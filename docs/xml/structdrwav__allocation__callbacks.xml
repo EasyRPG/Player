@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdrwav__allocation__callbacks" kind="struct" language="C++" prot="public">
+    <compoundname>drwav_allocation_callbacks</compoundname>
+    <includes refid="dr__wav_8h" local="no">dr_wav.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdrwav__allocation__callbacks_1a8a89a9b5010d65bbf19c1cd128c5648c" prot="public" static="no" mutable="no">
+        <type>void *</type>
+        <definition>void* drwav_allocation_callbacks::pUserData</definition>
+        <argsstring></argsstring>
+        <name>pUserData</name>
+        <qualifiedname>drwav_allocation_callbacks::pUserData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="299" column="10" bodyfile="external/dr_wav.h" bodystart="299" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__allocation__callbacks_1ab126e3faa9bc657f74aaff85b39dceaa" prot="public" static="no" mutable="no">
+        <type>void *(*</type>
+        <definition>void *(* drwav_allocation_callbacks::onMalloc) (size_t sz, void *pUserData)</definition>
+        <argsstring>)(size_t sz, void *pUserData)</argsstring>
+        <name>onMalloc</name>
+        <qualifiedname>drwav_allocation_callbacks::onMalloc</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="300" column="5" bodyfile="external/dr_wav.h" bodystart="300" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__allocation__callbacks_1a7bf52e165c07b303c044130900c9a4b1" prot="public" static="no" mutable="no">
+        <type>void *(*</type>
+        <definition>void *(* drwav_allocation_callbacks::onRealloc) (void *p, size_t sz, void *pUserData)</definition>
+        <argsstring>)(void *p, size_t sz, void *pUserData)</argsstring>
+        <name>onRealloc</name>
+        <qualifiedname>drwav_allocation_callbacks::onRealloc</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="301" column="5" bodyfile="external/dr_wav.h" bodystart="301" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__allocation__callbacks_1a8876068d884a7a7cd7389fce0527c207" prot="public" static="no" mutable="no">
+        <type>void(*</type>
+        <definition>void(* drwav_allocation_callbacks::onFree) (void *p, void *pUserData)</definition>
+        <argsstring>)(void *p, void *pUserData)</argsstring>
+        <name>onFree</name>
+        <qualifiedname>drwav_allocation_callbacks::onFree</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="302" column="5" bodyfile="external/dr_wav.h" bodystart="302" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="external/dr_wav.h" line="297" column="1" bodyfile="external/dr_wav.h" bodystart="298" bodyend="303"/>
+    <listofallmembers>
+      <member refid="structdrwav__allocation__callbacks_1a8876068d884a7a7cd7389fce0527c207" prot="public" virt="non-virtual"><scope>drwav_allocation_callbacks</scope><name>onFree</name></member>
+      <member refid="structdrwav__allocation__callbacks_1ab126e3faa9bc657f74aaff85b39dceaa" prot="public" virt="non-virtual"><scope>drwav_allocation_callbacks</scope><name>onMalloc</name></member>
+      <member refid="structdrwav__allocation__callbacks_1a7bf52e165c07b303c044130900c9a4b1" prot="public" virt="non-virtual"><scope>drwav_allocation_callbacks</scope><name>onRealloc</name></member>
+      <member refid="structdrwav__allocation__callbacks_1a8a89a9b5010d65bbf19c1cd128c5648c" prot="public" virt="non-virtual"><scope>drwav_allocation_callbacks</scope><name>pUserData</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

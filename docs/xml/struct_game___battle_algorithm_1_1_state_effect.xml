@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___battle_algorithm_1_1_state_effect" kind="struct" language="C++" prot="public">
+    <compoundname>Game_BattleAlgorithm::StateEffect</compoundname>
+    <includes refid="game__battlealgorithm_8h" local="no">game_battlealgorithm.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="struct_game___battle_algorithm_1_1_state_effect_1add185dcf428f59899851f98c2e5b5354" prot="public" static="no" strong="no">
+        <type>int16_t</type>
+        <name>Effect</name>
+        <qualifiedname>Game_BattleAlgorithm::StateEffect::Effect</qualifiedname>
+        <enumvalue id="struct_game___battle_algorithm_1_1_state_effect_1add185dcf428f59899851f98c2e5b5354aeda88435c0ed22bf0c6a11dc494746df" prot="public">
+          <name>None</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="struct_game___battle_algorithm_1_1_state_effect_1add185dcf428f59899851f98c2e5b5354a7ac2f6a07da275260a93e4b37f102bd7" prot="public">
+          <name>Inflicted</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="struct_game___battle_algorithm_1_1_state_effect_1add185dcf428f59899851f98c2e5b5354a85aa4160fcbee7916088d3f931086154" prot="public">
+          <name>AlreadyInflicted</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="struct_game___battle_algorithm_1_1_state_effect_1add185dcf428f59899851f98c2e5b5354ac8946e7784b2abb77442b93b9a545a4c" prot="public">
+          <name>Healed</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="struct_game___battle_algorithm_1_1_state_effect_1add185dcf428f59899851f98c2e5b5354ae279c3169f2e295e248360bcce5fcbcc" prot="public">
+          <name>HealedByAttack</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battlealgorithm.h" line="59" column="1" bodyfile="game_battlealgorithm.h" bodystart="59" bodyend="65"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___battle_algorithm_1_1_state_effect_1a4fa23cdce449ee40c67f2a3e1df3f530" prot="public" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t Game_BattleAlgorithm::StateEffect::state_id</definition>
+        <argsstring></argsstring>
+        <name>state_id</name>
+        <qualifiedname>Game_BattleAlgorithm::StateEffect::state_id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battlealgorithm.h" line="66" column="9" bodyfile="game_battlealgorithm.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___battle_algorithm_1_1_state_effect_1a4b35ed6cb4f113a2d4fc3c49aaa7f149" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_game___battle_algorithm_1_1_state_effect_1add185dcf428f59899851f98c2e5b5354" kindref="member">Effect</ref></type>
+        <definition>Effect Game_BattleAlgorithm::StateEffect::effect</definition>
+        <argsstring></argsstring>
+        <name>effect</name>
+        <qualifiedname>Game_BattleAlgorithm::StateEffect::effect</qualifiedname>
+        <initializer>= <ref refid="struct_game___battle_algorithm_1_1_state_effect_1add185dcf428f59899851f98c2e5b5354aeda88435c0ed22bf0c6a11dc494746df" kindref="member">None</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battlealgorithm.h" line="67" column="8" bodyfile="game_battlealgorithm.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_game___battle_algorithm_1_1_state_effect_1a33a8fcdd1c8546d949fd98e0343f2689" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_BattleAlgorithm::StateEffect::StateEffect</definition>
+        <argsstring>()=default</argsstring>
+        <name>StateEffect</name>
+        <qualifiedname>Game_BattleAlgorithm::StateEffect::StateEffect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battlealgorithm.h" line="69" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_game___battle_algorithm_1_1_state_effect_1a5612ca113d0bff5722a94a9b70270246" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Game_BattleAlgorithm::StateEffect::StateEffect</definition>
+        <argsstring>(int state_id, Effect effect)</argsstring>
+        <name>StateEffect</name>
+        <qualifiedname>Game_BattleAlgorithm::StateEffect::StateEffect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>state_id</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_game___battle_algorithm_1_1_state_effect_1add185dcf428f59899851f98c2e5b5354" kindref="member">Effect</ref></type>
+          <declname>effect</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battlealgorithm.h" line="70" column="1" bodyfile="game_battlealgorithm.h" bodystart="70" bodyend="71"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_battlealgorithm.h" line="58" column="1" bodyfile="game_battlealgorithm.h" bodystart="58" bodyend="72"/>
+    <listofallmembers>
+      <member refid="struct_game___battle_algorithm_1_1_state_effect_1add185dcf428f59899851f98c2e5b5354a85aa4160fcbee7916088d3f931086154" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::StateEffect</scope><name>AlreadyInflicted</name></member>
+      <member refid="struct_game___battle_algorithm_1_1_state_effect_1add185dcf428f59899851f98c2e5b5354" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::StateEffect</scope><name>Effect</name></member>
+      <member refid="struct_game___battle_algorithm_1_1_state_effect_1a4b35ed6cb4f113a2d4fc3c49aaa7f149" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::StateEffect</scope><name>effect</name></member>
+      <member refid="struct_game___battle_algorithm_1_1_state_effect_1add185dcf428f59899851f98c2e5b5354ac8946e7784b2abb77442b93b9a545a4c" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::StateEffect</scope><name>Healed</name></member>
+      <member refid="struct_game___battle_algorithm_1_1_state_effect_1add185dcf428f59899851f98c2e5b5354ae279c3169f2e295e248360bcce5fcbcc" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::StateEffect</scope><name>HealedByAttack</name></member>
+      <member refid="struct_game___battle_algorithm_1_1_state_effect_1add185dcf428f59899851f98c2e5b5354a7ac2f6a07da275260a93e4b37f102bd7" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::StateEffect</scope><name>Inflicted</name></member>
+      <member refid="struct_game___battle_algorithm_1_1_state_effect_1add185dcf428f59899851f98c2e5b5354aeda88435c0ed22bf0c6a11dc494746df" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::StateEffect</scope><name>None</name></member>
+      <member refid="struct_game___battle_algorithm_1_1_state_effect_1a4fa23cdce449ee40c67f2a3e1df3f530" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::StateEffect</scope><name>state_id</name></member>
+      <member refid="struct_game___battle_algorithm_1_1_state_effect_1a33a8fcdd1c8546d949fd98e0343f2689" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::StateEffect</scope><name>StateEffect</name></member>
+      <member refid="struct_game___battle_algorithm_1_1_state_effect_1a5612ca113d0bff5722a94a9b70270246" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::StateEffect</scope><name>StateEffect</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

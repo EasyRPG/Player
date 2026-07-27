@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1typings2_1_1is__complete_3_01_t_00_01std_1_1void__t_3_01decltype_07sizeof_07_t_08_08_4_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::typings2::is_complete&lt; T, std::void_t&lt; decltype(sizeof(T))&gt; &gt;</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::false_type</basecompoundref>
+    <basecompoundref prot="public" virt="non-virtual">std::true_type</basecompoundref>
+    <includes refid="metatypes_8hpp" local="no">metatypes.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>leasy::typings2::is_complete&lt; T, std::void_t&lt; decltype(sizeof(T))&gt; &gt;</label>
+        <link refid="structleasy_1_1typings2_1_1is__complete_3_01_t_00_01std_1_1void__t_3_01decltype_07sizeof_07_t_08_08_4_01_4"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::false_type</label>
+      </node>
+      <node id="3">
+        <label>std::true_type</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>leasy::typings2::is_complete&lt; T, std::void_t&lt; decltype(sizeof(T))&gt; &gt;</label>
+        <link refid="structleasy_1_1typings2_1_1is__complete_3_01_t_00_01std_1_1void__t_3_01decltype_07sizeof_07_t_08_08_4_01_4"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::false_type</label>
+      </node>
+      <node id="3">
+        <label>std::true_type</label>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/typings/metatypes.hpp" line="37" column="3" bodyfile="leasy/typings/metatypes.hpp" bodystart="38" bodyend="38"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

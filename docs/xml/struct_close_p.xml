@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_close_p" kind="struct" language="C++" prot="public">
+    <compoundname>CloseP</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_close_p_1a17028dbcb387a049f0f9d6179c89ffd2" prot="public" static="no" mutable="no">
+        <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+        <definition>StkId CloseP::level</definition>
+        <argsstring></argsstring>
+        <name>level</name>
+        <qualifiedname>CloseP::level</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.c" line="1041" column="9" bodyfile="leasy/lua/ldo.c" bodystart="1041" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_close_p_1a98847405fbff1104c704180135e7dbdd" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref></type>
+        <definition>TStatus CloseP::status</definition>
+        <argsstring></argsstring>
+        <name>status</name>
+        <qualifiedname>CloseP::status</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.c" line="1042" column="11" bodyfile="leasy/lua/ldo.c" bodystart="1042" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>CloseP</label>
+        <link refid="struct_close_p"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>level</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>StackValue</label>
+        <link refid="union_stack_value"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>val</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>TValue</label>
+        <link refid="struct_t_value"/>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/ldo.c" line="1040" column="1" bodyfile="leasy/lua/ldo.c" bodystart="1040" bodyend="1043"/>
+    <listofallmembers>
+      <member refid="struct_close_p_1a17028dbcb387a049f0f9d6179c89ffd2" prot="public" virt="non-virtual"><scope>CloseP</scope><name>level</name></member>
+      <member refid="struct_close_p_1a98847405fbff1104c704180135e7dbdd" prot="public" virt="non-virtual"><scope>CloseP</scope><name>status</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -84,3 +84,4 @@ struct Game_ConfigGame {
 };
 
 #endif
+

@@ -1,0 +1,412 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1metadata_1_1_type_info" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>leasy::metadata::TypeInfo</compoundname>
+    <basecompoundref refid="classleasy_1_1metadata_1_1_data" prot="public" virt="non-virtual">leasy::metadata::Data</basecompoundref>
+    <includes refid="type_8hpp" local="no">type.hpp</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classleasy_1_1metadata_1_1_type_info_1a771fff087462f3b6da98f2943ae03187" prot="public" static="no">
+        <type>std::type_index</type>
+        <definition>using leasy::metadata::TypeInfo::index_type = std::type_index</definition>
+        <argsstring></argsstring>
+        <name>index_type</name>
+        <qualifiedname>leasy::metadata::TypeInfo::index_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="50" column="5" bodyfile="leasy/metadata/type.hpp" bodystart="50" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classleasy_1_1metadata_1_1_type_info_1a1fb8f59ccae3090abdf71210aef8877e" prot="private" static="no" mutable="no">
+        <type>std::type_index</type>
+        <definition>std::type_index leasy::metadata::TypeInfo::m_index</definition>
+        <argsstring></argsstring>
+        <name>m_index</name>
+        <qualifiedname>leasy::metadata::TypeInfo::m_index</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="144" column="21" bodyfile="leasy/metadata/type.hpp" bodystart="144" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1metadata_1_1_type_info_1a6bcb028ab29c43aa1faaae48e17794fe" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string leasy::metadata::TypeInfo::m_name</definition>
+        <argsstring></argsstring>
+        <name>m_name</name>
+        <qualifiedname>leasy::metadata::TypeInfo::m_name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="145" column="17" bodyfile="leasy/metadata/type.hpp" bodystart="145" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1metadata_1_1_type_info_1a9e75d5e345bf2e1dcca35a8bd939a615" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string leasy::metadata::TypeInfo::m_implname</definition>
+        <argsstring></argsstring>
+        <name>m_implname</name>
+        <qualifiedname>leasy::metadata::TypeInfo::m_implname</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="146" column="17" bodyfile="leasy/metadata/type.hpp" bodystart="146" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1metadata_1_1_type_info_1a7990fa5df56ff040d905b5b6a4ecc277" prot="private" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t leasy::metadata::TypeInfo::m_size</definition>
+        <argsstring></argsstring>
+        <name>m_size</name>
+        <qualifiedname>leasy::metadata::TypeInfo::m_size</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="147" column="12" bodyfile="leasy/metadata/type.hpp" bodystart="147" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_type_info_1a405041d85739f3cbd1ee1338887ab19f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::metadata::TypeInfo::TypeInfo</definition>
+        <argsstring>()</argsstring>
+        <name>TypeInfo</name>
+        <qualifiedname>leasy::metadata::TypeInfo::TypeInfo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="52" column="5" bodyfile="leasy/metadata/type.hpp" bodystart="52" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_type_info_1a7e67f18cbbbee9c15fc32b79d9782610" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::metadata::TypeInfo::TypeInfo</definition>
+        <argsstring>(const std::type_index &amp;info)</argsstring>
+        <name>TypeInfo</name>
+        <qualifiedname>leasy::metadata::TypeInfo::TypeInfo</qualifiedname>
+        <param>
+          <type>const std::type_index &amp;</type>
+          <declname>info</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="57" column="14" bodyfile="leasy/metadata/type.hpp" bodystart="57" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_type_info_1a9eacef9880a6a377450a3e2d4197f49a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>leasy::metadata::TypeInfo::TypeInfo</definition>
+        <argsstring>(std::in_place_type_t&lt; T &gt;)</argsstring>
+        <name>TypeInfo</name>
+        <qualifiedname>leasy::metadata::TypeInfo::TypeInfo</qualifiedname>
+        <param>
+          <type>std::in_place_type_t&lt; T &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="77" column="5" bodyfile="leasy/metadata/type.hpp" bodystart="77" bodyend="85"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_type_info_1a89bb219e12970aa48d903dfa5a48b32a" prot="public" static="no" nodiscard="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>std::type_index</type>
+        <definition>std::type_index leasy::metadata::TypeInfo::index</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>index</name>
+        <qualifiedname>leasy::metadata::TypeInfo::index</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="88" column="21" bodyfile="leasy/metadata/type.hpp" bodystart="88" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_type_info_1aadda1d560c11e666964bb8e34e8e34c2" prot="public" static="no" nodiscard="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string leasy::metadata::TypeInfo::name</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>name</name>
+        <qualifiedname>leasy::metadata::TypeInfo::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="93" column="17" bodyfile="leasy/metadata/type.hpp" bodystart="93" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_type_info_1a4bce8eaf5ad4cf466eae8f1ef4d9aed4" prot="public" static="no" nodiscard="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string leasy::metadata::TypeInfo::implname</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>implname</name>
+        <qualifiedname>leasy::metadata::TypeInfo::implname</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="98" column="17" bodyfile="leasy/metadata/type.hpp" bodystart="98" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_type_info_1a2201f746d54fd89cf725c5ed683cef38" prot="public" static="no" nodiscard="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>std::size_t</type>
+        <definition>std::size_t leasy::metadata::TypeInfo::hash_code</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>hash_code</name>
+        <qualifiedname>leasy::metadata::TypeInfo::hash_code</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="103" column="17" bodyfile="leasy/metadata/type.hpp" bodystart="103" bodyend="105"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_type_info_1a0b9031772a51fa1e6653756f00a5c7f0" prot="public" static="no" const="yes" explicit="yes" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::metadata::TypeInfo::operator std::type_index</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>operator std::type_index</name>
+        <qualifiedname>leasy::metadata::TypeInfo::type_index</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="107" column="14" bodyfile="leasy/metadata/type.hpp" bodystart="107" bodyend="109"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_type_info_1a0eb196cd76a07de0ed31139150375b3c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t leasy::metadata::TypeInfo::size</definition>
+        <argsstring>() const</argsstring>
+        <name>size</name>
+        <qualifiedname>leasy::metadata::TypeInfo::size</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="123" column="12" bodyfile="leasy/metadata/type.hpp" bodystart="123" bodyend="125"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_type_info_1a6b87367f41d867e73dc91334e5ae24f1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref></type>
+        <definition>Object leasy::metadata::TypeInfo::dump</definition>
+        <argsstring>() const override</argsstring>
+        <name>dump</name>
+        <qualifiedname>leasy::metadata::TypeInfo::dump</qualifiedname>
+        <reimplements refid="classleasy_1_1metadata_1_1_data_1aa147e2dbf84c5b9edc0874e0492c8a5e">dump</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="127" column="12" bodyfile="leasy/metadata/type.hpp" bodystart="127" bodyend="132"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_type_info_1ab88095b69bf6b1f65a22459465d6076b" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="classleasy_1_1metadata_1_1_type_info_1a405041d85739f3cbd1ee1338887ab19f" kindref="member">TypeInfo</ref></type>
+        <definition>static TypeInfo leasy::metadata::TypeInfo::from</definition>
+        <argsstring>()</argsstring>
+        <name>from</name>
+        <qualifiedname>leasy::metadata::TypeInfo::from</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="63" column="21" bodyfile="leasy/metadata/type.hpp" bodystart="63" bodyend="74"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="friend">
+      <memberdef kind="friend" id="classleasy_1_1metadata_1_1_type_info_1ae8606ab6da02d430f5a7f88fabb36777" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool operator==</definition>
+        <argsstring>(const TypeInfo &amp;lhs, const TypeInfo &amp;rhs) noexcept</argsstring>
+        <name>operator==</name>
+        <qualifiedname>leasy::metadata::TypeInfo::operator==</qualifiedname>
+        <param>
+          <type>const <ref refid="classleasy_1_1metadata_1_1_type_info_1a405041d85739f3cbd1ee1338887ab19f" kindref="member">TypeInfo</ref> &amp;</type>
+          <declname>lhs</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classleasy_1_1metadata_1_1_type_info_1a405041d85739f3cbd1ee1338887ab19f" kindref="member">TypeInfo</ref> &amp;</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="111" column="17" bodyfile="leasy/metadata/type.hpp" bodystart="111" bodyend="113"/>
+      </memberdef>
+      <memberdef kind="friend" id="classleasy_1_1metadata_1_1_type_info_1a7bbcb46298caf29826043af3a5dbb2b1" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool operator!=</definition>
+        <argsstring>(const TypeInfo &amp;lhs, const TypeInfo &amp;rhs) noexcept</argsstring>
+        <name>operator!=</name>
+        <qualifiedname>leasy::metadata::TypeInfo::operator!=</qualifiedname>
+        <param>
+          <type>const <ref refid="classleasy_1_1metadata_1_1_type_info_1a405041d85739f3cbd1ee1338887ab19f" kindref="member">TypeInfo</ref> &amp;</type>
+          <declname>lhs</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classleasy_1_1metadata_1_1_type_info_1a405041d85739f3cbd1ee1338887ab19f" kindref="member">TypeInfo</ref> &amp;</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="115" column="17" bodyfile="leasy/metadata/type.hpp" bodystart="115" bodyend="117"/>
+      </memberdef>
+      <memberdef kind="friend" id="classleasy_1_1metadata_1_1_type_info_1a97fc6c84739362ab7fa6370f765686f8" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool operator&lt;</definition>
+        <argsstring>(const TypeInfo &amp;lhs, const TypeInfo &amp;rhs) noexcept</argsstring>
+        <name>operator&lt;</name>
+        <qualifiedname>leasy::metadata::TypeInfo::operator&lt;</qualifiedname>
+        <param>
+          <type>const <ref refid="classleasy_1_1metadata_1_1_type_info_1a405041d85739f3cbd1ee1338887ab19f" kindref="member">TypeInfo</ref> &amp;</type>
+          <declname>lhs</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classleasy_1_1metadata_1_1_type_info_1a405041d85739f3cbd1ee1338887ab19f" kindref="member">TypeInfo</ref> &amp;</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="119" column="12" bodyfile="leasy/metadata/type.hpp" bodystart="119" bodyend="121"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_type_info_1a3c8d884247f4ac195a4c0d4b659a0bc7" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::metadata::TypeInfo::TypeInfo</definition>
+        <argsstring>(const std::type_info &amp;info, std::string_view user_name, std::string_view impl_name, size_t size__=0)</argsstring>
+        <name>TypeInfo</name>
+        <qualifiedname>leasy::metadata::TypeInfo::TypeInfo</qualifiedname>
+        <param>
+          <type>const std::type_info &amp;</type>
+          <declname>info</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>user_name</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>impl_name</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size__</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="135" column="5" bodyfile="leasy/metadata/type.hpp" bodystart="135" bodyend="142"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>leasy::metadata::Data</label>
+        <link refid="classleasy_1_1metadata_1_1_data"/>
+      </node>
+      <node id="1">
+        <label>leasy::metadata::TypeInfo</label>
+        <link refid="classleasy_1_1metadata_1_1_type_info"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>leasy::metadata::Data</label>
+        <link refid="classleasy_1_1metadata_1_1_data"/>
+      </node>
+      <node id="1">
+        <label>leasy::metadata::TypeInfo</label>
+        <link refid="classleasy_1_1metadata_1_1_type_info"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/metadata/type.hpp" line="48" column="3" bodyfile="leasy/metadata/type.hpp" bodystart="48" bodyend="148"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1metadata_1_1_data_1a8776e154751bda5ca9d54b684c2c5699" prot="public" virt="virtual"><scope>leasy::metadata::TypeInfo</scope><name>bind</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1a6b87367f41d867e73dc91334e5ae24f1" prot="public" virt="virtual"><scope>leasy::metadata::TypeInfo</scope><name>dump</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1ab88095b69bf6b1f65a22459465d6076b" prot="public" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>from</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1a2201f746d54fd89cf725c5ed683cef38" prot="public" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>hash_code</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1a4bce8eaf5ad4cf466eae8f1ef4d9aed4" prot="public" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>implname</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1a89bb219e12970aa48d903dfa5a48b32a" prot="public" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>index</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1a771fff087462f3b6da98f2943ae03187" prot="public" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>index_type</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1a9e75d5e345bf2e1dcca35a8bd939a615" prot="private" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>m_implname</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1a1fb8f59ccae3090abdf71210aef8877e" prot="private" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>m_index</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1a6bcb028ab29c43aa1faaae48e17794fe" prot="private" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>m_name</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1a7990fa5df56ff040d905b5b6a4ecc277" prot="private" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>m_size</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1aadda1d560c11e666964bb8e34e8e34c2" prot="public" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>name</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1a0b9031772a51fa1e6653756f00a5c7f0" prot="public" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>operator std::type_index</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1a7bbcb46298caf29826043af3a5dbb2b1" prot="public" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>operator!=</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1a97fc6c84739362ab7fa6370f765686f8" prot="public" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>operator&lt;</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1ae8606ab6da02d430f5a7f88fabb36777" prot="public" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>operator==</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1a0eb196cd76a07de0ed31139150375b3c" prot="public" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>size</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1a405041d85739f3cbd1ee1338887ab19f" prot="public" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>TypeInfo</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1a7e67f18cbbbee9c15fc32b79d9782610" prot="public" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>TypeInfo</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1a9eacef9880a6a377450a3e2d4197f49a" prot="public" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>TypeInfo</name></member>
+      <member refid="classleasy_1_1metadata_1_1_type_info_1a3c8d884247f4ac195a4c0d4b659a0bc7" prot="private" virt="non-virtual"><scope>leasy::metadata::TypeInfo</scope><name>TypeInfo</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

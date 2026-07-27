@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ul2::lua_stack&lt; leasy::kits::variant&lt; Ts... &gt; &gt;</compoundname>
+    <includes refid="lua__stack_8hpp" local="no">lua_stack.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type>typename...</type>
+        <declname>Ts</declname>
+        <defname>Ts</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1acc54f67ebf42be90df26be27c86b9eff" prot="public" static="no">
+        <type><ref refid="classleasy_1_1kits_1_1variant" kindref="compound">leasy::kits::variant</ref>&lt; Ts... &gt;</type>
+        <definition>using leasy::ul2::lua_stack&lt; leasy::kits::variant&lt; Ts... &gt; &gt;::variant_t = leasy::kits::variant&lt;Ts...&gt;</definition>
+        <argsstring></argsstring>
+        <name>variant_t</name>
+        <qualifiedname>leasy::ul2::lua_stack&lt; leasy::kits::variant&lt; Ts... &gt; &gt;::variant_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/lua_stack.hpp" line="297" column="5" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="297" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1a7118a166fa25453957c508c92c626674" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1acc54f67ebf42be90df26be27c86b9eff" kindref="member">variant_t</ref></type>
+        <definition>static variant_t leasy::ul2::lua_stack&lt; leasy::kits::variant&lt; Ts... &gt; &gt;::get</definition>
+        <argsstring>(lua_State *L, int index)</argsstring>
+        <name>get</name>
+        <qualifiedname>leasy::ul2::lua_stack&lt; leasy::kits::variant&lt; Ts... &gt; &gt;::get</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/lua_stack.hpp" line="299" column="22" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="299" bodyend="306"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1a2a393e03db4bfb00813c53fb3fdf55c0" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void leasy::ul2::lua_stack&lt; leasy::kits::variant&lt; Ts... &gt; &gt;::push</definition>
+        <argsstring>(lua_State *L, const variant_t &amp;v)</argsstring>
+        <name>push</name>
+        <qualifiedname>leasy::ul2::lua_stack&lt; leasy::kits::variant&lt; Ts... &gt; &gt;::push</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1acc54f67ebf42be90df26be27c86b9eff" kindref="member">variant_t</ref> &amp;</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/lua_stack.hpp" line="308" column="17" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="308" bodyend="317"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ul2/lua_stack.hpp" line="295" column="3" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="296" bodyend="318"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1a7118a166fa25453957c508c92c626674" prot="public" virt="non-virtual"><scope>leasy::ul2::lua_stack&lt; leasy::kits::variant&lt; Ts... &gt; &gt;</scope><name>get</name></member>
+      <member refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1a2a393e03db4bfb00813c53fb3fdf55c0" prot="public" virt="non-virtual"><scope>leasy::ul2::lua_stack&lt; leasy::kits::variant&lt; Ts... &gt; &gt;</scope><name>push</name></member>
+      <member refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1acc54f67ebf42be90df26be27c86b9eff" prot="public" virt="non-virtual"><scope>leasy::ul2::lua_stack&lt; leasy::kits::variant&lt; Ts... &gt; &gt;</scope><name>variant_t</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

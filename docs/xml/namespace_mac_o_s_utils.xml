@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_mac_o_s_utils" kind="namespace" language="C++">
+    <compoundname>MacOSUtils</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_mac_o_s_utils_1a3814d874fbd4c649ccfab35e339b6cc7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool MacOSUtils::IsAppBundle</definition>
+        <argsstring>()</argsstring>
+        <name>IsAppBundle</name>
+        <qualifiedname>MacOSUtils::IsAppBundle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determine if the app is being run inside a .app bundle. <simplesect kind="return"><para>true if running in a bundle </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/macos/macos_utils.h" line="26" column="6" declfile="platform/macos/macos_utils.h" declline="26" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_mac_o_s_utils_1aff2242de720fc502029f47952828afdd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string MacOSUtils::GetBundleDir</definition>
+        <argsstring>()</argsstring>
+        <name>GetBundleDir</name>
+        <qualifiedname>MacOSUtils::GetBundleDir</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the path to the Player.app bundle. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/macos/macos_utils.h" line="30" column="13" declfile="platform/macos/macos_utils.h" declline="30" declcolumn="13"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/macos/macos_utils.h" line="21" column="1"/>
+  </compounddef>
+</doxygen>

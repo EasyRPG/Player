@@ -21,3 +21,4 @@ constexpr bool operator<(const BitmapFontGlyph& lhs, const BitmapFontGlyph& rhs)
 constexpr const BitmapFontGlyph BITMAPFONT_REPLACEMENT_GLYPH = { 65533, true, { 96, 240, 504, 924, 1902, 3967, 4031, 1982, 1020, 440, 240, 96 } };
 
 #endif
+

@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespacemidisynth" kind="namespace" language="C++">
+    <compoundname>midisynth</compoundname>
+    <innerclass refid="classmidisynth_1_1uncopyable" prot="public">midisynth::uncopyable</innerclass>
+    <innerclass refid="classmidisynth_1_1note" prot="public">midisynth::note</innerclass>
+    <innerclass refid="classmidisynth_1_1note__factory" prot="public">midisynth::note_factory</innerclass>
+    <innerclass refid="classmidisynth_1_1channel" prot="public">midisynth::channel</innerclass>
+    <innerclass refid="classmidisynth_1_1synthesizer" prot="public">midisynth::synthesizer</innerclass>
+    <innerclass refid="classmidisynth_1_1sine__wave__generator" prot="public">midisynth::sine_wave_generator</innerclass>
+    <innerclass refid="classmidisynth_1_1envelope__generator" prot="public">midisynth::envelope_generator</innerclass>
+    <innerclass refid="classmidisynth_1_1fm__operator" prot="public">midisynth::fm_operator</innerclass>
+    <innerclass refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r" prot="public">midisynth::FMPARAMETER</innerclass>
+    <innerclass refid="structmidisynth_1_1_d_r_u_m_p_a_r_a_m_e_t_e_r" prot="public">midisynth::DRUMPARAMETER</innerclass>
+    <innerclass refid="classmidisynth_1_1fm__sound__generator" prot="public">midisynth::fm_sound_generator</innerclass>
+    <innerclass refid="classmidisynth_1_1fm__note" prot="public">midisynth::fm_note</innerclass>
+    <innerclass refid="classmidisynth_1_1fm__note__factory" prot="public">midisynth::fm_note_factory</innerclass>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespacemidisynth_1a036a2f6a076f1510e07168a6648e316e" prot="public" static="no" strong="no">
+        <type></type>
+        <name>system_mode_t</name>
+        <qualifiedname>midisynth::system_mode_t</qualifiedname>
+        <enumvalue id="namespacemidisynth_1a036a2f6a076f1510e07168a6648e316ea39b8e53474c0fe3de07549078e17c340" prot="public">
+          <name>system_mode_default</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespacemidisynth_1a036a2f6a076f1510e07168a6648e316ea05660faa4dba3e4d9e91025d5436d5e9" prot="public">
+          <name>system_mode_gm</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespacemidisynth_1a036a2f6a076f1510e07168a6648e316ea89bd2db63493080da9c0fad1289530be" prot="public">
+          <name>system_mode_gm2</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespacemidisynth_1a036a2f6a076f1510e07168a6648e316eae79bc6cdf5f5a07fbba5596e75832d71" prot="public">
+          <name>system_mode_gs</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespacemidisynth_1a036a2f6a076f1510e07168a6648e316ea8ed1a60347b8eeba9bba02b7a811ffae" prot="public">
+          <name>system_mode_xg</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="49" column="5" bodyfile="midisynth.h" bodystart="49" bodyend="49"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="midisynth.h" line="38" column="1"/>
+  </compounddef>
+</doxygen>

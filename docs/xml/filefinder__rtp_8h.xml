@@ -1,0 +1,323 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="filefinder__rtp_8h" kind="file" language="C++">
+    <compoundname>filefinder_rtp.h</compoundname>
+    <includes refid="directory__tree_8h" local="yes">directory_tree.h</includes>
+    <includes refid="rtp_8h" local="yes">rtp.h</includes>
+    <includes refid="string__view_8h" local="yes">string_view.h</includes>
+    <includedby refid="filefinder_8cpp" local="yes">filefinder.cpp</includedby>
+    <includedby refid="filefinder__rtp_8cpp" local="yes">filefinder_rtp.cpp</includedby>
+    <includedby refid="main__data_8cpp" local="yes">main_data.cpp</includedby>
+    <includedby refid="player_8cpp" local="yes">player.cpp</includedby>
+    <incdepgraph>
+      <node id="2">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>filefinder_rtp.h</label>
+        <link refid="filefinder__rtp_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="14">
+        <label>rtp.h</label>
+        <link refid="rtp_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>cassert</label>
+      </node>
+      <node id="25">
+        <label>cstdint</label>
+      </node>
+      <node id="29">
+        <label>cstdio</label>
+      </node>
+      <node id="27">
+        <label>ctime</label>
+      </node>
+      <node id="12">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="13">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="28">
+        <label>functional</label>
+      </node>
+      <node id="30">
+        <label>ios</label>
+      </node>
+      <node id="22">
+        <label>istream</label>
+      </node>
+      <node id="11">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="15">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="8">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="10">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="3">
+        <label>memory</label>
+      </node>
+      <node id="23">
+        <label>ostream</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="6">
+        <label>unordered_map</label>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>filefinder.cpp</label>
+        <link refid="filefinder_8cpp"/>
+      </node>
+      <node id="3">
+        <label>filefinder_rtp.cpp</label>
+        <link refid="filefinder__rtp_8cpp"/>
+      </node>
+      <node id="1">
+        <label>filefinder_rtp.h</label>
+        <link refid="filefinder__rtp_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>main_data.cpp</label>
+        <link refid="main__data_8cpp"/>
+      </node>
+      <node id="5">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_file_finder___r_t_p" prot="public">FileFinder_RTP</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="filefinder__rtp_8h_1adef2e018d4ba5ce7448c1476cab308d6" prot="public" static="no">
+        <name>EP_FILEFINDER_RTP_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder_rtp.h" line="20" column="9" bodyfile="filefinder_rtp.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_FILEFINDER_RTP_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="filefinder__rtp_8h_1adef2e018d4ba5ce7448c1476cab308d6" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_FILEFINDER_RTP_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="directory__tree_8h" kindref="compound">directory_tree.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="rtp_8h" kindref="compound">rtp.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="string__view_8h" kindref="compound">string_view.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="class_file_finder___r_t_p" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_file_finder___r_t_p_1aee7ece686e9cfb18f6cf450e29561856" kindref="member">FileFinder_RTP</ref><sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_file_finder___r_t_p_1aee7ece686e9cfb18f6cf450e29561856" kindref="member">FileFinder_RTP</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>no_rtp,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>no_rtp_warnings,<sp/>std::string<sp/>rtp_path);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref><sp/><ref refid="class_file_finder___r_t_p_1a8c57499c5bdf6c3595ea40aa2663d7fc" kindref="member">Lookup</ref>(std::string_view<sp/>dir,<sp/>std::string_view<sp/>name,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Span&lt;const<sp/>std::string_view&gt;<sp/>exts)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>AddPath(std::string_view<sp/>p);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ReadRegistry(std::string_view<sp/>company,<sp/>std::string_view<sp/>product,<sp/>std::string_view<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref><sp/>LookupInternal(std::string_view<sp/>dir,<sp/>std::string_view<sp/>name,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Span&lt;const<sp/>std::string_view&gt;<sp/>exts,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">&amp;<sp/>is_rtp_asset)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">search_path_list<sp/>=<sp/>std::vector&lt;FilesystemView&gt;;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>search_path_list<sp/>search_paths;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>disable_rtp<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>game_has_full_package_flag<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">mutable</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>warning_broken_rtp_game_shown<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;RTP::RtpHitInfo&gt;<sp/>detected_rtp;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">mutable</highlight><highlight class="normal"><sp/>std::vector&lt;RTP::Type&gt;<sp/>game_rtp;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="filefinder_rtp.h"/>
+  </compounddef>
+</doxygen>

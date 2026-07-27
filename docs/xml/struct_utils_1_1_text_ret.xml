@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_utils_1_1_text_ret" kind="struct" language="C++" prot="public">
+    <compoundname>Utils::TextRet</compoundname>
+    <includes refid="utils_8h" local="no">utils.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_utils_1_1_text_ret_1a376d521443cfe51736779f148b1e2407" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* Utils::TextRet::next</definition>
+        <argsstring></argsstring>
+        <name>next</name>
+        <qualifiedname>Utils::TextRet::next</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="189" column="12" bodyfile="utils.h" bodystart="189" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_utils_1_1_text_ret_1a81ab5abe22b64a3d049db9e5e3cc71c5" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t Utils::TextRet::ch</definition>
+        <argsstring></argsstring>
+        <name>ch</name>
+        <qualifiedname>Utils::TextRet::ch</qualifiedname>
+        <initializer>= &apos;\0&apos;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="191" column="10" bodyfile="utils.h" bodystart="191" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_utils_1_1_text_ret_1a0e3b2e0ac4090d59cc639777e92eeff7" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Utils::TextRet::is_exfont</definition>
+        <argsstring></argsstring>
+        <name>is_exfont</name>
+        <qualifiedname>Utils::TextRet::is_exfont</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="193" column="6" bodyfile="utils.h" bodystart="193" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_utils_1_1_text_ret_1ae64dfd9806aef96933996d546e12313c" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Utils::TextRet::is_escape</definition>
+        <argsstring></argsstring>
+        <name>is_escape</name>
+        <qualifiedname>Utils::TextRet::is_escape</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="195" column="6" bodyfile="utils.h" bodystart="195" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_utils_1_1_text_ret_1acbb356089e307e9141c6ff3dca326617" prot="public" static="no" const="yes" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Utils::TextRet::operator bool</definition>
+        <argsstring>() const</argsstring>
+        <name>operator bool</name>
+        <qualifiedname>Utils::TextRet::operator bool</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="197" column="10" bodyfile="utils.h" bodystart="197" bodyend="197"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="utils.h" line="187" column="1" bodyfile="utils.h" bodystart="187" bodyend="198"/>
+    <listofallmembers>
+      <member refid="struct_utils_1_1_text_ret_1a81ab5abe22b64a3d049db9e5e3cc71c5" prot="public" virt="non-virtual"><scope>Utils::TextRet</scope><name>ch</name></member>
+      <member refid="struct_utils_1_1_text_ret_1ae64dfd9806aef96933996d546e12313c" prot="public" virt="non-virtual"><scope>Utils::TextRet</scope><name>is_escape</name></member>
+      <member refid="struct_utils_1_1_text_ret_1a0e3b2e0ac4090d59cc639777e92eeff7" prot="public" virt="non-virtual"><scope>Utils::TextRet</scope><name>is_exfont</name></member>
+      <member refid="struct_utils_1_1_text_ret_1a376d521443cfe51736779f148b1e2407" prot="public" virt="non-virtual"><scope>Utils::TextRet</scope><name>next</name></member>
+      <member refid="struct_utils_1_1_text_ret_1acbb356089e307e9141c6ff3dca326617" prot="public" virt="non-virtual"><scope>Utils::TextRet</scope><name>operator bool</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

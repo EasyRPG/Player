@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_ep_android" kind="namespace" language="C++">
+    <compoundname>EpAndroid</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_ep_android_1ae74f0d905c88f02723e6788a58dff3ab" prot="public" static="no" extern="yes" mutable="no">
+        <type>JNIEnv *</type>
+        <definition>JNIEnv * EpAndroid::env</definition>
+        <argsstring></argsstring>
+        <name>env</name>
+        <qualifiedname>EpAndroid::env</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/android.h" line="26" column="15" bodyfile="platform/android/android.cpp" bodystart="3" bodyend="-1" declfile="platform/android/android.h" declline="26" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_ep_android_1a8fa0a4d128b4b2fae86b852948b00af0" prot="public" static="no" extern="yes" mutable="no">
+        <type>std::function&lt; void()&gt;</type>
+        <definition>std::function&lt; void()&gt; EpAndroid::android_fn</definition>
+        <argsstring></argsstring>
+        <name>android_fn</name>
+        <qualifiedname>EpAndroid::android_fn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/android.h" line="27" column="22" bodyfile="platform/android/android.cpp" bodystart="4" bodyend="-1" declfile="platform/android/android.h" declline="27" declcolumn="22"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_ep_android_1a8da914d42a9e210ddd98af5083d9ce82" prot="public" static="no" extern="yes" mutable="no">
+        <type>std::mutex</type>
+        <definition>std::mutex EpAndroid::android_mutex</definition>
+        <argsstring></argsstring>
+        <name>android_mutex</name>
+        <qualifiedname>EpAndroid::android_mutex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/android.h" line="28" column="19" bodyfile="platform/android/android.cpp" bodystart="5" bodyend="-1" declfile="platform/android/android.h" declline="28" declcolumn="19"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_ep_android_1a4bacc337d627b6e5f8acaf71fb6b12f0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void EpAndroid::invoke</definition>
+        <argsstring>()</argsstring>
+        <name>invoke</name>
+        <qualifiedname>EpAndroid::invoke</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/android.h" line="30" column="13" bodyfile="platform/android/android.h" bodystart="30" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_ep_android_1a399b875d5b3fa0da234e36b408646917" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void EpAndroid::schedule</definition>
+        <argsstring>(F &amp;&amp;fn)</argsstring>
+        <name>schedule</name>
+        <qualifiedname>EpAndroid::schedule</qualifiedname>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>fn</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/android.h" line="44" column="13" bodyfile="platform/android/android.h" bodystart="44" bodyend="48"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/android/android.h" line="25" column="1"/>
+  </compounddef>
+</doxygen>

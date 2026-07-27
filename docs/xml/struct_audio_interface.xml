@@ -1,0 +1,877 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_audio_interface" kind="struct" language="C++" prot="public" abstract="yes">
+    <compoundname>AudioInterface</compoundname>
+    <derivedcompoundref refid="class_ctr_audio" prot="public" virt="non-virtual">CtrAudio</derivedcompoundref>
+    <derivedcompoundref refid="struct_empty_audio" prot="public" virt="non-virtual">EmptyAudio</derivedcompoundref>
+    <derivedcompoundref refid="class_generic_audio" prot="public" virt="non-virtual">GenericAudio</derivedcompoundref>
+    <includes refid="audio_8h" local="no">audio.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="struct_audio_interface_1ad751ed86af60ced4f37d7091b91f823b" prot="protected" static="no" mutable="no">
+        <type><ref refid="struct_game___config_audio" kindref="compound">Game_ConfigAudio</ref></type>
+        <definition>Game_ConfigAudio AudioInterface::cfg</definition>
+        <argsstring></argsstring>
+        <name>cfg</name>
+        <qualifiedname>AudioInterface::cfg</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="160" column="18" bodyfile="audio.h" bodystart="160" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_audio_interface_1a9c45557ddc2a1429df7be8d75a473011" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AudioInterface::AudioInterface</definition>
+        <argsstring>(const Game_ConfigAudio &amp;cfg)</argsstring>
+        <name>AudioInterface</name>
+        <qualifiedname>AudioInterface::AudioInterface</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_game___config_audio" kindref="compound">Game_ConfigAudio</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="33" column="10" bodyfile="audio.cpp" bodystart="67" bodyend="69"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1ac4ff9429ec5962d3985d182ec9b3d088" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual AudioInterface::~AudioInterface</definition>
+        <argsstring>()=default</argsstring>
+        <name>~AudioInterface</name>
+        <qualifiedname>AudioInterface::~AudioInterface</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="35" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1adee5375400b4ca5766688d41f0556128" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_game___config_audio" kindref="compound">Game_ConfigAudio</ref></type>
+        <definition>Game_ConfigAudio AudioInterface::GetConfig</definition>
+        <argsstring>() const</argsstring>
+        <name>GetConfig</name>
+        <qualifiedname>AudioInterface::GetConfig</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>current audio options. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="40" column="18" bodyfile="audio.cpp" bodystart="71" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1af623f1d38f8e6da5aa94ea14d09f018c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void AudioInterface::vGetConfig</definition>
+        <argsstring>(Game_ConfigAudio &amp;cfg) const =0</argsstring>
+        <name>vGetConfig</name>
+        <qualifiedname>AudioInterface::vGetConfig</qualifiedname>
+        <reimplementedby refid="class_ctr_audio_1af6a5bdd7e0b607b942a48f71501b95b6">vGetConfig</reimplementedby>
+        <reimplementedby refid="struct_empty_audio_1aa535bef5daff1fcf635dd765b882c40d">vGetConfig</reimplementedby>
+        <reimplementedby refid="class_generic_audio_1a0e8fba9fa4ef631d77a46109809167fb">vGetConfig</reimplementedby>
+        <param>
+          <type><ref refid="struct_game___config_audio" kindref="compound">Game_ConfigAudio</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="42" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1ab0b6a6be94283bf823cbaaa99fc318e3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="class_generic_audio_midi_out" kindref="compound">GenericAudioMidiOut</ref> *</type>
+        <definition>virtual GenericAudioMidiOut * AudioInterface::CreateAndGetMidiOut</definition>
+        <argsstring>()</argsstring>
+        <name>CreateAndGetMidiOut</name>
+        <qualifiedname>AudioInterface::CreateAndGetMidiOut</qualifiedname>
+        <reimplementedby refid="class_generic_audio_1a50f30239601cb6d043f6c3a8a5e08392">CreateAndGetMidiOut</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Instantiates and returns the Native Midi Out device. The Midi Out device is usually an exclusive resource. Implementing classes should only create one Midi Out and return the shared instance. <simplesect kind="return"><para>Native Midi Out Device or nullptr on error </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="51" column="29" bodyfile="audio.h" bodystart="51" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1ac979ffbf31cb53540c7022168a51970d" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void AudioInterface::Update</definition>
+        <argsstring>()=0</argsstring>
+        <name>Update</name>
+        <qualifiedname>AudioInterface::Update</qualifiedname>
+        <reimplementedby refid="class_ctr_audio_1a5fe16a9597b6a0f700d654e5ac27f392">Update</reimplementedby>
+        <reimplementedby refid="struct_empty_audio_1a8e9c4ff9d86e8402fb2def47f57d76a4">Update</reimplementedby>
+        <reimplementedby refid="class_generic_audio_1a767eea8aedf16a45bf1a2c59d8bb5e2a">Update</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Update audio. Must be called each frame. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="56" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1aa5e813f12b0f700ff5cc1b89f1e42345" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void AudioInterface::BGM_Play</definition>
+        <argsstring>(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein)=0</argsstring>
+        <name>BGM_Play</name>
+        <qualifiedname>AudioInterface::BGM_Play</qualifiedname>
+        <reimplementedby refid="class_ctr_audio_1a2734e552d04848fd37ad485add12767c">BGM_Play</reimplementedby>
+        <reimplementedby refid="struct_empty_audio_1a751e9762d9818241e99cc8c7a1781a17">BGM_Play</reimplementedby>
+        <reimplementedby refid="class_generic_audio_1a2a2889eeaa1a8e80cebfd22be3ae76fa">BGM_Play</reimplementedby>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+          <declname>stream</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>volume</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>pitch</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>fadein</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Plays a background music.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>file to play. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>volume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>volume. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pitch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pitch. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>fadein</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>fadein. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="66" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1a5c999d36bc47c7dc20d5eec061bbeabb" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void AudioInterface::BGM_Stop</definition>
+        <argsstring>()=0</argsstring>
+        <name>BGM_Stop</name>
+        <qualifiedname>AudioInterface::BGM_Stop</qualifiedname>
+        <reimplementedby refid="class_ctr_audio_1ad8c45545a37ae3cebcb486ee78b42d1f">BGM_Stop</reimplementedby>
+        <reimplementedby refid="struct_empty_audio_1aa13dc4813cf3e01f1246874f1b9f226b">BGM_Stop</reimplementedby>
+        <reimplementedby refid="class_generic_audio_1a2e2e98b9ee7597f402e1b03055bcaeac">BGM_Stop</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Stops the currently playing background music. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="71" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1ad32c5db309cfbda7a0b19655e0c57022" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool AudioInterface::BGM_PlayedOnce</definition>
+        <argsstring>() const =0</argsstring>
+        <name>BGM_PlayedOnce</name>
+        <qualifiedname>AudioInterface::BGM_PlayedOnce</qualifiedname>
+        <reimplementedby refid="class_ctr_audio_1aaaa561077d8b8970405acd4ef5539fbe">BGM_PlayedOnce</reimplementedby>
+        <reimplementedby refid="struct_empty_audio_1a6ee2df807d3e33bfcfb8fbc185104809">BGM_PlayedOnce</reimplementedby>
+        <reimplementedby refid="class_generic_audio_1abe966fdf07800473f9982ee98564ccb9">BGM_PlayedOnce</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns whether the background music has played at least once. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="76" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1afca63e45db9af8863c9cb386185a68b6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool AudioInterface::BGM_IsPlaying</definition>
+        <argsstring>() const =0</argsstring>
+        <name>BGM_IsPlaying</name>
+        <qualifiedname>AudioInterface::BGM_IsPlaying</qualifiedname>
+        <reimplementedby refid="class_ctr_audio_1a1537aeefc857e1c93e97d61d0caff983">BGM_IsPlaying</reimplementedby>
+        <reimplementedby refid="struct_empty_audio_1a34e9d7a7372454890693a68c63528453">BGM_IsPlaying</reimplementedby>
+        <reimplementedby refid="class_generic_audio_1a7fe0d4ca60290ffe99bfe902b171329a">BGM_IsPlaying</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reports if a music file is currently being played.</para>
+<para><simplesect kind="return"><para>true when BGM is playing </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="83" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1aa1029fed4b4865edc1ef6e4b8b69e0ae" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int AudioInterface::BGM_GetTicks</definition>
+        <argsstring>() const =0</argsstring>
+        <name>BGM_GetTicks</name>
+        <qualifiedname>AudioInterface::BGM_GetTicks</qualifiedname>
+        <reimplementedby refid="class_ctr_audio_1afdc7bffebc7230a4f56e9fd97b33eb73">BGM_GetTicks</reimplementedby>
+        <reimplementedby refid="struct_empty_audio_1a2ffc09834789acdd1c6212f9a6a1bce3">BGM_GetTicks</reimplementedby>
+        <reimplementedby refid="class_generic_audio_1a73eb869bbd9c695ac5eea3fbbb0c4f92">BGM_GetTicks</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the current MIDI tick of the background music. Only useful when the BGM is a MIDI track. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="89" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1a10656df1a8e4b3e016413014faa8afcb" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void AudioInterface::BGM_Fade</definition>
+        <argsstring>(int fade)=0</argsstring>
+        <name>BGM_Fade</name>
+        <qualifiedname>AudioInterface::BGM_Fade</qualifiedname>
+        <reimplementedby refid="class_ctr_audio_1aa40af9b298cf4c1883d3e77056228bb9">BGM_Fade</reimplementedby>
+        <reimplementedby refid="struct_empty_audio_1ac8cd5114eab7b8ae114a47401ac50029">BGM_Fade</reimplementedby>
+        <reimplementedby refid="class_generic_audio_1a5404efb2ca94e2a555bef5ff9b7eb711">BGM_Fade</reimplementedby>
+        <param>
+          <type>int</type>
+          <declname>fade</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Does a fade out of the background music.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fade</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>fade out time. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="96" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1a63c3c366f6a6e67a77e84ff7bbf53059" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void AudioInterface::BGM_Pause</definition>
+        <argsstring>()=0</argsstring>
+        <name>BGM_Pause</name>
+        <qualifiedname>AudioInterface::BGM_Pause</qualifiedname>
+        <reimplementedby refid="class_ctr_audio_1a142565124bf2b39233c426ed1a0293ca">BGM_Pause</reimplementedby>
+        <reimplementedby refid="struct_empty_audio_1a3d6a47e4a4b6a211041a4de10427fd1b">BGM_Pause</reimplementedby>
+        <reimplementedby refid="class_generic_audio_1a70225e3b8ff763deafb3ff0f5243d55c">BGM_Pause</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Pauses the currently playing background music. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="101" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1a6c0e1fc24c5bedc036203f031a6e8823" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void AudioInterface::BGM_Resume</definition>
+        <argsstring>()=0</argsstring>
+        <name>BGM_Resume</name>
+        <qualifiedname>AudioInterface::BGM_Resume</qualifiedname>
+        <reimplementedby refid="class_ctr_audio_1af4f4eaab996cd470ead7dec91d95bf7b">BGM_Resume</reimplementedby>
+        <reimplementedby refid="struct_empty_audio_1aa407620f3f36d022abd0dfadc31c4aed">BGM_Resume</reimplementedby>
+        <reimplementedby refid="class_generic_audio_1a9dfa494f083e2b943540cadb2422a71c">BGM_Resume</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Resumes the currently playing background music. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="106" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1a1264d313ca8c1927492d66b4401e7492" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void AudioInterface::BGM_Volume</definition>
+        <argsstring>(int volume)=0</argsstring>
+        <name>BGM_Volume</name>
+        <qualifiedname>AudioInterface::BGM_Volume</qualifiedname>
+        <reimplementedby refid="class_ctr_audio_1a6982234ec1d97c804f84060dc284a832">BGM_Volume</reimplementedby>
+        <reimplementedby refid="struct_empty_audio_1abf618f87f236d78ee2bd5f8b842af580">BGM_Volume</reimplementedby>
+        <reimplementedby refid="class_generic_audio_1a10d6c7b81ff97b3d6e68328add3daede">BGM_Volume</reimplementedby>
+        <param>
+          <type>int</type>
+          <declname>volume</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adjusts the volume of the currently playing background music.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>volume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>volume </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="113" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1a2f05c8b5f06ce846c8e88e725197194e" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void AudioInterface::BGM_Pitch</definition>
+        <argsstring>(int pitch)=0</argsstring>
+        <name>BGM_Pitch</name>
+        <qualifiedname>AudioInterface::BGM_Pitch</qualifiedname>
+        <reimplementedby refid="class_ctr_audio_1aedab10d1b7d8978d8c6d4e84ff466054">BGM_Pitch</reimplementedby>
+        <reimplementedby refid="struct_empty_audio_1a594a48c3a35336c09fc3c356fdc48422">BGM_Pitch</reimplementedby>
+        <reimplementedby refid="class_generic_audio_1a7471e2dc5bfd8e17d049480ca2dd7f08">BGM_Pitch</reimplementedby>
+        <param>
+          <type>int</type>
+          <declname>pitch</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adjusts the pitch of the currently playing background music.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pitch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pitch </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="120" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1a684f27f256c63e7c2f164c7fbf7b30d7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::string</type>
+        <definition>virtual std::string AudioInterface::BGM_GetType</definition>
+        <argsstring>() const =0</argsstring>
+        <name>BGM_GetType</name>
+        <qualifiedname>AudioInterface::BGM_GetType</qualifiedname>
+        <reimplementedby refid="class_ctr_audio_1a4157a7bfb440421a0e7a18af97f7123b">BGM_GetType</reimplementedby>
+        <reimplementedby refid="struct_empty_audio_1ab03336b48237210a0871cb099eec9d79">BGM_GetType</reimplementedby>
+        <reimplementedby refid="class_generic_audio_1ab1c2acac9ced84c1b49f7a593e2609fe">BGM_GetType</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Type of music being played. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="125" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1a9cb2340e795fdd828de4cd652d43d614" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void AudioInterface::SE_Play</definition>
+        <argsstring>(std::unique_ptr&lt; AudioSeCache &gt; se, int volume, int pitch)=0</argsstring>
+        <name>SE_Play</name>
+        <qualifiedname>AudioInterface::SE_Play</qualifiedname>
+        <reimplementedby refid="class_ctr_audio_1a34fbd5d6be54f0c35b66a95f4bd30ae0">SE_Play</reimplementedby>
+        <reimplementedby refid="struct_empty_audio_1a1aa70e2a5f182ac2e5553e9bef370d1e">SE_Play</reimplementedby>
+        <reimplementedby refid="class_generic_audio_1aa677e348ca35a8a937c1e0c5ce085a03">SE_Play</reimplementedby>
+        <param>
+          <type>std::unique_ptr&lt; <ref refid="class_audio_se_cache" kindref="compound">AudioSeCache</ref> &gt;</type>
+          <declname>se</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>volume</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>pitch</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Plays a sound effect.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>se</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>se to play. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>volume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>volume. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pitch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pitch. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="134" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1a8cb2a23c66962f995a0f836b7f7a6f7c" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void AudioInterface::SE_Stop</definition>
+        <argsstring>()=0</argsstring>
+        <name>SE_Stop</name>
+        <qualifiedname>AudioInterface::SE_Stop</qualifiedname>
+        <reimplementedby refid="class_ctr_audio_1a27a78f9d2582cf5ff6c2d03452e6441e">SE_Stop</reimplementedby>
+        <reimplementedby refid="struct_empty_audio_1af5da14a5e0a6ee418a1b457fde3b9d54">SE_Stop</reimplementedby>
+        <reimplementedby refid="class_generic_audio_1a3847443f9d8ac36a8a6535443b111ba2">SE_Stop</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Stops the currently playing sound effect. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="139" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1af908cc5d16f32e883bff0ae7a75a9750" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int AudioInterface::BGM_GetGlobalVolume</definition>
+        <argsstring>() const</argsstring>
+        <name>BGM_GetGlobalVolume</name>
+        <qualifiedname>AudioInterface::BGM_GetGlobalVolume</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="141" column="5" bodyfile="audio.cpp" bodystart="98" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1adb5e46889f939439998026d257052f07" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AudioInterface::BGM_SetGlobalVolume</definition>
+        <argsstring>(int volume)</argsstring>
+        <name>BGM_SetGlobalVolume</name>
+        <qualifiedname>AudioInterface::BGM_SetGlobalVolume</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>volume</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="142" column="6" bodyfile="audio.cpp" bodystart="102" bodyend="104"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1af76756316f54120859688ddd465d6d63" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int AudioInterface::SE_GetGlobalVolume</definition>
+        <argsstring>() const</argsstring>
+        <name>SE_GetGlobalVolume</name>
+        <qualifiedname>AudioInterface::SE_GetGlobalVolume</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="144" column="5" bodyfile="audio.cpp" bodystart="106" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1addcdf36521311bc0fcf761c78c8870fd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AudioInterface::SE_SetGlobalVolume</definition>
+        <argsstring>(int volume)</argsstring>
+        <name>SE_SetGlobalVolume</name>
+        <qualifiedname>AudioInterface::SE_SetGlobalVolume</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>volume</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="145" column="6" bodyfile="audio.cpp" bodystart="110" bodyend="112"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1acd8cb626f3ab05de21f5f2bf4f6f8705" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool AudioInterface::GetFluidsynthEnabled</definition>
+        <argsstring>() const</argsstring>
+        <name>GetFluidsynthEnabled</name>
+        <qualifiedname>AudioInterface::GetFluidsynthEnabled</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="147" column="6" bodyfile="audio.cpp" bodystart="114" bodyend="116"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1ad2bd03f936f089f7812450b7d204be0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AudioInterface::SetFluidsynthEnabled</definition>
+        <argsstring>(bool enable)</argsstring>
+        <name>SetFluidsynthEnabled</name>
+        <qualifiedname>AudioInterface::SetFluidsynthEnabled</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>enable</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="148" column="6" bodyfile="audio.cpp" bodystart="118" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1a276c5e6104212f238ad196e38bd8616a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool AudioInterface::GetWildMidiEnabled</definition>
+        <argsstring>() const</argsstring>
+        <name>GetWildMidiEnabled</name>
+        <qualifiedname>AudioInterface::GetWildMidiEnabled</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="150" column="6" bodyfile="audio.cpp" bodystart="122" bodyend="124"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1a9b02af54c27102366a662fa4e4b52849" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AudioInterface::SetWildMidiEnabled</definition>
+        <argsstring>(bool enable)</argsstring>
+        <name>SetWildMidiEnabled</name>
+        <qualifiedname>AudioInterface::SetWildMidiEnabled</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>enable</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="151" column="6" bodyfile="audio.cpp" bodystart="126" bodyend="128"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1a9505d2347489b105f34e8e9d8a1bc0a6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool AudioInterface::GetNativeMidiEnabled</definition>
+        <argsstring>() const</argsstring>
+        <name>GetNativeMidiEnabled</name>
+        <qualifiedname>AudioInterface::GetNativeMidiEnabled</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="153" column="6" bodyfile="audio.cpp" bodystart="130" bodyend="132"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1a840f26eedce549fb677874e0c767cdb7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AudioInterface::SetNativeMidiEnabled</definition>
+        <argsstring>(bool enable)</argsstring>
+        <name>SetNativeMidiEnabled</name>
+        <qualifiedname>AudioInterface::SetNativeMidiEnabled</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>enable</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="154" column="6" bodyfile="audio.cpp" bodystart="134" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1a2110824b87384e8d25305c5994b9388e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string AudioInterface::GetFluidsynthSoundfont</definition>
+        <argsstring>() const</argsstring>
+        <name>GetFluidsynthSoundfont</name>
+        <qualifiedname>AudioInterface::GetFluidsynthSoundfont</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="156" column="13" bodyfile="audio.cpp" bodystart="138" bodyend="140"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_interface_1a2856838fa110c28901e72df2a8dd3466" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AudioInterface::SetFluidsynthSoundfont</definition>
+        <argsstring>(std::string_view sf)</argsstring>
+        <name>SetFluidsynthSoundfont</name>
+        <qualifiedname>AudioInterface::SetFluidsynthSoundfont</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>sf</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="157" column="6" bodyfile="audio.cpp" bodystart="142" bodyend="145"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Base Audio class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>AudioInterface</label>
+        <link refid="struct_audio_interface"/>
+      </node>
+      <node id="2">
+        <label>CtrAudio</label>
+        <link refid="class_ctr_audio"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>EmptyAudio</label>
+        <link refid="struct_empty_audio"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>GenericAudio</label>
+        <link refid="class_generic_audio"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>LibretroAudio</label>
+        <link refid="class_libretro_audio"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>NxAudio</label>
+        <link refid="class_nx_audio"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Psp2Audio</label>
+        <link refid="class_psp2_audio"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Sdl2Audio</label>
+        <link refid="class_sdl2_audio"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>Sdl3Audio</label>
+        <link refid="class_sdl3_audio"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>SdlAudio</label>
+        <link refid="class_sdl_audio"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>WiiAudio</label>
+        <link refid="class_wii_audio"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>AudioInterface</label>
+        <link refid="struct_audio_interface"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>cfg</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>ConfigParam&lt; std::string &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="4">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="9">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="2">
+        <label>Game_ConfigAudio</label>
+        <link refid="struct_game___config_audio"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>music_volume</edgelabel>
+          <edgelabel>sound_volume</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>fluidsynth_midi</edgelabel>
+          <edgelabel>native_midi</edgelabel>
+          <edgelabel>wildmidi_midi</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>fmmidi_midi</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>soundfont</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>LockedConfigParam&lt; std::string &gt;</label>
+        <link refid="class_locked_config_param"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>PathConfigParam</label>
+        <link refid="class_path_config_param"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>StringConfigParam</label>
+        <link refid="class_config_param"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="audio.h" line="32" column="1" bodyfile="audio.h" bodystart="32" bodyend="161"/>
+    <listofallmembers>
+      <member refid="struct_audio_interface_1a9c45557ddc2a1429df7be8d75a473011" prot="public" virt="non-virtual"><scope>AudioInterface</scope><name>AudioInterface</name></member>
+      <member refid="struct_audio_interface_1a10656df1a8e4b3e016413014faa8afcb" prot="public" virt="pure-virtual"><scope>AudioInterface</scope><name>BGM_Fade</name></member>
+      <member refid="struct_audio_interface_1af908cc5d16f32e883bff0ae7a75a9750" prot="public" virt="non-virtual"><scope>AudioInterface</scope><name>BGM_GetGlobalVolume</name></member>
+      <member refid="struct_audio_interface_1aa1029fed4b4865edc1ef6e4b8b69e0ae" prot="public" virt="pure-virtual"><scope>AudioInterface</scope><name>BGM_GetTicks</name></member>
+      <member refid="struct_audio_interface_1a684f27f256c63e7c2f164c7fbf7b30d7" prot="public" virt="pure-virtual"><scope>AudioInterface</scope><name>BGM_GetType</name></member>
+      <member refid="struct_audio_interface_1afca63e45db9af8863c9cb386185a68b6" prot="public" virt="pure-virtual"><scope>AudioInterface</scope><name>BGM_IsPlaying</name></member>
+      <member refid="struct_audio_interface_1a63c3c366f6a6e67a77e84ff7bbf53059" prot="public" virt="pure-virtual"><scope>AudioInterface</scope><name>BGM_Pause</name></member>
+      <member refid="struct_audio_interface_1a2f05c8b5f06ce846c8e88e725197194e" prot="public" virt="pure-virtual"><scope>AudioInterface</scope><name>BGM_Pitch</name></member>
+      <member refid="struct_audio_interface_1aa5e813f12b0f700ff5cc1b89f1e42345" prot="public" virt="pure-virtual"><scope>AudioInterface</scope><name>BGM_Play</name></member>
+      <member refid="struct_audio_interface_1ad32c5db309cfbda7a0b19655e0c57022" prot="public" virt="pure-virtual"><scope>AudioInterface</scope><name>BGM_PlayedOnce</name></member>
+      <member refid="struct_audio_interface_1a6c0e1fc24c5bedc036203f031a6e8823" prot="public" virt="pure-virtual"><scope>AudioInterface</scope><name>BGM_Resume</name></member>
+      <member refid="struct_audio_interface_1adb5e46889f939439998026d257052f07" prot="public" virt="non-virtual"><scope>AudioInterface</scope><name>BGM_SetGlobalVolume</name></member>
+      <member refid="struct_audio_interface_1a5c999d36bc47c7dc20d5eec061bbeabb" prot="public" virt="pure-virtual"><scope>AudioInterface</scope><name>BGM_Stop</name></member>
+      <member refid="struct_audio_interface_1a1264d313ca8c1927492d66b4401e7492" prot="public" virt="pure-virtual"><scope>AudioInterface</scope><name>BGM_Volume</name></member>
+      <member refid="struct_audio_interface_1ad751ed86af60ced4f37d7091b91f823b" prot="protected" virt="non-virtual"><scope>AudioInterface</scope><name>cfg</name></member>
+      <member refid="struct_audio_interface_1ab0b6a6be94283bf823cbaaa99fc318e3" prot="public" virt="virtual"><scope>AudioInterface</scope><name>CreateAndGetMidiOut</name></member>
+      <member refid="struct_audio_interface_1adee5375400b4ca5766688d41f0556128" prot="public" virt="non-virtual"><scope>AudioInterface</scope><name>GetConfig</name></member>
+      <member refid="struct_audio_interface_1acd8cb626f3ab05de21f5f2bf4f6f8705" prot="public" virt="non-virtual"><scope>AudioInterface</scope><name>GetFluidsynthEnabled</name></member>
+      <member refid="struct_audio_interface_1a2110824b87384e8d25305c5994b9388e" prot="public" virt="non-virtual"><scope>AudioInterface</scope><name>GetFluidsynthSoundfont</name></member>
+      <member refid="struct_audio_interface_1a9505d2347489b105f34e8e9d8a1bc0a6" prot="public" virt="non-virtual"><scope>AudioInterface</scope><name>GetNativeMidiEnabled</name></member>
+      <member refid="struct_audio_interface_1a276c5e6104212f238ad196e38bd8616a" prot="public" virt="non-virtual"><scope>AudioInterface</scope><name>GetWildMidiEnabled</name></member>
+      <member refid="struct_audio_interface_1af76756316f54120859688ddd465d6d63" prot="public" virt="non-virtual"><scope>AudioInterface</scope><name>SE_GetGlobalVolume</name></member>
+      <member refid="struct_audio_interface_1a9cb2340e795fdd828de4cd652d43d614" prot="public" virt="pure-virtual"><scope>AudioInterface</scope><name>SE_Play</name></member>
+      <member refid="struct_audio_interface_1addcdf36521311bc0fcf761c78c8870fd" prot="public" virt="non-virtual"><scope>AudioInterface</scope><name>SE_SetGlobalVolume</name></member>
+      <member refid="struct_audio_interface_1a8cb2a23c66962f995a0f836b7f7a6f7c" prot="public" virt="pure-virtual"><scope>AudioInterface</scope><name>SE_Stop</name></member>
+      <member refid="struct_audio_interface_1ad2bd03f936f089f7812450b7d204be0b" prot="public" virt="non-virtual"><scope>AudioInterface</scope><name>SetFluidsynthEnabled</name></member>
+      <member refid="struct_audio_interface_1a2856838fa110c28901e72df2a8dd3466" prot="public" virt="non-virtual"><scope>AudioInterface</scope><name>SetFluidsynthSoundfont</name></member>
+      <member refid="struct_audio_interface_1a840f26eedce549fb677874e0c767cdb7" prot="public" virt="non-virtual"><scope>AudioInterface</scope><name>SetNativeMidiEnabled</name></member>
+      <member refid="struct_audio_interface_1a9b02af54c27102366a662fa4e4b52849" prot="public" virt="non-virtual"><scope>AudioInterface</scope><name>SetWildMidiEnabled</name></member>
+      <member refid="struct_audio_interface_1ac979ffbf31cb53540c7022168a51970d" prot="public" virt="pure-virtual"><scope>AudioInterface</scope><name>Update</name></member>
+      <member refid="struct_audio_interface_1af623f1d38f8e6da5aa94ea14d09f018c" prot="public" virt="pure-virtual"><scope>AudioInterface</scope><name>vGetConfig</name></member>
+      <member refid="struct_audio_interface_1ac4ff9429ec5962d3985d182ec9b3d088" prot="public" virt="virtual"><scope>AudioInterface</scope><name>~AudioInterface</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

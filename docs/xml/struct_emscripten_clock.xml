@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_emscripten_clock" kind="struct" language="C++" prot="public">
+    <compoundname>EmscriptenClock</compoundname>
+    <includes refid="emscripten_2clock_8h" local="no">clock.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="struct_emscripten_clock_1ab24661453d0e0c30e2d5267b66794802" prot="public" static="no">
+        <type>std::chrono::steady_clock</type>
+        <definition>using EmscriptenClock::clock = std::chrono::steady_clock</definition>
+        <argsstring></argsstring>
+        <name>clock</name>
+        <qualifiedname>EmscriptenClock::clock</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/clock.h" line="24" column="1" bodyfile="platform/emscripten/clock.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_emscripten_clock_1a81a9a172bb987dd06d0400c27fca9394" prot="public" static="no">
+        <type>clock::rep</type>
+        <definition>using EmscriptenClock::rep = clock::rep</definition>
+        <argsstring></argsstring>
+        <name>rep</name>
+        <qualifiedname>EmscriptenClock::rep</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/clock.h" line="26" column="1" bodyfile="platform/emscripten/clock.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_emscripten_clock_1afd8afae432a3afc3835a86b93ebf5656" prot="public" static="no">
+        <type>clock::period</type>
+        <definition>using EmscriptenClock::period = clock::period</definition>
+        <argsstring></argsstring>
+        <name>period</name>
+        <qualifiedname>EmscriptenClock::period</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/clock.h" line="27" column="1" bodyfile="platform/emscripten/clock.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_emscripten_clock_1a3585ab14d50cd9a8252f804a1059c768" prot="public" static="no">
+        <type>clock::duration</type>
+        <definition>using EmscriptenClock::duration = clock::duration</definition>
+        <argsstring></argsstring>
+        <name>duration</name>
+        <qualifiedname>EmscriptenClock::duration</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/clock.h" line="28" column="1" bodyfile="platform/emscripten/clock.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_emscripten_clock_1ab7695b28497194ffbbfff1dc0de3ef07" prot="public" static="no">
+        <type>clock::time_point</type>
+        <definition>using EmscriptenClock::time_point = clock::time_point</definition>
+        <argsstring></argsstring>
+        <name>time_point</name>
+        <qualifiedname>EmscriptenClock::time_point</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/clock.h" line="29" column="1" bodyfile="platform/emscripten/clock.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="struct_emscripten_clock_1ac19dd25c1a8fe4be4496744ab6924536" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool EmscriptenClock::is_steady</definition>
+        <argsstring></argsstring>
+        <name>is_steady</name>
+        <qualifiedname>EmscriptenClock::is_steady</qualifiedname>
+        <initializer>= clock::is_steady</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/clock.h" line="31" column="23" bodyfile="platform/emscripten/clock.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="struct_emscripten_clock_1a182773dfdd0a90c564891300d2a5870c" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="struct_emscripten_clock_1ab7695b28497194ffbbfff1dc0de3ef07" kindref="member">time_point</ref></type>
+        <definition>EmscriptenClock::time_point EmscriptenClock::now</definition>
+        <argsstring>()</argsstring>
+        <name>now</name>
+        <qualifiedname>EmscriptenClock::now</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get current time </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/clock.h" line="34" column="19" bodyfile="platform/emscripten/clock.h" bodystart="43" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_emscripten_clock_1a024146879f5c5a88329573d52a408680" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename R</type>
+          </param>
+          <param>
+            <type>typename P</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void EmscriptenClock::SleepFor</definition>
+        <argsstring>(std::chrono::duration&lt; R, P &gt; dt)</argsstring>
+        <name>SleepFor</name>
+        <qualifiedname>EmscriptenClock::SleepFor</qualifiedname>
+        <param>
+          <type>std::chrono::duration&lt; R, P &gt;</type>
+          <declname>dt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sleep for the specified duration </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/clock.h" line="38" column="13" bodyfile="platform/emscripten/clock.h" bodystart="48" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_emscripten_clock_1afd9e73fad9b71cc35fe4d4c37c0836a4" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const char *</type>
+        <definition>const char * EmscriptenClock::Name</definition>
+        <argsstring>()</argsstring>
+        <name>Name</name>
+        <qualifiedname>EmscriptenClock::Name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/clock.h" line="40" column="29" bodyfile="platform/emscripten/clock.h" bodystart="52" bodyend="54"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/emscripten/clock.h" line="23" column="1" bodyfile="platform/emscripten/clock.h" bodystart="23" bodyend="41"/>
+    <listofallmembers>
+      <member refid="struct_emscripten_clock_1ab24661453d0e0c30e2d5267b66794802" prot="public" virt="non-virtual"><scope>EmscriptenClock</scope><name>clock</name></member>
+      <member refid="struct_emscripten_clock_1a3585ab14d50cd9a8252f804a1059c768" prot="public" virt="non-virtual"><scope>EmscriptenClock</scope><name>duration</name></member>
+      <member refid="struct_emscripten_clock_1ac19dd25c1a8fe4be4496744ab6924536" prot="public" virt="non-virtual"><scope>EmscriptenClock</scope><name>is_steady</name></member>
+      <member refid="struct_emscripten_clock_1afd9e73fad9b71cc35fe4d4c37c0836a4" prot="public" virt="non-virtual"><scope>EmscriptenClock</scope><name>Name</name></member>
+      <member refid="struct_emscripten_clock_1a182773dfdd0a90c564891300d2a5870c" prot="public" virt="non-virtual"><scope>EmscriptenClock</scope><name>now</name></member>
+      <member refid="struct_emscripten_clock_1afd8afae432a3afc3835a86b93ebf5656" prot="public" virt="non-virtual"><scope>EmscriptenClock</scope><name>period</name></member>
+      <member refid="struct_emscripten_clock_1a81a9a172bb987dd06d0400c27fca9394" prot="public" virt="non-virtual"><scope>EmscriptenClock</scope><name>rep</name></member>
+      <member refid="struct_emscripten_clock_1a024146879f5c5a88329573d52a408680" prot="public" virt="non-virtual"><scope>EmscriptenClock</scope><name>SleepFor</name></member>
+      <member refid="struct_emscripten_clock_1ab7695b28497194ffbbfff1dc0de3ef07" prot="public" virt="non-virtual"><scope>EmscriptenClock</scope><name>time_point</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

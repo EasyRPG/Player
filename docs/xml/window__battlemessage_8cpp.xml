@@ -1,0 +1,1197 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="window__battlemessage_8cpp" kind="file" language="C++">
+    <compoundname>window_battlemessage.cpp</compoundname>
+    <includes local="no">sstream</includes>
+    <includes refid="game__message_8h" local="yes">game_message.h</includes>
+    <includes refid="player_8h" local="yes">player.h</includes>
+    <includes refid="window__battlemessage_8h" local="yes">window_battlemessage.h</includes>
+    <includes refid="bitmap_8h" local="yes">bitmap.h</includes>
+    <includes refid="font_8h" local="yes">font.h</includes>
+    <includes refid="utils_8h" local="yes">utils.h</includes>
+    <includes refid="output_8h" local="yes">output.h</includes>
+    <includes refid="feature_8h" local="yes">feature.h</includes>
+    <incdepgraph>
+      <node id="43">
+        <label>async_handler.h</label>
+        <link refid="async__handler_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>async_op.h</label>
+        <link refid="async__op_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="70">
+        <label>bitmap.h</label>
+        <link refid="bitmap_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="72">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="66">
+        <label>compiler.h</label>
+        <link refid="compiler_8h"/>
+      </node>
+      <node id="52">
+        <label>config_param.h</label>
+        <link refid="config__param_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="84">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="123">
+        <label>feature.h</label>
+        <link refid="feature_8h"/>
+      </node>
+      <node id="22">
+        <label>fileext_guesser.h</label>
+        <link refid="fileext__guesser_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="94">
+        <label>flash.h</label>
+        <link refid="flash_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+      </node>
+      <node id="58">
+        <label>flat_map.h</label>
+        <link refid="flat__map_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="119">
+        <label>font.h</label>
+        <link refid="font_8h"/>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="120" relation="include">
+        </childnode>
+      </node>
+      <node id="85">
+        <label>game_actor.h</label>
+        <link refid="game__actor_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+      </node>
+      <node id="90">
+        <label>game_battler.h</label>
+        <link refid="game__battler_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>game_clock.h</label>
+        <link refid="game__clock_8h"/>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>game_config.h</label>
+        <link refid="game__config_8h"/>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="60">
+        <label>game_config_game.h</label>
+        <link refid="game__config__game_8h"/>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="61">
+        <label>game_interpreter_shared.h</label>
+        <link refid="game__interpreter__shared_8h"/>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>game_message.h</label>
+        <link refid="game__message_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>input_buttons.h</label>
+        <link refid="input__buttons_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+      </node>
+      <node id="59">
+        <label>keys.h</label>
+        <link refid="keys_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+      </node>
+      <node id="100">
+        <label>lcf/data.h</label>
+        <link refid="data_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="107" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+        <childnode refid="110" relation="include">
+        </childnode>
+        <childnode refid="111" relation="include">
+        </childnode>
+        <childnode refid="112" relation="include">
+        </childnode>
+        <childnode refid="113" relation="include">
+        </childnode>
+        <childnode refid="114" relation="include">
+        </childnode>
+        <childnode refid="115" relation="include">
+        </childnode>
+        <childnode refid="116" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="117" relation="include">
+        </childnode>
+        <childnode refid="118" relation="include">
+        </childnode>
+      </node>
+      <node id="99">
+        <label>main_data.h</label>
+        <link refid="main__data_8h"/>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>meta.h</label>
+        <link refid="meta_8h"/>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="82">
+        <label>opacity.h</label>
+        <link refid="opacity_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="121">
+        <label>output.h</label>
+        <link refid="output_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="122" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>pending_message.h</label>
+        <link refid="pending__message_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="75">
+        <label>pixel_format.h</label>
+        <link refid="pixel__format_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="81">
+        <label>pixman_image_ptr.h</label>
+        <link refid="pixman__image__ptr_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>platform/clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>player.h</label>
+        <link refid="player_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="80">
+        <label>point.h</label>
+        <link refid="point_8h"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="74">
+        <label>rect.h</label>
+        <link refid="rect_8h"/>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="96">
+        <label>sprite.h</label>
+        <link refid="sprite_8h"/>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+      </node>
+      <node id="98">
+        <label>sprite_actor.h</label>
+        <link refid="sprite__actor_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="95">
+        <label>sprite_battler.h</label>
+        <link refid="sprite__battler_8h"/>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="97">
+        <label>sprite_weapon.h</label>
+        <link refid="sprite__weapon_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="93">
+        <label>state.h</label>
+        <link refid="state_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>std_clock.h</label>
+        <link refid="std__clock_8h"/>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="79">
+        <label>text.h</label>
+        <link refid="text_8h"/>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="78">
+        <label>tone.h</label>
+        <link refid="tone_8h"/>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>translation.h</label>
+        <link refid="translation_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="69">
+        <label>window.h</label>
+        <link refid="window_8h"/>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+      </node>
+      <node id="68">
+        <label>window_base.h</label>
+        <link refid="window__base_8h"/>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>window_battlemessage.cpp</label>
+        <link refid="window__battlemessage_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="119" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="121" relation="include">
+        </childnode>
+        <childnode refid="123" relation="include">
+        </childnode>
+      </node>
+      <node id="67">
+        <label>window_battlemessage.h</label>
+        <link refid="window__battlemessage_8h"/>
+        <childnode refid="68" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>algorithm</label>
+      </node>
+      <node id="53">
+        <label>array</label>
+      </node>
+      <node id="6">
+        <label>bitset</label>
+      </node>
+      <node id="18">
+        <label>cassert</label>
+      </node>
+      <node id="45">
+        <label>chrono</label>
+      </node>
+      <node id="83">
+        <label>climits</label>
+      </node>
+      <node id="4">
+        <label>cstdint</label>
+      </node>
+      <node id="40">
+        <label>cstdio</label>
+      </node>
+      <node id="76">
+        <label>cstdlib</label>
+      </node>
+      <node id="77">
+        <label>cstring</label>
+      </node>
+      <node id="38">
+        <label>ctime</label>
+      </node>
+      <node id="12">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="13">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="8">
+        <label>functional</label>
+      </node>
+      <node id="57">
+        <label>initializer_list</label>
+      </node>
+      <node id="41">
+        <label>ios</label>
+      </node>
+      <node id="122">
+        <label>iosfwd</label>
+      </node>
+      <node id="25">
+        <label>istream</label>
+      </node>
+      <node id="92">
+        <label>lcf/dbbitarray.h</label>
+      </node>
+      <node id="11">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="39">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="55">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="32">
+        <label>lcf/inireader.h</label>
+      </node>
+      <node id="88">
+        <label>lcf/rpg/actor.h</label>
+      </node>
+      <node id="107">
+        <label>lcf/rpg/animation.h</label>
+      </node>
+      <node id="105">
+        <label>lcf/rpg/attribute.h</label>
+      </node>
+      <node id="113">
+        <label>lcf/rpg/battlecommand.h</label>
+      </node>
+      <node id="114">
+        <label>lcf/rpg/battleranimation.h</label>
+      </node>
+      <node id="108">
+        <label>lcf/rpg/chipset.h</label>
+      </node>
+      <node id="112">
+        <label>lcf/rpg/class.h</label>
+      </node>
+      <node id="111">
+        <label>lcf/rpg/commonevent.h</label>
+      </node>
+      <node id="118">
+        <label>lcf/rpg/database.h</label>
+      </node>
+      <node id="103">
+        <label>lcf/rpg/enemy.h</label>
+      </node>
+      <node id="62">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="86">
+        <label>lcf/rpg/fwd.h</label>
+      </node>
+      <node id="102">
+        <label>lcf/rpg/item.h</label>
+      </node>
+      <node id="89">
+        <label>lcf/rpg/learning.h</label>
+      </node>
+      <node id="63">
+        <label>lcf/rpg/movecommand.h</label>
+      </node>
+      <node id="116">
+        <label>lcf/rpg/music.h</label>
+      </node>
+      <node id="87">
+        <label>lcf/rpg/saveactor.h</label>
+      </node>
+      <node id="65">
+        <label>lcf/rpg/saveeventexecframe.h</label>
+      </node>
+      <node id="64">
+        <label>lcf/rpg/saveeventexecstate.h</label>
+      </node>
+      <node id="101">
+        <label>lcf/rpg/skill.h</label>
+      </node>
+      <node id="115">
+        <label>lcf/rpg/sound.h</label>
+      </node>
+      <node id="91">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="110">
+        <label>lcf/rpg/system.h</label>
+      </node>
+      <node id="109">
+        <label>lcf/rpg/terms.h</label>
+      </node>
+      <node id="106">
+        <label>lcf/rpg/terrain.h</label>
+      </node>
+      <node id="117">
+        <label>lcf/rpg/treemap.h</label>
+      </node>
+      <node id="104">
+        <label>lcf/rpg/troop.h</label>
+      </node>
+      <node id="120">
+        <label>lcf/scope_guard.h</label>
+      </node>
+      <node id="29">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="10">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="54">
+        <label>limits</label>
+      </node>
+      <node id="31">
+        <label>map</label>
+      </node>
+      <node id="20">
+        <label>memory</label>
+      </node>
+      <node id="15">
+        <label>optional</label>
+      </node>
+      <node id="26">
+        <label>ostream</label>
+      </node>
+      <node id="71">
+        <label>pixman.h</label>
+      </node>
+      <node id="2">
+        <label>sstream</label>
+      </node>
+      <node id="7">
+        <label>string</label>
+      </node>
+      <node id="48">
+        <label>thread</label>
+      </node>
+      <node id="73">
+        <label>tuple</label>
+      </node>
+      <node id="47">
+        <label>type_traits</label>
+      </node>
+      <node id="23">
+        <label>unordered_map</label>
+      </node>
+      <node id="17">
+        <label>utility</label>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;sstream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__message_8h" kindref="compound">game_message.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="player_8h" kindref="compound">player.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="window__battlemessage_8h" kindref="compound">window_battlemessage.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="bitmap_8h" kindref="compound">bitmap.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="font_8h" kindref="compound">font.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="utils_8h" kindref="compound">utils.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="output_8h" kindref="compound">output.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="feature_8h" kindref="compound">feature.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="class_window___battle_message_1a549cb44a6e329948ff449a5b8527aaec" refkind="member"><highlight class="normal"><ref refid="class_window___battle_message_1a549cb44a6e329948ff449a5b8527aaec" kindref="member">Window_BattleMessage::Window_BattleMessage</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iwidth,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iheight)<sp/>:</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___base_1ab4bd342e1f0f125b9c823b0903979648" kindref="member">Window_Base</ref>(ix,<sp/>iy,<sp/>iwidth,<sp/>iheight)</highlight></codeline>
+<codeline lineno="31"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window_1ade4932d29b75cdd8f14b474006210505" kindref="member">SetContents</ref>(<ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>-<sp/>20,<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>-<sp/>16));</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" kindref="member">SetVisible</ref>(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Above<sp/>other<sp/>windows<sp/>but<sp/>below<sp/>the<sp/>messagebox</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" kindref="member">SetZ</ref>(<ref refid="drawable_8h_1a61c85b23eaec819f8e89dc0c97d58983a9af80534b2b9c713bdb36b1df9df8f7d" kindref="member">Priority_Window</ref><sp/>+<sp/>50);</highlight></codeline>
+<codeline lineno="37"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="class_window___battle_message_1ae1d79b70dde83a44b219da5e61fd49b7" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___battle_message_1ae1d79b70dde83a44b219da5e61fd49b7" kindref="member">Window_BattleMessage::Push</ref>(std::string_view<sp/>message)<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>EP_DEBUG_BATTLE2K_MESSAGE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_output_1aec7bcd2124d7576a8b20873585de07cd" kindref="member">Output::Debug</ref>(</highlight><highlight class="stringliteral">&quot;Battle2k<sp/>Message<sp/>Push<sp/>\&quot;{}\&quot;&quot;</highlight><highlight class="normal">,<sp/>message);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1aceb5b05337c96d3b37e77e3b45960dbf" kindref="member">Utils::ForEachLine</ref>(message,<sp/>[</highlight><highlight class="keyword">this</highlight><highlight class="normal">](std::string_view<sp/>line)</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/><ref refid="class_window___battle_message_1a652c56f2d1126daf8a588933ebdac3e1" kindref="member">PushLine</ref>(line);<sp/>});</highlight></codeline>
+<codeline lineno="45"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47" refid="class_window___battle_message_1a652c56f2d1126daf8a588933ebdac3e1" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___battle_message_1a652c56f2d1126daf8a588933ebdac3e1" kindref="member">Window_BattleMessage::PushLine</ref>(std::string_view<sp/>line)<sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_feature_1a6b64992538281a97892c0e2917e21128" kindref="member">Feature::HasPlaceholders</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_game___message_1a9afd18c0cbff01a166cf418cb997d5f8" kindref="member">Game_Message::WordWrap</ref>(</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>line,</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window_1a451bdfeab37afce97712f23f5c2492aa" kindref="member">GetWidth</ref>()<sp/>-<sp/>20,</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[</highlight><highlight class="keyword">this</highlight><highlight class="normal">](std::string_view<sp/>wrap_line)<sp/>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lines.push_back(std::string(wrap_line));</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lines.push_back(std::string(line));</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64" refid="class_window___battle_message_1a3336ae79ebb3ce5e0230ca57b175c467" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___battle_message_1a3336ae79ebb3ce5e0230ca57b175c467" kindref="member">Window_BattleMessage::PushWithSubject</ref>(std::string_view<sp/>message,<sp/>std::string_view<sp/>subject)<sp/>{</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_feature_1a6b64992538281a97892c0e2917e21128" kindref="member">Feature::HasPlaceholders</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___battle_message_1ae1d79b70dde83a44b219da5e61fd49b7" kindref="member">Push</ref>(<ref refid="namespace_utils_1a108ec8ba4fb5d70cc0cdbba3cde62a12" kindref="member">Utils::ReplacePlaceholders</ref>(</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>message,</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a2687ddf9fe6f1adb99c9feab34acb587" kindref="member">Utils::MakeArray</ref>(</highlight><highlight class="charliteral">&apos;S&apos;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(subject)</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>));</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___battle_message_1ae1d79b70dde83a44b219da5e61fd49b7" kindref="member">Push</ref>(std::string(subject)<sp/>+<sp/>std::string(message));</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78" refid="class_window___battle_message_1a28ab7475f5a2934a4718acca740fe151" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___battle_message_1a28ab7475f5a2934a4718acca740fe151" kindref="member">Window_BattleMessage::Pop</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>EP_DEBUG_BATTLE2K_MESSAGE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_output_1aec7bcd2124d7576a8b20873585de07cd" kindref="member">Output::Debug</ref>(</highlight><highlight class="stringliteral">&quot;Battle2k<sp/>Message<sp/>Pop&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>lines.pop_back();</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window___battle_message_1a6943927fe74d51e9fe33f67a670751b7" kindref="member">GetIndex</ref>()<sp/>&gt;<sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)lines.size())<sp/>{</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___battle_message_1aa930c6d21c2f0810e371f75e26dc834f" kindref="member">SetIndex</ref>(lines.size());</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="87"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89" refid="class_window___battle_message_1afbfad2fc1c6d4d98366188724f9f65dd" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___battle_message_1afbfad2fc1c6d4d98366188724f9f65dd" kindref="member">Window_BattleMessage::PopUntil</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>line_number)<sp/>{</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>EP_DEBUG_BATTLE2K_MESSAGE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_output_1aec7bcd2124d7576a8b20873585de07cd" kindref="member">Output::Debug</ref>(</highlight><highlight class="stringliteral">&quot;Battle2k<sp/>Message<sp/>PopUntil<sp/>{}&quot;</highlight><highlight class="normal">,<sp/>line_number);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(lines.size())<sp/>&gt;<sp/>line_number)<sp/>{</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lines.pop_back();</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99" refid="class_window___battle_message_1a4ce6d79451368bf13bd0d5d35b3d3be6" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___battle_message_1a4ce6d79451368bf13bd0d5d35b3d3be6" kindref="member">Window_BattleMessage::Clear</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>EP_DEBUG_BATTLE2K_MESSAGE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_output_1aec7bcd2124d7576a8b20873585de07cd" kindref="member">Output::Debug</ref>(</highlight><highlight class="stringliteral">&quot;Battle2k<sp/>Message<sp/>Clear&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>lines.clear();</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___battle_message_1aa930c6d21c2f0810e371f75e26dc834f" kindref="member">SetIndex</ref>(0);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108" refid="class_window___battle_message_1adab05e827acc10ee9c1ad22122bfc4c3" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___battle_message_1adab05e827acc10ee9c1ad22122bfc4c3" kindref="member">Window_BattleMessage::ScrollToEnd</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>old_index<sp/>=<sp/>index;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(lines.size()<sp/>&gt;<sp/><ref refid="class_window___battle_message_1aa39554c52e5542d13b5fc413263bf4b3" kindref="member">linesPerPage</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>index<sp/>=<sp/>lines.size()<sp/>-<sp/><ref refid="class_window___battle_message_1aa39554c52e5542d13b5fc413263bf4b3" kindref="member">linesPerPage</ref>;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>index<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>needs_refresh<sp/>|=<sp/>(index<sp/>!=<sp/>old_index);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118" refid="class_window___battle_message_1a9f11acec27032cc8b940467933db6ea6" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___battle_message_1a9f11acec27032cc8b940467933db6ea6" kindref="member">Window_BattleMessage::Refresh</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window_1aa37669a94405b73515d5bd9b342e07c0" kindref="member">contents</ref>-&gt;Clear();</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/><ref refid="class_window___battle_message_1a6943927fe74d51e9fe33f67a670751b7" kindref="member">GetIndex</ref>();</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>ed<sp/>=<sp/>std::min(i<sp/>+<sp/><ref refid="class_window___battle_message_1aa39554c52e5542d13b5fc413263bf4b3" kindref="member">linesPerPage</ref>,<sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)lines.size());</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>=<sp/>2;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>i<sp/>&lt;<sp/>ed;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window_1aa37669a94405b73515d5bd9b342e07c0" kindref="member">contents</ref>-&gt;TextDraw(0,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref>,<sp/><ref refid="class_font_1a300007dc1b65d906cf32066494d5cb8faab221bb13421493c5b0745d87ebc58e9" kindref="member">Font::ColorDefault</ref>,<sp/>lines[i]);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref>+=<sp/>16;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="129"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131" refid="class_window___battle_message_1a122be310b2cdf2bc57455f2829b18b60" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___battle_message_1a122be310b2cdf2bc57455f2829b18b60" kindref="member">Window_BattleMessage::Update</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___base_1acaae99eb154cc5e203c2fc87af953725" kindref="member">Window_Base::Update</ref>();</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(needs_refresh)<sp/>{</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___battle_message_1a9f11acec27032cc8b940467933db6ea6" kindref="member">Refresh</ref>();</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="136"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138" refid="class_window___battle_message_1a755abcc9584f4a2218d648351e16247b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window___battle_message_1a755abcc9584f4a2218d648351e16247b" kindref="member">Window_BattleMessage::GetLineCount</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)lines.size();</highlight></codeline>
+<codeline lineno="140"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142" refid="class_window___battle_message_1acdb394932afb16531e9b7ffa8b1ada80" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_window___battle_message_1acdb394932afb16531e9b7ffa8b1ada80" kindref="member">Window_BattleMessage::IsPageFilled</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(lines.size()<sp/>-<sp/><ref refid="class_window___battle_message_1a6943927fe74d51e9fe33f67a670751b7" kindref="member">GetIndex</ref>())<sp/>&gt;=<sp/><ref refid="class_window___battle_message_1aa39554c52e5542d13b5fc413263bf4b3" kindref="member">linesPerPage</ref>;</highlight></codeline>
+<codeline lineno="144"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="window_battlemessage.cpp"/>
+  </compounddef>
+</doxygen>

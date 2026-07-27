@@ -46,3 +46,4 @@ namespace leasy::libs2 {
     return Rect(pos.y, pos.x, siz.x, siz.y);
   }
 }
+

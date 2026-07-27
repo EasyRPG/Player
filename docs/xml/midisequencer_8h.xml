@@ -1,0 +1,434 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="midisequencer_8h" kind="file" language="C++">
+    <compoundname>midisequencer.h</compoundname>
+    <includes local="no">stdint.h</includes>
+    <includes local="no">cstdio</includes>
+    <includes local="no">string</includes>
+    <includes local="no">vector</includes>
+    <includes local="no">chrono</includes>
+    <includedby refid="audio__decoder__midi_8cpp" local="yes">audio_decoder_midi.cpp</includedby>
+    <includedby refid="audio__decoder__midi_8h" local="yes">audio_decoder_midi.h</includedby>
+    <includedby refid="decoder__fmmidi_8h" local="yes">decoder_fmmidi.h</includedby>
+    <includedby refid="midisequencer_8cpp" local="yes">midisequencer.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>midisequencer.h</label>
+        <link refid="midisequencer_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>chrono</label>
+      </node>
+      <node id="3">
+        <label>cstdio</label>
+      </node>
+      <node id="2">
+        <label>stdint.h</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="7">
+        <label>audio.cpp</label>
+        <link refid="audio_8cpp"/>
+      </node>
+      <node id="6">
+        <label>audio.h</label>
+        <link refid="audio_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>audio_decoder_midi.cpp</label>
+        <link refid="audio__decoder__midi_8cpp"/>
+      </node>
+      <node id="3">
+        <label>audio_decoder_midi.h</label>
+        <link refid="audio__decoder__midi_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>audio_generic.cpp</label>
+        <link refid="audio__generic_8cpp"/>
+      </node>
+      <node id="8">
+        <label>audio_generic.h</label>
+        <link refid="audio__generic_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>audio_generic_midiout.cpp</label>
+        <link refid="audio__generic__midiout_8cpp"/>
+      </node>
+      <node id="5">
+        <label>audio_generic_midiout.h</label>
+        <link refid="audio__generic__midiout_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>audio_midi.cpp</label>
+        <link refid="audio__midi_8cpp"/>
+      </node>
+      <node id="21">
+        <label>decoder_fluidsynth.cpp</label>
+        <link refid="decoder__fluidsynth_8cpp"/>
+      </node>
+      <node id="39">
+        <label>decoder_fmmidi.h</label>
+        <link refid="decoder__fmmidi_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>game_character.cpp</label>
+        <link refid="game__character_8cpp"/>
+      </node>
+      <node id="23">
+        <label>game_ineluki.cpp</label>
+        <link refid="game__ineluki_8cpp"/>
+      </node>
+      <node id="24">
+        <label>game_interpreter.cpp</label>
+        <link refid="game__interpreter_8cpp"/>
+      </node>
+      <node id="25">
+        <label>game_interpreter_control_variables.cpp</label>
+        <link refid="game__interpreter__control__variables_8cpp"/>
+      </node>
+      <node id="26">
+        <label>game_interpreter_map.cpp</label>
+        <link refid="game__interpreter__map_8cpp"/>
+      </node>
+      <node id="27">
+        <label>game_interpreter_shared.cpp</label>
+        <link refid="game__interpreter__shared_8cpp"/>
+      </node>
+      <node id="28">
+        <label>game_system.cpp</label>
+        <link refid="game__system_8cpp"/>
+      </node>
+      <node id="40">
+        <label>midisequencer.cpp</label>
+        <link refid="midisequencer_8cpp"/>
+      </node>
+      <node id="1">
+        <label>midisequencer.h</label>
+        <link refid="midisequencer_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>platform/libretro/audio.h</label>
+        <link refid="platform_2libretro_2audio_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>platform/libretro/midiout_device.cpp</label>
+        <link refid="midiout__device_8cpp"/>
+      </node>
+      <node id="13">
+        <label>platform/libretro/ui.cpp</label>
+        <link refid="libretro_2ui_8cpp"/>
+      </node>
+      <node id="11">
+        <label>platform/libretro/ui.h</label>
+        <link refid="libretro_2ui_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>platform/psvita/audio.h</label>
+        <link refid="platform_2psvita_2audio_8h"/>
+      </node>
+      <node id="15">
+        <label>platform/sdl/sdl2_audio.h</label>
+        <link refid="sdl2__audio_8h"/>
+      </node>
+      <node id="16">
+        <label>platform/sdl/sdl3_audio.h</label>
+        <link refid="sdl3__audio_8h"/>
+      </node>
+      <node id="17">
+        <label>platform/sdl/sdl_audio.h</label>
+        <link refid="sdl__audio_8h"/>
+      </node>
+      <node id="18">
+        <label>platform/switch/audio.h</label>
+        <link refid="platform_2switch_2audio_8h"/>
+      </node>
+      <node id="19">
+        <label>platform/wii/audio.h</label>
+        <link refid="platform_2wii_2audio_8h"/>
+      </node>
+      <node id="29">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="30">
+        <label>scene.cpp</label>
+        <link refid="scene_8cpp"/>
+      </node>
+      <node id="31">
+        <label>scene_end.cpp</label>
+        <link refid="scene__end_8cpp"/>
+      </node>
+      <node id="32">
+        <label>scene_gamebrowser.cpp</label>
+        <link refid="scene__gamebrowser_8cpp"/>
+      </node>
+      <node id="33">
+        <label>scene_language.cpp</label>
+        <link refid="scene__language_8cpp"/>
+      </node>
+      <node id="34">
+        <label>scene_map.cpp</label>
+        <link refid="scene__map_8cpp"/>
+      </node>
+      <node id="35">
+        <label>scene_menu.cpp</label>
+        <link refid="scene__menu_8cpp"/>
+      </node>
+      <node id="36">
+        <label>scene_settings.cpp</label>
+        <link refid="scene__settings_8cpp"/>
+      </node>
+      <node id="37">
+        <label>scene_title.cpp</label>
+        <link refid="scene__title_8cpp"/>
+      </node>
+      <node id="38">
+        <label>window_settings.cpp</label>
+        <link refid="window__settings_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structmidisequencer_1_1midi__message" prot="public">midisequencer::midi_message</innerclass>
+    <innerclass refid="classmidisequencer_1_1uncopyable" prot="public">midisequencer::uncopyable</innerclass>
+    <innerclass refid="classmidisequencer_1_1output" prot="public">midisequencer::output</innerclass>
+    <innerclass refid="classmidisequencer_1_1sequencer" prot="public">midisequencer::sequencer</innerclass>
+    <innernamespace refid="namespacemidisequencer">midisequencer</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="midisequencer_8h_1a87abf2646e1a792876d59ace2d60d0c2" prot="public" static="no">
+        <name>midisequencer_h</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="30" column="9" bodyfile="midisequencer.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="midisequencer_8h_1a51419a367024c735ff0bfa8478617652" prot="public" static="no">
+        <name>META_EVENT_ALL_NOTE_OFF</name>
+        <initializer>0x8888</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="38" column="9" bodyfile="midisequencer.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">Copyright<sp/>(c)<sp/>2003-2006<sp/>yuno</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">All<sp/>rights<sp/>reserved.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"></highlight></codeline>
+<codeline lineno="6"><highlight class="comment">Redistribution<sp/>and<sp/>use<sp/>in<sp/>source<sp/>and<sp/>binary<sp/>forms,<sp/>with<sp/>or<sp/>without</highlight></codeline>
+<codeline lineno="7"><highlight class="comment">modification,<sp/>are<sp/>permitted<sp/>provided<sp/>that<sp/>the<sp/>following<sp/>conditions<sp/>are<sp/>met:</highlight></codeline>
+<codeline lineno="8"><highlight class="comment">1.<sp/>Redistributions<sp/>of<sp/>source<sp/>code<sp/>must<sp/>retain<sp/>the<sp/>above<sp/>copyright<sp/>notice,</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/><sp/><sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment">2.<sp/>Redistributions<sp/>in<sp/>binary<sp/>form<sp/>must<sp/>reproduce<sp/>the<sp/>above<sp/>copyright<sp/>notice,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/><sp/><sp/>this<sp/>list<sp/>of<sp/>conditions<sp/>and<sp/>the<sp/>following<sp/>disclaimer<sp/>in<sp/>the<sp/>documentation</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/><sp/><sp/>and/or<sp/>other<sp/>materials<sp/>provided<sp/>with<sp/>the<sp/>distribution.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment">3.<sp/>Neither<sp/>the<sp/>name<sp/>of<sp/>copyright<sp/>holders<sp/>nor<sp/>the<sp/>names<sp/>of<sp/>its<sp/>contributors</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/><sp/><sp/>may<sp/>be<sp/>used<sp/>to<sp/>endorse<sp/>or<sp/>promote<sp/>products<sp/>derived<sp/>from<sp/>this<sp/>software</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/><sp/><sp/>without<sp/>specific<sp/>prior<sp/>written<sp/>permission.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"></highlight></codeline>
+<codeline lineno="17"><highlight class="comment">THIS<sp/>SOFTWARE<sp/>IS<sp/>PROVIDED<sp/>BY<sp/>THE<sp/>COPYRIGHT<sp/>HOLDERS<sp/>AND<sp/>CONTRIBUTORS<sp/>&apos;&apos;AS<sp/>IS&apos;&apos;</highlight></codeline>
+<codeline lineno="18"><highlight class="comment">AND<sp/>ANY<sp/>EXPRESS<sp/>OR<sp/>IMPLIED<sp/>WARRANTIES,<sp/>INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,<sp/>THE</highlight></codeline>
+<codeline lineno="19"><highlight class="comment">IMPLIED<sp/>WARRANTIES<sp/>OF<sp/>MERCHANTABILITY<sp/>AND<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE</highlight></codeline>
+<codeline lineno="20"><highlight class="comment">ARE<sp/>DISCLAIMED.<sp/>IN<sp/>NO<sp/>EVENT<sp/>SHALL<sp/>COPYRIGHT<sp/>HOLDERS<sp/>OR<sp/>CONTRIBUTORS<sp/>BE<sp/>LIABLE</highlight></codeline>
+<codeline lineno="21"><highlight class="comment">FOR<sp/>ANY<sp/>DIRECT,<sp/>INDIRECT,<sp/>INCIDENTAL,<sp/>SPECIAL,<sp/>EXEMPLARY,<sp/>OR<sp/>CONSEQUENTIAL</highlight></codeline>
+<codeline lineno="22"><highlight class="comment">DAMAGES<sp/>(INCLUDING,<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO,<sp/>PROCUREMENT<sp/>OF<sp/>SUBSTITUTE<sp/>GOODS<sp/>OR</highlight></codeline>
+<codeline lineno="23"><highlight class="comment">SERVICES;<sp/>LOSS<sp/>OF<sp/>USE,<sp/>DATA,<sp/>OR<sp/>PROFITS;<sp/>OR<sp/>BUSINESS<sp/>INTERRUPTION)<sp/>HOWEVER</highlight></codeline>
+<codeline lineno="24"><highlight class="comment">CAUSED<sp/>AND<sp/>ON<sp/>ANY<sp/>THEORY<sp/>OF<sp/>LIABILITY,<sp/>WHETHER<sp/>IN<sp/>CONTRACT,<sp/>STRICT<sp/>LIABILITY,</highlight></codeline>
+<codeline lineno="25"><highlight class="comment">OR<sp/>TORT<sp/>(INCLUDING<sp/>NEGLIGENCE<sp/>OR<sp/>OTHERWISE)<sp/>ARISING<sp/>IN<sp/>ANY<sp/>WAY<sp/>OUT<sp/>OF<sp/>THE<sp/>USE</highlight></codeline>
+<codeline lineno="26"><highlight class="comment">OF<sp/>THIS<sp/>SOFTWARE,<sp/>EVEN<sp/>IF<sp/>ADVISED<sp/>OF<sp/>THE<sp/>POSSIBILITY<sp/>OF<sp/>SUCH<sp/>DAMAGE.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>midisequencer_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="midisequencer_8h_1a87abf2646e1a792876d59ace2d60d0c2" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>midisequencer_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstdio&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;chrono&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="midisequencer_8h_1a51419a367024c735ff0bfa8478617652" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>META_EVENT_ALL_NOTE_OFF<sp/>0x8888</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacemidisequencer" kindref="compound">midisequencer</ref>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/><sp/><sp/><sp/>typedef<sp/>unsigned<sp/>long<sp/>uint_least32_t;</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="structmidisequencer_1_1midi__message" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structmidisequencer_1_1midi__message" kindref="compound">midi_message</ref>{</highlight></codeline>
+<codeline lineno="45" refid="structmidisequencer_1_1midi__message_1aa9855b51d379cc96cae762ea865745dd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::chrono::microseconds<sp/><ref refid="structmidisequencer_1_1midi__message_1aa9855b51d379cc96cae762ea865745dd" kindref="member">time</ref>;</highlight></codeline>
+<codeline lineno="46" refid="structmidisequencer_1_1midi__message_1ad8f411a96134911c640ecb1aca6bb963" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint_least32_t<sp/><ref refid="structmidisequencer_1_1midi__message_1ad8f411a96134911c640ecb1aca6bb963" kindref="member">message</ref>;</highlight></codeline>
+<codeline lineno="47" refid="structmidisequencer_1_1midi__message_1a204ca1ca3f0b0f8aee0de703566ae724" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structmidisequencer_1_1midi__message_1a204ca1ca3f0b0f8aee0de703566ae724" kindref="member">port</ref>;</highlight></codeline>
+<codeline lineno="48" refid="structmidisequencer_1_1midi__message_1a826735074cdb2aa2a8f6e7917a5c92d1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structmidisequencer_1_1midi__message_1a826735074cdb2aa2a8f6e7917a5c92d1" kindref="member">track</ref>;</highlight></codeline>
+<codeline lineno="49" refid="structmidisequencer_1_1midi__message_1a6ee262fd54a305dc4e28a46e92a4f49c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint_least32_t<sp/><ref refid="structmidisequencer_1_1midi__message_1a6ee262fd54a305dc4e28a46e92a4f49c" kindref="member">tempo</ref>;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52" refid="classmidisequencer_1_1uncopyable" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classmidisequencer_1_1uncopyable_1af78d270fee3ee1b2c5e05a7ffb70e37b" kindref="member">uncopyable</ref>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="54" refid="classmidisequencer_1_1uncopyable_1af78d270fee3ee1b2c5e05a7ffb70e37b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classmidisequencer_1_1uncopyable_1af78d270fee3ee1b2c5e05a7ffb70e37b" kindref="member">uncopyable</ref>(){}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classmidisequencer_1_1uncopyable_1af78d270fee3ee1b2c5e05a7ffb70e37b" kindref="member">uncopyable</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classmidisequencer_1_1uncopyable" kindref="compound">uncopyable</ref>&amp;);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>operator=(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classmidisequencer_1_1uncopyable" kindref="compound">uncopyable</ref>&amp;);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60" refid="classmidisequencer_1_1output" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classmidisequencer_1_1output" kindref="compound">output</ref>:<ref refid="classmidisequencer_1_1uncopyable_1af78d270fee3ee1b2c5e05a7ffb70e37b" kindref="member">uncopyable</ref>{</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="62" refid="classmidisequencer_1_1output_1a5296a8eab74c523cba3072158777ef97" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classmidisequencer_1_1output_1a5296a8eab74c523cba3072158777ef97" kindref="member">midi_message</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>port,<sp/>uint_least32_t<sp/>message)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="63" refid="classmidisequencer_1_1output_1a015fed410423611559440a0046501ac1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classmidisequencer_1_1output_1a015fed410423611559440a0046501ac1" kindref="member">sysex_message</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>port,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>data,<sp/>std::size_t<sp/>size)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="64" refid="classmidisequencer_1_1output_1a232ba8f79db59b14bcd7f870cd8d559a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classmidisequencer_1_1output_1a232ba8f79db59b14bcd7f870cd8d559a" kindref="member">meta_event</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>type,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>data,<sp/>std::size_t<sp/>size)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="65" refid="classmidisequencer_1_1output_1ab0a77944817bba99243b8556a4371462" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classmidisequencer_1_1output_1ab0a77944817bba99243b8556a4371462" kindref="member">reset</ref>()<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="67" refid="classmidisequencer_1_1output_1a4aadd64c0c016c380a277d19357e552e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classmidisequencer_1_1output_1a4aadd64c0c016c380a277d19357e552e" kindref="member">~output</ref>(){}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70" refid="classmidisequencer_1_1sequencer" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classmidisequencer_1_1sequencer_1a3044c1278949419c2e8a26d47673ee66" kindref="member">sequencer</ref>:<ref refid="classmidisequencer_1_1uncopyable_1af78d270fee3ee1b2c5e05a7ffb70e37b" kindref="member">uncopyable</ref>{</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classmidisequencer_1_1sequencer_1a3044c1278949419c2e8a26d47673ee66" kindref="member">sequencer</ref>();</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classmidisequencer_1_1sequencer_1a2724074abfc20243102611e36ca446b0" kindref="member">clear</ref>();</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classmidisequencer_1_1sequencer_1a25675a7efb8539d8a3a723806715b8d3" kindref="member">rewind</ref>();</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;midi_message&gt;::iterator<sp/><ref refid="classmidisequencer_1_1sequencer_1ae8e2661b6905f6f81db8f15e43d9a602" kindref="member">rewind_to_loop</ref>();</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classmidisequencer_1_1sequencer_1a3ca82ad4dd266e7a612b125813e29f2a" kindref="member">is_at_end</ref>();</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classmidisequencer_1_1sequencer_1ac6a0607711459afaefa527e72b787f51" kindref="member">load</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>fp,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">(*fgetc)(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*));</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classmidisequencer_1_1sequencer_1ac6a0607711459afaefa527e72b787f51" kindref="member">load</ref>(std::FILE*<sp/>fp);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classmidisequencer_1_1sequencer_1aacb2b99f6e18eccfe550eb70d511ab27" kindref="member">get_num_ports</ref>()</highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::chrono::microseconds<sp/><ref refid="classmidisequencer_1_1sequencer_1a2e89f97d6ae56e28088e6dc56ea932bd" kindref="member">get_total_time</ref>()</highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="classmidisequencer_1_1sequencer_1a58b72ec98da75b94dd8191f283def07a" kindref="member">get_title</ref>()</highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="classmidisequencer_1_1sequencer_1ad2d053a81a9faa0c97a3aba5dd70fa70" kindref="member">get_copyright</ref>()</highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="classmidisequencer_1_1sequencer_1a3a4cbae8f09651df1c48f1a4dc004f0b" kindref="member">get_song</ref>()</highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint32_t<sp/><ref refid="classmidisequencer_1_1sequencer_1a9062f117fd197b8b930ab1893fc79cb1" kindref="member">get_division</ref>()</highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classmidisequencer_1_1sequencer_1a9fd581ad6babdca8d29a611dc2349bb5" kindref="member">play</ref>(std::chrono::microseconds<sp/>time,<sp/><ref refid="classmidisequencer_1_1output" kindref="compound">output</ref>*<sp/>out);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classmidisequencer_1_1sequencer_1a6f4b75f9252b6353aa99c67bc9411037" kindref="member">set_time</ref>(std::chrono::microseconds<sp/>time,<sp/><ref refid="classmidisequencer_1_1output" kindref="compound">output</ref>*<sp/>out);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::chrono::microseconds<sp/><ref refid="classmidisequencer_1_1sequencer_1a7643e53df0f5b8ef454b749b482c6e62" kindref="member">get_start_skipping_silence</ref>();</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;midi_message&gt;<sp/>messages;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;midi_message&gt;::iterator<sp/>position;</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;midi_message&gt;::iterator<sp/>loop_position;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/>long_messages;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint32_t<sp/>division<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>load_smf(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>fp,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">(*fgetc)(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*));</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="96"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="midisequencer.h"/>
+  </compounddef>
+</doxygen>

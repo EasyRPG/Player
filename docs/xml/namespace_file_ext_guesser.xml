@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_file_ext_guesser" kind="namespace" language="C++">
+    <compoundname>FileExtGuesser</compoundname>
+    <innerclass refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap" prot="public">FileExtGuesser::RPG2KFileExtRemap</innerclass>
+    <innerclass refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser" prot="public">FileExtGuesser::RPG2KNonStandardFilenameGuesser</innerclass>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_file_ext_guesser_1ac0e2c6894c40be43c2c99819af87dd42" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void FileExtGuesser::GuessAndAddLmuExtension</definition>
+        <argsstring>(const FilesystemView &amp;fs, Meta const &amp;meta, RPG2KFileExtRemap &amp;mapping)</argsstring>
+        <name>GuessAndAddLmuExtension</name>
+        <qualifiedname>FileExtGuesser::GuessAndAddLmuExtension</qualifiedname>
+        <param>
+          <type>const <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> &amp;</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="class_meta" kindref="compound">Meta</ref> const &amp;</type>
+          <declname>meta</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap" kindref="compound">RPG2KFileExtRemap</ref> &amp;</type>
+          <declname>mapping</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Attempts to determine the LMU extension for non-standard projects.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The filesystem of the project in question </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>meta</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The meta object, which can be used to directly specify the extension </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mapping</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The resultant mapping, if any, is stored in this lookup. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fileext_guesser.h" line="57" column="6" bodyfile="fileext_guesser.cpp" bodystart="70" bodyend="103" declfile="fileext_guesser.h" declline="57" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_ext_guesser_1a84f41cba147f9091c96f623b1de4416f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser" kindref="compound">RPG2KNonStandardFilenameGuesser</ref></type>
+        <definition>FileExtGuesser::RPG2KNonStandardFilenameGuesser FileExtGuesser::GetRPG2kProjectWithRenames</definition>
+        <argsstring>(const FilesystemView &amp;fs)</argsstring>
+        <name>GetRPG2kProjectWithRenames</name>
+        <qualifiedname>FileExtGuesser::GetRPG2kProjectWithRenames</qualifiedname>
+        <param>
+          <type>const <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> &amp;</type>
+          <declname>fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Scans a directory tree and tries to identify the LMT/LDB files, but with non-standard extensions.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The filesystem of the project in question </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An object that contains the candidates (check with .Empty()) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fileext_guesser.h" line="93" column="33" bodyfile="fileext_guesser.cpp" bodystart="34" bodyend="68" declfile="fileext_guesser.h" declline="93" declcolumn="33"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="namespace_file_ext_guesser" kindref="compound">FileExtGuesser</ref> contains helper methods for guessing the extensions used on non-standard RPG Projects. </para>
+    </detaileddescription>
+    <location file="fileext_guesser.h" line="33" column="1"/>
+  </compounddef>
+</doxygen>

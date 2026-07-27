@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_config_param" kind="class" language="C++" prot="public">
+    <compoundname>ConfigParam</compoundname>
+    <basecompoundref refid="class_config_param_base" prot="public" virt="non-virtual">ConfigParamBase&lt; T &gt;</basecompoundref>
+    <derivedcompoundref refid="class_locked_config_param" prot="public" virt="non-virtual">LockedConfigParam&lt; T &gt;</derivedcompoundref>
+    <includes refid="config__param_8h" local="no">config_param.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_config_param_1a568ceffc4ec4c0aea7c9c04fb6f76929" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>ConfigParam&lt; T &gt;::ConfigParam</definition>
+        <argsstring>(std::string_view name, std::string_view description, std::string_view config_section, std::string_view config_key, T value={})</argsstring>
+        <name>ConfigParam</name>
+        <qualifiedname>ConfigParam::ConfigParam</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>description</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>config_section</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>config_key</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>value</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="231" column="10" bodyfile="config_param.h" bodystart="231" bodyend="232"/>
+      </memberdef>
+      <memberdef kind="function" id="class_config_param_1a20c3bb4f43601ec0fe323c43c93016d2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>bool ConfigParam&lt; T &gt;::vIsValid</definition>
+        <argsstring>(const T &amp;) const override</argsstring>
+        <name>vIsValid</name>
+        <qualifiedname>ConfigParam::vIsValid</qualifiedname>
+        <reimplements refid="class_config_param_base_1a8b8d537bc0275c083bffaf98116f0dda">vIsValid</reimplements>
+        <param>
+          <type>const T &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="234" column="6" bodyfile="config_param.h" bodystart="234" bodyend="236"/>
+      </memberdef>
+      <memberdef kind="function" id="class_config_param_1adcfb2962f402d7c8a560189d70bf4e12" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string ConfigParam&lt; T &gt;::ValueToString</definition>
+        <argsstring>() const override</argsstring>
+        <name>ValueToString</name>
+        <qualifiedname>ConfigParam::ValueToString</qualifiedname>
+        <reimplements refid="class_config_param_base_1aa50c70a0101b92717f895a0d101f4037">ValueToString</reimplements>
+        <reimplementedby refid="class_path_config_param_1a9094727307933f5fc49bd25e3b6c9f51">ValueToString</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>human readable representation of the value for the settings scene </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="238" column="13" bodyfile="config_param.h" bodystart="238" bodyend="240"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>A configuration parameter with no restrictions </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>ConfigParam&lt; T &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="3">
+        <label>LockedConfigParam&lt; T &gt;</label>
+        <link refid="class_locked_config_param"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>ConfigParam&lt; T &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+    </collaborationgraph>
+    <location file="config_param.h" line="229" column="1" bodyfile="config_param.h" bodystart="229" bodyend="241"/>
+    <listofallmembers>
+      <member refid="class_config_param_base_1a8ca4a74a2f3d5d8cc252162190893c9e" prot="protected" virt="non-virtual"><scope>ConfigParam</scope><name>_config_key</name></member>
+      <member refid="class_config_param_base_1a9093f720aa1025c05d48316d0ccefe65" prot="protected" virt="non-virtual"><scope>ConfigParam</scope><name>_config_section</name></member>
+      <member refid="class_config_param_base_1a6b63463243218d57495cd29033f1736c" prot="protected" virt="non-virtual"><scope>ConfigParam</scope><name>_description</name></member>
+      <member refid="class_config_param_base_1ac46a1abdfbd2aea6d6ad84000e43ce41" prot="protected" virt="non-virtual"><scope>ConfigParam</scope><name>_name</name></member>
+      <member refid="class_config_param_base_1ad486a9f44dcf1b8d760071884d29ce89" prot="protected" virt="non-virtual"><scope>ConfigParam</scope><name>_value</name></member>
+      <member refid="class_config_param_1a568ceffc4ec4c0aea7c9c04fb6f76929" prot="public" virt="non-virtual"><scope>ConfigParam</scope><name>ConfigParam</name></member>
+      <member refid="class_config_param_base_1ab00b08f1b9375287f6cb07e6731781a3" prot="public" virt="non-virtual"><scope>ConfigParam</scope><name>ConfigParamBase</name></member>
+      <member refid="class_config_param_base_1a0baf7f7760a3141267184a0e251c3ba2" prot="public" virt="virtual"><scope>ConfigParam</scope><name>FromIni</name></member>
+      <member refid="class_config_param_base_1a69547a9d358dae48d13b2115c17efd53" prot="public" virt="non-virtual"><scope>ConfigParam</scope><name>Get</name></member>
+      <member refid="class_config_param_base_1a928b6c9786fe9f1aa6237a097d20e8b0" prot="public" virt="non-virtual"><scope>ConfigParam</scope><name>GetDescription</name></member>
+      <member refid="class_config_param_base_1a88ae1702b97bd390636496a4e7114edd" prot="public" virt="non-virtual"><scope>ConfigParam</scope><name>GetName</name></member>
+      <member refid="class_config_param_base_1a2f8f8f70ca825f22319102ac3cb75bbd" prot="public" virt="non-virtual"><scope>ConfigParam</scope><name>IsLocked</name></member>
+      <member refid="class_config_param_base_1ad022cc572286546bcaa541de5859d24f" prot="public" virt="non-virtual"><scope>ConfigParam</scope><name>IsOptionVisible</name></member>
+      <member refid="class_config_param_base_1ab3e65722fba80c0bcd4420fe1bab8dc9" prot="public" virt="non-virtual"><scope>ConfigParam</scope><name>IsValid</name></member>
+      <member refid="class_config_param_base_1ac8648cf6d4b5ae495f5dc02bdf1074ac" prot="public" virt="non-virtual"><scope>ConfigParam</scope><name>Lock</name></member>
+      <member refid="class_config_param_base_1a8b45465ea459016817e6cc38a7fe1950" prot="public" virt="non-virtual"><scope>ConfigParam</scope><name>Set</name></member>
+      <member refid="class_config_param_base_1abe0d636ddc983d8965c70493f434ef2d" prot="public" virt="non-virtual"><scope>ConfigParam</scope><name>SetDescription</name></member>
+      <member refid="class_config_param_base_1afcca350f7a5df7e9e60f768fc69ce82a" prot="public" virt="non-virtual"><scope>ConfigParam</scope><name>SetLocked</name></member>
+      <member refid="class_config_param_base_1a19e2a139b6abf38a353e5f8e9055137b" prot="public" virt="non-virtual"><scope>ConfigParam</scope><name>SetName</name></member>
+      <member refid="class_config_param_base_1ae462283da6956166010805a492fbb12f" prot="public" virt="non-virtual"><scope>ConfigParam</scope><name>SetOptionVisible</name></member>
+      <member refid="class_config_param_base_1a8b033b1d1596ba80bdf4ca9e79db1f47" prot="public" virt="non-virtual"><scope>ConfigParam</scope><name>ToIni</name></member>
+      <member refid="class_config_param_base_1a64e7e428e4d66ab9e00ad46ef146ceb1" prot="public" virt="non-virtual"><scope>ConfigParam</scope><name>value_type</name></member>
+      <member refid="class_config_param_1adcfb2962f402d7c8a560189d70bf4e12" prot="public" virt="virtual"><scope>ConfigParam</scope><name>ValueToString</name></member>
+      <member refid="class_config_param_1a20c3bb4f43601ec0fe323c43c93016d2" prot="public" virt="virtual"><scope>ConfigParam</scope><name>vIsValid</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

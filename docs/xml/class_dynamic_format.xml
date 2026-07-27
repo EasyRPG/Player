@@ -1,0 +1,484 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_dynamic_format" kind="class" language="C++" prot="public">
+    <compoundname>DynamicFormat</compoundname>
+    <includes refid="pixel__format_8h" local="no">pixel_format.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_dynamic_format_1aae88e8519bfd1af60ae8c7dbd5820da3" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int DynamicFormat::bits</definition>
+        <argsstring></argsstring>
+        <name>bits</name>
+        <qualifiedname>DynamicFormat::bits</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="106" column="5" bodyfile="pixel_format.h" bodystart="106" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dynamic_format_1a03728804daafdd68bc615302b516b582" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int DynamicFormat::bytes</definition>
+        <argsstring></argsstring>
+        <name>bytes</name>
+        <qualifiedname>DynamicFormat::bytes</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="107" column="5" bodyfile="pixel_format.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dynamic_format_1aa6b58db640735f00e62537e0220910ef" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_component" kindref="compound">Component</ref></type>
+        <definition>Component DynamicFormat::r</definition>
+        <argsstring></argsstring>
+        <name>r</name>
+        <qualifiedname>DynamicFormat::r</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="108" column="11" bodyfile="pixel_format.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dynamic_format_1acd439b525449b12db5531721e3f81cb9" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_component" kindref="compound">Component</ref></type>
+        <definition>Component DynamicFormat::g</definition>
+        <argsstring></argsstring>
+        <name>g</name>
+        <qualifiedname>DynamicFormat::g</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="108" column="13" bodyfile="pixel_format.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dynamic_format_1aca8179f12a95c3cbb7048590d26ef774" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_component" kindref="compound">Component</ref></type>
+        <definition>Component DynamicFormat::b</definition>
+        <argsstring></argsstring>
+        <name>b</name>
+        <qualifiedname>DynamicFormat::b</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="108" column="15" bodyfile="pixel_format.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dynamic_format_1a1bd420512f4a4a316310038e1533185c" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_component" kindref="compound">Component</ref></type>
+        <definition>Component DynamicFormat::a</definition>
+        <argsstring></argsstring>
+        <name>a</name>
+        <qualifiedname>DynamicFormat::a</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="108" column="17" bodyfile="pixel_format.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dynamic_format_1a6107adcc0499be37716beb9486e895c8" prot="public" static="no" mutable="no">
+        <type><ref refid="namespace_p_f_1a2efd68b89cc15c64bf0f69e2c7ea6c85" kindref="member">PF::AlphaType</ref></type>
+        <definition>PF::AlphaType DynamicFormat::alpha_type</definition>
+        <argsstring></argsstring>
+        <name>alpha_type</name>
+        <qualifiedname>DynamicFormat::alpha_type</qualifiedname>
+        <initializer>= <ref refid="namespace_p_f_1a2efd68b89cc15c64bf0f69e2c7ea6c85a393005ae51a5ac49e9813b18ddff9281" kindref="member">PF::NoAlpha</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="109" column="15" bodyfile="pixel_format.h" bodystart="109" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_dynamic_format_1a0a24e78a4f1fcbf7b9e56b487c3d801a" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>DynamicFormat::DynamicFormat</definition>
+        <argsstring>()</argsstring>
+        <name>DynamicFormat</name>
+        <qualifiedname>DynamicFormat::DynamicFormat</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="111" column="11" bodyfile="pixel_format.h" bodystart="111" bodyend="111"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dynamic_format_1a3e158d872fa48e051a3313e93dd3cb13" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>DynamicFormat::DynamicFormat</definition>
+        <argsstring>(int bits, int rb, int rs, int gb, int gs, int bb, int bs, int ab, int as, PF::AlphaType alpha_type)</argsstring>
+        <name>DynamicFormat</name>
+        <qualifiedname>DynamicFormat::DynamicFormat</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>bits</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>rb</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>rs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>gb</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>gs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>bb</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>bs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>ab</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>as</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_p_f_1a2efd68b89cc15c64bf0f69e2c7ea6c85" kindref="member">PF::AlphaType</ref></type>
+          <declname>alpha_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="113" column="11" bodyfile="pixel_format.h" bodystart="113" bodyend="121"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dynamic_format_1a58758e1b4aff0fd6e792f8c86490e1ac" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>DynamicFormat::DynamicFormat</definition>
+        <argsstring>(int bits, uint32_t rmask, uint32_t gmask, uint32_t bmask, uint32_t amask, PF::AlphaType alpha_type)</argsstring>
+        <name>DynamicFormat</name>
+        <qualifiedname>DynamicFormat::DynamicFormat</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>bits</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>rmask</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>gmask</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>bmask</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>amask</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_p_f_1a2efd68b89cc15c64bf0f69e2c7ea6c85" kindref="member">PF::AlphaType</ref></type>
+          <declname>alpha_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="123" column="11" bodyfile="pixel_format.h" bodystart="123" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dynamic_format_1a45007fa1d7af2cf06b9705cb3ae84c12" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void DynamicFormat::Set</definition>
+        <argsstring>(int _bits, int rb, int rs, int gb, int gs, int bb, int bs, int ab, int as, PF::AlphaType _alpha_type)</argsstring>
+        <name>Set</name>
+        <qualifiedname>DynamicFormat::Set</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>_bits</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>rb</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>rs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>gb</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>gs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>bb</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>bs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>ab</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>as</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_p_f_1a2efd68b89cc15c64bf0f69e2c7ea6c85" kindref="member">PF::AlphaType</ref></type>
+          <declname>_alpha_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="133" column="16" bodyfile="pixel_format.h" bodystart="133" bodyend="146"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dynamic_format_1af72b13d74d57b3bb30180449f39da08b" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void DynamicFormat::Set</definition>
+        <argsstring>(int _bits, uint32_t rmask, uint32_t gmask, uint32_t bmask, uint32_t amask, PF::AlphaType _alpha_type)</argsstring>
+        <name>Set</name>
+        <qualifiedname>DynamicFormat::Set</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>_bits</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>rmask</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>gmask</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>bmask</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>amask</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_p_f_1a2efd68b89cc15c64bf0f69e2c7ea6c85" kindref="member">PF::AlphaType</ref></type>
+          <declname>_alpha_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="148" column="16" bodyfile="pixel_format.h" bodystart="148" bodyend="161"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dynamic_format_1a01190ada26360be8318c0ac5b7757629" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int DynamicFormat::code</definition>
+        <argsstring>(bool shifts) const</argsstring>
+        <name>code</name>
+        <qualifiedname>DynamicFormat::code</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>shifts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="163" column="15" bodyfile="pixel_format.h" bodystart="163" bodyend="171"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dynamic_format_1a285accc00e139b54229a796303e97e60" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int DynamicFormat::code_alpha</definition>
+        <argsstring>() const</argsstring>
+        <name>code_alpha</name>
+        <qualifiedname>DynamicFormat::code_alpha</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="173" column="15" bodyfile="pixel_format.h" bodystart="173" bodyend="180"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dynamic_format_1a7f442983a80b748a05551141cef80f56" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void DynamicFormat::uint32_to_rgba</definition>
+        <argsstring>(uint32_t pix, uint8_t &amp;_r, uint8_t &amp;_g, uint8_t &amp;_b, uint8_t &amp;_a) const</argsstring>
+        <name>uint32_to_rgba</name>
+        <qualifiedname>DynamicFormat::uint32_to_rgba</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>pix</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>_r</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>_g</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>_b</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>_a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="182" column="16" bodyfile="pixel_format.h" bodystart="182" bodyend="187"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dynamic_format_1ae438d7b01973ec14064dd5a9ce060054" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t DynamicFormat::rgba_to_uint32_t</definition>
+        <argsstring>(const uint8_t &amp;_r, const uint8_t &amp;_g, const uint8_t &amp;_b, const uint8_t &amp;_a) const</argsstring>
+        <name>rgba_to_uint32_t</name>
+        <qualifiedname>DynamicFormat::rgba_to_uint32_t</qualifiedname>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>_r</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>_g</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>_b</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>_a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="189" column="20" bodyfile="pixel_format.h" bodystart="189" bodyend="191"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dynamic_format_1a40acf593bb581d33d34d631e50048e51" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool DynamicFormat::operator==</definition>
+        <argsstring>(const DynamicFormat &amp;f)</argsstring>
+        <name>operator==</name>
+        <qualifiedname>DynamicFormat::operator==</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref> &amp;</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="193" column="16" bodyfile="pixel_format.h" bodystart="193" bodyend="195"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dynamic_format_1a4284fc7b3479d537d3a722fece1934fe" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool DynamicFormat::operator!=</definition>
+        <argsstring>(const DynamicFormat &amp;f)</argsstring>
+        <name>operator!=</name>
+        <qualifiedname>DynamicFormat::operator!=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref> &amp;</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="197" column="16" bodyfile="pixel_format.h" bodystart="197" bodyend="199"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref> struct </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>Component</label>
+        <link refid="struct_component"/>
+      </node>
+      <node id="1">
+        <label>DynamicFormat</label>
+        <link refid="class_dynamic_format"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>a</edgelabel>
+          <edgelabel>b</edgelabel>
+          <edgelabel>g</edgelabel>
+          <edgelabel>r</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="pixel_format.h" line="104" column="1" bodyfile="pixel_format.h" bodystart="104" bodyend="200"/>
+    <listofallmembers>
+      <member refid="class_dynamic_format_1a1bd420512f4a4a316310038e1533185c" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>a</name></member>
+      <member refid="class_dynamic_format_1a6107adcc0499be37716beb9486e895c8" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>alpha_type</name></member>
+      <member refid="class_dynamic_format_1aca8179f12a95c3cbb7048590d26ef774" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>b</name></member>
+      <member refid="class_dynamic_format_1aae88e8519bfd1af60ae8c7dbd5820da3" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>bits</name></member>
+      <member refid="class_dynamic_format_1a03728804daafdd68bc615302b516b582" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>bytes</name></member>
+      <member refid="class_dynamic_format_1a01190ada26360be8318c0ac5b7757629" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>code</name></member>
+      <member refid="class_dynamic_format_1a285accc00e139b54229a796303e97e60" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>code_alpha</name></member>
+      <member refid="class_dynamic_format_1a0a24e78a4f1fcbf7b9e56b487c3d801a" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>DynamicFormat</name></member>
+      <member refid="class_dynamic_format_1a3e158d872fa48e051a3313e93dd3cb13" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>DynamicFormat</name></member>
+      <member refid="class_dynamic_format_1a58758e1b4aff0fd6e792f8c86490e1ac" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>DynamicFormat</name></member>
+      <member refid="class_dynamic_format_1acd439b525449b12db5531721e3f81cb9" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>g</name></member>
+      <member refid="class_dynamic_format_1a4284fc7b3479d537d3a722fece1934fe" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>operator!=</name></member>
+      <member refid="class_dynamic_format_1a40acf593bb581d33d34d631e50048e51" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>operator==</name></member>
+      <member refid="class_dynamic_format_1aa6b58db640735f00e62537e0220910ef" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>r</name></member>
+      <member refid="class_dynamic_format_1ae438d7b01973ec14064dd5a9ce060054" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>rgba_to_uint32_t</name></member>
+      <member refid="class_dynamic_format_1a45007fa1d7af2cf06b9705cb3ae84c12" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>Set</name></member>
+      <member refid="class_dynamic_format_1af72b13d74d57b3bb30180449f39da08b" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>Set</name></member>
+      <member refid="class_dynamic_format_1a7f442983a80b748a05551141cef80f56" prot="public" virt="non-virtual"><scope>DynamicFormat</scope><name>uint32_to_rgba</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

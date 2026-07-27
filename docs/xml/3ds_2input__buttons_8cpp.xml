@@ -1,0 +1,435 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="3ds_2input__buttons_8cpp" kind="file" language="C++">
+    <compoundname>input_buttons.cpp</compoundname>
+    <includes refid="input__buttons_8h" local="yes">input_buttons.h</includes>
+    <includes refid="keys_8h" local="yes">keys.h</includes>
+    <includes refid="game__config_8h" local="yes">game_config.h</includes>
+    <incdepgraph>
+      <node id="19">
+        <label>config_param.h</label>
+        <link refid="config__param_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>flat_map.h</label>
+        <link refid="flat__map_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>game_config.h</label>
+        <link refid="game__config_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>input_buttons.h</label>
+        <link refid="input__buttons_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>keys.h</label>
+        <link refid="keys_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="1">
+        <label>platform/3ds/input_buttons.cpp</label>
+        <link refid="3ds_2input__buttons_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>algorithm</label>
+      </node>
+      <node id="4">
+        <label>array</label>
+      </node>
+      <node id="5">
+        <label>cassert</label>
+      </node>
+      <node id="6">
+        <label>cstdint</label>
+      </node>
+      <node id="37">
+        <label>cstdio</label>
+      </node>
+      <node id="35">
+        <label>ctime</label>
+      </node>
+      <node id="23">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="24">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="36">
+        <label>functional</label>
+      </node>
+      <node id="7">
+        <label>initializer_list</label>
+      </node>
+      <node id="38">
+        <label>ios</label>
+      </node>
+      <node id="27">
+        <label>istream</label>
+      </node>
+      <node id="22">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="10">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="42">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="39">
+        <label>lcf/inireader.h</label>
+      </node>
+      <node id="33">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="21">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="40">
+        <label>limits</label>
+      </node>
+      <node id="17">
+        <label>memory</label>
+      </node>
+      <node id="9">
+        <label>ostream</label>
+      </node>
+      <node id="31">
+        <label>string</label>
+      </node>
+      <node id="41">
+        <label>type_traits</label>
+      </node>
+      <node id="29">
+        <label>unordered_map</label>
+      </node>
+      <node id="12">
+        <label>utility</label>
+      </node>
+      <node id="3">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="input__buttons_8h" kindref="compound">input_buttons.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="keys_8h" kindref="compound">keys.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__config_8h" kindref="compound">game_config.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><ref refid="namespace_input_1a6c58920837b877254184fff33f735e9f" kindref="member">Input::ButtonMappingArray</ref><sp/><ref refid="namespace_input_1a2623f90624ed76850131e1d3b0f968ca" kindref="member">Input::GetDefaultButtonMappings</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054af648852ecf7f179c3aade95ab73ca77e" kindref="member">UP</ref>,<sp/>Keys::JOY_DPAD_UP},</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054a1c36cb50519f795f50197c8d1c54dd07" kindref="member">DOWN</ref>,<sp/>Keys::JOY_DPAD_DOWN},</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054a1ac680d64d34332effcb5a9142e84af3" kindref="member">LEFT</ref>,<sp/>Keys::JOY_DPAD_LEFT},</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054a3afc3acbd9c10695b63a10bccc995f12" kindref="member">RIGHT</ref>,<sp/>Keys::JOY_DPAD_RIGHT},</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7ad2568c4d3e7ca2d06f1d2f3a72ba82ae" kindref="member">DECISION</ref>,<sp/>Keys::JOY_A},</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a352ed3bee72afbb016c0a97d59898cf5" kindref="member">CANCEL</ref>,<sp/>Keys::JOY_B},</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a352ed3bee72afbb016c0a97d59898cf5" kindref="member">CANCEL</ref>,<sp/>Keys::JOY_X},</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a98813aa5fbc2363d14db8548abd10ac4" kindref="member">SHIFT</ref>,<sp/>Keys::JOY_Y},</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a60c0a84051350c78f90a5c0c455c39dd" kindref="member">TOGGLE_FPS</ref>,<sp/>Keys::JOY_SHOULDER_LEFT},</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7aaa7aadcf69be5574af655ae68a5b74dd" kindref="member">FAST_FORWARD_A</ref>,<sp/>Keys::JOY_SHOULDER_RIGHT},</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a124ad408d2f6da7f08951a538e3bb4c0" kindref="member">SETTINGS_MENU</ref>,<sp/>Keys::JOY_START},</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a0d015625d28ae97cd4c76cc81123adb4" kindref="member">RESET</ref>,<sp/>Keys::JOY_BACK},</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Touchscreen</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a27cfddc8440f06fecf935188babab137" kindref="member">N0</ref>,<sp/>Keys::N0},</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7ad3e422e6941cd8e6570359a528a461c8" kindref="member">N1</ref>,<sp/>Keys::N1},</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7aa8d32aba942407dc1aec861991a31265" kindref="member">N2</ref>,<sp/>Keys::N2},</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a92631570e3babc23badee9a9500b0ee0" kindref="member">N3</ref>,<sp/>Keys::N3},</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a6408956d2577225764f6d60daaa01974" kindref="member">N4</ref>,<sp/>Keys::N4},</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a2e7ff3d1cf724815114bce6adcce608a" kindref="member">N5</ref>,<sp/>Keys::N5},</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a2865f044d33f63bcdc529f8b7886db7c" kindref="member">N6</ref>,<sp/>Keys::N6},</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a0b46e503b1075d61a4f2647d3e597aa9" kindref="member">N7</ref>,<sp/>Keys::N7},</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a0ba9d96bad1e82b9815b09fd03a7e13d" kindref="member">N8</ref>,<sp/>Keys::N8},</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a06fafc020b265fceb0dc95d328d0cee0" kindref="member">N9</ref>,<sp/>Keys::N9},</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7ab7025a77bf0fcc28ddb6ca5048f3b719" kindref="member">PLUS</ref>,<sp/>Keys::KP_ADD},</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a81e404005b678e12590a7af64c8eea27" kindref="member">MINUS</ref>,<sp/>Keys::KP_SUBTRACT},</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7ac7dfa4400340ed929394dafeba2599d5" kindref="member">MULTIPLY</ref>,<sp/>Keys::KP_MULTIPLY},</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7aac7fc229e5664ee162a5023100562696" kindref="member">DIVIDE</ref>,<sp/>Keys::KP_DIVIDE},</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a296789e6fd5c2d0fc0ecc4ce3eb06350" kindref="member">PERIOD</ref>,<sp/>Keys::KP_PERIOD},</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(USE_JOYSTICK_AXIS)<sp/>&amp;&amp;<sp/>defined(SUPPORT_JOYSTICK_AXIS)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054a1ac680d64d34332effcb5a9142e84af3" kindref="member">LEFT</ref>,<sp/>Keys::JOY_LSTICK_LEFT},</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054a3afc3acbd9c10695b63a10bccc995f12" kindref="member">RIGHT</ref>,<sp/>Keys::JOY_LSTICK_RIGHT},</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054a1c36cb50519f795f50197c8d1c54dd07" kindref="member">DOWN</ref>,<sp/>Keys::JOY_LSTICK_DOWN},</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054af648852ecf7f179c3aade95ab73ca77e" kindref="member">UP</ref>,<sp/>Keys::JOY_LSTICK_UP},</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="61"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><ref refid="namespace_input_1a3cde3b1eef79d5f1ad0bc09f58bffc3c" kindref="member">Input::KeyNamesArray</ref><sp/><ref refid="namespace_input_1a189f091df311495eb1b87e0d86f6eb26" kindref="member">Input::GetInputKeyNames</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::JOY_DPAD_UP,<sp/></highlight><highlight class="stringliteral">&quot;D-Pad<sp/>Up&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::JOY_DPAD_DOWN,<sp/></highlight><highlight class="stringliteral">&quot;D-Pad<sp/>Down&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::JOY_DPAD_LEFT,<sp/></highlight><highlight class="stringliteral">&quot;D-Pad<sp/>Left&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::JOY_DPAD_RIGHT,<sp/></highlight><highlight class="stringliteral">&quot;D-Pad<sp/>Up&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::JOY_LSTICK_UP,<sp/></highlight><highlight class="stringliteral">&quot;Circle<sp/>Pad<sp/>Up&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::JOY_LSTICK_DOWN,<sp/></highlight><highlight class="stringliteral">&quot;Circle<sp/>Pad<sp/>Down&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::JOY_LSTICK_LEFT,<sp/></highlight><highlight class="stringliteral">&quot;Circle<sp/>Pad<sp/>Left&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::JOY_LSTICK_RIGHT,<sp/></highlight><highlight class="stringliteral">&quot;Circle<sp/>Pad<sp/>Up&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::JOY_A,<sp/></highlight><highlight class="stringliteral">&quot;A&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::JOY_B,<sp/></highlight><highlight class="stringliteral">&quot;B&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::JOY_X,<sp/></highlight><highlight class="stringliteral">&quot;X&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::JOY_Y,<sp/></highlight><highlight class="stringliteral">&quot;Y&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::JOY_SHOULDER_LEFT,<sp/></highlight><highlight class="stringliteral">&quot;L&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::JOY_SHOULDER_RIGHT,<sp/></highlight><highlight class="stringliteral">&quot;R&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::JOY_BACK,<sp/></highlight><highlight class="stringliteral">&quot;Select&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::JOY_START,<sp/></highlight><highlight class="stringliteral">&quot;Start&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Touchscreen</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::N0,<sp/></highlight><highlight class="stringliteral">&quot;Touch<sp/>0&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::N1,<sp/></highlight><highlight class="stringliteral">&quot;Touch<sp/>1&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::N2,<sp/></highlight><highlight class="stringliteral">&quot;Touch<sp/>2&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::N3,<sp/></highlight><highlight class="stringliteral">&quot;Touch<sp/>3&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::N4,<sp/></highlight><highlight class="stringliteral">&quot;Touch<sp/>4&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::N5,<sp/></highlight><highlight class="stringliteral">&quot;Touch<sp/>5&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::N6,<sp/></highlight><highlight class="stringliteral">&quot;Touch<sp/>6&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::N7,<sp/></highlight><highlight class="stringliteral">&quot;Touch<sp/>7&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::N8,<sp/></highlight><highlight class="stringliteral">&quot;Touch<sp/>8&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::N9,<sp/></highlight><highlight class="stringliteral">&quot;Touch<sp/>9&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::KP_ADD,<sp/></highlight><highlight class="stringliteral">&quot;Touch<sp/>+&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::KP_SUBTRACT,<sp/></highlight><highlight class="stringliteral">&quot;Touch<sp/>-&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::KP_MULTIPLY,<sp/></highlight><highlight class="stringliteral">&quot;Touch<sp/>*&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::KP_DIVIDE,<sp/></highlight><highlight class="stringliteral">&quot;Touch<sp/>/&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{Keys::KP_PERIOD,<sp/></highlight><highlight class="stringliteral">&quot;Touch<sp/>.&quot;</highlight><highlight class="normal">}</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="98"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_input_1a1a071e3141f2cbf60d8c018d1c2bac71" kindref="member">Input::GetSupportedConfig</ref>(<ref refid="struct_game___config_input" kindref="compound">Game_ConfigInput</ref>&amp;<sp/>cfg)<sp/>{</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>cfg.<ref refid="struct_game___config_input_1a2f8a2bed8014773f22fcfe047e08a3c5" kindref="member">gamepad_swap_ab_and_xy</ref>.<ref refid="class_config_param_base_1ae462283da6956166010805a492fbb12f" kindref="member">SetOptionVisible</ref>(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>cfg.<ref refid="struct_game___config_input_1aa963f9e797f853d2096a30432ed8db80" kindref="member">gamepad_swap_dpad_with_buttons</ref>.<ref refid="class_config_param_base_1ae462283da6956166010805a492fbb12f" kindref="member">SetOptionVisible</ref>(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="platform/3ds/input_buttons.cpp"/>
+  </compounddef>
+</doxygen>

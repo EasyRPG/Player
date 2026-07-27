@@ -1,0 +1,455 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_audio_decoder" kind="class" language="C++" prot="public">
+    <compoundname>AudioDecoder</compoundname>
+    <basecompoundref refid="class_audio_decoder_base" prot="public" virt="non-virtual">AudioDecoderBase</basecompoundref>
+    <derivedcompoundref refid="class_audio_se_decoder" prot="public" virt="non-virtual">AudioSeDecoder</derivedcompoundref>
+    <derivedcompoundref refid="class_libsndfile_decoder" prot="public" virt="non-virtual">LibsndfileDecoder</derivedcompoundref>
+    <derivedcompoundref refid="class_mpg123_decoder" prot="public" virt="non-virtual">Mpg123Decoder</derivedcompoundref>
+    <derivedcompoundref refid="class_ogg_vorbis_decoder" prot="public" virt="non-virtual">OggVorbisDecoder</derivedcompoundref>
+    <derivedcompoundref refid="class_opus_audio_decoder" prot="public" virt="non-virtual">OpusAudioDecoder</derivedcompoundref>
+    <derivedcompoundref refid="class_w_m_a_unsupported_format_decoder" prot="public" virt="non-virtual">WMAUnsupportedFormatDecoder</derivedcompoundref>
+    <derivedcompoundref refid="class_x_m_p_decoder" prot="public" virt="non-virtual">XMPDecoder</derivedcompoundref>
+    <includes refid="audio__decoder_8h" local="no">audio_decoder.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_audio_decoder_1ab538a5eae14acb7c2557cf8285e5fe34" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool AudioDecoder::paused</definition>
+        <argsstring></argsstring>
+        <name>paused</name>
+        <qualifiedname>AudioDecoder::paused</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.h" line="105" column="6" bodyfile="audio_decoder.h" bodystart="105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_1a4b1c6a15c8784bc73ffe62c8b9980f16" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float AudioDecoder::volume</definition>
+        <argsstring></argsstring>
+        <name>volume</name>
+        <qualifiedname>AudioDecoder::volume</qualifiedname>
+        <initializer>= 0.0f</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.h" line="106" column="7" bodyfile="audio_decoder.h" bodystart="106" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_1a65d0b4307a47d384625815dfd0e0db52" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float AudioDecoder::log_volume</definition>
+        <argsstring></argsstring>
+        <name>log_volume</name>
+        <qualifiedname>AudioDecoder::log_volume</qualifiedname>
+        <initializer>= 0.0f</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.h" line="107" column="7" bodyfile="audio_decoder.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_1ab7193c2002a69be2a874b64e6028183b" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int AudioDecoder::fade_volume_end</definition>
+        <argsstring></argsstring>
+        <name>fade_volume_end</name>
+        <qualifiedname>AudioDecoder::fade_volume_end</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.h" line="109" column="5" bodyfile="audio_decoder.h" bodystart="109" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_1a6f793d4dfcf1ee505451b0039867dc6c" prot="private" static="no" mutable="no">
+        <type>std::chrono::microseconds</type>
+        <definition>std::chrono::microseconds AudioDecoder::fade_time</definition>
+        <argsstring></argsstring>
+        <name>fade_time</name>
+        <qualifiedname>AudioDecoder::fade_time</qualifiedname>
+        <initializer>= std::chrono::microseconds(0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.h" line="110" column="27" bodyfile="audio_decoder.h" bodystart="110" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_1a32701ad378c2f243fa6f1cf31dcf8a0b" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float AudioDecoder::delta_volume_step</definition>
+        <argsstring></argsstring>
+        <name>delta_volume_step</name>
+        <qualifiedname>AudioDecoder::delta_volume_step</qualifiedname>
+        <initializer>= 0.0f</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.h" line="111" column="7" bodyfile="audio_decoder.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_audio_decoder_1a5cc996156bf9b185f46e501ae1d26edd" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unique_ptr&lt; <ref refid="class_audio_decoder_base" kindref="compound">AudioDecoderBase</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; AudioDecoderBase &gt; AudioDecoder::Create</definition>
+        <argsstring>(Filesystem_Stream::InputStream &amp;stream, bool resample=true)</argsstring>
+        <name>Create</name>
+        <qualifiedname>AudioDecoder::Create</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref> &amp;</type>
+          <declname>stream</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>resample</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Parses the specified stream and open a proper audio decoder to handle the audio file. Upon success the stream is owned by the audio decoder and further operations on it will be undefined! Upon failure the stream points at the beginning. The filename is used for debug purposes but should match the FILE handle. Upon failure the FILE handle is valid and points at the beginning.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>handle to parse </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>resample</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether the decoder shall be wrapped into a resampler (if supported) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An audio decoder instance when the format was detected, otherwise null </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.h" line="46" column="24" bodyfile="audio_decoder.cpp" bodystart="54" bodyend="159"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_1a7f4f01e9acc6b7a7f4cf46f138f0c3cf" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int AudioDecoder::GetSamplesizeForFormat</definition>
+        <argsstring>(AudioDecoderBase::Format format)</argsstring>
+        <name>GetSamplesizeForFormat</name>
+        <qualifiedname>AudioDecoder::GetSamplesizeForFormat</qualifiedname>
+        <param>
+          <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">AudioDecoderBase::Format</ref></type>
+          <declname>format</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the amount of bytes per sample.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Sample format </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Bytes per sample </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.h" line="54" column="12" bodyfile="audio_decoder.cpp" bodystart="203" bodyend="219"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_audio_decoder_1a50ddc8b699ec0ae2fc0495bfd0b1707b" prot="public" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+        <type>void</type>
+        <definition>void AudioDecoder::Pause</definition>
+        <argsstring>() final override</argsstring>
+        <name>Pause</name>
+        <qualifiedname>AudioDecoder::Pause</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a0fe6d62d12d7be7a508d8dc42723470e">Pause</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Pauses the audio decoding. Calling any Decode function will return a 0-buffer. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.h" line="60" column="6" bodyfile="audio_decoder.cpp" bodystart="161" bodyend="163"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_1aecdd23e1eeeb1a0b445302c3e61801b8" prot="public" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+        <type>void</type>
+        <definition>void AudioDecoder::Resume</definition>
+        <argsstring>() final override</argsstring>
+        <name>Resume</name>
+        <qualifiedname>AudioDecoder::Resume</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a34e9b2c022adabcc0ce4788b3fe6e9b6">Resume</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Resumes the audio decoding. The decode function will continue behaving as expected. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.h" line="66" column="6" bodyfile="audio_decoder.cpp" bodystart="165" bodyend="167"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_1af6aa02e1eafb474d6bda180b432f5e15" prot="public" static="no" const="yes" explicit="no" inline="no" final="yes" virt="virtual">
+        <type>int</type>
+        <definition>int AudioDecoder::GetVolume</definition>
+        <argsstring>() const final override</argsstring>
+        <name>GetVolume</name>
+        <qualifiedname>AudioDecoder::GetVolume</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a4845bd23893eb58d00839e30f683ad20">GetVolume</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the volume of the audio decoder. Volume changes will not really modify the volume but are only helper functions for retrieving the volume information for the audio hardware.</para>
+<para><simplesect kind="return"><para>current volume (from 0 - 100) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.h" line="75" column="5" bodyfile="audio_decoder.cpp" bodystart="181" bodyend="183"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_1ac6a23dcafc0da6b15539133234dad41b" prot="public" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+        <type>void</type>
+        <definition>void AudioDecoder::SetVolume</definition>
+        <argsstring>(int volume) final override</argsstring>
+        <name>SetVolume</name>
+        <qualifiedname>AudioDecoder::SetVolume</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a06aa42fb66d0f633dd5e853de757ff07">SetVolume</reimplements>
+        <param>
+          <type>int</type>
+          <declname>volume</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the volume of the audio decoder. Volume changes will not really modify the volume but are only helper functions for retrieving the volume information for the audio hardware.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>volume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(from 0-100) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.h" line="84" column="6" bodyfile="audio_decoder.cpp" bodystart="185" bodyend="188"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_1a629190e608348a1b91237be1602004a2" prot="public" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+        <type>void</type>
+        <definition>void AudioDecoder::SetFade</definition>
+        <argsstring>(int end, std::chrono::milliseconds duration) final override</argsstring>
+        <name>SetFade</name>
+        <qualifiedname>AudioDecoder::SetFade</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a3fd6f74451d83233449a2eab1ddc636e">SetFade</reimplements>
+        <param>
+          <type>int</type>
+          <declname>end</declname>
+        </param>
+        <param>
+          <type>std::chrono::milliseconds</type>
+          <declname>duration</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Prepares a volume fade in/out effect. To do a fade out begin must be larger then end. Call Update to do the fade.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>end</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>End volume (from 0-100) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>duration</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Fade duration in ms </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.h" line="94" column="6" bodyfile="audio_decoder.cpp" bodystart="190" bodyend="201"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_1a279e144005fee23820bd0a02db5d87a6" prot="public" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+        <type>void</type>
+        <definition>void AudioDecoder::Update</definition>
+        <argsstring>(std::chrono::microseconds delta) final override</argsstring>
+        <name>Update</name>
+        <qualifiedname>AudioDecoder::Update</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1aafccb01cf3ca20cc79941ac8a31e6c22">Update</reimplements>
+        <param>
+          <type>std::chrono::microseconds</type>
+          <declname>delta</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the volume for the fade in/out effect. Volume changes will not really modify the volume but are only helper functions for retrieving the volume information for the audio hardware.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>delta</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time in us since the last call of this function. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.h" line="103" column="6" bodyfile="audio_decoder.cpp" bodystart="169" bodyend="179"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>The <ref refid="class_audio_decoder" kindref="compound">AudioDecoder</ref> class provides an abstraction over the decoding of common audio formats. Create will instantiate a proper audio decoder and calling Decode will fill a buffer with audio data which must be passed to the audio hardware. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>AudioDecoder</label>
+        <link refid="class_audio_decoder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>AudioDecoderBase</label>
+        <link refid="class_audio_decoder_base"/>
+      </node>
+      <node id="3">
+        <label>AudioSeDecoder</label>
+        <link refid="class_audio_se_decoder"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>LibsndfileDecoder</label>
+        <link refid="class_libsndfile_decoder"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Mpg123Decoder</label>
+        <link refid="class_mpg123_decoder"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>OggVorbisDecoder</label>
+        <link refid="class_ogg_vorbis_decoder"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>OpusAudioDecoder</label>
+        <link refid="class_opus_audio_decoder"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>WMAUnsupportedFormatDecoder</label>
+        <link refid="class_w_m_a_unsupported_format_decoder"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>XMPDecoder</label>
+        <link refid="class_x_m_p_decoder"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>AudioDecoder</label>
+        <link refid="class_audio_decoder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>AudioDecoderBase</label>
+        <link refid="class_audio_decoder_base"/>
+      </node>
+    </collaborationgraph>
+    <location file="audio_decoder.h" line="31" column="1" bodyfile="audio_decoder.h" bodystart="31" bodyend="112"/>
+    <listofallmembers>
+      <member refid="class_audio_decoder_base_1ad75c2fadcdccc9bdf89626e9689dc73d" prot="public" virt="non-virtual"><scope>AudioDecoder</scope><name>AdjustVolume</name></member>
+      <member refid="class_audio_decoder_1a5cc996156bf9b185f46e501ae1d26edd" prot="public" virt="non-virtual"><scope>AudioDecoder</scope><name>Create</name></member>
+      <member refid="class_audio_decoder_base_1a176c25bf79b3e978665d01f649741dca" prot="public" virt="non-virtual"><scope>AudioDecoder</scope><name>Decode</name></member>
+      <member refid="class_audio_decoder_base_1aaec31de02d5329099c26005f8c365fff" prot="protected" virt="non-virtual"><scope>AudioDecoder</scope><name>Decode</name></member>
+      <member refid="class_audio_decoder_base_1a675f8d5337b547549b2c11ad63acffbd" prot="public" virt="non-virtual"><scope>AudioDecoder</scope><name>DecodeAll</name></member>
+      <member refid="class_audio_decoder_1a32701ad378c2f243fa6f1cf31dcf8a0b" prot="private" virt="non-virtual"><scope>AudioDecoder</scope><name>delta_volume_step</name></member>
+      <member refid="class_audio_decoder_base_1ad2ce3dacf661c0849a08d1cad2e598d8" prot="protected" virt="non-virtual"><scope>AudioDecoder</scope><name>error_message</name></member>
+      <member refid="class_audio_decoder_1a6f793d4dfcf1ee505451b0039867dc6c" prot="private" virt="non-virtual"><scope>AudioDecoder</scope><name>fade_time</name></member>
+      <member refid="class_audio_decoder_1ab7193c2002a69be2a874b64e6028183b" prot="private" virt="non-virtual"><scope>AudioDecoder</scope><name>fade_volume_end</name></member>
+      <member refid="class_audio_decoder_base_1aa06a5130b4b45e44a364162230953636" prot="protected" virt="pure-virtual"><scope>AudioDecoder</scope><name>FillBuffer</name></member>
+      <member refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" prot="public" virt="non-virtual"><scope>AudioDecoder</scope><name>Format</name></member>
+      <member refid="class_audio_decoder_base_1a6459a4a6bbef9a3c1e114687e1ee38a7" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>GetError</name></member>
+      <member refid="class_audio_decoder_base_1a1710868b1111bf6e33e43156958e0d57" prot="public" virt="pure-virtual"><scope>AudioDecoder</scope><name>GetFormat</name></member>
+      <member refid="class_audio_decoder_base_1ada062070c78b1298131fc11bfb84e4b3" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>GetLoopCount</name></member>
+      <member refid="class_audio_decoder_base_1a0dc76b0664e5db6bbf08f15feac0b2f7" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>GetLooping</name></member>
+      <member refid="class_audio_decoder_base_1a2296a26d68cfe1f139cf82aa27c38019" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>GetPitch</name></member>
+      <member refid="class_audio_decoder_1a7f4f01e9acc6b7a7f4cf46f138f0c3cf" prot="public" virt="non-virtual"><scope>AudioDecoder</scope><name>GetSamplesizeForFormat</name></member>
+      <member refid="class_audio_decoder_base_1acecf36942396a6f78a9839b2dc2315db" prot="public" virt="pure-virtual"><scope>AudioDecoder</scope><name>GetTicks</name></member>
+      <member refid="class_audio_decoder_base_1ad6fee4301b53a5891a4b37e6cab958f1" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>GetType</name></member>
+      <member refid="class_audio_decoder_1af6aa02e1eafb474d6bda180b432f5e15" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>GetVolume</name></member>
+      <member refid="class_audio_decoder_base_1a6dc473563b9edccf21d07a39fae4fc2d" prot="public" virt="pure-virtual"><scope>AudioDecoder</scope><name>IsFinished</name></member>
+      <member refid="class_audio_decoder_1a65d0b4307a47d384625815dfd0e0db52" prot="private" virt="non-virtual"><scope>AudioDecoder</scope><name>log_volume</name></member>
+      <member refid="class_audio_decoder_base_1ab8feafa866394875dc7c538b79021025" prot="protected" virt="non-virtual"><scope>AudioDecoder</scope><name>loop_count</name></member>
+      <member refid="class_audio_decoder_base_1a31c8df4d0267b8363daa9da00d2ed2f3" prot="protected" virt="non-virtual"><scope>AudioDecoder</scope><name>looping</name></member>
+      <member refid="class_audio_decoder_base_1a0735cf7d77356fbc1a2735804211a9c8" prot="protected" virt="non-virtual"><scope>AudioDecoder</scope><name>music_type</name></member>
+      <member refid="class_audio_decoder_base_1a572f94aa66fe630a45cbe1c500c55213" prot="public" virt="pure-virtual"><scope>AudioDecoder</scope><name>Open</name></member>
+      <member refid="class_audio_decoder_1a50ddc8b699ec0ae2fc0495bfd0b1707b" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>Pause</name></member>
+      <member refid="class_audio_decoder_1ab538a5eae14acb7c2557cf8285e5fe34" prot="private" virt="non-virtual"><scope>AudioDecoder</scope><name>paused</name></member>
+      <member refid="class_audio_decoder_1aecdd23e1eeeb1a0b445302c3e61801b8" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>Resume</name></member>
+      <member refid="class_audio_decoder_base_1a2c9d165295deeb0cd12fea13cdd60467" prot="public" virt="non-virtual"><scope>AudioDecoder</scope><name>Rewind</name></member>
+      <member refid="class_audio_decoder_base_1a5edd0cdbf8114d680a94c269b24e79f8" prot="public" virt="pure-virtual"><scope>AudioDecoder</scope><name>Seek</name></member>
+      <member refid="class_audio_decoder_1a629190e608348a1b91237be1602004a2" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>SetFade</name></member>
+      <member refid="class_audio_decoder_base_1acabfabe4f0b75482cc967b19133288c2" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>SetFormat</name></member>
+      <member refid="class_audio_decoder_base_1a840273aa05f6b6619863f9b7af142034" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>SetLooping</name></member>
+      <member refid="class_audio_decoder_base_1a81ca81aceceef4b9cc8a6818d3d199ca" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>SetPitch</name></member>
+      <member refid="class_audio_decoder_1ac6a23dcafc0da6b15539133234dad41b" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>SetVolume</name></member>
+      <member refid="class_audio_decoder_base_1a786745c4d49ed9146579c72a8b63ddd7" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>Tell</name></member>
+      <member refid="class_audio_decoder_1a279e144005fee23820bd0a02db5d87a6" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>Update</name></member>
+      <member refid="class_audio_decoder_base_1a11f5c509ee0dbc2e9e49505c27a8caf7" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>UpdateMidi</name></member>
+      <member refid="class_audio_decoder_1a4b1c6a15c8784bc73ffe62c8b9980f16" prot="private" virt="non-virtual"><scope>AudioDecoder</scope><name>volume</name></member>
+      <member refid="class_audio_decoder_base_1ab939d02c28d911d06a0c68087afa90aa" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>WasInited</name></member>
+      <member refid="class_audio_decoder_base_1a9b7f3034af094a9d71e48ac220b4ca6a" prot="public" virt="virtual"><scope>AudioDecoder</scope><name>~AudioDecoderBase</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

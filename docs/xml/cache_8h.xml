@@ -1,0 +1,478 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="cache_8h" kind="file" language="C++">
+    <compoundname>cache.h</compoundname>
+    <includes local="no">cstdint</includes>
+    <includes local="no">string</includes>
+    <includes local="no">vector</includes>
+    <includes refid="system_8h" local="yes">system.h</includes>
+    <includes refid="memory__management_8h" local="yes">memory_management.h</includes>
+    <includes refid="string__view_8h" local="yes">string_view.h</includes>
+    <includedby refid="async__handler_8cpp" local="yes">async_handler.cpp</includedby>
+    <includedby refid="background_8cpp" local="yes">background.cpp</includedby>
+    <includedby refid="battle__animation_8cpp" local="yes">battle_animation.cpp</includedby>
+    <includedby refid="bitmap_8cpp" local="yes">bitmap.cpp</includedby>
+    <includedby refid="cache_8cpp" local="yes">cache.cpp</includedby>
+    <includedby refid="font_8cpp" local="yes">font.cpp</includedby>
+    <includedby refid="frame_8cpp" local="yes">frame.cpp</includedby>
+    <includedby refid="game__pictures_8cpp" local="yes">game_pictures.cpp</includedby>
+    <includedby refid="game__system_8cpp" local="yes">game_system.cpp</includedby>
+    <includedby refid="game__windows_8cpp" local="yes">game_windows.cpp</includedby>
+    <includedby refid="graphics_8cpp" local="yes">graphics.cpp</includedby>
+    <includedby refid="player_8cpp" local="yes">player.cpp</includedby>
+    <includedby refid="scene__battle__rpg2k3_8cpp" local="yes">scene_battle_rpg2k3.cpp</includedby>
+    <includedby refid="scene__debug_8cpp" local="yes">scene_debug.cpp</includedby>
+    <includedby refid="scene__end_8cpp" local="yes">scene_end.cpp</includedby>
+    <includedby refid="scene__file_8cpp" local="yes">scene_file.cpp</includedby>
+    <includedby refid="scene__gamebrowser_8cpp" local="yes">scene_gamebrowser.cpp</includedby>
+    <includedby refid="scene__gameover_8cpp" local="yes">scene_gameover.cpp</includedby>
+    <includedby refid="scene__language_8cpp" local="yes">scene_language.cpp</includedby>
+    <includedby refid="scene__menu_8cpp" local="yes">scene_menu.cpp</includedby>
+    <includedby refid="scene__settings_8cpp" local="yes">scene_settings.cpp</includedby>
+    <includedby refid="scene__title_8cpp" local="yes">scene_title.cpp</includedby>
+    <includedby refid="sprite_8cpp" local="yes">sprite.cpp</includedby>
+    <includedby refid="sprite__actor_8cpp" local="yes">sprite_actor.cpp</includedby>
+    <includedby refid="sprite__airshipshadow_8cpp" local="yes">sprite_airshipshadow.cpp</includedby>
+    <includedby refid="sprite__battler_8cpp" local="yes">sprite_battler.cpp</includedby>
+    <includedby refid="sprite__character_8cpp" local="yes">sprite_character.cpp</includedby>
+    <includedby refid="sprite__enemy_8cpp" local="yes">sprite_enemy.cpp</includedby>
+    <includedby refid="sprite__timer_8cpp" local="yes">sprite_timer.cpp</includedby>
+    <includedby refid="sprite__weapon_8cpp" local="yes">sprite_weapon.cpp</includedby>
+    <includedby refid="spriteset__battle_8cpp" local="yes">spriteset_battle.cpp</includedby>
+    <includedby refid="spriteset__map_8cpp" local="yes">spriteset_map.cpp</includedby>
+    <includedby refid="text_8cpp" local="yes">text.cpp</includedby>
+    <includedby refid="translation_8cpp" local="yes">translation.cpp</includedby>
+    <includedby refid="window__base_8cpp" local="yes">window_base.cpp</includedby>
+    <includedby refid="window__battlestatus_8cpp" local="yes">window_battlestatus.cpp</includedby>
+    <includedby refid="window__interpreter_8cpp" local="no">window_interpreter.cpp</includedby>
+    <includedby refid="window__menustatus_8cpp" local="yes">window_menustatus.cpp</includedby>
+    <includedby refid="window__message_8cpp" local="yes">window_message.cpp</includedby>
+    <includedby refid="window__shopparty_8cpp" local="yes">window_shopparty.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>cache.h</label>
+        <link refid="cache_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="9">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>cstdint</label>
+      </node>
+      <node id="12">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="13">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="11">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="10">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="8">
+        <label>memory</label>
+      </node>
+      <node id="3">
+        <label>string</label>
+      </node>
+      <node id="4">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>async_handler.cpp</label>
+        <link refid="async__handler_8cpp"/>
+      </node>
+      <node id="3">
+        <label>background.cpp</label>
+        <link refid="background_8cpp"/>
+      </node>
+      <node id="4">
+        <label>battle_animation.cpp</label>
+        <link refid="battle__animation_8cpp"/>
+      </node>
+      <node id="5">
+        <label>bitmap.cpp</label>
+        <link refid="bitmap_8cpp"/>
+      </node>
+      <node id="6">
+        <label>cache.cpp</label>
+        <link refid="cache_8cpp"/>
+      </node>
+      <node id="1">
+        <label>cache.h</label>
+        <link refid="cache_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>font.cpp</label>
+        <link refid="font_8cpp"/>
+      </node>
+      <node id="8">
+        <label>frame.cpp</label>
+        <link refid="frame_8cpp"/>
+      </node>
+      <node id="9">
+        <label>game_pictures.cpp</label>
+        <link refid="game__pictures_8cpp"/>
+      </node>
+      <node id="10">
+        <label>game_system.cpp</label>
+        <link refid="game__system_8cpp"/>
+      </node>
+      <node id="11">
+        <label>game_windows.cpp</label>
+        <link refid="game__windows_8cpp"/>
+      </node>
+      <node id="12">
+        <label>graphics.cpp</label>
+        <link refid="graphics_8cpp"/>
+      </node>
+      <node id="13">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="14">
+        <label>scene_battle_rpg2k3.cpp</label>
+        <link refid="scene__battle__rpg2k3_8cpp"/>
+      </node>
+      <node id="15">
+        <label>scene_debug.cpp</label>
+        <link refid="scene__debug_8cpp"/>
+      </node>
+      <node id="16">
+        <label>scene_end.cpp</label>
+        <link refid="scene__end_8cpp"/>
+      </node>
+      <node id="17">
+        <label>scene_file.cpp</label>
+        <link refid="scene__file_8cpp"/>
+      </node>
+      <node id="18">
+        <label>scene_gamebrowser.cpp</label>
+        <link refid="scene__gamebrowser_8cpp"/>
+      </node>
+      <node id="19">
+        <label>scene_gameover.cpp</label>
+        <link refid="scene__gameover_8cpp"/>
+      </node>
+      <node id="20">
+        <label>scene_language.cpp</label>
+        <link refid="scene__language_8cpp"/>
+      </node>
+      <node id="21">
+        <label>scene_menu.cpp</label>
+        <link refid="scene__menu_8cpp"/>
+      </node>
+      <node id="22">
+        <label>scene_settings.cpp</label>
+        <link refid="scene__settings_8cpp"/>
+      </node>
+      <node id="23">
+        <label>scene_title.cpp</label>
+        <link refid="scene__title_8cpp"/>
+      </node>
+      <node id="24">
+        <label>sprite.cpp</label>
+        <link refid="sprite_8cpp"/>
+      </node>
+      <node id="25">
+        <label>sprite_actor.cpp</label>
+        <link refid="sprite__actor_8cpp"/>
+      </node>
+      <node id="26">
+        <label>sprite_airshipshadow.cpp</label>
+        <link refid="sprite__airshipshadow_8cpp"/>
+      </node>
+      <node id="27">
+        <label>sprite_battler.cpp</label>
+        <link refid="sprite__battler_8cpp"/>
+      </node>
+      <node id="28">
+        <label>sprite_character.cpp</label>
+        <link refid="sprite__character_8cpp"/>
+      </node>
+      <node id="29">
+        <label>sprite_enemy.cpp</label>
+        <link refid="sprite__enemy_8cpp"/>
+      </node>
+      <node id="30">
+        <label>sprite_timer.cpp</label>
+        <link refid="sprite__timer_8cpp"/>
+      </node>
+      <node id="31">
+        <label>sprite_weapon.cpp</label>
+        <link refid="sprite__weapon_8cpp"/>
+      </node>
+      <node id="32">
+        <label>spriteset_battle.cpp</label>
+        <link refid="spriteset__battle_8cpp"/>
+      </node>
+      <node id="33">
+        <label>spriteset_map.cpp</label>
+        <link refid="spriteset__map_8cpp"/>
+      </node>
+      <node id="34">
+        <label>text.cpp</label>
+        <link refid="text_8cpp"/>
+      </node>
+      <node id="35">
+        <label>translation.cpp</label>
+        <link refid="translation_8cpp"/>
+      </node>
+      <node id="36">
+        <label>window_base.cpp</label>
+        <link refid="window__base_8cpp"/>
+      </node>
+      <node id="37">
+        <label>window_battlestatus.cpp</label>
+        <link refid="window__battlestatus_8cpp"/>
+      </node>
+      <node id="38">
+        <label>window_interpreter.cpp</label>
+        <link refid="window__interpreter_8cpp"/>
+      </node>
+      <node id="39">
+        <label>window_menustatus.cpp</label>
+        <link refid="window__menustatus_8cpp"/>
+      </node>
+      <node id="40">
+        <label>window_message.cpp</label>
+        <link refid="window__message_8cpp"/>
+      </node>
+      <node id="41">
+        <label>window_shopparty.cpp</label>
+        <link refid="window__shopparty_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespace_cache">Cache</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="cache_8h_1a52e0f395eb1f75f119577f9a796db730" prot="public" static="no">
+        <name>EP_CACHE_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="20" column="9" bodyfile="cache.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="cache_8h_1a837700f541fc5a3df7d3dce502269e30" prot="public" static="no">
+        <name>CACHE_DEFAULT_BITMAP</name>
+        <initializer>&quot;\x01&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="31" column="9" bodyfile="cache.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_CACHE_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="cache_8h_1a52e0f395eb1f75f119577f9a796db730" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_CACHE_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstdint&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="system_8h" kindref="compound">system.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="memory__management_8h" kindref="compound">memory_management.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="string__view_8h" kindref="compound">string_view.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="cache_8h_1a837700f541fc5a3df7d3dce502269e30" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CACHE_DEFAULT_BITMAP<sp/>&quot;\x01&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_color" kindref="compound">Color</ref>;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_rect" kindref="compound">Rect</ref>;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_tone" kindref="compound">Tone</ref>;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="namespace_cache" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_cache" kindref="compound">Cache</ref><sp/>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1ac6bf114d26d85a30056d6a98fc847900" kindref="member">Backdrop</ref>(std::string_view<sp/>filename);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1a662dab6f7d8825c2ec943a177a23b273" kindref="member">Battle</ref>(std::string_view<sp/>filename);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1a7e8f7249a2ab350bfdd1f560d0fab8f1" kindref="member">Battle2</ref>(std::string_view<sp/>filename);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1a4c07c33e6a8be647620b8d2003652c16" kindref="member">Battlecharset</ref>(std::string_view<sp/>filename);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1a590c3c351ca3768cc20e6ce283ec7a94" kindref="member">Battleweapon</ref>(std::string_view<sp/>filename);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1a02a70f3751d1ef3f1c22d8a06e3f2156" kindref="member">Charset</ref>(std::string_view<sp/>filename);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1ada58752b302567c6402dd92ae9c86757" kindref="member">Exfont</ref>();</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1a48293c9f5d1b31a92f05dfb0922a9bf6" kindref="member">Faceset</ref>(std::string_view<sp/>filename);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1a408b860fc13e80c802b855b4b025d5fa" kindref="member">Frame</ref>(std::string_view<sp/>filename,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>transparent<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1af85a3f8d4598e7719651bad52582d750" kindref="member">Gameover</ref>(std::string_view<sp/>filename);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1a04da64ddcc48968e41d50104e19f5759" kindref="member">Monster</ref>(std::string_view<sp/>filename);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1a655c7757754044b65b5c2344051a65b3" kindref="member">Panorama</ref>(std::string_view<sp/>filename);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1ab2d8db7f8312ea286cf560efae67ea7e" kindref="member">Picture</ref>(std::string_view<sp/>filename,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>transparent);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1a6477b0e90e4ab01b74a8213fc50ae3db" kindref="member">Chipset</ref>(std::string_view<sp/>filename);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1a9bd5380af0f471880e64695eefe7d77d" kindref="member">Title</ref>(std::string_view<sp/>filename);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1a6329140ce8d9a89d3aec236fa5c5b42a" kindref="member">System</ref>(std::string_view<sp/>filename);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1abbe7599b2331df38f5f0a20c6a347a0e" kindref="member">System2</ref>(std::string_view<sp/>filename);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1a9f348ed3fe0d0538f1c43b2e3962847e" kindref="member">Tile</ref>(std::string_view<sp/>filename,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>tile_id);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1a5a02477d257a0fd63fcc3ca2995efb7e" kindref="member">SpriteEffect</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref>&amp;<sp/>src_bitmap,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_rect" kindref="compound">Rect</ref>&amp;<sp/>rect,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>flip_x,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>flip_y,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_tone" kindref="compound">Tone</ref>&amp;<sp/>tone,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref>&amp;<sp/>blend);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_cache_1ac2702ae39bfd908ac1640b6650de645e" kindref="member">Clear</ref>();</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_cache_1a72bcfa8a87bdfbce67d2d30ee3b649e8" kindref="member">ClearAll</ref>();</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1a6329140ce8d9a89d3aec236fa5c5b42a" kindref="member">System</ref>();</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1aa6ed0a4c787fd0ca767bb296ae780923" kindref="member">SysBlack</ref>();</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1a99b6cb97d9ba0ced35bed05bca1d2150" kindref="member">SystemOrBlack</ref>();</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/><ref refid="namespace_cache_1abbe7599b2331df38f5f0a20c6a347a0e" kindref="member">System2</ref>();</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_cache_1a1351aecfe7f68012fabbf6194eb93523" kindref="member">SetSystemName</ref>(std::string<sp/>filename);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_cache_1a99faff3aa282746c4eb34a2bc0156232" kindref="member">SetSystem2Name</ref>(std::string<sp/>filename);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/>std::vector&lt;uint8_t&gt;<sp/><ref refid="namespace_cache_1ac4fe502224de0fd6266d8fae42c1a29e" kindref="member">exfont_custom</ref>;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="cache.h"/>
+  </compounddef>
+</doxygen>

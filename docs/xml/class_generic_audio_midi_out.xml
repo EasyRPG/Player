@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_generic_audio_midi_out" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>GenericAudioMidiOut</compoundname>
+    <includes refid="audio__generic__midiout_8h" local="no">audio_generic_midiout.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_generic_audio_midi_out_1a74da8fcf3c033dcf57e2fed6910dd715" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_audio_decoder_midi" kindref="compound">AudioDecoderMidi</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;AudioDecoderMidi&gt; GenericAudioMidiOut::midi_out</definition>
+        <argsstring></argsstring>
+        <name>midi_out</name>
+        <qualifiedname>GenericAudioMidiOut::midi_out</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic_midiout.h" line="92" column="17" bodyfile="audio_generic_midiout.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_generic_audio_midi_out_1af802df3e91eb729e84fde60b9f6c9062" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>GenericAudioMidiOut::GenericAudioMidiOut</definition>
+        <argsstring>()</argsstring>
+        <name>GenericAudioMidiOut</name>
+        <qualifiedname>GenericAudioMidiOut::GenericAudioMidiOut</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic_midiout.h" line="72" column="1" bodyfile="audio_generic_midiout.h" bodystart="72" bodyend="72"/>
+      </memberdef>
+      <memberdef kind="function" id="class_generic_audio_midi_out_1a81984e8c4fefb2d095c9748d31e27b41" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_audio_decoder_midi" kindref="compound">AudioDecoderMidi</ref> &amp;</type>
+        <definition>AudioDecoderMidi &amp; GenericAudioMidiOut::GetMidiOut</definition>
+        <argsstring>()</argsstring>
+        <name>GetMidiOut</name>
+        <qualifiedname>GenericAudioMidiOut::GetMidiOut</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic_midiout.h" line="74" column="18" bodyfile="audio_generic_midiout.cpp" bodystart="177" bodyend="180"/>
+      </memberdef>
+      <memberdef kind="function" id="class_generic_audio_midi_out_1ae6f8d5b7180d188f788a934f671b6c13" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void GenericAudioMidiOut::LockMutex</definition>
+        <argsstring>()</argsstring>
+        <name>LockMutex</name>
+        <qualifiedname>GenericAudioMidiOut::LockMutex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic_midiout.h" line="76" column="6" bodyfile="audio_generic_midiout.h" bodystart="76" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="class_generic_audio_midi_out_1ad021f7924122f611ceabbcdd64ee0686" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void GenericAudioMidiOut::UnlockMutex</definition>
+        <argsstring>()</argsstring>
+        <name>UnlockMutex</name>
+        <qualifiedname>GenericAudioMidiOut::UnlockMutex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic_midiout.h" line="77" column="6" bodyfile="audio_generic_midiout.h" bodystart="77" bodyend="77"/>
+      </memberdef>
+      <memberdef kind="function" id="class_generic_audio_midi_out_1acf936e444d4b7d8f33fb9ce1799b7302" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void GenericAudioMidiOut::UpdateMidiOut</definition>
+        <argsstring>(int)</argsstring>
+        <name>UpdateMidiOut</name>
+        <qualifiedname>GenericAudioMidiOut::UpdateMidiOut</qualifiedname>
+        <param>
+          <type>int</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic_midiout.h" line="79" column="6" bodyfile="audio_generic_midiout.h" bodystart="79" bodyend="79"/>
+      </memberdef>
+      <memberdef kind="function" id="class_generic_audio_midi_out_1a61603d54b34c0f96ad09e6a7e6d96902" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void GenericAudioMidiOut::StartThread</definition>
+        <argsstring>()</argsstring>
+        <name>StartThread</name>
+        <qualifiedname>GenericAudioMidiOut::StartThread</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic_midiout.h" line="81" column="6" bodyfile="audio_generic_midiout.h" bodystart="81" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="class_generic_audio_midi_out_1a8e6a4cefe63b6f1170b60ceafe76d994" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void GenericAudioMidiOut::StopThread</definition>
+        <argsstring>()</argsstring>
+        <name>StopThread</name>
+        <qualifiedname>GenericAudioMidiOut::StopThread</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic_midiout.h" line="82" column="6" bodyfile="audio_generic_midiout.h" bodystart="82" bodyend="82"/>
+      </memberdef>
+      <memberdef kind="function" id="class_generic_audio_midi_out_1a4786d25da938a3898d596caa26f93242" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool GenericAudioMidiOut::IsInitialized</definition>
+        <argsstring>(std::string &amp;) const</argsstring>
+        <name>IsInitialized</name>
+        <qualifiedname>GenericAudioMidiOut::IsInitialized</qualifiedname>
+        <param>
+          <type>std::string &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic_midiout.h" line="83" column="6" bodyfile="audio_generic_midiout.h" bodystart="83" bodyend="85"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_generic_audio_midi_out_1a361ba863ca02093ebaf4c76b029794c0" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool GenericAudioMidiOut::IsSupported</definition>
+        <argsstring>(Filesystem_Stream::InputStream &amp;)</argsstring>
+        <name>IsSupported</name>
+        <qualifiedname>GenericAudioMidiOut::IsSupported</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic_midiout.h" line="87" column="13" bodyfile="audio_generic_midiout.h" bodystart="87" bodyend="89"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="audio_generic_midiout.h" line="70" column="1" bodyfile="audio_generic_midiout.h" bodystart="70" bodyend="93"/>
+    <listofallmembers>
+      <member refid="class_generic_audio_midi_out_1af802df3e91eb729e84fde60b9f6c9062" prot="public" virt="non-virtual"><scope>GenericAudioMidiOut</scope><name>GenericAudioMidiOut</name></member>
+      <member refid="class_generic_audio_midi_out_1a81984e8c4fefb2d095c9748d31e27b41" prot="public" virt="non-virtual"><scope>GenericAudioMidiOut</scope><name>GetMidiOut</name></member>
+      <member refid="class_generic_audio_midi_out_1a4786d25da938a3898d596caa26f93242" prot="public" virt="non-virtual"><scope>GenericAudioMidiOut</scope><name>IsInitialized</name></member>
+      <member refid="class_generic_audio_midi_out_1a361ba863ca02093ebaf4c76b029794c0" prot="public" virt="non-virtual"><scope>GenericAudioMidiOut</scope><name>IsSupported</name></member>
+      <member refid="class_generic_audio_midi_out_1ae6f8d5b7180d188f788a934f671b6c13" prot="public" virt="non-virtual"><scope>GenericAudioMidiOut</scope><name>LockMutex</name></member>
+      <member refid="class_generic_audio_midi_out_1a74da8fcf3c033dcf57e2fed6910dd715" prot="private" virt="non-virtual"><scope>GenericAudioMidiOut</scope><name>midi_out</name></member>
+      <member refid="class_generic_audio_midi_out_1a61603d54b34c0f96ad09e6a7e6d96902" prot="public" virt="non-virtual"><scope>GenericAudioMidiOut</scope><name>StartThread</name></member>
+      <member refid="class_generic_audio_midi_out_1a8e6a4cefe63b6f1170b60ceafe76d994" prot="public" virt="non-virtual"><scope>GenericAudioMidiOut</scope><name>StopThread</name></member>
+      <member refid="class_generic_audio_midi_out_1ad021f7924122f611ceabbcdd64ee0686" prot="public" virt="non-virtual"><scope>GenericAudioMidiOut</scope><name>UnlockMutex</name></member>
+      <member refid="class_generic_audio_midi_out_1acf936e444d4b7d8f33fb9ce1799b7302" prot="public" virt="non-virtual"><scope>GenericAudioMidiOut</scope><name>UpdateMidiOut</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

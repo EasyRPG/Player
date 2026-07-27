@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_image_b_m_p" kind="namespace" language="C++">
+    <compoundname>ImageBMP</compoundname>
+    <innerclass refid="struct_image_b_m_p_1_1_bitmap_header" prot="public">ImageBMP::BitmapHeader</innerclass>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_image_b_m_p_1a3e821df75be8431802b56b2302fdd56d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ImageBMP::Read</definition>
+        <argsstring>(const uint8_t *data, unsigned len, bool transparent, ImageOut &amp;output)</argsstring>
+        <name>Read</name>
+        <qualifiedname>ImageBMP::Read</qualifiedname>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>len</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>transparent</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_image_out" kindref="compound">ImageOut</ref> &amp;</type>
+          <declname>output</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_bmp.h" line="38" column="6" bodyfile="image_bmp.cpp" bodystart="87" bodyend="188" declfile="image_bmp.h" declline="38" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_image_b_m_p_1a134e1290814fc70600daea98cf37f8b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ImageBMP::Read</definition>
+        <argsstring>(Filesystem_Stream::InputStream &amp;stream, bool transparent, ImageOut &amp;output)</argsstring>
+        <name>Read</name>
+        <qualifiedname>ImageBMP::Read</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref> &amp;</type>
+          <declname>stream</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>transparent</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_image_out" kindref="compound">ImageOut</ref> &amp;</type>
+          <declname>output</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_bmp.h" line="39" column="6" bodyfile="image_bmp.cpp" bodystart="190" bodyend="193" declfile="image_bmp.h" declline="39" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_image_b_m_p_1a04a4895d3689eac4951a48606b9af0a0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_image_b_m_p_1_1_bitmap_header" kindref="compound">BitmapHeader</ref></type>
+        <definition>ImageBMP::BitmapHeader ImageBMP::ParseHeader</definition>
+        <argsstring>(const uint8_t *&amp;ptr, uint8_t const *e)</argsstring>
+        <name>ParseHeader</name>
+        <qualifiedname>ImageBMP::ParseHeader</qualifiedname>
+        <param>
+          <type>const uint8_t *&amp;</type>
+          <declname>ptr</declname>
+        </param>
+        <param>
+          <type>uint8_t const *</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_bmp.h" line="41" column="14" bodyfile="image_bmp.cpp" bodystart="47" bodyend="85" declfile="image_bmp.h" declline="41" declcolumn="14"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="image_bmp.h" line="26" column="1"/>
+  </compounddef>
+</doxygen>

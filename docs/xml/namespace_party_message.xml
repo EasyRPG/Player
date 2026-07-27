@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_party_message" kind="namespace" language="C++">
+    <compoundname>PartyMessage</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_party_message_1a19c4fe36354e4c45f06f5efe36ee6025" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string PartyMessage::GetExperienceGainedMessage</definition>
+        <argsstring>(int exp)</argsstring>
+        <name>GetExperienceGainedMessage</name>
+        <qualifiedname>PartyMessage::GetExperienceGainedMessage</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>exp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="620" column="13" bodyfile="game_message_terms.cpp" bodystart="620" bodyend="635" declfile="game_message_terms.h" declline="131" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_party_message_1a45ce4483ac51c3632a410d03daef06e2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string PartyMessage::GetGoldReceivedMessage</definition>
+        <argsstring>(int money)</argsstring>
+        <name>GetGoldReceivedMessage</name>
+        <qualifiedname>PartyMessage::GetGoldReceivedMessage</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>money</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="637" column="13" bodyfile="game_message_terms.cpp" bodystart="637" bodyend="648" declfile="game_message_terms.h" declline="133" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_party_message_1a9d13586b6872f8e000fd71dd1a82098e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string PartyMessage::GetItemReceivedMessage</definition>
+        <argsstring>(const lcf::rpg::Item *item)</argsstring>
+        <name>GetItemReceivedMessage</name>
+        <qualifiedname>PartyMessage::GetItemReceivedMessage</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Item *</type>
+          <declname>item</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="650" column="13" bodyfile="game_message_terms.cpp" bodystart="650" bodyend="668" declfile="game_message_terms.h" declline="135" declcolumn="13"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_message_terms.cpp" line="618" column="1"/>
+  </compounddef>
+</doxygen>

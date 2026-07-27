@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structmask__traits" kind="struct" language="C++" prot="public">
+    <compoundname>mask_traits</compoundname>
+    <includes refid="pixel__format_8h" local="no">pixel_format.h</includes>
+    <templateparamlist>
+      <param>
+        <type>class TPF</type>
+      </param>
+      <param>
+        <type>bool</type>
+        <declname>dynamic</declname>
+        <defname>dynamic</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>_bits</declname>
+        <defname>_bits</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>_shift</declname>
+        <defname>_shift</defname>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pixel_format.h" line="440" column="1" bodyfile="pixel_format.h" bodystart="440" bodyend="441"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

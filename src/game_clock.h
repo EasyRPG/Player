@@ -182,3 +182,4 @@ inline float Game_Clock::GetGameSpeedFactor() {
 }
 
 #endif
+

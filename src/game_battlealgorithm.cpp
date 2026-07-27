@@ -1665,3 +1665,4 @@ int Game_BattleAlgorithm::DoNothing::GetActionId() {
 	return lcf::rpg::EnemyAction::Basic_nothing;
 }
 
+

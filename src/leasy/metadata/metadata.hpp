@@ -35,3 +35,4 @@ namespace leasy::metadata {
     virtual void bind(ul2::lstate&) const {}
   };
 }
+

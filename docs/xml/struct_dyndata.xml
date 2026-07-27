@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_dyndata" kind="struct" language="C++" prot="public">
+    <compoundname>Dyndata</compoundname>
+    <includes refid="lparser_8h" local="no">lparser.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_dyndata_1a9ea28d4a31d64ce92476584631e0849d" prot="public" static="no" mutable="no">
+        <type><ref refid="union_vardesc" kindref="compound">Vardesc</ref> *</type>
+        <definition>Vardesc* Dyndata::arr</definition>
+        <argsstring></argsstring>
+        <name>arr</name>
+        <qualifiedname>Dyndata::arr</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="152" column="13" bodyfile="leasy/lua/lparser.h" bodystart="152" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_dyndata_1ab7b4e1b3f94ab7cad0cf0991172dca47" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Dyndata::n</definition>
+        <argsstring></argsstring>
+        <name>n</name>
+        <qualifiedname>Dyndata::n</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="153" column="9" bodyfile="leasy/lua/lparser.h" bodystart="153" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_dyndata_1a5f104a2554c21af98954babb640ac030" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Dyndata::size</definition>
+        <argsstring></argsstring>
+        <name>size</name>
+        <qualifiedname>Dyndata::size</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="154" column="9" bodyfile="leasy/lua/lparser.h" bodystart="154" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_dyndata_1a4909cea83f1a228e46cbdcab7c7d70eb" prot="public" static="no" mutable="no">
+        <type>struct Dyndata::@024046353002142005354010252212363045167255223276</type>
+        <definition>struct Dyndata::@024046353002142005354010252212363045167255223276 Dyndata::actvar</definition>
+        <argsstring></argsstring>
+        <name>actvar</name>
+        <qualifiedname>Dyndata::actvar</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="155" column="10"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_dyndata_1a0e4b4f8cf1af3f8e4398e705f22e09cb" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_labellist" kindref="compound">Labellist</ref></type>
+        <definition>Labellist Dyndata::gt</definition>
+        <argsstring></argsstring>
+        <name>gt</name>
+        <qualifiedname>Dyndata::gt</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="156" column="13" bodyfile="leasy/lua/lparser.h" bodystart="156" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_dyndata_1a72bb32d4e97bf9af6005d8459d44d1ef" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_labellist" kindref="compound">Labellist</ref></type>
+        <definition>Labellist Dyndata::label</definition>
+        <argsstring></argsstring>
+        <name>label</name>
+        <qualifiedname>Dyndata::label</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="157" column="13" bodyfile="leasy/lua/lparser.h" bodystart="157" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>Dyndata</label>
+        <link refid="struct_dyndata"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>arr</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>gt</edgelabel>
+          <edgelabel>label</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Labeldesc</label>
+        <link refid="struct_labeldesc"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>name</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Labellist</label>
+        <link refid="struct_labellist"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>arr</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>TValue</label>
+        <link refid="struct_t_value"/>
+      </node>
+      <node id="2">
+        <label>Vardesc</label>
+        <link refid="union_vardesc"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>name</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>k</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lparser.h" line="150" column="1" bodyfile="leasy/lua/lparser.h" bodystart="150" bodyend="158"/>
+    <listofallmembers>
+      <member refid="struct_dyndata_1a4909cea83f1a228e46cbdcab7c7d70eb" prot="public" virt="non-virtual"><scope>Dyndata</scope><name>actvar</name></member>
+      <member refid="struct_dyndata_1a9ea28d4a31d64ce92476584631e0849d" prot="public" virt="non-virtual"><scope>Dyndata</scope><name>arr</name></member>
+      <member refid="struct_dyndata_1a0e4b4f8cf1af3f8e4398e705f22e09cb" prot="public" virt="non-virtual"><scope>Dyndata</scope><name>gt</name></member>
+      <member refid="struct_dyndata_1a72bb32d4e97bf9af6005d8459d44d1ef" prot="public" virt="non-virtual"><scope>Dyndata</scope><name>label</name></member>
+      <member refid="struct_dyndata_1ab7b4e1b3f94ab7cad0cf0991172dca47" prot="public" virt="non-virtual"><scope>Dyndata</scope><name>n</name></member>
+      <member refid="struct_dyndata_1a5f104a2554c21af98954babb640ac030" prot="public" virt="non-virtual"><scope>Dyndata</scope><name>size</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

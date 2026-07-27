@@ -1,0 +1,1673 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="weather_8cpp" kind="file" language="C++">
+    <compoundname>weather.cpp</compoundname>
+    <includes local="no">cstdint</includes>
+    <includes local="no">string</includes>
+    <includes local="no">vector</includes>
+    <includes refid="bitmap_8h" local="yes">bitmap.h</includes>
+    <includes refid="color_8h" local="yes">color.h</includes>
+    <includes refid="game__screen_8h" local="yes">game_screen.h</includes>
+    <includes refid="main__data_8h" local="yes">main_data.h</includes>
+    <includes refid="weather_8h" local="yes">weather.h</includes>
+    <includes refid="drawable__mgr_8h" local="yes">drawable_mgr.h</includes>
+    <includes refid="player_8h" local="yes">player.h</includes>
+    <includes refid="output_8h" local="yes">output.h</includes>
+    <includes refid="rand_8h" local="yes">rand.h</includes>
+    <incdepgraph>
+      <node id="59">
+        <label>async_handler.h</label>
+        <link refid="async__handler_8h"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>battle_animation.h</label>
+        <link refid="battle__animation_8h"/>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>bitmap.h</label>
+        <link refid="bitmap_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>compiler.h</label>
+        <link refid="compiler_8h"/>
+      </node>
+      <node id="81">
+        <label>config_param.h</label>
+        <link refid="config__param_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="117">
+        <label>drawable_list.h</label>
+        <link refid="drawable__list_8h"/>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+      </node>
+      <node id="116">
+        <label>drawable_mgr.h</label>
+        <link refid="drawable__mgr_8h"/>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="117" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="64">
+        <label>fileext_guesser.h</label>
+        <link refid="fileext__guesser_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+      </node>
+      <node id="68">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>flash.h</label>
+        <link refid="flash_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="86">
+        <label>flat_map.h</label>
+        <link refid="flat__map_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>game_battler.h</label>
+        <link refid="game__battler_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>game_character.h</label>
+        <link refid="game__character_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="74">
+        <label>game_clock.h</label>
+        <link refid="game__clock_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="80">
+        <label>game_config.h</label>
+        <link refid="game__config_8h"/>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="88">
+        <label>game_config_game.h</label>
+        <link refid="game__config__game_8h"/>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="89">
+        <label>game_interpreter_shared.h</label>
+        <link refid="game__interpreter__shared_8h"/>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>game_screen.h</label>
+        <link refid="game__screen_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+      </node>
+      <node id="84">
+        <label>input_buttons.h</label>
+        <link refid="input__buttons_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+      </node>
+      <node id="87">
+        <label>keys.h</label>
+        <link refid="keys_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+      </node>
+      <node id="96">
+        <label>lcf/data.h</label>
+        <link refid="data_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="107" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+        <childnode refid="110" relation="include">
+        </childnode>
+        <childnode refid="111" relation="include">
+        </childnode>
+        <childnode refid="112" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="113" relation="include">
+        </childnode>
+        <childnode refid="114" relation="include">
+        </childnode>
+      </node>
+      <node id="95">
+        <label>main_data.h</label>
+        <link refid="main__data_8h"/>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="66">
+        <label>meta.h</label>
+        <link refid="meta_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>opacity.h</label>
+        <link refid="opacity_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="118">
+        <label>output.h</label>
+        <link refid="output_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="119" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>pixel_format.h</label>
+        <link refid="pixel__format_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>pixman_image_ptr.h</label>
+        <link refid="pixman__image__ptr_8h"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="76">
+        <label>platform/clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+      </node>
+      <node id="63">
+        <label>player.h</label>
+        <link refid="player_8h"/>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>point.h</label>
+        <link refid="point_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="120">
+        <label>rand.h</label>
+        <link refid="rand_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="121" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>rect.h</label>
+        <link refid="rect_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="58">
+        <label>sprite.h</label>
+        <link refid="sprite_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>sprite_battler.h</label>
+        <link refid="sprite__battler_8h"/>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+      </node>
+      <node id="60">
+        <label>sprite_weapon.h</label>
+        <link refid="sprite__weapon_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>state.h</label>
+        <link refid="state_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+      </node>
+      <node id="79">
+        <label>std_clock.h</label>
+        <link refid="std__clock_8h"/>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>text.h</label>
+        <link refid="text_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>tone.h</label>
+        <link refid="tone_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="72">
+        <label>translation.h</label>
+        <link refid="translation_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>weather.cpp</label>
+        <link refid="weather_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="115" relation="include">
+        </childnode>
+        <childnode refid="116" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="118" relation="include">
+        </childnode>
+        <childnode refid="120" relation="include">
+        </childnode>
+      </node>
+      <node id="115">
+        <label>weather.h</label>
+        <link refid="weather_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>algorithm</label>
+      </node>
+      <node id="82">
+        <label>array</label>
+      </node>
+      <node id="7">
+        <label>cassert</label>
+      </node>
+      <node id="75">
+        <label>chrono</label>
+      </node>
+      <node id="36">
+        <label>climits</label>
+      </node>
+      <node id="2">
+        <label>cstdint</label>
+      </node>
+      <node id="70">
+        <label>cstdio</label>
+      </node>
+      <node id="18">
+        <label>cstdlib</label>
+      </node>
+      <node id="19">
+        <label>cstring</label>
+      </node>
+      <node id="22">
+        <label>ctime</label>
+      </node>
+      <node id="27">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="28">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="23">
+        <label>functional</label>
+      </node>
+      <node id="85">
+        <label>initializer_list</label>
+      </node>
+      <node id="71">
+        <label>ios</label>
+      </node>
+      <node id="119">
+        <label>iosfwd</label>
+      </node>
+      <node id="38">
+        <label>istream</label>
+      </node>
+      <node id="55">
+        <label>lcf/dbbitarray.h</label>
+      </node>
+      <node id="26">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="69">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="83">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="67">
+        <label>lcf/inireader.h</label>
+      </node>
+      <node id="97">
+        <label>lcf/rpg/actor.h</label>
+      </node>
+      <node id="61">
+        <label>lcf/rpg/animation.h</label>
+      </node>
+      <node id="102">
+        <label>lcf/rpg/attribute.h</label>
+      </node>
+      <node id="109">
+        <label>lcf/rpg/battlecommand.h</label>
+      </node>
+      <node id="110">
+        <label>lcf/rpg/battleranimation.h</label>
+      </node>
+      <node id="104">
+        <label>lcf/rpg/chipset.h</label>
+      </node>
+      <node id="108">
+        <label>lcf/rpg/class.h</label>
+      </node>
+      <node id="107">
+        <label>lcf/rpg/commonevent.h</label>
+      </node>
+      <node id="114">
+        <label>lcf/rpg/database.h</label>
+      </node>
+      <node id="100">
+        <label>lcf/rpg/enemy.h</label>
+      </node>
+      <node id="90">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="48">
+        <label>lcf/rpg/eventpage.h</label>
+      </node>
+      <node id="99">
+        <label>lcf/rpg/item.h</label>
+      </node>
+      <node id="91">
+        <label>lcf/rpg/movecommand.h</label>
+      </node>
+      <node id="47">
+        <label>lcf/rpg/moveroute.h</label>
+      </node>
+      <node id="112">
+        <label>lcf/rpg/music.h</label>
+      </node>
+      <node id="93">
+        <label>lcf/rpg/saveeventexecframe.h</label>
+      </node>
+      <node id="92">
+        <label>lcf/rpg/saveeventexecstate.h</label>
+      </node>
+      <node id="49">
+        <label>lcf/rpg/savemapeventbase.h</label>
+      </node>
+      <node id="62">
+        <label>lcf/rpg/savescreen.h</label>
+      </node>
+      <node id="98">
+        <label>lcf/rpg/skill.h</label>
+      </node>
+      <node id="111">
+        <label>lcf/rpg/sound.h</label>
+      </node>
+      <node id="54">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="106">
+        <label>lcf/rpg/system.h</label>
+      </node>
+      <node id="105">
+        <label>lcf/rpg/terms.h</label>
+      </node>
+      <node id="103">
+        <label>lcf/rpg/terrain.h</label>
+      </node>
+      <node id="113">
+        <label>lcf/rpg/treemap.h</label>
+      </node>
+      <node id="101">
+        <label>lcf/rpg/troop.h</label>
+      </node>
+      <node id="30">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="25">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="53">
+        <label>limits</label>
+      </node>
+      <node id="6">
+        <label>map</label>
+      </node>
+      <node id="12">
+        <label>memory</label>
+      </node>
+      <node id="94">
+        <label>optional</label>
+      </node>
+      <node id="15">
+        <label>ostream</label>
+      </node>
+      <node id="8">
+        <label>pixman.h</label>
+      </node>
+      <node id="121">
+        <label>random</label>
+      </node>
+      <node id="73">
+        <label>sstream</label>
+      </node>
+      <node id="3">
+        <label>string</label>
+      </node>
+      <node id="78">
+        <label>thread</label>
+      </node>
+      <node id="14">
+        <label>tuple</label>
+      </node>
+      <node id="77">
+        <label>type_traits</label>
+      </node>
+      <node id="40">
+        <label>unordered_map</label>
+      </node>
+      <node id="45">
+        <label>unordered_set</label>
+      </node>
+      <node id="65">
+        <label>utility</label>
+      </node>
+      <node id="4">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="weather_8cpp_1a8e583522a6706dc4866b582eeaf5f9ba" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int num_strength</definition>
+        <argsstring></argsstring>
+        <name>num_strength</name>
+        <initializer>= 3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.cpp" line="65" column="22" bodyfile="weather.cpp" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="weather_8cpp_1afe7c53187a7ecaf2603369c27c4fe2a2" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int num_rain_or_snow_particles[]</definition>
+        <argsstring>[]</argsstring>
+        <name>num_rain_or_snow_particles</name>
+        <initializer>= { 20, 60, 100 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.cpp" line="66" column="22" bodyfile="weather.cpp" bodystart="66" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="variable" id="weather_8cpp_1a7731b359db4293bb804a91ceacb90bf7" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto rain_bitmap_rect</definition>
+        <argsstring></argsstring>
+        <name>rain_bitmap_rect</name>
+        <initializer>= <ref refid="class_rect" kindref="compound">Rect</ref>{ 0, 0, 6, 24 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.cpp" line="67" column="23" bodyfile="weather.cpp" bodystart="67" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="variable" id="weather_8cpp_1ad979255eb2d390630bcf82ffd9a10b6d" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto snow_bitmap_rect</definition>
+        <argsstring></argsstring>
+        <name>snow_bitmap_rect</name>
+        <initializer>= <ref refid="class_rect" kindref="compound">Rect</ref>{ 0, 0, 2, 2 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.cpp" line="68" column="23" bodyfile="weather.cpp" bodystart="68" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="variable" id="weather_8cpp_1a2a803910235efd114f20db011391b1af" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto overlay_bitmap_rect</definition>
+        <argsstring></argsstring>
+        <name>overlay_bitmap_rect</name>
+        <initializer>= <ref refid="class_rect" kindref="compound">Rect</ref>{ 0, 0, <ref refid="options_8h_1a62ecd70800687eb2d625af180c4210d7" kindref="member">TILE_SIZE</ref>, <ref refid="options_8h_1a62ecd70800687eb2d625af180c4210d7" kindref="member">TILE_SIZE</ref> }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.cpp" line="69" column="23" bodyfile="weather.cpp" bodystart="69" bodyend="69"/>
+      </memberdef>
+      <memberdef kind="variable" id="weather_8cpp_1ac330c927443ccf84466a6fdb8b1dea4a" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto num_fog_particles</definition>
+        <argsstring></argsstring>
+        <name>num_fog_particles</name>
+        <initializer>= 2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.cpp" line="71" column="23" bodyfile="weather.cpp" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="weather_8cpp_1adb7fdbfba7043444b8b24e96efb12bc0" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int num_sand_particles[]</definition>
+        <argsstring>[]</argsstring>
+        <name>num_sand_particles</name>
+        <initializer>= { 128, 191, 255 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.cpp" line="73" column="22" bodyfile="weather.cpp" bodystart="73" bodyend="73"/>
+      </memberdef>
+      <memberdef kind="variable" id="weather_8cpp_1aef5a3a6e9361100b94c9ec1fcade9a00" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int num_sand_colors</definition>
+        <argsstring></argsstring>
+        <name>num_sand_colors</name>
+        <initializer>= 4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.cpp" line="74" column="22" bodyfile="weather.cpp" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="weather_8cpp_1a1aea96bb7acff03320b28c560c456de7" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto sand_particle_rect</definition>
+        <argsstring></argsstring>
+        <name>sand_particle_rect</name>
+        <initializer>= <ref refid="class_rect" kindref="compound">Rect</ref>{ 0, 0, 1, 2 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.cpp" line="75" column="23" bodyfile="weather.cpp" bodystart="75" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="variable" id="weather_8cpp_1abdda6379f0449e87d75f6635313926fa" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto sand_particle_bitmap_rect</definition>
+        <argsstring></argsstring>
+        <name>sand_particle_bitmap_rect</name>
+        <initializer>                                                = <ref refid="class_rect" kindref="compound">Rect</ref>{
+    0, 0,
+    sand_particle_rect.width,
+    sand_particle_rect.height * num_sand_colors,
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.cpp" line="77" column="23" bodyfile="weather.cpp" bodystart="77" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="variable" id="weather_8cpp_1af7b4427d4fa6cabeee3a102b50c00c79" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto tone_bitmap_rect</definition>
+        <argsstring></argsstring>
+        <name>tone_bitmap_rect</name>
+        <initializer>= MakeMaxBitmapRect({ rain_bitmap_rect, snow_bitmap_rect, overlay_bitmap_rect, sand_particle_bitmap_rect })</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.cpp" line="93" column="23" bodyfile="weather.cpp" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="weather_8cpp_1a6aa4b572d23a2a0899a0ee102e333e88" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int num_overlay_colors</definition>
+        <argsstring></argsstring>
+        <name>num_overlay_colors</name>
+        <initializer>= 3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.cpp" line="95" column="22" bodyfile="weather.cpp" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="weather_8cpp_1ae9648fa51604456065158f5f8e4a1f1b" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color fog_overlay_colors[num_overlay_colors]</definition>
+        <argsstring>[num_overlay_colors]</argsstring>
+        <name>fog_overlay_colors</name>
+        <initializer>                                          = {
+    { 230, 230, 230, 255 },
+    { 240, 240, 240, 255 },
+    { 255, 255, 255, 255 },
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.cpp" line="97" column="24" bodyfile="weather.cpp" bodystart="97" bodyend="101"/>
+      </memberdef>
+      <memberdef kind="variable" id="weather_8cpp_1ab93ea92addec78450d26a0c737315f81" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color sand_overlay_colors[num_overlay_colors]</definition>
+        <argsstring>[num_overlay_colors]</argsstring>
+        <name>sand_overlay_colors</name>
+        <initializer>                                           = {
+    { 220, 220, 160, 255 },
+    { 230, 230, 170, 255 },
+    { 240, 240, 180, 255 },
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.cpp" line="103" column="24" bodyfile="weather.cpp" bodystart="103" bodyend="107"/>
+      </memberdef>
+      <memberdef kind="variable" id="weather_8cpp_1a9da25d27fa8494f07f0ce6e9057f9a1b" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int num_opacities</definition>
+        <argsstring></argsstring>
+        <name>num_opacities</name>
+        <initializer>= 4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.cpp" line="115" column="22" bodyfile="weather.cpp" bodystart="115" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="weather_8cpp_1a83fe78a04a4d6517448f8d4e79d44024" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int fog_opacity[2][4]</definition>
+        <argsstring>[2][4]</argsstring>
+        <name>fog_opacity</name>
+        <initializer>                                 = {
+    { 32, 64, 96, 0 },
+    { 64, 80, 160, 255 },
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.cpp" line="116" column="22" bodyfile="weather.cpp" bodystart="116" bodyend="119"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="weather_8cpp_1afbf7b0186f73ddf728793613ac15f044" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>static constexpr Rect MakeMaxBitmapRect</definition>
+        <argsstring>(std::initializer_list&lt; Rect &gt; list)</argsstring>
+        <name>MakeMaxBitmapRect</name>
+        <param>
+          <type>std::initializer_list&lt; <ref refid="class_rect" kindref="compound">Rect</ref> &gt;</type>
+          <declname>list</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.cpp" line="83" column="23" bodyfile="weather.cpp" bodystart="83" bodyend="91"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstdint&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="bitmap_8h" kindref="compound">bitmap.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="color_8h" kindref="compound">color.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__screen_8h" kindref="compound">game_screen.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="main__data_8h" kindref="compound">main_data.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="weather_8h" kindref="compound">weather.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="drawable__mgr_8h" kindref="compound">drawable_mgr.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="player_8h" kindref="compound">player.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="output_8h" kindref="compound">output.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="rand_8h" kindref="compound">rand.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="class_weather_1aa404c94fec05b825454a7309827767c6" refkind="member"><highlight class="normal"><ref refid="class_weather_1aa404c94fec05b825454a7309827767c6" kindref="member">Weather::Weather</ref>()<sp/>:</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" kindref="member">Drawable</ref>(<ref refid="drawable_8h_1a61c85b23eaec819f8e89dc0c97d58983a500acabbe7c478fcf82e97ba0ae170bc" kindref="member">Priority_Weather</ref>,<sp/><ref refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" kindref="member">Drawable</ref>::<ref refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" kindref="member">Flags</ref>::Shared)</highlight></codeline>
+<codeline lineno="34"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_drawable_mgr_1aacd977551017460aac101bd7ab0e7650" kindref="member">DrawableMgr::Register</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>rect<sp/>=<sp/><ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;GetScreenEffectsRect();</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>weather_surface<sp/>=<sp/><ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(rect.width,<sp/>rect.height,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="class_weather_1a7ad4c8a19ac2bd7b484e42ca4515c2f4" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_weather_1a7ad4c8a19ac2bd7b484e42ca4515c2f4" kindref="member">Weather::Update</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="class_weather_1abbb52c8af2197776d78a8f69fc5d0fee" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_weather_1abbb52c8af2197776d78a8f69fc5d0fee" kindref="member">Weather::Draw</ref>(<ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>dst)<sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_weather_1a887289f3321f9436c3b04ce320a2e8a3" kindref="member">SetTone</ref>(<ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;<ref refid="class_weather_1a023e90fda601af153f08f24dfca0050d" kindref="member">GetTone</ref>());</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(<ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;GetWeatherType())<sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_game___screen_1ac0c7d104854f1aef32a821605b58b411a563b10ab4b735b46ec83f360f606c1ca" kindref="member">Game_Screen::Weather_None</ref>:</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_game___screen_1ac0c7d104854f1aef32a821605b58b411a6beae53ad9aa73db0ecb59f43581cd68" kindref="member">Game_Screen::Weather_Rain</ref>:</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>DrawRain(dst);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_game___screen_1ac0c7d104854f1aef32a821605b58b411a58fbda5b1b48eee6e838c2d40b05e2ff" kindref="member">Game_Screen::Weather_Snow</ref>:</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>DrawSnow(dst);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_game___screen_1ac0c7d104854f1aef32a821605b58b411ad28ae31403759ad97b733adf840d65c8" kindref="member">Game_Screen::Weather_Fog</ref>:</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>DrawFog(dst);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_game___screen_1ac0c7d104854f1aef32a821605b58b411aeab5127282ffaeab1bc1984cc55af969" kindref="member">Game_Screen::Weather_Sandstorm</ref>:</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>DrawSandstorm(dst);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="63"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>num_strength<sp/>=<sp/>3;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>num_rain_or_snow_particles[]<sp/>=<sp/>{<sp/>20,<sp/>60,<sp/>100<sp/>};</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>rain_bitmap_rect<sp/>=<sp/><ref refid="class_rect" kindref="compound">Rect</ref>{<sp/>0,<sp/>0,<sp/>6,<sp/>24<sp/>};</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>snow_bitmap_rect<sp/>=<sp/><ref refid="class_rect" kindref="compound">Rect</ref>{<sp/>0,<sp/>0,<sp/>2,<sp/>2<sp/>};</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>overlay_bitmap_rect<sp/>=<sp/><ref refid="class_rect" kindref="compound">Rect</ref>{<sp/>0,<sp/>0,<sp/><ref refid="options_8h_1a62ecd70800687eb2d625af180c4210d7" kindref="member">TILE_SIZE</ref>,<sp/><ref refid="options_8h_1a62ecd70800687eb2d625af180c4210d7" kindref="member">TILE_SIZE</ref><sp/>};</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>num_fog_particles<sp/>=<sp/>2;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>num_sand_particles[]<sp/>=<sp/>{<sp/>128,<sp/>191,<sp/>255<sp/>};</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>num_sand_colors<sp/>=<sp/>4;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>sand_particle_rect<sp/>=<sp/><ref refid="class_rect" kindref="compound">Rect</ref>{<sp/>0,<sp/>0,<sp/>1,<sp/>2<sp/>};</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>sand_particle_bitmap_rect<sp/>=<sp/><ref refid="class_rect" kindref="compound">Rect</ref>{</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>0,<sp/>0,</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>sand_particle_rect.width,</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>sand_particle_rect.height<sp/>*<sp/>num_sand_colors,</highlight></codeline>
+<codeline lineno="81"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/><ref refid="class_rect" kindref="compound">Rect</ref><sp/>MakeMaxBitmapRect(std::initializer_list&lt;Rect&gt;<sp/>list)<sp/>{</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>max_w<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>max_h<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>rect:<sp/>list)<sp/>{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>max_w<sp/>=<sp/>std::max(rect.width,<sp/>max_w);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>max_h<sp/>=<sp/>std::max(rect.height,<sp/>max_h);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_rect" kindref="compound">Rect</ref>{<sp/>0,<sp/>0,<sp/>max_w,<sp/>max_h<sp/>};</highlight></codeline>
+<codeline lineno="91"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>tone_bitmap_rect<sp/>=<sp/>MakeMaxBitmapRect({<sp/>rain_bitmap_rect,<sp/>snow_bitmap_rect,<sp/>overlay_bitmap_rect,<sp/>sand_particle_bitmap_rect<sp/>});</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>num_overlay_colors<sp/>=<sp/>3;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/>fog_overlay_colors[num_overlay_colors]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>230,<sp/>230,<sp/>230,<sp/>255<sp/>},</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>240,<sp/>240,<sp/>240,<sp/>255<sp/>},</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>255,<sp/>255,<sp/>255,<sp/>255<sp/>},</highlight></codeline>
+<codeline lineno="101"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/>sand_overlay_colors[num_overlay_colors]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>220,<sp/>220,<sp/>160,<sp/>255<sp/>},</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>230,<sp/>230,<sp/>170,<sp/>255<sp/>},</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>240,<sp/>240,<sp/>180,<sp/>255<sp/>},</highlight></codeline>
+<codeline lineno="107"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight><highlight class="comment">//<sp/>RPG_RT<sp/>only<sp/>allows<sp/>strength<sp/>0,<sp/>1,<sp/>and<sp/>2.<sp/>If<sp/>you<sp/>hack<sp/>strength<sp/>3,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="comment">//<sp/>it<sp/>will<sp/>show<sp/>the<sp/>upper<sp/>layer<sp/>as<sp/>fully<sp/>opaque<sp/>and<sp/>the<sp/>lower<sp/>layer</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight><highlight class="comment">//<sp/>with<sp/>opacity<sp/>64.<sp/>We<sp/>set<sp/>lower<sp/>layer<sp/>to<sp/>0<sp/>and<sp/>don&apos;t<sp/>render<sp/>it</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight><highlight class="comment">//<sp/>since<sp/>it<sp/>can&apos;t<sp/>be<sp/>seen<sp/>anyway.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="comment">//<sp/>If<sp/>you<sp/>hack<sp/>strength<sp/>4<sp/>or<sp/>higher,<sp/>RPG_RT<sp/>will<sp/>exhibit<sp/>buggy</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight><highlight class="comment">//<sp/>wraparound<sp/>behavior.<sp/>In<sp/>Player,<sp/>we<sp/>clamp<sp/>at<sp/>3.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>num_opacities<sp/>=<sp/>4;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>fog_opacity[2][4]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>32,<sp/>64,<sp/>96,<sp/>0<sp/>},</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>{<sp/>64,<sp/>80,<sp/>160,<sp/>255<sp/>},</highlight></codeline>
+<codeline lineno="119"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122" refid="class_weather_1aff2712a93ff719e31c88499687531fe5" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_weather_1aff2712a93ff719e31c88499687531fe5" kindref="member">Weather::GetMaxNumParticles</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>weather_type)<sp/>{</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(weather_type)<sp/>{</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_game___screen_1ac0c7d104854f1aef32a821605b58b411a563b10ab4b735b46ec83f360f606c1ca" kindref="member">Game_Screen::Weather_None</ref>:</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_game___screen_1ac0c7d104854f1aef32a821605b58b411a6beae53ad9aa73db0ecb59f43581cd68" kindref="member">Game_Screen::Weather_Rain</ref>:</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_game___screen_1ac0c7d104854f1aef32a821605b58b411a58fbda5b1b48eee6e838c2d40b05e2ff" kindref="member">Game_Screen::Weather_Snow</ref>:</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>num_rain_or_snow_particles[num_strength<sp/>-<sp/>1];</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_game___screen_1ac0c7d104854f1aef32a821605b58b411ad28ae31403759ad97b733adf840d65c8" kindref="member">Game_Screen::Weather_Fog</ref>:</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>num_fog_particles;</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_game___screen_1ac0c7d104854f1aef32a821605b58b411aeab5127282ffaeab1bc1984cc55af969" kindref="member">Game_Screen::Weather_Sandstorm</ref>:</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>num_sand_particles[num_strength<sp/>-<sp/>1];</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_bitmap" kindref="compound">Bitmap</ref>*<sp/>Weather::ApplyToneEffect(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>bitmap,<sp/><ref refid="class_rect" kindref="compound">Rect</ref><sp/>rect)<sp/>{</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(tone_effect<sp/>==<sp/><ref refid="class_tone" kindref="compound">Tone</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>&amp;bitmap;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!tone_bitmap)<sp/>{</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(tone_dirty<sp/>&amp;&amp;<sp/></highlight><highlight class="stringliteral">&quot;Tone<sp/>Bitmap<sp/>Created<sp/>but<sp/>tone<sp/>was<sp/>not<sp/>marked<sp/>dirty!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tone_bitmap<sp/>=<sp/><ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(tone_bitmap_rect.width,<sp/>tone_bitmap_rect.height,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(tone_dirty)<sp/>{</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tone_bitmap-&gt;ToneBlit(0,<sp/>0,<sp/>bitmap,<sp/>rect,<sp/>tone_effect,<sp/><ref refid="struct_opacity_1ac5b02f85f47672fcd1662125ef760c3a" kindref="member">Opacity::Opaque</ref>());</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>tone_bitmap.get();</highlight></codeline>
+<codeline lineno="151"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Weather::CreateRainParticle()<sp/>{</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>w<sp/>=<sp/>rain_bitmap_rect.width;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>h<sp/>=<sp/>rain_bitmap_rect.height;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>rain_bitmap<sp/>=<sp/><ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(w,<sp/>h,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>pixel<sp/>=<sp/><ref refid="class_bitmap_1a2eda8338c15e5e0ae35317145c8025c4" kindref="member">Bitmap::pixel_format</ref>.<ref refid="class_dynamic_format_1ae438d7b01973ec14064dd5a9ce060054" kindref="member">rgba_to_uint32_t</ref>(255,255,255,255);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>img<sp/>=<sp/></highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="normal">uint32_t*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(rain_bitmap-&gt;pixels());</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y<sp/>=<sp/>0;<sp/>y<sp/>&lt;<sp/>h;<sp/>++y)<sp/>{</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x<sp/>=<sp/>w<sp/>-<sp/>(y<sp/>/<sp/>4)<sp/>-<sp/>1;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>img[y<sp/>*<sp/>w<sp/>+<sp/>x]<sp/>=<sp/>pixel;</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="167"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Weather::DrawRain(<ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>dst)<sp/>{</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!rain_bitmap)<sp/>{</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CreateRainParticle();</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>DrawParticles(dst,<sp/>*rain_bitmap,<sp/>rain_bitmap_rect,<sp/>5,<sp/>12);</highlight></codeline>
+<codeline lineno="174"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Weather::CreateSnowParticle()<sp/>{</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>w<sp/>=<sp/>snow_bitmap_rect.width;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>h<sp/>=<sp/>snow_bitmap_rect.height;</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/>snow_bitmap<sp/>=<sp/><ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(w,<sp/>h,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>pixel<sp/>=<sp/><ref refid="class_bitmap_1a2eda8338c15e5e0ae35317145c8025c4" kindref="member">Bitmap::pixel_format</ref>.<ref refid="class_dynamic_format_1ae438d7b01973ec14064dd5a9ce060054" kindref="member">rgba_to_uint32_t</ref>(255,255,255,255);</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>img<sp/>=<sp/></highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="normal">uint32_t*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(snow_bitmap-&gt;pixels());</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>w<sp/>*<sp/>h;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>img[i]<sp/>=<sp/>pixel;</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="189"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Weather::DrawSnow(<ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>dst)<sp/>{</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!snow_bitmap)<sp/>{</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CreateSnowParticle();</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/>DrawParticles(dst,<sp/>*snow_bitmap,<sp/>snow_bitmap_rect,<sp/>7,<sp/>30);</highlight></codeline>
+<codeline lineno="196"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Weather::DrawParticles(<ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>dst,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>particle,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_rect" kindref="compound">Rect</ref><sp/>rect,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>abase,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>tmax)<sp/>{</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>bitmap<sp/>=<sp/>ApplyToneEffect(particle,<sp/>rect);</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>strength<sp/>=<sp/><ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;GetWeatherStrength();</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>particles<sp/>=<sp/><ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;GetParticles();</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>num_particles<sp/>=<sp/>num_rain_or_snow_particles[<ref refid="namespace_utils_1a805d2bcdaa90b0f02e1806941e8e9cd2" kindref="member">Utils::Clamp</ref>(strength,<sp/>0,<sp/>num_strength<sp/>-<sp/>1)];</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>ainc<sp/>=<sp/>abase<sp/>+<sp/>strength;</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>surface_rect<sp/>=<sp/>weather_surface-&gt;GetRect();</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/>weather_surface-&gt;Clear();</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(num_particles<sp/>&lt;=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(particles.size()));</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"></highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>num_particles;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>p<sp/>=<sp/>particles[i];</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p.t<sp/>&gt;<sp/>tmax)<sp/>{</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>alpha<sp/>=<sp/>std::min(ainc<sp/>*<sp/>p.t,<sp/>255);</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>weather_surface-&gt;EdgeMirrorBlit(p.x,<sp/>p.y,<sp/>*bitmap,<sp/>rect,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">,<sp/>alpha);</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"></highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>shake_x<sp/>=<sp/><ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;GetShakeOffsetX();</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>shake_y<sp/>=<sp/><ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;GetShakeOffsetY();</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>pan_rect<sp/>=<sp/><ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;GetScreenEffectsRect();</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a48a65e430ae428112d598c5502031f91" kindref="member">TiledBlit</ref>(-pan_rect.x<sp/>+<sp/>shake_x,<sp/>-pan_rect.y<sp/>+<sp/>shake_y,<sp/>surface_rect,<sp/>*weather_surface,<sp/>dst.<ref refid="class_bitmap_1a4cf1ab8d5ea7758211b3db046565ff43" kindref="member">GetRect</ref>(),<sp/><ref refid="struct_opacity_1ac5b02f85f47672fcd1662125ef760c3a" kindref="member">Opacity::Opaque</ref>());</highlight></codeline>
+<codeline lineno="227"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"></highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Weather::DrawFog(<ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>dst)<sp/>{</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!fog_bitmap)<sp/>{</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CreateFogOverlay();</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"></highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/>DrawFogOverlay(dst,<sp/>*fog_bitmap);</highlight></codeline>
+<codeline lineno="235"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight></codeline>
+<codeline lineno="237"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Weather::DrawSandstorm(<ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>dst)<sp/>{</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!sand_bitmap)<sp/>{</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CreateFogOverlay();</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!sand_particle_bitmap)<sp/>{</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CreateSandParticle();</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/>DrawFogOverlay(dst,<sp/>*sand_bitmap);</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/>DrawSandParticles(dst,<sp/>*sand_particle_bitmap);</highlight></codeline>
+<codeline lineno="247"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"></highlight></codeline>
+<codeline lineno="249"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Weather::CreateSandParticle()<sp/>{</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>w<sp/>=<sp/>sand_particle_bitmap_rect.width;</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>h<sp/>=<sp/>sand_particle_bitmap_rect.height;</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/>sand_particle_bitmap<sp/>=<sp/><ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(w,<sp/>h,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"></highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::array&lt;uint32_t,num_sand_colors&gt;<sp/>pixels<sp/>=<sp/>{{</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_bitmap_1a2eda8338c15e5e0ae35317145c8025c4" kindref="member">Bitmap::pixel_format</ref>.<ref refid="class_dynamic_format_1ae438d7b01973ec14064dd5a9ce060054" kindref="member">rgba_to_uint32_t</ref>(255,255,32,255),<sp/></highlight><highlight class="comment">//<sp/>Yellow</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_bitmap_1a2eda8338c15e5e0ae35317145c8025c4" kindref="member">Bitmap::pixel_format</ref>.<ref refid="class_dynamic_format_1ae438d7b01973ec14064dd5a9ce060054" kindref="member">rgba_to_uint32_t</ref>(255,180,32,255),<sp/></highlight><highlight class="comment">//<sp/>Orange</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_bitmap_1a2eda8338c15e5e0ae35317145c8025c4" kindref="member">Bitmap::pixel_format</ref>.<ref refid="class_dynamic_format_1ae438d7b01973ec14064dd5a9ce060054" kindref="member">rgba_to_uint32_t</ref>(255,32,32,255),<sp/></highlight><highlight class="comment">//<sp/>Red</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_bitmap_1a2eda8338c15e5e0ae35317145c8025c4" kindref="member">Bitmap::pixel_format</ref>.<ref refid="class_dynamic_format_1ae438d7b01973ec14064dd5a9ce060054" kindref="member">rgba_to_uint32_t</ref>(255,255,240,255),<sp/></highlight><highlight class="comment">//<sp/>White</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/>}};</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"></highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>img<sp/>=<sp/></highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="normal">uint32_t*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(sand_particle_bitmap-&gt;pixels());</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"></highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>w<sp/>*<sp/>h;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>img[i]<sp/>=<sp/>pixels[i<sp/>/<sp/>2];</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="267"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"></highlight></codeline>
+<codeline lineno="269"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Weather::DrawSandParticles(<ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>dst,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>particle_bitmap)<sp/>{</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>strength<sp/>=<sp/><ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;GetWeatherStrength();</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>particles<sp/>=<sp/><ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;GetParticles();</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"></highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>bitmap<sp/>=<sp/>ApplyToneEffect(particle_bitmap,<sp/>particle_bitmap.<ref refid="class_bitmap_1a4cf1ab8d5ea7758211b3db046565ff43" kindref="member">GetRect</ref>());</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"></highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>num_particles<sp/>=<sp/>num_sand_particles[<ref refid="namespace_utils_1a805d2bcdaa90b0f02e1806941e8e9cd2" kindref="member">Utils::Clamp</ref>(strength,<sp/>0,<sp/>num_strength<sp/>-<sp/>1)];</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"></highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(num_particles<sp/>&lt;=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(particles.size()));</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"></highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>num_particles;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>p<sp/>=<sp/>particles[i];</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>color<sp/>=<sp/>(i<sp/>%<sp/>num_sand_colors);</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"></highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>rect<sp/>=<sp/>Rect{</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0,</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>color<sp/>*<sp/>sand_particle_rect.height,</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sand_particle_rect.width,</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sand_particle_rect.height</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"></highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(p.x,<sp/>p.y,<sp/>*bitmap,<sp/>rect,<sp/>p.alpha);</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="292"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"></highlight></codeline>
+<codeline lineno="294"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Weather::CreateFogOverlay()<sp/>{</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>fog_pixels[num_overlay_colors];</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>sand_pixels[num_overlay_colors];</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"></highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>num_overlay_colors;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>fc<sp/>=<sp/>fog_overlay_colors[i];</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>sc<sp/>=<sp/>sand_overlay_colors[i];</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>fog_pixels[i]<sp/>=<sp/><ref refid="class_bitmap_1a2eda8338c15e5e0ae35317145c8025c4" kindref="member">Bitmap::pixel_format</ref>.<ref refid="class_dynamic_format_1ae438d7b01973ec14064dd5a9ce060054" kindref="member">rgba_to_uint32_t</ref>(fc.red,<sp/>fc.green,<sp/>fc.blue,<sp/>fc.alpha);</highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sand_pixels[i]<sp/>=<sp/><ref refid="class_bitmap_1a2eda8338c15e5e0ae35317145c8025c4" kindref="member">Bitmap::pixel_format</ref>.<ref refid="class_dynamic_format_1ae438d7b01973ec14064dd5a9ce060054" kindref="member">rgba_to_uint32_t</ref>(sc.red,<sp/>sc.green,<sp/>sc.blue,<sp/>sc.alpha);</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"></highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>w<sp/>=<sp/>overlay_bitmap_rect.width;</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>h<sp/>=<sp/>overlay_bitmap_rect.height;</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"></highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/>fog_bitmap<sp/>=<sp/><ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(w,<sp/>h);</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/>sand_bitmap<sp/>=<sp/><ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(w,<sp/>h);</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"></highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>fog_img<sp/>=<sp/></highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="normal">uint32_t*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(fog_bitmap-&gt;pixels());</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>sand_img<sp/>=<sp/></highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="normal">uint32_t*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(sand_bitmap-&gt;pixels());</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"></highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>w<sp/>*<sp/>h;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>px<sp/>=<sp/><ref refid="namespace_rand_1a1c0fe37f0d80509213973f2b5765931f" kindref="member">Rand::GetRandomNumber</ref>(0,<sp/>num_overlay_colors<sp/>-<sp/>1);</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>FIXME:<sp/>This<sp/>only<sp/>works<sp/>for<sp/>32bit<sp/>pixel<sp/>formats</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="317"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>fog_img[i]<sp/>=<sp/>fog_pixels[px];</highlight></codeline>
+<codeline lineno="318"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sand_img[i]<sp/>=<sp/>sand_pixels[px];</highlight></codeline>
+<codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="320"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="321"><highlight class="normal"></highlight></codeline>
+<codeline lineno="322"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Weather::DrawFogOverlay(<ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>dst,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>overlay)<sp/>{</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>dr<sp/>=<sp/>dst.<ref refid="class_bitmap_1a4cf1ab8d5ea7758211b3db046565ff43" kindref="member">GetRect</ref>();</highlight></codeline>
+<codeline lineno="324"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>sr<sp/>=<sp/>overlay_bitmap_rect;</highlight></codeline>
+<codeline lineno="325"><highlight class="normal"></highlight></codeline>
+<codeline lineno="326"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>src<sp/>=<sp/>ApplyToneEffect(overlay,<sp/>sr);</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"></highlight></codeline>
+<codeline lineno="328"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>strength<sp/>=<sp/><ref refid="namespace_utils_1a805d2bcdaa90b0f02e1806941e8e9cd2" kindref="member">Utils::Clamp</ref>(<ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;GetWeatherStrength(),<sp/>0,<sp/>num_opacities<sp/>-<sp/>1);</highlight></codeline>
+<codeline lineno="329"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>back_opacity<sp/>=<sp/>fog_opacity[0][strength];</highlight></codeline>
+<codeline lineno="330"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>front_opacity<sp/>=<sp/>fog_opacity[1][strength];</highlight></codeline>
+<codeline lineno="331"><highlight class="normal"></highlight></codeline>
+<codeline lineno="332"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>shake_x<sp/>=<sp/><ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;GetShakeOffsetX();</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>shake_y<sp/>=<sp/><ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;GetShakeOffsetY();</highlight></codeline>
+<codeline lineno="334"><highlight class="normal"></highlight></codeline>
+<codeline lineno="335"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>RPG_RT<sp/>uses<sp/>the<sp/>first<sp/>2<sp/>particles<sp/>for<sp/>fog<sp/>layer<sp/>graphics</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="336"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>particles<sp/>=<sp/><ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;GetParticles();</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(particles.size()<sp/>&gt;=<sp/>num_fog_particles);</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>fog_bg_frames<sp/>=<sp/>particles[0].x;</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>fog_fg_frames<sp/>=<sp/>particles[1].x;</highlight></codeline>
+<codeline lineno="340"><highlight class="normal"></highlight></codeline>
+<codeline lineno="341"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Front<sp/>layer<sp/>moves<sp/>left<sp/>one<sp/>pixel<sp/>every<sp/>8<sp/>frames.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>fx<sp/>=<sp/>shake_x<sp/>+<sp/>(fog_fg_frames<sp/>/<sp/>8)<sp/>%<sp/>sr.width;</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Back<sp/>layer<sp/>moves<sp/>left<sp/>one<sp/>pixel<sp/>every<sp/>4<sp/>frames.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bx<sp/>=<sp/>shake_x<sp/>-<sp/>(fog_bg_frames<sp/>/<sp/>4)<sp/>%<sp/>sr.width;</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Front<sp/>layer<sp/>moves<sp/>vertically<sp/>up<sp/>and<sp/>down<sp/>using<sp/>this<sp/>algorithm.<sp/>And<sp/>it<sp/>uses<sp/>the<sp/>background<sp/>frame<sp/>counter!</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="346"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Confirmed<sp/>to<sp/>be<sp/>matching<sp/>RPG_RT</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>fy<sp/>=<sp/>shake_y<sp/>-<sp/><ref refid="namespace_utils_1a3c42755ce0d916d0381a72310ad94343" kindref="member">Utils::RoundTo&lt;int&gt;</ref>(std::sin(fog_bg_frames<sp/>*<sp/>M_PI<sp/>/<sp/>4096.0)<sp/>*<sp/>(sr.height<sp/>/<sp/>2))<sp/>-<sp/>(sr.height<sp/>/<sp/>4);</highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Back<sp/>layer<sp/>never<sp/>moves<sp/>vertically</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="349"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>by<sp/>=<sp/>shake_y;</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"></highlight></codeline>
+<codeline lineno="351"><highlight class="normal"><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a48a65e430ae428112d598c5502031f91" kindref="member">TiledBlit</ref>(bx,<sp/>by,<sp/>sr,<sp/>*src,<sp/>dr,<sp/>back_opacity);</highlight></codeline>
+<codeline lineno="352"><highlight class="normal"><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a48a65e430ae428112d598c5502031f91" kindref="member">TiledBlit</ref>(fx,<sp/>fy,<sp/>sr,<sp/>*src,<sp/>dr,<sp/>front_opacity);</highlight></codeline>
+<codeline lineno="353"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="354"><highlight class="normal"></highlight></codeline>
+<codeline lineno="355" refid="class_weather_1a887289f3321f9436c3b04ce320a2e8a3" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_weather_1a887289f3321f9436c3b04ce320a2e8a3" kindref="member">Weather::SetTone</ref>(<ref refid="class_tone" kindref="compound">Tone</ref><sp/>tone)<sp/>{</highlight></codeline>
+<codeline lineno="356"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(tone<sp/>!=<sp/>tone_effect)<sp/>{</highlight></codeline>
+<codeline lineno="357"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tone_effect<sp/>=<sp/>tone;</highlight></codeline>
+<codeline lineno="358"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tone_dirty<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="359"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="360"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="361"><highlight class="normal"></highlight></codeline>
+<codeline lineno="362" refid="class_weather_1a88e10def4c8e2c82cb154b1c6b2de56c" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_weather_1a88e10def4c8e2c82cb154b1c6b2de56c" kindref="member">Weather::OnWeatherChanged</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="363"><highlight class="normal"><sp/><sp/><sp/><sp/>tone_dirty<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="364"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(tone_bitmap)<sp/>{</highlight></codeline>
+<codeline lineno="365"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tone_bitmap-&gt;Clear();</highlight></codeline>
+<codeline lineno="366"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="367"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="368"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="weather.cpp"/>
+  </compounddef>
+</doxygen>

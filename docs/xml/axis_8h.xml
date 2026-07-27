@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="axis_8h" kind="file" language="C++">
+    <compoundname>axis.h</compoundname>
+    <includedby refid="sdl__ui_8h" local="yes">platform/sdl/sdl_ui.h</includedby>
+    <invincdepgraph>
+      <node id="1">
+        <label>platform/sdl/axis.h</label>
+        <link refid="axis_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>platform/sdl/sdl_ui.cpp</label>
+        <link refid="sdl__ui_8cpp"/>
+      </node>
+      <node id="2">
+        <label>platform/sdl/sdl_ui.h</label>
+        <link refid="sdl__ui_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="struct_sdl_axis" prot="public">SdlAxis</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_SDL_AXIS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_SDL_AXIS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="struct_sdl_axis" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_sdl_axis" kindref="compound">SdlAxis</ref><sp/>{</highlight></codeline>
+<codeline lineno="31" refid="struct_sdl_axis_1a7ee3e30b6ae8b21d5bac19882b816bc5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_sdl_axis_1a7ee3e30b6ae8b21d5bac19882b816bc5" kindref="member">stick_primary_x</ref><sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="32" refid="struct_sdl_axis_1a50907ef28890fb51e5f3d10fcbdd1f26" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_sdl_axis_1a50907ef28890fb51e5f3d10fcbdd1f26" kindref="member">stick_primary_y</ref><sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="33" refid="struct_sdl_axis_1a48addf59c3791669f23843c61909d771" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_sdl_axis_1a48addf59c3791669f23843c61909d771" kindref="member">stick_secondary_x</ref><sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="34" refid="struct_sdl_axis_1a1cca8987d7bdb13fa015aa9f9e34ae95" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_sdl_axis_1a1cca8987d7bdb13fa015aa9f9e34ae95" kindref="member">stick_secondary_y</ref><sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="35" refid="struct_sdl_axis_1a9eb96ba004762876eb5d8d15da2238a7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_sdl_axis_1a9eb96ba004762876eb5d8d15da2238a7" kindref="member">trigger_left</ref><sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="36" refid="struct_sdl_axis_1a6ee3d9f7d9aca2615d4a60ae64d1f35f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_sdl_axis_1a6ee3d9f7d9aca2615d4a60ae64d1f35f" kindref="member">trigger_right</ref><sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="38" refid="struct_sdl_axis_1a36345cf7195cd5dd9a8161ec2cdd54f4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_sdl_axis_1a36345cf7195cd5dd9a8161ec2cdd54f4" kindref="member">stick_invert_y</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="40" refid="struct_sdl_axis_1a68d7886ce8a2b73b9e03eaf618a8be71" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_sdl_axis_1a68d7886ce8a2b73b9e03eaf618a8be71" kindref="member">hat_invert_y</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="platform/sdl/axis.h"/>
+  </compounddef>
+</doxygen>

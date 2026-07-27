@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_0d243337361044102244224207061135060014147136012264" kind="namespace" language="C++">
+    <compoundname>@243337361044102244224207061135060014147136012264</compoundname>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_0d243337361044102244224207061135060014147136012264_1addcb7e0f81bc75218bb440a1f144bbbd" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>screen_state</name>
+        <qualifiedname>@243337361044102244224207061135060014147136012264::screen_state</qualifiedname>
+        <enumvalue id="namespace_0d243337361044102244224207061135060014147136012264_1addcb7e0f81bc75218bb440a1f144bbbda3262d48df5d75e3452f0f16b313b7808" prot="public">
+          <name>off</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d243337361044102244224207061135060014147136012264_1addcb7e0f81bc75218bb440a1f144bbbda18ccf61d533b600bbf5a963359223fe4" prot="public">
+          <name>keep</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d243337361044102244224207061135060014147136012264_1addcb7e0f81bc75218bb440a1f144bbbda62698b8ff9e416d9a7ac0fb3bd548b96" prot="public">
+          <name>touched</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d243337361044102244224207061135060014147136012264_1addcb7e0f81bc75218bb440a1f144bbbda03b62516184fb6ef591f45bd4974b753" prot="public">
+          <name>refresh</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/ui.cpp" line="52" column="1" bodyfile="platform/3ds/ui.cpp" bodystart="52" bodyend="52"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/3ds/ui.cpp" line="49" column="1"/>
+  </compounddef>
+</doxygen>

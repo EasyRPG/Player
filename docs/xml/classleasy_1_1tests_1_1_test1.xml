@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1tests_1_1_test1" kind="class" language="C++" prot="public">
+    <compoundname>leasy::tests::Test1</compoundname>
+    <includes refid="core1_8hpp" local="no">core1.hpp</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classleasy_1_1tests_1_1_test1_1a2e9c8f47085339a23a544906de7957de" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string leasy::tests::Test1::opt</definition>
+        <argsstring></argsstring>
+        <name>opt</name>
+        <qualifiedname>leasy::tests::Test1::opt</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/test/core1.hpp" line="35" column="17" bodyfile="leasy/test/core1.hpp" bodystart="35" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1tests_1_1_test1_1a4fa34a305663814b1f818196fe8e5e75" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::tests::Test1::foo</definition>
+        <argsstring>() const</argsstring>
+        <name>foo</name>
+        <qualifiedname>leasy::tests::Test1::foo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/test/core1.hpp" line="31" column="17" bodyfile="leasy/test/core1.hpp" bodystart="31" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1tests_1_1_test1_1a8bc624d19d6af81b7e89da4f33bd8f56" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::tests::Test1::foo2</definition>
+        <argsstring>()</argsstring>
+        <name>foo2</name>
+        <qualifiedname>leasy::tests::Test1::foo2</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/test/core1.hpp" line="37" column="17" bodyfile="leasy/test/core1.hpp" bodystart="37" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1tests_1_1_test1_1a837a83b6870f82c9b3c171c89d855956" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::tests::Test1::Test1</definition>
+        <argsstring>()=default</argsstring>
+        <name>Test1</name>
+        <qualifiedname>leasy::tests::Test1::Test1</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/test/core1.hpp" line="41" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1tests_1_1_test1_1a0f128d6635587c4c015a7433ca5bd90c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::tests::Test1::Test1</definition>
+        <argsstring>(const char *c)</argsstring>
+        <name>Test1</name>
+        <qualifiedname>leasy::tests::Test1::Test1</qualifiedname>
+        <param>
+          <type>const char *</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/test/core1.hpp" line="42" column="12" bodyfile="leasy/test/core1.hpp" bodystart="42" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1tests_1_1_test1_1ae032f11095ef6bd57e30c0f4c90f3748" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::tests::Test1::Test1</definition>
+        <argsstring>(const std::string &amp;c)</argsstring>
+        <name>Test1</name>
+        <qualifiedname>leasy::tests::Test1::Test1</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/test/core1.hpp" line="45" column="12" bodyfile="leasy/test/core1.hpp" bodystart="45" bodyend="46"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/test/core1.hpp" line="29" column="3" bodyfile="leasy/test/core1.hpp" bodystart="29" bodyend="48"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1tests_1_1_test1_1a4fa34a305663814b1f818196fe8e5e75" prot="public" virt="non-virtual"><scope>leasy::tests::Test1</scope><name>foo</name></member>
+      <member refid="classleasy_1_1tests_1_1_test1_1a8bc624d19d6af81b7e89da4f33bd8f56" prot="public" virt="non-virtual"><scope>leasy::tests::Test1</scope><name>foo2</name></member>
+      <member refid="classleasy_1_1tests_1_1_test1_1a2e9c8f47085339a23a544906de7957de" prot="public" virt="non-virtual"><scope>leasy::tests::Test1</scope><name>opt</name></member>
+      <member refid="classleasy_1_1tests_1_1_test1_1a837a83b6870f82c9b3c171c89d855956" prot="public" virt="non-virtual"><scope>leasy::tests::Test1</scope><name>Test1</name></member>
+      <member refid="classleasy_1_1tests_1_1_test1_1a0f128d6635587c4c015a7433ca5bd90c" prot="public" virt="non-virtual"><scope>leasy::tests::Test1</scope><name>Test1</name></member>
+      <member refid="classleasy_1_1tests_1_1_test1_1ae032f11095ef6bd57e30c0f4c90f3748" prot="public" virt="non-virtual"><scope>leasy::tests::Test1</scope><name>Test1</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

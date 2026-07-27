@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__integral__v_3_06172c95ee22f9d9bf9dbe317b6bd8715" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ul2::lua_stack&lt; T, std::enable_if_t&lt; std::is_integral_v&lt; T &gt; &amp;&amp;!std::is_same_v&lt; T, bool &gt; &gt; &gt;</compoundname>
+    <includes refid="lua__stack_8hpp" local="no">lua_stack.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__integral__v_3_06172c95ee22f9d9bf9dbe317b6bd8715_1a91578fa5f1301bddb9a5c598ff405bd9" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>static T leasy::ul2::lua_stack&lt; T, std::enable_if_t&lt; std::is_integral_v&lt; T &gt; &amp;&amp;!std::is_same_v&lt; T, bool &gt; &gt; &gt;::get</definition>
+        <argsstring>(lua_State *L, int index)</argsstring>
+        <name>get</name>
+        <qualifiedname>leasy::ul2::lua_stack&lt; T, std::enable_if_t&lt; std::is_integral_v&lt; T &gt; &amp;&amp;!std::is_same_v&lt; T, bool &gt; &gt; &gt;::get</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/lua_stack.hpp" line="60" column="12" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="60" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__integral__v_3_06172c95ee22f9d9bf9dbe317b6bd8715_1af1c8097a20a2b84b20fe82e4ef9557aa" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void leasy::ul2::lua_stack&lt; T, std::enable_if_t&lt; std::is_integral_v&lt; T &gt; &amp;&amp;!std::is_same_v&lt; T, bool &gt; &gt; &gt;::push</definition>
+        <argsstring>(lua_State *L, T value)</argsstring>
+        <name>push</name>
+        <qualifiedname>leasy::ul2::lua_stack&lt; T, std::enable_if_t&lt; std::is_integral_v&lt; T &gt; &amp;&amp;!std::is_same_v&lt; T, bool &gt; &gt; &gt;::push</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/lua_stack.hpp" line="68" column="15" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="68" bodyend="74"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ul2/lua_stack.hpp" line="52" column="1" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="59" bodyend="75"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__integral__v_3_06172c95ee22f9d9bf9dbe317b6bd8715_1a91578fa5f1301bddb9a5c598ff405bd9" prot="public" virt="non-virtual"><scope>leasy::ul2::lua_stack&lt; T, std::enable_if_t&lt; std::is_integral_v&lt; T &gt; &amp;&amp;!std::is_same_v&lt; T, bool &gt; &gt; &gt;</scope><name>get</name></member>
+      <member refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__integral__v_3_06172c95ee22f9d9bf9dbe317b6bd8715_1af1c8097a20a2b84b20fe82e4ef9557aa" prot="public" virt="non-virtual"><scope>leasy::ul2::lua_stack&lt; T, std::enable_if_t&lt; std::is_integral_v&lt; T &gt; &amp;&amp;!std::is_same_v&lt; T, bool &gt; &gt; &gt;</scope><name>push</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

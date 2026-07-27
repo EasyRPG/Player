@@ -1,0 +1,604 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="rtp_8cpp" kind="file" language="C++">
+    <compoundname>rtp.cpp</compoundname>
+    <includes local="no">algorithm</includes>
+    <includes local="no">array</includes>
+    <includes local="no">cassert</includes>
+    <includes local="no">cstring</includes>
+    <includes refid="rtp_8h" local="yes">rtp.h</includes>
+    <incdepgraph>
+      <node id="21">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="1">
+        <label>rtp.cpp</label>
+        <link refid="rtp_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>rtp.h</label>
+        <link refid="rtp_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>algorithm</label>
+      </node>
+      <node id="3">
+        <label>array</label>
+      </node>
+      <node id="4">
+        <label>cassert</label>
+      </node>
+      <node id="19">
+        <label>cstdint</label>
+      </node>
+      <node id="32">
+        <label>cstdio</label>
+      </node>
+      <node id="5">
+        <label>cstring</label>
+      </node>
+      <node id="30">
+        <label>ctime</label>
+      </node>
+      <node id="27">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="28">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="31">
+        <label>functional</label>
+      </node>
+      <node id="33">
+        <label>ios</label>
+      </node>
+      <node id="16">
+        <label>istream</label>
+      </node>
+      <node id="26">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="9">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="23">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="25">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="14">
+        <label>memory</label>
+      </node>
+      <node id="17">
+        <label>ostream</label>
+      </node>
+      <node id="7">
+        <label>string</label>
+      </node>
+      <node id="20">
+        <label>unordered_map</label>
+      </node>
+      <node id="8">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="rtp_8cpp_1ae6e2f5deb21fc1a9358fa87eb2417bc4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::pair&lt; int, int &gt;</type>
+        <definition>static std::pair&lt; int, int &gt; get_table_idx</definition>
+        <argsstring>(const char *const lookup_table[16], const int lookup_table_idx[16], std::string_view category)</argsstring>
+        <name>get_table_idx</name>
+        <param>
+          <type>const char *const</type>
+          <declname>lookup_table</declname>
+          <array>[16]</array>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>lookup_table_idx</declname>
+          <array>[16]</array>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>category</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.cpp" line="24" column="18" bodyfile="rtp.cpp" bodystart="24" bodyend="35"/>
+      </memberdef>
+      <memberdef kind="function" id="rtp_8cpp_1a20f286a46dd107df270e7f9d2e11c6ba" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void detect_helper</definition>
+        <argsstring>(const FilesystemView &amp;fs, std::vector&lt; struct RTP::RtpHitInfo &gt; &amp;hit_list, T rtp_table, int num_rtps, int offset, const std::pair&lt; int, int &gt; &amp;range, Span&lt; std::string_view &gt; ext_list, int miss_limit)</argsstring>
+        <name>detect_helper</name>
+        <param>
+          <type>const <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> &amp;</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; struct <ref refid="struct_r_t_p_1_1_rtp_hit_info" kindref="compound">RTP::RtpHitInfo</ref> &gt; &amp;</type>
+          <declname>hit_list</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>rtp_table</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>num_rtps</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>offset</declname>
+        </param>
+        <param>
+          <type>const std::pair&lt; int, int &gt; &amp;</type>
+          <declname>range</declname>
+        </param>
+        <param>
+          <type>Span&lt; std::string_view &gt;</type>
+          <declname>ext_list</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>miss_limit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.cpp" line="38" column="13" bodyfile="rtp.cpp" bodystart="38" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="rtp_8cpp_1a2a69f98e5366f186ff48a7141446ebce" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::vector&lt; <ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0a" kindref="member">RTP::Type</ref> &gt;</type>
+        <definition>static std::vector&lt; RTP::Type &gt; lookup_any_to_rtp_helper</definition>
+        <argsstring>(T rtp_table, const std::pair&lt; int, int &gt; &amp;range, std::string_view src_name, int num_rtps, int offset)</argsstring>
+        <name>lookup_any_to_rtp_helper</name>
+        <param>
+          <type>T</type>
+          <declname>rtp_table</declname>
+        </param>
+        <param>
+          <type>const std::pair&lt; int, int &gt; &amp;</type>
+          <declname>range</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>src_name</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>num_rtps</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>offset</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.cpp" line="130" column="20" bodyfile="rtp.cpp" bodystart="130" bodyend="144"/>
+      </memberdef>
+      <memberdef kind="function" id="rtp_8cpp_1a2321e975e97ac0e3abd8e220ef45da2c" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::string</type>
+        <definition>static std::string lookup_rtp_to_rtp_helper</definition>
+        <argsstring>(T rtp_table, const std::pair&lt; int, int &gt; &amp;range, std::string_view src_name, int src_index, int dst_index, bool *is_rtp_asset)</argsstring>
+        <name>lookup_rtp_to_rtp_helper</name>
+        <param>
+          <type>T</type>
+          <declname>rtp_table</declname>
+        </param>
+        <param>
+          <type>const std::pair&lt; int, int &gt; &amp;</type>
+          <declname>range</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>src_name</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>src_index</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dst_index</declname>
+        </param>
+        <param>
+          <type>bool *</type>
+          <declname>is_rtp_asset</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.cpp" line="157" column="20" bodyfile="rtp.cpp" bodystart="157" bodyend="178"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;algorithm&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;array&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cassert&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstring&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="rtp_8h" kindref="compound">rtp.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::pair&lt;int,<sp/>int&gt;<sp/>get_table_idx(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lookup_table[16],<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>lookup_table_idx[16],<sp/>std::string_view<sp/>category)<sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>lookup_table[i]<sp/>!=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(std::string_view(lookup_table[i])<sp/>==<sp/>category)<sp/>{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{lookup_table_idx[i],<sp/>lookup_table_idx[i+1]};</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Points<sp/>at<sp/>nullptr<sp/>(final<sp/>row)<sp/>in<sp/>the<sp/>rtp<sp/>table</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{lookup_table_idx[i],<sp/>lookup_table_idx[i]};</highlight></codeline>
+<codeline lineno="35"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>detect_helper(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref>&amp;<sp/>fs,<sp/>std::vector&lt;struct<sp/>RTP::RtpHitInfo&gt;&amp;<sp/>hit_list,</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T<sp/>rtp_table,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>num_rtps,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>offset,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::pair&lt;int,<sp/>int&gt;&amp;<sp/>range,<sp/>Span&lt;std::string_view&gt;<sp/>ext_list,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>miss_limit)<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>ret;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>j<sp/>=<sp/>1;<sp/>j<sp/>&lt;=<sp/>num_rtps;<sp/>++j)<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>cur_miss<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>range.first;<sp/>i<sp/>&lt;<sp/>range.second;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>category<sp/>=<sp/>rtp_table[i][0];</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>name<sp/>=<sp/>rtp_table[i][j];</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(name<sp/>!=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>TODO:<sp/>Filefinder<sp/>refactor<sp/>should<sp/>provide<sp/>FindImage<sp/>etc.<sp/>for<sp/>non-project<sp/>trees</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_directory_tree_1_1_args" kindref="compound">DirectoryTree::Args</ref><sp/>args<sp/>=<sp/>{<sp/><ref refid="namespace_file_finder_1a4fd812bde01ba517d506ff2b5ccb1821" kindref="member">FileFinder::MakePath</ref>(category,<sp/>name),<sp/>ext_list,<sp/>1,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret<sp/>=<sp/>fs.<ref refid="class_filesystem_view_1abcab7f2060f92a8905c4d83f4cce8f5e" kindref="member">FindFile</ref>(args);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!ret.empty())<sp/>{</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hit_list[offset<sp/>+<sp/>j<sp/>-<sp/>1].hits++;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>++cur_miss;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(cur_miss<sp/>&gt;<sp/>miss_limit)<sp/>{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63" refid="namespace_r_t_p_1a24f8665166e3663272fafcab581d56c1" refkind="member"><highlight class="normal">std::vector&lt;RTP::RtpHitInfo&gt;<sp/><ref refid="namespace_r_t_p_1a24f8665166e3663272fafcab581d56c1" kindref="member">RTP::Detect</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref>&amp;<sp/>fs,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>version,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>miss_limit)<sp/>{</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;struct<sp/>RTP::RtpHitInfo&gt;<sp/>hit_list<sp/>=<sp/>{{</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aaf85433ed800839d169fd106eae634f17" kindref="member">RTP::Type::RPG2000_OfficialJapanese</ref>,<sp/><ref refid="namespace_r_t_p_1a0797cb8a6ebcf7a1d9567e4d4511a7cf" kindref="member">kTypes</ref>[0],<sp/>2000,<sp/>0,<sp/>465,<sp/>fs},</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa0d1d61d807b4f88f4d7421173b4048c7" kindref="member">RTP::Type::RPG2000_OfficialEnglish</ref>,<sp/><ref refid="namespace_r_t_p_1a0797cb8a6ebcf7a1d9567e4d4511a7cf" kindref="member">kTypes</ref>[1],<sp/>2000,<sp/>0,<sp/>465,<sp/>fs},</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aad1616556f085fabad5ca7a4bad222128" kindref="member">RTP::Type::RPG2000_DonMiguelEnglish</ref>,<sp/><ref refid="namespace_r_t_p_1a0797cb8a6ebcf7a1d9567e4d4511a7cf" kindref="member">kTypes</ref>[2],<sp/>2000,<sp/>0,<sp/>500,<sp/>fs},</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aad3d2a9cf100b89612cb7c4ff3a3078aa" kindref="member">RTP::Type::RPG2000_DonMiguelAddon</ref>,<sp/><ref refid="namespace_r_t_p_1a0797cb8a6ebcf7a1d9567e4d4511a7cf" kindref="member">kTypes</ref>[3],<sp/>2000,<sp/>0,<sp/>503,<sp/>fs},</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa1c6c8246425a9df9d19d4882d962a0ad" kindref="member">RTP::Type::RPG2003_OfficialJapanese</ref>,<sp/><ref refid="namespace_r_t_p_1a0797cb8a6ebcf7a1d9567e4d4511a7cf" kindref="member">kTypes</ref>[4],<sp/>2003,<sp/>0,<sp/>675,<sp/>fs},</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa1f742045534f5f88ddea42cd062a253c" kindref="member">RTP::Type::RPG2003_OfficialEnglish</ref>,<sp/><ref refid="namespace_r_t_p_1a0797cb8a6ebcf7a1d9567e4d4511a7cf" kindref="member">kTypes</ref>[5],<sp/>2003,<sp/>0,<sp/>675,<sp/>fs},</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa722a9d9158d99465e06fc69f5b07acab" kindref="member">RTP::Type::RPG2003_RpgAdvocateEnglish</ref>,<sp/><ref refid="namespace_r_t_p_1a0797cb8a6ebcf7a1d9567e4d4511a7cf" kindref="member">kTypes</ref>[6],<sp/>2003,<sp/>0,<sp/>675,<sp/>fs},</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa4634a6c40c8cc9e2f0b4e7a9eaee3f31" kindref="member">RTP::Type::RPG2003_VladRussian</ref>,<sp/><ref refid="namespace_r_t_p_1a0797cb8a6ebcf7a1d9567e4d4511a7cf" kindref="member">kTypes</ref>[7],<sp/>2003,<sp/>0,<sp/>350,<sp/>fs},</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aab3c05dab7859cf11829b8e5be10abed1" kindref="member">RTP::Type::RPG2003_RpgUniverseSpanishPortuguese</ref>,<sp/><ref refid="namespace_r_t_p_1a0797cb8a6ebcf7a1d9567e4d4511a7cf" kindref="member">kTypes</ref>[8],<sp/>2003,<sp/>0,<sp/>600,<sp/>fs},</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa0e1577000015931b32ccac863c3fcf6d" kindref="member">RTP::Type::RPG2003_Korean</ref>,<sp/><ref refid="namespace_r_t_p_1a0797cb8a6ebcf7a1d9567e4d4511a7cf" kindref="member">kTypes</ref>[9],<sp/>2003,<sp/>0,<sp/>675,<sp/>fs},</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa130780b372f23ef986f1bfddd4ca65a1" kindref="member">RTP::Type::RPG2003_OfficialTraditionalChinese</ref>,<sp/><ref refid="namespace_r_t_p_1a0797cb8a6ebcf7a1d9567e4d4511a7cf" kindref="member">kTypes</ref>[10],<sp/>2003,<sp/>0,<sp/>676,<sp/>fs}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>}};</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>SOUND_TYPES<sp/>=<sp/><ref refid="namespace_utils_1a6cd68ab5b29a5edbbe7c7325498e8cf8" kindref="member">Utils::MakeSvVector</ref>(</highlight><highlight class="stringliteral">&quot;.wav&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;.mp3&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>MUSIC_TYPES<sp/>=<sp/><ref refid="namespace_utils_1a6cd68ab5b29a5edbbe7c7325498e8cf8" kindref="member">Utils::MakeSvVector</ref>(</highlight><highlight class="stringliteral">&quot;.wav&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;.mid&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>MOVIE_TYPES<sp/>=<sp/><ref refid="namespace_utils_1a6cd68ab5b29a5edbbe7c7325498e8cf8" kindref="member">Utils::MakeSvVector</ref>(</highlight><highlight class="stringliteral">&quot;.avi&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>IMAGE_TYPES<sp/>=<sp/><ref refid="namespace_utils_1a6cd68ab5b29a5edbbe7c7325498e8cf8" kindref="member">Utils::MakeSvVector</ref>(</highlight><highlight class="stringliteral">&quot;.png&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>ext_for_cat<sp/>=<sp/>[=](</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>category)<sp/>{</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!strcmp(</highlight><highlight class="stringliteral">&quot;sound&quot;</highlight><highlight class="normal">,<sp/>category))<sp/>{</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SOUND_TYPES;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!strcmp(</highlight><highlight class="stringliteral">&quot;music&quot;</highlight><highlight class="normal">,<sp/>category))<sp/>{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>MUSIC_TYPES;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!strcmp(</highlight><highlight class="stringliteral">&quot;movie&quot;</highlight><highlight class="normal">,<sp/>category))<sp/>{</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>MOVIE_TYPES;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>IMAGE_TYPES;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(version<sp/>==<sp/>2000<sp/>||<sp/>version<sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/><ref refid="namespace_r_t_p_1a4e20b856bdb2a727a5b1112958914d90" kindref="member">rtp_table_2k_categories</ref>[i]<sp/>!=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>category<sp/>=<sp/><ref refid="namespace_r_t_p_1a4e20b856bdb2a727a5b1112958914d90" kindref="member">rtp_table_2k_categories</ref>[i];</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::pair&lt;int,<sp/>int&gt;<sp/>range<sp/>=<sp/>{<ref refid="namespace_r_t_p_1a9c68654b1eb380201a10ca6b3199b8aa" kindref="member">rtp_table_2k_categories_idx</ref>[i],<sp/><ref refid="namespace_r_t_p_1a9c68654b1eb380201a10ca6b3199b8aa" kindref="member">rtp_table_2k_categories_idx</ref>[i+1]};</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>ext_list<sp/>=<sp/>ext_for_cat(category);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>detect_helper(fs,<sp/>hit_list,<sp/><ref refid="namespace_r_t_p_1aab9225024ac1d40fe3a3d4261e481f3b" kindref="member">rtp_table_2k</ref>,<sp/><ref refid="namespace_r_t_p_1aaa1bf98e558c12d19982a1d065d610e7" kindref="member">num_2k_rtps</ref>,<sp/>0,<sp/>range,<sp/>ext_list,<sp/>miss_limit);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(version<sp/>==<sp/>2003<sp/>||<sp/>version<sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/><ref refid="namespace_r_t_p_1a090b17c1e2cd7ffb58c6487e7f214625" kindref="member">rtp_table_2k3_categories</ref>[i]<sp/>!=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>category<sp/>=<sp/><ref refid="namespace_r_t_p_1a090b17c1e2cd7ffb58c6487e7f214625" kindref="member">rtp_table_2k3_categories</ref>[i];</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::pair&lt;int,<sp/>int&gt;<sp/>range<sp/>=<sp/>{<ref refid="namespace_r_t_p_1a391856c3d719eb45aec72043e8d1c772" kindref="member">rtp_table_2k3_categories_idx</ref>[i],<sp/><ref refid="namespace_r_t_p_1a391856c3d719eb45aec72043e8d1c772" kindref="member">rtp_table_2k3_categories_idx</ref>[i+1]};</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>ext_list<sp/>=<sp/>ext_for_cat(category);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>detect_helper(fs,<sp/>hit_list,<sp/><ref refid="namespace_r_t_p_1aa1477350016612f749fd9a3d0d8383c0" kindref="member">rtp_table_2k3</ref>,<sp/><ref refid="namespace_r_t_p_1a0b9eb45cd96abde77d58243834a97c2a" kindref="member">num_2k3_rtps</ref>,<sp/><ref refid="namespace_r_t_p_1aaa1bf98e558c12d19982a1d065d610e7" kindref="member">num_2k_rtps</ref>,<sp/>range,<sp/>ext_list,<sp/>miss_limit);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>remove<sp/>RTPs<sp/>with<sp/>zero<sp/>hits</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>it<sp/>=<sp/>hit_list.begin();<sp/>it<sp/>!=<sp/>hit_list.end();<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(it-&gt;hits<sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>it<sp/>=<sp/>hit_list.erase(it);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>++it;</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>sort<sp/>by<sp/>hit<sp/>rate<sp/>(best<sp/>to<sp/>worse)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>std::sort(hit_list.begin(),<sp/>hit_list.end(),<sp/>[](</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="struct_r_t_p_1_1_rtp_hit_info" kindref="compound">RTP::RtpHitInfo</ref>&amp;<sp/>a,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct</highlight><highlight class="normal"><sp/><ref refid="struct_r_t_p_1_1_rtp_hit_info" kindref="compound">RTP::RtpHitInfo</ref>&amp;<sp/>b)<sp/>{</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>(float)a.hits<sp/>/<sp/>a.max<sp/>&gt;<sp/>(float)b.hits<sp/>/<sp/>b.max;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>});</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>hit_list;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::vector&lt;RTP::Type&gt;<sp/>lookup_any_to_rtp_helper(T<sp/>rtp_table,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::pair&lt;int,<sp/>int&gt;&amp;<sp/>range,</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string_view<sp/>src_name,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>num_rtps,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>offset)<sp/>{</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;RTP::Type&gt;<sp/>type_hits;</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>range.first;<sp/>i<sp/>&lt;<sp/>range.second;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>j<sp/>=<sp/>1;<sp/>j<sp/>&lt;=<sp/>num_rtps;<sp/>++j)<sp/>{</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>name<sp/>=<sp/>rtp_table[i][j];</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(name<sp/>!=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal"><sp/>&amp;&amp;<sp/>src_name<sp/>==<sp/>std::string_view(name))<sp/>{</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>type_hits.push_back((<ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0a" kindref="member">RTP::Type</ref>)(j<sp/>-<sp/>1<sp/>+<sp/>offset));</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>type_hits;</highlight></codeline>
+<codeline lineno="144"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146" refid="namespace_r_t_p_1acee4cf136ed4259c2e64fc84b563545d" refkind="member"><highlight class="normal">std::vector&lt;RTP::Type&gt;<sp/><ref refid="namespace_r_t_p_1acee4cf136ed4259c2e64fc84b563545d" kindref="member">RTP::LookupAnyToRtp</ref>(std::string_view<sp/>src_category,<sp/>std::string_view<sp/>src_name,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>version)<sp/>{</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(version<sp/>==<sp/>2000)<sp/>{</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>tbl_idx<sp/>=<sp/>get_table_idx(<ref refid="namespace_r_t_p_1a4e20b856bdb2a727a5b1112958914d90" kindref="member">rtp_table_2k_categories</ref>,<sp/><ref refid="namespace_r_t_p_1a9c68654b1eb380201a10ca6b3199b8aa" kindref="member">rtp_table_2k_categories_idx</ref>,<sp/>src_category);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lookup_any_to_rtp_helper(<ref refid="namespace_r_t_p_1aab9225024ac1d40fe3a3d4261e481f3b" kindref="member">rtp_table_2k</ref>,<sp/>tbl_idx,<sp/>src_name,<sp/><ref refid="namespace_r_t_p_1aaa1bf98e558c12d19982a1d065d610e7" kindref="member">num_2k_rtps</ref>,<sp/>0);</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>tbl_idx<sp/>=<sp/>get_table_idx(<ref refid="namespace_r_t_p_1a090b17c1e2cd7ffb58c6487e7f214625" kindref="member">rtp_table_2k3_categories</ref>,<sp/><ref refid="namespace_r_t_p_1a391856c3d719eb45aec72043e8d1c772" kindref="member">rtp_table_2k3_categories_idx</ref>,<sp/>src_category);</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lookup_any_to_rtp_helper(<ref refid="namespace_r_t_p_1aa1477350016612f749fd9a3d0d8383c0" kindref="member">rtp_table_2k3</ref>,<sp/>tbl_idx,<sp/>src_name,<sp/><ref refid="namespace_r_t_p_1a0b9eb45cd96abde77d58243834a97c2a" kindref="member">num_2k3_rtps</ref>,<sp/><ref refid="namespace_r_t_p_1aaa1bf98e558c12d19982a1d065d610e7" kindref="member">num_2k_rtps</ref>);</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="154"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::string<sp/>lookup_rtp_to_rtp_helper(T<sp/>rtp_table,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::pair&lt;int,<sp/>int&gt;&amp;<sp/>range,</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string_view<sp/>src_name,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>src_index,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>dst_index,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">*<sp/>is_rtp_asset)<sp/>{</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>range.first;<sp/>i<sp/>&lt;<sp/>range.second;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>name<sp/>=<sp/>rtp_table[i][src_index<sp/>+<sp/>1];</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(name<sp/>!=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal"><sp/>&amp;&amp;<sp/>src_name<sp/>==<sp/>std::string_view(name))<sp/>{</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>dst_name<sp/>=<sp/>rtp_table[i][dst_index<sp/>+<sp/>1];</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(is_rtp_asset)<sp/>{</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*is_rtp_asset<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>dst_name<sp/>==<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal"><sp/>?<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>:<sp/>dst_name;</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(is_rtp_asset)<sp/>{</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*is_rtp_asset<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="178"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight></codeline>
+<codeline lineno="180" refid="namespace_r_t_p_1a57b0857704928d8503e0ee6274195d06" refkind="member"><highlight class="normal">std::string<sp/><ref refid="namespace_r_t_p_1a57b0857704928d8503e0ee6274195d06" kindref="member">RTP::LookupRtpToRtp</ref>(std::string_view<sp/>src_category,<sp/>std::string_view<sp/>src_name,<sp/><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0a" kindref="member">RTP::Type</ref><sp/>src_rtp,</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0a" kindref="member">RTP::Type</ref><sp/>target_rtp,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">*<sp/>is_rtp_asset)<sp/>{</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>ensure<sp/>both<sp/>2k<sp/>or<sp/>2k3</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(((</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)src_rtp<sp/>&lt;<sp/><ref refid="namespace_r_t_p_1aaa1bf98e558c12d19982a1d065d610e7" kindref="member">num_2k_rtps</ref><sp/>&amp;&amp;<sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)target_rtp<sp/>&lt;<sp/><ref refid="namespace_r_t_p_1aaa1bf98e558c12d19982a1d065d610e7" kindref="member">num_2k_rtps</ref>)<sp/>||</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>((</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)src_rtp<sp/>&gt;=<sp/><ref refid="namespace_r_t_p_1aaa1bf98e558c12d19982a1d065d610e7" kindref="member">num_2k_rtps</ref><sp/>&amp;&amp;<sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)target_rtp<sp/>&gt;=<sp/><ref refid="namespace_r_t_p_1aaa1bf98e558c12d19982a1d065d610e7" kindref="member">num_2k_rtps</ref>));</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(src_rtp<sp/>==<sp/>target_rtp)<sp/>{</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Design<sp/>limitation:<sp/>When<sp/>game_rtp<sp/>==<sp/>installed<sp/>rtp<sp/>can&apos;t<sp/>tell<sp/>if<sp/>it<sp/>is<sp/>a<sp/>rtp<sp/>asset,<sp/>this<sp/>needs<sp/>a<sp/>table<sp/>scan</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(is_rtp_asset)<sp/>{</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*is_rtp_asset<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ToString(src_name);</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)src_rtp<sp/>&lt;<sp/><ref refid="namespace_r_t_p_1aaa1bf98e558c12d19982a1d065d610e7" kindref="member">num_2k_rtps</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>tbl_idx<sp/>=<sp/>get_table_idx(<ref refid="namespace_r_t_p_1a4e20b856bdb2a727a5b1112958914d90" kindref="member">rtp_table_2k_categories</ref>,<sp/><ref refid="namespace_r_t_p_1a9c68654b1eb380201a10ca6b3199b8aa" kindref="member">rtp_table_2k_categories_idx</ref>,<sp/>src_category);</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lookup_rtp_to_rtp_helper(<ref refid="namespace_r_t_p_1aab9225024ac1d40fe3a3d4261e481f3b" kindref="member">rtp_table_2k</ref>,<sp/>tbl_idx,<sp/>src_name,<sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)src_rtp,<sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)target_rtp,<sp/>is_rtp_asset);</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>tbl_idx<sp/>=<sp/>get_table_idx(<ref refid="namespace_r_t_p_1a090b17c1e2cd7ffb58c6487e7f214625" kindref="member">rtp_table_2k3_categories</ref>,<sp/><ref refid="namespace_r_t_p_1a391856c3d719eb45aec72043e8d1c772" kindref="member">rtp_table_2k3_categories_idx</ref>,<sp/>src_category);</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lookup_rtp_to_rtp_helper(<ref refid="namespace_r_t_p_1aa1477350016612f749fd9a3d0d8383c0" kindref="member">rtp_table_2k3</ref>,<sp/>tbl_idx,<sp/>src_name,<sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)src_rtp<sp/>-<sp/><ref refid="namespace_r_t_p_1aaa1bf98e558c12d19982a1d065d610e7" kindref="member">num_2k_rtps</ref>,<sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)target_rtp<sp/>-<sp/><ref refid="namespace_r_t_p_1aaa1bf98e558c12d19982a1d065d610e7" kindref="member">num_2k_rtps</ref>,<sp/>is_rtp_asset);</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="201"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="rtp.cpp"/>
+  </compounddef>
+</doxygen>

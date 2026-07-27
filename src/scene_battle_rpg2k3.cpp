@@ -3029,3 +3029,4 @@ void Scene_Battle_Rpg2k3::CBAMove() {
 		}
 	}
 }
+

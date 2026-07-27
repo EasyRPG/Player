@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="linit_8c" kind="file" language="C++">
+    <compoundname>linit.c</compoundname>
+    <includes refid="lprefix_8h" local="yes">lprefix.h</includes>
+    <includes local="no">stddef.h</includes>
+    <includes refid="lua_8h" local="yes">lua.h</includes>
+    <includes refid="lualib_8h" local="yes">lualib.h</includes>
+    <includes refid="lauxlib_8h" local="yes">lauxlib.h</includes>
+    <includes refid="llimits_8h" local="yes">llimits.h</includes>
+    <incdepgraph>
+      <node id="9">
+        <label>lauxlib.h</label>
+        <link refid="lauxlib_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/linit.c</label>
+        <link refid="linit_8c"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>lprefix.h</label>
+        <link refid="lprefix_8h"/>
+      </node>
+      <node id="4">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>lualib.h</label>
+        <link refid="lualib_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>limits.h</label>
+      </node>
+      <node id="5">
+        <label>stdarg.h</label>
+      </node>
+      <node id="3">
+        <label>stddef.h</label>
+      </node>
+      <node id="10">
+        <label>stdio.h</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="linit_8c_1ae5afd9dab2b8e7dcf0d6aa17ccec17bd" prot="public" static="no">
+        <name>linit_c</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/linit.c" line="8" column="9" bodyfile="leasy/lua/linit.c" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="linit_8c_1a884b19ad6094d6238c4072a8064aeb12" prot="public" static="no">
+        <name>LUA_LIB</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/linit.c" line="9" column="9" bodyfile="leasy/lua/linit.c" bodystart="9" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="linit_8c_1ae569b4d6890d2c067eb29c9bd3d6f479" prot="public" static="yes" mutable="no">
+        <type>const <ref refid="structlua_l___reg" kindref="compound">luaL_Reg</ref></type>
+        <definition>const luaL_Reg stdlibs[]</definition>
+        <argsstring>[]</argsstring>
+        <name>stdlibs</name>
+        <initializer>                              = {
+  {<ref refid="lauxlib_8h_1a074d53b3afd2b899d4b986c9643fb41a" kindref="member">LUA_GNAME</ref>, <ref refid="lbaselib_8c_1ae99bbf706d0fcfb0c1c7afbe3c4de382" kindref="member">luaopen_base</ref>},
+  {<ref refid="lualib_8h_1a875eb4d5f4d22b844254330b45f02b76" kindref="member">LUA_LOADLIBNAME</ref>, <ref refid="loadlib_8c_1ab732e1ec253c9b8dc0c2ce4d74cb0083" kindref="member">luaopen_package</ref>},
+  {<ref refid="lualib_8h_1a8548d3b29e4dffa749a4ca4288bec7e3" kindref="member">LUA_COLIBNAME</ref>, <ref refid="lcorolib_8c_1a8515aa0d6a2e901a5397afd5e4250db2" kindref="member">luaopen_coroutine</ref>},
+  {<ref refid="lualib_8h_1a4c656e7d665aa72e62976adc701795f9" kindref="member">LUA_DBLIBNAME</ref>, <ref refid="ldblib_8c_1ad94d3e2d0ca6d83a904a3ba9aad04f3b" kindref="member">luaopen_debug</ref>},
+  {<ref refid="lualib_8h_1a54fc1c91f79390071a7b7fc341c9aac0" kindref="member">LUA_IOLIBNAME</ref>, <ref refid="liolib_8c_1a2d3f245e532f3d582a4ff62bbd567149" kindref="member">luaopen_io</ref>},
+  {<ref refid="lualib_8h_1a18b55f45d0662ae9c460e4607913bbd7" kindref="member">LUA_MATHLIBNAME</ref>, <ref refid="lmathlib_8c_1a78cbff06fd4d59cf3d7525fa6cc196ba" kindref="member">luaopen_math</ref>},
+  {<ref refid="lualib_8h_1ac89a67224db2eecc20aded867531e26d" kindref="member">LUA_OSLIBNAME</ref>, <ref refid="loslib_8c_1a03d1c1c58e52032aee542b65a2b1c3ca" kindref="member">luaopen_os</ref>},
+  {<ref refid="lualib_8h_1aa973f7834b4cbf409e5a2752d91cf2c0" kindref="member">LUA_STRLIBNAME</ref>, <ref refid="lstrlib_8c_1ab65aeff75cb100dde75e955c698c83b8" kindref="member">luaopen_string</ref>},
+  {<ref refid="lualib_8h_1aa9da6ee4401c3ea9591a60ae5514a4dd" kindref="member">LUA_TABLIBNAME</ref>, <ref refid="ltablib_8c_1acfb66f04d8d0ea06cb1c4c059b9e142b" kindref="member">luaopen_table</ref>},
+  {<ref refid="lualib_8h_1abc11555bcb492e59444d8774bd8970d8" kindref="member">LUA_UTF8LIBNAME</ref>, <ref refid="lualib_8h_1ae1247f71bc4b3f3be7da9c9d5c7668b1" kindref="member">luaopen_utf8</ref>},
+  {NULL, NULL}
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/linit.c" line="28" column="23" bodyfile="leasy/lua/linit.c" bodystart="28" bodyend="40"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="linit_8c_1ad09996aefb08d65ffee01b1729919261" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_openselectedlibs</definition>
+        <argsstring>(lua_State *L, int load, int preload)</argsstring>
+        <name>luaL_openselectedlibs</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>load</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>preload</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/linit.c" line="46" column="17" bodyfile="leasy/lua/linit.c" bodystart="46" bodyend="62"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>linit.c<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Initialization<sp/>of<sp/>libraries<sp/>for<sp/>lua.c<sp/>and<sp/>other<sp/>clients</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="linit_8c_1ae5afd9dab2b8e7dcf0d6aa17ccec17bd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>linit_c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9" refid="linit_8c_1a884b19ad6094d6238c4072a8064aeb12" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_LIB</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lprefix_8h" kindref="compound">lprefix.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stddef.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lua_8h" kindref="compound">lua.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lualib_8h" kindref="compound">lualib.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lauxlib_8h" kindref="compound">lauxlib.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="llimits_8h" kindref="compound">llimits.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="25"><highlight class="comment">**<sp/>Standard<sp/>Libraries.<sp/>(Must<sp/>be<sp/>listed<sp/>in<sp/>the<sp/>same<sp/>ORDER<sp/>of<sp/>their</highlight></codeline>
+<codeline lineno="26"><highlight class="comment">**<sp/>respective<sp/>constants<sp/>LUA_&lt;libname&gt;K.)</highlight></codeline>
+<codeline lineno="27"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structlua_l___reg" kindref="compound">luaL_Reg</ref><sp/>stdlibs[]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/>{<ref refid="lauxlib_8h_1a074d53b3afd2b899d4b986c9643fb41a" kindref="member">LUA_GNAME</ref>,<sp/><ref refid="lbaselib_8c_1ae99bbf706d0fcfb0c1c7afbe3c4de382" kindref="member">luaopen_base</ref>},</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/>{<ref refid="lualib_8h_1a875eb4d5f4d22b844254330b45f02b76" kindref="member">LUA_LOADLIBNAME</ref>,<sp/><ref refid="loadlib_8c_1ab732e1ec253c9b8dc0c2ce4d74cb0083" kindref="member">luaopen_package</ref>},</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/>{<ref refid="lualib_8h_1a8548d3b29e4dffa749a4ca4288bec7e3" kindref="member">LUA_COLIBNAME</ref>,<sp/><ref refid="lcorolib_8c_1a8515aa0d6a2e901a5397afd5e4250db2" kindref="member">luaopen_coroutine</ref>},</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/>{<ref refid="lualib_8h_1a4c656e7d665aa72e62976adc701795f9" kindref="member">LUA_DBLIBNAME</ref>,<sp/><ref refid="ldblib_8c_1ad94d3e2d0ca6d83a904a3ba9aad04f3b" kindref="member">luaopen_debug</ref>},</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/>{<ref refid="lualib_8h_1a54fc1c91f79390071a7b7fc341c9aac0" kindref="member">LUA_IOLIBNAME</ref>,<sp/><ref refid="liolib_8c_1a2d3f245e532f3d582a4ff62bbd567149" kindref="member">luaopen_io</ref>},</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/>{<ref refid="lualib_8h_1a18b55f45d0662ae9c460e4607913bbd7" kindref="member">LUA_MATHLIBNAME</ref>,<sp/><ref refid="lmathlib_8c_1a78cbff06fd4d59cf3d7525fa6cc196ba" kindref="member">luaopen_math</ref>},</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/>{<ref refid="lualib_8h_1ac89a67224db2eecc20aded867531e26d" kindref="member">LUA_OSLIBNAME</ref>,<sp/><ref refid="loslib_8c_1a03d1c1c58e52032aee542b65a2b1c3ca" kindref="member">luaopen_os</ref>},</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/>{<ref refid="lualib_8h_1aa973f7834b4cbf409e5a2752d91cf2c0" kindref="member">LUA_STRLIBNAME</ref>,<sp/><ref refid="lstrlib_8c_1ab65aeff75cb100dde75e955c698c83b8" kindref="member">luaopen_string</ref>},</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/>{<ref refid="lualib_8h_1aa9da6ee4401c3ea9591a60ae5514a4dd" kindref="member">LUA_TABLIBNAME</ref>,<sp/><ref refid="ltablib_8c_1acfb66f04d8d0ea06cb1c4c059b9e142b" kindref="member">luaopen_table</ref>},</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/>{<ref refid="lualib_8h_1abc11555bcb492e59444d8774bd8970d8" kindref="member">LUA_UTF8LIBNAME</ref>,<sp/><ref refid="lualib_8h_1ae1247f71bc4b3f3be7da9c9d5c7668b1" kindref="member">luaopen_utf8</ref>},</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/>{NULL,<sp/>NULL}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="44"><highlight class="comment">**<sp/>require<sp/>and<sp/>preload<sp/>selected<sp/>standard<sp/>libraries</highlight></codeline>
+<codeline lineno="45"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="linit_8c_1ad09996aefb08d65ffee01b1729919261" refkind="member"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="linit_8c_1ad09996aefb08d65ffee01b1729919261" kindref="member">luaL_openselectedlibs</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>load,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>preload)<sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mask;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structlua_l___reg" kindref="compound">luaL_Reg</ref><sp/>*lib;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><ref refid="lauxlib_8c_1a4cd66d7b986316711233243a268e8e04" kindref="member">luaL_getsubtable</ref>(L,<sp/><ref refid="lua_8h_1a3524c2bbc8fcf847dc083246b62945dd" kindref="member">LUA_REGISTRYINDEX</ref>,<sp/><ref refid="lauxlib_8h_1ab654a257ab8f9de4ba519a64a9a9ea91" kindref="member">LUA_PRELOAD_TABLE</ref>);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(lib<sp/>=<sp/>stdlibs,<sp/>mask<sp/>=<sp/>1;<sp/>lib-&gt;<ref refid="structlua_l___reg_1a58b99f63b304e5c489b90d812f92cba2" kindref="member">name</ref><sp/>!=<sp/>NULL;<sp/>lib++,<sp/>mask<sp/>&lt;&lt;=<sp/>1)<sp/>{</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(load<sp/>&amp;<sp/>mask)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>selected?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lauxlib_8c_1a3cb8205f86c838d8f82b7d2360b1b0f4" kindref="member">luaL_requiref</ref>(L,<sp/>lib-&gt;<ref refid="structlua_l___reg_1a58b99f63b304e5c489b90d812f92cba2" kindref="member">name</ref>,<sp/>lib-&gt;<ref refid="structlua_l___reg_1a54aa8f9955870caf78148514e61196ce" kindref="member">func</ref>,<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>require<sp/>library<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lua_8h_1abb8eae2164badeafdb037bc1e03cc822" kindref="member">lua_pop</ref>(L,<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>remove<sp/>result<sp/>from<sp/>the<sp/>stack<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(preload<sp/>&amp;<sp/>mask)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>selected?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lua_8h_1a2e4fbbe97182bf90004379202202f2b9" kindref="member">lua_pushcfunction</ref>(L,<sp/>lib-&gt;<ref refid="structlua_l___reg_1a54aa8f9955870caf78148514e61196ce" kindref="member">func</ref>);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a3f2f542ee6728d82e51b1c302f9606df" kindref="member">lua_setfield</ref>(L,<sp/>-2,<sp/>lib-&gt;<ref refid="structlua_l___reg_1a58b99f63b304e5c489b90d812f92cba2" kindref="member">name</ref>);<sp/><sp/></highlight><highlight class="comment">/*<sp/>add<sp/>library<sp/>to<sp/>PRELOAD<sp/>table<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>((mask<sp/>&gt;&gt;<sp/>1)<sp/>==<sp/><ref refid="lualib_8h_1a4a1394187f847bd0fb5e972ecb5dba48" kindref="member">LUA_UTF8LIBK</ref>);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1abb8eae2164badeafdb037bc1e03cc822" kindref="member">lua_pop</ref>(L,<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>remove<sp/>PRELOAD<sp/>table<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/linit.c"/>
+  </compounddef>
+</doxygen>

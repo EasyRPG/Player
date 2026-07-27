@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_tilemap_layer_1_1_tile_x_y" kind="struct" language="C++" prot="private">
+    <compoundname>TilemapLayer::TileXY</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_tilemap_layer_1_1_tile_x_y_1a198f3a23e2d9c5c5560c19f34c8f887d" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t TilemapLayer::TileXY::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <qualifiedname>TilemapLayer::TileXY::x</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="131" column="9" bodyfile="tilemap_layer.h" bodystart="131" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_tilemap_layer_1_1_tile_x_y_1a06732181e3309468cd8e946c4752159c" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t TilemapLayer::TileXY::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <qualifiedname>TilemapLayer::TileXY::y</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="132" column="9" bodyfile="tilemap_layer.h" bodystart="132" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_tilemap_layer_1_1_tile_x_y_1ae0bdd1539c32d925b22cdcb509e03c3d" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool TilemapLayer::TileXY::valid</definition>
+        <argsstring></argsstring>
+        <name>valid</name>
+        <qualifiedname>TilemapLayer::TileXY::valid</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="133" column="6" bodyfile="tilemap_layer.h" bodystart="133" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_tilemap_layer_1_1_tile_x_y_1a99c97126fcfdff86d580da0b7a67fa57" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>TilemapLayer::TileXY::TileXY</definition>
+        <argsstring>()</argsstring>
+        <name>TileXY</name>
+        <qualifiedname>TilemapLayer::TileXY::TileXY</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="134" column="1" bodyfile="tilemap_layer.h" bodystart="134" bodyend="134"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_tilemap_layer_1_1_tile_x_y_1ad379710f6bfc8a2b4396aa83cbfdcb55" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>TilemapLayer::TileXY::TileXY</definition>
+        <argsstring>(uint8_t x, uint8_t y)</argsstring>
+        <name>TileXY</name>
+        <qualifiedname>TilemapLayer::TileXY::TileXY</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="135" column="1" bodyfile="tilemap_layer.h" bodystart="135" bodyend="135"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="tilemap_layer.h" line="130" column="1" bodyfile="tilemap_layer.h" bodystart="130" bodyend="136"/>
+    <listofallmembers>
+      <member refid="struct_tilemap_layer_1_1_tile_x_y_1a99c97126fcfdff86d580da0b7a67fa57" prot="public" virt="non-virtual"><scope>TilemapLayer::TileXY</scope><name>TileXY</name></member>
+      <member refid="struct_tilemap_layer_1_1_tile_x_y_1ad379710f6bfc8a2b4396aa83cbfdcb55" prot="public" virt="non-virtual"><scope>TilemapLayer::TileXY</scope><name>TileXY</name></member>
+      <member refid="struct_tilemap_layer_1_1_tile_x_y_1ae0bdd1539c32d925b22cdcb509e03c3d" prot="public" virt="non-virtual"><scope>TilemapLayer::TileXY</scope><name>valid</name></member>
+      <member refid="struct_tilemap_layer_1_1_tile_x_y_1a198f3a23e2d9c5c5560c19f34c8f887d" prot="public" virt="non-virtual"><scope>TilemapLayer::TileXY</scope><name>x</name></member>
+      <member refid="struct_tilemap_layer_1_1_tile_x_y_1a06732181e3309468cd8e946c4752159c" prot="public" virt="non-virtual"><scope>TilemapLayer::TileXY</scope><name>y</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

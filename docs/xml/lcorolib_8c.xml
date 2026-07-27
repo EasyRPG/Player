@@ -1,0 +1,687 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lcorolib_8c" kind="file" language="C++">
+    <compoundname>lcorolib.c</compoundname>
+    <includes refid="lprefix_8h" local="yes">lprefix.h</includes>
+    <includes local="no">stdlib.h</includes>
+    <includes refid="lua_8h" local="yes">lua.h</includes>
+    <includes refid="lauxlib_8h" local="yes">lauxlib.h</includes>
+    <includes refid="lualib_8h" local="yes">lualib.h</includes>
+    <includes refid="llimits_8h" local="yes">llimits.h</includes>
+    <incdepgraph>
+      <node id="9">
+        <label>lauxlib.h</label>
+        <link refid="lauxlib_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lcorolib.c</label>
+        <link refid="lcorolib_8c"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>lprefix.h</label>
+        <link refid="lprefix_8h"/>
+      </node>
+      <node id="4">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>lualib.h</label>
+        <link refid="lualib_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>limits.h</label>
+      </node>
+      <node id="5">
+        <label>stdarg.h</label>
+      </node>
+      <node id="6">
+        <label>stddef.h</label>
+      </node>
+      <node id="10">
+        <label>stdio.h</label>
+      </node>
+      <node id="3">
+        <label>stdlib.h</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lcorolib_8c_1a31c0a2b112d201fa0724ffc2b060bae9" prot="public" static="no">
+        <name>lcorolib_c</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="7" column="9" bodyfile="leasy/lua/lcorolib.c" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lcorolib_8c_1a884b19ad6094d6238c4072a8064aeb12" prot="public" static="no">
+        <name>LUA_LIB</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="8" column="9" bodyfile="leasy/lua/lcorolib.c" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lcorolib_8c_1adaddcee95d6b75c9dbd868c5d0712a3d" prot="public" static="no">
+        <name>COS_RUN</name>
+        <initializer>0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="118" column="9" bodyfile="leasy/lua/lcorolib.c" bodystart="118" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lcorolib_8c_1a1383eeb3b35a1c6845dddb20f6231dee" prot="public" static="no">
+        <name>COS_DEAD</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="119" column="9" bodyfile="leasy/lua/lcorolib.c" bodystart="119" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lcorolib_8c_1a6a963efbed545bee5070e431283bf6ef" prot="public" static="no">
+        <name>COS_YIELD</name>
+        <initializer>2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="120" column="9" bodyfile="leasy/lua/lcorolib.c" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lcorolib_8c_1a22448f8c21d50901d6b61f24babfdeb5" prot="public" static="no">
+        <name>COS_NORM</name>
+        <initializer>3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="121" column="9" bodyfile="leasy/lua/lcorolib.c" bodystart="121" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="lcorolib_8c_1a2bb2d9d526012610179c36c32de2c3d7" prot="public" static="yes" mutable="no">
+        <type>const char *const</type>
+        <definition>const char* const statname[]</definition>
+        <argsstring>[]</argsstring>
+        <name>statname</name>
+        <initializer>                               =
+{&quot;running&quot;, &quot;dead&quot;, &quot;suspended&quot;, &quot;normal&quot;}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="124" column="25" bodyfile="leasy/lua/lcorolib.c" bodystart="124" bodyend="125"/>
+      </memberdef>
+      <memberdef kind="variable" id="lcorolib_8c_1a3857a1be3b5aaf23b28b4e6809c7dc97" prot="public" static="yes" mutable="no">
+        <type>const <ref refid="structlua_l___reg" kindref="compound">luaL_Reg</ref></type>
+        <definition>const luaL_Reg co_funcs[]</definition>
+        <argsstring>[]</argsstring>
+        <name>co_funcs</name>
+        <initializer>                               = {
+  {&quot;create&quot;, luaB_cocreate},
+  {&quot;resume&quot;, luaB_coresume},
+  {&quot;running&quot;, luaB_corunning},
+  {&quot;status&quot;, luaB_costatus},
+  {&quot;wrap&quot;, luaB_cowrap},
+  {&quot;yield&quot;, luaB_yield},
+  {&quot;isyieldable&quot;, luaB_yieldable},
+  {&quot;close&quot;, luaB_close},
+  {NULL, NULL}
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="207" column="23" bodyfile="leasy/lua/lcorolib.c" bodystart="207" bodyend="217"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="lcorolib_8c_1a89dbbf4ee1fbcd3c84a42c2f1c49fb85" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+        <definition>static lua_State * getco</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>getco</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="22" column="18" bodyfile="leasy/lua/lcorolib.c" bodystart="22" bodyend="26"/>
+      </memberdef>
+      <memberdef kind="function" id="lcorolib_8c_1aaa37b3a30ab0c6daef7fae8951fef3e7" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int auxresume</definition>
+        <argsstring>(lua_State *L, lua_State *co, int narg)</argsstring>
+        <name>auxresume</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>co</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>narg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="33" column="12" bodyfile="leasy/lua/lcorolib.c" bodystart="33" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="lcorolib_8c_1a76f5d80387eeb1c7d31eb5f9cb6c9392" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int luaB_coresume</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaB_coresume</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="57" column="12" bodyfile="leasy/lua/lcorolib.c" bodystart="57" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="lcorolib_8c_1a777abb20385a69ce4787f72bd90375a7" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int luaB_auxwrap</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaB_auxwrap</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="74" column="12" bodyfile="leasy/lua/lcorolib.c" bodystart="74" bodyend="93"/>
+      </memberdef>
+      <memberdef kind="function" id="lcorolib_8c_1ad49772e236781ef7ad88ff8bc980b40b" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int luaB_cocreate</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaB_cocreate</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="96" column="12" bodyfile="leasy/lua/lcorolib.c" bodystart="96" bodyend="103"/>
+      </memberdef>
+      <memberdef kind="function" id="lcorolib_8c_1a1c0429e27f504b08e25f437f733edad1" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int luaB_cowrap</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaB_cowrap</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="106" column="12" bodyfile="leasy/lua/lcorolib.c" bodystart="106" bodyend="110"/>
+      </memberdef>
+      <memberdef kind="function" id="lcorolib_8c_1ad9fe432026d8990d13be09536a683c2a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int luaB_yield</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaB_yield</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="113" column="12" bodyfile="leasy/lua/lcorolib.c" bodystart="113" bodyend="115"/>
+      </memberdef>
+      <memberdef kind="function" id="lcorolib_8c_1abc457c5c23f83972c1b822fdc7c35d01" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int auxstatus</definition>
+        <argsstring>(lua_State *L, lua_State *co)</argsstring>
+        <name>auxstatus</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>co</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="128" column="12" bodyfile="leasy/lua/lcorolib.c" bodystart="128" bodyend="147"/>
+      </memberdef>
+      <memberdef kind="function" id="lcorolib_8c_1a174dfb2852a7d04964e4a1426fff93f8" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int luaB_costatus</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaB_costatus</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="150" column="12" bodyfile="leasy/lua/lcorolib.c" bodystart="150" bodyend="154"/>
+      </memberdef>
+      <memberdef kind="function" id="lcorolib_8c_1ab68cf186276c419bc9ceabefed6dac11" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+        <definition>static lua_State * getoptco</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>getoptco</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="157" column="18" bodyfile="leasy/lua/lcorolib.c" bodystart="157" bodyend="159"/>
+      </memberdef>
+      <memberdef kind="function" id="lcorolib_8c_1a692ce6ad2c6f43a5c7d521cbcc56af5d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int luaB_yieldable</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaB_yieldable</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="162" column="12" bodyfile="leasy/lua/lcorolib.c" bodystart="162" bodyend="166"/>
+      </memberdef>
+      <memberdef kind="function" id="lcorolib_8c_1ad5fa6e6f20235e61b3ba56ea3dc973d2" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int luaB_corunning</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaB_corunning</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="169" column="12" bodyfile="leasy/lua/lcorolib.c" bodystart="169" bodyend="173"/>
+      </memberdef>
+      <memberdef kind="function" id="lcorolib_8c_1a3c6a70201b343432bfeb1f3e09cdde6f" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int luaB_close</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaB_close</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="176" column="12" bodyfile="leasy/lua/lcorolib.c" bodystart="176" bodyend="204"/>
+      </memberdef>
+      <memberdef kind="function" id="lcorolib_8c_1a8515aa0d6a2e901a5397afd5e4250db2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref> int</type>
+        <definition>LUAMOD_API int luaopen_coroutine</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaopen_coroutine</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcorolib.c" line="221" column="16" bodyfile="leasy/lua/lcorolib.c" bodystart="221" bodyend="224"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lcorolib.c<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Coroutine<sp/>Library</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="lcorolib_8c_1a31c0a2b112d201fa0724ffc2b060bae9" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lcorolib_c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="lcorolib_8c_1a884b19ad6094d6238c4072a8064aeb12" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_LIB</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lprefix_8h" kindref="compound">lprefix.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdlib.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lua_8h" kindref="compound">lua.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lauxlib_8h" kindref="compound">lauxlib.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lualib_8h" kindref="compound">lualib.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="llimits_8h" kindref="compound">llimits.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*getco<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*co<sp/>=<sp/><ref refid="lapi_8c_1a97794d731a3c99bbb3e46715a5746414" kindref="member">lua_tothread</ref>(L,<sp/>1);</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><ref refid="lauxlib_8h_1ad13737dbd230fffc0b9925b1c728c58e" kindref="member">luaL_argexpected</ref>(L,<sp/>co,<sp/>1,<sp/></highlight><highlight class="stringliteral">&quot;thread&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>co;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="30"><highlight class="comment">**<sp/>Resumes<sp/>a<sp/>coroutine.<sp/>Returns<sp/>the<sp/>number<sp/>of<sp/>results<sp/>for<sp/>non-error</highlight></codeline>
+<codeline lineno="31"><highlight class="comment">**<sp/>cases<sp/>or<sp/>-1<sp/>for<sp/>errors.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>auxresume<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*co,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>narg)<sp/>{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>status,<sp/>nres;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="llimits_8h_1ae9c389231436634605d75b0c31f8c3be" kindref="member">l_unlikely</ref>(!<ref refid="lapi_8c_1a1d762b92d5d82d6fa9f54ccf5c89d6a2" kindref="member">lua_checkstack</ref>(co,<sp/>narg)))<sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lua_8h_1a47854189a679002ed743ebbcb30b1b26" kindref="member">lua_pushliteral</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;too<sp/>many<sp/>arguments<sp/>to<sp/>resume&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>-1;<sp/><sp/></highlight><highlight class="comment">/*<sp/>error<sp/>flag<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><ref refid="lapi_8c_1ae27bb8d0218710bbbfefc1f573839d6d" kindref="member">lua_xmove</ref>(L,<sp/>co,<sp/>narg);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/>status<sp/>=<sp/><ref refid="ldo_8c_1ad07756c576e4e989a7ca417c1d691d2a" kindref="member">lua_resume</ref>(co,<sp/>L,<sp/>narg,<sp/>&amp;nres);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="llimits_8h_1a5df9232284dcc98967aa354c6abab9b2" kindref="member">l_likely</ref>(status<sp/>==<sp/><ref refid="lua_8h_1ab969ff78cb1b63efa2bba3bdfa6fff5c" kindref="member">LUA_OK</ref><sp/>||<sp/>status<sp/>==<sp/><ref refid="lua_8h_1ab69f4bd0c0693d4c8fcfc0ebaeb2806b" kindref="member">LUA_YIELD</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="llimits_8h_1ae9c389231436634605d75b0c31f8c3be" kindref="member">l_unlikely</ref>(!<ref refid="lapi_8c_1a1d762b92d5d82d6fa9f54ccf5c89d6a2" kindref="member">lua_checkstack</ref>(L,<sp/>nres<sp/>+<sp/>1)))<sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lua_8h_1abb8eae2164badeafdb037bc1e03cc822" kindref="member">lua_pop</ref>(co,<sp/>nres);<sp/><sp/></highlight><highlight class="comment">/*<sp/>remove<sp/>results<sp/>anyway<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lua_8h_1a47854189a679002ed743ebbcb30b1b26" kindref="member">lua_pushliteral</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;too<sp/>many<sp/>results<sp/>to<sp/>resume&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>-1;<sp/><sp/></highlight><highlight class="comment">/*<sp/>error<sp/>flag<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1ae27bb8d0218710bbbfefc1f573839d6d" kindref="member">lua_xmove</ref>(co,<sp/>L,<sp/>nres);<sp/><sp/></highlight><highlight class="comment">/*<sp/>move<sp/>yielded<sp/>values<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>nres;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1ae27bb8d0218710bbbfefc1f573839d6d" kindref="member">lua_xmove</ref>(co,<sp/>L,<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>move<sp/>error<sp/>message<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>-1;<sp/><sp/></highlight><highlight class="comment">/*<sp/>error<sp/>flag<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="54"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>luaB_coresume<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*co<sp/>=<sp/>getco(L);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>r;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/>r<sp/>=<sp/>auxresume(L,<sp/>co,<sp/><ref refid="lapi_8c_1afbb08ecb69421875494105d4de68e5bf" kindref="member">lua_gettop</ref>(L)<sp/>-<sp/>1);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="llimits_8h_1ae9c389231436634605d75b0c31f8c3be" kindref="member">l_unlikely</ref>(r<sp/>&lt;<sp/>0))<sp/>{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a56bbb7479265e38da2e2596e6ec25faa" kindref="member">lua_pushboolean</ref>(L,<sp/>0);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lua_8h_1a1ba55afa0e7f756a4599e86cf46d92e0" kindref="member">lua_insert</ref>(L,<sp/>-2);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>2;<sp/><sp/></highlight><highlight class="comment">/*<sp/>return<sp/>false<sp/>+<sp/>error<sp/>message<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a56bbb7479265e38da2e2596e6ec25faa" kindref="member">lua_pushboolean</ref>(L,<sp/>1);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lua_8h_1a1ba55afa0e7f756a4599e86cf46d92e0" kindref="member">lua_insert</ref>(L,<sp/>-(r<sp/>+<sp/>1));</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>r<sp/>+<sp/>1;<sp/><sp/></highlight><highlight class="comment">/*<sp/>return<sp/>true<sp/>+<sp/>&apos;resume&apos;<sp/>returns<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>luaB_auxwrap<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*co<sp/>=<sp/><ref refid="lapi_8c_1a97794d731a3c99bbb3e46715a5746414" kindref="member">lua_tothread</ref>(L,<sp/><ref refid="lua_8h_1ac3aa6665c25070f282c9827ec919fe6a" kindref="member">lua_upvalueindex</ref>(1));</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>r<sp/>=<sp/>auxresume(L,<sp/>co,<sp/><ref refid="lapi_8c_1afbb08ecb69421875494105d4de68e5bf" kindref="member">lua_gettop</ref>(L));</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="llimits_8h_1ae9c389231436634605d75b0c31f8c3be" kindref="member">l_unlikely</ref>(r<sp/>&lt;<sp/>0))<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>error?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>stat<sp/>=<sp/><ref refid="lapi_8c_1aadea4b6f60174a1334ebde560968a615" kindref="member">lua_status</ref>(co);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(stat<sp/>!=<sp/><ref refid="lua_8h_1ab969ff78cb1b63efa2bba3bdfa6fff5c" kindref="member">LUA_OK</ref><sp/>&amp;&amp;<sp/>stat<sp/>!=<sp/><ref refid="lua_8h_1ab69f4bd0c0693d4c8fcfc0ebaeb2806b" kindref="member">LUA_YIELD</ref>)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>error<sp/>in<sp/>the<sp/>coroutine?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>stat<sp/>=<sp/><ref refid="lstate_8c_1a95ab7e493b56dfead9aac2d2fcbcb408" kindref="member">lua_closethread</ref>(co,<sp/>L);<sp/><sp/></highlight><highlight class="comment">/*<sp/>close<sp/>its<sp/>tbc<sp/>variables<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(stat<sp/>!=<sp/><ref refid="lua_8h_1ab969ff78cb1b63efa2bba3bdfa6fff5c" kindref="member">LUA_OK</ref>);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1ae27bb8d0218710bbbfefc1f573839d6d" kindref="member">lua_xmove</ref>(co,<sp/>L,<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>move<sp/>error<sp/>message<sp/>to<sp/>the<sp/>caller<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(stat<sp/>!=<sp/><ref refid="lua_8h_1ac28ced8d63f58b5164a298d7d254f658" kindref="member">LUA_ERRMEM</ref><sp/>&amp;&amp;<sp/><sp/></highlight><highlight class="comment">/*<sp/>not<sp/>a<sp/>memory<sp/>error<sp/>and<sp/>...<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a652b273947f0656686f998d8e90cd3ea" kindref="member">lua_type</ref>(L,<sp/>-1)<sp/>==<sp/><ref refid="lua_8h_1a57de20d87bb5131a3159f2bd52e3fab6" kindref="member">LUA_TSTRING</ref>)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>...<sp/>error<sp/>object<sp/>is<sp/>a<sp/>string?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lauxlib_8c_1a0f4d3c30c07eae36aa25605df84279a0" kindref="member">luaL_where</ref>(L,<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>add<sp/>extra<sp/>info,<sp/>if<sp/>available<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lua_8h_1a1ba55afa0e7f756a4599e86cf46d92e0" kindref="member">lua_insert</ref>(L,<sp/>-2);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a1de3afee1daece63d455f23818c883d9" kindref="member">lua_concat</ref>(L,<sp/>2);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lapi_8c_1a6ba7b91143fe8a03910420d800de8e97" kindref="member">lua_error</ref>(L);<sp/><sp/></highlight><highlight class="comment">/*<sp/>propagate<sp/>error<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>r;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>luaB_cocreate<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*NL;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><ref refid="lauxlib_8c_1a0f8f78c4edc5cbf890690b3cf9615dc8" kindref="member">luaL_checktype</ref>(L,<sp/>1,<sp/><ref refid="lua_8h_1adaa7fa6e2561c1bc428ba8d265171494" kindref="member">LUA_TFUNCTION</ref>);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/>NL<sp/>=<sp/><ref refid="lstate_8c_1a9eb2f070b3e3bceeae22abe1788cad52" kindref="member">lua_newthread</ref>(L);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><ref refid="lapi_8c_1a602f61a9b583d69dc1c72c8970bd65e8" kindref="member">lua_pushvalue</ref>(L,<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>move<sp/>function<sp/>to<sp/>top<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><ref refid="lapi_8c_1ae27bb8d0218710bbbfefc1f573839d6d" kindref="member">lua_xmove</ref>(L,<sp/>NL,<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>move<sp/>function<sp/>from<sp/>L<sp/>to<sp/>NL<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="103"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>luaB_cowrap<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/>luaB_cocreate(L);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><ref refid="lapi_8c_1a142802b91cdd22516b54599f51e101e4" kindref="member">lua_pushcclosure</ref>(L,<sp/>luaB_auxwrap,<sp/>1);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>luaB_yield<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lua_8h_1a19e4e5528fbd5bf4c31e5ff6604e5a38" kindref="member">lua_yield</ref>(L,<sp/><ref refid="lapi_8c_1afbb08ecb69421875494105d4de68e5bf" kindref="member">lua_gettop</ref>(L));</highlight></codeline>
+<codeline lineno="115"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118" refid="lcorolib_8c_1adaddcee95d6b75c9dbd868c5d0712a3d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>COS_RUN<sp/><sp/><sp/><sp/><sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119" refid="lcorolib_8c_1a1383eeb3b35a1c6845dddb20f6231dee" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>COS_DEAD<sp/><sp/><sp/><sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="120" refid="lcorolib_8c_1a6a963efbed545bee5070e431283bf6ef" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>COS_YIELD<sp/><sp/><sp/>2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="121" refid="lcorolib_8c_1a22448f8c21d50901d6b61f24babfdeb5" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>COS_NORM<sp/><sp/><sp/><sp/>3</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>statname[]<sp/>=</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;running&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;dead&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;suspended&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;normal&quot;</highlight><highlight class="normal">};</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>auxstatus<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*co)<sp/>{</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(L<sp/>==<sp/>co)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lcorolib_8c_1adaddcee95d6b75c9dbd868c5d0712a3d" kindref="member">COS_RUN</ref>;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(<ref refid="lapi_8c_1aadea4b6f60174a1334ebde560968a615" kindref="member">lua_status</ref>(co))<sp/>{</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lua_8h_1ab69f4bd0c0693d4c8fcfc0ebaeb2806b" kindref="member">LUA_YIELD</ref>:</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lcorolib_8c_1a6a963efbed545bee5070e431283bf6ef" kindref="member">COS_YIELD</ref>;</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lua_8h_1ab969ff78cb1b63efa2bba3bdfa6fff5c" kindref="member">LUA_OK</ref>:<sp/>{</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structlua___debug" kindref="compound">lua_Debug</ref><sp/>ar;</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="ldebug_8c_1ac1fc03c27ee46caa4037df2d70f22110" kindref="member">lua_getstack</ref>(co,<sp/>0,<sp/>&amp;ar))<sp/><sp/></highlight><highlight class="comment">/*<sp/>does<sp/>it<sp/>have<sp/>frames?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lcorolib_8c_1a22448f8c21d50901d6b61f24babfdeb5" kindref="member">COS_NORM</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>it<sp/>is<sp/>running<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lapi_8c_1afbb08ecb69421875494105d4de68e5bf" kindref="member">lua_gettop</ref>(co)<sp/>==<sp/>0)</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lcorolib_8c_1a1383eeb3b35a1c6845dddb20f6231dee" kindref="member">COS_DEAD</ref>;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lcorolib_8c_1a6a963efbed545bee5070e431283bf6ef" kindref="member">COS_YIELD</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>initial<sp/>state<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:<sp/><sp/></highlight><highlight class="comment">/*<sp/>some<sp/>error<sp/>occurred<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lcorolib_8c_1a1383eeb3b35a1c6845dddb20f6231dee" kindref="member">COS_DEAD</ref>;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="147"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>luaB_costatus<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*co<sp/>=<sp/>getco(L);</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><ref refid="lapi_8c_1a6dd1a745d08c2dd96916ff0f2f1ca9ad" kindref="member">lua_pushstring</ref>(L,<sp/>statname[auxstatus(L,<sp/>co)]);</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="154"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*getoptco<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(<ref refid="lua_8h_1ad054300429f1094d3692313abc733ddf" kindref="member">lua_isnone</ref>(L,<sp/>1)<sp/>?<sp/>L<sp/>:<sp/>getco(L));</highlight></codeline>
+<codeline lineno="159"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>luaB_yieldable<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*co<sp/>=<sp/>getoptco(L);</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><ref refid="lapi_8c_1a56bbb7479265e38da2e2596e6ec25faa" kindref="member">lua_pushboolean</ref>(L,<sp/><ref refid="ldo_8c_1a490ddb801dda485ec5a94236d82477d2" kindref="member">lua_isyieldable</ref>(co));</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="166"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>luaB_corunning<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ismain<sp/>=<sp/><ref refid="lapi_8c_1a4175aeea9aa6dbf096ecfca7b190fa4a" kindref="member">lua_pushthread</ref>(L);</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><ref refid="lapi_8c_1a56bbb7479265e38da2e2596e6ec25faa" kindref="member">lua_pushboolean</ref>(L,<sp/>ismain);</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>2;</highlight></codeline>
+<codeline lineno="173"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>luaB_close<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*co<sp/>=<sp/>getoptco(L);</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>status<sp/>=<sp/>auxstatus(L,<sp/>co);</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(status)<sp/>{</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lcorolib_8c_1a1383eeb3b35a1c6845dddb20f6231dee" kindref="member">COS_DEAD</ref>:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lcorolib_8c_1a6a963efbed545bee5070e431283bf6ef" kindref="member">COS_YIELD</ref>:<sp/>{</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>status<sp/>=<sp/><ref refid="lstate_8c_1a95ab7e493b56dfead9aac2d2fcbcb408" kindref="member">lua_closethread</ref>(co,<sp/>L);</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(status<sp/>==<sp/><ref refid="lua_8h_1ab969ff78cb1b63efa2bba3bdfa6fff5c" kindref="member">LUA_OK</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a56bbb7479265e38da2e2596e6ec25faa" kindref="member">lua_pushboolean</ref>(L,<sp/>1);</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a56bbb7479265e38da2e2596e6ec25faa" kindref="member">lua_pushboolean</ref>(L,<sp/>0);</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1ae27bb8d0218710bbbfefc1f573839d6d" kindref="member">lua_xmove</ref>(co,<sp/>L,<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>move<sp/>error<sp/>message<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>2;</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lcorolib_8c_1a22448f8c21d50901d6b61f24babfdeb5" kindref="member">COS_NORM</ref>:</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lauxlib_8c_1a6c51d83d29244779392551388913e08a" kindref="member">luaL_error</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;cannot<sp/>close<sp/>a<sp/>%s<sp/>coroutine&quot;</highlight><highlight class="normal">,<sp/>statname[status]);</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lcorolib_8c_1adaddcee95d6b75c9dbd868c5d0712a3d" kindref="member">COS_RUN</ref>:</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a631ebda324b6a0f382ab6b9314917384" kindref="member">lua_geti</ref>(L,<sp/><ref refid="lua_8h_1a3524c2bbc8fcf847dc083246b62945dd" kindref="member">LUA_REGISTRYINDEX</ref>,<sp/><ref refid="lua_8h_1aafaecd92640c28ca5bc0169bfcdd2f30" kindref="member">LUA_RIDX_MAINTHREAD</ref>);<sp/><sp/></highlight><highlight class="comment">/*<sp/>get<sp/>main<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lapi_8c_1a97794d731a3c99bbb3e46715a5746414" kindref="member">lua_tothread</ref>(L,<sp/>-1)<sp/>==<sp/>co)</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lauxlib_8c_1a6c51d83d29244779392551388913e08a" kindref="member">luaL_error</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;cannot<sp/>close<sp/>main<sp/>thread&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lstate_8c_1a95ab7e493b56dfead9aac2d2fcbcb408" kindref="member">lua_closethread</ref>(co,<sp/>L);<sp/><sp/></highlight><highlight class="comment">/*<sp/>close<sp/>itself<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>previous<sp/>call<sp/>does<sp/>not<sp/>return<sp/>*/</highlight><highlight class="comment">/*<sp/>FALLTHROUGH<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(0);</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="204"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structlua_l___reg" kindref="compound">luaL_Reg</ref><sp/>co_funcs[]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;create&quot;</highlight><highlight class="normal">,<sp/>luaB_cocreate},</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;resume&quot;</highlight><highlight class="normal">,<sp/>luaB_coresume},</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;running&quot;</highlight><highlight class="normal">,<sp/>luaB_corunning},</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;status&quot;</highlight><highlight class="normal">,<sp/>luaB_costatus},</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;wrap&quot;</highlight><highlight class="normal">,<sp/>luaB_cowrap},</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;yield&quot;</highlight><highlight class="normal">,<sp/>luaB_yield},</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;isyieldable&quot;</highlight><highlight class="normal">,<sp/>luaB_yieldable},</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;close&quot;</highlight><highlight class="normal">,<sp/>luaB_close},</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/>{NULL,<sp/>NULL}</highlight></codeline>
+<codeline lineno="217"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight></codeline>
+<codeline lineno="221" refid="lcorolib_8c_1a8515aa0d6a2e901a5397afd5e4250db2" refkind="member"><highlight class="normal"><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lcorolib_8c_1a8515aa0d6a2e901a5397afd5e4250db2" kindref="member">luaopen_coroutine</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><ref refid="lauxlib_8h_1a5088ff720ec66200d83eb78467b77239" kindref="member">luaL_newlib</ref>(L,<sp/>co_funcs);</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="224"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"></highlight></codeline>
+<codeline lineno="226"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lcorolib.c"/>
+  </compounddef>
+</doxygen>

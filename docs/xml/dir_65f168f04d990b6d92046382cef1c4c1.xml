@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_65f168f04d990b6d92046382cef1c4c1" kind="dir">
+    <compoundname>leasy/ul2</compoundname>
+    <innerfile refid="any__function_8hpp">any_function.hpp</innerfile>
+    <innerfile refid="dispatcher_8hpp">dispatcher.hpp</innerfile>
+    <innerfile refid="function__traits_8hpp">function_traits.hpp</innerfile>
+    <innerfile refid="function__wrapper_8hpp">function_wrapper.hpp</innerfile>
+    <innerfile refid="lua__stack_8hpp">lua_stack.hpp</innerfile>
+    <innerfile refid="state_8hpp">state.hpp</innerfile>
+    <innerfile refid="types_8hpp">types.hpp</innerfile>
+    <innerfile refid="ulexception2_8cpp">ulexception2.cpp</innerfile>
+    <innerfile refid="ulexception2_8hpp">ulexception2.hpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ul2/"/>
+  </compounddef>
+</doxygen>

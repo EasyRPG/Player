@@ -1,0 +1,689 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_config_param_base" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>ConfigParamBase</compoundname>
+    <derivedcompoundref refid="class_config_param" prot="public" virt="non-virtual">ConfigParam&lt; std::string &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_config_param" prot="public" virt="non-virtual">ConfigParam&lt; T &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_range_config_param" prot="public" virt="non-virtual">RangeConfigParam&lt; T &gt;</derivedcompoundref>
+    <includes refid="config__param_8h" local="no">config_param.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_config_param_base_1a64e7e428e4d66ab9e00ad46ef146ceb1" prot="public" static="no">
+        <type>T</type>
+        <definition>using ConfigParamBase&lt; T &gt;::value_type = T</definition>
+        <argsstring></argsstring>
+        <name>value_type</name>
+        <qualifiedname>ConfigParamBase::value_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="58" column="1" bodyfile="config_param.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_config_param_base_1ac46a1abdfbd2aea6d6ad84000e43ce41" prot="protected" static="no" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view ConfigParamBase&lt; T &gt;::_name</definition>
+        <argsstring></argsstring>
+        <name>_name</name>
+        <qualifiedname>ConfigParamBase::_name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="216" column="18" bodyfile="config_param.h" bodystart="216" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_config_param_base_1a6b63463243218d57495cd29033f1736c" prot="protected" static="no" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view ConfigParamBase&lt; T &gt;::_description</definition>
+        <argsstring></argsstring>
+        <name>_description</name>
+        <qualifiedname>ConfigParamBase::_description</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="217" column="18" bodyfile="config_param.h" bodystart="217" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_config_param_base_1a9093f720aa1025c05d48316d0ccefe65" prot="protected" static="no" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view ConfigParamBase&lt; T &gt;::_config_section</definition>
+        <argsstring></argsstring>
+        <name>_config_section</name>
+        <qualifiedname>ConfigParamBase::_config_section</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="218" column="18" bodyfile="config_param.h" bodystart="218" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_config_param_base_1a8ca4a74a2f3d5d8cc252162190893c9e" prot="protected" static="no" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view ConfigParamBase&lt; T &gt;::_config_key</definition>
+        <argsstring></argsstring>
+        <name>_config_key</name>
+        <qualifiedname>ConfigParamBase::_config_key</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="219" column="18" bodyfile="config_param.h" bodystart="219" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_config_param_base_1ad486a9f44dcf1b8d760071884d29ce89" prot="protected" static="no" mutable="no">
+        <type>T</type>
+        <definition>T ConfigParamBase&lt; T &gt;::_value</definition>
+        <argsstring></argsstring>
+        <name>_value</name>
+        <qualifiedname>ConfigParamBase::_value</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="220" column="3" bodyfile="config_param.h" bodystart="220" bodyend="220"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_config_param_base_1a792475117d9e96b202904d6bf03f8261" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool ConfigParamBase&lt; T &gt;::_visible</definition>
+        <argsstring></argsstring>
+        <name>_visible</name>
+        <qualifiedname>ConfigParamBase::_visible</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="223" column="6" bodyfile="config_param.h" bodystart="223" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_config_param_base_1ac65b0dfb0d07981f54ab4a8157af8fb3" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool ConfigParamBase&lt; T &gt;::_locked</definition>
+        <argsstring></argsstring>
+        <name>_locked</name>
+        <qualifiedname>ConfigParamBase::_locked</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="224" column="6" bodyfile="config_param.h" bodystart="224" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_config_param_base_1ab00b08f1b9375287f6cb07e6731781a3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>ConfigParamBase&lt; T &gt;::ConfigParamBase</definition>
+        <argsstring>(std::string_view name, std::string_view description, std::string_view config_section, std::string_view config_key, T value)</argsstring>
+        <name>ConfigParamBase</name>
+        <qualifiedname>ConfigParamBase::ConfigParamBase</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>description</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>config_section</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>config_key</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name shown in the settings scene </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>description</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Description shown in the help window of the settings scene </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial value </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="65" column="1" bodyfile="config_param.h" bodystart="65" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="class_config_param_base_1a69547a9d358dae48d13b2115c17efd53" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>T ConfigParamBase&lt; T &gt;::Get</definition>
+        <argsstring>() const</argsstring>
+        <name>Get</name>
+        <qualifiedname>ConfigParamBase::Get</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>current assigned value </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="69" column="3" bodyfile="config_param.h" bodystart="69" bodyend="69"/>
+      </memberdef>
+      <memberdef kind="function" id="class_config_param_base_1a8b45465ea459016817e6cc38a7fe1950" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ConfigParamBase&lt; T &gt;::Set</definition>
+        <argsstring>(const T &amp;value)</argsstring>
+        <name>Set</name>
+        <qualifiedname>ConfigParamBase::Set</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the value. Setting fails when the option is locked or invisible or the value is not in a supported range of the option.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="union_value" kindref="compound">Value</ref> to set to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the setting succeeded. When it fails the old value remains. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="79" column="6" bodyfile="config_param.h" bodystart="79" bodyend="89"/>
+      </memberdef>
+      <memberdef kind="function" id="class_config_param_base_1ab3e65722fba80c0bcd4420fe1bab8dc9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ConfigParamBase&lt; T &gt;::IsValid</definition>
+        <argsstring>(const T &amp;value) const</argsstring>
+        <name>IsValid</name>
+        <qualifiedname>ConfigParamBase::IsValid</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Check whether a value is acceptable for this setting. This function is used for internal purposes.</para>
+<para><simplesect kind="see"><para><ref refid="class_config_param_base_1a8b45465ea459016817e6cc38a7fe1950" kindref="member">Set</ref> </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="union_value" kindref="compound">Value</ref> to set to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the value is okay </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="99" column="6" bodyfile="config_param.h" bodystart="99" bodyend="109"/>
+      </memberdef>
+      <memberdef kind="function" id="class_config_param_base_1ad022cc572286546bcaa541de5859d24f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ConfigParamBase&lt; T &gt;::IsOptionVisible</definition>
+        <argsstring>() const</argsstring>
+        <name>IsOptionVisible</name>
+        <qualifiedname>ConfigParamBase::IsOptionVisible</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Whether the option is displayed and supported </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="112" column="6" bodyfile="config_param.h" bodystart="112" bodyend="114"/>
+      </memberdef>
+      <memberdef kind="function" id="class_config_param_base_1ae462283da6956166010805a492fbb12f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void ConfigParamBase&lt; T &gt;::SetOptionVisible</definition>
+        <argsstring>(bool visible)</argsstring>
+        <name>SetOptionVisible</name>
+        <qualifiedname>ConfigParamBase::SetOptionVisible</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>visible</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the visibility of the option in the settings scene. Additionally this indicates wheter the setting is supported at all. When not visible all write operations to the setting will fail.</para>
+<para><simplesect kind="see"><para><ref refid="class_config_param_base_1ac8648cf6d4b5ae495f5dc02bdf1074ac" kindref="member">Lock</ref> To indicate that the setting is supported but currently constant </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>visible</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Turns visibility on/off </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="124" column="6" bodyfile="config_param.h" bodystart="124" bodyend="126"/>
+      </memberdef>
+      <memberdef kind="function" id="class_config_param_base_1a2f8f8f70ca825f22319102ac3cb75bbd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ConfigParamBase&lt; T &gt;::IsLocked</definition>
+        <argsstring>() const</argsstring>
+        <name>IsLocked</name>
+        <qualifiedname>ConfigParamBase::IsLocked</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Whether the option is currently locked and cannot be altered </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="129" column="6" bodyfile="config_param.h" bodystart="129" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="function" id="class_config_param_base_1ac8648cf6d4b5ae495f5dc02bdf1074ac" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ConfigParamBase&lt; T &gt;::Lock</definition>
+        <argsstring>(T value)</argsstring>
+        <name>Lock</name>
+        <qualifiedname>ConfigParamBase::Lock</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Locks the option. A locked option cannot be altered. Use this when the option is supported but cannot be altered currently due to a dependency on another option.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="union_value" kindref="compound">Value</ref> to lock the option with </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the locking succeeded. When it fails the old value remains. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="141" column="6" bodyfile="config_param.h" bodystart="141" bodyend="151"/>
+      </memberdef>
+      <memberdef kind="function" id="class_config_param_base_1afcca350f7a5df7e9e60f768fc69ce82a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void ConfigParamBase&lt; T &gt;::SetLocked</definition>
+        <argsstring>(bool locked)</argsstring>
+        <name>SetLocked</name>
+        <qualifiedname>ConfigParamBase::SetLocked</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>locked</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Locks or unlocks the option. The current value stays.</para>
+<para><simplesect kind="see"><para><ref refid="class_config_param_base_1ac8648cf6d4b5ae495f5dc02bdf1074ac" kindref="member">Lock</ref> </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>locked</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>turn locking on/off </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="159" column="6" bodyfile="config_param.h" bodystart="159" bodyend="161"/>
+      </memberdef>
+      <memberdef kind="function" id="class_config_param_base_1a88ae1702b97bd390636496a4e7114edd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view ConfigParamBase&lt; T &gt;::GetName</definition>
+        <argsstring>() const</argsstring>
+        <name>GetName</name>
+        <qualifiedname>ConfigParamBase::GetName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>name displayed in the settings scene </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="164" column="18" bodyfile="config_param.h" bodystart="164" bodyend="166"/>
+      </memberdef>
+      <memberdef kind="function" id="class_config_param_base_1a19e2a139b6abf38a353e5f8e9055137b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void ConfigParamBase&lt; T &gt;::SetName</definition>
+        <argsstring>(std::string_view name)</argsstring>
+        <name>SetName</name>
+        <qualifiedname>ConfigParamBase::SetName</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new name of the setting </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="171" column="6" bodyfile="config_param.h" bodystart="171" bodyend="173"/>
+      </memberdef>
+      <memberdef kind="function" id="class_config_param_base_1a928b6c9786fe9f1aa6237a097d20e8b0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view ConfigParamBase&lt; T &gt;::GetDescription</definition>
+        <argsstring>() const</argsstring>
+        <name>GetDescription</name>
+        <qualifiedname>ConfigParamBase::GetDescription</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>help text displayed in the settings scene </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="176" column="18" bodyfile="config_param.h" bodystart="176" bodyend="178"/>
+      </memberdef>
+      <memberdef kind="function" id="class_config_param_base_1abe0d636ddc983d8965c70493f434ef2d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void ConfigParamBase&lt; T &gt;::SetDescription</definition>
+        <argsstring>(std::string_view description)</argsstring>
+        <name>SetDescription</name>
+        <qualifiedname>ConfigParamBase::SetDescription</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>description</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>description</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new description of the setting </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="183" column="6" bodyfile="config_param.h" bodystart="183" bodyend="185"/>
+      </memberdef>
+      <memberdef kind="function" id="class_config_param_base_1aa50c70a0101b92717f895a0d101f4037" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::string</type>
+        <definition>virtual std::string ConfigParamBase&lt; T &gt;::ValueToString</definition>
+        <argsstring>() const =0</argsstring>
+        <name>ValueToString</name>
+        <qualifiedname>ConfigParamBase::ValueToString</qualifiedname>
+        <reimplementedby refid="class_bool_config_param_1aa6733bf40b6bdd6ddda5cb261cdf53c9">ValueToString</reimplementedby>
+        <reimplementedby refid="class_config_param_1adcfb2962f402d7c8a560189d70bf4e12">ValueToString</reimplementedby>
+        <reimplementedby refid="class_config_param_1adcfb2962f402d7c8a560189d70bf4e12">ValueToString</reimplementedby>
+        <reimplementedby refid="class_config_param_1adcfb2962f402d7c8a560189d70bf4e12">ValueToString</reimplementedby>
+        <reimplementedby refid="class_config_param_1adcfb2962f402d7c8a560189d70bf4e12">ValueToString</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a0dc5b4efff9ef0506161436b7a2ac85d">ValueToString</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a0dc5b4efff9ef0506161436b7a2ac85d">ValueToString</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a0dc5b4efff9ef0506161436b7a2ac85d">ValueToString</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a0dc5b4efff9ef0506161436b7a2ac85d">ValueToString</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a0dc5b4efff9ef0506161436b7a2ac85d">ValueToString</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a0dc5b4efff9ef0506161436b7a2ac85d">ValueToString</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a0dc5b4efff9ef0506161436b7a2ac85d">ValueToString</reimplementedby>
+        <reimplementedby refid="class_path_config_param_1a9094727307933f5fc49bd25e3b6c9f51">ValueToString</reimplementedby>
+        <reimplementedby refid="class_range_config_param_1a648c73358512c55cfdd3323366b6433c">ValueToString</reimplementedby>
+        <reimplementedby refid="class_range_config_param_1a648c73358512c55cfdd3323366b6433c">ValueToString</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>human readable representation of the value for the settings scene </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="188" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_config_param_base_1a0baf7f7760a3141267184a0e251c3ba2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool ConfigParamBase&lt; T &gt;::FromIni</definition>
+        <argsstring>(const lcf::INIReader &amp;ini)</argsstring>
+        <name>FromIni</name>
+        <qualifiedname>ConfigParamBase::FromIni</qualifiedname>
+        <reimplementedby refid="class_enum_config_param_1a89b8fd31a2120446fe6da0563a2207de">FromIni</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a89b8fd31a2120446fe6da0563a2207de">FromIni</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a89b8fd31a2120446fe6da0563a2207de">FromIni</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a89b8fd31a2120446fe6da0563a2207de">FromIni</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a89b8fd31a2120446fe6da0563a2207de">FromIni</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a89b8fd31a2120446fe6da0563a2207de">FromIni</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a89b8fd31a2120446fe6da0563a2207de">FromIni</reimplementedby>
+        <param>
+          <type>const lcf::INIReader &amp;</type>
+          <declname>ini</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="190" column="14" bodyfile="config_param.h" bodystart="190" bodyend="204"/>
+      </memberdef>
+      <memberdef kind="function" id="class_config_param_base_1a8b033b1d1596ba80bdf4ca9e79db1f47" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename U</type>
+            <defval>T</defval>
+          </param>
+          <param>
+            <type>typename std::enable_if&lt;!std::is_enum&lt; U &gt;::value, int &gt;::type</type>
+            <defval>0</defval>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void ConfigParamBase&lt; T &gt;::ToIni</definition>
+        <argsstring>(std::ostream &amp;ini) const</argsstring>
+        <name>ToIni</name>
+        <qualifiedname>ConfigParamBase::ToIni</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>ini</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="207" column="6" bodyfile="config_param.h" bodystart="207" bodyend="211"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_config_param_base_1a8b8d537bc0275c083bffaf98116f0dda" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool ConfigParamBase&lt; T &gt;::vIsValid</definition>
+        <argsstring>(const T &amp;value) const =0</argsstring>
+        <name>vIsValid</name>
+        <qualifiedname>ConfigParamBase::vIsValid</qualifiedname>
+        <reimplementedby refid="class_bool_config_param_1a6776b036b7569268f3c5f5d98c846577">vIsValid</reimplementedby>
+        <reimplementedby refid="class_config_param_1a20c3bb4f43601ec0fe323c43c93016d2">vIsValid</reimplementedby>
+        <reimplementedby refid="class_config_param_1a20c3bb4f43601ec0fe323c43c93016d2">vIsValid</reimplementedby>
+        <reimplementedby refid="class_config_param_1a20c3bb4f43601ec0fe323c43c93016d2">vIsValid</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a858b7360a686acb3f86c0720bfe55ab7">vIsValid</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a858b7360a686acb3f86c0720bfe55ab7">vIsValid</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a858b7360a686acb3f86c0720bfe55ab7">vIsValid</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a858b7360a686acb3f86c0720bfe55ab7">vIsValid</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a858b7360a686acb3f86c0720bfe55ab7">vIsValid</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a858b7360a686acb3f86c0720bfe55ab7">vIsValid</reimplementedby>
+        <reimplementedby refid="class_enum_config_param_1a858b7360a686acb3f86c0720bfe55ab7">vIsValid</reimplementedby>
+        <reimplementedby refid="class_range_config_param_1a8a406de5e67e36b9f74d27f8fe844803">vIsValid</reimplementedby>
+        <reimplementedby refid="class_range_config_param_1a8a406de5e67e36b9f74d27f8fe844803">vIsValid</reimplementedby>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="214" column="14"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Base class for all ConfigParams </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="5">
+        <label>ConfigParam&lt; T &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>ConfigParam&lt; std::string &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="6">
+        <label>LockedConfigParam&lt; T &gt;</label>
+        <link refid="class_locked_config_param"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>LockedConfigParam&lt; std::string &gt;</label>
+        <link refid="class_locked_config_param"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>PathConfigParam</label>
+        <link refid="class_path_config_param"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>RangeConfigParam&lt; T &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="config_param.h" line="56" column="1" bodyfile="config_param.h" bodystart="56" bodyend="225"/>
+    <listofallmembers>
+      <member refid="class_config_param_base_1a8ca4a74a2f3d5d8cc252162190893c9e" prot="protected" virt="non-virtual"><scope>ConfigParamBase</scope><name>_config_key</name></member>
+      <member refid="class_config_param_base_1a9093f720aa1025c05d48316d0ccefe65" prot="protected" virt="non-virtual"><scope>ConfigParamBase</scope><name>_config_section</name></member>
+      <member refid="class_config_param_base_1a6b63463243218d57495cd29033f1736c" prot="protected" virt="non-virtual"><scope>ConfigParamBase</scope><name>_description</name></member>
+      <member refid="class_config_param_base_1ac65b0dfb0d07981f54ab4a8157af8fb3" prot="private" virt="non-virtual"><scope>ConfigParamBase</scope><name>_locked</name></member>
+      <member refid="class_config_param_base_1ac46a1abdfbd2aea6d6ad84000e43ce41" prot="protected" virt="non-virtual"><scope>ConfigParamBase</scope><name>_name</name></member>
+      <member refid="class_config_param_base_1ad486a9f44dcf1b8d760071884d29ce89" prot="protected" virt="non-virtual"><scope>ConfigParamBase</scope><name>_value</name></member>
+      <member refid="class_config_param_base_1a792475117d9e96b202904d6bf03f8261" prot="private" virt="non-virtual"><scope>ConfigParamBase</scope><name>_visible</name></member>
+      <member refid="class_config_param_base_1ab00b08f1b9375287f6cb07e6731781a3" prot="public" virt="non-virtual"><scope>ConfigParamBase</scope><name>ConfigParamBase</name></member>
+      <member refid="class_config_param_base_1a0baf7f7760a3141267184a0e251c3ba2" prot="public" virt="virtual"><scope>ConfigParamBase</scope><name>FromIni</name></member>
+      <member refid="class_config_param_base_1a69547a9d358dae48d13b2115c17efd53" prot="public" virt="non-virtual"><scope>ConfigParamBase</scope><name>Get</name></member>
+      <member refid="class_config_param_base_1a928b6c9786fe9f1aa6237a097d20e8b0" prot="public" virt="non-virtual"><scope>ConfigParamBase</scope><name>GetDescription</name></member>
+      <member refid="class_config_param_base_1a88ae1702b97bd390636496a4e7114edd" prot="public" virt="non-virtual"><scope>ConfigParamBase</scope><name>GetName</name></member>
+      <member refid="class_config_param_base_1a2f8f8f70ca825f22319102ac3cb75bbd" prot="public" virt="non-virtual"><scope>ConfigParamBase</scope><name>IsLocked</name></member>
+      <member refid="class_config_param_base_1ad022cc572286546bcaa541de5859d24f" prot="public" virt="non-virtual"><scope>ConfigParamBase</scope><name>IsOptionVisible</name></member>
+      <member refid="class_config_param_base_1ab3e65722fba80c0bcd4420fe1bab8dc9" prot="public" virt="non-virtual"><scope>ConfigParamBase</scope><name>IsValid</name></member>
+      <member refid="class_config_param_base_1ac8648cf6d4b5ae495f5dc02bdf1074ac" prot="public" virt="non-virtual"><scope>ConfigParamBase</scope><name>Lock</name></member>
+      <member refid="class_config_param_base_1a8b45465ea459016817e6cc38a7fe1950" prot="public" virt="non-virtual"><scope>ConfigParamBase</scope><name>Set</name></member>
+      <member refid="class_config_param_base_1abe0d636ddc983d8965c70493f434ef2d" prot="public" virt="non-virtual"><scope>ConfigParamBase</scope><name>SetDescription</name></member>
+      <member refid="class_config_param_base_1afcca350f7a5df7e9e60f768fc69ce82a" prot="public" virt="non-virtual"><scope>ConfigParamBase</scope><name>SetLocked</name></member>
+      <member refid="class_config_param_base_1a19e2a139b6abf38a353e5f8e9055137b" prot="public" virt="non-virtual"><scope>ConfigParamBase</scope><name>SetName</name></member>
+      <member refid="class_config_param_base_1ae462283da6956166010805a492fbb12f" prot="public" virt="non-virtual"><scope>ConfigParamBase</scope><name>SetOptionVisible</name></member>
+      <member refid="class_config_param_base_1a8b033b1d1596ba80bdf4ca9e79db1f47" prot="public" virt="non-virtual"><scope>ConfigParamBase</scope><name>ToIni</name></member>
+      <member refid="class_config_param_base_1a64e7e428e4d66ab9e00ad46ef146ceb1" prot="public" virt="non-virtual"><scope>ConfigParamBase</scope><name>value_type</name></member>
+      <member refid="class_config_param_base_1aa50c70a0101b92717f895a0d101f4037" prot="public" virt="pure-virtual"><scope>ConfigParamBase</scope><name>ValueToString</name></member>
+      <member refid="class_config_param_base_1a8b8d537bc0275c083bffaf98116f0dda" prot="protected" virt="pure-virtual"><scope>ConfigParamBase</scope><name>vIsValid</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

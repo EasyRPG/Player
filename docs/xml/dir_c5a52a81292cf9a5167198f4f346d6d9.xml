@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_c5a52a81292cf9a5167198f4f346d6d9" kind="dir">
+    <compoundname>platform</compoundname>
+    <innerdir refid="dir_479bb07892b7996e35e87d423e7cadff">platform/3ds</innerdir>
+    <innerdir refid="dir_8bbdd70d8d6cf5bf505cb18bcc336c87">platform/android</innerdir>
+    <innerdir refid="dir_b4b0e8330b327eab3d254333bc3cdcb1">platform/emscripten</innerdir>
+    <innerdir refid="dir_5a5503bbe22de52529224dd2d5b3c42f">platform/libretro</innerdir>
+    <innerdir refid="dir_3a887a178c55a31a996f441b8ca49395">platform/linux</innerdir>
+    <innerdir refid="dir_9146873c03ec196cb07d82238976763c">platform/macos</innerdir>
+    <innerdir refid="dir_f8c90c89b1c4a296d4ac622b08bc2fdd">platform/morphos</innerdir>
+    <innerdir refid="dir_b5dc120fe57854586421860ce3a9fa39">platform/opendingux</innerdir>
+    <innerdir refid="dir_048b8333038616dc3a4f6850366c0966">platform/psp</innerdir>
+    <innerdir refid="dir_9b3b89bd36bdd845fa0acb610ef7d0f5">platform/psvita</innerdir>
+    <innerdir refid="dir_d64c130e92b5a00dc3238d97138262e7">platform/sdl</innerdir>
+    <innerdir refid="dir_8b9dfb618191a26320f53d52df89571e">platform/switch</innerdir>
+    <innerdir refid="dir_b52efa348ec493d2862ff544fffab557">platform/wii</innerdir>
+    <innerdir refid="dir_9c56f63ac7bdaa25a54ae94d4c6c1540">platform/wiiu</innerdir>
+    <innerdir refid="dir_e08283cc6d510b8aa112d4e505095a3a">platform/windows</innerdir>
+    <innerfile refid="clock_8h">clock.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/"/>
+  </compounddef>
+</doxygen>

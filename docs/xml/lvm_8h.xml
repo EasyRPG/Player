@@ -1,0 +1,990 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lvm_8h" kind="file" language="C++">
+    <compoundname>lvm.h</compoundname>
+    <includes refid="ldo_8h" local="yes">ldo.h</includes>
+    <includes refid="lobject_8h" local="yes">lobject.h</includes>
+    <includes refid="ltm_8h" local="yes">ltm.h</includes>
+    <includedby refid="lapi_8c" local="yes">leasy/lua/lapi.c</includedby>
+    <includedby refid="lcode_8c" local="yes">leasy/lua/lcode.c</includedby>
+    <includedby refid="ldebug_8c" local="yes">leasy/lua/ldebug.c</includedby>
+    <includedby refid="ldo_8c" local="yes">leasy/lua/ldo.c</includedby>
+    <includedby refid="lobject_8c" local="yes">leasy/lua/lobject.c</includedby>
+    <includedby refid="ltable_8c" local="yes">leasy/lua/ltable.c</includedby>
+    <includedby refid="ltm_8c" local="yes">leasy/lua/ltm.c</includedby>
+    <includedby refid="lvm_8c" local="yes">leasy/lua/lvm.c</includedby>
+    <incdepgraph>
+      <node id="2">
+        <label>ldo.h</label>
+        <link refid="ldo_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>lmem.h</label>
+        <link refid="lmem_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>lobject.h</label>
+        <link refid="lobject_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>lstate.h</label>
+        <link refid="lstate_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>ltm.h</label>
+        <link refid="ltm_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lvm.h</label>
+        <link refid="lvm_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>lzio.h</label>
+        <link refid="lzio_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>limits.h</label>
+      </node>
+      <node id="14">
+        <label>signal.h</label>
+      </node>
+      <node id="7">
+        <label>stdarg.h</label>
+      </node>
+      <node id="5">
+        <label>stddef.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>leasy/lua/lapi.c</label>
+        <link refid="lapi_8c"/>
+      </node>
+      <node id="3">
+        <label>leasy/lua/lcode.c</label>
+        <link refid="lcode_8c"/>
+      </node>
+      <node id="4">
+        <label>leasy/lua/ldebug.c</label>
+        <link refid="ldebug_8c"/>
+      </node>
+      <node id="5">
+        <label>leasy/lua/ldo.c</label>
+        <link refid="ldo_8c"/>
+      </node>
+      <node id="6">
+        <label>leasy/lua/lobject.c</label>
+        <link refid="lobject_8c"/>
+      </node>
+      <node id="7">
+        <label>leasy/lua/ltable.c</label>
+        <link refid="ltable_8c"/>
+      </node>
+      <node id="8">
+        <label>leasy/lua/ltm.c</label>
+        <link refid="ltm_8c"/>
+      </node>
+      <node id="9">
+        <label>leasy/lua/lvm.c</label>
+        <link refid="lvm_8c"/>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lvm.h</label>
+        <link refid="lvm_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lvm_8h_1aa6af30bdcb0dce1826c81061cec16d81" prot="public" static="no">
+        <name>cvt2str</name>
+        <param><defname>o</defname></param>
+        <initializer><ref refid="lobject_8h_1a7a1392f89b1f29ed3b1afa37a22d0be2" kindref="member">ttisnumber</ref>(o)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="17" column="9" bodyfile="leasy/lua/lvm.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lvm_8h_1a19856e050e5fb27e8c0babf15cf1a1fa" prot="public" static="no">
+        <name>cvt2num</name>
+        <param><defname>o</defname></param>
+        <initializer><ref refid="lobject_8h_1a9bdf057a0de8da2ffae3ac35662dd255" kindref="member">ttisstring</ref>(o)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="24" column="9" bodyfile="leasy/lua/lvm.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lvm_8h_1a8fad4fb73165b35bb6e1b9718040703e" prot="public" static="no">
+        <name>LUA_FLOORN2I</name>
+        <initializer><ref refid="lvm_8h_1a1639065f78212a54317141b2703061c0a7eaebd7cdc41b6f7c4ae319a813f3995" kindref="member">F2Ieq</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="36" column="9" bodyfile="leasy/lua/lvm.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lvm_8h_1af9edcc5da8ea1ac07ffdf79fbe5bb95c" prot="public" static="no">
+        <name>tonumber</name>
+        <param><defname>o</defname></param>
+        <param><defname>n</defname></param>
+        <initializer>(<ref refid="lobject_8h_1ac1338b5ac67cadf27489f5ae7e939c29" kindref="member">ttisfloat</ref>(o) ? (*(n) = <ref refid="lobject_8h_1a7d7d6b08f40350c9e7364e9cb984d744" kindref="member">fltvalue</ref>(o), 1) : <ref refid="lvm_8h_1a8dde84947fb2b5ec169813216235a4ba" kindref="member">luaV_tonumber_</ref>(o,n))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="51" column="9" bodyfile="leasy/lua/lvm.h" bodystart="51" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="define" id="lvm_8h_1a1c1072a8845c14cc7b5b7744ef4d18a4" prot="public" static="no">
+        <name>tonumberns</name>
+        <param><defname>o</defname></param>
+        <param><defname>n</defname></param>
+        <initializer>(<ref refid="lobject_8h_1ac1338b5ac67cadf27489f5ae7e939c29" kindref="member">ttisfloat</ref>(o) ? ((n) = <ref refid="lobject_8h_1a7d7d6b08f40350c9e7364e9cb984d744" kindref="member">fltvalue</ref>(o), 1) : \
+(<ref refid="lobject_8h_1abade243295a9140f7b86838fbb049054" kindref="member">ttisinteger</ref>(o) ? ((n) = <ref refid="llimits_8h_1ac92cecb12c5aba1164877e81e76e2cb6" kindref="member">cast_num</ref>(<ref refid="lobject_8h_1af1a59636db050b842a791cd19086d925" kindref="member">ivalue</ref>(o)), 1) : 0))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="56" column="9" bodyfile="leasy/lua/lvm.h" bodystart="56" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="define" id="lvm_8h_1aa0972161c02de57dbe993112eb5c5583" prot="public" static="no">
+        <name>tointeger</name>
+        <param><defname>o</defname></param>
+        <param><defname>i</defname></param>
+        <initializer>(<ref refid="llimits_8h_1a5df9232284dcc98967aa354c6abab9b2" kindref="member">l_likely</ref>(<ref refid="lobject_8h_1abade243295a9140f7b86838fbb049054" kindref="member">ttisinteger</ref>(o)) ? (*(i) = <ref refid="lobject_8h_1af1a59636db050b842a791cd19086d925" kindref="member">ivalue</ref>(o), 1) \
+                        : <ref refid="lvm_8h_1a2a864417ad70b6e8d3eb7d3c10cad672" kindref="member">luaV_tointeger</ref>(o,i,<ref refid="lvm_8h_1a8fad4fb73165b35bb6e1b9718040703e" kindref="member">LUA_FLOORN2I</ref>))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="62" column="9" bodyfile="leasy/lua/lvm.h" bodystart="62" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="define" id="lvm_8h_1a0b3a6eff12747eacea6551dbc2d42707" prot="public" static="no">
+        <name>tointegerns</name>
+        <param><defname>o</defname></param>
+        <param><defname>i</defname></param>
+        <initializer>(<ref refid="llimits_8h_1a5df9232284dcc98967aa354c6abab9b2" kindref="member">l_likely</ref>(<ref refid="lobject_8h_1abade243295a9140f7b86838fbb049054" kindref="member">ttisinteger</ref>(o)) ? (*(i) = <ref refid="lobject_8h_1af1a59636db050b842a791cd19086d925" kindref="member">ivalue</ref>(o), 1) \
+                        : <ref refid="lvm_8h_1a217081972ce52f0e7a489d2398422b39" kindref="member">luaV_tointegerns</ref>(o,i,<ref refid="lvm_8h_1a8fad4fb73165b35bb6e1b9718040703e" kindref="member">LUA_FLOORN2I</ref>))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="68" column="9" bodyfile="leasy/lua/lvm.h" bodystart="68" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="define" id="lvm_8h_1a6c054eb9ce53c1b282e7ff0088895a37" prot="public" static="no">
+        <name>intop</name>
+        <param><defname>op</defname></param>
+        <param><defname>v1</defname></param>
+        <param><defname>v2</defname></param>
+        <initializer><ref refid="llimits_8h_1a873fa1b216f8caed046edbcebd4c1bc8" kindref="member">l_castU2S</ref>(<ref refid="llimits_8h_1a5871309e671ba9f938fcb1e0d3bcbeca" kindref="member">l_castS2U</ref>(v1) op <ref refid="llimits_8h_1a5871309e671ba9f938fcb1e0d3bcbeca" kindref="member">l_castS2U</ref>(v2))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="73" column="9" bodyfile="leasy/lua/lvm.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lvm_8h_1aedbcec0d2a0e951710844d11dfa59a07" prot="public" static="no">
+        <name>luaV_rawequalobj</name>
+        <param><defname>t1</defname></param>
+        <param><defname>t2</defname></param>
+        <initializer><ref refid="lvm_8h_1a2f779d315adf5ac6a26c88409b58eeec" kindref="member">luaV_equalobj</ref>(NULL,t1,t2)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="75" column="9" bodyfile="leasy/lua/lvm.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lvm_8h_1a25f2f53523d93587ea7bf974c97b7b60" prot="public" static="no">
+        <name>luaV_fastget</name>
+        <param><defname>t</defname></param>
+        <param><defname>k</defname></param>
+        <param><defname>res</defname></param>
+        <param><defname>f</defname></param>
+        <param><defname>tag</defname></param>
+        <initializer>(tag = (!<ref refid="lobject_8h_1ac5338f5fe3885d1ee65412e00a44384e" kindref="member">ttistable</ref>(t) ? <ref refid="lobject_8h_1a7b4eeb42a08d7483d09f2f5a6248ff21" kindref="member">LUA_VNOTABLE</ref> : f(<ref refid="lobject_8h_1a336a6ce5e8340e6de133ec249cf47ebf" kindref="member">hvalue</ref>(t), k, res)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="81" column="9" bodyfile="leasy/lua/lvm.h" bodystart="81" bodyend="82"/>
+      </memberdef>
+      <memberdef kind="define" id="lvm_8h_1a323abdbf17c11ad7a4d7951aa99bd56d" prot="public" static="no">
+        <name>luaV_fastgeti</name>
+        <param><defname>t</defname></param>
+        <param><defname>k</defname></param>
+        <param><defname>res</defname></param>
+        <param><defname>tag</defname></param>
+        <initializer>if (!<ref refid="lobject_8h_1ac5338f5fe3885d1ee65412e00a44384e" kindref="member">ttistable</ref>(t)) tag = <ref refid="lobject_8h_1a7b4eeb42a08d7483d09f2f5a6248ff21" kindref="member">LUA_VNOTABLE</ref>; \
+else { <ref refid="ltable_8h_1a2b173ca3509371168fed5faa75fd02ee" kindref="member">luaH_fastgeti</ref>(<ref refid="lobject_8h_1a336a6ce5e8340e6de133ec249cf47ebf" kindref="member">hvalue</ref>(t), k, res, tag); }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="89" column="9" bodyfile="leasy/lua/lvm.h" bodystart="89" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="define" id="lvm_8h_1af4a14ec5a459ba7b816ddf29562eed28" prot="public" static="no">
+        <name>luaV_fastset</name>
+        <param><defname>t</defname></param>
+        <param><defname>k</defname></param>
+        <param><defname>val</defname></param>
+        <param><defname>hres</defname></param>
+        <param><defname>f</defname></param>
+        <initializer>(hres = (!<ref refid="lobject_8h_1ac5338f5fe3885d1ee65412e00a44384e" kindref="member">ttistable</ref>(t) ? <ref refid="ltable_8h_1a6eb3819f70bd20a64e23e20e405de46f" kindref="member">HNOTATABLE</ref> : f(<ref refid="lobject_8h_1a336a6ce5e8340e6de133ec249cf47ebf" kindref="member">hvalue</ref>(t), k, val)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="94" column="9" bodyfile="leasy/lua/lvm.h" bodystart="94" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="define" id="lvm_8h_1a8b40f79264d00a1c86da7712bafb46ba" prot="public" static="no">
+        <name>luaV_fastseti</name>
+        <param><defname>t</defname></param>
+        <param><defname>k</defname></param>
+        <param><defname>val</defname></param>
+        <param><defname>hres</defname></param>
+        <initializer>if (!<ref refid="lobject_8h_1ac5338f5fe3885d1ee65412e00a44384e" kindref="member">ttistable</ref>(t)) hres = <ref refid="ltable_8h_1a6eb3819f70bd20a64e23e20e405de46f" kindref="member">HNOTATABLE</ref>; \
+else { <ref refid="ltable_8h_1a40ea18434574c42819014d5dce3f187f" kindref="member">luaH_fastseti</ref>(<ref refid="lobject_8h_1a336a6ce5e8340e6de133ec249cf47ebf" kindref="member">hvalue</ref>(t), k, val, hres); }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="97" column="9" bodyfile="leasy/lua/lvm.h" bodystart="97" bodyend="99"/>
+      </memberdef>
+      <memberdef kind="define" id="lvm_8h_1ad8bb4e81bb34378d29438c600fb729bf" prot="public" static="no">
+        <name>luaV_finishfastset</name>
+        <param><defname>L</defname></param>
+        <param><defname>t</defname></param>
+        <param><defname>v</defname></param>
+        <initializer><ref refid="lgc_8h_1a60903f232a1c51d22de556ea4c144f3a" kindref="member">luaC_barrierback</ref>(L, <ref refid="lobject_8h_1a05cdf6070135f10ad37e1048a730b634" kindref="member">gcvalue</ref>(t), v)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="105" column="9" bodyfile="leasy/lua/lvm.h" bodystart="105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lvm_8h_1a1696d36ebff18f8164f4aa2f993c2088" prot="public" static="no">
+        <name>luaV_shiftr</name>
+        <param><defname>x</defname></param>
+        <param><defname>y</defname></param>
+        <initializer><ref refid="lvm_8h_1aa785f0ac32664e47c2d3689d75edc5e8" kindref="member">luaV_shiftl</ref>(x,<ref refid="lvm_8h_1a6c054eb9ce53c1b282e7ff0088895a37" kindref="member">intop</ref>(-, 0, y))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="111" column="9" bodyfile="leasy/lua/lvm.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="lvm_8h_1a1639065f78212a54317141b2703061c0" prot="public" static="no" strong="no">
+        <type></type>
+        <name>F2Imod</name>
+        <enumvalue id="lvm_8h_1a1639065f78212a54317141b2703061c0a7eaebd7cdc41b6f7c4ae319a813f3995" prot="public">
+          <name>F2Ieq</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lvm_8h_1a1639065f78212a54317141b2703061c0a04712d393ba74d0c04f9f1e80f33c02c" prot="public">
+          <name>F2Ifloor</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lvm_8h_1a1639065f78212a54317141b2703061c0ac844cfcb3d7f91dd0c10f424d93c13ca" prot="public">
+          <name>F2Iceil</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="43" column="1" bodyfile="leasy/lua/lvm.h" bodystart="43" bodyend="47"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="lvm_8h_1a2f779d315adf5ac6a26c88409b58eeec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaV_equalobj</definition>
+        <argsstring>(lua_State *L, const TValue *t1, const TValue *t2)</argsstring>
+        <name>luaV_equalobj</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>t1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>t2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="115" column="15" bodyfile="leasy/lua/lvm.c" bodystart="582" bodyend="653" declfile="leasy/lua/lvm.h" declline="115" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="lvm_8h_1a1245a563d674251ea03c7abbd1a2ca8c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaV_lessthan</definition>
+        <argsstring>(lua_State *L, const TValue *l, const TValue *r)</argsstring>
+        <name>luaV_lessthan</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>l</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="116" column="15" bodyfile="leasy/lua/lvm.c" bodystart="549" bodyend="553" declfile="leasy/lua/lvm.h" declline="116" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="lvm_8h_1aa151c39c80af19e2ea6d309e7993973c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaV_lessequal</definition>
+        <argsstring>(lua_State *L, const TValue *l, const TValue *r)</argsstring>
+        <name>luaV_lessequal</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>l</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="117" column="15" bodyfile="leasy/lua/lvm.c" bodystart="571" bodyend="575" declfile="leasy/lua/lvm.h" declline="117" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="lvm_8h_1a8dde84947fb2b5ec169813216235a4ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaV_tonumber_</definition>
+        <argsstring>(const TValue *obj, lua_Number *n)</argsstring>
+        <name>luaV_tonumber_</name>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>obj</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref> *</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="118" column="15" bodyfile="leasy/lua/lvm.c" bodystart="108" bodyend="120" declfile="leasy/lua/lvm.h" declline="118" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="lvm_8h_1a2a864417ad70b6e8d3eb7d3c10cad672" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaV_tointeger</definition>
+        <argsstring>(const TValue *obj, lua_Integer *p, F2Imod mode)</argsstring>
+        <name>luaV_tointeger</name>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>obj</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref> *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type><ref refid="lvm_8h_1a1639065f78212a54317141b2703061c0" kindref="member">F2Imod</ref></type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="119" column="15" bodyfile="leasy/lua/lvm.c" bodystart="157" bodyend="162" declfile="leasy/lua/lvm.h" declline="119" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="lvm_8h_1a217081972ce52f0e7a489d2398422b39" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaV_tointegerns</definition>
+        <argsstring>(const TValue *obj, lua_Integer *p, F2Imod mode)</argsstring>
+        <name>luaV_tointegerns</name>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>obj</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref> *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type><ref refid="lvm_8h_1a1639065f78212a54317141b2703061c0" kindref="member">F2Imod</ref></type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="120" column="15" bodyfile="leasy/lua/lvm.c" bodystart="142" bodyend="151" declfile="leasy/lua/lvm.h" declline="120" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="lvm_8h_1aafdf8bf00e39d6cf1d53e1e364ced4cb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaV_flttointeger</definition>
+        <argsstring>(lua_Number n, lua_Integer *p, F2Imod mode)</argsstring>
+        <name>luaV_flttointeger</name>
+        <param>
+          <type><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref></type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref> *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type><ref refid="lvm_8h_1a1639065f78212a54317141b2703061c0" kindref="member">F2Imod</ref></type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="122" column="15" bodyfile="leasy/lua/lvm.c" bodystart="126" bodyend="134" declfile="leasy/lua/lvm.h" declline="122" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="lvm_8h_1a2bd5bc2f19cf4d863645d76ec93e8c17" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>LUAI_FUNC lu_byte luaV_finishget</definition>
+        <argsstring>(lua_State *L, const TValue *t, TValue *key, StkId val, lu_byte tag)</argsstring>
+        <name>luaV_finishget</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+          <declname>val</declname>
+        </param>
+        <param>
+          <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+          <declname>tag</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="123" column="19" bodyfile="leasy/lua/lvm.c" bodystart="291" bodyend="323" declfile="leasy/lua/lvm.h" declline="123" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="lvm_8h_1a1f4ce3fb3bad1161d5a5c16315041032" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaV_finishset</definition>
+        <argsstring>(lua_State *L, const TValue *t, TValue *key, TValue *val, int aux)</argsstring>
+        <name>luaV_finishset</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>val</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>aux</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="125" column="16" bodyfile="leasy/lua/lvm.c" bodystart="334" bodyend="372" declfile="leasy/lua/lvm.h" declline="125" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lvm_8h_1a5db3e64b3cc2f63c3b10b27f7ecd1d03" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaV_finishOp</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaV_finishOp</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="127" column="16" bodyfile="leasy/lua/lvm.c" bodystart="855" bodyend="912" declfile="leasy/lua/lvm.h" declline="127" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lvm_8h_1ac430e93ed874f6ab2449d7a16aa6b62f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaV_execute</definition>
+        <argsstring>(lua_State *L, CallInfo *ci)</argsstring>
+        <name>luaV_execute</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_call_info" kindref="compound">CallInfo</ref> *</type>
+          <declname>ci</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="128" column="16" bodyfile="leasy/lua/lvm.c" bodystart="1198" bodyend="1970" declfile="leasy/lua/lvm.h" declline="128" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lvm_8h_1aee84bfc563cb4bdd21a013218a289aa7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaV_concat</definition>
+        <argsstring>(lua_State *L, int total)</argsstring>
+        <name>luaV_concat</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>total</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="129" column="16" bodyfile="leasy/lua/lvm.c" bodystart="684" bodyend="725" declfile="leasy/lua/lvm.h" declline="129" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lvm_8h_1a3fb7bab8732e10dbf0305243201075dc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+        <definition>LUAI_FUNC lua_Integer luaV_idiv</definition>
+        <argsstring>(lua_State *L, lua_Integer x, lua_Integer y)</argsstring>
+        <name>luaV_idiv</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="130" column="23" bodyfile="leasy/lua/lvm.c" bodystart="766" bodyend="778" declfile="leasy/lua/lvm.h" declline="130" declcolumn="23"/>
+      </memberdef>
+      <memberdef kind="function" id="lvm_8h_1a8c64b8dbe11cb5be7617feb17c279ced" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+        <definition>LUAI_FUNC lua_Integer luaV_mod</definition>
+        <argsstring>(lua_State *L, lua_Integer x, lua_Integer y)</argsstring>
+        <name>luaV_mod</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="131" column="23" bodyfile="leasy/lua/lvm.c" bodystart="786" bodyend="798" declfile="leasy/lua/lvm.h" declline="131" declcolumn="23"/>
+      </memberdef>
+      <memberdef kind="function" id="lvm_8h_1a7de4dcc7d1f397d2c02443dd7cb3e65b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref></type>
+        <definition>LUAI_FUNC lua_Number luaV_modf</definition>
+        <argsstring>(lua_State *L, lua_Number x, lua_Number y)</argsstring>
+        <name>luaV_modf</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref></type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref></type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="132" column="22" bodyfile="leasy/lua/lvm.c" bodystart="804" bodyend="808" declfile="leasy/lua/lvm.h" declline="132" declcolumn="22"/>
+      </memberdef>
+      <memberdef kind="function" id="lvm_8h_1aa785f0ac32664e47c2d3689d75edc5e8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+        <definition>LUAI_FUNC lua_Integer luaV_shiftl</definition>
+        <argsstring>(lua_Integer x, lua_Integer y)</argsstring>
+        <name>luaV_shiftl</name>
+        <param>
+          <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="133" column="23" bodyfile="leasy/lua/lvm.c" bodystart="818" bodyend="827" declfile="leasy/lua/lvm.h" declline="133" declcolumn="23"/>
+      </memberdef>
+      <memberdef kind="function" id="lvm_8h_1a414b4b487239935324f2f16e1e7715db" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaV_objlen</definition>
+        <argsstring>(lua_State *L, StkId ra, const TValue *rb)</argsstring>
+        <name>luaV_objlen</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+          <declname>ra</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>rb</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lvm.h" line="134" column="16" bodyfile="leasy/lua/lvm.c" bodystart="731" bodyend="757" declfile="leasy/lua/lvm.h" declline="134" declcolumn="16"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lvm.h<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Lua<sp/>virtual<sp/>machine</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>lvm_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lvm_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ldo_8h" kindref="compound">ldo.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lobject_8h" kindref="compound">lobject.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ltm_8h" kindref="compound">ltm.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(LUA_NOCVTN2S)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17" refid="lvm_8h_1aa6af30bdcb0dce1826c81061cec16d81" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cvt2str(o)<sp/><sp/>ttisnumber(o)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cvt2str(o)<sp/><sp/>0<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>no<sp/>conversion<sp/>from<sp/>numbers<sp/>to<sp/>strings<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(LUA_NOCVTS2N)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="lvm_8h_1a19856e050e5fb27e8c0babf15cf1a1fa" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cvt2num(o)<sp/><sp/>ttisstring(o)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cvt2num(o)<sp/><sp/>0<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>no<sp/>conversion<sp/>from<sp/>strings<sp/>to<sp/>numbers<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="31"><highlight class="comment">**<sp/>You<sp/>can<sp/>define<sp/>LUA_FLOORN2I<sp/>if<sp/>you<sp/>want<sp/>to<sp/>convert<sp/>floats<sp/>to<sp/>integers</highlight></codeline>
+<codeline lineno="32"><highlight class="comment">**<sp/>by<sp/>flooring<sp/>them<sp/>(instead<sp/>of<sp/>raising<sp/>an<sp/>error<sp/>if<sp/>they<sp/>are<sp/>not</highlight></codeline>
+<codeline lineno="33"><highlight class="comment">**<sp/>integral<sp/>values)</highlight></codeline>
+<codeline lineno="34"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(LUA_FLOORN2I)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="lvm_8h_1a8fad4fb73165b35bb6e1b9718040703e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_FLOORN2I<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>F2Ieq</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="41"><highlight class="comment">**<sp/>Rounding<sp/>modes<sp/>for<sp/>float-&gt;integer<sp/>coercion</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="lvm_8h_1a1639065f78212a54317141b2703061c0" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="44" refid="lvm_8h_1a1639065f78212a54317141b2703061c0a7eaebd7cdc41b6f7c4ae319a813f3995" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lvm_8h_1a1639065f78212a54317141b2703061c0a7eaebd7cdc41b6f7c4ae319a813f3995" kindref="member">F2Ieq</ref>,<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>no<sp/>rounding;<sp/>accepts<sp/>only<sp/>integral<sp/>values<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="lvm_8h_1a1639065f78212a54317141b2703061c0a04712d393ba74d0c04f9f1e80f33c02c" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lvm_8h_1a1639065f78212a54317141b2703061c0a04712d393ba74d0c04f9f1e80f33c02c" kindref="member">F2Ifloor</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>takes<sp/>the<sp/>floor<sp/>of<sp/>the<sp/>number<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="lvm_8h_1a1639065f78212a54317141b2703061c0ac844cfcb3d7f91dd0c10f424d93c13ca" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lvm_8h_1a1639065f78212a54317141b2703061c0ac844cfcb3d7f91dd0c10f424d93c13ca" kindref="member">F2Iceil</ref><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>takes<sp/>the<sp/>ceiling<sp/>of<sp/>the<sp/>number<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal">}<sp/><ref refid="lvm_8h_1a1639065f78212a54317141b2703061c0" kindref="member">F2Imod</ref>;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>convert<sp/>an<sp/>object<sp/>to<sp/>a<sp/>float<sp/>(including<sp/>string<sp/>coercion)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="lvm_8h_1af9edcc5da8ea1ac07ffdf79fbe5bb95c" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>tonumber(o,n)<sp/>\</highlight></codeline>
+<codeline lineno="52"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>(ttisfloat(o)<sp/>?<sp/>(*(n)<sp/>=<sp/>fltvalue(o),<sp/>1)<sp/>:<sp/>luaV_tonumber_(o,n))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>convert<sp/>an<sp/>object<sp/>to<sp/>a<sp/>float<sp/>(without<sp/>string<sp/>coercion)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="lvm_8h_1a1c1072a8845c14cc7b5b7744ef4d18a4" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>tonumberns(o,n)<sp/>\</highlight></codeline>
+<codeline lineno="57"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>(ttisfloat(o)<sp/>?<sp/>((n)<sp/>=<sp/>fltvalue(o),<sp/>1)<sp/>:<sp/>\</highlight></codeline>
+<codeline lineno="58"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>(ttisinteger(o)<sp/>?<sp/>((n)<sp/>=<sp/>cast_num(ivalue(o)),<sp/>1)<sp/>:<sp/>0))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>convert<sp/>an<sp/>object<sp/>to<sp/>an<sp/>integer<sp/>(including<sp/>string<sp/>coercion)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="lvm_8h_1aa0972161c02de57dbe993112eb5c5583" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>tointeger(o,i)<sp/>\</highlight></codeline>
+<codeline lineno="63"><highlight class="preprocessor"><sp/><sp/>(l_likely(ttisinteger(o))<sp/>?<sp/>(*(i)<sp/>=<sp/>ivalue(o),<sp/>1)<sp/>\</highlight></codeline>
+<codeline lineno="64"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>luaV_tointeger(o,i,LUA_FLOORN2I))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>convert<sp/>an<sp/>object<sp/>to<sp/>an<sp/>integer<sp/>(without<sp/>string<sp/>coercion)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="lvm_8h_1a0b3a6eff12747eacea6551dbc2d42707" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>tointegerns(o,i)<sp/>\</highlight></codeline>
+<codeline lineno="69"><highlight class="preprocessor"><sp/><sp/>(l_likely(ttisinteger(o))<sp/>?<sp/>(*(i)<sp/>=<sp/>ivalue(o),<sp/>1)<sp/>\</highlight></codeline>
+<codeline lineno="70"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>luaV_tointegerns(o,i,LUA_FLOORN2I))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73" refid="lvm_8h_1a6c054eb9ce53c1b282e7ff0088895a37" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>intop(op,v1,v2)<sp/>l_castU2S(l_castS2U(v1)<sp/>op<sp/>l_castS2U(v2))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75" refid="lvm_8h_1aedbcec0d2a0e951710844d11dfa59a07" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaV_rawequalobj(t1,t2)<sp/><sp/><sp/><sp/><sp/>luaV_equalobj(NULL,t1,t2)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="79"><highlight class="comment">**<sp/>fast<sp/>track<sp/>for<sp/>&apos;gettable&apos;</highlight></codeline>
+<codeline lineno="80"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81" refid="lvm_8h_1a25f2f53523d93587ea7bf974c97b7b60" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaV_fastget(t,k,res,f,<sp/>tag)<sp/>\</highlight></codeline>
+<codeline lineno="82"><highlight class="preprocessor"><sp/><sp/>(tag<sp/>=<sp/>(!ttistable(t)<sp/>?<sp/>LUA_VNOTABLE<sp/>:<sp/>f(hvalue(t),<sp/>k,<sp/>res)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="86"><highlight class="comment">**<sp/>Special<sp/>case<sp/>of<sp/>&apos;luaV_fastget&apos;<sp/>for<sp/>integers,<sp/>inlining<sp/>the<sp/>fast<sp/>case</highlight></codeline>
+<codeline lineno="87"><highlight class="comment">**<sp/>of<sp/>&apos;luaH_getint&apos;.</highlight></codeline>
+<codeline lineno="88"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89" refid="lvm_8h_1a323abdbf17c11ad7a4d7951aa99bd56d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaV_fastgeti(t,k,res,tag)<sp/>\</highlight></codeline>
+<codeline lineno="90"><highlight class="preprocessor"><sp/><sp/>if<sp/>(!ttistable(t))<sp/>tag<sp/>=<sp/>LUA_VNOTABLE;<sp/>\</highlight></codeline>
+<codeline lineno="91"><highlight class="preprocessor"><sp/><sp/>else<sp/>{<sp/>luaH_fastgeti(hvalue(t),<sp/>k,<sp/>res,<sp/>tag);<sp/>}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94" refid="lvm_8h_1af4a14ec5a459ba7b816ddf29562eed28" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaV_fastset(t,k,val,hres,f)<sp/>\</highlight></codeline>
+<codeline lineno="95"><highlight class="preprocessor"><sp/><sp/>(hres<sp/>=<sp/>(!ttistable(t)<sp/>?<sp/>HNOTATABLE<sp/>:<sp/>f(hvalue(t),<sp/>k,<sp/>val)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97" refid="lvm_8h_1a8b40f79264d00a1c86da7712bafb46ba" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaV_fastseti(t,k,val,hres)<sp/>\</highlight></codeline>
+<codeline lineno="98"><highlight class="preprocessor"><sp/><sp/>if<sp/>(!ttistable(t))<sp/>hres<sp/>=<sp/>HNOTATABLE;<sp/>\</highlight></codeline>
+<codeline lineno="99"><highlight class="preprocessor"><sp/><sp/>else<sp/>{<sp/>luaH_fastseti(hvalue(t),<sp/>k,<sp/>val,<sp/>hres);<sp/>}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="103"><highlight class="comment">**<sp/>Finish<sp/>a<sp/>fast<sp/>set<sp/>operation<sp/>(when<sp/>fast<sp/>set<sp/>succeeds).</highlight></codeline>
+<codeline lineno="104"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105" refid="lvm_8h_1ad8bb4e81bb34378d29438c600fb729bf" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaV_finishfastset(L,t,v)<sp/><sp/><sp/>luaC_barrierback(L,<sp/>gcvalue(t),<sp/>v)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="109"><highlight class="comment">**<sp/>Shift<sp/>right<sp/>is<sp/>the<sp/>same<sp/>as<sp/>shift<sp/>left<sp/>with<sp/>a<sp/>negative<sp/>&apos;y&apos;</highlight></codeline>
+<codeline lineno="110"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111" refid="lvm_8h_1a1696d36ebff18f8164f4aa2f993c2088" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaV_shiftr(x,y)<sp/><sp/><sp/><sp/>luaV_shiftl(x,intop(-,<sp/>0,<sp/>y))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lvm_8h_1a2f779d315adf5ac6a26c88409b58eeec" kindref="member">luaV_equalobj</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*t1,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*t2);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lvm_8h_1a1245a563d674251ea03c7abbd1a2ca8c" kindref="member">luaV_lessthan</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*l,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*r);</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lvm_8h_1aa151c39c80af19e2ea6d309e7993973c" kindref="member">luaV_lessequal</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*l,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*r);</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lvm_8h_1a8dde84947fb2b5ec169813216235a4ba" kindref="member">luaV_tonumber_</ref><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*obj,<sp/><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref><sp/>*n);</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lvm_8h_1a2a864417ad70b6e8d3eb7d3c10cad672" kindref="member">luaV_tointeger</ref><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*obj,<sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>*p,<sp/><ref refid="lvm_8h_1a1639065f78212a54317141b2703061c0" kindref="member">F2Imod</ref><sp/>mode);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lvm_8h_1a217081972ce52f0e7a489d2398422b39" kindref="member">luaV_tointegerns</ref><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*obj,<sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>*p,</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lvm_8h_1a1639065f78212a54317141b2703061c0" kindref="member">F2Imod</ref><sp/>mode);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lvm_8h_1aafdf8bf00e39d6cf1d53e1e364ced4cb" kindref="member">luaV_flttointeger</ref><sp/>(<ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref><sp/>n,<sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>*p,<sp/><ref refid="lvm_8h_1a1639065f78212a54317141b2703061c0" kindref="member">F2Imod</ref><sp/>mode);</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="lvm_8h_1a2bd5bc2f19cf4d863645d76ec93e8c17" kindref="member">luaV_finishget</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*t,<sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>val,<sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/>tag);</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lvm_8h_1a1f4ce3fb3bad1161d5a5c16315041032" kindref="member">luaV_finishset</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*t,<sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*val,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>aux);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lvm_8h_1a5db3e64b3cc2f63c3b10b27f7ecd1d03" kindref="member">luaV_finishOp</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lvm_8h_1ac430e93ed874f6ab2449d7a16aa6b62f" kindref="member">luaV_execute</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_call_info" kindref="compound">CallInfo</ref><sp/>*ci);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lvm_8h_1aee84bfc563cb4bdd21a013218a289aa7" kindref="member">luaV_concat</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>total);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/><ref refid="lvm_8h_1a3fb7bab8732e10dbf0305243201075dc" kindref="member">luaV_idiv</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>x,<sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>y);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/><ref refid="lvm_8h_1a8c64b8dbe11cb5be7617feb17c279ced" kindref="member">luaV_mod</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>x,<sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>y);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref><sp/><ref refid="lvm_8h_1a7de4dcc7d1f397d2c02443dd7cb3e65b" kindref="member">luaV_modf</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref><sp/>x,<sp/><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref><sp/>y);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/><ref refid="lvm_8h_1aa785f0ac32664e47c2d3689d75edc5e8" kindref="member">luaV_shiftl</ref><sp/>(<ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>x,<sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>y);</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lvm_8h_1a414b4b487239935324f2f16e1e7715db" kindref="member">luaV_objlen</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>ra,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*rb);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lvm.h"/>
+  </compounddef>
+</doxygen>

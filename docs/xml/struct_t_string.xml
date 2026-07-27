@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_t_string" kind="struct" language="C++" prot="public">
+    <compoundname>TString</compoundname>
+    <includes refid="lobject_8h" local="no">lobject.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_t_string_1a46677057221656f98fa80eb77089de45" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>TString::CommonHeader</definition>
+        <argsstring></argsstring>
+        <name>CommonHeader</name>
+        <qualifiedname>TString::CommonHeader</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="406" column="3" bodyfile="leasy/lua/lobject.h" bodystart="406" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_t_string_1a11878b0fae7367ad203a0c470ee54fa1" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte TString::extra</definition>
+        <argsstring></argsstring>
+        <name>extra</name>
+        <qualifiedname>TString::extra</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="407" column="11" bodyfile="leasy/lua/lobject.h" bodystart="407" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_t_string_1a4daff60502f0255ec75513191424a9c7" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1aab58a246c9e0a85c4c2ed0fd8d6724bb" kindref="member">ls_byte</ref></type>
+        <definition>ls_byte TString::shrlen</definition>
+        <argsstring></argsstring>
+        <name>shrlen</name>
+        <qualifiedname>TString::shrlen</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="408" column="11" bodyfile="leasy/lua/lobject.h" bodystart="408" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_t_string_1a57f69ac2b4c4eb34f5521ffd68d90b5f" prot="public" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int TString::hash</definition>
+        <argsstring></argsstring>
+        <name>hash</name>
+        <qualifiedname>TString::hash</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="409" column="16" bodyfile="leasy/lua/lobject.h" bodystart="409" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_t_string_1a25f3ee23e67e10eba379fa4f31dec5d2" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t TString::lnglen</definition>
+        <argsstring></argsstring>
+        <name>lnglen</name>
+        <qualifiedname>TString::lnglen</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="411" column="12" bodyfile="leasy/lua/lobject.h" bodystart="411" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_t_string_1adb99ad67b6bc67f62fac7d69b88f07fd" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>struct TString* TString::hnext</definition>
+        <argsstring></argsstring>
+        <name>hnext</name>
+        <qualifiedname>TString::hnext</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="412" column="18" bodyfile="leasy/lua/lobject.h" bodystart="412" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_t_string_1af0a4680e50b64541e1811240795f3fb9" prot="public" static="no" mutable="no">
+        <type>union TString::@132224162152025003177021330242146137377142044123</type>
+        <definition>union TString::@132224162152025003177021330242146137377142044123 TString::u</definition>
+        <argsstring></argsstring>
+        <name>u</name>
+        <qualifiedname>TString::u</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="413" column="5"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_t_string_1ab794bd2b18ab7a16fa3f3b16669801d7" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* TString::contents</definition>
+        <argsstring></argsstring>
+        <name>contents</name>
+        <qualifiedname>TString::contents</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="414" column="8" bodyfile="leasy/lua/lobject.h" bodystart="414" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_t_string_1acad92742e5915e44fdbbeed12b3c244d" prot="public" static="no" mutable="no">
+        <type><ref refid="lua_8h_1a2ba24df8972a4a52ebd3517c62e0830d" kindref="member">lua_Alloc</ref></type>
+        <definition>lua_Alloc TString::falloc</definition>
+        <argsstring></argsstring>
+        <name>falloc</name>
+        <qualifiedname>TString::falloc</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="415" column="13" bodyfile="leasy/lua/lobject.h" bodystart="415" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_t_string_1a4754301957abb501d3525ed5796611d6" prot="public" static="no" mutable="no">
+        <type>void *</type>
+        <definition>void* TString::ud</definition>
+        <argsstring></argsstring>
+        <name>ud</name>
+        <qualifiedname>TString::ud</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="416" column="8" bodyfile="leasy/lua/lobject.h" bodystart="416" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="1" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lobject.h" line="405" column="1" bodyfile="leasy/lua/lobject.h" bodystart="405" bodyend="417"/>
+    <listofallmembers>
+      <member refid="struct_t_string_1a46677057221656f98fa80eb77089de45" prot="public" virt="non-virtual"><scope>TString</scope><name>CommonHeader</name></member>
+      <member refid="struct_t_string_1ab794bd2b18ab7a16fa3f3b16669801d7" prot="public" virt="non-virtual"><scope>TString</scope><name>contents</name></member>
+      <member refid="struct_t_string_1a11878b0fae7367ad203a0c470ee54fa1" prot="public" virt="non-virtual"><scope>TString</scope><name>extra</name></member>
+      <member refid="struct_t_string_1acad92742e5915e44fdbbeed12b3c244d" prot="public" virt="non-virtual"><scope>TString</scope><name>falloc</name></member>
+      <member refid="struct_t_string_1a57f69ac2b4c4eb34f5521ffd68d90b5f" prot="public" virt="non-virtual"><scope>TString</scope><name>hash</name></member>
+      <member refid="struct_t_string_1adb99ad67b6bc67f62fac7d69b88f07fd" prot="public" virt="non-virtual"><scope>TString</scope><name>hnext</name></member>
+      <member refid="struct_t_string_1a25f3ee23e67e10eba379fa4f31dec5d2" prot="public" virt="non-virtual"><scope>TString</scope><name>lnglen</name></member>
+      <member refid="struct_t_string_1a4daff60502f0255ec75513191424a9c7" prot="public" virt="non-virtual"><scope>TString</scope><name>shrlen</name></member>
+      <member refid="struct_t_string_1af0a4680e50b64541e1811240795f3fb9" prot="public" virt="non-virtual"><scope>TString</scope><name>u</name></member>
+      <member refid="struct_t_string_1a4754301957abb501d3525ed5796611d6" prot="public" virt="non-virtual"><scope>TString</scope><name>ud</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

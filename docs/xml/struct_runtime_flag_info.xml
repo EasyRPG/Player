@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_runtime_flag_info" kind="struct" language="C++" prot="public">
+    <compoundname>RuntimeFlagInfo</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_runtime_flag_info_1aae7a802e57abe22a155cfb34369b934c" prot="public" static="no" mutable="no">
+        <type>bool(*</type>
+        <definition>bool(* RuntimeFlagInfo::config_fn) ()</definition>
+        <argsstring>)()</argsstring>
+        <name>config_fn</name>
+        <qualifiedname>RuntimeFlagInfo::config_fn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.cpp" line="45" column="1" bodyfile="window_interpreter.cpp" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_runtime_flag_info_1a78ca51284abbba2800b4e6811e23bb21" prot="public" static="no" mutable="no">
+        <type><ref refid="namespace_game___interpreter___shared_1aa988fbaba0ebd6cdb28a6222e1ef2575" kindref="member">Game_Interpreter_Shared::StateRuntimeFlagRef</ref></type>
+        <definition>Game_Interpreter_Shared::StateRuntimeFlagRef RuntimeFlagInfo::field_on</definition>
+        <argsstring></argsstring>
+        <name>field_on</name>
+        <qualifiedname>RuntimeFlagInfo::field_on</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.cpp" line="46" column="46" bodyfile="window_interpreter.cpp" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_runtime_flag_info_1a83fe5956e66b74cac58b7d719c2a04d8" prot="public" static="no" mutable="no">
+        <type><ref refid="namespace_game___interpreter___shared_1aa988fbaba0ebd6cdb28a6222e1ef2575" kindref="member">Game_Interpreter_Shared::StateRuntimeFlagRef</ref></type>
+        <definition>Game_Interpreter_Shared::StateRuntimeFlagRef RuntimeFlagInfo::field_off</definition>
+        <argsstring></argsstring>
+        <name>field_off</name>
+        <qualifiedname>RuntimeFlagInfo::field_off</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.cpp" line="46" column="55" bodyfile="window_interpreter.cpp" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_runtime_flag_info_1afb2391df0a6d6348c714db20322cb699" prot="public" static="no" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view RuntimeFlagInfo::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>RuntimeFlagInfo::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.cpp" line="47" column="18" bodyfile="window_interpreter.cpp" bodystart="47" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="window_interpreter.cpp" line="44" column="1" bodyfile="window_interpreter.cpp" bodystart="44" bodyend="48"/>
+    <listofallmembers>
+      <member refid="struct_runtime_flag_info_1aae7a802e57abe22a155cfb34369b934c" prot="public" virt="non-virtual"><scope>RuntimeFlagInfo</scope><name>config_fn</name></member>
+      <member refid="struct_runtime_flag_info_1a83fe5956e66b74cac58b7d719c2a04d8" prot="public" virt="non-virtual"><scope>RuntimeFlagInfo</scope><name>field_off</name></member>
+      <member refid="struct_runtime_flag_info_1a78ca51284abbba2800b4e6811e23bb21" prot="public" virt="non-virtual"><scope>RuntimeFlagInfo</scope><name>field_on</name></member>
+      <member refid="struct_runtime_flag_info_1afb2391df0a6d6348c714db20322cb699" prot="public" virt="non-virtual"><scope>RuntimeFlagInfo</scope><name>name</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

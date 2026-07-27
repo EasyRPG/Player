@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___ineluki_1_1_ineluki_command" kind="struct" language="C++" prot="private">
+    <compoundname>Game_Ineluki::InelukiCommand</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___ineluki_1_1_ineluki_command_1a9e6febff2739e3e617710a690f70045a" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Game_Ineluki::InelukiCommand::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>Game_Ineluki::InelukiCommand::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="103" column="13" bodyfile="game_ineluki.h" bodystart="103" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___ineluki_1_1_ineluki_command_1ac012694bdfc59f63855188c4194ef9f1" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Game_Ineluki::InelukiCommand::arg</definition>
+        <argsstring></argsstring>
+        <name>arg</name>
+        <qualifiedname>Game_Ineluki::InelukiCommand::arg</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="104" column="13" bodyfile="game_ineluki.h" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___ineluki_1_1_ineluki_command_1adf7312245cc91e60149ac22ad24eff99" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Game_Ineluki::InelukiCommand::arg2</definition>
+        <argsstring></argsstring>
+        <name>arg2</name>
+        <qualifiedname>Game_Ineluki::InelukiCommand::arg2</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="105" column="13" bodyfile="game_ineluki.h" bodystart="105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___ineluki_1_1_ineluki_command_1a7f514d5523852307ba69ad730d0ec452" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Game_Ineluki::InelukiCommand::arg3</definition>
+        <argsstring></argsstring>
+        <name>arg3</name>
+        <qualifiedname>Game_Ineluki::InelukiCommand::arg3</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="106" column="13" bodyfile="game_ineluki.h" bodystart="106" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_ineluki.h" line="102" column="1" bodyfile="game_ineluki.h" bodystart="102" bodyend="107"/>
+    <listofallmembers>
+      <member refid="struct_game___ineluki_1_1_ineluki_command_1ac012694bdfc59f63855188c4194ef9f1" prot="public" virt="non-virtual"><scope>Game_Ineluki::InelukiCommand</scope><name>arg</name></member>
+      <member refid="struct_game___ineluki_1_1_ineluki_command_1adf7312245cc91e60149ac22ad24eff99" prot="public" virt="non-virtual"><scope>Game_Ineluki::InelukiCommand</scope><name>arg2</name></member>
+      <member refid="struct_game___ineluki_1_1_ineluki_command_1a7f514d5523852307ba69ad730d0ec452" prot="public" virt="non-virtual"><scope>Game_Ineluki::InelukiCommand</scope><name>arg3</name></member>
+      <member refid="struct_game___ineluki_1_1_ineluki_command_1a9e6febff2739e3e617710a690f70045a" prot="public" virt="non-virtual"><scope>Game_Ineluki::InelukiCommand</scope><name>name</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

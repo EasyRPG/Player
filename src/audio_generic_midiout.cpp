@@ -178,3 +178,4 @@ AudioDecoderMidi& GenericAudioMidiOut::GetMidiOut() {
 	assert(midi_out);
 	return *midi_out;
 }
+

@@ -216,3 +216,4 @@ inline bool Game_Battle::IsBattleRunning() {
 }
 
 #endif
+

@@ -252,3 +252,4 @@ struct Game_Config {
 };
 
 #endif
+

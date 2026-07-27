@@ -1,0 +1,306 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="ps7k_8hpp" kind="file" language="C++">
+    <compoundname>ps7k.hpp</compoundname>
+    <includes local="no">algorithm</includes>
+    <includes local="no">cstddef</includes>
+    <includes local="no">cstring</includes>
+    <includes local="no">string</includes>
+    <includes local="no">string_view</includes>
+    <includes local="no">type_traits</includes>
+    <includes local="no">utility</includes>
+    <includes local="no">iterator</includes>
+    <includedby refid="lio_8hpp" local="yes">leasy/lio.hpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/kits/ps7k.hpp</label>
+        <link refid="ps7k_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>algorithm</label>
+      </node>
+      <node id="3">
+        <label>cstddef</label>
+      </node>
+      <node id="4">
+        <label>cstring</label>
+      </node>
+      <node id="9">
+        <label>iterator</label>
+      </node>
+      <node id="5">
+        <label>string</label>
+      </node>
+      <node id="6">
+        <label>string_view</label>
+      </node>
+      <node id="7">
+        <label>type_traits</label>
+      </node>
+      <node id="8">
+        <label>utility</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="17">
+        <label>algo.cpp</label>
+        <link refid="algo_8cpp"/>
+      </node>
+      <node id="5">
+        <label>game_actor.cpp</label>
+        <link refid="game__actor_8cpp"/>
+      </node>
+      <node id="6">
+        <label>game_character.cpp</label>
+        <link refid="game__character_8cpp"/>
+      </node>
+      <node id="3">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="4">
+        <label>leasy/diag5/diagnostics.hpp</label>
+        <link refid="diagnostics_8hpp"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>leasy/events.hpp</label>
+        <link refid="events_8hpp"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>leasy/ily3/boot.cpp</label>
+        <link refid="boot_8cpp"/>
+      </node>
+      <node id="11">
+        <label>leasy/ily3/ily3.cpp</label>
+        <link refid="ily3_8cpp"/>
+      </node>
+      <node id="1">
+        <label>leasy/kits/ps7k.hpp</label>
+        <link refid="ps7k_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>leasy/leasy.cpp</label>
+        <link refid="leasy_8cpp"/>
+      </node>
+      <node id="12">
+        <label>leasy/lio.cpp</label>
+        <link refid="lio_8cpp"/>
+      </node>
+      <node id="2">
+        <label>leasy/lio.hpp</label>
+        <link refid="lio_8hpp"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>leasy/lmain.cpp</label>
+        <link refid="lmain_8cpp"/>
+      </node>
+      <node id="15">
+        <label>leasy/metadata/class.hpp</label>
+        <link refid="class_8hpp"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>leasy/metadata/function.hpp</label>
+        <link refid="function_8hpp"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>leasy/metadata/namespace.hpp</label>
+        <link refid="namespace_8hpp"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>leasy/metadata/reflection.hpp</label>
+        <link refid="reflection_8hpp"/>
+      </node>
+      <node id="19">
+        <label>leasy/metadata/type.cpp</label>
+        <link refid="type_8cpp"/>
+      </node>
+      <node id="20">
+        <label>leasy/ui/winstream.hpp</label>
+        <link refid="winstream_8hpp"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespaceleasy">leasy</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1compat">leasy::compat</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;algorithm&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstddef&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstring&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string_view&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;type_traits&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;utility&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iterator&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>__cplusplus<sp/>&lt;<sp/>202002L</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1compat" kindref="compound">leasy::compat</ref><sp/>{</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Container,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="39" refid="namespaceleasy_1_1compat_1af0b1cca2d3b88aa7fc1729e77cd93b8e" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Container::size_type<sp/><ref refid="namespaceleasy_1_1compat_1af0b1cca2d3b88aa7fc1729e77cd93b8e" kindref="member">erase</ref>(Container&amp;<sp/>c,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T&amp;<sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>old<sp/>=<sp/>c.size();</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/>c.erase(std::remove(c.begin(),<sp/>c.end(),<sp/>value),<sp/>c.end());</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>old<sp/>-<sp/>c.size();</highlight></codeline>
+<codeline lineno="43"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Container,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Pred&gt;</highlight></codeline>
+<codeline lineno="46" refid="namespaceleasy_1_1compat_1a0248da5bd137c1f19faa774ea38a9b2f" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Container::size_type<sp/><ref refid="namespaceleasy_1_1compat_1a0248da5bd137c1f19faa774ea38a9b2f" kindref="member">erase_if</ref>(Container&amp;<sp/>c,<sp/>Pred<sp/>pred)<sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>old<sp/>=<sp/>c.size();</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/>c.erase(std::remove_if(c.begin(),<sp/>c.end(),<sp/>pred),<sp/>c.end());</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>old<sp/>-<sp/>c.size();</highlight></codeline>
+<codeline lineno="50"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Container,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="53" refid="namespaceleasy_1_1compat_1a3fb931d00f2ca3bde2dd2a9967e74200" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1compat_1a3fb931d00f2ca3bde2dd2a9967e74200" kindref="member">contains</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Container&amp;<sp/>c,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T&amp;<sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::find(c.begin(),<sp/>c.end(),<sp/>value)<sp/>!=<sp/>c.end();</highlight></codeline>
+<codeline lineno="55"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>E&gt;</highlight></codeline>
+<codeline lineno="58" refid="namespaceleasy_1_1compat_1acc90a2b1a4c607c37f48bef0cbccf54b" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>std::underlying_type_t&lt;E&gt;<sp/><ref refid="namespaceleasy_1_1compat_1acc90a2b1a4c607c37f48bef0cbccf54b" kindref="member">to_underlying</ref>(E<sp/>e)<sp/></highlight><highlight class="keyword">noexcept</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">std::underlying_type_t&lt;E&gt;</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(e);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="namespaceleasy_1_1compat_1ad93275dcc2d37feb03d16b7e91e94751" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1compat_1ad93275dcc2d37feb03d16b7e91e94751" kindref="member">starts_with</ref>(std::string_view<sp/>s,<sp/>std::string_view<sp/>prefix)<sp/>{</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>s.substr(0,<sp/>prefix.size())<sp/>==<sp/>prefix;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="namespaceleasy_1_1compat_1aa5a097a9b845a2d2380eef599a5ff4cb" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1compat_1aa5a097a9b845a2d2380eef599a5ff4cb" kindref="member">ends_with</ref>(std::string_view<sp/>s,<sp/>std::string_view<sp/>suffix)<sp/>{</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>s.size()<sp/>&gt;=<sp/>suffix.size()<sp/>&amp;&amp;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>s.substr(s.size()<sp/>-<sp/>suffix.size())<sp/>==<sp/>suffix;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>To,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>From&gt;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal">std::enable_if_t&lt;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(To)<sp/>==<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(From)<sp/>&amp;&amp;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/>std::is_trivially_copyable_v&lt;From&gt;<sp/>&amp;&amp;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/>std::is_trivially_copyable_v&lt;To&gt;,</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/>To&gt;</highlight></codeline>
+<codeline lineno="77" refid="namespaceleasy_1_1compat_1a2b4cac92d7053972b7650d5d085894e2" refkind="member"><highlight class="normal"><ref refid="namespaceleasy_1_1compat_1a2b4cac92d7053972b7650d5d085894e2" kindref="member">bit_cast</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>From&amp;<sp/>src)<sp/></highlight><highlight class="keyword">noexcept</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/>To<sp/>dst;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/>std::memcpy(&amp;dst,<sp/>&amp;src,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(To));</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>dst;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>U&gt;</highlight></codeline>
+<codeline lineno="84" refid="namespaceleasy_1_1compat_1a341fa0eec66edacfba67003cd2daed61" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1compat_1a341fa0eec66edacfba67003cd2daed61" kindref="member">cmp_equal</ref>(T<sp/>t,<sp/>U<sp/>u)<sp/></highlight><highlight class="keyword">noexcept</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(std::is_signed_v&lt;T&gt;<sp/>==<sp/>std::is_signed_v&lt;U&gt;)</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>t<sp/>==<sp/>u;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(std::is_signed_v&lt;T&gt;)</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>t<sp/>&gt;=<sp/>0<sp/>&amp;&amp;<sp/>std::make_unsigned_t&lt;T&gt;(t)<sp/>==<sp/>u;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>u<sp/>&gt;=<sp/>0<sp/>&amp;&amp;<sp/>t<sp/>==<sp/>std::make_unsigned_t&lt;U&gt;(u);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>U&gt;</highlight></codeline>
+<codeline lineno="94" refid="namespaceleasy_1_1compat_1a960b6774e9dba231df7bb2618e49f0e6" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1compat_1a960b6774e9dba231df7bb2618e49f0e6" kindref="member">cmp_less</ref>(T<sp/>t,<sp/>U<sp/>u)<sp/></highlight><highlight class="keyword">noexcept</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(std::is_signed_v&lt;T&gt;<sp/>==<sp/>std::is_signed_v&lt;U&gt;)</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>t<sp/>&lt;<sp/>u;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(std::is_signed_v&lt;T&gt;)</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>t<sp/>&lt;<sp/>0<sp/>||<sp/>std::make_unsigned_t&lt;T&gt;(t)<sp/>&lt;<sp/>u;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>u<sp/>&gt;=<sp/>0<sp/>&amp;&amp;<sp/>t<sp/>&lt;<sp/>std::make_unsigned_t&lt;U&gt;(u);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>U&gt;</highlight></codeline>
+<codeline lineno="104" refid="namespaceleasy_1_1compat_1a232d2655feae87e5bc4061ca72e4dc66" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1compat_1a232d2655feae87e5bc4061ca72e4dc66" kindref="member">cmp_greater</ref>(T<sp/>t,<sp/>U<sp/>u)<sp/></highlight><highlight class="keyword">noexcept</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1compat_1a960b6774e9dba231df7bb2618e49f0e6" kindref="member">cmp_less</ref>(u,<sp/>t);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>U&gt;</highlight></codeline>
+<codeline lineno="109" refid="namespaceleasy_1_1compat_1a4a6886ea86a4b768ec15264c95b6b213" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1compat_1a4a6886ea86a4b768ec15264c95b6b213" kindref="member">cmp_less_equal</ref>(T<sp/>t,<sp/>U<sp/>u)<sp/></highlight><highlight class="keyword">noexcept</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>!<ref refid="namespaceleasy_1_1compat_1a232d2655feae87e5bc4061ca72e4dc66" kindref="member">cmp_greater</ref>(t,<sp/>u);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>U&gt;</highlight></codeline>
+<codeline lineno="114" refid="namespaceleasy_1_1compat_1ade9bca9ee5a857520b643dea61be2157" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1compat_1ade9bca9ee5a857520b643dea61be2157" kindref="member">cmp_greater_equal</ref>(T<sp/>t,<sp/>U<sp/>u)<sp/></highlight><highlight class="keyword">noexcept</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>!<ref refid="namespaceleasy_1_1compat_1a960b6774e9dba231df7bb2618e49f0e6" kindref="member">cmp_less</ref>(t,<sp/>u);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>compat</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight><highlight class="preprocessor">#warning<sp/>leasy.System.Compiler:<sp/>[WARNING]<sp/>This<sp/>mod<sp/>was<sp/>designed<sp/>to<sp/>support<sp/>C++17<sp/>—<sp/>C++20<sp/>may<sp/>cause<sp/>issues.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/kits/ps7k.hpp"/>
+  </compounddef>
+</doxygen>

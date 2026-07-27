@@ -169,3 +169,4 @@ std::optional<std::string> PendingMessage::DefaultCommandInserter(char ch, const
 
 	return std::nullopt;
 }
+

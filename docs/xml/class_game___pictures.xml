@@ -1,0 +1,368 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___pictures" kind="class" language="C++" prot="public">
+    <compoundname>Game_Pictures</compoundname>
+    <includes refid="game__pictures_8h" local="no">game_pictures.h</includes>
+    <innerclass refid="struct_game___pictures_1_1_params" prot="public">Game_Pictures::Params</innerclass>
+    <innerclass refid="struct_game___pictures_1_1_show_params" prot="public">Game_Pictures::ShowParams</innerclass>
+    <innerclass refid="struct_game___pictures_1_1_move_params" prot="public">Game_Pictures::MoveParams</innerclass>
+    <innerclass refid="struct_game___pictures_1_1_picture" prot="public">Game_Pictures::Picture</innerclass>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___pictures_1af4d2754800afad273822b84e5f70ebb4" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="struct_game___pictures_1_1_picture" kindref="compound">Picture</ref> &gt;</type>
+        <definition>std::vector&lt;Picture&gt; Game_Pictures::pictures</definition>
+        <argsstring></argsstring>
+        <name>pictures</name>
+        <qualifiedname>Game_Pictures::pictures</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="141" column="13" bodyfile="game_pictures.h" bodystart="141" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___pictures_1a00bd7f09f98e98cdba2ea3c62b7a4c20" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Pictures::frame_counter</definition>
+        <argsstring></argsstring>
+        <name>frame_counter</name>
+        <qualifiedname>Game_Pictures::frame_counter</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="142" column="5" bodyfile="game_pictures.h" bodystart="142" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___pictures_1a4d0f98c0903ca09df68853b8247681c1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Pictures::Game_Pictures</definition>
+        <argsstring>()=default</argsstring>
+        <name>Game_Pictures</name>
+        <qualifiedname>Game_Pictures::Game_Pictures</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="38" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___pictures_1ac135b756a88c82ca56c9184de91d12d7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Pictures::SetSaveData</definition>
+        <argsstring>(std::vector&lt; lcf::rpg::SavePicture &gt; save)</argsstring>
+        <name>SetSaveData</name>
+        <qualifiedname>Game_Pictures::SetSaveData</qualifiedname>
+        <param>
+          <type>std::vector&lt; lcf::rpg::SavePicture &gt;</type>
+          <declname>save</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="40" column="6" bodyfile="game_pictures.cpp" bodystart="77" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___pictures_1af72c95ec73dd82c6d599c8587f30048c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; lcf::rpg::SavePicture &gt;</type>
+        <definition>std::vector&lt; lcf::rpg::SavePicture &gt; Game_Pictures::GetSaveData</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSaveData</name>
+        <qualifiedname>Game_Pictures::GetSaveData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="41" column="13" bodyfile="game_pictures.cpp" bodystart="98" bodyend="126"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___pictures_1a9b2a42c8b858d48c4089facd53c7fe11" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Pictures::InitGraphics</definition>
+        <argsstring>()</argsstring>
+        <name>InitGraphics</name>
+        <qualifiedname>Game_Pictures::InitGraphics</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="43" column="6" bodyfile="game_pictures.cpp" bodystart="71" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___pictures_1a8ef7b423b841cc3b0ee62c4be98fbbb0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Pictures::Show</definition>
+        <argsstring>(int id, const ShowParams &amp;params)</argsstring>
+        <name>Show</name>
+        <qualifiedname>Game_Pictures::Show</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_game___pictures_1_1_show_params" kindref="compound">ShowParams</ref> &amp;</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="86" column="6" bodyfile="game_pictures.cpp" bodystart="253" bodyend="265"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___pictures_1a18670179a611e6ab44ac98f1a92f9f52" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Pictures::Move</definition>
+        <argsstring>(int id, const MoveParams &amp;params)</argsstring>
+        <name>Move</name>
+        <qualifiedname>Game_Pictures::Move</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_game___pictures_1_1_move_params" kindref="compound">MoveParams</ref> &amp;</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="87" column="6" bodyfile="game_pictures.cpp" bodystart="322" bodyend="325"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___pictures_1a7b4d094dc8b489eb20e722c7b0ac7a0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Pictures::Erase</definition>
+        <argsstring>(int id)</argsstring>
+        <name>Erase</name>
+        <qualifiedname>Game_Pictures::Erase</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="88" column="6" bodyfile="game_pictures.cpp" bodystart="339" bodyend="344"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___pictures_1ad886328413060f44051b6ea3bb6fd349" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Pictures::EraseAll</definition>
+        <argsstring>()</argsstring>
+        <name>EraseAll</name>
+        <qualifiedname>Game_Pictures::EraseAll</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="89" column="6" bodyfile="game_pictures.cpp" bodystart="346" bodyend="350"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___pictures_1a2747ccfb3be069ffd3c9e7dec65cf294" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Pictures::Update</definition>
+        <argsstring>(bool is_battle)</argsstring>
+        <name>Update</name>
+        <qualifiedname>Game_Pictures::Update</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>is_battle</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="91" column="6" bodyfile="game_pictures.cpp" bodystart="603" bodyend="608"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___pictures_1af7fcc5142f68b9d89e97a0cf61720b88" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Pictures::OnMapChange</definition>
+        <argsstring>()</argsstring>
+        <name>OnMapChange</name>
+        <qualifiedname>Game_Pictures::OnMapChange</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="93" column="6" bodyfile="game_pictures.cpp" bodystart="163" bodyend="169"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___pictures_1abc0045438e54b00da7e364a3066d9e19" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Pictures::OnBattleEnd</definition>
+        <argsstring>()</argsstring>
+        <name>OnBattleEnd</name>
+        <qualifiedname>Game_Pictures::OnBattleEnd</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="94" column="6" bodyfile="game_pictures.cpp" bodystart="171" bodyend="177"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___pictures_1a7b7cf1dbb54a3dc299101bf181321277" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Pictures::OnMapScrolled</definition>
+        <argsstring>(int dx, int dy)</argsstring>
+        <name>OnMapScrolled</name>
+        <qualifiedname>Game_Pictures::OnMapScrolled</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>dx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="95" column="6" bodyfile="game_pictures.cpp" bodystart="490" bodyend="494"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___pictures_1a967b53320516e0e70d781691eb43e225" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_game___pictures_1_1_picture" kindref="compound">Picture</ref> &amp;</type>
+        <definition>Game_Pictures::Picture &amp; Game_Pictures::GetPicture</definition>
+        <argsstring>(int id)</argsstring>
+        <name>GetPicture</name>
+        <qualifiedname>Game_Pictures::GetPicture</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="134" column="9" bodyfile="game_pictures.cpp" bodystart="148" bodyend="156"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___pictures_1afb33804abe58d1085a4e71695a6c6865" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_game___pictures_1_1_picture" kindref="compound">Picture</ref> *</type>
+        <definition>Game_Pictures::Picture * Game_Pictures::GetPicturePtr</definition>
+        <argsstring>(int id)</argsstring>
+        <name>GetPicturePtr</name>
+        <qualifiedname>Game_Pictures::GetPicturePtr</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="135" column="9" bodyfile="game_pictures.cpp" bodystart="158" bodyend="161"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_game___pictures_1afbd88c99ec547f4af10748cb1e8c85ef" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Pictures::GetDefaultNumberOfPictures</definition>
+        <argsstring>()</argsstring>
+        <name>GetDefaultNumberOfPictures</name>
+        <qualifiedname>Game_Pictures::GetDefaultNumberOfPictures</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="45" column="12" bodyfile="game_pictures.cpp" bodystart="128" bodyend="146"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_game___pictures_1a9684536e8dc150eec356142359dcd8af" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Pictures::RequestPictureSprite</definition>
+        <argsstring>(Picture &amp;pic)</argsstring>
+        <name>RequestPictureSprite</name>
+        <qualifiedname>Game_Pictures::RequestPictureSprite</qualifiedname>
+        <param>
+          <type><ref refid="struct_game___pictures_1_1_picture" kindref="compound">Picture</ref> &amp;</type>
+          <declname>pic</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="138" column="6" bodyfile="game_pictures.cpp" bodystart="372" bodyend="382"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___pictures_1ab434e4efbb30ead2d9e273ccb7453172" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Pictures::OnPictureSpriteReady</definition>
+        <argsstring>(FileRequestResult *, int id)</argsstring>
+        <name>OnPictureSpriteReady</name>
+        <qualifiedname>Game_Pictures::OnPictureSpriteReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="139" column="6" bodyfile="game_pictures.cpp" bodystart="394" bodyend="401"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Pictures class. </para>
+    </detaileddescription>
+    <location file="game_pictures.h" line="36" column="1" bodyfile="game_pictures.h" bodystart="36" bodyend="143"/>
+    <listofallmembers>
+      <member refid="class_game___pictures_1a7b4d094dc8b489eb20e722c7b0ac7a0b" prot="public" virt="non-virtual"><scope>Game_Pictures</scope><name>Erase</name></member>
+      <member refid="class_game___pictures_1ad886328413060f44051b6ea3bb6fd349" prot="public" virt="non-virtual"><scope>Game_Pictures</scope><name>EraseAll</name></member>
+      <member refid="class_game___pictures_1a00bd7f09f98e98cdba2ea3c62b7a4c20" prot="private" virt="non-virtual"><scope>Game_Pictures</scope><name>frame_counter</name></member>
+      <member refid="class_game___pictures_1a4d0f98c0903ca09df68853b8247681c1" prot="public" virt="non-virtual"><scope>Game_Pictures</scope><name>Game_Pictures</name></member>
+      <member refid="class_game___pictures_1afbd88c99ec547f4af10748cb1e8c85ef" prot="public" virt="non-virtual"><scope>Game_Pictures</scope><name>GetDefaultNumberOfPictures</name></member>
+      <member refid="class_game___pictures_1a967b53320516e0e70d781691eb43e225" prot="public" virt="non-virtual"><scope>Game_Pictures</scope><name>GetPicture</name></member>
+      <member refid="class_game___pictures_1afb33804abe58d1085a4e71695a6c6865" prot="public" virt="non-virtual"><scope>Game_Pictures</scope><name>GetPicturePtr</name></member>
+      <member refid="class_game___pictures_1af72c95ec73dd82c6d599c8587f30048c" prot="public" virt="non-virtual"><scope>Game_Pictures</scope><name>GetSaveData</name></member>
+      <member refid="class_game___pictures_1a9b2a42c8b858d48c4089facd53c7fe11" prot="public" virt="non-virtual"><scope>Game_Pictures</scope><name>InitGraphics</name></member>
+      <member refid="class_game___pictures_1a18670179a611e6ab44ac98f1a92f9f52" prot="public" virt="non-virtual"><scope>Game_Pictures</scope><name>Move</name></member>
+      <member refid="class_game___pictures_1abc0045438e54b00da7e364a3066d9e19" prot="public" virt="non-virtual"><scope>Game_Pictures</scope><name>OnBattleEnd</name></member>
+      <member refid="class_game___pictures_1af7fcc5142f68b9d89e97a0cf61720b88" prot="public" virt="non-virtual"><scope>Game_Pictures</scope><name>OnMapChange</name></member>
+      <member refid="class_game___pictures_1a7b7cf1dbb54a3dc299101bf181321277" prot="public" virt="non-virtual"><scope>Game_Pictures</scope><name>OnMapScrolled</name></member>
+      <member refid="class_game___pictures_1ab434e4efbb30ead2d9e273ccb7453172" prot="private" virt="non-virtual"><scope>Game_Pictures</scope><name>OnPictureSpriteReady</name></member>
+      <member refid="class_game___pictures_1af4d2754800afad273822b84e5f70ebb4" prot="private" virt="non-virtual"><scope>Game_Pictures</scope><name>pictures</name></member>
+      <member refid="class_game___pictures_1a9684536e8dc150eec356142359dcd8af" prot="private" virt="non-virtual"><scope>Game_Pictures</scope><name>RequestPictureSprite</name></member>
+      <member refid="class_game___pictures_1ac135b756a88c82ca56c9184de91d12d7" prot="public" virt="non-virtual"><scope>Game_Pictures</scope><name>SetSaveData</name></member>
+      <member refid="class_game___pictures_1a8ef7b423b841cc3b0ee62c4be98fbbb0" prot="public" virt="non-virtual"><scope>Game_Pictures</scope><name>Show</name></member>
+      <member refid="class_game___pictures_1a2747ccfb3be069ffd3c9e7dec65cf294" prot="public" virt="non-virtual"><scope>Game_Pictures</scope><name>Update</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

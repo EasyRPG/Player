@@ -1,0 +1,516 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_0d073035250077027371134345077373231046127146320174" kind="namespace" language="C++">
+    <compoundname>@073035250077027371134345077373231046127146320174</compoundname>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740b" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>Op</name>
+        <qualifiedname>@073035250077027371134345077373231046127146320174::Op</qualifiedname>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740babbb93ef26e3c101ff11cdd21cab08a94" prot="public">
+          <name>Null</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba6669348b484e3008dca2bfa8e85e40b5" prot="public">
+          <name>U8</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740baef9ef3ebca4d2b64b6ec83808bafa5f2" prot="public">
+          <name>U16</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740baa1e28eee0339658d39a8b4d325b56e9c" prot="public">
+          <name>S32</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740baa51e27afc87871bbd6395a9e1db0bda5" prot="public">
+          <name>UX8</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740baff264f9e2714fb85960d277253adeb94" prot="public">
+          <name>UX16</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740bafd81bdce1e3ab6f91f02216e5fbb393e" prot="public">
+          <name>SX32</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba5a92344ee95acf10c31901b36418be77" prot="public">
+          <name>Var</name>
+          <initializer>= 8</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740babbc155fb2b111bf61c4f5ff892915e6b" prot="public">
+          <name>Switch</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba8d9d350a75e886aa7d121fe30e211333" prot="public">
+          <name>VarIndirect</name>
+          <initializer>= 13</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba78050498db12c6af2c3fd27346e084a6" prot="public">
+          <name>SwitchIndirect</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba4410ec34d9e6c1a68100ca0ce033fb17" prot="public">
+          <name>Array</name>
+          <initializer>= 19</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba67d9ebb87ad2c62fe6b9de06c8da7fa5" prot="public">
+          <name>Negate</name>
+          <initializer>= 24</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740baa74c05d080620f087c4e523977230666" prot="public">
+          <name>Not</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba9ffbd422925a6839ee820ddbc59278c5" prot="public">
+          <name>Flip</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740bab3db9c9d7c39068ac6ba4cb8384261ba" prot="public">
+          <name>AssignInplace</name>
+          <initializer>= 34</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740babf4116994d37719bb067cdc3fb5edc2d" prot="public">
+          <name>AddInplace</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba6147fa0ca86930dbd298dff3f0f1c398" prot="public">
+          <name>SubInplace</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba7dbf24f650051a0ce6f31061199b2140" prot="public">
+          <name>MulInplace</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740bad4d30779682174be1d987021f7231914" prot="public">
+          <name>DivInplace</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba5ce60bd45a6ea8f740d19263bc85bfd1" prot="public">
+          <name>ModInplace</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba5762173ebf44b7b7030fbcbc0c1ae930" prot="public">
+          <name>BitOrInplace</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740badda34f37be662197da1e2a29f705e618" prot="public">
+          <name>BitAndInplace</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740bac861bf1f380e119d8614736e54107b04" prot="public">
+          <name>BitXorInplace</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba90fc667f924fda8c67567d6052ad225f" prot="public">
+          <name>BitShiftLeftInplace</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba86160f1705867ea25270cc874a5e1d8e" prot="public">
+          <name>BitShiftRightInplace</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740baec211f7c20af43e742bf2570c3cb84f9" prot="public">
+          <name>Add</name>
+          <initializer>= 48</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740bae80155eceb940c89e2de63ad05868db2" prot="public">
+          <name>Sub</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba62b6d55816cf737bfc6f42e60df1a3f2" prot="public">
+          <name>Mul</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba43d11850893d2fe84a1e618121c1cc0a" prot="public">
+          <name>Div</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba7aeb0277500c86e4aa6bd23f9a737942" prot="public">
+          <name>Mod</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba04306ca0b4b3ed9a5cedc16d4acbc2b8" prot="public">
+          <name>BitOr</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740bae5c7b3dc6fa17e0c1d0586d1a169c77d" prot="public">
+          <name>BitAnd</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740bac23bb1635c2e183c276b68ecdcf076c1" prot="public">
+          <name>BitXor</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba8480764b7cfa3ae27eccb39a21c19409" prot="public">
+          <name>BitShiftLeft</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740bad5fc78501b98741e5e2b18d979f6b873" prot="public">
+          <name>BitShiftRight</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740baf5f286e73bda105e538310b3190f75c5" prot="public">
+          <name>Equal</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba758b05d899def79c9eb864ad4f96be1f" prot="public">
+          <name>GreaterEqual</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740bad3e6fdac55bb7b0edd7834c968ba1f38" prot="public">
+          <name>LessEqual</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba8768a6821cd735aea4f5b0df88c1fc6a" prot="public">
+          <name>Greater</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba1cfdf0e8d0c87a228c1f40d9bee7888b" prot="public">
+          <name>Less</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba19bb0af2c3c530538cb41aff7f235b96" prot="public">
+          <name>NotEqual</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba3a2d5fe857d8f9541136a124c2edec6c" prot="public">
+          <name>Or</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740bac33315685a0cba3ce53be378b3c7874b" prot="public">
+          <name>And</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba87ba2ecc8b6915e8bd6f5089918229fd" prot="public">
+          <name>Range</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba928558e2f9712e38d447d674f2672200" prot="public">
+          <name>Subscript</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba4060a536bc1d1834fb773671c2d32337" prot="public">
+          <name>Ternary</name>
+          <initializer>= 72</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa355a5b8637440129c7d89cf8879740ba86408593c34af77fdd90df932f8b5261" prot="public">
+          <name>Function</name>
+          <initializer>= 78</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="maniac_patch.cpp" line="48" column="1" bodyfile="maniac_patch.cpp" bodystart="48" bodyend="97"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>Fn</name>
+        <qualifiedname>@073035250077027371134345077373231046127146320174::Fn</qualifiedname>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541a17baa58f59079cf7bd3ef3659d426bfb" prot="public">
+          <name>Rand</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541a7d74f3b92b19da5e606d737d339a9679" prot="public">
+          <name>Item</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541aa4ecfc70574394990cf17bd83df499f7" prot="public">
+          <name>Event</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541a1cc84619677de81ee6e44149845270a3" prot="public">
+          <name>Actor</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541a094a173d3b32f44f5b5c996e8710ae28" prot="public">
+          <name>Party</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541a8c6d21187fb58b7a079d70030686b33e" prot="public">
+          <name>Enemy</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541a74248c725e00bf9fe04df4e35b249a19" prot="public">
+          <name>Misc</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541a8be6d3e955290ee50c00a4bc92aa7749" prot="public">
+          <name>Pow</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541aae77f3ad25595e35b327334d89410054" prot="public">
+          <name>Sqrt</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541a0986d137604183312e6d3599578bc6cd" prot="public">
+          <name>Sin</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541affca562be079b9e4e41ea9d6a86c582b" prot="public">
+          <name>Cos</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541a5816dfcaf3b6dbb486ef9c8c006ff613" prot="public">
+          <name>Atan2</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541a78d811e98514cd165dda532286610fd2" prot="public">
+          <name>Min</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541a6a061313d22e51e0f25b7cd4dc065233" prot="public">
+          <name>Max</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541a1e34af023adeb7d5f484f8eb4b9826b6" prot="public">
+          <name>Abs</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541a08825280e3f8137556325061ba67ff8c" prot="public">
+          <name>Clamp</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541a0f6bad51848d7393cfca35d814c7c87a" prot="public">
+          <name>Muldiv</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541ae70ef95c04d937f789b59ccf143a9dc7" prot="public">
+          <name>Divmul</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_0d073035250077027371134345077373231046127146320174_1aa1afceaa86bdaa4ee46e10ff95353541a5ccb72b3b258508dc7918070eaeb214c" prot="public">
+          <name>Between</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="maniac_patch.cpp" line="99" column="1" bodyfile="maniac_patch.cpp" bodystart="99" bodyend="119"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="maniac_patch.cpp" line="47" column="1"/>
+  </compounddef>
+</doxygen>

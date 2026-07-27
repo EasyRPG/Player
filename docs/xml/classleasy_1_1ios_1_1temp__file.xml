@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1ios_1_1temp__file" kind="class" language="C++" prot="public">
+    <compoundname>leasy::ios::temp_file</compoundname>
+    <includes refid="lio_8hpp" local="no">lio.hpp</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1temp__file_1a7d46254763b9d4672eeccee5ff05600a" prot="private" static="no" mutable="no">
+        <type>std::filesystem::path</type>
+        <definition>std::filesystem::path leasy::ios::temp_file::path_</definition>
+        <argsstring></argsstring>
+        <name>path_</name>
+        <qualifiedname>leasy::ios::temp_file::path_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="393" column="25" bodyfile="leasy/lio.hpp" bodystart="393" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1ios_1_1temp__file_1aec6a80b72df415ce6dd996a2a2e43962" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ios::temp_file::temp_file</definition>
+        <argsstring>()</argsstring>
+        <name>temp_file</name>
+        <qualifiedname>leasy::ios::temp_file::temp_file</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="369" column="10" bodyfile="leasy/lio.hpp" bodystart="369" bodyend="381"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1temp__file_1abaac0a9da565c4a43bcb778ae78de5a4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ios::temp_file::~temp_file</definition>
+        <argsstring>()</argsstring>
+        <name>~temp_file</name>
+        <qualifiedname>leasy::ios::temp_file::~temp_file</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="383" column="10" bodyfile="leasy/lio.hpp" bodystart="383" bodyend="386"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1temp__file_1a556b2ea169783b3d379e51ee5a4f59eb" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::filesystem::path &amp;</type>
+        <definition>const std::filesystem::path &amp; leasy::ios::temp_file::path</definition>
+        <argsstring>() const</argsstring>
+        <name>path</name>
+        <qualifiedname>leasy::ios::temp_file::path</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="388" column="38" bodyfile="leasy/lio.hpp" bodystart="388" bodyend="390"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/lio.hpp" line="367" column="1" bodyfile="leasy/lio.hpp" bodystart="367" bodyend="394"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1ios_1_1temp__file_1a556b2ea169783b3d379e51ee5a4f59eb" prot="public" virt="non-virtual"><scope>leasy::ios::temp_file</scope><name>path</name></member>
+      <member refid="classleasy_1_1ios_1_1temp__file_1a7d46254763b9d4672eeccee5ff05600a" prot="private" virt="non-virtual"><scope>leasy::ios::temp_file</scope><name>path_</name></member>
+      <member refid="classleasy_1_1ios_1_1temp__file_1aec6a80b72df415ce6dd996a2a2e43962" prot="public" virt="non-virtual"><scope>leasy::ios::temp_file</scope><name>temp_file</name></member>
+      <member refid="classleasy_1_1ios_1_1temp__file_1abaac0a9da565c4a43bcb778ae78de5a4" prot="public" virt="non-virtual"><scope>leasy::ios::temp_file</scope><name>~temp_file</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

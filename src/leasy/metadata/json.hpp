@@ -119,3 +119,4 @@ namespace leasy::metadata::json {
     return oss.str();
   }
 }
+

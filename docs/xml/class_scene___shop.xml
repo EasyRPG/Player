@@ -1,0 +1,674 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_scene___shop" kind="class" language="C++" prot="public">
+    <compoundname>Scene_Shop</compoundname>
+    <basecompoundref refid="class_scene" prot="public" virt="non-virtual">Scene</basecompoundref>
+    <includes refid="scene__shop_8h" local="no">scene_shop.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19" prot="public" static="no" strong="no">
+        <type></type>
+        <name>ShopMode</name>
+        <qualifiedname>Scene_Shop::ShopMode</qualifiedname>
+        <enumvalue id="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19ae64764fcff6caa3d109751712e3a316c" prot="public">
+          <name>BuySellLeave</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19ab421d871d20b46194cd4465da3664768" prot="public">
+          <name>BuySellLeave2</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19ab6d1a435ea2ef5b9a553c24cb6ec94d6" prot="public">
+          <name>Buy</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19a8a66a1e4ed4a87aca4a154bc5ac78da0" prot="public">
+          <name>BuyHowMany</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19aeda0271adc95b4a49c0cd9695d69dc95" prot="public">
+          <name>Bought</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19a19f1ad8e2c7811959dfd180c10a51eca" prot="public">
+          <name>Sell</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19adb365964d81daad49d27373336f4e435" prot="public">
+          <name>SellHowMany</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19aa2cb01775e05c47677d073d0191ad768" prot="public">
+          <name>Sold</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19a23370c3809cefb5ac610c0f226f11411" prot="public">
+          <name>Leave</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="55" column="1" bodyfile="scene_shop.h" bodystart="55" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_scene___shop_1ac00cfd22199d81f9a5be5d594a4a0eb5" prot="public" static="no">
+        <type>std::function&lt; void(bool)&gt;</type>
+        <definition>using Scene_Shop::Continuation = std::function&lt;void(bool)&gt;</definition>
+        <argsstring></argsstring>
+        <name>Continuation</name>
+        <qualifiedname>Scene_Shop::Continuation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="41" column="1" bodyfile="scene_shop.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_scene___shop_1ac9a0e486618e8b5528a77314611da8e5" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___help" kindref="compound">Window_Help</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Help&gt; Scene_Shop::help_window</definition>
+        <argsstring></argsstring>
+        <name>help_window</name>
+        <qualifiedname>Scene_Shop::help_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Displays available items. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="77" column="17" bodyfile="scene_shop.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___shop_1a53a6e4b181faa1e826e7886002ed1958" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___shop_buy" kindref="compound">Window_ShopBuy</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_ShopBuy&gt; Scene_Shop::buy_window</definition>
+        <argsstring></argsstring>
+        <name>buy_window</name>
+        <qualifiedname>Scene_Shop::buy_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="78" column="17" bodyfile="scene_shop.h" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___shop_1a0a677bfee70581a366c529b67d3828e6" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___shop_party" kindref="compound">Window_ShopParty</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_ShopParty&gt; Scene_Shop::party_window</definition>
+        <argsstring></argsstring>
+        <name>party_window</name>
+        <qualifiedname>Scene_Shop::party_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="79" column="17" bodyfile="scene_shop.h" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___shop_1a6f11ad88a34064c88867a4c0654c7f35" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___shop_status" kindref="compound">Window_ShopStatus</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_ShopStatus&gt; Scene_Shop::status_window</definition>
+        <argsstring></argsstring>
+        <name>status_window</name>
+        <qualifiedname>Scene_Shop::status_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="80" column="17" bodyfile="scene_shop.h" bodystart="80" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___shop_1ad7d1dde61d6d3f1f83e5a38ef7fe1818" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___gold" kindref="compound">Window_Gold</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Gold&gt; Scene_Shop::gold_window</definition>
+        <argsstring></argsstring>
+        <name>gold_window</name>
+        <qualifiedname>Scene_Shop::gold_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="81" column="17" bodyfile="scene_shop.h" bodystart="81" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___shop_1aa095051fc4e24a0111b2621300d7c945" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___shop_sell" kindref="compound">Window_ShopSell</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_ShopSell&gt; Scene_Shop::sell_window</definition>
+        <argsstring></argsstring>
+        <name>sell_window</name>
+        <qualifiedname>Scene_Shop::sell_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="82" column="17" bodyfile="scene_shop.h" bodystart="82" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___shop_1a879c2c27dab8ededaf6638c0d04e6b9b" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___shop_number" kindref="compound">Window_ShopNumber</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_ShopNumber&gt; Scene_Shop::number_window</definition>
+        <argsstring></argsstring>
+        <name>number_window</name>
+        <qualifiedname>Scene_Shop::number_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="83" column="17" bodyfile="scene_shop.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___shop_1a5cf9955489d110c18d3c2d0153584e67" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___base" kindref="compound">Window_Base</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Base&gt; Scene_Shop::empty_window</definition>
+        <argsstring></argsstring>
+        <name>empty_window</name>
+        <qualifiedname>Scene_Shop::empty_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="84" column="17" bodyfile="scene_shop.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___shop_1a1f48e1ac5c1d7052a1a00004cb4c1e51" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___base" kindref="compound">Window_Base</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Base&gt; Scene_Shop::empty_window2</definition>
+        <argsstring></argsstring>
+        <name>empty_window2</name>
+        <qualifiedname>Scene_Shop::empty_window2</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="85" column="17" bodyfile="scene_shop.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___shop_1a6c9a1336426da2e8b232b0ccb42c0642" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___shop" kindref="compound">Window_Shop</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Shop&gt; Scene_Shop::shop_window</definition>
+        <argsstring></argsstring>
+        <name>shop_window</name>
+        <qualifiedname>Scene_Shop::shop_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="86" column="17" bodyfile="scene_shop.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___shop_1a782cfda3ae6f39086f912ac09621b114" prot="private" static="no" mutable="no">
+        <type><ref refid="class_scene___shop_1ac00cfd22199d81f9a5be5d594a4a0eb5" kindref="member">Continuation</ref></type>
+        <definition>Continuation Scene_Shop::on_finish</definition>
+        <argsstring></argsstring>
+        <name>on_finish</name>
+        <qualifiedname>Scene_Shop::on_finish</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="87" column="14" bodyfile="scene_shop.h" bodystart="87" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___shop_1aace10a9597b2bc85c9d58473c9201448" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; Scene_Shop::goods</definition>
+        <argsstring></argsstring>
+        <name>goods</name>
+        <qualifiedname>Scene_Shop::goods</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="89" column="13" bodyfile="scene_shop.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___shop_1a601448ebee8b76d57480c83b0f9cdade" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Shop::shop_type</definition>
+        <argsstring></argsstring>
+        <name>shop_type</name>
+        <qualifiedname>Scene_Shop::shop_type</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="90" column="5" bodyfile="scene_shop.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___shop_1a17a317ea2f315b7e59b755ca7bad669d" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Shop::mode</definition>
+        <argsstring></argsstring>
+        <name>mode</name>
+        <qualifiedname>Scene_Shop::mode</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="91" column="5" bodyfile="scene_shop.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___shop_1a46db5b9286e9bd32c732edc9c62e3df7" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Shop::timer</definition>
+        <argsstring></argsstring>
+        <name>timer</name>
+        <qualifiedname>Scene_Shop::timer</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="92" column="5" bodyfile="scene_shop.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___shop_1a4c08ba9c39667bffef7bc3419a29d6fa" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Shop::allow_buy</definition>
+        <argsstring></argsstring>
+        <name>allow_buy</name>
+        <qualifiedname>Scene_Shop::allow_buy</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="93" column="6" bodyfile="scene_shop.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___shop_1a24fe13dc19470dbd64856bac8db4299c" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Shop::allow_sell</definition>
+        <argsstring></argsstring>
+        <name>allow_sell</name>
+        <qualifiedname>Scene_Shop::allow_sell</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="94" column="6" bodyfile="scene_shop.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___shop_1ab15c8c7ff1b8778ff8bd3403a987e7f3" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Shop::did_transaction</definition>
+        <argsstring></argsstring>
+        <name>did_transaction</name>
+        <qualifiedname>Scene_Shop::did_transaction</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="95" column="6" bodyfile="scene_shop.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_scene___shop_1a99fd1e0f1c8d2bc7ea00714f264bd107" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Scene_Shop::Scene_Shop</definition>
+        <argsstring>(std::vector&lt; int &gt; goods, int shop_type, bool allow_buy, bool allow_sell, Continuation on_finish)</argsstring>
+        <name>Scene_Shop</name>
+        <qualifiedname>Scene_Shop::Scene_Shop</qualifiedname>
+        <param>
+          <type>std::vector&lt; int &gt;</type>
+          <declname>goods</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>shop_type</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>allow_buy</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>allow_sell</declname>
+        </param>
+        <param>
+          <type><ref refid="class_scene___shop_1ac00cfd22199d81f9a5be5d594a4a0eb5" kindref="member">Continuation</ref></type>
+          <declname>on_finish</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="45" column="1" bodyfile="scene_shop.cpp" bodystart="26" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___shop_1a6228084b06d589cbf15a9468f7f4b4ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Shop::Start</definition>
+        <argsstring>() override</argsstring>
+        <name>Start</name>
+        <qualifiedname>Scene_Shop::Start</qualifiedname>
+        <reimplements refid="class_scene_1a31e0e1b9ce39bd9f5ec160835cc94d44">Start</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Start processing. This function is executed while the screen is faded out. All objects needed for the scene should be created here. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="52" column="6" bodyfile="scene_shop.cpp" bodystart="41" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___shop_1a2559dfb89f64b988d3cc104c4a1c461e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Shop::Suspend</definition>
+        <argsstring>(SceneType next_scene) override</argsstring>
+        <name>Suspend</name>
+        <qualifiedname>Scene_Shop::Suspend</qualifiedname>
+        <reimplements refid="class_scene_1ac6413c7a3e405e57e415bec3c3096f26">Suspend</reimplements>
+        <param>
+          <type><ref refid="class_scene_1adf61561da781541f6b9ec5590756b09e" kindref="member">SceneType</ref></type>
+          <declname>next_scene</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This function is executed after the fade out transition is finished. Use this for clean up before terminating the scene or switching to a nested scene. In case of termination this is called right before the destructor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>next_scene</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the scene we will transition to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="53" column="6" bodyfile="scene_shop.cpp" bodystart="340" bodyend="344"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___shop_1a0903e7085cbf964197c97b876a5d7123" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Shop::SetMode</definition>
+        <argsstring>(int nmode)</argsstring>
+        <name>SetMode</name>
+        <qualifiedname>Scene_Shop::SetMode</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>nmode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="67" column="6" bodyfile="scene_shop.cpp" bodystart="109" bodyend="190"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___shop_1a2a62c2ce8c7721ed7a48f80654554ab8" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Shop::vUpdate</definition>
+        <argsstring>() override</argsstring>
+        <name>vUpdate</name>
+        <qualifiedname>Scene_Shop::vUpdate</qualifiedname>
+        <reimplements refid="class_scene_1a8111b81e59b90b6711e9a39a507a32eb">vUpdate</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called every frame from Update. The scene should redraw all elements. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="69" column="6" bodyfile="scene_shop.cpp" bodystart="192" bodyend="227"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___shop_1afbd47405e5099cd8314f63054dee4bb1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Shop::UpdateCommandSelection</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateCommandSelection</name>
+        <qualifiedname>Scene_Shop::UpdateCommandSelection</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="70" column="6" bodyfile="scene_shop.cpp" bodystart="229" bodyend="244"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___shop_1a18a0baf5ddf1a7b78ab2728d8f390cd5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Shop::UpdateBuySelection</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateBuySelection</name>
+        <qualifiedname>Scene_Shop::UpdateBuySelection</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="71" column="6" bodyfile="scene_shop.cpp" bodystart="246" bodyend="279"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___shop_1a75731e8341b26380659e96b5b30e8169" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Shop::UpdateSellSelection</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateSellSelection</name>
+        <qualifiedname>Scene_Shop::UpdateSellSelection</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="72" column="6" bodyfile="scene_shop.cpp" bodystart="281" bodyend="303"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___shop_1aeaef7c43f98039e542e218b27bb4fd37" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Shop::UpdateNumberInput</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateNumberInput</name>
+        <qualifiedname>Scene_Shop::UpdateNumberInput</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_shop.h" line="73" column="6" bodyfile="scene_shop.cpp" bodystart="305" bodyend="338"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_scene" kindref="compound">Scene</ref> Shop class. Manages buying and selling of items. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="1">
+        <label>Scene_Shop</label>
+        <link refid="class_scene___shop"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="1">
+        <label>Scene_Shop</label>
+        <link refid="class_scene___shop"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="scene_shop.h" line="38" column="1" bodyfile="scene_shop.h" bodystart="38" bodyend="96"/>
+    <listofallmembers>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea525fafbc764da0de39c27dea3ffeb3d0" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>ActorTarget</name></member>
+      <member refid="class_scene___shop_1a4c08ba9c39667bffef7bc3419a29d6fa" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>allow_buy</name></member>
+      <member refid="class_scene___shop_1a24fe13dc19470dbd64856bac8db4299c" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>allow_sell</name></member>
+      <member refid="class_scene_1a6091a98761b264c35a150bc28ee4a505" prot="protected" virt="non-virtual"><scope>Scene_Shop</scope><name>async_continuation</name></member>
+      <member refid="class_scene_1a30c5c46dd99e4825df2d69518748c8ac" prot="protected" virt="non-virtual"><scope>Scene_Shop</scope><name>AsyncContinuation</name></member>
+      <member refid="class_scene_1a40aec0ae8ed38526531911eea247398b" prot="protected" virt="non-virtual"><scope>Scene_Shop</scope><name>AsyncNext</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea705f705b65bac2369f3cb10f5e89453a" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Battle</name></member>
+      <member refid="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19aeda0271adc95b4a49c0cd9695d69dc95" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Bought</name></member>
+      <member refid="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19ab6d1a435ea2ef5b9a553c24cb6ec94d6" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Buy</name></member>
+      <member refid="class_scene___shop_1a53a6e4b181faa1e826e7886002ed1958" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>buy_window</name></member>
+      <member refid="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19a8a66a1e4ed4a87aca4a154bc5ac78da0" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>BuyHowMany</name></member>
+      <member refid="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19ae64764fcff6caa3d109751712e3a316c" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>BuySellLeave</name></member>
+      <member refid="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19ab421d871d20b46194cd4465da3664768" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>BuySellLeave2</name></member>
+      <member refid="class_scene_1a91e354ab86259cd3bc94c094036280da" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>CheckSceneExit</name></member>
+      <member refid="class_scene___shop_1ac00cfd22199d81f9a5be5d594a4a0eb5" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Continuation</name></member>
+      <member refid="class_scene_1ac612b681d0de7c100f580b4bc446887b" prot="public" virt="virtual"><scope>Scene_Shop</scope><name>Continue</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea418b00b4c130e675ac7512610ed3f473" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Debug</name></member>
+      <member refid="class_scene___shop_1ab15c8c7ff1b8778ff8bd3403a987e7f3" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>did_transaction</name></member>
+      <member refid="class_scene_1a1fcc0d5308270cc967966da917957bdf" prot="public" virt="virtual"><scope>Scene_Shop</scope><name>DrawBackground</name></member>
+      <member refid="class_scene___shop_1a5cf9955489d110c18d3c2d0153584e67" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>empty_window</name></member>
+      <member refid="class_scene___shop_1a1f48e1ac5c1d7052a1a00004cb4c1e51" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>empty_window2</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaee9d4a8ee40ca6e8310597315e07b978" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>End</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea302637f5f0048f4433949f10fc6c8f58" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Equip</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea85a7c5a46a3ca806d41de80e68da80e1" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>File</name></member>
+      <member refid="class_scene_1aa8b96a758c0f1ea4cf28808089ff7123" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Find</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea895a9b137f215eee5613d6a546275f5b" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>GameBrowser</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ead885a8fd6d0f378a99ee56a676029bca" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Gameover</name></member>
+      <member refid="class_scene_1ad837b22dff59e9c21f31204d958a24d7" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>GetDrawableList</name></member>
+      <member refid="class_scene_1ab9edda06ab170512d308c0c9fb38056b" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>GetRequestedSceneType</name></member>
+      <member refid="class_scene___shop_1ad7d1dde61d6d3f1f83e5a38ef7fe1818" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>gold_window</name></member>
+      <member refid="class_scene___shop_1aace10a9597b2bc85c9d58473c9201448" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>goods</name></member>
+      <member refid="class_scene_1a203eba321fedc8a26c8802f4b9a84e01" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>HasDelayFrames</name></member>
+      <member refid="class_scene_1a1acd1e4345dfecb30c7c35f6d3e8130b" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>HasRequestedScene</name></member>
+      <member refid="class_scene___shop_1ac9a0e486618e8b5528a77314611da8e5" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>help_window</name></member>
+      <member refid="class_scene_1ac348fc3b0beb12093144a1f03d81449d" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>instance</name></member>
+      <member refid="class_scene_1a5a8c37138fc3a2dda1e0e077b472ab7b" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>IsAsyncPending</name></member>
+      <member refid="class_scene_1a0e0d605d080b286e73a07587d72dfe70" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>IsInitialized</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea70390d274c6e9c167ac095faaa160c7c" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Item</name></member>
+      <member refid="class_scene_1a119de9e0876281a6eee15c7d15618d87" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>kReturnTitleDelayFrames</name></member>
+      <member refid="class_scene_1a563850d0f01381b76420c22ac335a103" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>kStartGameDelayFrames</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea16a3c57786ccf0d21f72a774d43957ab" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>LanguageMenu</name></member>
+      <member refid="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19a23370c3809cefb5ac610c0f226f11411" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Leave</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eac3db6576c8c7dc6e5d007d989f5022ea" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Load</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea4615e1aa6a92b7860d342a6aaf642611" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Logo</name></member>
+      <member refid="class_scene_1ae7f0f916c29e55b282dfe4ae522d2096" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>MainFunction</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eae39f3115e47e2cc1a161ab73db4819a6" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Map</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea2412b59539890965aeb61a22141a781b" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Menu</name></member>
+      <member refid="class_scene___shop_1a17a317ea2f315b7e59b755ca7bad669d" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>mode</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea05b82d049724f3ca8838b9800e8f3f3e" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Name</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea352ebbd390cdf4d31336a52af54fca32" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Null</name></member>
+      <member refid="class_scene___shop_1a879c2c27dab8ededaf6638c0d04e6b9b" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>number_window</name></member>
+      <member refid="class_scene_1a71555af047b54446dfc4fd2b0e6f78bd" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>old_instances</name></member>
+      <member refid="class_scene___shop_1a782cfda3ae6f39086f912ac09621b114" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>on_finish</name></member>
+      <member refid="class_scene_1a7388cece257333bb2c98a202135adf51" prot="public" virt="virtual"><scope>Scene_Shop</scope><name>OnEventHpChanged</name></member>
+      <member refid="class_scene_1a80c10e8f0c10921300be168e67ddf3ed" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>OnFinishAsync</name></member>
+      <member refid="class_scene_1a05be417a18748b38a3cd18566edd6d2d" prot="public" virt="virtual"><scope>Scene_Shop</scope><name>OnPartyChanged</name></member>
+      <member refid="class_scene_1ac6fa936fd2dc55f41889400d36d855e6" prot="public" virt="virtual"><scope>Scene_Shop</scope><name>OnTranslationChanged</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea26ab4613edf5d94d74a5e1ad4ec37fa3" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Order</name></member>
+      <member refid="class_scene___shop_1a0a677bfee70581a366c529b67d3828e6" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>party_window</name></member>
+      <member refid="class_scene_1a29b08fddcde74b786ec01129847454ba" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Peek</name></member>
+      <member refid="class_scene_1a713d07a297477318624fada11415f5e3" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Pop</name></member>
+      <member refid="class_scene_1ac657b33df6c856847d87aa976ae9a9eb" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>PopUntil</name></member>
+      <member refid="class_scene_1a61c10b38185eac9925da70d7fb915890" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Push</name></member>
+      <member refid="class_scene_1afb9e8385131d0524f0d9afa946096709" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>PushTitleScene</name></member>
+      <member refid="class_scene_1a5ecd59170e0a54d6216ccebd76702dd6" prot="public" virt="virtual"><scope>Scene_Shop</scope><name>Refresh</name></member>
+      <member refid="class_scene_1a902f2993901187b05d8e42188b7e8156" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>ReturnToTitleScene</name></member>
+      <member refid="class_scene_1a495973012445184e00a31dd31e217b7e" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>rpgRtSceneFromSceneType</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc195dbdbaa61f7b6b3ecb3236592d17" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Save</name></member>
+      <member refid="class_scene_1ad10176d75a9cc0da56626f682d083507" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Scene</name></member>
+      <member refid="class_scene_1a300d6b1274f226a1e69a552858414ba3" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>scene_names</name></member>
+      <member refid="class_scene___shop_1a99fd1e0f1c8d2bc7ea00714f264bd107" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Scene_Shop</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea7484d8e1128440652139839089e85604" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>SceneMax</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09e" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>SceneType</name></member>
+      <member refid="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19a19f1ad8e2c7811959dfd180c10a51eca" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Sell</name></member>
+      <member refid="class_scene___shop_1aa095051fc4e24a0111b2621300d7c945" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>sell_window</name></member>
+      <member refid="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19adb365964d81daad49d27373336f4e435" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>SellHowMany</name></member>
+      <member refid="class_scene_1a40c9e3ffb2917b1e3880e2ff5733b1b6" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>SetDelayFrames</name></member>
+      <member refid="class_scene___shop_1a0903e7085cbf964197c97b876a5d7123" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>SetMode</name></member>
+      <member refid="class_scene_1a9f641fa0061cebf4294009cb1d860cbe" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>SetRequestedScene</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc93e55e9b1ff9b798d1fb0ee22abab0" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Settings</name></member>
+      <member refid="class_scene_1a287b3a8a6fdaa0eb6e9b43ae7c774c8b" prot="protected" virt="non-virtual"><scope>Scene_Shop</scope><name>SetUseSharedDrawables</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea40484f6fb0aae90d36b27e9f7abfee9c" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Shop</name></member>
+      <member refid="class_scene___shop_1a601448ebee8b76d57480c83b0f9cdade" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>shop_type</name></member>
+      <member refid="class_scene___shop_1a6c9a1336426da2e8b232b0ccb42c0642" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>shop_window</name></member>
+      <member refid="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>ShopMode</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafd156984a4436ea28706dc0c7873c8fc" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Skill</name></member>
+      <member refid="class_scene___shop_1afa093dcd1589292249f06ea9ae579e19aa2cb01775e05c47677d073d0191ad768" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Sold</name></member>
+      <member refid="class_scene___shop_1a6228084b06d589cbf15a9468f7f4b4ba" prot="public" virt="virtual"><scope>Scene_Shop</scope><name>Start</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eabe141c1b0922ac825b014da56774c2dc" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Status</name></member>
+      <member refid="class_scene___shop_1a6f11ad88a34064c88867a4c0654c7f35" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>status_window</name></member>
+      <member refid="class_scene___shop_1a2559dfb89f64b988d3cc104c4a1c461e" prot="public" virt="virtual"><scope>Scene_Shop</scope><name>Suspend</name></member>
+      <member refid="class_scene_1a2ac1629e5d081accb6b3d2682c8aac18" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>TakeRequestedScene</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eadce8e1c84d0a06f5a005b24a6e602424" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Teleport</name></member>
+      <member refid="class_scene___shop_1a46db5b9286e9bd32c732edc9c62e3df7" prot="private" virt="non-virtual"><scope>Scene_Shop</scope><name>timer</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaf3446103059a7e7c2333b8e0f81377d0" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Title</name></member>
+      <member refid="class_scene_1a1e97664b3509e2eb64b1aa621634703c" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>TransferDrawablesFrom</name></member>
+      <member refid="class_scene_1a4a594aefe6bd86e17042acf7c76eb0e6" prot="public" virt="virtual"><scope>Scene_Shop</scope><name>TransitionIn</name></member>
+      <member refid="class_scene_1a64d36508ee1971f89c7d5e8513d777b1" prot="public" virt="virtual"><scope>Scene_Shop</scope><name>TransitionOut</name></member>
+      <member refid="class_scene_1a8320189e28f3918a4f0200aedb97ccb5" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>type</name></member>
+      <member refid="class_scene_1a71a71b4f7752b853ff8032b0941a9d8d" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>Update</name></member>
+      <member refid="class_scene___shop_1a18a0baf5ddf1a7b78ab2728d8f390cd5" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>UpdateBuySelection</name></member>
+      <member refid="class_scene___shop_1afbd47405e5099cd8314f63054dee4bb1" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>UpdateCommandSelection</name></member>
+      <member refid="class_scene_1a85503cbb64a2f88b227d926768ed0100" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>UpdateDelayFrames</name></member>
+      <member refid="class_scene_1affa07b015ecebcf18cc0d652ab9a2fd4" prot="public" virt="virtual"><scope>Scene_Shop</scope><name>UpdateGraphics</name></member>
+      <member refid="class_scene___shop_1aeaef7c43f98039e542e218b27bb4fd37" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>UpdateNumberInput</name></member>
+      <member refid="class_scene___shop_1a75731e8341b26380659e96b5b30e8169" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>UpdateSellSelection</name></member>
+      <member refid="class_scene_1ac41adc09c7fed6609df594bf5bcdc1c5" prot="public" virt="non-virtual"><scope>Scene_Shop</scope><name>UsesSharedDrawables</name></member>
+      <member refid="class_scene___shop_1a2a62c2ce8c7721ed7a48f80654554ab8" prot="public" virt="virtual"><scope>Scene_Shop</scope><name>vUpdate</name></member>
+      <member refid="class_scene_1aa0a5be58e2ee2d1fdafc5fb46b5e661e" prot="public" virt="virtual"><scope>Scene_Shop</scope><name>~Scene</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

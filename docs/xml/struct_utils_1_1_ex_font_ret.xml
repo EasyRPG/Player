@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_utils_1_1_ex_font_ret" kind="struct" language="C++" prot="public">
+    <compoundname>Utils::ExFontRet</compoundname>
+    <includes refid="utils_8h" local="no">utils.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_utils_1_1_ex_font_ret_1a09dd5f2bb6963b56621eada820d0f1ac" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* Utils::ExFontRet::next</definition>
+        <argsstring></argsstring>
+        <name>next</name>
+        <qualifiedname>Utils::ExFontRet::next</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="170" column="12" bodyfile="utils.h" bodystart="170" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_utils_1_1_ex_font_ret_1a01c0ab288f6fbc882d3743f7167290eb" prot="public" static="no" mutable="no">
+        <type>char</type>
+        <definition>char Utils::ExFontRet::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>Utils::ExFontRet::value</qualifiedname>
+        <initializer>= &apos;\0&apos;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="171" column="6" bodyfile="utils.h" bodystart="171" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_utils_1_1_ex_font_ret_1a9b18e167493b40597956f012f18cec23" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Utils::ExFontRet::is_valid</definition>
+        <argsstring></argsstring>
+        <name>is_valid</name>
+        <qualifiedname>Utils::ExFontRet::is_valid</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="172" column="6" bodyfile="utils.h" bodystart="172" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_utils_1_1_ex_font_ret_1a04a99b8e07d89c2d3ff90164a4961bd1" prot="public" static="no" const="yes" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Utils::ExFontRet::operator bool</definition>
+        <argsstring>() const</argsstring>
+        <name>operator bool</name>
+        <qualifiedname>Utils::ExFontRet::operator bool</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="174" column="10" bodyfile="utils.h" bodystart="174" bodyend="174"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="utils.h" line="169" column="1" bodyfile="utils.h" bodystart="169" bodyend="175"/>
+    <listofallmembers>
+      <member refid="struct_utils_1_1_ex_font_ret_1a9b18e167493b40597956f012f18cec23" prot="public" virt="non-virtual"><scope>Utils::ExFontRet</scope><name>is_valid</name></member>
+      <member refid="struct_utils_1_1_ex_font_ret_1a09dd5f2bb6963b56621eada820d0f1ac" prot="public" virt="non-virtual"><scope>Utils::ExFontRet</scope><name>next</name></member>
+      <member refid="struct_utils_1_1_ex_font_ret_1a04a99b8e07d89c2d3ff90164a4961bd1" prot="public" virt="non-virtual"><scope>Utils::ExFontRet</scope><name>operator bool</name></member>
+      <member refid="struct_utils_1_1_ex_font_ret_1a01c0ab288f6fbc882d3743f7167290eb" prot="public" virt="non-virtual"><scope>Utils::ExFontRet</scope><name>value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

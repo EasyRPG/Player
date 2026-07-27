@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structalpha__type__traits_3_01_t_p_f_00_01_p_f_1_1_static_alpha_00_01__alpha__type_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>alpha_type_traits&lt; TPF, PF::StaticAlpha, _alpha_type &gt;</compoundname>
+    <includes refid="pixel__format_8h" local="no">pixel_format.h</includes>
+    <templateparamlist>
+      <param>
+        <type>class TPF</type>
+      </param>
+      <param>
+        <type><ref refid="namespace_p_f_1a2efd68b89cc15c64bf0f69e2c7ea6c85" kindref="member">PF::AlphaType</ref></type>
+        <declname>_alpha_type</declname>
+        <defname>_alpha_type</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="structalpha__type__traits_3_01_t_p_f_00_01_p_f_1_1_static_alpha_00_01__alpha__type_01_4_1adfe62cdd764fe02995994ad8441f98e4" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="namespace_p_f_1a2efd68b89cc15c64bf0f69e2c7ea6c85" kindref="member">PF::AlphaType</ref></type>
+        <definition>static PF::AlphaType alpha_type_traits&lt; TPF, PF::StaticAlpha, _alpha_type &gt;::alpha_type</definition>
+        <argsstring>(const TPF *)</argsstring>
+        <name>alpha_type</name>
+        <qualifiedname>alpha_type_traits&lt; TPF, PF::StaticAlpha, _alpha_type &gt;::alpha_type</qualifiedname>
+        <param>
+          <type>const TPF *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="292" column="29" bodyfile="pixel_format.h" bodystart="292" bodyend="294"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pixel_format.h" line="291" column="1" bodyfile="pixel_format.h" bodystart="291" bodyend="295"/>
+    <listofallmembers>
+      <member refid="structalpha__type__traits_3_01_t_p_f_00_01_p_f_1_1_static_alpha_00_01__alpha__type_01_4_1adfe62cdd764fe02995994ad8441f98e4" prot="public" virt="non-virtual"><scope>alpha_type_traits&lt; TPF, PF::StaticAlpha, _alpha_type &gt;</scope><name>alpha_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

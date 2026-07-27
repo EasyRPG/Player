@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_audio_decoder_midi_1_1_midi_tempo_data" kind="struct" language="C++" prot="private">
+    <compoundname>AudioDecoderMidi::MidiTempoData</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_audio_decoder_midi_1_1_midi_tempo_data_1a6e3a6b8fe075420dc4dfb98a1b449570" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t AudioDecoderMidi::MidiTempoData::tempo</definition>
+        <argsstring></argsstring>
+        <name>tempo</name>
+        <qualifiedname>AudioDecoderMidi::MidiTempoData::tempo</qualifiedname>
+        <initializer>= midi_default_tempo</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="196" column="10" bodyfile="audio_decoder_midi.h" bodystart="196" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_audio_decoder_midi_1_1_midi_tempo_data_1ad20c1a2d18713ff615133ddbfc572ff6" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double AudioDecoderMidi::MidiTempoData::ticks_per_us</definition>
+        <argsstring></argsstring>
+        <name>ticks_per_us</name>
+        <qualifiedname>AudioDecoderMidi::MidiTempoData::ticks_per_us</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="197" column="8" bodyfile="audio_decoder_midi.h" bodystart="197" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_audio_decoder_midi_1_1_midi_tempo_data_1ae0882cd41d647c842af16263efe01a7b" prot="public" static="no" mutable="no">
+        <type>std::chrono::microseconds</type>
+        <definition>std::chrono::microseconds AudioDecoderMidi::MidiTempoData::mtime</definition>
+        <argsstring></argsstring>
+        <name>mtime</name>
+        <qualifiedname>AudioDecoderMidi::MidiTempoData::mtime</qualifiedname>
+        <initializer>= std::chrono::microseconds(0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="198" column="27" bodyfile="audio_decoder_midi.h" bodystart="198" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_audio_decoder_midi_1_1_midi_tempo_data_1a0ed156b236f5d07c7c2ee83211ff8d6b" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int AudioDecoderMidi::MidiTempoData::ticks</definition>
+        <argsstring></argsstring>
+        <name>ticks</name>
+        <qualifiedname>AudioDecoderMidi::MidiTempoData::ticks</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="199" column="5" bodyfile="audio_decoder_midi.h" bodystart="199" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_audio_decoder_midi_1_1_midi_tempo_data_1a2538f792c0c9ebeb4dfea2765e3eec14" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int AudioDecoderMidi::MidiTempoData::samples_per_tick</definition>
+        <argsstring></argsstring>
+        <name>samples_per_tick</name>
+        <qualifiedname>AudioDecoderMidi::MidiTempoData::samples_per_tick</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="200" column="5" bodyfile="audio_decoder_midi.h" bodystart="200" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_audio_decoder_midi_1_1_midi_tempo_data_1a8aaec72b8dbf071e7f983056d8a27651" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int AudioDecoderMidi::MidiTempoData::samples</definition>
+        <argsstring></argsstring>
+        <name>samples</name>
+        <qualifiedname>AudioDecoderMidi::MidiTempoData::samples</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="201" column="5" bodyfile="audio_decoder_midi.h" bodystart="201" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_audio_decoder_midi_1_1_midi_tempo_data_1a115229b951d8d538e96ec2e8358ac5f4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AudioDecoderMidi::MidiTempoData::MidiTempoData</definition>
+        <argsstring>(const AudioDecoderMidi *midi, uint32_t cur_tempo, const MidiTempoData *prev=nullptr)</argsstring>
+        <name>MidiTempoData</name>
+        <qualifiedname>AudioDecoderMidi::MidiTempoData::MidiTempoData</qualifiedname>
+        <param>
+          <type>const <ref refid="class_audio_decoder_midi" kindref="compound">AudioDecoderMidi</ref> *</type>
+          <declname>midi</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>cur_tempo</declname>
+        </param>
+        <param>
+          <type>const MidiTempoData *</type>
+          <declname>prev</declname>
+          <defval>nullptr</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="194" column="1" bodyfile="audio_decoder_midi.cpp" bodystart="460" bodyend="471"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_decoder_midi_1_1_midi_tempo_data_1aae4479ccf7db2853e8e5da19e4a4fefd" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int AudioDecoderMidi::MidiTempoData::GetTicks</definition>
+        <argsstring>(std::chrono::microseconds cur_mtime) const</argsstring>
+        <name>GetTicks</name>
+        <qualifiedname>AudioDecoderMidi::MidiTempoData::GetTicks</qualifiedname>
+        <param>
+          <type>std::chrono::microseconds</type>
+          <declname>cur_mtime</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="203" column="5" bodyfile="audio_decoder_midi.cpp" bodystart="473" bodyend="476"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_audio_decoder_midi_1_1_midi_tempo_data_1a9c688effe12217404a19cb4162b4c059" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int AudioDecoderMidi::MidiTempoData::GetSamples</definition>
+        <argsstring>(std::chrono::microseconds cur_mtime) const</argsstring>
+        <name>GetSamples</name>
+        <qualifiedname>AudioDecoderMidi::MidiTempoData::GetSamples</qualifiedname>
+        <param>
+          <type>std::chrono::microseconds</type>
+          <declname>cur_mtime</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="204" column="5" bodyfile="audio_decoder_midi.cpp" bodystart="478" bodyend="482"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="audio_decoder_midi.h" line="193" column="1" bodyfile="audio_decoder_midi.h" bodystart="193" bodyend="205"/>
+    <listofallmembers>
+      <member refid="struct_audio_decoder_midi_1_1_midi_tempo_data_1a9c688effe12217404a19cb4162b4c059" prot="public" virt="non-virtual"><scope>AudioDecoderMidi::MidiTempoData</scope><name>GetSamples</name></member>
+      <member refid="struct_audio_decoder_midi_1_1_midi_tempo_data_1aae4479ccf7db2853e8e5da19e4a4fefd" prot="public" virt="non-virtual"><scope>AudioDecoderMidi::MidiTempoData</scope><name>GetTicks</name></member>
+      <member refid="struct_audio_decoder_midi_1_1_midi_tempo_data_1a115229b951d8d538e96ec2e8358ac5f4" prot="public" virt="non-virtual"><scope>AudioDecoderMidi::MidiTempoData</scope><name>MidiTempoData</name></member>
+      <member refid="struct_audio_decoder_midi_1_1_midi_tempo_data_1ae0882cd41d647c842af16263efe01a7b" prot="public" virt="non-virtual"><scope>AudioDecoderMidi::MidiTempoData</scope><name>mtime</name></member>
+      <member refid="struct_audio_decoder_midi_1_1_midi_tempo_data_1a8aaec72b8dbf071e7f983056d8a27651" prot="public" virt="non-virtual"><scope>AudioDecoderMidi::MidiTempoData</scope><name>samples</name></member>
+      <member refid="struct_audio_decoder_midi_1_1_midi_tempo_data_1a2538f792c0c9ebeb4dfea2765e3eec14" prot="public" virt="non-virtual"><scope>AudioDecoderMidi::MidiTempoData</scope><name>samples_per_tick</name></member>
+      <member refid="struct_audio_decoder_midi_1_1_midi_tempo_data_1a6e3a6b8fe075420dc4dfb98a1b449570" prot="public" virt="non-virtual"><scope>AudioDecoderMidi::MidiTempoData</scope><name>tempo</name></member>
+      <member refid="struct_audio_decoder_midi_1_1_midi_tempo_data_1a0ed156b236f5d07c7c2ee83211ff8d6b" prot="public" virt="non-virtual"><scope>AudioDecoderMidi::MidiTempoData</scope><name>ticks</name></member>
+      <member refid="struct_audio_decoder_midi_1_1_midi_tempo_data_1ad20c1a2d18713ff615133ddbfc572ff6" prot="public" virt="non-virtual"><scope>AudioDecoderMidi::MidiTempoData</scope><name>ticks_per_us</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

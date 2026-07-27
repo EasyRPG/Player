@@ -143,3 +143,4 @@ void AudioInterface::SetFluidsynthSoundfont(std::string_view sf) {
 	cfg.soundfont.Set(ToString(sf));
 	MidiDecoder::ChangeFluidsynthSoundfont(sf);
 }
+

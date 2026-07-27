@@ -1,0 +1,538 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_sprite___character" kind="class" language="C++" prot="public">
+    <compoundname>Sprite_Character</compoundname>
+    <basecompoundref refid="class_sprite" prot="public" virt="non-virtual">Sprite</basecompoundref>
+    <includes refid="sprite__character_8h" local="no">sprite_character.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_sprite___character_1ad4582b5ee38d76a74302b70241010539" prot="private" static="no" mutable="no">
+        <type><ref refid="class_game___character" kindref="compound">Game_Character</ref> *</type>
+        <definition>Game_Character* Sprite_Character::character</definition>
+        <argsstring></argsstring>
+        <name>character</name>
+        <qualifiedname>Sprite_Character::character</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="83" column="16" bodyfile="sprite_character.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___character_1a321565cec650ddb5dd2fe7dfce7c622a" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite_Character::tile_id</definition>
+        <argsstring></argsstring>
+        <name>tile_id</name>
+        <qualifiedname>Sprite_Character::tile_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="85" column="5" bodyfile="sprite_character.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___character_1a0aad2128b4d546a3b8bd114f7b610a08" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Sprite_Character::character_name</definition>
+        <argsstring></argsstring>
+        <name>character_name</name>
+        <qualifiedname>Sprite_Character::character_name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="86" column="13" bodyfile="sprite_character.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___character_1a056cbc6c282e80b73c656a978dcb15bc" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite_Character::character_index</definition>
+        <argsstring></argsstring>
+        <name>character_index</name>
+        <qualifiedname>Sprite_Character::character_index</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="87" column="5" bodyfile="sprite_character.h" bodystart="87" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___character_1a95373e1745262767402c22f8e6b9956f" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite_Character::chara_width</definition>
+        <argsstring></argsstring>
+        <name>chara_width</name>
+        <qualifiedname>Sprite_Character::chara_width</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="89" column="5" bodyfile="sprite_character.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___character_1a263b71c9b0573c801d9001433f9fc60c" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite_Character::chara_height</definition>
+        <argsstring></argsstring>
+        <name>chara_height</name>
+        <qualifiedname>Sprite_Character::chara_height</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="90" column="5" bodyfile="sprite_character.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___character_1a8447a45fe5d3b83acdb160e1cf59e27a" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite_Character::x_offset</definition>
+        <argsstring></argsstring>
+        <name>x_offset</name>
+        <qualifiedname>Sprite_Character::x_offset</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="95" column="5" bodyfile="sprite_character.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___character_1a1f2dfa9e3743545a243f28094d685362" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite_Character::y_offset</definition>
+        <argsstring></argsstring>
+        <name>y_offset</name>
+        <qualifiedname>Sprite_Character::y_offset</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="96" column="5" bodyfile="sprite_character.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___character_1ab3f212c13dec8832255a7468127f4226" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Sprite_Character::refresh_bitmap</definition>
+        <argsstring></argsstring>
+        <name>refresh_bitmap</name>
+        <qualifiedname>Sprite_Character::refresh_bitmap</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="97" column="6" bodyfile="sprite_character.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___character_1a2edea70458de28b5e88b4a344b02598e" prot="private" static="no" mutable="no">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding Sprite_Character::request_id</definition>
+        <argsstring></argsstring>
+        <name>request_id</name>
+        <qualifiedname>Sprite_Character::request_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="102" column="20" bodyfile="sprite_character.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_sprite___character_1a0ad15c3b5c79ef8e23d3397ed2dabc3a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Sprite_Character::Sprite_Character</definition>
+        <argsstring>(Game_Character *character, int x_offset=0, int y_offset=0)</argsstring>
+        <name>Sprite_Character</name>
+        <qualifiedname>Sprite_Character::Sprite_Character</qualifiedname>
+        <param>
+          <type><ref refid="class_game___character" kindref="compound">Game_Character</ref> *</type>
+          <declname>character</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x_offset</declname>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y_offset</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>character</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>game character to display </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x_offset</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>X Render offset when being a clone </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y_offset</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Y Render offset when being a clone </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="43" column="1" bodyfile="sprite_character.cpp" bodystart="26" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___character_1a38aa5b4bda3b49f9c764b2706a8b1f5b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Sprite_Character::Draw</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Sprite_Character::Draw</qualifiedname>
+        <reimplements refid="class_sprite_1a0a4a3bd44c2556cbbe47b4480fae2a5b">Draw</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="45" column="6" bodyfile="sprite_character.cpp" bodystart="38" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___character_1a084adfbfaa78d14cd7a4a66a9c68f8a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Character::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>Sprite_Character::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates sprite state. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="50" column="6" bodyfile="sprite_character.cpp" bodystart="59" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___character_1aa9a50e52b52fd4f3046427a77e2168f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___character" kindref="compound">Game_Character</ref> *</type>
+        <definition>Game_Character * Sprite_Character::GetCharacter</definition>
+        <argsstring>()</argsstring>
+        <name>GetCharacter</name>
+        <qualifiedname>Sprite_Character::GetCharacter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets game character.</para>
+<para><simplesect kind="return"><para>game character. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="57" column="16" bodyfile="sprite_character.cpp" bodystart="92" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___character_1ab57aecd1c82ea2f65893e0d98d3d413a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Character::SetCharacter</definition>
+        <argsstring>(Game_Character *character)</argsstring>
+        <name>SetCharacter</name>
+        <qualifiedname>Sprite_Character::SetCharacter</qualifiedname>
+        <param>
+          <type><ref refid="class_game___character" kindref="compound">Game_Character</ref> *</type>
+          <declname>character</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets game character.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>character</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new game character. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="64" column="6" bodyfile="sprite_character.cpp" bodystart="96" bodyend="98"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___character_1a007731321f56e96c6436f89c610a0a2f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Character::ChipsetUpdated</definition>
+        <argsstring>()</argsstring>
+        <name>ChipsetUpdated</name>
+        <qualifiedname>Sprite_Character::ChipsetUpdated</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called when the map chipset is changed by an event </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="80" column="6" bodyfile="sprite_character.cpp" bodystart="124" bodyend="129"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_sprite___character_1a09de5f49207d0052dbcf3d973dac9ea1" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect Sprite_Character::GetCharacterRect</definition>
+        <argsstring>(std::string_view name, int index, Rect bitmap_rect)</argsstring>
+        <name>GetCharacterRect</name>
+        <qualifiedname>Sprite_Character::GetCharacterRect</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>index</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+          <declname>bitmap_rect</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns a <ref refid="class_rect" kindref="compound">Rect</ref> describing the boundaries for a single character</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>name of charset </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>index of character </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>bitmap_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The dimensions of the charset bitmap</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="class_rect" kindref="compound">Rect</ref> describing image sub region containing character frames. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="75" column="13" bodyfile="sprite_character.cpp" bodystart="131" bodyend="151"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_sprite___character_1aff7e3c40e1cdea3be843f3aa5f710900" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Sprite_Character::UsesCharset</definition>
+        <argsstring>() const</argsstring>
+        <name>UsesCharset</name>
+        <qualifiedname>Sprite_Character::UsesCharset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns true for charset sprites; false for tiles. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="93" column="6" bodyfile="sprite_character.cpp" bodystart="100" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___character_1ae8daeca66079c6c5883bab7090643586" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Character::OnTileSpriteReady</definition>
+        <argsstring>(FileRequestResult *)</argsstring>
+        <name>OnTileSpriteReady</name>
+        <qualifiedname>Sprite_Character::OnTileSpriteReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="99" column="6" bodyfile="sprite_character.cpp" bodystart="104" bodyend="122"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___character_1a303be677bd49a509ace8729d25783d6d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Character::OnCharSpriteReady</definition>
+        <argsstring>(FileRequestResult *)</argsstring>
+        <name>OnCharSpriteReady</name>
+        <qualifiedname>Sprite_Character::OnCharSpriteReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_character.h" line="100" column="6" bodyfile="sprite_character.cpp" bodystart="153" bodyend="163"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_sprite" kindref="compound">Sprite</ref> character class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="2">
+        <label>Sprite</label>
+        <link refid="class_sprite"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Sprite_Character</label>
+        <link refid="class_sprite___character"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="2">
+        <label>Sprite</label>
+        <link refid="class_sprite"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Sprite_Character</label>
+        <link refid="class_sprite___character"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="sprite_character.h" line="34" column="1" bodyfile="sprite_character.h" bodystart="34" bodyend="103"/>
+    <listofallmembers>
+      <member refid="class_sprite___character_1a263b71c9b0573c801d9001433f9fc60c" prot="private" virt="non-virtual"><scope>Sprite_Character</scope><name>chara_height</name></member>
+      <member refid="class_sprite___character_1a95373e1745262767402c22f8e6b9956f" prot="private" virt="non-virtual"><scope>Sprite_Character</scope><name>chara_width</name></member>
+      <member refid="class_sprite___character_1ad4582b5ee38d76a74302b70241010539" prot="private" virt="non-virtual"><scope>Sprite_Character</scope><name>character</name></member>
+      <member refid="class_sprite___character_1a056cbc6c282e80b73c656a978dcb15bc" prot="private" virt="non-virtual"><scope>Sprite_Character</scope><name>character_index</name></member>
+      <member refid="class_sprite___character_1a0aad2128b4d546a3b8bd114f7b610a08" prot="private" virt="non-virtual"><scope>Sprite_Character</scope><name>character_name</name></member>
+      <member refid="class_sprite___character_1a007731321f56e96c6436f89c610a0a2f" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>ChipsetUpdated</name></member>
+      <member refid="class_sprite___character_1a38aa5b4bda3b49f9c764b2706a8b1f5b" prot="public" virt="virtual"><scope>Sprite_Character</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>Flags</name></member>
+      <member refid="class_sprite_1ade47ec9b2fc6b79921a978ac85508eb4" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetAngle</name></member>
+      <member refid="class_sprite_1a8692649cce1320c23d7216207805b990" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetBitmap</name></member>
+      <member refid="class_sprite_1aa34fbb968bfb9441bca6a7be8a1e9629" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetBitmap</name></member>
+      <member refid="class_sprite_1a699b7b199c7e2ea838878d9058401911" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetBlendColor</name></member>
+      <member refid="class_sprite_1ae5eb51cb5b55c057cbcafe69d13929a6" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetBlendType</name></member>
+      <member refid="class_sprite_1a9a5a480bc86ea9712a94303a53082da3" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetBushDepth</name></member>
+      <member refid="class_sprite___character_1aa9a50e52b52fd4f3046427a77e2168f0" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetCharacter</name></member>
+      <member refid="class_sprite___character_1a09de5f49207d0052dbcf3d973dac9ea1" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetCharacterRect</name></member>
+      <member refid="class_sprite_1a120a7dccaeea0d7fd7bac4f87b4b9d00" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetFlipX</name></member>
+      <member refid="class_sprite_1a7217243249b11d9046369cd3f0141adb" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetFlipY</name></member>
+      <member refid="class_sprite_1ab10bdecf4bf20472b53a3102315180c2" prot="public" virt="virtual"><scope>Sprite_Character</scope><name>GetHeight</name></member>
+      <member refid="class_sprite_1ae6b8f3dd521db97853b3f2719e298db5" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetOpacity</name></member>
+      <member refid="class_sprite_1aa5c54c0b59a4f4247157e8446d588645" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetOx</name></member>
+      <member refid="class_sprite_1a8acf5af95db9d7f29958277c2625b8c7" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetOy</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetRenderOy</name></member>
+      <member refid="class_sprite_1ac50818cd2774516c70f2583d54845f98" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetSrcRect</name></member>
+      <member refid="class_sprite_1af315f162b8f1d0374d2bb4788f15eb59" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetTone</name></member>
+      <member refid="class_sprite_1add7a9fa3823099c15d04bd98764c00b8" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetWaverDepth</name></member>
+      <member refid="class_sprite_1a5781eeeb12fd97b447809efd0f14afea" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetWaverPhase</name></member>
+      <member refid="class_sprite_1a190fdb389450b2a425d3b7256b10b041" prot="public" virt="virtual"><scope>Sprite_Character</scope><name>GetWidth</name></member>
+      <member refid="class_sprite_1aa87fb1678e6d814923b390085c8b47ca" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetX</name></member>
+      <member refid="class_sprite_1af3bb2ded3b6d29905c717031e8e873e4" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetY</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetZ</name></member>
+      <member refid="class_sprite_1afdc1630a767fef01cb29f81983a25825" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetZoomX</name></member>
+      <member refid="class_sprite_1a7fc9c4d33c7fade504f93a86c34a2b66" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>GetZoomY</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>IsGlobal</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>IsVisible</name></member>
+      <member refid="class_sprite___character_1a303be677bd49a509ace8729d25783d6d" prot="private" virt="non-virtual"><scope>Sprite_Character</scope><name>OnCharSpriteReady</name></member>
+      <member refid="class_sprite___character_1ae8daeca66079c6c5883bab7090643586" prot="private" virt="non-virtual"><scope>Sprite_Character</scope><name>OnTileSpriteReady</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>operator=</name></member>
+      <member refid="class_sprite___character_1ab3f212c13dec8832255a7468127f4226" prot="private" virt="non-virtual"><scope>Sprite_Character</scope><name>refresh_bitmap</name></member>
+      <member refid="class_sprite___character_1a2edea70458de28b5e88b4a344b02598e" prot="private" virt="non-virtual"><scope>Sprite_Character</scope><name>request_id</name></member>
+      <member refid="class_sprite_1ab2ac97d71f9af168477ff5114e895021" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetAngle</name></member>
+      <member refid="class_sprite_1a0b1f8eb93adbfffb165acb30699ddd78" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetBitmap</name></member>
+      <member refid="class_sprite_1a5a80440fb552919c24e3320544554a62" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetBlendColor</name></member>
+      <member refid="class_sprite_1a662cbae14d3628d670b865157b247df1" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetBlendType</name></member>
+      <member refid="class_sprite_1a48f4b1522175b8aab5e7f2d6b11a9425" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetBushDepth</name></member>
+      <member refid="class_sprite___character_1ab57aecd1c82ea2f65893e0d98d3d413a" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetCharacter</name></member>
+      <member refid="class_sprite_1a88b06fec2499b21fb21445269cbee15f" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetFlashEffect</name></member>
+      <member refid="class_sprite_1a85222d16191092db3e0d731f8a78d4a8" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetFlipX</name></member>
+      <member refid="class_sprite_1a909b9d49b660fa592b0b753f602dddef" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetFlipY</name></member>
+      <member refid="class_sprite_1a00ec8dcc661ae5acea3c013dc12c07f0" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetOpacity</name></member>
+      <member refid="class_sprite_1ae2504fad70205dd8064392da7ceb4f71" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetOx</name></member>
+      <member refid="class_sprite_1a0e189abc78607a4a6e011d6e394a43d7" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetOy</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetRenderOy</name></member>
+      <member refid="class_sprite_1ae0a9b0248ce543551c1486c824b2949c" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetSpriteRect</name></member>
+      <member refid="class_sprite_1a890398eafe1a9135d7baa939842a798a" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetSrcRect</name></member>
+      <member refid="class_sprite_1a89865e8080e634db19ab6409efc0ef2c" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetTone</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetVisible</name></member>
+      <member refid="class_sprite_1a505321681169327d559b7f59146fdec9" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetWaverDepth</name></member>
+      <member refid="class_sprite_1a85f701cd0eb6033b471f84bb24f192b8" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetWaverPhase</name></member>
+      <member refid="class_sprite_1a57277e7b2c107f36f587c46e99f7a48f" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetX</name></member>
+      <member refid="class_sprite_1a0012676d8951dbf2342de94acc18eecd" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetY</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetZ</name></member>
+      <member refid="class_sprite_1a3e7151dfb8645a3fbb71395625af985c" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetZoomX</name></member>
+      <member refid="class_sprite_1aad6019d133e5abac3323d671af4ed06b" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>SetZoomY</name></member>
+      <member refid="class_sprite_1aa3a20244c338653f65beaa26d6189581" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>Sprite</name></member>
+      <member refid="class_sprite___character_1a0ad15c3b5c79ef8e23d3397ed2dabc3a" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>Sprite_Character</name></member>
+      <member refid="class_sprite___character_1a321565cec650ddb5dd2fe7dfce7c622a" prot="private" virt="non-virtual"><scope>Sprite_Character</scope><name>tile_id</name></member>
+      <member refid="class_sprite___character_1a084adfbfaa78d14cd7a4a66a9c68f8a4" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>Update</name></member>
+      <member refid="class_sprite___character_1aff7e3c40e1cdea3be843f3aa5f710900" prot="private" virt="non-virtual"><scope>Sprite_Character</scope><name>UsesCharset</name></member>
+      <member refid="class_sprite___character_1a8447a45fe5d3b83acdb160e1cf59e27a" prot="private" virt="non-virtual"><scope>Sprite_Character</scope><name>x_offset</name></member>
+      <member refid="class_sprite___character_1a1f2dfa9e3743545a243f28094d685362" prot="private" virt="non-virtual"><scope>Sprite_Character</scope><name>y_offset</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>Sprite_Character</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>Sprite_Character</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

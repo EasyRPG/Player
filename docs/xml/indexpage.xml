@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="indexpage" kind="page">
+    <compoundname>index</compoundname>
+    <title>Leasy — Lua and EasyRPG guys!!</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>The <ref refid="namespace_player" kindref="compound">Player</ref> is the game interpreter of games made with RPG Maker 2000 or 2003 editors. Technically, the player is the replacement of the RPG_RT.exe program executable and runtime interpreter of RPG Maker, distributed with games.<linebreak/>
+ This page provides a documentation of all the player classes and how they interact with each other. </para>
+    </detaileddescription>
+    <location file="docmain.h"/>
+  </compounddef>
+</doxygen>

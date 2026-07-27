@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="version_8h" kind="file" language="C++">
+    <compoundname>version.h</compoundname>
+    <includes local="no">cstring</includes>
+    <includes local="no">string</includes>
+    <includedby refid="dynrpg__easyrpg_8cpp" local="yes">dynrpg_easyrpg.cpp</includedby>
+    <includedby refid="input__source_8cpp" local="yes">input_source.cpp</includedby>
+    <includedby refid="ily3_8cpp" local="yes">leasy/ily3/ily3.cpp</includedby>
+    <includedby refid="player_8cpp" local="yes">player.cpp</includedby>
+    <includedby refid="scene__logo_8cpp" local="yes">scene_logo.cpp</includedby>
+    <includedby refid="scene__save_8cpp" local="yes">scene_save.cpp</includedby>
+    <includedby refid="version_8cpp" local="yes">version.cpp</includedby>
+    <includedby refid="window__about_8cpp" local="yes">window_about.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>version.h</label>
+        <link refid="version_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>cstring</label>
+      </node>
+      <node id="3">
+        <label>string</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>dynrpg_easyrpg.cpp</label>
+        <link refid="dynrpg__easyrpg_8cpp"/>
+      </node>
+      <node id="3">
+        <label>input_source.cpp</label>
+        <link refid="input__source_8cpp"/>
+      </node>
+      <node id="4">
+        <label>leasy/ily3/ily3.cpp</label>
+        <link refid="ily3_8cpp"/>
+      </node>
+      <node id="5">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="6">
+        <label>scene_logo.cpp</label>
+        <link refid="scene__logo_8cpp"/>
+      </node>
+      <node id="7">
+        <label>scene_save.cpp</label>
+        <link refid="scene__save_8cpp"/>
+      </node>
+      <node id="8">
+        <label>version.cpp</label>
+        <link refid="version_8cpp"/>
+      </node>
+      <node id="1">
+        <label>version.h</label>
+        <link refid="version_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>window_about.cpp</label>
+        <link refid="window__about_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespace_version">Version</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="version_8h_1a5b6b6f860b4b2de23856daf4809e2f9f" prot="public" static="no">
+        <name>EP_VERSION_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.h" line="20" column="9" bodyfile="version.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="version_8h_1a9d0698a8ea0ddbc85b867487c7b02b9a" prot="public" static="no">
+        <name>PLAYER_SAVEGAME_VERSION</name>
+        <initializer>(<ref refid="namespace_version_1ab2bec3294bd2f71d45ca8c4ae42742f9" kindref="member">Version::MAJOR</ref> * 1000 + <ref refid="namespace_version_1ac3b4a5708c4a7d331a6a3fa58fb2c3ee" kindref="member">Version::MINOR</ref> * 100 + <ref refid="namespace_version_1a1b1cbf1d76c33e3bf8d319b9c2211e5c" kindref="member">Version::PATCH</ref> * 10 + 0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="namespace_version" kindref="compound">Version</ref> written to the easyrpg_data.version field in savegames. Increment the last digit (0) only when having a good reason. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.h" line="51" column="9" bodyfile="version.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_VERSION_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="version_8h_1a5b6b6f860b4b2de23856daf4809e2f9f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_VERSION_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstring&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_version" kindref="compound">Version</ref><sp/>{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_version_1ab2bec3294bd2f71d45ca8c4ae42742f9" kindref="member">MAJOR</ref>;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_version_1ac3b4a5708c4a7d331a6a3fa58fb2c3ee" kindref="member">MINOR</ref>;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_version_1a1b1cbf1d76c33e3bf8d319b9c2211e5c" kindref="member">PATCH</ref>;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_version_1ac776edcd04f232b710b7fec181dd5f4e" kindref="member">TWEAK</ref>;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/><ref refid="namespace_version_1aa1306183eb54181a68e03a76960223ef" kindref="member">STRING</ref>[];</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/><ref refid="namespace_version_1a9044b69e005be6c8b995f6ff0c6e892c" kindref="member">GIT</ref>[];</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/><ref refid="namespace_version_1a1116f3408ff2a1ac6151a6f18894170d" kindref="member">APPEND</ref>[];</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="namespace_version_1afb61e596a826b119307dae8938c87bc6" kindref="member">GetVersionString</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>with_git<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>with_append<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="version_8h_1a9d0698a8ea0ddbc85b867487c7b02b9a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PLAYER_SAVEGAME_VERSION<sp/>(Version::MAJOR<sp/>*<sp/>1000<sp/>+<sp/>Version::MINOR<sp/>*<sp/>100<sp/>+<sp/>Version::PATCH<sp/>*<sp/>10<sp/>+<sp/>0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="version.h"/>
+  </compounddef>
+</doxygen>

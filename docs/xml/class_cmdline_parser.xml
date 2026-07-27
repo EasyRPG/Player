@@ -1,0 +1,335 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_cmdline_parser" kind="class" language="C++" prot="public">
+    <compoundname>CmdlineParser</compoundname>
+    <includes refid="cmdline__parser_8h" local="no">cmdline_parser.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_cmdline_parser_1a0ed6f4f9aacd99eb7ac74a3467429c1c" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt;std::string&gt; CmdlineParser::args</definition>
+        <argsstring></argsstring>
+        <name>args</name>
+        <qualifiedname>CmdlineParser::args</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cmdline_parser.h" line="159" column="13" bodyfile="cmdline_parser.h" bodystart="159" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_cmdline_parser_1aea8f103fce3292ebdb6f701050089b21" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int CmdlineParser::index</definition>
+        <argsstring></argsstring>
+        <name>index</name>
+        <qualifiedname>CmdlineParser::index</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cmdline_parser.h" line="160" column="5" bodyfile="cmdline_parser.h" bodystart="160" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_cmdline_parser_1a7e40627cf6ec96f5d00ca813ebc4c6b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CmdlineParser::CmdlineParser</definition>
+        <argsstring>(std::vector&lt; std::string &gt; arguments)</argsstring>
+        <name>CmdlineParser</name>
+        <qualifiedname>CmdlineParser::CmdlineParser</qualifiedname>
+        <param>
+          <type>std::vector&lt; std::string &gt;</type>
+          <declname>arguments</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Construct with given arguments</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>arguments</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="3ds_2main_8cpp_1a0ddf1224851353fc92bfbff6f499fa97" kindref="member">main()</ref> argv as vector of strings </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cmdline_parser.h" line="116" column="1" bodyfile="cmdline_parser.cpp" bodystart="50" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cmdline_parser_1a11c92526bec4c803752f9c3b66fb51c8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool CmdlineParser::ParseNext</definition>
+        <argsstring>(CmdlineArg &amp;arg, int max_values, const char *longval, char shortval=&apos;\0&apos;)</argsstring>
+        <name>ParseNext</name>
+        <qualifiedname>CmdlineParser::ParseNext</qualifiedname>
+        <param>
+          <type><ref refid="class_cmdline_arg" kindref="compound">CmdlineArg</ref> &amp;</type>
+          <declname>arg</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>max_values</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>longval</declname>
+        </param>
+        <param>
+          <type>char</type>
+          <declname>shortval</declname>
+          <defval>&apos;\0&apos;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Parses the next command line argument if there is a match in longval or shortval. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>arg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>CommandlineArg to fill in with details about argument that was parsed. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>max_values</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The maximum number of values of parse if they exist. The number of values in arg will be &lt;= this value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>longval</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The long argument name such as &quot;--help&quot; </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>shortval</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The short argument character. &apos;h&apos; for example would mean check for &quot;-h&quot; </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if the argument was parsed. If returning true, the <ref refid="class_cmdline_parser" kindref="compound">CmdlineParser</ref> advances to the next argument. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cmdline_parser.h" line="126" column="6" bodyfile="cmdline_parser.cpp" bodystart="99" bodyend="103"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cmdline_parser_1a374b4d799f3a0d07fca4a92dcad9c2bf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool CmdlineParser::ParseNext</definition>
+        <argsstring>(CmdlineArg &amp;arg, int max_values, std::initializer_list&lt; const char * &gt; longvals, char shortval=&apos;\0&apos;)</argsstring>
+        <name>ParseNext</name>
+        <qualifiedname>CmdlineParser::ParseNext</qualifiedname>
+        <param>
+          <type><ref refid="class_cmdline_arg" kindref="compound">CmdlineArg</ref> &amp;</type>
+          <declname>arg</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>max_values</declname>
+        </param>
+        <param>
+          <type>std::initializer_list&lt; const char * &gt;</type>
+          <declname>longvals</declname>
+        </param>
+        <param>
+          <type>char</type>
+          <declname>shortval</declname>
+          <defval>&apos;\0&apos;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Parses the next command line argument if there is a match in longval or shortval. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>arg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>CommandlineArg to fill in with details about argument that was parsed. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>max_values</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The maximum number of values of parse if they exist. The number of values in arg will be &lt;= this value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>longvals</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A set of long argument name such as { &quot;--help&quot;, &quot;/?&quot; }. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>shortval</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The short argument character. &apos;h&apos; for example would mean check for &quot;-h&quot; </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if the argument was parsed. If returning true, the <ref refid="class_cmdline_parser" kindref="compound">CmdlineParser</ref> advances to the next argument. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cmdline_parser.h" line="136" column="6" bodyfile="cmdline_parser.cpp" bodystart="105" bodyend="116"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cmdline_parser_1af1f1cecaab9880ada80c37d00e410732" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void CmdlineParser::SkipNext</definition>
+        <argsstring>()</argsstring>
+        <name>SkipNext</name>
+        <qualifiedname>CmdlineParser::SkipNext</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Skips the current argument. <simplesect kind="post"><para>advances to next command line argument </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cmdline_parser.h" line="142" column="6" bodyfile="cmdline_parser.cpp" bodystart="118" bodyend="121"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cmdline_parser_1a84b0f73739559ff259748a02dad5d089" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool CmdlineParser::Done</definition>
+        <argsstring>() const</argsstring>
+        <name>Done</name>
+        <qualifiedname>CmdlineParser::Done</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if no more command line arguments </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cmdline_parser.h" line="145" column="6" bodyfile="cmdline_parser.h" bodystart="163" bodyend="165"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cmdline_parser_1a7442847adf6d825e965358d8121fea7a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void CmdlineParser::Rewind</definition>
+        <argsstring>()</argsstring>
+        <name>Rewind</name>
+        <qualifiedname>CmdlineParser::Rewind</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Resets the parser back to the first argument </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cmdline_parser.h" line="148" column="6" bodyfile="cmdline_parser.h" bodystart="167" bodyend="169"/>
+      </memberdef>
+      <memberdef kind="function" id="class_cmdline_parser_1a7d96560c02a9d125339321dfd7b79c97" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void CmdlineParser::RewindBy</definition>
+        <argsstring>(int rewind)</argsstring>
+        <name>RewindBy</name>
+        <qualifiedname>CmdlineParser::RewindBy</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>rewind</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Rewinds the parser by the specified amount <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>rewind</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>how far to rewind </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cmdline_parser.h" line="154" column="6" bodyfile="cmdline_parser.cpp" bodystart="123" bodyend="127"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_cmdline_parser_1a4a7ba81d3d3fa8fc54e67763a2ff0f5a" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool CmdlineParser::DoParseNext</definition>
+        <argsstring>(CmdlineArg &amp;arg, int max_values, F &amp;&amp;is_longval, char shortval)</argsstring>
+        <name>DoParseNext</name>
+        <qualifiedname>CmdlineParser::DoParseNext</qualifiedname>
+        <param>
+          <type><ref refid="class_cmdline_arg" kindref="compound">CmdlineArg</ref> &amp;</type>
+          <declname>arg</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>max_values</declname>
+        </param>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>is_longval</declname>
+        </param>
+        <param>
+          <type>char</type>
+          <declname>shortval</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cmdline_parser.h" line="157" column="6" bodyfile="cmdline_parser.cpp" bodystart="60" bodyend="97"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Commandline parser class which is used to search through command line arguments. </para>
+    </detaileddescription>
+    <location file="cmdline_parser.h" line="109" column="1" bodyfile="cmdline_parser.h" bodystart="109" bodyend="161"/>
+    <listofallmembers>
+      <member refid="class_cmdline_parser_1a0ed6f4f9aacd99eb7ac74a3467429c1c" prot="private" virt="non-virtual"><scope>CmdlineParser</scope><name>args</name></member>
+      <member refid="class_cmdline_parser_1a7e40627cf6ec96f5d00ca813ebc4c6b8" prot="public" virt="non-virtual"><scope>CmdlineParser</scope><name>CmdlineParser</name></member>
+      <member refid="class_cmdline_parser_1a84b0f73739559ff259748a02dad5d089" prot="public" virt="non-virtual"><scope>CmdlineParser</scope><name>Done</name></member>
+      <member refid="class_cmdline_parser_1a4a7ba81d3d3fa8fc54e67763a2ff0f5a" prot="private" virt="non-virtual"><scope>CmdlineParser</scope><name>DoParseNext</name></member>
+      <member refid="class_cmdline_parser_1aea8f103fce3292ebdb6f701050089b21" prot="private" virt="non-virtual"><scope>CmdlineParser</scope><name>index</name></member>
+      <member refid="class_cmdline_parser_1a11c92526bec4c803752f9c3b66fb51c8" prot="public" virt="non-virtual"><scope>CmdlineParser</scope><name>ParseNext</name></member>
+      <member refid="class_cmdline_parser_1a374b4d799f3a0d07fca4a92dcad9c2bf" prot="public" virt="non-virtual"><scope>CmdlineParser</scope><name>ParseNext</name></member>
+      <member refid="class_cmdline_parser_1a7442847adf6d825e965358d8121fea7a" prot="public" virt="non-virtual"><scope>CmdlineParser</scope><name>Rewind</name></member>
+      <member refid="class_cmdline_parser_1a7d96560c02a9d125339321dfd7b79c97" prot="public" virt="non-virtual"><scope>CmdlineParser</scope><name>RewindBy</name></member>
+      <member refid="class_cmdline_parser_1af1f1cecaab9880ada80c37d00e410732" prot="public" virt="non-virtual"><scope>CmdlineParser</scope><name>SkipNext</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

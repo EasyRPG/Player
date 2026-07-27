@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdrwav__cue__point" kind="struct" language="C++" prot="public">
+    <compoundname>drwav_cue_point</compoundname>
+    <includes refid="dr__wav_8h" local="no">dr_wav.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdrwav__cue__point_1a418150615b3a3b5622c3d82a311e5776" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_cue_point::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <qualifiedname>drwav_cue_point::id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="626" column="18" bodyfile="external/dr_wav.h" bodystart="626" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__cue__point_1a7fbc19e98bbd91342850c16126c8b1a8" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_cue_point::playOrderPosition</definition>
+        <argsstring></argsstring>
+        <name>playOrderPosition</name>
+        <qualifiedname>drwav_cue_point::playOrderPosition</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="629" column="18" bodyfile="external/dr_wav.h" bodystart="629" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__cue__point_1a5d434eba13eff6889dcc277d8b7b5fb1" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ae433204b3e47bded80161f89f5d52895" kindref="member">drwav_uint8</ref></type>
+        <definition>drwav_uint8 drwav_cue_point::dataChunkId[4]</definition>
+        <argsstring>[4]</argsstring>
+        <name>dataChunkId</name>
+        <qualifiedname>drwav_cue_point::dataChunkId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="632" column="17" bodyfile="external/dr_wav.h" bodystart="632" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__cue__point_1ad1c3fc949cb517ad1a7c526a298c1a7c" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_cue_point::chunkStart</definition>
+        <argsstring></argsstring>
+        <name>chunkStart</name>
+        <qualifiedname>drwav_cue_point::chunkStart</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="635" column="18" bodyfile="external/dr_wav.h" bodystart="635" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__cue__point_1a1ac1ca0a422969e328c4db31d6d78562" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_cue_point::blockStart</definition>
+        <argsstring></argsstring>
+        <name>blockStart</name>
+        <qualifiedname>drwav_cue_point::blockStart</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="638" column="18" bodyfile="external/dr_wav.h" bodystart="638" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__cue__point_1a63f3881f15969cba454322fdca6050e5" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_cue_point::sampleByteOffset</definition>
+        <argsstring></argsstring>
+        <name>sampleByteOffset</name>
+        <qualifiedname>drwav_cue_point::sampleByteOffset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="641" column="18" bodyfile="external/dr_wav.h" bodystart="641" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="external/dr_wav.h" line="623" column="1" bodyfile="external/dr_wav.h" bodystart="624" bodyend="642"/>
+    <listofallmembers>
+      <member refid="structdrwav__cue__point_1a1ac1ca0a422969e328c4db31d6d78562" prot="public" virt="non-virtual"><scope>drwav_cue_point</scope><name>blockStart</name></member>
+      <member refid="structdrwav__cue__point_1ad1c3fc949cb517ad1a7c526a298c1a7c" prot="public" virt="non-virtual"><scope>drwav_cue_point</scope><name>chunkStart</name></member>
+      <member refid="structdrwav__cue__point_1a5d434eba13eff6889dcc277d8b7b5fb1" prot="public" virt="non-virtual"><scope>drwav_cue_point</scope><name>dataChunkId</name></member>
+      <member refid="structdrwav__cue__point_1a418150615b3a3b5622c3d82a311e5776" prot="public" virt="non-virtual"><scope>drwav_cue_point</scope><name>id</name></member>
+      <member refid="structdrwav__cue__point_1a7fbc19e98bbd91342850c16126c8b1a8" prot="public" virt="non-virtual"><scope>drwav_cue_point</scope><name>playOrderPosition</name></member>
+      <member refid="structdrwav__cue__point_1a63f3881f15969cba454322fdca6050e5" prot="public" virt="non-virtual"><scope>drwav_cue_point</scope><name>sampleByteOffset</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

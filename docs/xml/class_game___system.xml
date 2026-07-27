@@ -1,0 +1,2308 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___system" kind="class" language="C++" prot="public">
+    <compoundname>Game_System</compoundname>
+    <includes refid="game__system_8h" local="no">game_system.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_game___system_1ae4ac09717daf9a17a276627ed8ac544e" prot="public" static="no" strong="no">
+        <type></type>
+        <name>sys_bgm</name>
+        <qualifiedname>Game_System::sys_bgm</qualifiedname>
+        <enumvalue id="class_game___system_1ae4ac09717daf9a17a276627ed8ac544ea5ebf3edf979d854fdeeebddcad5a2184" prot="public">
+          <name>BGM_Battle</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1ae4ac09717daf9a17a276627ed8ac544ea78e519259ae897ead5b0d6731b392720" prot="public">
+          <name>BGM_Victory</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1ae4ac09717daf9a17a276627ed8ac544ea8d072f05c846dbab95d25bf129ac9863" prot="public">
+          <name>BGM_Inn</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1ae4ac09717daf9a17a276627ed8ac544ea07c6ac562712f2a1457e3061b0170831" prot="public">
+          <name>BGM_Boat</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1ae4ac09717daf9a17a276627ed8ac544eaf64df9330a23028d41a51296384a583e" prot="public">
+          <name>BGM_Ship</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1ae4ac09717daf9a17a276627ed8ac544ead26f08f9bffb793acae752db0891acad" prot="public">
+          <name>BGM_Airship</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1ae4ac09717daf9a17a276627ed8ac544ea75f0b477070aee650c3f6925835eedc3" prot="public">
+          <name>BGM_GameOver</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1ae4ac09717daf9a17a276627ed8ac544eaf8f267630ac9fc8ddb97afa0ed77beea" prot="public">
+          <name>BGM_Count</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="43" column="1" bodyfile="game_system.h" bodystart="43" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="enum" id="class_game___system_1abbef8f9198794e5678bee50066b90680" prot="public" static="no" strong="no">
+        <type></type>
+        <name>sys_sfx</name>
+        <qualifiedname>Game_System::sys_sfx</qualifiedname>
+        <enumvalue id="class_game___system_1abbef8f9198794e5678bee50066b90680a723709de21b24fc56d7b98bad4df5d51" prot="public">
+          <name>SFX_Cursor</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1abbef8f9198794e5678bee50066b90680a365bd3c3062ecd67bbaff57d962e6a09" prot="public">
+          <name>SFX_Decision</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1abbef8f9198794e5678bee50066b90680a587ffd820eaeaef9a8b7cddaf87d5e31" prot="public">
+          <name>SFX_Cancel</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1abbef8f9198794e5678bee50066b90680a7ec76d45b7ecab8ae3d3a44bce635c18" prot="public">
+          <name>SFX_Buzzer</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1abbef8f9198794e5678bee50066b90680a120c7c48be041290263348620f1b159d" prot="public">
+          <name>SFX_BeginBattle</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1abbef8f9198794e5678bee50066b90680a2291a3488bdc8d34f4a234583ac69168" prot="public">
+          <name>SFX_Escape</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1abbef8f9198794e5678bee50066b90680a2d3ffcd7a7265b4e40ccdb95e9b41725" prot="public">
+          <name>SFX_EnemyAttacks</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1abbef8f9198794e5678bee50066b90680a165a65624da1d0f51b931432e6d66ee5" prot="public">
+          <name>SFX_EnemyDamage</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1abbef8f9198794e5678bee50066b90680a88132f5558a5622e2b9b32382dd27adb" prot="public">
+          <name>SFX_AllyDamage</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1abbef8f9198794e5678bee50066b90680a1132929afe799dde1af5f0794e1ca27f" prot="public">
+          <name>SFX_Evasion</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1abbef8f9198794e5678bee50066b90680af86d0017887f5102f7e0d904b4e31801" prot="public">
+          <name>SFX_EnemyKill</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1abbef8f9198794e5678bee50066b90680ac96636d12fe8430fce5c464828f3242b" prot="public">
+          <name>SFX_UseItem</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1abbef8f9198794e5678bee50066b90680a74216d32776ab35257d9e4f884407b91" prot="public">
+          <name>SFX_Count</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="55" column="1" bodyfile="game_system.h" bodystart="55" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="enum" id="class_game___system_1afbeb533963bf0da8494a53a787b6b0c8" prot="public" static="no" strong="no">
+        <type></type>
+        <name>sys_transition</name>
+        <qualifiedname>Game_System::sys_transition</qualifiedname>
+        <enumvalue id="class_game___system_1afbeb533963bf0da8494a53a787b6b0c8a085b53a5a2183ec51d0dcdf9718cc327" prot="public">
+          <name>Transition_TeleportErase</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1afbeb533963bf0da8494a53a787b6b0c8aa30f306858a6124731a800572118c119" prot="public">
+          <name>Transition_TeleportShow</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1afbeb533963bf0da8494a53a787b6b0c8a0862cf8e270907b2e794a49b606c75ff" prot="public">
+          <name>Transition_BeginBattleErase</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1afbeb533963bf0da8494a53a787b6b0c8a90a1820dd8d10fd7073f3f1d5d59df77" prot="public">
+          <name>Transition_BeginBattleShow</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1afbeb533963bf0da8494a53a787b6b0c8ad45d05afd3e7cef684e851a6279dd6c7" prot="public">
+          <name>Transition_EndBattleErase</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1afbeb533963bf0da8494a53a787b6b0c8a86cc62f25277733e918fb87c71f1c0b5" prot="public">
+          <name>Transition_EndBattleShow</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___system_1afbeb533963bf0da8494a53a787b6b0c8a08f376af30fa4b7f7833ffa7229a5c9b" prot="public">
+          <name>Transition_Count</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="72" column="1" bodyfile="game_system.h" bodystart="72" bodyend="80"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_game___system_1a1d34a432da34878489362ed9622faa3f" prot="public" static="no">
+        <type>lcf::rpg::SaveSystem::AtbMode</type>
+        <definition>using Game_System::AtbMode = lcf::rpg::SaveSystem::AtbMode</definition>
+        <argsstring></argsstring>
+        <name>AtbMode</name>
+        <qualifiedname>Game_System::AtbMode</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="82" column="1" bodyfile="game_system.h" bodystart="82" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___system_1ad12717e84c1f0eb19e39e2c81f5c6591" prot="private" static="no" mutable="no">
+        <type>lcf::rpg::SaveSystem</type>
+        <definition>lcf::rpg::SaveSystem Game_System::data</definition>
+        <argsstring></argsstring>
+        <name>data</name>
+        <qualifiedname>Game_System::data</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="449" column="22" bodyfile="game_system.h" bodystart="449" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___system_1a82bf9fd471c826b02af4f63102c151aa" prot="private" static="no" mutable="no">
+        <type>const lcf::rpg::System *</type>
+        <definition>const lcf::rpg::System* Game_System::dbsys</definition>
+        <argsstring></argsstring>
+        <name>dbsys</name>
+        <qualifiedname>Game_System::dbsys</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="450" column="24" bodyfile="game_system.h" bodystart="450" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___system_1a2955b30051c76c5be0e59189105b44c7" prot="private" static="no" mutable="no">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding Game_System::music_request_id</definition>
+        <argsstring></argsstring>
+        <name>music_request_id</name>
+        <qualifiedname>Game_System::music_request_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="451" column="20" bodyfile="game_system.h" bodystart="451" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___system_1ac02e7a7535f525b9e3b8df2a70c08c71" prot="private" static="no" mutable="no">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding Game_System::system_request_id</definition>
+        <argsstring></argsstring>
+        <name>system_request_id</name>
+        <qualifiedname>Game_System::system_request_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="452" column="20" bodyfile="game_system.h" bodystart="452" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___system_1a6b842b43743f782e645216884a80ebe2" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref> &gt;</type>
+        <definition>std::map&lt;std::string, FileRequestBinding&gt; Game_System::se_request_ids</definition>
+        <argsstring></argsstring>
+        <name>se_request_ids</name>
+        <qualifiedname>Game_System::se_request_ids</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="453" column="10" bodyfile="game_system.h" bodystart="453" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___system_1a1ea75869e636e483574d47896eeae2b7" prot="private" static="no" mutable="no">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color Game_System::bg_color</definition>
+        <argsstring></argsstring>
+        <name>bg_color</name>
+        <qualifiedname>Game_System::bg_color</qualifiedname>
+        <initializer>= <ref refid="class_color" kindref="compound">Color</ref>{ 0, 0, 0, 255 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="454" column="7" bodyfile="game_system.h" bodystart="454" bodyend="454"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___system_1a38d0be0607045141258d3ee0aabcdfab" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_System::bgm_pending</definition>
+        <argsstring></argsstring>
+        <name>bgm_pending</name>
+        <qualifiedname>Game_System::bgm_pending</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="455" column="6" bodyfile="game_system.h" bodystart="455" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___system_1a904de030fecf87813304ada02068967d" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_System::loaded_frame_count</definition>
+        <argsstring></argsstring>
+        <name>loaded_frame_count</name>
+        <qualifiedname>Game_System::loaded_frame_count</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="456" column="5" bodyfile="game_system.h" bodystart="456" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___system_1a26c02e65bd605d8935860ec2ca860707" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_System::Game_System</definition>
+        <argsstring>()</argsstring>
+        <name>Game_System</name>
+        <qualifiedname>Game_System::Game_System</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes Game System. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="87" column="1" bodyfile="game_system.cpp" bodystart="40" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a8cc7400424a9a3d0dd7e4fa64b1de67f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetupFromSave</definition>
+        <argsstring>(lcf::rpg::SaveSystem save)</argsstring>
+        <name>SetupFromSave</name>
+        <qualifiedname>Game_System::SetupFromSave</qualifiedname>
+        <param>
+          <type>lcf::rpg::SaveSystem</type>
+          <declname>save</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initialize from save game </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="90" column="6" bodyfile="game_system.cpp" bodystart="44" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1ad67d14651ddfe79935659329f4d9522a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const lcf::rpg::SaveSystem &amp;</type>
+        <definition>const lcf::rpg::SaveSystem &amp; Game_System::GetSaveData</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSaveData</name>
+        <qualifiedname>Game_System::GetSaveData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>save game data </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="93" column="28" bodyfile="game_system.cpp" bodystart="49" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a1c634bd5900dbc0ee459c77ed0eaed07" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::BgmPlay</definition>
+        <argsstring>(lcf::rpg::Music const &amp;bgm)</argsstring>
+        <name>BgmPlay</name>
+        <qualifiedname>Game_System::BgmPlay</qualifiedname>
+        <param>
+          <type>lcf::rpg::Music const &amp;</type>
+          <declname>bgm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Plays a Music.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>bgm</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>music data. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="100" column="6" bodyfile="game_system.cpp" bodystart="72" bodyend="122"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a08ad8dc0418af60b53dd503dad6b951e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::BgmStop</definition>
+        <argsstring>()</argsstring>
+        <name>BgmStop</name>
+        <qualifiedname>Game_System::BgmStop</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Stops playing music. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="105" column="6" bodyfile="game_system.cpp" bodystart="124" bodyend="128"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a2ba20d926a51d96679f66d57621bd7c4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::BgmFade</definition>
+        <argsstring>(int duration, bool clear_current_music=false)</argsstring>
+        <name>BgmFade</name>
+        <qualifiedname>Game_System::BgmFade</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>duration</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>clear_current_music</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Fades out the current BGM</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>duration</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Duration in ms </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>clear_current_music</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true then current_music is set to (OFF). Only needed on starting a new game. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="113" column="6" bodyfile="game_system.cpp" bodystart="130" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1ae8f6cebd7789dc4d1c243a36410d61cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::BgmPlayedOnce</definition>
+        <argsstring>()</argsstring>
+        <name>BgmPlayedOnce</name>
+        <qualifiedname>Game_System::BgmPlayedOnce</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns whether a Bgm track played once. For RPG_RT compatibility always returns false for WAV files. Use <ref refid="audio_8cpp_1ab9892584e494554d81a6d630c9b97573" kindref="member">Audio()</ref>.BGM_PlayedOnce() if this is not desired.</para>
+<para><simplesect kind="return"><para>Whether Bgm played once </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="122" column="6" bodyfile="game_system.cpp" bodystart="138" bodyend="148"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a36ed0915b2b5f9d031e5654fceb309eb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SePlay</definition>
+        <argsstring>(const lcf::rpg::Sound &amp;se, bool stop_sounds=false)</argsstring>
+        <name>SePlay</name>
+        <qualifiedname>Game_System::SePlay</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Sound &amp;</type>
+          <declname>se</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>stop_sounds</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Plays a Sound.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>se</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>sound data. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stop_sounds</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true stops all SEs when playing (OFF)/(...). Only used by the interpreter. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="130" column="6" bodyfile="game_system.cpp" bodystart="150" bodyend="190"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a6c8b5f0277fafcd5c38c026020bbdcc7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SePlay</definition>
+        <argsstring>(const lcf::rpg::Animation &amp;animation)</argsstring>
+        <name>SePlay</name>
+        <qualifiedname>Game_System::SePlay</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Animation &amp;</type>
+          <declname>animation</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Plays the first valid sound in the animation.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>animation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>animation data. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="137" column="6" bodyfile="game_system.cpp" bodystart="192" bodyend="200"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1ac3c8f9ffcdae1121e7bf0764bd7d9004" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_System::GetSystemName</definition>
+        <argsstring>()</argsstring>
+        <name>GetSystemName</name>
+        <qualifiedname>Game_System::GetSystemName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>system graphic filename. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="140" column="18" bodyfile="game_system.cpp" bodystart="202" bodyend="205"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1af46c5b9a8ea5e369299cb0b5f311e457" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>lcf::rpg::System::Stretch</type>
+        <definition>lcf::rpg::System::Stretch Game_System::GetMessageStretch</definition>
+        <argsstring>()</argsstring>
+        <name>GetMessageStretch</name>
+        <qualifiedname>Game_System::GetMessageStretch</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>message stretch style </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="143" column="27" bodyfile="game_system.cpp" bodystart="384" bodyend="388"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1aef7481aaece3ba16cc9180cac3bf9ede" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>lcf::rpg::System::Font</type>
+        <definition>lcf::rpg::System::Font Game_System::GetFontId</definition>
+        <argsstring>()</argsstring>
+        <name>GetFontId</name>
+        <qualifiedname>Game_System::GetFontId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>system font </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="146" column="24" bodyfile="game_system.cpp" bodystart="390" bodyend="394"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a1ecb24fc5ff8f1c22948f2cc434d3f34" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetSystemGraphic</definition>
+        <argsstring>(const std::string &amp;system_name, lcf::rpg::System::Stretch stretch, lcf::rpg::System::Font font)</argsstring>
+        <name>SetSystemGraphic</name>
+        <qualifiedname>Game_System::SetSystemGraphic</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>system_name</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::System::Stretch</type>
+          <declname>stretch</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::System::Font</type>
+          <declname>font</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the system graphic.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>system_name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new system name. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>message_stretch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>message stretch style </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>font_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The system font to use. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="155" column="6" bodyfile="game_system.cpp" bodystart="225" bodyend="238"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1abf85c44c7e00fe03a700845c98fef84b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::ResetSystemGraphic</definition>
+        <argsstring>()</argsstring>
+        <name>ResetSystemGraphic</name>
+        <qualifiedname>Game_System::ResetSystemGraphic</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Resets the system graphic to the default value. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="160" column="6" bodyfile="game_system.cpp" bodystart="240" bodyend="246"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a050a5e9eebf1ee472fe3864614cef811" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_System::GetSystem2Name</definition>
+        <argsstring>()</argsstring>
+        <name>GetSystem2Name</name>
+        <qualifiedname>Game_System::GetSystem2Name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the system2 graphic name </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="163" column="18" bodyfile="game_system.h" bodystart="618" bodyend="620"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a7fdb349a9d620a5acccc8d9635c41870" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::HasSystemGraphic</definition>
+        <argsstring>()</argsstring>
+        <name>HasSystemGraphic</name>
+        <qualifiedname>Game_System::HasSystemGraphic</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if the game has a configured system graphic </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="166" column="6" bodyfile="game_system.h" bodystart="459" bodyend="461"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a287c9caf47fba1f4ae9276a628860920" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::HasSystem2Graphic</definition>
+        <argsstring>()</argsstring>
+        <name>HasSystem2Graphic</name>
+        <qualifiedname>Game_System::HasSystem2Graphic</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if the game has a configured system2 graphic </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="169" column="6" bodyfile="game_system.h" bodystart="463" bodyend="465"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1afafba9e83b245f4026d0dd1b2d6a1433" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const lcf::rpg::Music &amp;</type>
+        <definition>const lcf::rpg::Music &amp; Game_System::GetSystemBGM</definition>
+        <argsstring>(int which)</argsstring>
+        <name>GetSystemBGM</name>
+        <qualifiedname>Game_System::GetSystemBGM</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>which</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the system music.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>which</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which &quot;context&quot; to set the music for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the music. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="177" column="23" bodyfile="game_system.cpp" bodystart="263" bodyend="283"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a0e6c561f0d9600e1130b9fce784b2705" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetSystemBGM</definition>
+        <argsstring>(int which, lcf::rpg::Music bgm)</argsstring>
+        <name>SetSystemBGM</name>
+        <qualifiedname>Game_System::SetSystemBGM</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>which</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::Music</type>
+          <declname>bgm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the system music.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>which</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which &quot;context&quot; to set the music for. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>bgm</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the music. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="185" column="6" bodyfile="game_system.cpp" bodystart="285" bodyend="309"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a9591dac451c90102b7548d1df8f27d8d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const lcf::rpg::Sound &amp;</type>
+        <definition>const lcf::rpg::Sound &amp; Game_System::GetSystemSE</definition>
+        <argsstring>(int which)</argsstring>
+        <name>GetSystemSE</name>
+        <qualifiedname>Game_System::GetSystemSE</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>which</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the system sound effects.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>which</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which &quot;context&quot; to set the music for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the sound. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="193" column="23" bodyfile="game_system.cpp" bodystart="311" bodyend="341"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1af5c1273734435f247ea7cbd21eb2cf53" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetSystemSE</definition>
+        <argsstring>(int which, lcf::rpg::Sound sfx)</argsstring>
+        <name>SetSystemSE</name>
+        <qualifiedname>Game_System::SetSystemSE</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>which</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::Sound</type>
+          <declname>sfx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets a system sound effect.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>which</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which &quot;context&quot; to set the effect for. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sfx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the sound effect. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="201" column="6" bodyfile="game_system.cpp" bodystart="343" bodyend="382"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a6f6138fdc4b7c53f8f21f26aa46d463e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253" kindref="member">Transition::Type</ref></type>
+        <definition>Transition::Type Game_System::GetTransition</definition>
+        <argsstring>(int which)</argsstring>
+        <name>GetTransition</name>
+        <qualifiedname>Game_System::GetTransition</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>which</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the system transitions.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>which</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which &quot;context&quot; to get the transition for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the transition. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="209" column="18" bodyfile="game_system.cpp" bodystart="396" bodyend="482"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a436d5b06156e7d77e0aa88a97f204bf4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetTransition</definition>
+        <argsstring>(int which, int transition)</argsstring>
+        <name>SetTransition</name>
+        <qualifiedname>Game_System::SetTransition</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>which</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>transition</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the system transitions.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>which</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which &quot;context&quot; to set the transition for. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>transition</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the transition. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="217" column="6" bodyfile="game_system.cpp" bodystart="484" bodyend="509"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1ac30358a52ff2a433bb8b048e19a5577f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::GetAllowTeleport</definition>
+        <argsstring>()</argsstring>
+        <name>GetAllowTeleport</name>
+        <qualifiedname>Game_System::GetAllowTeleport</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="219" column="6" bodyfile="game_system.h" bodystart="638" bodyend="640"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1ae6ebb1276715fb5f3ab8d0d756620485" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetAllowTeleport</definition>
+        <argsstring>(bool allow)</argsstring>
+        <name>SetAllowTeleport</name>
+        <qualifiedname>Game_System::SetAllowTeleport</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>allow</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="220" column="6" bodyfile="game_system.h" bodystart="634" bodyend="636"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a42ca3d2379140fe409f5f6eaa712d37e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::GetAllowEscape</definition>
+        <argsstring>()</argsstring>
+        <name>GetAllowEscape</name>
+        <qualifiedname>Game_System::GetAllowEscape</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="221" column="6" bodyfile="game_system.h" bodystart="646" bodyend="648"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1aa32fab011359353ace28f0b1967fa902" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetAllowEscape</definition>
+        <argsstring>(bool allow)</argsstring>
+        <name>SetAllowEscape</name>
+        <qualifiedname>Game_System::SetAllowEscape</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>allow</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="222" column="6" bodyfile="game_system.h" bodystart="642" bodyend="644"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a6f661ecba8e4c5b224d450f56c13f2d5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::GetAllowSave</definition>
+        <argsstring>()</argsstring>
+        <name>GetAllowSave</name>
+        <qualifiedname>Game_System::GetAllowSave</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="223" column="6" bodyfile="game_system.h" bodystart="654" bodyend="656"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a870b35c08c95ae00756de7a0cfb3e399" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetAllowSave</definition>
+        <argsstring>(bool allow)</argsstring>
+        <name>SetAllowSave</name>
+        <qualifiedname>Game_System::SetAllowSave</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>allow</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="224" column="6" bodyfile="game_system.h" bodystart="650" bodyend="652"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1af2a4c32fe4cb63e2b7a93ba2deb6f292" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::GetAllowMenu</definition>
+        <argsstring>()</argsstring>
+        <name>GetAllowMenu</name>
+        <qualifiedname>Game_System::GetAllowMenu</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="225" column="6" bodyfile="game_system.h" bodystart="662" bodyend="664"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a83bce4994bca1958388df17790f78af7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetAllowMenu</definition>
+        <argsstring>(bool allow)</argsstring>
+        <name>SetAllowMenu</name>
+        <qualifiedname>Game_System::SetAllowMenu</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>allow</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="226" column="6" bodyfile="game_system.h" bodystart="658" bodyend="660"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a8374b5d64fc5eed2cb49df7121520944" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_System::GetSaveCount</definition>
+        <argsstring>()</argsstring>
+        <name>GetSaveCount</name>
+        <qualifiedname>Game_System::GetSaveCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="228" column="5" bodyfile="game_system.h" bodystart="610" bodyend="612"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a2a2315521d6309066ac4549346e294f9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::IncSaveCount</definition>
+        <argsstring>()</argsstring>
+        <name>IncSaveCount</name>
+        <qualifiedname>Game_System::IncSaveCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="229" column="6" bodyfile="game_system.h" bodystart="614" bodyend="616"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1ae5cb5c3b2a970dc18085272a76ff3f48" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>const lcf::rpg::Music &amp;</type>
+        <definition>const lcf::rpg::Music &amp; Game_System::GetCurrentBGM</definition>
+        <argsstring>()</argsstring>
+        <name>GetCurrentBGM</name>
+        <qualifiedname>Game_System::GetCurrentBGM</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="231" column="23" bodyfile="game_system.h" bodystart="622" bodyend="624"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1aab27c6dddb87eec061517a72ac460a4d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::MemorizeBGM</definition>
+        <argsstring>()</argsstring>
+        <name>MemorizeBGM</name>
+        <qualifiedname>Game_System::MemorizeBGM</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="232" column="6" bodyfile="game_system.h" bodystart="626" bodyend="628"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a6c20d1bec40def2c363f7f9ca2342973" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::PlayMemorizedBGM</definition>
+        <argsstring>()</argsstring>
+        <name>PlayMemorizedBGM</name>
+        <qualifiedname>Game_System::PlayMemorizedBGM</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="233" column="6" bodyfile="game_system.h" bodystart="630" bodyend="632"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1aabbb61e145942b011a72bceab2071697" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::ReloadSystemGraphic</definition>
+        <argsstring>()</argsstring>
+        <name>ReloadSystemGraphic</name>
+        <qualifiedname>Game_System::ReloadSystemGraphic</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="235" column="6" bodyfile="game_system.cpp" bodystart="217" bodyend="223"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a6ff165c923a0c61d71267113818f75ac" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_game___system_1a1d34a432da34878489362ed9622faa3f" kindref="member">AtbMode</ref></type>
+        <definition>Game_System::AtbMode Game_System::GetAtbMode</definition>
+        <argsstring>()</argsstring>
+        <name>GetAtbMode</name>
+        <qualifiedname>Game_System::GetAtbMode</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>current atb mode </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="260" column="9" bodyfile="game_system.h" bodystart="554" bodyend="556"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a45026fd60c0c3a3df47b194d24569585" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetAtbMode</definition>
+        <argsstring>(AtbMode m)</argsstring>
+        <name>SetAtbMode</name>
+        <qualifiedname>Game_System::SetAtbMode</qualifiedname>
+        <param>
+          <type><ref refid="class_game___system_1a1d34a432da34878489362ed9622faa3f" kindref="member">AtbMode</ref></type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the atb mode </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="263" column="6" bodyfile="game_system.h" bodystart="558" bodyend="560"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a14a9462412129fc3a199523316c9a4f8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::ToggleAtbMode</definition>
+        <argsstring>()</argsstring>
+        <name>ToggleAtbMode</name>
+        <qualifiedname>Game_System::ToggleAtbMode</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Flip the atb mode to the opposite </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="266" column="6" bodyfile="game_system.h" bodystart="562" bodyend="564"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a34da11b45c8a6c0ea7cfb4f88f9f2741" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>const lcf::rpg::Music &amp;</type>
+        <definition>const lcf::rpg::Music &amp; Game_System::GetBeforeBattleMusic</definition>
+        <argsstring>()</argsstring>
+        <name>GetBeforeBattleMusic</name>
+        <qualifiedname>Game_System::GetBeforeBattleMusic</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Music playing before battle started </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="269" column="23" bodyfile="game_system.h" bodystart="566" bodyend="568"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1aecd0e8f0c5c600c31fb64f3b9edac533" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetBeforeBattleMusic</definition>
+        <argsstring>(lcf::rpg::Music music)</argsstring>
+        <name>SetBeforeBattleMusic</name>
+        <qualifiedname>Game_System::SetBeforeBattleMusic</qualifiedname>
+        <param>
+          <type>lcf::rpg::Music</type>
+          <declname>music</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set before battle music</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>music</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>music to set </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="276" column="6" bodyfile="game_system.h" bodystart="570" bodyend="572"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1af48398f11c265892714f7d6785e7010b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>const lcf::rpg::Music &amp;</type>
+        <definition>const lcf::rpg::Music &amp; Game_System::GetBeforeVehicleMusic</definition>
+        <argsstring>()</argsstring>
+        <name>GetBeforeVehicleMusic</name>
+        <qualifiedname>Game_System::GetBeforeVehicleMusic</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Music playing before boarded vehicle </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="279" column="23" bodyfile="game_system.h" bodystart="574" bodyend="576"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1aa78a0debcf511ff2a33a70df71676c56" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetBeforeVehicleMusic</definition>
+        <argsstring>(lcf::rpg::Music music)</argsstring>
+        <name>SetBeforeVehicleMusic</name>
+        <qualifiedname>Game_System::SetBeforeVehicleMusic</qualifiedname>
+        <param>
+          <type>lcf::rpg::Music</type>
+          <declname>music</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set before vehicle music</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>name of music to set </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="286" column="6" bodyfile="game_system.h" bodystart="578" bodyend="580"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a3f9381cc33d4a0c43be4085bed543b71" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_System::GetSaveSlot</definition>
+        <argsstring>()</argsstring>
+        <name>GetSaveSlot</name>
+        <qualifiedname>Game_System::GetSaveSlot</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>save slot used for last save game </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="289" column="5" bodyfile="game_system.h" bodystart="582" bodyend="584"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a6bbd96f935f5e2bb99c489ff294dd6db" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetSaveSlot</definition>
+        <argsstring>(int slot)</argsstring>
+        <name>SetSaveSlot</name>
+        <qualifiedname>Game_System::SetSaveSlot</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>slot</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the save slot used when saving the game</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>slot</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the slot number </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="296" column="6" bodyfile="game_system.h" bodystart="586" bodyend="588"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a682cb6aad00cb1f3afb5cb4dc04467fb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_System::GetFrameCounter</definition>
+        <argsstring>()</argsstring>
+        <name>GetFrameCounter</name>
+        <qualifiedname>Game_System::GetFrameCounter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>RPG_RT compatible frame counter </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="299" column="5" bodyfile="game_system.h" bodystart="590" bodyend="592"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a24c6c4be0aff36e09e74f9c65ad43401" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::ResetFrameCounter</definition>
+        <argsstring>()</argsstring>
+        <name>ResetFrameCounter</name>
+        <qualifiedname>Game_System::ResetFrameCounter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reset the RPG_RT compatible frame counter to 0 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="302" column="6" bodyfile="game_system.h" bodystart="594" bodyend="596"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a1f837776c6d59053adc67daffc7a7ebb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::IncFrameCounter</definition>
+        <argsstring>()</argsstring>
+        <name>IncFrameCounter</name>
+        <qualifiedname>Game_System::IncFrameCounter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Increment the RPG_RT compatible frame counter </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="305" column="6" bodyfile="game_system.h" bodystart="598" bodyend="600"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1ab9f51ec36aff7b5a6521604527ae39ad" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color Game_System::GetBackgroundColor</definition>
+        <argsstring>()</argsstring>
+        <name>GetBackgroundColor</name>
+        <qualifiedname>Game_System::GetBackgroundColor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the system background color </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="308" column="7" bodyfile="game_system.h" bodystart="602" bodyend="604"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1aaf3d153c062e0a64dda06013e81cec29" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::GetInvertAnimations</definition>
+        <argsstring>()</argsstring>
+        <name>GetInvertAnimations</name>
+        <qualifiedname>Game_System::GetInvertAnimations</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if battle animations are flipped if attacked from behind </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="311" column="6" bodyfile="game_system.h" bodystart="606" bodyend="608"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1af19f2446ee38214d985b18c0debbe148" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::ClearMessageFace</definition>
+        <argsstring>()</argsstring>
+        <name>ClearMessageFace</name>
+        <qualifiedname>Game_System::ClearMessageFace</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reset the face graphic. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="314" column="6" bodyfile="game_system.h" bodystart="477" bodyend="480"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a4d859f65e3093515c9d92ec2b9b25b98" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_System::GetMessageFaceName</definition>
+        <argsstring>()</argsstring>
+        <name>GetMessageFaceName</name>
+        <qualifiedname>Game_System::GetMessageFaceName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>name of file that contains the face. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="317" column="18" bodyfile="game_system.h" bodystart="482" bodyend="484"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a797a537794795f118eb38e1d611de358" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetMessageFaceName</definition>
+        <argsstring>(const std::string &amp;face)</argsstring>
+        <name>SetMessageFaceName</name>
+        <qualifiedname>Game_System::SetMessageFaceName</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>face</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set FaceSet graphic file containing the face.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>face</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>FaceSet file </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="324" column="6" bodyfile="game_system.h" bodystart="486" bodyend="488"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a3349c77ded8ba26f4908c38cf124714f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_System::GetMessageFaceIndex</definition>
+        <argsstring>()</argsstring>
+        <name>GetMessageFaceIndex</name>
+        <qualifiedname>Game_System::GetMessageFaceIndex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets index of the face to display.</para>
+<para><simplesect kind="return"><para>face index </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="331" column="5" bodyfile="game_system.h" bodystart="490" bodyend="492"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a547b6a30d55746b1bc0d6f247ae33cb6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetMessageFaceIndex</definition>
+        <argsstring>(int index)</argsstring>
+        <name>SetMessageFaceIndex</name>
+        <qualifiedname>Game_System::SetMessageFaceIndex</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets index of the face to display</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>face index </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="338" column="6" bodyfile="game_system.h" bodystart="494" bodyend="496"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a35493d0f7774258c23b8dfc0e6565d4b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::IsMessageFaceFlipped</definition>
+        <argsstring>()</argsstring>
+        <name>IsMessageFaceFlipped</name>
+        <qualifiedname>Game_System::IsMessageFaceFlipped</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Whether to mirror the face.</para>
+<para><simplesect kind="return"><para>true: flipped, false: normal </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="345" column="6" bodyfile="game_system.h" bodystart="498" bodyend="500"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a38c004dd22dfbd5fe001b77ba57880ca" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetMessageFaceFlipped</definition>
+        <argsstring>(bool flipped)</argsstring>
+        <name>SetMessageFaceFlipped</name>
+        <qualifiedname>Game_System::SetMessageFaceFlipped</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>flipped</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets whether to mirror the face.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>flipped</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Enable/Disable mirroring </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="352" column="6" bodyfile="game_system.h" bodystart="502" bodyend="504"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a63d980a10d1b27972031d3b07cb28ffe" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::IsMessageFaceRightPosition</definition>
+        <argsstring>()</argsstring>
+        <name>IsMessageFaceRightPosition</name>
+        <qualifiedname>Game_System::IsMessageFaceRightPosition</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>If the face shall be placed right.</para>
+<para><simplesect kind="return"><para>true: right side, false: left side </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="359" column="6" bodyfile="game_system.h" bodystart="506" bodyend="508"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1aa15c5dba82a377de0730c1285b8a687f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetMessageFaceRightPosition</definition>
+        <argsstring>(bool right)</argsstring>
+        <name>SetMessageFaceRightPosition</name>
+        <qualifiedname>Game_System::SetMessageFaceRightPosition</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>right</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the face position.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>right</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>true: right side, false: left side </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="366" column="6" bodyfile="game_system.h" bodystart="510" bodyend="512"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a8fbbc407242bfb8bdfa4d1b4f60bbe4f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::IsMessageTransparent</definition>
+        <argsstring>()</argsstring>
+        <name>IsMessageTransparent</name>
+        <qualifiedname>Game_System::IsMessageTransparent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if the message background is transparent.</para>
+<para><simplesect kind="return"><para>message transparent </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="373" column="6" bodyfile="game_system.cpp" bodystart="626" bodyend="632"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a4fc828e1b73f8494fe17e1d621c29f86" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetMessageTransparent</definition>
+        <argsstring>(bool transparent)</argsstring>
+        <name>SetMessageTransparent</name>
+        <qualifiedname>Game_System::SetMessageTransparent</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>transparent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets message box background state</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>transparent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>true: transparent, false: opaque </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="380" column="6" bodyfile="game_system.h" bodystart="514" bodyend="516"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a91a1c0d6d99a319f23ba481c629ddc8d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_System::GetMessagePosition</definition>
+        <argsstring>()</argsstring>
+        <name>GetMessagePosition</name>
+        <qualifiedname>Game_System::GetMessagePosition</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the message box position.</para>
+<para><simplesect kind="return"><para>0: top, 1: middle, 2: bottom </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="387" column="5" bodyfile="game_system.h" bodystart="518" bodyend="520"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1adbeb5001baedd06921c866e341cd5f88" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetMessagePosition</definition>
+        <argsstring>(int new_position)</argsstring>
+        <name>SetMessagePosition</name>
+        <qualifiedname>Game_System::SetMessagePosition</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>new_position</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the message box position. Depending on the player position this value is ignored to prevent overlap. (see SetPositionFixed)</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>new_position</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>0: top, 1: middle, 2: bottom </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="396" column="6" bodyfile="game_system.h" bodystart="522" bodyend="524"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a8e30a4b48ff525a8388d9c0f6fa96837" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::IsMessagePositionFixed</definition>
+        <argsstring>()</argsstring>
+        <name>IsMessagePositionFixed</name>
+        <qualifiedname>Game_System::IsMessagePositionFixed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets whether message box position is fixed. In that case the hero can be obstructed.</para>
+<para><simplesect kind="return"><para>fixed </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="404" column="6" bodyfile="game_system.h" bodystart="526" bodyend="528"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1ac781877ec9d708c2c43dbddbb0065941" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetMessagePositionFixed</definition>
+        <argsstring>(bool fixed)</argsstring>
+        <name>SetMessagePositionFixed</name>
+        <qualifiedname>Game_System::SetMessagePositionFixed</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>fixed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets if message box is moved to avoid obscuring the player.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fixed</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>position fixed </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="411" column="6" bodyfile="game_system.h" bodystart="530" bodyend="532"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a620a53d93a24cf57ea677b1e9e8dbe0a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::GetMessageContinueEvents</definition>
+        <argsstring>()</argsstring>
+        <name>GetMessageContinueEvents</name>
+        <qualifiedname>Game_System::GetMessageContinueEvents</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if parallel events continue while message box is displayed.</para>
+<para><simplesect kind="return"><para>whether events continue </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="418" column="6" bodyfile="game_system.h" bodystart="534" bodyend="536"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a5ac10d4a6d1c5c50b92eb08b7a648a4b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetMessageContinueEvents</definition>
+        <argsstring>(bool continue_events)</argsstring>
+        <name>SetMessageContinueEvents</name>
+        <qualifiedname>Game_System::SetMessageContinueEvents</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>continue_events</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets if parallel events continue while message box is displayed.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>continue_events</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>continue events </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="425" column="6" bodyfile="game_system.h" bodystart="538" bodyend="540"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1abeb984310bb4dd275a642409c2c8b51b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::SetMessageEventMessageActive</definition>
+        <argsstring>(bool value)</argsstring>
+        <name>SetMessageEventMessageActive</name>
+        <qualifiedname>Game_System::SetMessageEventMessageActive</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the RpgRt event message active flag.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>what to set the flag to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="432" column="6" bodyfile="game_system.h" bodystart="542" bodyend="544"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a0074f042e100cbb176e6770e2a80b666" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::GetMessageEventMessageActive</definition>
+        <argsstring>()</argsstring>
+        <name>GetMessageEventMessageActive</name>
+        <qualifiedname>Game_System::GetMessageEventMessageActive</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the RpgRt event message active flag </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="435" column="6" bodyfile="game_system.h" bodystart="546" bodyend="548"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a3e2a9df32833339ef8dd800d5935e4d2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::IsLoadedThisFrame</definition>
+        <argsstring>() const</argsstring>
+        <name>IsLoadedThisFrame</name>
+        <qualifiedname>Game_System::IsLoadedThisFrame</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Whether the game was loaded from a savegame in the current frame </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="438" column="6" bodyfile="game_system.h" bodystart="550" bodyend="552"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_game___system_1a50decbb316745e5b01c0262fc2a575ff" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::IsStopFilename</definition>
+        <argsstring>(std::string_view name, Filesystem_Stream::InputStream(*find_func)(std::string_view), Filesystem_Stream::InputStream &amp;found_stream)</argsstring>
+        <name>IsStopFilename</name>
+        <qualifiedname>Game_System::IsStopFilename</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref>(*)(std::string_view)</type>
+          <declname>find_func</declname>
+        </param>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref> &amp;</type>
+          <declname>found_stream</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines if the requested file is supposed to Stop BGM/SE play. For empty string and (OFF) this is always the case. Many RPG Maker translation overtranslated the (OFF) reserved string, e.g. (Brak) and (Kein Sound). A file is detected as &quot;Stop BGM/SE&quot; when the file is missing in the filesystem and the name is wrapped in (), otherwise it is a regular file.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>File to find </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>find_func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Find function to use (OpenSound or OpenMusic) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>found_stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Handle to the file to play </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true when the file is supposed to Stop playback. false otherwise and a handle to the file is returned in found_stream </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="252" column="13" bodyfile="game_system.cpp" bodystart="53" bodyend="62"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a6b688abfef70279ce0fb88947461ff20" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::IsStopMusicFilename</definition>
+        <argsstring>(std::string_view name, Filesystem_Stream::InputStream &amp;found_stream)</argsstring>
+        <name>IsStopMusicFilename</name>
+        <qualifiedname>Game_System::IsStopMusicFilename</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref> &amp;</type>
+          <declname>found_stream</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="254" column="13" bodyfile="game_system.cpp" bodystart="64" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1aee6eb16c744a94b2fed11c6e125c180a" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::IsStopMusicFilename</definition>
+        <argsstring>(std::string_view name)</argsstring>
+        <name>IsStopMusicFilename</name>
+        <qualifiedname>Game_System::IsStopMusicFilename</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="255" column="13" bodyfile="game_system.h" bodystart="467" bodyend="470"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a0c72c51fe03067ed9c5098a97d567077" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::IsStopSoundFilename</definition>
+        <argsstring>(std::string_view name, Filesystem_Stream::InputStream &amp;found_stream)</argsstring>
+        <name>IsStopSoundFilename</name>
+        <qualifiedname>Game_System::IsStopSoundFilename</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref> &amp;</type>
+          <declname>found_stream</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="256" column="13" bodyfile="game_system.cpp" bodystart="68" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1ad31c148d3d274cae62504926d18cc97c" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_System::IsStopSoundFilename</definition>
+        <argsstring>(std::string_view name)</argsstring>
+        <name>IsStopSoundFilename</name>
+        <qualifiedname>Game_System::IsStopSoundFilename</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="257" column="13" bodyfile="game_system.h" bodystart="472" bodyend="475"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_game___system_1a167ef7249790d174a62838f8c77288b6" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Game_System::InelukiReadLink</definition>
+        <argsstring>(Filesystem_Stream::InputStream &amp;stream)</argsstring>
+        <name>InelukiReadLink</name>
+        <qualifiedname>Game_System::InelukiReadLink</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref> &amp;</type>
+          <declname>stream</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="441" column="13" bodyfile="game_system.cpp" bodystart="511" bodyend="524"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a947cca397d4963571373179c67080df9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::OnBgmReady</definition>
+        <argsstring>(FileRequestResult *result)</argsstring>
+        <name>OnBgmReady</name>
+        <qualifiedname>Game_System::OnBgmReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="443" column="6" bodyfile="game_system.cpp" bodystart="526" bodyend="552"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a41ac1a38899627d324d1583583d4ab47" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::OnBgmInelukiReady</definition>
+        <argsstring>(FileRequestResult *result)</argsstring>
+        <name>OnBgmInelukiReady</name>
+        <qualifiedname>Game_System::OnBgmInelukiReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="444" column="6" bodyfile="game_system.cpp" bodystart="554" bodyend="557"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a49388679122835011b86625ff8f8601b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::OnSeReady</definition>
+        <argsstring>(FileRequestResult *result, lcf::rpg::Sound se, bool stop_sounds)</argsstring>
+        <name>OnSeReady</name>
+        <qualifiedname>Game_System::OnSeReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::Sound</type>
+          <declname>se</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>stop_sounds</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="445" column="6" bodyfile="game_system.cpp" bodystart="559" bodyend="604"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1aa3e4227bdb3bf1c57a719845780a6c45" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::OnSeInelukiReady</definition>
+        <argsstring>(FileRequestResult *result, lcf::rpg::Sound se)</argsstring>
+        <name>OnSeInelukiReady</name>
+        <qualifiedname>Game_System::OnSeInelukiReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::Sound</type>
+          <declname>se</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="446" column="6" bodyfile="game_system.cpp" bodystart="606" bodyend="624"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___system_1a9e92e6b827a53f9e245189e565dd4ad1" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_System::OnChangeSystemGraphicReady</definition>
+        <argsstring>(FileRequestResult *result)</argsstring>
+        <name>OnChangeSystemGraphicReady</name>
+        <qualifiedname>Game_System::OnChangeSystemGraphicReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_system.h" line="447" column="6" bodyfile="game_system.cpp" bodystart="207" bodyend="215"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Game System namespace. </para>
+    </detaileddescription>
+    <location file="game_system.h" line="41" column="1" bodyfile="game_system.h" bodystart="41" bodyend="457"/>
+    <listofallmembers>
+      <member refid="class_game___system_1a1d34a432da34878489362ed9622faa3f" prot="public" virt="non-virtual"><scope>Game_System</scope><name>AtbMode</name></member>
+      <member refid="class_game___system_1a1ea75869e636e483574d47896eeae2b7" prot="private" virt="non-virtual"><scope>Game_System</scope><name>bg_color</name></member>
+      <member refid="class_game___system_1ae4ac09717daf9a17a276627ed8ac544ead26f08f9bffb793acae752db0891acad" prot="public" virt="non-virtual"><scope>Game_System</scope><name>BGM_Airship</name></member>
+      <member refid="class_game___system_1ae4ac09717daf9a17a276627ed8ac544ea5ebf3edf979d854fdeeebddcad5a2184" prot="public" virt="non-virtual"><scope>Game_System</scope><name>BGM_Battle</name></member>
+      <member refid="class_game___system_1ae4ac09717daf9a17a276627ed8ac544ea07c6ac562712f2a1457e3061b0170831" prot="public" virt="non-virtual"><scope>Game_System</scope><name>BGM_Boat</name></member>
+      <member refid="class_game___system_1ae4ac09717daf9a17a276627ed8ac544eaf8f267630ac9fc8ddb97afa0ed77beea" prot="public" virt="non-virtual"><scope>Game_System</scope><name>BGM_Count</name></member>
+      <member refid="class_game___system_1ae4ac09717daf9a17a276627ed8ac544ea75f0b477070aee650c3f6925835eedc3" prot="public" virt="non-virtual"><scope>Game_System</scope><name>BGM_GameOver</name></member>
+      <member refid="class_game___system_1ae4ac09717daf9a17a276627ed8ac544ea8d072f05c846dbab95d25bf129ac9863" prot="public" virt="non-virtual"><scope>Game_System</scope><name>BGM_Inn</name></member>
+      <member refid="class_game___system_1a38d0be0607045141258d3ee0aabcdfab" prot="private" virt="non-virtual"><scope>Game_System</scope><name>bgm_pending</name></member>
+      <member refid="class_game___system_1ae4ac09717daf9a17a276627ed8ac544eaf64df9330a23028d41a51296384a583e" prot="public" virt="non-virtual"><scope>Game_System</scope><name>BGM_Ship</name></member>
+      <member refid="class_game___system_1ae4ac09717daf9a17a276627ed8ac544ea78e519259ae897ead5b0d6731b392720" prot="public" virt="non-virtual"><scope>Game_System</scope><name>BGM_Victory</name></member>
+      <member refid="class_game___system_1a2ba20d926a51d96679f66d57621bd7c4" prot="public" virt="non-virtual"><scope>Game_System</scope><name>BgmFade</name></member>
+      <member refid="class_game___system_1a1c634bd5900dbc0ee459c77ed0eaed07" prot="public" virt="non-virtual"><scope>Game_System</scope><name>BgmPlay</name></member>
+      <member refid="class_game___system_1ae8f6cebd7789dc4d1c243a36410d61cd" prot="public" virt="non-virtual"><scope>Game_System</scope><name>BgmPlayedOnce</name></member>
+      <member refid="class_game___system_1a08ad8dc0418af60b53dd503dad6b951e" prot="public" virt="non-virtual"><scope>Game_System</scope><name>BgmStop</name></member>
+      <member refid="class_game___system_1af19f2446ee38214d985b18c0debbe148" prot="public" virt="non-virtual"><scope>Game_System</scope><name>ClearMessageFace</name></member>
+      <member refid="class_game___system_1ad12717e84c1f0eb19e39e2c81f5c6591" prot="private" virt="non-virtual"><scope>Game_System</scope><name>data</name></member>
+      <member refid="class_game___system_1a82bf9fd471c826b02af4f63102c151aa" prot="private" virt="non-virtual"><scope>Game_System</scope><name>dbsys</name></member>
+      <member refid="class_game___system_1a26c02e65bd605d8935860ec2ca860707" prot="public" virt="non-virtual"><scope>Game_System</scope><name>Game_System</name></member>
+      <member refid="class_game___system_1a42ca3d2379140fe409f5f6eaa712d37e" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetAllowEscape</name></member>
+      <member refid="class_game___system_1af2a4c32fe4cb63e2b7a93ba2deb6f292" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetAllowMenu</name></member>
+      <member refid="class_game___system_1a6f661ecba8e4c5b224d450f56c13f2d5" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetAllowSave</name></member>
+      <member refid="class_game___system_1ac30358a52ff2a433bb8b048e19a5577f" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetAllowTeleport</name></member>
+      <member refid="class_game___system_1a6ff165c923a0c61d71267113818f75ac" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetAtbMode</name></member>
+      <member refid="class_game___system_1ab9f51ec36aff7b5a6521604527ae39ad" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetBackgroundColor</name></member>
+      <member refid="class_game___system_1a34da11b45c8a6c0ea7cfb4f88f9f2741" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetBeforeBattleMusic</name></member>
+      <member refid="class_game___system_1af48398f11c265892714f7d6785e7010b" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetBeforeVehicleMusic</name></member>
+      <member refid="class_game___system_1ae5cb5c3b2a970dc18085272a76ff3f48" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetCurrentBGM</name></member>
+      <member refid="class_game___system_1aef7481aaece3ba16cc9180cac3bf9ede" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetFontId</name></member>
+      <member refid="class_game___system_1a682cb6aad00cb1f3afb5cb4dc04467fb" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetFrameCounter</name></member>
+      <member refid="class_game___system_1aaf3d153c062e0a64dda06013e81cec29" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetInvertAnimations</name></member>
+      <member refid="class_game___system_1a620a53d93a24cf57ea677b1e9e8dbe0a" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetMessageContinueEvents</name></member>
+      <member refid="class_game___system_1a0074f042e100cbb176e6770e2a80b666" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetMessageEventMessageActive</name></member>
+      <member refid="class_game___system_1a3349c77ded8ba26f4908c38cf124714f" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetMessageFaceIndex</name></member>
+      <member refid="class_game___system_1a4d859f65e3093515c9d92ec2b9b25b98" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetMessageFaceName</name></member>
+      <member refid="class_game___system_1a91a1c0d6d99a319f23ba481c629ddc8d" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetMessagePosition</name></member>
+      <member refid="class_game___system_1af46c5b9a8ea5e369299cb0b5f311e457" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetMessageStretch</name></member>
+      <member refid="class_game___system_1a8374b5d64fc5eed2cb49df7121520944" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetSaveCount</name></member>
+      <member refid="class_game___system_1ad67d14651ddfe79935659329f4d9522a" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetSaveData</name></member>
+      <member refid="class_game___system_1a3f9381cc33d4a0c43be4085bed543b71" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetSaveSlot</name></member>
+      <member refid="class_game___system_1a050a5e9eebf1ee472fe3864614cef811" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetSystem2Name</name></member>
+      <member refid="class_game___system_1afafba9e83b245f4026d0dd1b2d6a1433" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetSystemBGM</name></member>
+      <member refid="class_game___system_1ac3c8f9ffcdae1121e7bf0764bd7d9004" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetSystemName</name></member>
+      <member refid="class_game___system_1a9591dac451c90102b7548d1df8f27d8d" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetSystemSE</name></member>
+      <member refid="class_game___system_1a6f6138fdc4b7c53f8f21f26aa46d463e" prot="public" virt="non-virtual"><scope>Game_System</scope><name>GetTransition</name></member>
+      <member refid="class_game___system_1a287c9caf47fba1f4ae9276a628860920" prot="public" virt="non-virtual"><scope>Game_System</scope><name>HasSystem2Graphic</name></member>
+      <member refid="class_game___system_1a7fdb349a9d620a5acccc8d9635c41870" prot="public" virt="non-virtual"><scope>Game_System</scope><name>HasSystemGraphic</name></member>
+      <member refid="class_game___system_1a1f837776c6d59053adc67daffc7a7ebb" prot="public" virt="non-virtual"><scope>Game_System</scope><name>IncFrameCounter</name></member>
+      <member refid="class_game___system_1a2a2315521d6309066ac4549346e294f9" prot="public" virt="non-virtual"><scope>Game_System</scope><name>IncSaveCount</name></member>
+      <member refid="class_game___system_1a167ef7249790d174a62838f8c77288b6" prot="private" virt="non-virtual"><scope>Game_System</scope><name>InelukiReadLink</name></member>
+      <member refid="class_game___system_1a3e2a9df32833339ef8dd800d5935e4d2" prot="public" virt="non-virtual"><scope>Game_System</scope><name>IsLoadedThisFrame</name></member>
+      <member refid="class_game___system_1a35493d0f7774258c23b8dfc0e6565d4b" prot="public" virt="non-virtual"><scope>Game_System</scope><name>IsMessageFaceFlipped</name></member>
+      <member refid="class_game___system_1a63d980a10d1b27972031d3b07cb28ffe" prot="public" virt="non-virtual"><scope>Game_System</scope><name>IsMessageFaceRightPosition</name></member>
+      <member refid="class_game___system_1a8e30a4b48ff525a8388d9c0f6fa96837" prot="public" virt="non-virtual"><scope>Game_System</scope><name>IsMessagePositionFixed</name></member>
+      <member refid="class_game___system_1a8fbbc407242bfb8bdfa4d1b4f60bbe4f" prot="public" virt="non-virtual"><scope>Game_System</scope><name>IsMessageTransparent</name></member>
+      <member refid="class_game___system_1a50decbb316745e5b01c0262fc2a575ff" prot="public" virt="non-virtual"><scope>Game_System</scope><name>IsStopFilename</name></member>
+      <member refid="class_game___system_1a6b688abfef70279ce0fb88947461ff20" prot="public" virt="non-virtual"><scope>Game_System</scope><name>IsStopMusicFilename</name></member>
+      <member refid="class_game___system_1aee6eb16c744a94b2fed11c6e125c180a" prot="public" virt="non-virtual"><scope>Game_System</scope><name>IsStopMusicFilename</name></member>
+      <member refid="class_game___system_1a0c72c51fe03067ed9c5098a97d567077" prot="public" virt="non-virtual"><scope>Game_System</scope><name>IsStopSoundFilename</name></member>
+      <member refid="class_game___system_1ad31c148d3d274cae62504926d18cc97c" prot="public" virt="non-virtual"><scope>Game_System</scope><name>IsStopSoundFilename</name></member>
+      <member refid="class_game___system_1a904de030fecf87813304ada02068967d" prot="private" virt="non-virtual"><scope>Game_System</scope><name>loaded_frame_count</name></member>
+      <member refid="class_game___system_1aab27c6dddb87eec061517a72ac460a4d" prot="public" virt="non-virtual"><scope>Game_System</scope><name>MemorizeBGM</name></member>
+      <member refid="class_game___system_1a2955b30051c76c5be0e59189105b44c7" prot="private" virt="non-virtual"><scope>Game_System</scope><name>music_request_id</name></member>
+      <member refid="class_game___system_1a41ac1a38899627d324d1583583d4ab47" prot="private" virt="non-virtual"><scope>Game_System</scope><name>OnBgmInelukiReady</name></member>
+      <member refid="class_game___system_1a947cca397d4963571373179c67080df9" prot="private" virt="non-virtual"><scope>Game_System</scope><name>OnBgmReady</name></member>
+      <member refid="class_game___system_1a9e92e6b827a53f9e245189e565dd4ad1" prot="private" virt="non-virtual"><scope>Game_System</scope><name>OnChangeSystemGraphicReady</name></member>
+      <member refid="class_game___system_1aa3e4227bdb3bf1c57a719845780a6c45" prot="private" virt="non-virtual"><scope>Game_System</scope><name>OnSeInelukiReady</name></member>
+      <member refid="class_game___system_1a49388679122835011b86625ff8f8601b" prot="private" virt="non-virtual"><scope>Game_System</scope><name>OnSeReady</name></member>
+      <member refid="class_game___system_1a6c20d1bec40def2c363f7f9ca2342973" prot="public" virt="non-virtual"><scope>Game_System</scope><name>PlayMemorizedBGM</name></member>
+      <member refid="class_game___system_1aabbb61e145942b011a72bceab2071697" prot="public" virt="non-virtual"><scope>Game_System</scope><name>ReloadSystemGraphic</name></member>
+      <member refid="class_game___system_1a24c6c4be0aff36e09e74f9c65ad43401" prot="public" virt="non-virtual"><scope>Game_System</scope><name>ResetFrameCounter</name></member>
+      <member refid="class_game___system_1abf85c44c7e00fe03a700845c98fef84b" prot="public" virt="non-virtual"><scope>Game_System</scope><name>ResetSystemGraphic</name></member>
+      <member refid="class_game___system_1a6b842b43743f782e645216884a80ebe2" prot="private" virt="non-virtual"><scope>Game_System</scope><name>se_request_ids</name></member>
+      <member refid="class_game___system_1a36ed0915b2b5f9d031e5654fceb309eb" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SePlay</name></member>
+      <member refid="class_game___system_1a6c8b5f0277fafcd5c38c026020bbdcc7" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SePlay</name></member>
+      <member refid="class_game___system_1aa32fab011359353ace28f0b1967fa902" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetAllowEscape</name></member>
+      <member refid="class_game___system_1a83bce4994bca1958388df17790f78af7" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetAllowMenu</name></member>
+      <member refid="class_game___system_1a870b35c08c95ae00756de7a0cfb3e399" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetAllowSave</name></member>
+      <member refid="class_game___system_1ae6ebb1276715fb5f3ab8d0d756620485" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetAllowTeleport</name></member>
+      <member refid="class_game___system_1a45026fd60c0c3a3df47b194d24569585" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetAtbMode</name></member>
+      <member refid="class_game___system_1aecd0e8f0c5c600c31fb64f3b9edac533" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetBeforeBattleMusic</name></member>
+      <member refid="class_game___system_1aa78a0debcf511ff2a33a70df71676c56" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetBeforeVehicleMusic</name></member>
+      <member refid="class_game___system_1a5ac10d4a6d1c5c50b92eb08b7a648a4b" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetMessageContinueEvents</name></member>
+      <member refid="class_game___system_1abeb984310bb4dd275a642409c2c8b51b" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetMessageEventMessageActive</name></member>
+      <member refid="class_game___system_1a38c004dd22dfbd5fe001b77ba57880ca" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetMessageFaceFlipped</name></member>
+      <member refid="class_game___system_1a547b6a30d55746b1bc0d6f247ae33cb6" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetMessageFaceIndex</name></member>
+      <member refid="class_game___system_1a797a537794795f118eb38e1d611de358" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetMessageFaceName</name></member>
+      <member refid="class_game___system_1aa15c5dba82a377de0730c1285b8a687f" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetMessageFaceRightPosition</name></member>
+      <member refid="class_game___system_1adbeb5001baedd06921c866e341cd5f88" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetMessagePosition</name></member>
+      <member refid="class_game___system_1ac781877ec9d708c2c43dbddbb0065941" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetMessagePositionFixed</name></member>
+      <member refid="class_game___system_1a4fc828e1b73f8494fe17e1d621c29f86" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetMessageTransparent</name></member>
+      <member refid="class_game___system_1a6bbd96f935f5e2bb99c489ff294dd6db" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetSaveSlot</name></member>
+      <member refid="class_game___system_1a0e6c561f0d9600e1130b9fce784b2705" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetSystemBGM</name></member>
+      <member refid="class_game___system_1a1ecb24fc5ff8f1c22948f2cc434d3f34" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetSystemGraphic</name></member>
+      <member refid="class_game___system_1af5c1273734435f247ea7cbd21eb2cf53" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetSystemSE</name></member>
+      <member refid="class_game___system_1a436d5b06156e7d77e0aa88a97f204bf4" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetTransition</name></member>
+      <member refid="class_game___system_1a8cc7400424a9a3d0dd7e4fa64b1de67f" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SetupFromSave</name></member>
+      <member refid="class_game___system_1abbef8f9198794e5678bee50066b90680a88132f5558a5622e2b9b32382dd27adb" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SFX_AllyDamage</name></member>
+      <member refid="class_game___system_1abbef8f9198794e5678bee50066b90680a120c7c48be041290263348620f1b159d" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SFX_BeginBattle</name></member>
+      <member refid="class_game___system_1abbef8f9198794e5678bee50066b90680a7ec76d45b7ecab8ae3d3a44bce635c18" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SFX_Buzzer</name></member>
+      <member refid="class_game___system_1abbef8f9198794e5678bee50066b90680a587ffd820eaeaef9a8b7cddaf87d5e31" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SFX_Cancel</name></member>
+      <member refid="class_game___system_1abbef8f9198794e5678bee50066b90680a74216d32776ab35257d9e4f884407b91" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SFX_Count</name></member>
+      <member refid="class_game___system_1abbef8f9198794e5678bee50066b90680a723709de21b24fc56d7b98bad4df5d51" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SFX_Cursor</name></member>
+      <member refid="class_game___system_1abbef8f9198794e5678bee50066b90680a365bd3c3062ecd67bbaff57d962e6a09" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SFX_Decision</name></member>
+      <member refid="class_game___system_1abbef8f9198794e5678bee50066b90680a2d3ffcd7a7265b4e40ccdb95e9b41725" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SFX_EnemyAttacks</name></member>
+      <member refid="class_game___system_1abbef8f9198794e5678bee50066b90680a165a65624da1d0f51b931432e6d66ee5" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SFX_EnemyDamage</name></member>
+      <member refid="class_game___system_1abbef8f9198794e5678bee50066b90680af86d0017887f5102f7e0d904b4e31801" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SFX_EnemyKill</name></member>
+      <member refid="class_game___system_1abbef8f9198794e5678bee50066b90680a2291a3488bdc8d34f4a234583ac69168" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SFX_Escape</name></member>
+      <member refid="class_game___system_1abbef8f9198794e5678bee50066b90680a1132929afe799dde1af5f0794e1ca27f" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SFX_Evasion</name></member>
+      <member refid="class_game___system_1abbef8f9198794e5678bee50066b90680ac96636d12fe8430fce5c464828f3242b" prot="public" virt="non-virtual"><scope>Game_System</scope><name>SFX_UseItem</name></member>
+      <member refid="class_game___system_1ae4ac09717daf9a17a276627ed8ac544e" prot="public" virt="non-virtual"><scope>Game_System</scope><name>sys_bgm</name></member>
+      <member refid="class_game___system_1abbef8f9198794e5678bee50066b90680" prot="public" virt="non-virtual"><scope>Game_System</scope><name>sys_sfx</name></member>
+      <member refid="class_game___system_1afbeb533963bf0da8494a53a787b6b0c8" prot="public" virt="non-virtual"><scope>Game_System</scope><name>sys_transition</name></member>
+      <member refid="class_game___system_1ac02e7a7535f525b9e3b8df2a70c08c71" prot="private" virt="non-virtual"><scope>Game_System</scope><name>system_request_id</name></member>
+      <member refid="class_game___system_1a14a9462412129fc3a199523316c9a4f8" prot="public" virt="non-virtual"><scope>Game_System</scope><name>ToggleAtbMode</name></member>
+      <member refid="class_game___system_1afbeb533963bf0da8494a53a787b6b0c8a0862cf8e270907b2e794a49b606c75ff" prot="public" virt="non-virtual"><scope>Game_System</scope><name>Transition_BeginBattleErase</name></member>
+      <member refid="class_game___system_1afbeb533963bf0da8494a53a787b6b0c8a90a1820dd8d10fd7073f3f1d5d59df77" prot="public" virt="non-virtual"><scope>Game_System</scope><name>Transition_BeginBattleShow</name></member>
+      <member refid="class_game___system_1afbeb533963bf0da8494a53a787b6b0c8a08f376af30fa4b7f7833ffa7229a5c9b" prot="public" virt="non-virtual"><scope>Game_System</scope><name>Transition_Count</name></member>
+      <member refid="class_game___system_1afbeb533963bf0da8494a53a787b6b0c8ad45d05afd3e7cef684e851a6279dd6c7" prot="public" virt="non-virtual"><scope>Game_System</scope><name>Transition_EndBattleErase</name></member>
+      <member refid="class_game___system_1afbeb533963bf0da8494a53a787b6b0c8a86cc62f25277733e918fb87c71f1c0b5" prot="public" virt="non-virtual"><scope>Game_System</scope><name>Transition_EndBattleShow</name></member>
+      <member refid="class_game___system_1afbeb533963bf0da8494a53a787b6b0c8a085b53a5a2183ec51d0dcdf9718cc327" prot="public" virt="non-virtual"><scope>Game_System</scope><name>Transition_TeleportErase</name></member>
+      <member refid="class_game___system_1afbeb533963bf0da8494a53a787b6b0c8aa30f306858a6124731a800572118c119" prot="public" virt="non-virtual"><scope>Game_System</scope><name>Transition_TeleportShow</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

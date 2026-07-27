@@ -1,0 +1,281 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1app" kind="namespace" language="C++">
+    <compoundname>leasy::app</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceleasy_1_1app_1a7a8f2a1841e21c8ef1d5e6f517cdfc9c" prot="public" static="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool leasy::app::should_exit</definition>
+        <argsstring></argsstring>
+        <name>should_exit</name>
+        <qualifiedname>leasy::app::should_exit</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/leasy.cpp" line="56" column="17" bodyfile="leasy/leasy.cpp" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1app_1a90db719dedbc3926f37b37684484fbe6" prot="public" static="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto leasy::app::last</definition>
+        <argsstring></argsstring>
+        <name>last</name>
+        <qualifiedname>leasy::app::last</qualifiedname>
+        <initializer>= std::chrono::high_resolution_clock::now()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/leasy.cpp" line="57" column="17" bodyfile="leasy/leasy.cpp" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1app_1afb44e9facf3cd7ab9f05d6e019608bb5" prot="public" static="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool leasy::app::leasy_enabled</definition>
+        <argsstring></argsstring>
+        <name>leasy_enabled</name>
+        <qualifiedname>leasy::app::leasy_enabled</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/leasy.cpp" line="58" column="17" bodyfile="leasy/leasy.cpp" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1app_1a5a7a6a3646250e571a05375a6e3860b5" prot="public" static="no" mutable="no">
+        <type><ref refid="classleasy_1_1ios_1_1attachment" kindref="compound">leasy::ios::attachment</ref></type>
+        <definition>leasy::ios::attachment leasy::app::logfile</definition>
+        <argsstring></argsstring>
+        <name>logfile</name>
+        <qualifiedname>leasy::app::logfile</qualifiedname>
+        <initializer>= io.Debug.attach(<ref refid="namespaceleasy_1_1ios_1a1c7f570130c50d8595fc9216f2160c8f" kindref="member">ios::file</ref>(&quot;leasy.io.Debug.log&quot;))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lmain.cpp" line="38" column="28" bodyfile="leasy/lmain.cpp" bodystart="38" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceleasy_1_1app_1a8f7f62423e9c1c93f3d4a7fd7eb3703d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool leasy::app::exit_requested</definition>
+        <argsstring>()</argsstring>
+        <name>exit_requested</name>
+        <qualifiedname>leasy::app::exit_requested</qualifiedname>
+        <briefdescription>
+<para>This returns true only if an internal error happens, or a command invokes an exit-ending situation. Otherwise, this won&apos;t return if you SIG. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/leasy.cpp" line="60" column="10" bodyfile="leasy/leasy.cpp" bodystart="60" bodyend="62" declfile="leasy/leasy.hpp" declline="43" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1app_1a56c6441f4b8dc28966155c4ab1cfc116" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::app::request_exit</definition>
+        <argsstring>()</argsstring>
+        <name>request_exit</name>
+        <qualifiedname>leasy::app::request_exit</qualifiedname>
+        <briefdescription>
+<para>This asks the leasy engine for exiting. This won&apos;t make the process exit directly. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/leasy.cpp" line="64" column="10" bodyfile="leasy/leasy.cpp" bodystart="64" bodyend="66" declfile="leasy/leasy.hpp" declline="48" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1app_1a5b8bd09d3027d176363ca25706edf1a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::app::ready</definition>
+        <argsstring>(void)</argsstring>
+        <name>ready</name>
+        <qualifiedname>leasy::app::ready</qualifiedname>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>This function is called after that EasyRPG is initialized. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/leasy.cpp" line="68" column="10" bodyfile="leasy/leasy.cpp" bodystart="68" bodyend="74" declfile="leasy/lmain.cpp" declline="36" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1app_1ae2b0467e2667503f6cfe42d5af1db0b0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::app::process</definition>
+        <argsstring>()</argsstring>
+        <name>process</name>
+        <qualifiedname>leasy::app::process</qualifiedname>
+        <briefdescription>
+<para>This function is called everytime EasyRPG updates. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/leasy.cpp" line="76" column="10" bodyfile="leasy/leasy.cpp" bodystart="76" bodyend="83" declfile="leasy/leasy.hpp" declline="54" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1app_1aaad713daeef6e56eaba94451dca02e51" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::app::draw</definition>
+        <argsstring>(Bitmap *)</argsstring>
+        <name>draw</name>
+        <qualifiedname>leasy::app::draw</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> *</type>
+          <declname>map</declname>
+        </param>
+        <briefdescription>
+<para>This function is called when drawing. (i swear). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/leasy.cpp" line="85" column="10" bodyfile="leasy/leasy.cpp" bodystart="85" bodyend="96" declfile="leasy/leasy.hpp" declline="60" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1app_1a27b15cffdde4b0cc50625aeb0245ef36" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::app::exit</definition>
+        <argsstring>(void)</argsstring>
+        <name>exit</name>
+        <qualifiedname>leasy::app::exit</qualifiedname>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+<para>This function is called before exiting (maybe, let&apos;s hope guys). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/leasy.cpp" line="98" column="10" bodyfile="leasy/leasy.cpp" bodystart="98" bodyend="98" declfile="leasy/leasy.hpp" declline="57" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1app_1a15fc8a6d0a2842617f05a946f08c9277" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::app::disable</definition>
+        <argsstring>()</argsstring>
+        <name>disable</name>
+        <qualifiedname>leasy::app::disable</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/leasy.cpp" line="100" column="10" bodyfile="leasy/leasy.cpp" bodystart="100" bodyend="103" declfile="leasy/leasy.hpp" declline="64" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1app_1a60c73056282dda2c27746ac4b1343fa1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool leasy::app::is_enabled</definition>
+        <argsstring>()</argsstring>
+        <name>is_enabled</name>
+        <qualifiedname>leasy::app::is_enabled</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/leasy.cpp" line="105" column="10" bodyfile="leasy/leasy.cpp" bodystart="105" bodyend="107" declfile="leasy/leasy.hpp" declline="65" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1app_1ab2447a0bb50eefb1eed8cbb9a9edf925" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::app::lmain</definition>
+        <argsstring>(void)</argsstring>
+        <name>lmain</name>
+        <qualifiedname>leasy::app::lmain</qualifiedname>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lmain.cpp" line="40" column="10" bodyfile="leasy/lmain.cpp" bodystart="40" bodyend="47" declfile="leasy/leasy.hpp" declline="62" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1app_1aca816cbf7a15843e23e62926f52b4f7e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void leasy::app::call</definition>
+        <argsstring>(const std::string &amp;name, Args...args)</argsstring>
+        <name>call</name>
+        <qualifiedname>leasy::app::call</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>Args...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/leasy.hpp" line="68" column="17" bodyfile="leasy/leasy.hpp" bodystart="68" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1app_1af6b870b74c3b17ebd9cb6c445c157ac2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename R</type>
+          </param>
+          <param>
+            <type>class...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>R</type>
+        <definition>R leasy::app::call</definition>
+        <argsstring>(const std::string &amp;name, Args...args)</argsstring>
+        <name>call</name>
+        <qualifiedname>leasy::app::call</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>Args...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/leasy.hpp" line="74" column="14" bodyfile="leasy/leasy.hpp" bodystart="74" bodyend="77"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/leasy.cpp" line="55" column="3"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,869 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_game___battle" kind="namespace" language="C++">
+    <compoundname>Game_Battle</compoundname>
+    <innerclass refid="struct_game___battle_1_1_battle_test" prot="public">Game_Battle::BattleTest</innerclass>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_game___battle_1a8f625d684c351d70ce7a1b08f3da34d6" prot="public" static="no" mutable="no">
+        <type>const lcf::rpg::Troop *</type>
+        <definition>const lcf::rpg::Troop* Game_Battle::troop</definition>
+        <argsstring></argsstring>
+        <name>troop</name>
+        <qualifiedname>Game_Battle::troop</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.cpp" line="41" column="23" bodyfile="game_battle.cpp" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_game___battle_1a50c1414f7e690dcacc0e8135fde6d734" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Game_Battle::background_name</definition>
+        <argsstring></argsstring>
+        <name>background_name</name>
+        <qualifiedname>Game_Battle::background_name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.cpp" line="43" column="13" bodyfile="game_battle.cpp" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_game___battle_1ac11e803879277c2bb27e834034045d34" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___interpreter___battle" kindref="compound">Game_Interpreter_Battle</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Game_Interpreter_Battle&gt; Game_Battle::interpreter</definition>
+        <argsstring></argsstring>
+        <name>interpreter</name>
+        <qualifiedname>Game_Battle::interpreter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.cpp" line="45" column="17" bodyfile="game_battle.cpp" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_game___battle_1aacd3e25850ed3b96e7b235f02e3cc688" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_spriteset___battle" kindref="compound">Spriteset_Battle</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Spriteset_Battle&gt; Game_Battle::spriteset</definition>
+        <argsstring></argsstring>
+        <name>spriteset</name>
+        <qualifiedname>Game_Battle::spriteset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Contains battle related sprites </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.cpp" line="47" column="17" bodyfile="game_battle.cpp" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_game___battle_1a52bf4b6af9ab4b4880d82c0355fa1805" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_battle_animation" kindref="compound">BattleAnimation</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;BattleAnimation&gt; Game_Battle::animation_actors</definition>
+        <argsstring></argsstring>
+        <name>animation_actors</name>
+        <qualifiedname>Game_Battle::animation_actors</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.cpp" line="49" column="17" bodyfile="game_battle.cpp" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_game___battle_1a068a10785fa49d876bd09080f976cf60" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_battle_animation" kindref="compound">BattleAnimation</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;BattleAnimation&gt; Game_Battle::animation_enemies</definition>
+        <argsstring></argsstring>
+        <name>animation_enemies</name>
+        <qualifiedname>Game_Battle::animation_enemies</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.cpp" line="50" column="17" bodyfile="game_battle.cpp" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_game___battle_1a7e54d596d6c8f2c045e6e08766247203" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Battle::battle_running</definition>
+        <argsstring></argsstring>
+        <name>battle_running</name>
+        <qualifiedname>Game_Battle::battle_running</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Don&apos;t reference this, use <ref refid="namespace_game___battle_1af32623a9af3ddb112a2e4f43b1375094" kindref="member">IsBattleRunning()</ref>! </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.cpp" line="52" column="6" bodyfile="game_battle.cpp" bodystart="52" bodyend="-1" declfile="game_battle.h" declline="211" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_game___battle_1af60a0042a64c9c5e367a21cdc0e8efd7" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="struct_game___battle_1_1_battle_test" kindref="compound">BattleTest</ref></type>
+        <definition>struct BattleTest Game_Battle::battle_test</definition>
+        <argsstring></argsstring>
+        <name>battle_test</name>
+        <qualifiedname>Game_Battle::battle_test</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.cpp" line="54" column="17" bodyfile="game_battle.cpp" bodystart="54" bodyend="-1" declfile="game_battle.h" declline="196" declcolumn="24"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_game___battle_1a18832b5e24090582bc52a60504fceb80" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Battle::Init</definition>
+        <argsstring>(int troop_id)</argsstring>
+        <name>Init</name>
+        <qualifiedname>Game_Battle::Init</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>troop_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initialize <ref refid="namespace_game___battle" kindref="compound">Game_Battle</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="50" column="6" bodyfile="game_battle.cpp" bodystart="63" bodyend="83" declfile="game_battle.h" declline="50" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1af32623a9af3ddb112a2e4f43b1375094" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Battle::IsBattleRunning</definition>
+        <argsstring>()</argsstring>
+        <name>IsBattleRunning</name>
+        <qualifiedname>Game_Battle::IsBattleRunning</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if a battle is currently running </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="53" column="6" bodyfile="game_battle.h" bodystart="214" bodyend="216" declfile="game_battle.h" declline="53" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1ac024487c884194bf40a7fbba65d1ccd0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Battle::Quit</definition>
+        <argsstring>()</argsstring>
+        <name>Quit</name>
+        <qualifiedname>Game_Battle::Quit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Quits (frees) <ref refid="namespace_game___battle" kindref="compound">Game_Battle</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="58" column="6" bodyfile="game_battle.cpp" bodystart="85" bodyend="110" declfile="game_battle.h" declline="58" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1ae1dffdc2ce646f0903efd3674654b4de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Battle::UpdateAnimation</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateAnimation</name>
+        <qualifiedname>Game_Battle::UpdateAnimation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the battle animation </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="63" column="6" bodyfile="game_battle.cpp" bodystart="112" bodyend="125" declfile="game_battle.h" declline="63" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a6e8242b30ef3f41823f6ddd8dd84c0d1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Battle::UpdateGraphics</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateGraphics</name>
+        <qualifiedname>Game_Battle::UpdateGraphics</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates spriteset graphics </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="68" column="6" bodyfile="game_battle.cpp" bodystart="127" bodyend="129" declfile="game_battle.h" declline="68" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a1db1f7c30bc8899f6afa340b99ca3800" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Battle::CheckWin</definition>
+        <argsstring>()</argsstring>
+        <name>CheckWin</name>
+        <qualifiedname>Game_Battle::CheckWin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if a victory condition for the player party (enemy dead) is fulfilled.</para>
+<para><simplesect kind="return"><para>True on victory </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="75" column="6" bodyfile="game_battle.cpp" bodystart="131" bodyend="133" declfile="game_battle.h" declline="75" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1aaf62484ec977d92a8421b48ab9560b9f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Battle::CheckLose</definition>
+        <argsstring>()</argsstring>
+        <name>CheckLose</name>
+        <qualifiedname>Game_Battle::CheckLose</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Check if a lose condition for the player party (party dead) is fulfilled.</para>
+<para><simplesect kind="return"><para>True on lose </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="82" column="6" bodyfile="game_battle.cpp" bodystart="135" bodyend="145" declfile="game_battle.h" declline="82" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a6195ed10fe71f77b2d49bab73f43f896" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_spriteset___battle" kindref="compound">Spriteset_Battle</ref> &amp;</type>
+        <definition>Spriteset_Battle &amp; Game_Battle::GetSpriteset</definition>
+        <argsstring>()</argsstring>
+        <name>GetSpriteset</name>
+        <qualifiedname>Game_Battle::GetSpriteset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="84" column="18" bodyfile="game_battle.cpp" bodystart="147" bodyend="150" declfile="game_battle.h" declline="84" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a327ceaf7930e4b308f5cc45bb50f3720" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Battle::ShowBattleAnimation</definition>
+        <argsstring>(int animation_id, std::vector&lt; Game_Battler * &gt; targets, bool only_sound=false, int cutoff=-1, bool invert=false)</argsstring>
+        <name>ShowBattleAnimation</name>
+        <qualifiedname>Game_Battle::ShowBattleAnimation</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>animation_id</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> * &gt;</type>
+          <declname>targets</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>only_sound</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cutoff</declname>
+          <defval>-1</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>invert</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Plays a battle animation against several targets simultaneously.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>animation_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the animation ID </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>targets</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a vector of pointer to the battlers to play against</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the number of frames of the animation. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="94" column="5" bodyfile="game_battle.cpp" bodystart="152" bodyend="186" declfile="game_battle.h" declline="94" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a0e128db291f619958d29d19dc352a1eb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Battle::IsBattleAnimationWaiting</definition>
+        <argsstring>()</argsstring>
+        <name>IsBattleAnimationWaiting</name>
+        <qualifiedname>Game_Battle::IsBattleAnimationWaiting</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Whether or not a battle animation is currently playing. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="99" column="6" bodyfile="game_battle.cpp" bodystart="188" bodyend="190" declfile="game_battle.h" declline="99" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a0547866f00925ec2555e568c20354025" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Battle::NextTurn</definition>
+        <argsstring>(Game_Battler *battler=nullptr)</argsstring>
+        <name>NextTurn</name>
+        <qualifiedname>Game_Battle::NextTurn</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>battler</declname>
+          <defval>nullptr</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Starts a new battle turn. Event pages are reset depending on the actor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>battler</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Battler who did the turn. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="107" column="6" declfile="game_battle.h" declline="107" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a7cba6cfe0119e05a828d1d299e23d64a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Battle::UpdateAtbGauges</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateAtbGauges</name>
+        <qualifiedname>Game_Battle::UpdateAtbGauges</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the gauge of all battlers based on the highest agi of all. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="112" column="6" bodyfile="game_battle.cpp" bodystart="192" bodyend="234" declfile="game_battle.h" declline="112" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1ab913e5c581f06602d21615d62b8fb054" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Battle::ManiacBattleHook</definition>
+        <argsstring>(Game_Interpreter_Battle::ManiacBattleHookType hook_type, int var1, int var2, int var3, int var4=0, int var5=0, int var6=0)</argsstring>
+        <name>ManiacBattleHook</name>
+        <qualifiedname>Game_Battle::ManiacBattleHook</qualifiedname>
+        <param>
+          <type><ref refid="class_game___interpreter___battle_1a2412719c1a6e3b38303df8673e74b3ed" kindref="member">Game_Interpreter_Battle::ManiacBattleHookType</ref></type>
+          <declname>hook_type</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var1</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var2</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var3</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var4</declname>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var5</declname>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var6</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Convenience function to call a maniacs battle hook, which processes sub-events at any time. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="117" column="6" bodyfile="game_battle.cpp" bodystart="236" bodyend="242" declfile="game_battle.h" declline="117" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a915d949ad509827323d7eab4ded0bd74" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Battle::ManiacProcessSubEvents</definition>
+        <argsstring>()</argsstring>
+        <name>ManiacProcessSubEvents</name>
+        <qualifiedname>Game_Battle::ManiacProcessSubEvents</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Convenience function to process all maniacs sub-events, and return whether they&apos;re currently running </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="122" column="6" bodyfile="game_battle.cpp" bodystart="244" bodyend="246" declfile="game_battle.h" declline="122" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a2f209a5172bbe555bd07e17317583490" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Battle::ChangeBackground</definition>
+        <argsstring>(const std::string &amp;name)</argsstring>
+        <name>ChangeBackground</name>
+        <qualifiedname>Game_Battle::ChangeBackground</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="124" column="6" bodyfile="game_battle.cpp" bodystart="248" bodyend="250" declfile="game_battle.h" declline="124" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a3fe1a238ef09c0f7f4ef006df546c79d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::string &amp;</type>
+        <definition>const std::string &amp; Game_Battle::GetBackground</definition>
+        <argsstring>()</argsstring>
+        <name>GetBackground</name>
+        <qualifiedname>Game_Battle::GetBackground</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="126" column="19" bodyfile="game_battle.cpp" bodystart="252" bodyend="254" declfile="game_battle.h" declline="126" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1ad8e493b9348be87890f5b9fd7cc7d6e2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Battle::GetTurn</definition>
+        <argsstring>()</argsstring>
+        <name>GetTurn</name>
+        <qualifiedname>Game_Battle::GetTurn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="128" column="5" bodyfile="game_battle.cpp" bodystart="256" bodyend="258" declfile="game_battle.h" declline="128" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1abb837c0672f510a6d875a0abb20b0661" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Battle::CheckTurns</definition>
+        <argsstring>(int turns, int base, int multiple)</argsstring>
+        <name>CheckTurns</name>
+        <qualifiedname>Game_Battle::CheckTurns</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>turns</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>base</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>multiple</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="129" column="6" bodyfile="game_battle.cpp" bodystart="260" bodyend="267" declfile="game_battle.h" declline="129" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1aab3a9f71c1af8a769d8688884558f8a1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___interpreter" kindref="compound">Game_Interpreter</ref> &amp;</type>
+        <definition>Game_Interpreter &amp; Game_Battle::GetInterpreter</definition>
+        <argsstring>()</argsstring>
+        <name>GetInterpreter</name>
+        <qualifiedname>Game_Battle::GetInterpreter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the game interpreter.</para>
+<para><simplesect kind="return"><para>the game interpreter. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="136" column="18" bodyfile="game_battle.cpp" bodystart="269" bodyend="272" declfile="game_battle.h" declline="136" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a8858b9605e54b8c8752a0218bd301b9b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___interpreter___battle" kindref="compound">Game_Interpreter_Battle</ref> &amp;</type>
+        <definition>Game_Interpreter_Battle &amp; Game_Battle::GetInterpreterBattle</definition>
+        <argsstring>()</argsstring>
+        <name>GetInterpreterBattle</name>
+        <qualifiedname>Game_Battle::GetInterpreterBattle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the battle game interpreter.</para>
+<para><simplesect kind="return"><para>the battle game interpreter. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="143" column="25" bodyfile="game_battle.cpp" bodystart="274" bodyend="277" declfile="game_battle.h" declline="143" declcolumn="25"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1add3554f0bf8ca136268edc58e4c782d1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Battle::SetTerrainId</definition>
+        <argsstring>(int id)</argsstring>
+        <name>SetTerrainId</name>
+        <qualifiedname>Game_Battle::SetTerrainId</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="145" column="6" bodyfile="game_battle.cpp" bodystart="279" bodyend="281" declfile="game_battle.h" declline="145" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1afdf6d55fb6882881c1f69148e1597a78" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Battle::GetTerrainId</definition>
+        <argsstring>()</argsstring>
+        <name>GetTerrainId</name>
+        <qualifiedname>Game_Battle::GetTerrainId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="146" column="5" bodyfile="game_battle.cpp" bodystart="283" bodyend="285" declfile="game_battle.h" declline="146" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a72f80c4f7ff7708e02bc7cbb59b7ab02" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Battle::SetBattleCondition</definition>
+        <argsstring>(lcf::rpg::System::BattleCondition cond)</argsstring>
+        <name>SetBattleCondition</name>
+        <qualifiedname>Game_Battle::SetBattleCondition</qualifiedname>
+        <param>
+          <type>lcf::rpg::System::BattleCondition</type>
+          <declname>cond</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="148" column="6" bodyfile="game_battle.cpp" bodystart="287" bodyend="289" declfile="game_battle.h" declline="148" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1ad7d81fb256bc85fb65e01796bcb286d5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>lcf::rpg::System::BattleCondition</type>
+        <definition>lcf::rpg::System::BattleCondition Game_Battle::GetBattleCondition</definition>
+        <argsstring>()</argsstring>
+        <name>GetBattleCondition</name>
+        <qualifiedname>Game_Battle::GetBattleCondition</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="149" column="35" bodyfile="game_battle.cpp" bodystart="291" bodyend="293" declfile="game_battle.h" declline="149" declcolumn="35"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a8261aeffbd9cf8164ecf270372daa8cc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Battle::SetBattleFormation</definition>
+        <argsstring>(lcf::rpg::System::BattleFormation form)</argsstring>
+        <name>SetBattleFormation</name>
+        <qualifiedname>Game_Battle::SetBattleFormation</qualifiedname>
+        <param>
+          <type>lcf::rpg::System::BattleFormation</type>
+          <declname>form</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="151" column="6" bodyfile="game_battle.cpp" bodystart="295" bodyend="297" declfile="game_battle.h" declline="151" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a7c76c320f843ebfb8430d85ac2044c33" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>lcf::rpg::System::BattleFormation</type>
+        <definition>lcf::rpg::System::BattleFormation Game_Battle::GetBattleFormation</definition>
+        <argsstring>()</argsstring>
+        <name>GetBattleFormation</name>
+        <qualifiedname>Game_Battle::GetBattleFormation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="152" column="35" bodyfile="game_battle.cpp" bodystart="299" bodyend="301" declfile="game_battle.h" declline="152" declcolumn="35"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a14eac47e5b33bfa25dbd2b403e551fe9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Game_Battle::CalculateBaseGridPosition</definition>
+        <argsstring>(int party_idx, int party_size, int x_table, int y_table, lcf::rpg::System::BattleFormation form, int terrain_id)</argsstring>
+        <name>CalculateBaseGridPosition</name>
+        <qualifiedname>Game_Battle::CalculateBaseGridPosition</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>party_idx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>party_size</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x_table</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y_table</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::System::BattleFormation</type>
+          <declname>form</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>terrain_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calculates the base grid position from the parameters used for both actors and enemies.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>party_idx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the index of the party member </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>party_size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the size of the party </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>table_x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Which grid table to use for X position </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>table_y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which grid table to use for Y position </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cond</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the battle condition </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>form</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the battle formation </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>terrain_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the battle terrain id </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="165" column="7" bodyfile="game_battle.cpp" bodystart="374" bodyend="411" declfile="game_battle.h" declline="165" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a25e43ff647345561d25533dcf4768ec3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Game_Battle::Calculate2k3BattlePosition</definition>
+        <argsstring>(const Game_Enemy &amp;enemy)</argsstring>
+        <name>Calculate2k3BattlePosition</name>
+        <qualifiedname>Game_Battle::Calculate2k3BattlePosition</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___enemy" kindref="compound">Game_Enemy</ref> &amp;</type>
+          <declname>enemy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calculate the battler position that would be used for the enemy</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>enemy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the enemy to calculate. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="178" column="7" bodyfile="game_battle.cpp" bodystart="414" bodyend="495" declfile="game_battle.h" declline="178" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1aa2e9d024eda6d92a0b69753700a0218f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Game_Battle::Calculate2k3BattlePosition</definition>
+        <argsstring>(const Game_Actor &amp;actor)</argsstring>
+        <name>Calculate2k3BattlePosition</name>
+        <qualifiedname>Game_Battle::Calculate2k3BattlePosition</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calculate the battler position that would be used for the enemy</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>enemy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the enemy to calculate. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="185" column="7" bodyfile="game_battle.cpp" bodystart="497" bodyend="567" declfile="game_battle.h" declline="185" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1afefcccb0ee4988fb17212eefb7c1b2bc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Battle::HasDeathHandler</definition>
+        <argsstring>()</argsstring>
+        <name>HasDeathHandler</name>
+        <qualifiedname>Game_Battle::HasDeathHandler</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if a death handler is installed </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="199" column="6" bodyfile="game_battle.cpp" bodystart="303" bodyend="308" declfile="game_battle.h" declline="199" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1ae697d4c9d5b510f28ab9366608872a3e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Battle::GetDeathHandlerCommonEvent</definition>
+        <argsstring>()</argsstring>
+        <name>GetDeathHandlerCommonEvent</name>
+        <qualifiedname>Game_Battle::GetDeathHandlerCommonEvent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>death handler common event if one is installed, otherwise 0 </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="202" column="5" bodyfile="game_battle.cpp" bodystart="310" bodyend="316" declfile="game_battle.h" declline="202" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a56155556642e00db8b6250c580b04574" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_teleport_target" kindref="compound">TeleportTarget</ref></type>
+        <definition>TeleportTarget Game_Battle::GetDeathHandlerTeleport</definition>
+        <argsstring>()</argsstring>
+        <name>GetDeathHandlerTeleport</name>
+        <qualifiedname>Game_Battle::GetDeathHandlerTeleport</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>death teleport handler if one is installed, otherwise an inactive target </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="205" column="16" bodyfile="game_battle.cpp" bodystart="318" bodyend="324" declfile="game_battle.h" declline="205" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___battle_1a62cdd839b0269988231e23b682ca83b6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const lcf::rpg::Troop *</type>
+        <definition>const lcf::rpg::Troop * Game_Battle::GetActiveTroop</definition>
+        <argsstring>()</argsstring>
+        <name>GetActiveTroop</name>
+        <qualifiedname>Game_Battle::GetActiveTroop</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the active troop for the currently running battle </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="208" column="23" bodyfile="game_battle.cpp" bodystart="326" bodyend="328" declfile="game_battle.h" declline="208" declcolumn="23"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_battle.cpp" line="40" column="1"/>
+  </compounddef>
+</doxygen>

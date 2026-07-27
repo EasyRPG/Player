@@ -1,0 +1,754 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="function_8hpp" kind="file" language="C++">
+    <compoundname>function.hpp</compoundname>
+    <includes local="no">any</includes>
+    <includes local="no">vector</includes>
+    <includes local="no">typeindex</includes>
+    <includes local="no">functional</includes>
+    <includes local="no">type_traits</includes>
+    <includes refid="nameof_8hpp" local="yes">../iky7/nameof.hpp</includes>
+    <includes refid="anyf_8hpp" local="yes">../iky7/anyf.hpp</includes>
+    <includes refid="rtt_8hpp" local="yes">../kits/rtt.hpp</includes>
+    <includes refid="variant_8hpp" local="yes">../kits/variant.hpp</includes>
+    <includes refid="select_8hpp" local="yes">../kits/select.hpp</includes>
+    <includes refid="state_8hpp" local="yes">../ul2/state.hpp</includes>
+    <includes refid="function__traits_8hpp" local="yes">../ul2/function_traits.hpp</includes>
+    <includes refid="lio_8hpp" local="yes">../lio.hpp</includes>
+    <includes refid="metadata_8hpp" local="yes">metadata.hpp</includes>
+    <includedby refid="class_8hpp" local="yes">leasy/metadata/class.hpp</includedby>
+    <includedby refid="namespace_8hpp" local="yes">leasy/metadata/namespace.hpp</includedby>
+    <includedby refid="reflection_8hpp" local="yes">leasy/metadata/reflection.hpp</includedby>
+    <incdepgraph>
+      <node id="9">
+        <label>../iky7/anyf.hpp</label>
+        <link refid="anyf_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>../iky7/nameof.hpp</label>
+        <link refid="nameof_8hpp"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="55">
+        <label>kits/ps7k.hpp</label>
+        <link refid="ps7k_8hpp"/>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>../kits/rtt.hpp</label>
+        <link refid="rtt_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>../kits/select.hpp</label>
+        <link refid="select_8hpp"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>../kits/utils.hpp</label>
+        <link refid="utils_8hpp"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>../kits/variant.hpp</label>
+        <link refid="variant_8hpp"/>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>../ldebug.hpp</label>
+        <link refid="ldebug_8hpp"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>../lio.hpp</label>
+        <link refid="lio_8hpp"/>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>lauxlib.h</label>
+        <link refid="lauxlib_8h"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>../lua/lua.hpp</label>
+        <link refid="lua_2lua_8hpp"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>lualib.h</label>
+        <link refid="lualib_8h"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/metadata/function.hpp</label>
+        <link refid="function_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>metadata.hpp</label>
+        <link refid="metadata_8hpp"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>object.hpp</label>
+        <link refid="object_8hpp"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>../metadata/type.hpp</label>
+        <link refid="type_8hpp"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>../typings/metatypes.hpp</label>
+        <link refid="metatypes_8hpp"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>dispatcher.hpp</label>
+        <link refid="dispatcher_8hpp"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>../ul2/function_traits.hpp</label>
+        <link refid="function__traits_8hpp"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>lua_stack.hpp</label>
+        <link refid="lua__stack_8hpp"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>../ul2/state.hpp</label>
+        <link refid="state_8hpp"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>types.hpp</label>
+        <link refid="types_8hpp"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>ulexception2.hpp</label>
+        <link refid="ulexception2_8hpp"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>algorithm</label>
+      </node>
+      <node id="2">
+        <label>any</label>
+      </node>
+      <node id="48">
+        <label>chrono</label>
+      </node>
+      <node id="56">
+        <label>cstddef</label>
+      </node>
+      <node id="44">
+        <label>cstdint</label>
+      </node>
+      <node id="57">
+        <label>cstring</label>
+      </node>
+      <node id="49">
+        <label>filesystem</label>
+      </node>
+      <node id="50">
+        <label>fstream</label>
+      </node>
+      <node id="5">
+        <label>functional</label>
+      </node>
+      <node id="51">
+        <label>iomanip</label>
+      </node>
+      <node id="19">
+        <label>iostream</label>
+      </node>
+      <node id="58">
+        <label>iterator</label>
+      </node>
+      <node id="27">
+        <label>limits.h</label>
+      </node>
+      <node id="38">
+        <label>memory</label>
+      </node>
+      <node id="52">
+        <label>mutex</label>
+      </node>
+      <node id="40">
+        <label>new</label>
+      </node>
+      <node id="53">
+        <label>optional</label>
+      </node>
+      <node id="21">
+        <label>sstream</label>
+      </node>
+      <node id="24">
+        <label>stdarg.h</label>
+      </node>
+      <node id="25">
+        <label>stddef.h</label>
+      </node>
+      <node id="33">
+        <label>stdexcept</label>
+      </node>
+      <node id="30">
+        <label>stdio.h</label>
+      </node>
+      <node id="13">
+        <label>string</label>
+      </node>
+      <node id="8">
+        <label>string_view</label>
+      </node>
+      <node id="54">
+        <label>thread</label>
+      </node>
+      <node id="11">
+        <label>tuple</label>
+      </node>
+      <node id="6">
+        <label>type_traits</label>
+      </node>
+      <node id="4">
+        <label>typeindex</label>
+      </node>
+      <node id="16">
+        <label>typeinfo</label>
+      </node>
+      <node id="39">
+        <label>unordered_map</label>
+      </node>
+      <node id="15">
+        <label>utility</label>
+      </node>
+      <node id="37">
+        <label>variant</label>
+      </node>
+      <node id="3">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="4">
+        <label>algo.cpp</label>
+        <link refid="algo_8cpp"/>
+      </node>
+      <node id="5">
+        <label>leasy/leasy.cpp</label>
+        <link refid="leasy_8cpp"/>
+      </node>
+      <node id="2">
+        <label>leasy/metadata/class.hpp</label>
+        <link refid="class_8hpp"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/metadata/function.hpp</label>
+        <link refid="function_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>leasy/metadata/namespace.hpp</label>
+        <link refid="namespace_8hpp"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>leasy/metadata/reflection.hpp</label>
+        <link refid="reflection_8hpp"/>
+      </node>
+      <node id="7">
+        <label>leasy/metadata/type.cpp</label>
+        <link refid="type_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classleasy_1_1metadata_1_1function__base__t" prot="public">leasy::metadata::function_base_t</innerclass>
+    <innerclass refid="classleasy_1_1metadata_1_1function" prot="public">leasy::metadata::function</innerclass>
+    <innerclass refid="classleasy_1_1metadata_1_1overload__set" prot="public">leasy::metadata::overload_set</innerclass>
+    <innerclass refid="classleasy_1_1metadata_1_1_native_callable" prot="public">leasy::metadata::NativeCallable</innerclass>
+    <innernamespace refid="namespaceleasy">leasy</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1metadata">leasy::metadata</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;any&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;typeindex&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;functional&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;type_traits&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="nameof_8hpp" kindref="compound">../iky7/nameof.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="anyf_8hpp" kindref="compound">../iky7/anyf.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="rtt_8hpp" kindref="compound">../kits/rtt.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="variant_8hpp" kindref="compound">../kits/variant.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="select_8hpp" kindref="compound">../kits/select.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="state_8hpp" kindref="compound">../ul2/state.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="function__traits_8hpp" kindref="compound">../ul2/function_traits.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lio_8hpp" kindref="compound">../lio.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="metadata_8hpp" kindref="compound">metadata.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1metadata" kindref="compound">leasy::metadata</ref><sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="classleasy_1_1metadata_1_1function__base__t" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classleasy_1_1metadata_1_1function__base__t" kindref="compound">function_base_t</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1_data" kindref="compound">Data</ref><sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="46" refid="classleasy_1_1metadata_1_1function__base__t_1aac3a26cb956eea1305b511a642e9e42f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="classleasy_1_1metadata_1_1function__base__t_1aac3a26cb956eea1305b511a642e9e42f" kindref="member">name</ref>;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="classleasy_1_1metadata_1_1function__base__t_1a4191d0d015a76b420d98064b10f24eab" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>std::pair&lt;bool,<sp/>std::string&gt;<sp/><ref refid="classleasy_1_1metadata_1_1function__base__t_1a4191d0d015a76b420d98064b10f24eab" kindref="member">is_callable</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;std::any&gt;&amp;)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{</highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;You&apos;re<sp/>trying<sp/>to<sp/>call<sp/>a<sp/>default-virtual<sp/>function<sp/>!&quot;</highlight><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52" refid="classleasy_1_1metadata_1_1function__base__t_1a1f415e9591840be8beac967f9131cbd2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>std::any<sp/><ref refid="classleasy_1_1metadata_1_1function__base__t_1a1f415e9591840be8beac967f9131cbd2" kindref="member">call</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;std::any&gt;&amp;)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{};<sp/></highlight><highlight class="comment">//<sp/>I<sp/>prefer<sp/>an<sp/>API<sp/>that<sp/>fails<sp/>over<sp/>virtual<sp/>methods<sp/>rather<sp/>than<sp/>making<sp/>weird<sp/>pure<sp/>virtual<sp/>things.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="classleasy_1_1metadata_1_1function__base__t_1a42715055f5630b60e8c830f95de3a388" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>std::function&lt;int(<ref refid="structlua___state" kindref="compound">lua_State</ref>*)&gt;<sp/><ref refid="classleasy_1_1metadata_1_1function__base__t_1a42715055f5630b60e8c830f95de3a388" kindref="member">lua</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>[](<ref refid="structlua___state" kindref="compound">lua_State</ref>*)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>And<sp/>making<sp/>warnings<sp/>is<sp/>the<sp/>best<sp/>way<sp/>to<sp/>debug!</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1a969ece27b2f9f49c39c191cbcd5098c1" kindref="member">io</ref>.Warning.writeln(__func__,<sp/></highlight><highlight class="stringliteral">&quot;:<sp/>unimplemented<sp/>binding<sp/>was<sp/>called<sp/>on<sp/>base<sp/>&quot;</highlight><highlight class="normal">,<sp/><ref refid="nameof_8hpp_1a02e7237d33b75d7dccc83e4770a1bca1" kindref="member">nameof</ref>&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">)&gt;());</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="classleasy_1_1metadata_1_1function" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classleasy_1_1metadata_1_1function_1a00e6541aea39c4245e1b660140ae5291" kindref="member">function</ref><sp/>final<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1function__base__t" kindref="compound">function_base_t</ref><sp/>{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>std::function&lt;std::any(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;std::any&gt;&amp;)&gt;<sp/>native_bridge;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>std::function&lt;int(<ref refid="structlua___state" kindref="compound">lua_State</ref>*)&gt;<sp/>lua_bridge;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="71" refid="classleasy_1_1metadata_1_1function_1a6ce0d7ed9ddce9000ab15d99175fc494" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;TypeInfo&gt;<sp/><ref refid="classleasy_1_1metadata_1_1function_1a6ce0d7ed9ddce9000ab15d99175fc494" kindref="member">arguments</ref>;</highlight></codeline>
+<codeline lineno="72" refid="classleasy_1_1metadata_1_1function_1a43fd0ef883930012a7dbe019a36aeaf7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classleasy_1_1metadata_1_1_type_info" kindref="compound">TypeInfo</ref><sp/><ref refid="classleasy_1_1metadata_1_1function_1a43fd0ef883930012a7dbe019a36aeaf7" kindref="member">return_type</ref>;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="classleasy_1_1metadata_1_1function_1ad3a139faae9b63cafebfff198b0e8396" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::pair&lt;bool,<sp/>std::string&gt;<sp/><ref refid="classleasy_1_1metadata_1_1function_1ad3a139faae9b63cafebfff198b0e8396" kindref="member">is_callable</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;std::any&gt;<sp/>&amp;args)</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1kits_1a01192718bbf977c28386c146d2cd6a83" kindref="member">kits::is_callable_with</ref>(this-&gt;arguments,<sp/>args);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78" refid="classleasy_1_1metadata_1_1function_1aa57e8a4e1b99246a272de1ba748002fd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::any<sp/><ref refid="classleasy_1_1metadata_1_1function_1aa57e8a4e1b99246a272de1ba748002fd" kindref="member">call</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;std::any&gt;<sp/>&amp;args)</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>this-&gt;native_bridge(args);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82" refid="classleasy_1_1metadata_1_1function_1aa08bfd7fd00d9264908d956cdf7ac03c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::function&lt;int(<ref refid="structlua___state" kindref="compound">lua_State</ref>*)&gt;<sp/><ref refid="classleasy_1_1metadata_1_1function_1aa08bfd7fd00d9264908d956cdf7ac03c" kindref="member">lua</ref>()</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>this-&gt;lua_bridge;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86" refid="classleasy_1_1metadata_1_1function_1a745ae80b7878aceeab8f16d674a8c689" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1function_1a745ae80b7878aceeab8f16d674a8c689" kindref="member">bind</ref>(<ref refid="classleasy_1_1ul2_1_1lstate" kindref="compound">ul2::lstate</ref><sp/>&amp;state)</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>state.<ref refid="classleasy_1_1ul2_1_1lstate_1aad3707a8428b6027884acbefbaadf2ee" kindref="member">bind2</ref>(this-&gt;<ref refid="classleasy_1_1metadata_1_1function__base__t_1aac3a26cb956eea1305b511a642e9e42f" kindref="member">name</ref>,<sp/>this-&gt;lua_bridge);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90" refid="classleasy_1_1metadata_1_1function_1a118e838c5e2b5781b72e425585bb366b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref><sp/><ref refid="classleasy_1_1metadata_1_1function_1a118e838c5e2b5781b72e425585bb366b" kindref="member">dump</ref>()</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1_map" kindref="compound">Map</ref>()</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.<ref refid="classleasy_1_1metadata_1_1_map_1a294f10efc817dfd3025e182c3c219d58" kindref="member">add</ref>(</highlight><highlight class="stringliteral">&quot;name&quot;</highlight><highlight class="normal">,<sp/><ref refid="classleasy_1_1metadata_1_1function__base__t_1aac3a26cb956eea1305b511a642e9e42f" kindref="member">name</ref>)</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.<ref refid="classleasy_1_1metadata_1_1_map_1a294f10efc817dfd3025e182c3c219d58" kindref="member">add</ref>(</highlight><highlight class="stringliteral">&quot;arguments&quot;</highlight><highlight class="normal">,<sp/><ref refid="namespaceleasy_1_1kits_1ac342f88d38356c4b83aad707fbab9160" kindref="member">kits::select</ref>(<ref refid="classleasy_1_1metadata_1_1function_1a6ce0d7ed9ddce9000ab15d99175fc494" kindref="member">arguments</ref>,<sp/>[](<ref refid="classleasy_1_1metadata_1_1_type_info" kindref="compound">TypeInfo</ref><sp/>info)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>info.<ref refid="classleasy_1_1metadata_1_1_type_info_1a6b87367f41d867e73dc91334e5ae24f1" kindref="member">dump</ref>();<sp/>}))</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.add(</highlight><highlight class="stringliteral">&quot;return&quot;</highlight><highlight class="normal">,<sp/><ref refid="classleasy_1_1metadata_1_1function_1a43fd0ef883930012a7dbe019a36aeaf7" kindref="member">return_type</ref>.dump());</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97" refid="classleasy_1_1metadata_1_1function_1a00e6541aea39c4245e1b660140ae5291" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1function_1a00e6541aea39c4245e1b660140ae5291" kindref="member">function</ref>()<sp/>:<sp/><ref refid="classleasy_1_1metadata_1_1function_1a6ce0d7ed9ddce9000ab15d99175fc494" kindref="member">arguments</ref>({}),<sp/><ref refid="classleasy_1_1metadata_1_1function_1a43fd0ef883930012a7dbe019a36aeaf7" kindref="member">return_type</ref>(<ref refid="type_8hpp_1ab79a93a427066d17a6e04fca8e5b0780" kindref="member">typeidof&lt;void&gt;</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;native_bridge<sp/>=<sp/>[](</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;std::any&gt;&amp;)<sp/>-&gt;<sp/>std::any<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{};<sp/>};</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;lua_bridge<sp/>=<sp/>[](<ref refid="structlua___state" kindref="compound">lua_State</ref>*)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;<sp/>};</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Fn&gt;</highlight></codeline>
+<codeline lineno="103" refid="classleasy_1_1metadata_1_1function_1ac3221577ca811e60be49993ee88e4327" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1function_1ac3221577ca811e60be49993ee88e4327" kindref="member">function</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;<ref refid="classleasy_1_1metadata_1_1function__base__t_1aac3a26cb956eea1305b511a642e9e42f" kindref="member">name</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Fn<sp/>&amp;f)<sp/>{</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;name<sp/>=<sp/><ref refid="classleasy_1_1metadata_1_1function__base__t_1aac3a26cb956eea1305b511a642e9e42f" kindref="member">name</ref>;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">traits<sp/>=<sp/><ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">ul2::function_traits&lt;Fn&gt;</ref>;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;native_bridge<sp/>=<sp/><ref refid="namespaceleasy_1_1iky7_1a15e77278065a64d060a6353442020bce" kindref="member">iky7::bridgefunc&lt;Fn&gt;</ref>(f);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;lua_bridge<sp/>=<sp/><ref refid="classleasy_1_1ul2_1_1lstate_1a799c5bfc0e1f752717d78abd9b06842c" kindref="member">ul2::lstate::bridge&lt;Fn&gt;</ref>(f);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;arguments<sp/>=<sp/><ref refid="namespaceleasy_1_1kits_1a97997e31c8930668962044d3277edb78" kindref="member">kits::tuple_types&lt;typename traits::args_tuple&gt;</ref>();</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;return_type<sp/>=<sp/><ref refid="type_8hpp_1ab79a93a427066d17a6e04fca8e5b0780" kindref="member">typeidof&lt;typename traits::return_type&gt;</ref>();</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113" refid="classleasy_1_1metadata_1_1overload__set" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classleasy_1_1metadata_1_1overload__set_1a04f732eee6c5f44761a531b6a65c818b" kindref="member">overload_set</ref><sp/>final<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1function__base__t" kindref="compound">function_base_t</ref><sp/>{</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;function&gt;<sp/>funcs;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>std::function&lt;int(<ref refid="structlua___state" kindref="compound">lua_State</ref>*)&gt;<sp/>bridge;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120" refid="classleasy_1_1metadata_1_1overload__set_1aa585d2af9a8850688ed81576d6f4d4aa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::pair&lt;bool,<sp/>std::string&gt;<sp/><ref refid="classleasy_1_1metadata_1_1overload__set_1aa585d2af9a8850688ed81576d6f4d4aa" kindref="member">is_callable</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;std::any&gt;<sp/>&amp;args)</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>end<sp/>=<sp/>funcs.size();</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(i++<sp/>&lt;<sp/>end)<sp/>{</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>r<sp/>=<sp/>funcs[i-1].is_callable(args);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(r.first)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>r;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{</highlight><highlight class="keyword">false</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;No<sp/>such<sp/>overload<sp/>found&quot;</highlight><highlight class="normal">};</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132" refid="classleasy_1_1metadata_1_1overload__set_1aa6ac61e066d67ae4590196857dd0cb87" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::any<sp/><ref refid="classleasy_1_1metadata_1_1overload__set_1aa6ac61e066d67ae4590196857dd0cb87" kindref="member">call</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;std::any&gt;<sp/>&amp;args)</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>end<sp/>=<sp/>funcs.size();</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(i++<sp/>&lt;<sp/>end)<sp/>{</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>r<sp/>=<sp/>funcs[i-1].is_callable(args);</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(r.first)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>funcs[i-1].call(args);</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(</highlight><highlight class="stringliteral">&quot;overload-resolver<sp/>error:<sp/>No<sp/>such<sp/>overload<sp/>found<sp/>when<sp/>calling<sp/>&quot;</highlight><highlight class="normal"><sp/>+<sp/><ref refid="classleasy_1_1metadata_1_1function__base__t_1aac3a26cb956eea1305b511a642e9e42f" kindref="member">name</ref><sp/>+<sp/></highlight><highlight class="stringliteral">&quot;!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144" refid="classleasy_1_1metadata_1_1overload__set_1ab484801734a3bd45551ef8cb05e4be9f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::function&lt;int(<ref refid="structlua___state" kindref="compound">lua_State</ref>*)&gt;<sp/><ref refid="classleasy_1_1metadata_1_1overload__set_1ab484801734a3bd45551ef8cb05e4be9f" kindref="member">lua</ref>()</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>That&apos;s<sp/>the<sp/>fucking<sp/>point<sp/>where<sp/>i<sp/>need<sp/>a<sp/>pure-native<sp/>value.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>fucking<sp/>issue&apos;s<sp/>that<sp/>we<sp/>can&apos;t<sp/>both<sp/>template<sp/>a<sp/>type<sp/>and<sp/>serialize<sp/>it<sp/>easily</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>in<sp/>then.<sp/>So,<sp/>the<sp/>trick<sp/>is<sp/>playing<sp/>with<sp/>C++&apos;s<sp/>variables:<sp/>We<sp/>build<sp/>the<sp/>lua-bridge</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>at<sp/>construction.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>That&apos;s<sp/>**coding.**</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>this-&gt;bridge;</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153" refid="classleasy_1_1metadata_1_1overload__set_1a04f732eee6c5f44761a531b6a65c818b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1overload__set_1a04f732eee6c5f44761a531b6a65c818b" kindref="member">overload_set</ref>()<sp/>{}<sp/></highlight><highlight class="comment">//<sp/>bruh.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>Fs&gt;<sp/></highlight><highlight class="comment">//<sp/>why<sp/>does<sp/>standard<sp/>conventions<sp/>put<sp/>&apos;s&apos;<sp/>in<sp/>plural<sp/>templated-names<sp/>?<sp/>Tf.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156" refid="classleasy_1_1metadata_1_1overload__set_1a4cd7ff77dac190b5d224736c3e9c891a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1overload__set_1a4cd7ff77dac190b5d224736c3e9c891a" kindref="member">overload_set</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;<ref refid="classleasy_1_1metadata_1_1function__base__t_1aac3a26cb956eea1305b511a642e9e42f" kindref="member">name</ref>,<sp/>Fs&amp;&amp;<sp/>...fs)<sp/>{</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;name<sp/>=<sp/><ref refid="classleasy_1_1metadata_1_1function__base__t_1aac3a26cb956eea1305b511a642e9e42f" kindref="member">name</ref>;</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;bridge<sp/>=<sp/><ref refid="namespaceleasy_1_1ul2_1aea526f0284dcdd410e3c5dac9e5ba05c" kindref="member">ul2::make_overload</ref>(std::forward&lt;Fs&gt;(fs)...);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Now,<sp/>let&apos;s<sp/>bridge<sp/>native<sp/>overloads.<sp/>MUCH<sp/>more<sp/>easier.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>(this-&gt;funcs.emplace_back(<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(<ref refid="classleasy_1_1metadata_1_1function__base__t_1aac3a26cb956eea1305b511a642e9e42f" kindref="member">name</ref>,<sp/>std::forward&lt;Fs&gt;(fs))),<sp/>...);</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight></codeline>
+<codeline lineno="163" refid="classleasy_1_1metadata_1_1overload__set_1ab925a6109fbc6af0100015644cded2e2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref><sp/><ref refid="classleasy_1_1metadata_1_1overload__set_1ab925a6109fbc6af0100015644cded2e2" kindref="member">dump</ref>()</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1_map" kindref="compound">Map</ref>()<sp/><sp/></highlight><highlight class="comment">//<sp/>Programming&apos;s<sp/>magic.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.<ref refid="classleasy_1_1metadata_1_1_map_1a294f10efc817dfd3025e182c3c219d58" kindref="member">add</ref>(</highlight><highlight class="stringliteral">&quot;name&quot;</highlight><highlight class="normal">,<sp/>this-&gt;<ref refid="classleasy_1_1metadata_1_1function__base__t_1aac3a26cb956eea1305b511a642e9e42f" kindref="member">name</ref>)</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.<ref refid="classleasy_1_1metadata_1_1_map_1a294f10efc817dfd3025e182c3c219d58" kindref="member">add</ref>(</highlight><highlight class="stringliteral">&quot;overloads&quot;</highlight><highlight class="normal">,<sp/><ref refid="namespaceleasy_1_1kits_1ac342f88d38356c4b83aad707fbab9160" kindref="member">kits::select</ref>(this-&gt;funcs,<sp/>[](<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref><sp/>func)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>func.<ref refid="classleasy_1_1metadata_1_1function_1a118e838c5e2b5781b72e425585bb366b" kindref="member">dump</ref>();<sp/>}));</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169" refid="classleasy_1_1metadata_1_1overload__set_1a21fd539abbc727397fc9d8b03ff815c6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1overload__set_1a21fd539abbc727397fc9d8b03ff815c6" kindref="member">bind</ref>(<ref refid="classleasy_1_1ul2_1_1lstate" kindref="compound">ul2::lstate</ref><sp/>&amp;state)</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>state.<ref refid="classleasy_1_1ul2_1_1lstate_1aad3707a8428b6027884acbefbaadf2ee" kindref="member">bind2</ref>(this-&gt;<ref refid="classleasy_1_1metadata_1_1function__base__t_1aac3a26cb956eea1305b511a642e9e42f" kindref="member">name</ref>,<sp/>this-&gt;bridge);</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174" refid="classleasy_1_1metadata_1_1_native_callable" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classleasy_1_1metadata_1_1_native_callable_1a6d1feebdea96cee740518ecbb0eb4800" kindref="member">NativeCallable</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1function__base__t" kindref="compound">function_base_t</ref><sp/>{</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/>std::shared_ptr&lt;function_base_t&gt;<sp/>impl;</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="179" refid="classleasy_1_1metadata_1_1_native_callable_1a6d1feebdea96cee740518ecbb0eb4800" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classleasy_1_1metadata_1_1_native_callable_1a6d1feebdea96cee740518ecbb0eb4800" kindref="member">NativeCallable</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181" refid="classleasy_1_1metadata_1_1_native_callable_1a634b394f275f8a16ab2d46523598f610" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classleasy_1_1metadata_1_1_native_callable_1a634b394f275f8a16ab2d46523598f610" kindref="member">NativeCallable</ref>(<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref><sp/>f)</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>impl(<ref refid="namespacestd" kindref="compound">std</ref>::make_shared&lt;<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>&gt;(<ref refid="namespacestd" kindref="compound">std</ref>::move(f)))<sp/>{}</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="184" refid="classleasy_1_1metadata_1_1_native_callable_1aa2c4ee62aa0e919e68aca4b9a91a12d4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classleasy_1_1metadata_1_1_native_callable_1aa2c4ee62aa0e919e68aca4b9a91a12d4" kindref="member">NativeCallable</ref>(<ref refid="classleasy_1_1metadata_1_1overload__set" kindref="compound">overload_set</ref><sp/>o)</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>impl(<ref refid="namespacestd" kindref="compound">std</ref>::make_shared&lt;<ref refid="classleasy_1_1metadata_1_1overload__set" kindref="compound">overload_set</ref>&gt;(<ref refid="namespacestd" kindref="compound">std</ref>::move(o)))<sp/>{}</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187" refid="classleasy_1_1metadata_1_1_native_callable_1ae722124792891d89a52663007fa99343" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classleasy_1_1metadata_1_1function__base__t" kindref="compound">function_base_t</ref>*<sp/><ref refid="classleasy_1_1metadata_1_1_native_callable_1ae722124792891d89a52663007fa99343" kindref="member">operator-&gt;</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>impl.get();</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight></codeline>
+<codeline lineno="191" refid="classleasy_1_1metadata_1_1_native_callable_1a24eee9c37e61307542206b63713e1eb4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1function__base__t" kindref="compound">function_base_t</ref>*<sp/><ref refid="classleasy_1_1metadata_1_1_native_callable_1a24eee9c37e61307542206b63713e1eb4" kindref="member">operator-&gt;</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>impl.get();</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight></codeline>
+<codeline lineno="195" refid="classleasy_1_1metadata_1_1_native_callable_1a7a70efbe100ebbb0d43d2b3eb52a409f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classleasy_1_1metadata_1_1function__base__t" kindref="compound">function_base_t</ref>&amp;<sp/><ref refid="classleasy_1_1metadata_1_1_native_callable_1a7a70efbe100ebbb0d43d2b3eb52a409f" kindref="member">operator*</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*impl;</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight></codeline>
+<codeline lineno="199" refid="classleasy_1_1metadata_1_1_native_callable_1a231f9f85b3c75d8f4071801bdb2a7fc0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1function__base__t" kindref="compound">function_base_t</ref>&amp;<sp/><ref refid="classleasy_1_1metadata_1_1_native_callable_1a231f9f85b3c75d8f4071801bdb2a7fc0" kindref="member">operator*</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*impl;</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight></codeline>
+<codeline lineno="203" refid="classleasy_1_1metadata_1_1_native_callable_1a91c8bedcd8896f2cf8f34441ebafae8f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">operator</highlight><highlight class="normal"><sp/>bool()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">bool</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(impl);</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight></codeline>
+<codeline lineno="207" refid="classleasy_1_1metadata_1_1_native_callable_1a9f4cd493a41ae20bd602c1d98b7a146b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::pair&lt;bool,<sp/>std::string&gt;<sp/><ref refid="classleasy_1_1metadata_1_1_native_callable_1a9f4cd493a41ae20bd602c1d98b7a146b" kindref="member">is_callable</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;std::any&gt;&amp;<sp/>args)</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>impl-&gt;is_callable(args);</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"></highlight></codeline>
+<codeline lineno="211" refid="classleasy_1_1metadata_1_1_native_callable_1a01691cff423e7e4cd3e814b512bbb4fa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::any<sp/><ref refid="classleasy_1_1metadata_1_1_native_callable_1a01691cff423e7e4cd3e814b512bbb4fa" kindref="member">call</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;std::any&gt;&amp;<sp/>args)</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>impl-&gt;call(args);</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+<codeline lineno="215" refid="classleasy_1_1metadata_1_1_native_callable_1ac0086dcab51dda06010379fe58208a0f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::function&lt;int(<ref refid="structlua___state" kindref="compound">lua_State</ref>*)&gt;<sp/><ref refid="classleasy_1_1metadata_1_1_native_callable_1ac0086dcab51dda06010379fe58208a0f" kindref="member">lua</ref>()</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>impl-&gt;lua();</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight></codeline>
+<codeline lineno="219" refid="classleasy_1_1metadata_1_1_native_callable_1ac5c7383f039d571bedddee289f660da5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1_native_callable_1ac5c7383f039d571bedddee289f660da5" kindref="member">bind</ref>(<ref refid="classleasy_1_1ul2_1_1lstate" kindref="compound">ul2::lstate</ref>&amp;<sp/>state)</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>impl-&gt;bind(state);</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"></highlight></codeline>
+<codeline lineno="223" refid="classleasy_1_1metadata_1_1_native_callable_1a9a898a0fcf1da835aa6a7d4c6d3e238e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref><sp/><ref refid="classleasy_1_1metadata_1_1_native_callable_1a9a898a0fcf1da835aa6a7d4c6d3e238e" kindref="member">dump</ref>()</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>impl-&gt;dump();</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"></highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>Fs&gt;</highlight></codeline>
+<codeline lineno="229" refid="namespaceleasy_1_1metadata_1a1ae9b6db76c99e10f2ebdb409649b56f" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classleasy_1_1metadata_1_1_native_callable" kindref="compound">NativeCallable</ref><sp/><ref refid="namespaceleasy_1_1metadata_1a1ae9b6db76c99e10f2ebdb409649b56f" kindref="member">make_function</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;name,<sp/>Fs&amp;&amp;...<sp/>fs)<sp/>{</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">...(fs)<sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(name,<sp/>[]()<sp/>{});<sp/></highlight><highlight class="comment">//<sp/>That<sp/>one<sp/>does<sp/>cleary<sp/>something.<sp/>LOL.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">...(fs)<sp/>==<sp/>1)<sp/>{</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(name,<sp/>std::forward&lt;Fs&gt;(fs)...);</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1metadata_1_1overload__set" kindref="compound">overload_set</ref>(name,<sp/>std::forward&lt;Fs&gt;(fs)...);</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="238"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/metadata/function.hpp"/>
+  </compounddef>
+</doxygen>

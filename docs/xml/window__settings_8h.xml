@@ -1,0 +1,1243 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="window__settings_8h" kind="file" language="C++">
+    <compoundname>window_settings.h</compoundname>
+    <includes local="no">vector</includes>
+    <includes refid="input_8h" local="yes">input.h</includes>
+    <includes refid="window__numberinput_8h" local="yes">window_numberinput.h</includes>
+    <includes refid="window__selectable_8h" local="yes">window_selectable.h</includes>
+    <includedby refid="scene__language_8cpp" local="yes">scene_language.cpp</includedby>
+    <includedby refid="scene__language_8h" local="yes">scene_language.h</includedby>
+    <includedby refid="scene__settings_8cpp" local="yes">scene_settings.cpp</includedby>
+    <includedby refid="scene__settings_8h" local="yes">scene_settings.h</includedby>
+    <includedby refid="window__settings_8cpp" local="yes">window_settings.cpp</includedby>
+    <incdepgraph>
+      <node id="84">
+        <label>async_handler.h</label>
+        <link refid="async__handler_8h"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>bitmap.h</label>
+        <link refid="bitmap_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="60">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>config_param.h</label>
+        <link refid="config__param_8h"/>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="71">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="81">
+        <label>flash.h</label>
+        <link refid="flash_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>flat_map.h</label>
+        <link refid="flat__map_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="109">
+        <label>font.h</label>
+        <link refid="font_8h"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="110" relation="include">
+        </childnode>
+      </node>
+      <node id="72">
+        <label>game_actor.h</label>
+        <link refid="game__actor_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+      </node>
+      <node id="77">
+        <label>game_battler.h</label>
+        <link refid="game__battler_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+      </node>
+      <node id="48">
+        <label>game_clock.h</label>
+        <link refid="game__clock_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>game_config.h</label>
+        <link refid="game__config_8h"/>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>input.h</label>
+        <link refid="input_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>input_buttons.h</label>
+        <link refid="input__buttons_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>input_source.h</label>
+        <link refid="input__source_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>keys.h</label>
+        <link refid="keys_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="88">
+        <label>lcf/data.h</label>
+        <link refid="data_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="107" relation="include">
+        </childnode>
+      </node>
+      <node id="87">
+        <label>main_data.h</label>
+        <link refid="main__data_8h"/>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="69">
+        <label>opacity.h</label>
+        <link refid="opacity_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="63">
+        <label>pixel_format.h</label>
+        <link refid="pixel__format_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="68">
+        <label>pixman_image_ptr.h</label>
+        <link refid="pixman__image__ptr_8h"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>platform/clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>point.h</label>
+        <link refid="point_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="62">
+        <label>rect.h</label>
+        <link refid="rect_8h"/>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="83">
+        <label>sprite.h</label>
+        <link refid="sprite_8h"/>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+      </node>
+      <node id="86">
+        <label>sprite_actor.h</label>
+        <link refid="sprite__actor_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+      </node>
+      <node id="82">
+        <label>sprite_battler.h</label>
+        <link refid="sprite__battler_8h"/>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+      </node>
+      <node id="85">
+        <label>sprite_weapon.h</label>
+        <link refid="sprite__weapon_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+      </node>
+      <node id="80">
+        <label>state.h</label>
+        <link refid="state_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>std_clock.h</label>
+        <link refid="std__clock_8h"/>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="67">
+        <label>text.h</label>
+        <link refid="text_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="66">
+        <label>tone.h</label>
+        <link refid="tone_8h"/>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>window.h</label>
+        <link refid="window_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+      </node>
+      <node id="55">
+        <label>window_base.h</label>
+        <link refid="window__base_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+      </node>
+      <node id="108">
+        <label>window_help.h</label>
+        <link refid="window__help_8h"/>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>window_numberinput.h</label>
+        <link refid="window__numberinput_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>window_selectable.h</label>
+        <link refid="window__selectable_8h"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>window_settings.h</label>
+        <link refid="window__settings_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>algorithm</label>
+      </node>
+      <node id="12">
+        <label>array</label>
+      </node>
+      <node id="4">
+        <label>bitset</label>
+      </node>
+      <node id="13">
+        <label>cassert</label>
+      </node>
+      <node id="49">
+        <label>chrono</label>
+      </node>
+      <node id="70">
+        <label>climits</label>
+      </node>
+      <node id="14">
+        <label>cstdint</label>
+      </node>
+      <node id="42">
+        <label>cstdio</label>
+      </node>
+      <node id="64">
+        <label>cstdlib</label>
+      </node>
+      <node id="65">
+        <label>cstring</label>
+      </node>
+      <node id="37">
+        <label>ctime</label>
+      </node>
+      <node id="34">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="35">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="22">
+        <label>fstream</label>
+      </node>
+      <node id="38">
+        <label>functional</label>
+      </node>
+      <node id="15">
+        <label>initializer_list</label>
+      </node>
+      <node id="43">
+        <label>ios</label>
+      </node>
+      <node id="24">
+        <label>istream</label>
+      </node>
+      <node id="79">
+        <label>lcf/dbbitarray.h</label>
+      </node>
+      <node id="33">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="17">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="47">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="44">
+        <label>lcf/inireader.h</label>
+      </node>
+      <node id="75">
+        <label>lcf/rpg/actor.h</label>
+      </node>
+      <node id="95">
+        <label>lcf/rpg/animation.h</label>
+      </node>
+      <node id="93">
+        <label>lcf/rpg/attribute.h</label>
+      </node>
+      <node id="101">
+        <label>lcf/rpg/battlecommand.h</label>
+      </node>
+      <node id="102">
+        <label>lcf/rpg/battleranimation.h</label>
+      </node>
+      <node id="96">
+        <label>lcf/rpg/chipset.h</label>
+      </node>
+      <node id="100">
+        <label>lcf/rpg/class.h</label>
+      </node>
+      <node id="99">
+        <label>lcf/rpg/commonevent.h</label>
+      </node>
+      <node id="107">
+        <label>lcf/rpg/database.h</label>
+      </node>
+      <node id="91">
+        <label>lcf/rpg/enemy.h</label>
+      </node>
+      <node id="105">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="73">
+        <label>lcf/rpg/fwd.h</label>
+      </node>
+      <node id="90">
+        <label>lcf/rpg/item.h</label>
+      </node>
+      <node id="76">
+        <label>lcf/rpg/learning.h</label>
+      </node>
+      <node id="104">
+        <label>lcf/rpg/music.h</label>
+      </node>
+      <node id="74">
+        <label>lcf/rpg/saveactor.h</label>
+      </node>
+      <node id="89">
+        <label>lcf/rpg/skill.h</label>
+      </node>
+      <node id="103">
+        <label>lcf/rpg/sound.h</label>
+      </node>
+      <node id="78">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="98">
+        <label>lcf/rpg/system.h</label>
+      </node>
+      <node id="97">
+        <label>lcf/rpg/terms.h</label>
+      </node>
+      <node id="94">
+        <label>lcf/rpg/terrain.h</label>
+      </node>
+      <node id="106">
+        <label>lcf/rpg/treemap.h</label>
+      </node>
+      <node id="92">
+        <label>lcf/rpg/troop.h</label>
+      </node>
+      <node id="110">
+        <label>lcf/scope_guard.h</label>
+      </node>
+      <node id="30">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="32">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="45">
+        <label>limits</label>
+      </node>
+      <node id="58">
+        <label>map</label>
+      </node>
+      <node id="10">
+        <label>memory</label>
+      </node>
+      <node id="6">
+        <label>ostream</label>
+      </node>
+      <node id="59">
+        <label>pixman.h</label>
+      </node>
+      <node id="28">
+        <label>string</label>
+      </node>
+      <node id="51">
+        <label>thread</label>
+      </node>
+      <node id="61">
+        <label>tuple</label>
+      </node>
+      <node id="46">
+        <label>type_traits</label>
+      </node>
+      <node id="26">
+        <label>unordered_map</label>
+      </node>
+      <node id="19">
+        <label>utility</label>
+      </node>
+      <node id="2">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="9">
+        <label>game_interpreter.cpp</label>
+        <link refid="game__interpreter_8cpp"/>
+      </node>
+      <node id="4">
+        <label>game_interpreter_map.cpp</label>
+        <link refid="game__interpreter__map_8cpp"/>
+      </node>
+      <node id="10">
+        <label>platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp</label>
+        <link refid="org__easyrpg__player__player___easy_rpg_player_activity_8cpp"/>
+      </node>
+      <node id="11">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="5">
+        <label>scene.cpp</label>
+        <link refid="scene_8cpp"/>
+      </node>
+      <node id="12">
+        <label>scene_battle.cpp</label>
+        <link refid="scene__battle_8cpp"/>
+      </node>
+      <node id="13">
+        <label>scene_gamebrowser.cpp</label>
+        <link refid="scene__gamebrowser_8cpp"/>
+      </node>
+      <node id="2">
+        <label>scene_language.cpp</label>
+        <link refid="scene__language_8cpp"/>
+      </node>
+      <node id="3">
+        <label>scene_language.h</label>
+        <link refid="scene__language_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>scene_logo.cpp</label>
+        <link refid="scene__logo_8cpp"/>
+      </node>
+      <node id="15">
+        <label>scene_map.cpp</label>
+        <link refid="scene__map_8cpp"/>
+      </node>
+      <node id="16">
+        <label>scene_menu.cpp</label>
+        <link refid="scene__menu_8cpp"/>
+      </node>
+      <node id="6">
+        <label>scene_settings.cpp</label>
+        <link refid="scene__settings_8cpp"/>
+      </node>
+      <node id="8">
+        <label>scene_settings.h</label>
+        <link refid="scene__settings_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>scene_title.cpp</label>
+        <link refid="scene__title_8cpp"/>
+      </node>
+      <node id="17">
+        <label>window_settings.cpp</label>
+        <link refid="window__settings_8cpp"/>
+      </node>
+      <node id="1">
+        <label>window_settings.h</label>
+        <link refid="window__settings_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_window___settings" prot="public">Window_Settings</innerclass>
+    <innerclass refid="struct_window___settings_1_1_option" prot="public">Window_Settings::Option</innerclass>
+    <innerclass refid="struct_window___settings_1_1_stack_frame" prot="public">Window_Settings::StackFrame</innerclass>
+    <innerclass refid="struct_window___settings_1_1_memory" prot="private">Window_Settings::Memory</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="window__settings_8h_1a0735043763e9b50dd4afc232dcc467fc" prot="public" static="no">
+        <name>EP_WINDOW_SETTINGS_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="20" column="9" bodyfile="window_settings.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_WINDOW_SETTINGS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="window__settings_8h_1a0735043763e9b50dd4afc232dcc467fc" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_WINDOW_SETTINGS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="input_8h" kindref="compound">input.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="window__numberinput_8h" kindref="compound">window_numberinput.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="window__selectable_8h" kindref="compound">window_selectable.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="class_window___settings" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_window___settings_1a7649d810c004c1f82ef7221833fcdd2f" kindref="member">Window_Settings</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1a432f6e58c02d8f2d6973158af56de9f2" kindref="member">Window_Selectable</ref><sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="33" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562" kindref="member">UiMode</ref><sp/>{</highlight></codeline>
+<codeline lineno="34" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a32c65fb5e75649fd5b7023df88c972da" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a32c65fb5e75649fd5b7023df88c972da" kindref="member">eNone</ref>,</highlight></codeline>
+<codeline lineno="35" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562aaed1b0b9d6a007daa67b6fb6bb90a90b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562aaed1b0b9d6a007daa67b6fb6bb90a90b" kindref="member">eMain</ref>,</highlight></codeline>
+<codeline lineno="36" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a8869d3ad79421dfabe2b86060eed7b1a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a8869d3ad79421dfabe2b86060eed7b1a" kindref="member">eInput</ref>,</highlight></codeline>
+<codeline lineno="37" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a4f58ed6c6405be92ec98c835cf9f0fe3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a4f58ed6c6405be92ec98c835cf9f0fe3" kindref="member">eInputButtonCategory</ref>,</highlight></codeline>
+<codeline lineno="38" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562ab284b848c532d4f2e5ec183738fa209d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562ab284b848c532d4f2e5ec183738fa209d" kindref="member">eInputListButtonsGame</ref>,</highlight></codeline>
+<codeline lineno="39" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a32630dcfcc3abdc1782ba283c69a03d3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a32630dcfcc3abdc1782ba283c69a03d3" kindref="member">eInputListButtonsEngine</ref>,</highlight></codeline>
+<codeline lineno="40" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562ad8815191a5246d580fe788f89fe3f4a5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562ad8815191a5246d580fe788f89fe3f4a5" kindref="member">eInputListButtonsDeveloper</ref>,</highlight></codeline>
+<codeline lineno="41" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562aec31ee50ce545fd879eac153162ad236" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562aec31ee50ce545fd879eac153162ad236" kindref="member">eInputButtonOption</ref>,</highlight></codeline>
+<codeline lineno="42" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a8d6cb5586bd102a489b2a9d1a271209b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a8d6cb5586bd102a489b2a9d1a271209b" kindref="member">eInputButtonAdd</ref>,</highlight></codeline>
+<codeline lineno="43" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a7a147e4120352f43137de8698a2c4370" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a7a147e4120352f43137de8698a2c4370" kindref="member">eInputButtonRemove</ref>,</highlight></codeline>
+<codeline lineno="44" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562aa5150d8610868c333baaa784fcfafd13" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562aa5150d8610868c333baaa784fcfafd13" kindref="member">eVideo</ref>,</highlight></codeline>
+<codeline lineno="45" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a51fe9b66e160699a3ec374bfb3827e47" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a51fe9b66e160699a3ec374bfb3827e47" kindref="member">eAudio</ref>,</highlight></codeline>
+<codeline lineno="46" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562aafaf5bdf914a6fad56ffda569e3b1668" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562aafaf5bdf914a6fad56ffda569e3b1668" kindref="member">eAudioMidi</ref>,</highlight></codeline>
+<codeline lineno="47" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a2b5818744684e6f1cdf0ffae34f3b74f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a2b5818744684e6f1cdf0ffae34f3b74f" kindref="member">eAudioSoundfont</ref>,</highlight></codeline>
+<codeline lineno="48" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a50bcbefdbdf729f71ce76867ed12020b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a50bcbefdbdf729f71ce76867ed12020b" kindref="member">eLicense</ref>,</highlight></codeline>
+<codeline lineno="49" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562afe0c3da9676c41fa4472c46b3d71f512" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562afe0c3da9676c41fa4472c46b3d71f512" kindref="member">eEngine</ref>,</highlight></codeline>
+<codeline lineno="50" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562aef4af78c39c91d7ac4fef44f33a5f79a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562aef4af78c39c91d7ac4fef44f33a5f79a" kindref="member">eEngineFont1</ref>,</highlight></codeline>
+<codeline lineno="51" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a5cd89d1a7850ac333b8e749db4f1f1f2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a5cd89d1a7850ac333b8e749db4f1f1f2" kindref="member">eEngineFont2</ref>,</highlight></codeline>
+<codeline lineno="52" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562ac2c83f518220383ea4f8f6e58d821804" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562ac2c83f518220383ea4f8f6e58d821804" kindref="member">eSave</ref>,</highlight></codeline>
+<codeline lineno="53" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a1e1b3e5eb92b1df24accf8bf8c16d38c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a1e1b3e5eb92b1df24accf8bf8c16d38c" kindref="member">eEnd</ref>,</highlight></codeline>
+<codeline lineno="54" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562ad9f00bd8a2890fc7ff454e458c41d83e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562ad9f00bd8a2890fc7ff454e458c41d83e" kindref="member">eAbout</ref>,</highlight></codeline>
+<codeline lineno="55" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a22162b5a75892f0d8d4908279e15b9e9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a22162b5a75892f0d8d4908279e15b9e9" kindref="member">eLanguage</ref>,</highlight></codeline>
+<codeline lineno="56" refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562adb6f92f0c0ef71b5c91c2c4dd1cf576d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562adb6f92f0c0ef71b5c91c2c4dd1cf576d" kindref="member">eLastMode</ref></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="class_window___settings_1a643af582bcf6d86b76c675dc545270b0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="class_window___settings_1a643af582bcf6d86b76c675dc545270b0" kindref="member">OptionMode</ref><sp/>{</highlight></codeline>
+<codeline lineno="60" refid="class_window___settings_1a643af582bcf6d86b76c675dc545270b0af7c3c3f624142dd018a057a1f913af2b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a643af582bcf6d86b76c675dc545270b0af7c3c3f624142dd018a057a1f913af2b" kindref="member">eOptionNone</ref>,</highlight></codeline>
+<codeline lineno="61" refid="class_window___settings_1a643af582bcf6d86b76c675dc545270b0acc7df9f6d1155c2f0308e3ec5312b2d5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a643af582bcf6d86b76c675dc545270b0acc7df9f6d1155c2f0308e3ec5312b2d5" kindref="member">eOptionRangeInput</ref>,</highlight></codeline>
+<codeline lineno="62" refid="class_window___settings_1a643af582bcf6d86b76c675dc545270b0a4ef2054c3b6b7b7fd9172dfab33511a5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a643af582bcf6d86b76c675dc545270b0a4ef2054c3b6b7b7fd9172dfab33511a5" kindref="member">eOptionPicker</ref></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="struct_window___settings_1_1_option" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_window___settings_1_1_option" kindref="compound">Option</ref><sp/>{</highlight></codeline>
+<codeline lineno="66" refid="struct_window___settings_1_1_option_1ac2c23071ae815a92c1b3e33b200ef362" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="struct_window___settings_1_1_option_1ac2c23071ae815a92c1b3e33b200ef362" kindref="member">text</ref>;</highlight></codeline>
+<codeline lineno="67" refid="struct_window___settings_1_1_option_1a6b393f0431cec9aeef9fcd2a905361da" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="struct_window___settings_1_1_option_1a6b393f0431cec9aeef9fcd2a905361da" kindref="member">value_text</ref>;</highlight></codeline>
+<codeline lineno="68" refid="struct_window___settings_1_1_option_1af11aa863c38f9823e92278ad771cef6f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="struct_window___settings_1_1_option_1af11aa863c38f9823e92278ad771cef6f" kindref="member">help</ref>;</highlight></codeline>
+<codeline lineno="69" refid="struct_window___settings_1_1_option_1a0bba107e8ecd0299d884acc27b6b2f01" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="struct_window___settings_1_1_option_1a0bba107e8ecd0299d884acc27b6b2f01" kindref="member">help2</ref>;</highlight></codeline>
+<codeline lineno="70" refid="struct_window___settings_1_1_option_1a9a5d671096348588e941ea98c4319541" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::function&lt;void(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">)&gt;<sp/><ref refid="struct_window___settings_1_1_option_1a9a5d671096348588e941ea98c4319541" kindref="member">action</ref>;</highlight></codeline>
+<codeline lineno="71" refid="struct_window___settings_1_1_option_1aa8fd872e001511b624cbec0b376dfe66" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a643af582bcf6d86b76c675dc545270b0" kindref="member">OptionMode</ref><sp/><ref refid="struct_window___settings_1_1_option_1aa8fd872e001511b624cbec0b376dfe66" kindref="member">mode</ref>;</highlight></codeline>
+<codeline lineno="72" refid="struct_window___settings_1_1_option_1a35b462da093ab89763b46f2bc6243a7a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_font_1a300007dc1b65d906cf32066494d5cb8f" kindref="member">Font::SystemColor</ref><sp/><ref refid="struct_window___settings_1_1_option_1a35b462da093ab89763b46f2bc6243a7a" kindref="member">color</ref><sp/>=<sp/><ref refid="class_font_1a300007dc1b65d906cf32066494d5cb8faab221bb13421493c5b0745d87ebc58e9" kindref="member">Font::ColorDefault</ref>;</highlight></codeline>
+<codeline lineno="73" refid="struct_window___settings_1_1_option_1ac8c005e753688c071a6d26f97818d707" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_window___settings_1_1_option_1ac8c005e753688c071a6d26f97818d707" kindref="member">current_value</ref>;</highlight></codeline>
+<codeline lineno="74" refid="struct_window___settings_1_1_option_1aef824aff542deb08b5264007da9ebd31" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_window___settings_1_1_option_1aef824aff542deb08b5264007da9ebd31" kindref="member">original_value</ref>;</highlight></codeline>
+<codeline lineno="75" refid="struct_window___settings_1_1_option_1a399e2e06fefc4df46066460eb6decbf9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_window___settings_1_1_option_1a399e2e06fefc4df46066460eb6decbf9" kindref="member">min_value</ref>;</highlight></codeline>
+<codeline lineno="76" refid="struct_window___settings_1_1_option_1ae3ed23f10d87865b30f7f285dffdbdcb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_window___settings_1_1_option_1ae3ed23f10d87865b30f7f285dffdbdcb" kindref="member">max_value</ref>;</highlight></codeline>
+<codeline lineno="77" refid="struct_window___settings_1_1_option_1a842fd5850ce4a22a990e2de0969014cc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/><ref refid="struct_window___settings_1_1_option_1a842fd5850ce4a22a990e2de0969014cc" kindref="member">options_index</ref>;</highlight></codeline>
+<codeline lineno="78" refid="struct_window___settings_1_1_option_1a4360f955eee99043cdd11ce1358662eb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/><ref refid="struct_window___settings_1_1_option_1a4360f955eee99043cdd11ce1358662eb" kindref="member">options_text</ref>;</highlight></codeline>
+<codeline lineno="79" refid="struct_window___settings_1_1_option_1a0f48481adfed78df63e1e954d8c67d1d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/><ref refid="struct_window___settings_1_1_option_1a0f48481adfed78df63e1e954d8c67d1d" kindref="member">options_help</ref>;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82" refid="struct_window___settings_1_1_stack_frame" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_window___settings_1_1_stack_frame" kindref="compound">StackFrame</ref><sp/>{</highlight></codeline>
+<codeline lineno="83" refid="struct_window___settings_1_1_stack_frame_1a726281b4aa2f6ad1ebc484d13da5b37c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562" kindref="member">UiMode</ref><sp/><ref refid="struct_window___settings_1_1_stack_frame_1a726281b4aa2f6ad1ebc484d13da5b37c" kindref="member">uimode</ref><sp/>=<sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a32c65fb5e75649fd5b7023df88c972da" kindref="member">eNone</ref>;</highlight></codeline>
+<codeline lineno="84" refid="struct_window___settings_1_1_stack_frame_1af027ac053b2ae0d5d92fe3e5a57da7ca" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_window___settings_1_1_stack_frame_1af027ac053b2ae0d5d92fe3e5a57da7ca" kindref="member">arg</ref><sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="85" refid="struct_window___settings_1_1_stack_frame_1a1921e6c45dce3e3a5daf071404e2abaa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_window___settings_1_1_stack_frame_1a1921e6c45dce3e3a5daf071404e2abaa" kindref="member">scratch</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="86" refid="struct_window___settings_1_1_stack_frame_1a09228e39b9a33597416478e6ad2ad61b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_window___settings_1_1_stack_frame_1a09228e39b9a33597416478e6ad2ad61b" kindref="member">scratch2</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="87" refid="struct_window___settings_1_1_stack_frame_1adb56fd7a5d0eba7d08d5f6f3e6caa674" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;Option&gt;<sp/><ref refid="struct_window___settings_1_1_stack_frame_1adb56fd7a5d0eba7d08d5f6f3e6caa674" kindref="member">options</ref>;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a7649d810c004c1f82ef7221833fcdd2f" kindref="member">Window_Settings</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iwidth,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iheight);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94" refid="class_window___settings_1a4fab631139490097b317a1c24725dd41" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_window___settings_1a4fab631139490097b317a1c24725dd41" kindref="member">IsCurrentActionEnabled</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(<ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>&gt;=<sp/>0</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&amp;&amp;<sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>&lt;<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(<ref refid="class_window___settings_1a2d92c56ebc7f9d4f2db523e6e2aeb004" kindref="member">GetFrame</ref>().options.size())</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&amp;&amp;<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">bool</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(<ref refid="class_window___settings_1a2d92c56ebc7f9d4f2db523e6e2aeb004" kindref="member">GetFrame</ref>().options[<ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref>].action));</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101" refid="class_window___settings_1a84fcff2046eea28afe19b024d25a8cca" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_window___settings_1_1_option" kindref="compound">Option</ref>&amp;<sp/><ref refid="class_window___settings_1a84fcff2046eea28afe19b024d25a8cca" kindref="member">GetCurrentOption</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_window___settings_1a2d92c56ebc7f9d4f2db523e6e2aeb004" kindref="member">GetFrame</ref>().<ref refid="struct_window___settings_1_1_stack_frame_1adb56fd7a5d0eba7d08d5f6f3e6caa674" kindref="member">options</ref>[<ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref>];</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562" kindref="member">UiMode</ref><sp/><ref refid="class_window___settings_1ab91f7d5ce26160c6328f79e744161e17" kindref="member">GetMode</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___settings_1a08943b628c0db8bdbaff49f60fb5fa89" kindref="member">Push</ref>(<ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562" kindref="member">UiMode</ref><sp/>ui,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg<sp/>=<sp/>-1);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___settings_1a927683f4b3c07af2b768d4a43aa6ec8c" kindref="member">Pop</ref>();</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>StackFrame&amp;<sp/><ref refid="class_window___settings_1a2d92c56ebc7f9d4f2db523e6e2aeb004" kindref="member">GetFrame</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n<sp/>=<sp/>0);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>StackFrame&amp;<sp/><ref refid="class_window___settings_1a2d92c56ebc7f9d4f2db523e6e2aeb004" kindref="member">GetFrame</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n<sp/>=<sp/>0)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___settings_1a209200b9dc748d5f5b0a176cb2d51ce6" kindref="member">Refresh</ref>();</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___settings_1a62a9f6110bc0d354f4d172d445a7dc23" kindref="member">DrawOption</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref>);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125" refid="class_window___settings_1a691311315ce8ebfa905e35327bb23ff7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___help" kindref="compound">Window_Help</ref>*<sp/><ref refid="class_window___settings_1a691311315ce8ebfa905e35327bb23ff7" kindref="member">help_window2</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="126" refid="class_window___settings_1a8c9270b66d9f5aebea12f3448faf84e9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_range_config_param" kindref="compound">RangeConfigParam&lt;int&gt;</ref><sp/><ref refid="class_window___settings_1a8c9270b66d9f5aebea12f3448faf84e9" kindref="member">font_size</ref><sp/>{<sp/></highlight><highlight class="stringliteral">&quot;&lt;Font<sp/>Size&gt;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Font<sp/>size<sp/>to<sp/>use.<sp/>Not<sp/>supported<sp/>for<sp/>the<sp/>built-in<sp/>font.&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>12,<sp/>6,<sp/>16};</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Param,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Action&gt;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>AddOption(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Param&amp;<sp/>p,</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Action&amp;&amp;<sp/>action);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Action&gt;</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>AddOption(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_range_config_param" kindref="compound">RangeConfigParam&lt;T&gt;</ref>&amp;<sp/>p,</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Action&amp;&amp;<sp/>action</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Action,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>S&gt;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>AddOption(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_enum_config_param" kindref="compound">EnumConfigParam&lt;T, S&gt;</ref>&amp;<sp/>p,</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Action&amp;&amp;<sp/>action</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RefreshInput();</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RefreshButtonCategory();</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RefreshButtonList();</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RefreshVideo();</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RefreshAudio();</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RefreshAudioMidi();</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RefreshAudioSoundfont();</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RefreshEngine();</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RefreshEngineFont(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>mincho);</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RefreshLicense();</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1a1dfb10711a23fb5feac2c0392e423b06" kindref="member">UpdateHelp</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">Memory<sp/>{</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>top_row<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/>Memory<sp/>memory[<ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562adb6f92f0c0ef71b5c91c2c4dd1cf576d" kindref="member">eLastMode</ref>]<sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/>std::array&lt;StackFrame,8&gt;<sp/>stack;</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>stack_index<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/>picker_options;</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>SavePosition();</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RestorePosition();</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>sample<sp/>text<sp/>for<sp/>the<sp/>font<sp/>preview.<sp/>This<sp/>option<sp/>is<sp/>not<sp/>saved.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/>SampleText<sp/>{</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>English,</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>French,</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>German,</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Spanish,</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Chinese,</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Japanese_Hiragana,</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Japanese_Kanji,</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Korean,</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Diacritics</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/>EnumConfigParam&lt;SampleText,<sp/>9&gt;<sp/>sample_text{</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;&lt;Sample<sp/>Text&gt;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Text<sp/>to<sp/>show<sp/>in<sp/>the<sp/>preview&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>SampleText::English,</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight><highlight class="stringliteral">&quot;English&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;French&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;German&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Spanish&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Chinese&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Japanese<sp/>(Hiragana)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Japanese<sp/>(Kanji)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Korean&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Various<sp/>Diacritics&quot;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;The<sp/>quick<sp/>brown<sp/>fox<sp/>jumps<sp/>over<sp/>the<sp/>lazy<sp/>dog<sp/>1234567890.?!&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Voix<sp/>ambiguë<sp/>d&apos;un<sp/>cœur<sp/>qui<sp/>au<sp/>zéphyr<sp/>préfère<sp/>les<sp/>jattes<sp/>de<sp/>kiwis&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Victor<sp/>jagt<sp/>zwölf<sp/>Boxkämpfer<sp/>quer<sp/>über<sp/>den<sp/>großen<sp/>Sylter<sp/>Deich&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Jovencillo<sp/>emponzoñado<sp/>de<sp/>whisky,<sp/>¡qué<sp/>figurota<sp/>exhibe!&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;天地玄黃宇宙洪荒。日月盈昃辰宿列張。寒來暑往秋收冬藏。閏餘成歲律呂調陽。雲騰致雨露結為霜。金生麗水玉出崑岡。劍號巨闕珠稱夜光。果珍李柰菜重芥薑。海鹹河淡鱗潛羽翔。&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;いろはにほへと<sp/>ちりぬるを<sp/>わかよたれそ<sp/>つねならむ<sp/>うゐのおくやま<sp/>けふこえて<sp/>あさきゆめみし<sp/>ゑひもせす&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;色は匂えど散りぬるを我が世誰ぞ常ならん有為の奥山今日越えて浅き夢見じ酔いもせず&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;키스의<sp/>고유조건은<sp/>입술끼리<sp/>만나야<sp/>하고<sp/>특별한<sp/>기술은<sp/>필요치<sp/>않다&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>)</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="198"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="window_settings.h"/>
+  </compounddef>
+</doxygen>

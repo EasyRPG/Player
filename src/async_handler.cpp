@@ -454,3 +454,4 @@ void FileRequestAsync::DownloadDone(bool success) {
 		CallListeners(false);
 	}
 }
+

@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1lscripts" kind="namespace" language="C++">
+    <compoundname>leasy::lscripts</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceleasy_1_1lscripts_1aa0708778b7f8b231e05f152188fb63f7" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char * leasy::lscripts::set_require</definition>
+        <argsstring></argsstring>
+        <name>set_require</name>
+        <qualifiedname>leasy::lscripts::set_require</qualifiedname>
+        <initializer>                       = R&quot;(local old_require = require
+function require(module_name)
+        if not package.loaded[module_name] then
+            print(&quot; loading&quot;, module_name, &quot;not loaded&quot;)
+        else
+         print(&quot;loading&quot;, module_name, &quot;chached&quot;)
+        end
+        return old_require(module_name)
+end)&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/_lua_scripts.cpp" line="24" column="12" bodyfile="leasy/ily3/_lua_scripts.cpp" bodystart="24" bodyend="-1" declfile="leasy/ily3/_lua_scripts.hpp" declline="26" declcolumn="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para><ulink url="mailto:0xEF9087A@wys-prog.https">0xEF9087A@wys-prog.https</ulink>://github.com/wys-prog/leasy </para>
+    </detaileddescription>
+    <location file="leasy/ily3/_lua_scripts.cpp" line="23" column="1"/>
+  </compounddef>
+</doxygen>

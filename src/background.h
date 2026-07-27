@@ -69,3 +69,4 @@ inline void Background::SetTone(Tone tone) {
 }
 
 #endif
+

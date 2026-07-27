@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_file_finder_1_1_fs_entry" kind="struct" language="C++" prot="public">
+    <compoundname>FileFinder::FsEntry</compoundname>
+    <includes refid="filefinder_8h" local="no">filefinder.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_file_finder_1_1_fs_entry_1a08a4c0a4b4fe74fe10dc8be67a43043d" prot="public" static="no" mutable="no">
+        <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+        <definition>FilesystemView FileFinder::FsEntry::fs</definition>
+        <argsstring></argsstring>
+        <name>fs</name>
+        <qualifiedname>FileFinder::FsEntry::fs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="94" column="16" bodyfile="filefinder.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_file_finder_1_1_fs_entry_1a8c011e4b2551296f357673452d249312" prot="public" static="no" mutable="no">
+        <type><ref refid="namespace_file_finder_1a428f945a3463676f892b1c6890319a35" kindref="member">ProjectType</ref></type>
+        <definition>ProjectType FileFinder::FsEntry::type</definition>
+        <argsstring></argsstring>
+        <name>type</name>
+        <qualifiedname>FileFinder::FsEntry::type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="95" column="13" bodyfile="filefinder.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Helper struct combining project type and filesystem (used by Android Game Browser) </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>FileFinder::FsEntry</label>
+        <link refid="struct_file_finder_1_1_fs_entry"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>fs</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>FilesystemView</label>
+        <link refid="class_filesystem_view"/>
+      </node>
+    </collaborationgraph>
+    <location file="filefinder.h" line="93" column="1" bodyfile="filefinder.h" bodystart="93" bodyend="96"/>
+    <listofallmembers>
+      <member refid="struct_file_finder_1_1_fs_entry_1a08a4c0a4b4fe74fe10dc8be67a43043d" prot="public" virt="non-virtual"><scope>FileFinder::FsEntry</scope><name>fs</name></member>
+      <member refid="struct_file_finder_1_1_fs_entry_1a8c011e4b2551296f357673452d249312" prot="public" virt="non-virtual"><scope>FileFinder::FsEntry</scope><name>type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

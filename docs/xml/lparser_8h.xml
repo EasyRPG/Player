@@ -1,0 +1,813 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lparser_8h" kind="file" language="C++">
+    <compoundname>lparser.h</compoundname>
+    <includes refid="llimits_8h" local="yes">llimits.h</includes>
+    <includes refid="lobject_8h" local="yes">lobject.h</includes>
+    <includes refid="lzio_8h" local="yes">lzio.h</includes>
+    <includedby refid="lcode_8c" local="yes">leasy/lua/lcode.c</includedby>
+    <includedby refid="lcode_8h" local="yes">leasy/lua/lcode.h</includedby>
+    <includedby refid="ldo_8c" local="yes">leasy/lua/ldo.c</includedby>
+    <includedby refid="llex_8c" local="yes">leasy/lua/llex.c</includedby>
+    <includedby refid="lparser_8c" local="yes">leasy/lua/lparser.c</includedby>
+    <incdepgraph>
+      <node id="2">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>lmem.h</label>
+        <link refid="lmem_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>lobject.h</label>
+        <link refid="lobject_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lparser.h</label>
+        <link refid="lparser_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>lzio.h</label>
+        <link refid="lzio_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>limits.h</label>
+      </node>
+      <node id="6">
+        <label>stdarg.h</label>
+      </node>
+      <node id="4">
+        <label>stddef.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>leasy/lua/lcode.c</label>
+        <link refid="lcode_8c"/>
+      </node>
+      <node id="3">
+        <label>leasy/lua/lcode.h</label>
+        <link refid="lcode_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>leasy/lua/ldebug.c</label>
+        <link refid="ldebug_8c"/>
+      </node>
+      <node id="6">
+        <label>leasy/lua/ldo.c</label>
+        <link refid="ldo_8c"/>
+      </node>
+      <node id="7">
+        <label>leasy/lua/llex.c</label>
+        <link refid="llex_8c"/>
+      </node>
+      <node id="5">
+        <label>leasy/lua/lparser.c</label>
+        <link refid="lparser_8c"/>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lparser.h</label>
+        <link refid="lparser_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structexpdesc" prot="public">expdesc</innerclass>
+    <innerclass refid="union_vardesc" prot="public">Vardesc</innerclass>
+    <innerclass refid="struct_labeldesc" prot="public">Labeldesc</innerclass>
+    <innerclass refid="struct_labellist" prot="public">Labellist</innerclass>
+    <innerclass refid="struct_dyndata" prot="public">Dyndata</innerclass>
+    <innerclass refid="struct_func_state" prot="public">FuncState</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lparser_8h_1a51778fbd65fc02656cb2731b5e9c7d06" prot="public" static="no">
+        <name>vkisvar</name>
+        <param><defname>k</defname></param>
+        <initializer>(<ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ead8fc7331fa6e500f522f9f3334f14567" kindref="member">VLOCAL</ref> &lt;= (k) &amp;&amp; (k) &lt;= <ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea16545cc6f945dda467b1418b80a35876" kindref="member">VINDEXSTR</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="74" column="9" bodyfile="leasy/lua/lparser.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lparser_8h_1a461494027b4038753f03ee04f4753d0f" prot="public" static="no">
+        <name>vkisindexed</name>
+        <param><defname>k</defname></param>
+        <initializer>(<ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eab1cb541b6c8f3a5f03b17184a2facc85" kindref="member">VINDEXED</ref> &lt;= (k) &amp;&amp; (k) &lt;= <ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea16545cc6f945dda467b1418b80a35876" kindref="member">VINDEXSTR</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="75" column="9" bodyfile="leasy/lua/lparser.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lparser_8h_1a5def61221e8337c622aaede33e79e7ea" prot="public" static="no">
+        <name>VDKREG</name>
+        <initializer>0   /* regular local */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="102" column="9" bodyfile="leasy/lua/lparser.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lparser_8h_1a6edb3863e15fbe2a86f0da27cd40dd36" prot="public" static="no">
+        <name>RDKCONST</name>
+        <initializer>1   /* local constant */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="103" column="9" bodyfile="leasy/lua/lparser.h" bodystart="103" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lparser_8h_1ac1b16f12acac377d1e010792ec1c5463" prot="public" static="no">
+        <name>RDKVAVAR</name>
+        <initializer>2   /* vararg parameter */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="104" column="9" bodyfile="leasy/lua/lparser.h" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lparser_8h_1aff76bd46e696b6c05c8ebcacbff3e436" prot="public" static="no">
+        <name>RDKTOCLOSE</name>
+        <initializer>3   /* to-be-closed */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="105" column="9" bodyfile="leasy/lua/lparser.h" bodystart="105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lparser_8h_1ae37149486c77ebc6d130a3a1d1b5942d" prot="public" static="no">
+        <name>RDKCTC</name>
+        <initializer>4   /* local compile-time constant */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="106" column="9" bodyfile="leasy/lua/lparser.h" bodystart="106" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lparser_8h_1afda116dee5baf6e49ba6500ff9bfe1b5" prot="public" static="no">
+        <name>GDKREG</name>
+        <initializer>5   /* regular global */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="107" column="9" bodyfile="leasy/lua/lparser.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lparser_8h_1a5d5528b55210afb7e76416ad944d06ce" prot="public" static="no">
+        <name>GDKCONST</name>
+        <initializer>6   /* global constant */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="108" column="9" bodyfile="leasy/lua/lparser.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lparser_8h_1a636c4ea464d692c45325d6be24c97981" prot="public" static="no">
+        <name>varinreg</name>
+        <param><defname>v</defname></param>
+        <initializer>((v)-&gt;vd.kind &lt;= <ref refid="lparser_8h_1aff76bd46e696b6c05c8ebcacbff3e436" kindref="member">RDKTOCLOSE</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="111" column="9" bodyfile="leasy/lua/lparser.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lparser_8h_1a67e7eadd9abaf57e3086e4fd5a48ca7f" prot="public" static="no">
+        <name>varglobal</name>
+        <param><defname>v</defname></param>
+        <initializer>((v)-&gt;vd.kind &gt;= <ref refid="lparser_8h_1afda116dee5baf6e49ba6500ff9bfe1b5" kindref="member">GDKREG</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="114" column="9" bodyfile="leasy/lua/lparser.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4e" prot="public" static="no" strong="no">
+        <type></type>
+        <name>expkind</name>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eae4dbae7b833ca72c63360ec7be904fa6" prot="public">
+          <name>VVOID</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea47eb055b6420db339de283cef27ad5d8" prot="public">
+          <name>VNIL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea1228eca4fdc8e7643d18155507942482" prot="public">
+          <name>VTRUE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea21820bf1e2c58882ffeb34849972ecaa" prot="public">
+          <name>VFALSE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eaf926040fb3c22e9456f27b78e4ad19d2" prot="public">
+          <name>VK</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea425f6de3ad910f1c4c56cbf16711a967" prot="public">
+          <name>VKFLT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea4d24e28198fe684b7237e57bd8a0070f" prot="public">
+          <name>VKINT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eab06fcbc55fc36e7552634eef34375124" prot="public">
+          <name>VKSTR</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eaa7be620e4921ca3142b792f4bb0a98be" prot="public">
+          <name>VNONRELOC</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ead8fc7331fa6e500f522f9f3334f14567" prot="public">
+          <name>VLOCAL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea4fe161377d9dafb20e579ba02678257f" prot="public">
+          <name>VVARGVAR</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea0abe25efc118cf90d3c5c7ce4404a650" prot="public">
+          <name>VGLOBAL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea8ebb62b5889a955b7e4dd1c5b169b38f" prot="public">
+          <name>VUPVAL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea45b9027634b5e43ca50f4d6efbbe4220" prot="public">
+          <name>VCONST</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eab1cb541b6c8f3a5f03b17184a2facc85" prot="public">
+          <name>VINDEXED</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea7a4fe0f22a4e65a7ab67bb5851afcb36" prot="public">
+          <name>VVARGIND</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea83132d11273ccae411b61430023e4be0" prot="public">
+          <name>VINDEXUP</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea8007ab33287e6ed71b323366234b532a" prot="public">
+          <name>VINDEXI</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea16545cc6f945dda467b1418b80a35876" prot="public">
+          <name>VINDEXSTR</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ead1066918edd602fb0577c9f58ced173c" prot="public">
+          <name>VJMP</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea50c55cd86f50851c8861fb827cff6073" prot="public">
+          <name>VRELOC</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eae61a8c04cfeabd756694cd13774e47b7" prot="public">
+          <name>VCALL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea3f5f58de0fa9e69449d4e2362ddbfaa1" prot="public">
+          <name>VVARARG</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="25" column="1" bodyfile="leasy/lua/lparser.h" bodystart="25" bodyend="71"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="lparser_8h_1a5dd0cc7fac1ea8a3cacefb7cf322cd7a" prot="public" static="no">
+        <type>struct expdesc</type>
+        <definition>typedef struct expdesc expdesc</definition>
+        <argsstring></argsstring>
+        <name>expdesc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="98" column="9"/>
+      </memberdef>
+      <memberdef kind="typedef" id="lparser_8h_1a213230d7919520e54d776ec5a50903dc" prot="public" static="no">
+        <type>union Vardesc</type>
+        <definition>typedef union Vardesc Vardesc</definition>
+        <argsstring></argsstring>
+        <name>Vardesc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="127" column="9"/>
+      </memberdef>
+      <memberdef kind="typedef" id="lparser_8h_1ab135786bb87517f9f774754b91b72374" prot="public" static="no">
+        <type>struct Labeldesc</type>
+        <definition>typedef struct Labeldesc Labeldesc</definition>
+        <argsstring></argsstring>
+        <name>Labeldesc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="138" column="11"/>
+      </memberdef>
+      <memberdef kind="typedef" id="lparser_8h_1ad15a88bb9fe7b666c688c37ce5a9a07a" prot="public" static="no">
+        <type>struct Labellist</type>
+        <definition>typedef struct Labellist Labellist</definition>
+        <argsstring></argsstring>
+        <name>Labellist</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="146" column="11"/>
+      </memberdef>
+      <memberdef kind="typedef" id="lparser_8h_1aecb808d1d218e15537c9ff5b72bfd1e5" prot="public" static="no">
+        <type>struct Dyndata</type>
+        <definition>typedef struct Dyndata Dyndata</definition>
+        <argsstring></argsstring>
+        <name>Dyndata</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="158" column="9"/>
+      </memberdef>
+      <memberdef kind="typedef" id="lparser_8h_1a365e467fb166b7359e63492250ceb49f" prot="public" static="no">
+        <type>struct FuncState</type>
+        <definition>typedef struct FuncState FuncState</definition>
+        <argsstring></argsstring>
+        <name>FuncState</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="186" column="11"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="lparser_8h_1a2f12e1a31d781c068555e21fb7bacc05" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>LUAI_FUNC lu_byte luaY_nvarstack</definition>
+        <argsstring>(FuncState *fs)</argsstring>
+        <name>luaY_nvarstack</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="189" column="19" bodyfile="leasy/lua/lparser.c" bodystart="250" bodyend="252" declfile="leasy/lua/lparser.h" declline="189" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="lparser_8h_1a6f046f4c2d3575ef07cf0147016bc65a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaY_checklimit</definition>
+        <argsstring>(FuncState *fs, int v, int l, const char *what)</argsstring>
+        <name>luaY_checklimit</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>v</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>l</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>what</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="190" column="16" bodyfile="leasy/lua/lparser.c" bodystart="87" bodyend="89" declfile="leasy/lua/lparser.h" declline="190" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lparser_8h_1a5970b5cbbac35cf0e512db9e9dba0ecc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="struct_l_closure" kindref="compound">LClosure</ref> *</type>
+        <definition>LUAI_FUNC LClosure * luaY_parser</definition>
+        <argsstring>(lua_State *L, ZIO *z, Mbuffer *buff, Dyndata *dyd, const char *name, int firstchar)</argsstring>
+        <name>luaY_parser</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref> *</type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_mbuffer" kindref="compound">Mbuffer</ref> *</type>
+          <declname>buff</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_dyndata" kindref="compound">Dyndata</ref> *</type>
+          <declname>dyd</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>firstchar</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="192" column="20" bodyfile="leasy/lua/lparser.c" bodystart="2168" bodyend="2192" declfile="leasy/lua/lparser.h" declline="192" declcolumn="20"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lparser.h<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Lua<sp/>Parser</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>lparser_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lparser_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="llimits_8h" kindref="compound">llimits.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lobject_8h" kindref="compound">lobject.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lzio_8h" kindref="compound">lzio.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment">**<sp/>Expression<sp/>and<sp/>variable<sp/>descriptor.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment">**<sp/>Code<sp/>generation<sp/>for<sp/>variables<sp/>and<sp/>expressions<sp/>can<sp/>be<sp/>delayed<sp/>to<sp/>allow</highlight></codeline>
+<codeline lineno="18"><highlight class="comment">**<sp/>optimizations;<sp/>An<sp/>&apos;expdesc&apos;<sp/>structure<sp/>describes<sp/>a<sp/>potentially-delayed</highlight></codeline>
+<codeline lineno="19"><highlight class="comment">**<sp/>variable/expression.<sp/>It<sp/>has<sp/>a<sp/>description<sp/>of<sp/>its<sp/>&quot;main&quot;<sp/>value<sp/>plus<sp/>a</highlight></codeline>
+<codeline lineno="20"><highlight class="comment">**<sp/>list<sp/>of<sp/>conditional<sp/>jumps<sp/>that<sp/>can<sp/>also<sp/>produce<sp/>its<sp/>value<sp/>(generated</highlight></codeline>
+<codeline lineno="21"><highlight class="comment">**<sp/>by<sp/>short-circuit<sp/>operators<sp/>&apos;and&apos;/&apos;or&apos;).</highlight></codeline>
+<codeline lineno="22"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>kinds<sp/>of<sp/>variables/expressions<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4e" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="26" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eae4dbae7b833ca72c63360ec7be904fa6" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eae4dbae7b833ca72c63360ec7be904fa6" kindref="member">VVOID</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>when<sp/>&apos;expdesc&apos;<sp/>describes<sp/>the<sp/>last<sp/>expression<sp/>of<sp/>a<sp/>list,</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this<sp/>kind<sp/>means<sp/>an<sp/>empty<sp/>list<sp/>(so,<sp/>no<sp/>expression)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea47eb055b6420db339de283cef27ad5d8" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea47eb055b6420db339de283cef27ad5d8" kindref="member">VNIL</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>constant<sp/>nil<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea1228eca4fdc8e7643d18155507942482" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea1228eca4fdc8e7643d18155507942482" kindref="member">VTRUE</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>constant<sp/>true<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea21820bf1e2c58882ffeb34849972ecaa" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea21820bf1e2c58882ffeb34849972ecaa" kindref="member">VFALSE</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>constant<sp/>false<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eaf926040fb3c22e9456f27b78e4ad19d2" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eaf926040fb3c22e9456f27b78e4ad19d2" kindref="member">VK</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>constant<sp/>in<sp/>&apos;k&apos;;<sp/>info<sp/>=<sp/>index<sp/>of<sp/>constant<sp/>in<sp/>&apos;k&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea425f6de3ad910f1c4c56cbf16711a967" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea425f6de3ad910f1c4c56cbf16711a967" kindref="member">VKFLT</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>floating<sp/>constant;<sp/>nval<sp/>=<sp/>numerical<sp/>float<sp/>value<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea4d24e28198fe684b7237e57bd8a0070f" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea4d24e28198fe684b7237e57bd8a0070f" kindref="member">VKINT</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>integer<sp/>constant;<sp/>ival<sp/>=<sp/>numerical<sp/>integer<sp/>value<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eab06fcbc55fc36e7552634eef34375124" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eab06fcbc55fc36e7552634eef34375124" kindref="member">VKSTR</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>string<sp/>constant;<sp/>strval<sp/>=<sp/>TString<sp/>address;</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(string<sp/>is<sp/>fixed<sp/>by<sp/>the<sp/>scanner)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eaa7be620e4921ca3142b792f4bb0a98be" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eaa7be620e4921ca3142b792f4bb0a98be" kindref="member">VNONRELOC</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>expression<sp/>has<sp/>its<sp/>value<sp/>in<sp/>a<sp/>fixed<sp/>register;</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>info<sp/>=<sp/>result<sp/>register<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ead8fc7331fa6e500f522f9f3334f14567" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ead8fc7331fa6e500f522f9f3334f14567" kindref="member">VLOCAL</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>local<sp/>variable;<sp/>var.ridx<sp/>=<sp/>register<sp/>index;</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>var.vidx<sp/>=<sp/>relative<sp/>index<sp/>in<sp/>&apos;actvar.arr&apos;<sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea4fe161377d9dafb20e579ba02678257f" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea4fe161377d9dafb20e579ba02678257f" kindref="member">VVARGVAR</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>vararg<sp/>parameter;<sp/>var.ridx<sp/>=<sp/>register<sp/>index;</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>var.vidx<sp/>=<sp/>relative<sp/>index<sp/>in<sp/>&apos;actvar.arr&apos;<sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea0abe25efc118cf90d3c5c7ce4404a650" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea0abe25efc118cf90d3c5c7ce4404a650" kindref="member">VGLOBAL</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>global<sp/>variable;</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>info<sp/>=<sp/>relative<sp/>index<sp/>in<sp/>&apos;actvar.arr&apos;<sp/>(or<sp/>-1<sp/>for</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>implicit<sp/>declaration)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea8ebb62b5889a955b7e4dd1c5b169b38f" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea8ebb62b5889a955b7e4dd1c5b169b38f" kindref="member">VUPVAL</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>upvalue<sp/>variable;<sp/>info<sp/>=<sp/>index<sp/>of<sp/>upvalue<sp/>in<sp/>&apos;upvalues&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea45b9027634b5e43ca50f4d6efbbe4220" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea45b9027634b5e43ca50f4d6efbbe4220" kindref="member">VCONST</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>compile-time<sp/>&lt;const&gt;<sp/>variable;</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>info<sp/>=<sp/>absolute<sp/>index<sp/>in<sp/>&apos;actvar.arr&apos;<sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eab1cb541b6c8f3a5f03b17184a2facc85" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eab1cb541b6c8f3a5f03b17184a2facc85" kindref="member">VINDEXED</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>indexed<sp/>variable;</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ind.t<sp/>=<sp/>table<sp/>register;</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ind.idx<sp/>=<sp/>key&apos;s<sp/>R<sp/>index;</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ind.ro<sp/>=<sp/>true<sp/>if<sp/>it<sp/>represents<sp/>a<sp/>read-only<sp/>global;</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ind.keystr<sp/>=<sp/>if<sp/>key<sp/>is<sp/>a<sp/>string,<sp/>index<sp/>in<sp/>&apos;k&apos;<sp/>of<sp/>that<sp/>string;</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>-1<sp/>if<sp/>key<sp/>is<sp/>not<sp/>a<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea7a4fe0f22a4e65a7ab67bb5851afcb36" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea7a4fe0f22a4e65a7ab67bb5851afcb36" kindref="member">VVARGIND</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>indexed<sp/>vararg<sp/>parameter;</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ind.*<sp/>as<sp/>in<sp/>VINDEXED<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea83132d11273ccae411b61430023e4be0" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea83132d11273ccae411b61430023e4be0" kindref="member">VINDEXUP</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>indexed<sp/>upvalue;</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ind.idx<sp/>=<sp/>key&apos;s<sp/>K<sp/>index;</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ind.*<sp/>as<sp/>in<sp/>VINDEXED<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea8007ab33287e6ed71b323366234b532a" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea8007ab33287e6ed71b323366234b532a" kindref="member">VINDEXI</ref>,<sp/></highlight><highlight class="comment">/*<sp/>indexed<sp/>variable<sp/>with<sp/>constant<sp/>integer;</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ind.t<sp/>=<sp/>table<sp/>register;</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ind.idx<sp/>=<sp/>key&apos;s<sp/>value<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea16545cc6f945dda467b1418b80a35876" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea16545cc6f945dda467b1418b80a35876" kindref="member">VINDEXSTR</ref>,<sp/></highlight><highlight class="comment">/*<sp/>indexed<sp/>variable<sp/>with<sp/>literal<sp/>string;</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ind.idx<sp/>=<sp/>key&apos;s<sp/>K<sp/>index;</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ind.*<sp/>as<sp/>in<sp/>VINDEXED<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ead1066918edd602fb0577c9f58ced173c" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ead1066918edd602fb0577c9f58ced173c" kindref="member">VJMP</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>expression<sp/>is<sp/>a<sp/>test/comparison;</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>info<sp/>=<sp/>pc<sp/>of<sp/>corresponding<sp/>jump<sp/>instruction<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea50c55cd86f50851c8861fb827cff6073" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea50c55cd86f50851c8861fb827cff6073" kindref="member">VRELOC</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>expression<sp/>can<sp/>put<sp/>result<sp/>in<sp/>any<sp/>register;</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>info<sp/>=<sp/>instruction<sp/>pc<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eae61a8c04cfeabd756694cd13774e47b7" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4eae61a8c04cfeabd756694cd13774e47b7" kindref="member">VCALL</ref>,<sp/><sp/></highlight><highlight class="comment">/*<sp/>expression<sp/>is<sp/>a<sp/>function<sp/>call;<sp/>info<sp/>=<sp/>instruction<sp/>pc<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70" refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea3f5f58de0fa9e69449d4e2362ddbfaa1" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4ea3f5f58de0fa9e69449d4e2362ddbfaa1" kindref="member">VVARARG</ref><sp/><sp/></highlight><highlight class="comment">/*<sp/>vararg<sp/>expression;<sp/>info<sp/>=<sp/>instruction<sp/>pc<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal">}<sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4e" kindref="member">expkind</ref>;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="lparser_8h_1a51778fbd65fc02656cb2731b5e9c7d06" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>vkisvar(k)<sp/><sp/>(VLOCAL<sp/>&lt;=<sp/>(k)<sp/>&amp;&amp;<sp/>(k)<sp/>&lt;=<sp/>VINDEXSTR)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75" refid="lparser_8h_1a461494027b4038753f03ee04f4753d0f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>vkisindexed(k)<sp/><sp/>(VINDEXED<sp/>&lt;=<sp/>(k)<sp/>&amp;&amp;<sp/>(k)<sp/>&lt;=<sp/>VINDEXSTR)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78" refid="structexpdesc" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>{</highlight></codeline>
+<codeline lineno="79" refid="structexpdesc_1ae74b3577aad7833518986edca3db242c" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lparser_8h_1aecced501a9387ab3e6e50a9834615d4e" kindref="member">expkind</ref><sp/><ref refid="structexpdesc_1ae74b3577aad7833518986edca3db242c" kindref="member">k</ref>;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">union<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="81" refid="structexpdesc_1ab9299c85deaf83fd3f37c0f7d29639e0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/><ref refid="structexpdesc_1ab9299c85deaf83fd3f37c0f7d29639e0" kindref="member">ival</ref>;<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>for<sp/>VKINT<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82" refid="structexpdesc_1ad7e0406615f459c8df64b2b7b86e6a0a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref><sp/><ref refid="structexpdesc_1ad7e0406615f459c8df64b2b7b86e6a0a" kindref="member">nval</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>for<sp/>VKFLT<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83" refid="structexpdesc_1ad2c5bc52ce3eecf4eb5cce524ee56d67" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="structexpdesc_1ad2c5bc52ce3eecf4eb5cce524ee56d67" kindref="member">strval</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>for<sp/>VKSTR<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84" refid="structexpdesc_1a0b2f77c33e2412d54ec90f71030121e2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structexpdesc_1a0b2f77c33e2412d54ec90f71030121e2" kindref="member">info</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>for<sp/>generic<sp/>use<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{<sp/><sp/></highlight><highlight class="comment">/*<sp/>for<sp/>indexed<sp/>variables<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86" refid="structexpdesc_1a2333bf09cdfaeb847c56b2a13925ff11" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/><ref refid="structexpdesc_1a2333bf09cdfaeb847c56b2a13925ff11" kindref="member">idx</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>index<sp/>(R<sp/>or<sp/>&quot;long&quot;<sp/>K)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87" refid="structexpdesc_1aff73ceb852b920307d0adf7b42111d7b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="structexpdesc_1aff73ceb852b920307d0adf7b42111d7b" kindref="member">t</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>table<sp/>(register<sp/>or<sp/>upvalue)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88" refid="structexpdesc_1aec04a5d981ad75350b77911bb40f982f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="structexpdesc_1aec04a5d981ad75350b77911bb40f982f" kindref="member">ro</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>true<sp/>if<sp/>variable<sp/>is<sp/>read-only<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89" refid="structexpdesc_1a7ac82b0b6cb960cb25cb79b959367af2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structexpdesc_1a7ac82b0b6cb960cb25cb79b959367af2" kindref="member">keystr</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>index<sp/>in<sp/>&apos;k&apos;<sp/>of<sp/>string<sp/>key,<sp/>or<sp/>-1<sp/>if<sp/>not<sp/>a<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90" refid="structexpdesc_1af46fcd8dd38a7125b81432f476d2972c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/><ref refid="structexpdesc_1af46fcd8dd38a7125b81432f476d2972c" kindref="member">ind</ref>;</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{<sp/><sp/></highlight><highlight class="comment">/*<sp/>for<sp/>local<sp/>variables<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92" refid="structexpdesc_1af19de25aff8a4e626089882273d06150" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="structexpdesc_1af19de25aff8a4e626089882273d06150" kindref="member">ridx</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>register<sp/>holding<sp/>the<sp/>variable<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93" refid="structexpdesc_1a6cf7c8b3430a7b1bb77557614bc116dc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/><ref refid="structexpdesc_1a6cf7c8b3430a7b1bb77557614bc116dc" kindref="member">vidx</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>index<sp/>in<sp/>&apos;actvar.arr&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94" refid="structexpdesc_1a77894230b86086f41b1f9a964acab939" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/><ref refid="structexpdesc_1a77894230b86086f41b1f9a964acab939" kindref="member">var</ref>;</highlight></codeline>
+<codeline lineno="95" refid="structexpdesc_1a1d4605aecd5cff9e496c9687490aa22f" refkind="member"><highlight class="normal"><sp/><sp/>}<sp/><ref refid="structexpdesc_1a1d4605aecd5cff9e496c9687490aa22f" kindref="member">u</ref>;</highlight></codeline>
+<codeline lineno="96" refid="structexpdesc_1a406e85dd954d4a5cec0c0f4a73e519bf" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structexpdesc_1aff73ceb852b920307d0adf7b42111d7b" kindref="member">t</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>patch<sp/>list<sp/>of<sp/>&apos;exit<sp/>when<sp/>true&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97" refid="structexpdesc_1afe6e22f2c18d75bc97add0e1f62e93e2" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structexpdesc_1afe6e22f2c18d75bc97add0e1f62e93e2" kindref="member">f</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>patch<sp/>list<sp/>of<sp/>&apos;exit<sp/>when<sp/>false&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98" refid="lparser_8h_1a5dd0cc7fac1ea8a3cacefb7cf322cd7a" refkind="member"><highlight class="normal">}<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref>;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>kinds<sp/>of<sp/>variables<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102" refid="lparser_8h_1a5def61221e8337c622aaede33e79e7ea" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>VDKREG<sp/><sp/><sp/><sp/><sp/><sp/>0<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>regular<sp/>local<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103" refid="lparser_8h_1a6edb3863e15fbe2a86f0da27cd40dd36" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>RDKCONST<sp/><sp/><sp/><sp/>1<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>local<sp/>constant<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104" refid="lparser_8h_1ac1b16f12acac377d1e010792ec1c5463" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>RDKVAVAR<sp/><sp/><sp/><sp/>2<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>vararg<sp/>parameter<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105" refid="lparser_8h_1aff76bd46e696b6c05c8ebcacbff3e436" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>RDKTOCLOSE<sp/><sp/>3<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>to-be-closed<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106" refid="lparser_8h_1ae37149486c77ebc6d130a3a1d1b5942d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>RDKCTC<sp/><sp/><sp/><sp/><sp/><sp/>4<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>local<sp/>compile-time<sp/>constant<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107" refid="lparser_8h_1afda116dee5baf6e49ba6500ff9bfe1b5" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GDKREG<sp/><sp/><sp/><sp/><sp/><sp/>5<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>regular<sp/>global<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108" refid="lparser_8h_1a5d5528b55210afb7e76416ad944d06ce" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GDKCONST<sp/><sp/><sp/><sp/>6<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>global<sp/>constant<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>variables<sp/>that<sp/>live<sp/>in<sp/>registers<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111" refid="lparser_8h_1a636c4ea464d692c45325d6be24c97981" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>varinreg(v)<sp/>((v)-&gt;vd.kind<sp/>&lt;=<sp/>RDKTOCLOSE)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>test<sp/>for<sp/>global<sp/>variables<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114" refid="lparser_8h_1a67e7eadd9abaf57e3086e4fd5a48ca7f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>varglobal(v)<sp/><sp/><sp/><sp/>((v)-&gt;vd.kind<sp/>&gt;=<sp/>GDKREG)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>description<sp/>of<sp/>an<sp/>active<sp/>variable<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118" refid="union_vardesc" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">union<sp/></highlight><highlight class="normal"><ref refid="union_vardesc" kindref="compound">Vardesc</ref><sp/>{</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="120" refid="union_vardesc_1aec05721e79f1bb78e05389553ef3c971" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="union_vardesc_1aec05721e79f1bb78e05389553ef3c971" kindref="member">TValuefields</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>constant<sp/>value<sp/>(if<sp/>it<sp/>is<sp/>a<sp/>compile-time<sp/>constant)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="121" refid="union_vardesc_1a2fd435b2b04c1eaa315462f92751dac5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="union_vardesc_1a2fd435b2b04c1eaa315462f92751dac5" kindref="member">kind</ref>;</highlight></codeline>
+<codeline lineno="122" refid="union_vardesc_1a02666a7f4d0da02bf0f834e66b02a18e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="union_vardesc_1a02666a7f4d0da02bf0f834e66b02a18e" kindref="member">ridx</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>register<sp/>holding<sp/>the<sp/>variable<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="123" refid="union_vardesc_1a6323f2ec4ddf1d7b53d057d5b3f160b2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/><ref refid="union_vardesc_1a6323f2ec4ddf1d7b53d057d5b3f160b2" kindref="member">pidx</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>index<sp/>of<sp/>the<sp/>variable<sp/>in<sp/>the<sp/>Proto&apos;s<sp/>&apos;locvars&apos;<sp/>array<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="124" refid="union_vardesc_1ae42e8803588ca9ffd1225c67ab3ba79d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="union_vardesc_1ae42e8803588ca9ffd1225c67ab3ba79d" kindref="member">name</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>variable<sp/>name<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="125" refid="union_vardesc_1a4ce04b337146569b848dbf96ceb89808" refkind="member"><highlight class="normal"><sp/><sp/>}<sp/><ref refid="union_vardesc_1a4ce04b337146569b848dbf96ceb89808" kindref="member">vd</ref>;</highlight></codeline>
+<codeline lineno="126" refid="union_vardesc_1a80d37db0e7356a3f6e0fd623f41275b0" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/><ref refid="union_vardesc_1a80d37db0e7356a3f6e0fd623f41275b0" kindref="member">k</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>constant<sp/>value<sp/>(if<sp/>any)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="127" refid="lparser_8h_1a213230d7919520e54d776ec5a50903dc" refkind="member"><highlight class="normal">}<sp/><ref refid="union_vardesc" kindref="compound">Vardesc</ref>;</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>description<sp/>of<sp/>pending<sp/>goto<sp/>statements<sp/>and<sp/>label<sp/>statements<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132" refid="struct_labeldesc" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_labeldesc" kindref="compound">Labeldesc</ref><sp/>{</highlight></codeline>
+<codeline lineno="133" refid="struct_labeldesc_1adb07dc226860577090f82586ebfebd81" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="struct_labeldesc_1adb07dc226860577090f82586ebfebd81" kindref="member">name</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>label<sp/>identifier<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134" refid="struct_labeldesc_1a0383e9e85c343a50a9c6250596e5347f" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_labeldesc_1a0383e9e85c343a50a9c6250596e5347f" kindref="member">pc</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>position<sp/>in<sp/>code<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135" refid="struct_labeldesc_1ac180e0f26c94e5094956f2b69c0e2b1f" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_labeldesc_1ac180e0f26c94e5094956f2b69c0e2b1f" kindref="member">line</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>line<sp/>where<sp/>it<sp/>appeared<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="136" refid="struct_labeldesc_1a23a91a0c75487ef9a987931686f0797d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/><ref refid="struct_labeldesc_1a23a91a0c75487ef9a987931686f0797d" kindref="member">nactvar</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>number<sp/>of<sp/>active<sp/>variables<sp/>in<sp/>that<sp/>position<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137" refid="struct_labeldesc_1a1cb3dd8c4a749605dfba38bf113975e4" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="struct_labeldesc_1a1cb3dd8c4a749605dfba38bf113975e4" kindref="member">close</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>true<sp/>for<sp/>goto<sp/>that<sp/>escapes<sp/>upvalues<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138" refid="lparser_8h_1ab135786bb87517f9f774754b91b72374" refkind="member"><highlight class="normal">}<sp/><ref refid="struct_labeldesc" kindref="compound">Labeldesc</ref>;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>list<sp/>of<sp/>labels<sp/>or<sp/>gotos<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="142" refid="struct_labellist" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_labellist" kindref="compound">Labellist</ref><sp/>{</highlight></codeline>
+<codeline lineno="143" refid="struct_labellist_1a330c4161f41ef91c4f4e730e50d75b34" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_labeldesc" kindref="compound">Labeldesc</ref><sp/>*<ref refid="struct_labellist_1a330c4161f41ef91c4f4e730e50d75b34" kindref="member">arr</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>array<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144" refid="struct_labellist_1a68f90673b9dc53b9a816bc981525f2a8" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_labellist_1a68f90673b9dc53b9a816bc981525f2a8" kindref="member">n</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>number<sp/>of<sp/>entries<sp/>in<sp/>use<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145" refid="struct_labellist_1a2d0f72da42c57cfdbf8a19b9929b50cc" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_labellist_1a2d0f72da42c57cfdbf8a19b9929b50cc" kindref="member">size</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>array<sp/>size<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146" refid="lparser_8h_1ad15a88bb9fe7b666c688c37ce5a9a07a" refkind="member"><highlight class="normal">}<sp/><ref refid="struct_labellist" kindref="compound">Labellist</ref>;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>dynamic<sp/>structures<sp/>used<sp/>by<sp/>the<sp/>parser<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="150" refid="struct_dyndata" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_dyndata" kindref="compound">Dyndata</ref><sp/>{</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{<sp/><sp/></highlight><highlight class="comment">/*<sp/>list<sp/>of<sp/>all<sp/>active<sp/>local<sp/>variables<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="152" refid="struct_dyndata_1a9ea28d4a31d64ce92476584631e0849d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="union_vardesc" kindref="compound">Vardesc</ref><sp/>*<ref refid="struct_dyndata_1a9ea28d4a31d64ce92476584631e0849d" kindref="member">arr</ref>;</highlight></codeline>
+<codeline lineno="153" refid="struct_dyndata_1ab7b4e1b3f94ab7cad0cf0991172dca47" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_dyndata_1ab7b4e1b3f94ab7cad0cf0991172dca47" kindref="member">n</ref>;</highlight></codeline>
+<codeline lineno="154" refid="struct_dyndata_1a5f104a2554c21af98954babb640ac030" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_dyndata_1a5f104a2554c21af98954babb640ac030" kindref="member">size</ref>;</highlight></codeline>
+<codeline lineno="155" refid="struct_dyndata_1a4909cea83f1a228e46cbdcab7c7d70eb" refkind="member"><highlight class="normal"><sp/><sp/>}<sp/><ref refid="struct_dyndata_1a4909cea83f1a228e46cbdcab7c7d70eb" kindref="member">actvar</ref>;</highlight></codeline>
+<codeline lineno="156" refid="struct_dyndata_1a0e4b4f8cf1af3f8e4398e705f22e09cb" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_labellist" kindref="compound">Labellist</ref><sp/><ref refid="struct_dyndata_1a0e4b4f8cf1af3f8e4398e705f22e09cb" kindref="member">gt</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>list<sp/>of<sp/>pending<sp/>gotos<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="157" refid="struct_dyndata_1a72bb32d4e97bf9af6005d8459d44d1ef" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_labellist" kindref="compound">Labellist</ref><sp/><ref refid="struct_dyndata_1a72bb32d4e97bf9af6005d8459d44d1ef" kindref="member">label</ref>;<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>list<sp/>of<sp/>active<sp/>labels<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="158" refid="lparser_8h_1aecb808d1d218e15537c9ff5b72bfd1e5" refkind="member"><highlight class="normal">}<sp/><ref refid="struct_dyndata" kindref="compound">Dyndata</ref>;</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>control<sp/>of<sp/>blocks<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_block_cnt" kindref="compound">BlockCnt</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>defined<sp/>in<sp/>lparser.c<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>state<sp/>needed<sp/>to<sp/>generate<sp/>code<sp/>for<sp/>a<sp/>given<sp/>function<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166" refid="struct_func_state" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>{</highlight></codeline>
+<codeline lineno="167" refid="struct_func_state_1a9eb5835ecb89505391ace26565f4f805" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*<ref refid="struct_func_state_1a9eb5835ecb89505391ace26565f4f805" kindref="member">f</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>current<sp/>function<sp/>header<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168" refid="struct_func_state_1aef40521f156a3aceaec2a431a3ba8df0" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*<ref refid="struct_func_state_1aef40521f156a3aceaec2a431a3ba8df0" kindref="member">prev</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>enclosing<sp/>function<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="169" refid="struct_func_state_1af0b246751acfbdec5bebc850e9e3217a" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*<ref refid="struct_func_state_1af0b246751acfbdec5bebc850e9e3217a" kindref="member">ls</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>lexical<sp/>state<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170" refid="struct_func_state_1a43d13c83a7d67d08a48dcc4ad41c2236" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_block_cnt" kindref="compound">BlockCnt</ref><sp/>*<ref refid="struct_func_state_1a43d13c83a7d67d08a48dcc4ad41c2236" kindref="member">bl</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>chain<sp/>of<sp/>current<sp/>blocks<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="171" refid="struct_func_state_1a6efb9ca12c9b6c7366c51faf0b0f958c" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*<ref refid="struct_func_state_1a6efb9ca12c9b6c7366c51faf0b0f958c" kindref="member">kcache</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>cache<sp/>for<sp/>reusing<sp/>constants<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172" refid="struct_func_state_1ab2fe1df83ece8a6ca9e5cd70859a7b14" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_func_state_1ab2fe1df83ece8a6ca9e5cd70859a7b14" kindref="member">pc</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>next<sp/>position<sp/>to<sp/>code<sp/>(equivalent<sp/>to<sp/>&apos;ncode&apos;)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="173" refid="struct_func_state_1af20e4cc7f98b798b5319e4015c7ccb04" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_func_state_1af20e4cc7f98b798b5319e4015c7ccb04" kindref="member">lasttarget</ref>;<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;label&apos;<sp/>of<sp/>last<sp/>&apos;jump<sp/>label&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="174" refid="struct_func_state_1a23d2f4916fa4bacbc59d95f4c7a216bf" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_func_state_1a23d2f4916fa4bacbc59d95f4c7a216bf" kindref="member">previousline</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>last<sp/>line<sp/>that<sp/>was<sp/>saved<sp/>in<sp/>&apos;lineinfo&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="175" refid="struct_func_state_1a51f2362dabbe7e117feb2f059253a01b" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_func_state_1a51f2362dabbe7e117feb2f059253a01b" kindref="member">nk</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>number<sp/>of<sp/>elements<sp/>in<sp/>&apos;k&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176" refid="struct_func_state_1aa6952cddc83bd271703e1458d012d67d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_func_state_1aa6952cddc83bd271703e1458d012d67d" kindref="member">np</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>number<sp/>of<sp/>elements<sp/>in<sp/>&apos;p&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="177" refid="struct_func_state_1a487e08851245a9672ec61d4d10025c4e" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_func_state_1a487e08851245a9672ec61d4d10025c4e" kindref="member">nabslineinfo</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>number<sp/>of<sp/>elements<sp/>in<sp/>&apos;abslineinfo&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="178" refid="struct_func_state_1a7357e446fded54ea3d2f4cfe529a3648" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_func_state_1a7357e446fded54ea3d2f4cfe529a3648" kindref="member">firstlocal</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>index<sp/>of<sp/>first<sp/>local<sp/>var<sp/>(in<sp/>Dyndata<sp/>array)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="179" refid="struct_func_state_1a11b10fc6cd08b40b8e55455e812db760" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_func_state_1a11b10fc6cd08b40b8e55455e812db760" kindref="member">firstlabel</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>index<sp/>of<sp/>first<sp/>label<sp/>(in<sp/>&apos;dyd-&gt;label-&gt;arr&apos;)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="180" refid="struct_func_state_1a707d74ea43d2e0230e840236fbfb3c02" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/><ref refid="struct_func_state_1a707d74ea43d2e0230e840236fbfb3c02" kindref="member">ndebugvars</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>number<sp/>of<sp/>elements<sp/>in<sp/>&apos;f-&gt;locvars&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="181" refid="struct_func_state_1a068b8abdd94dc435910817ebd896ba5c" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/><ref refid="struct_func_state_1a068b8abdd94dc435910817ebd896ba5c" kindref="member">nactvar</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>number<sp/>of<sp/>active<sp/>variable<sp/>declarations<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="182" refid="struct_func_state_1aa6595513c43642ce3b506131d847dd7b" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="struct_func_state_1aa6595513c43642ce3b506131d847dd7b" kindref="member">nups</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>number<sp/>of<sp/>upvalues<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="183" refid="struct_func_state_1a99e672543fbe771557b576b69f54e551" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="struct_func_state_1a99e672543fbe771557b576b69f54e551" kindref="member">freereg</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>first<sp/>free<sp/>register<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="184" refid="struct_func_state_1a5ddc3f780b936d7f3e5936f8ec9eda79" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="struct_func_state_1a5ddc3f780b936d7f3e5936f8ec9eda79" kindref="member">iwthabs</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>instructions<sp/>issued<sp/>since<sp/>last<sp/>absolute<sp/>line<sp/>info<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="185" refid="struct_func_state_1af11f4a129f3c84bef358c4aabd388778" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="struct_func_state_1af11f4a129f3c84bef358c4aabd388778" kindref="member">needclose</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>function<sp/>needs<sp/>to<sp/>close<sp/>upvalues<sp/>when<sp/>returning<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="186" refid="lparser_8h_1a365e467fb166b7359e63492250ceb49f" refkind="member"><highlight class="normal">}<sp/><ref refid="struct_func_state" kindref="compound">FuncState</ref>;</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="lparser_8h_1a2f12e1a31d781c068555e21fb7bacc05" kindref="member">luaY_nvarstack</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs);</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lparser_8h_1a6f046f4c2d3575ef07cf0147016bc65a" kindref="member">luaY_checklimit</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>v,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>l,</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*what);</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="struct_l_closure" kindref="compound">LClosure</ref><sp/>*<ref refid="lparser_8h_1a5970b5cbbac35cf0e512db9e9dba0ecc" kindref="member">luaY_parser</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref><sp/>*z,<sp/><ref refid="struct_mbuffer" kindref="compound">Mbuffer</ref><sp/>*buff,</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_dyndata" kindref="compound">Dyndata</ref><sp/>*dyd,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*name,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>firstchar);</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lparser.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,470 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_background" kind="class" language="C++" prot="public">
+    <compoundname>Background</compoundname>
+    <basecompoundref refid="class_drawable" prot="public" virt="non-virtual">Drawable</basecompoundref>
+    <includes refid="background_8h" local="no">background.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_background_1a53d2a2b2974e7d797f895a9a928d81be" prot="private" static="no" mutable="no">
+        <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+        <definition>Tone Background::tone_effect</definition>
+        <argsstring></argsstring>
+        <name>tone_effect</name>
+        <qualifiedname>Background::tone_effect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="46" column="6" bodyfile="background.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_background_1a3376060581f66b29c14b647e4855ad53" prot="private" static="no" mutable="no">
+        <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+        <definition>Tone Background::current_tone</definition>
+        <argsstring></argsstring>
+        <name>current_tone</name>
+        <qualifiedname>Background::current_tone</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="47" column="6" bodyfile="background.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_background_1ad5db534b56c2ca7dc3822d3c3eb98a73" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Background::bg_bitmap</definition>
+        <argsstring></argsstring>
+        <name>bg_bitmap</name>
+        <qualifiedname>Background::bg_bitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="48" column="11" bodyfile="background.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_background_1a587d5e2975fcce220c26c849d50dbedf" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Background::bg_hscroll</definition>
+        <argsstring></argsstring>
+        <name>bg_hscroll</name>
+        <qualifiedname>Background::bg_hscroll</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="49" column="5" bodyfile="background.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_background_1ab7e0a10a045e88f4bb10371e65c72232" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Background::bg_vscroll</definition>
+        <argsstring></argsstring>
+        <name>bg_vscroll</name>
+        <qualifiedname>Background::bg_vscroll</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="50" column="5" bodyfile="background.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_background_1a96f78f440699a0efa1913213614542b8" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Background::bg_x</definition>
+        <argsstring></argsstring>
+        <name>bg_x</name>
+        <qualifiedname>Background::bg_x</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="51" column="5" bodyfile="background.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_background_1a0cb274521dfe741afc0daee74579b7b2" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Background::bg_y</definition>
+        <argsstring></argsstring>
+        <name>bg_y</name>
+        <qualifiedname>Background::bg_y</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="52" column="5" bodyfile="background.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_background_1a8b1537aee9057ae0dff9a486ac25d05b" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Background::fg_bitmap</definition>
+        <argsstring></argsstring>
+        <name>fg_bitmap</name>
+        <qualifiedname>Background::fg_bitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="53" column="11" bodyfile="background.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_background_1a40aeea7df5cc216364e26ad0b063325d" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Background::fg_hscroll</definition>
+        <argsstring></argsstring>
+        <name>fg_hscroll</name>
+        <qualifiedname>Background::fg_hscroll</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="54" column="5" bodyfile="background.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_background_1a85833eadffc1d2edc24e9191926af574" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Background::fg_vscroll</definition>
+        <argsstring></argsstring>
+        <name>fg_vscroll</name>
+        <qualifiedname>Background::fg_vscroll</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="55" column="5" bodyfile="background.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_background_1a912b7fc834764619b45cee46366f3028" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Background::fg_x</definition>
+        <argsstring></argsstring>
+        <name>fg_x</name>
+        <qualifiedname>Background::fg_x</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="56" column="5" bodyfile="background.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_background_1ad339fb5605e02c7f712f7534523135df" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Background::fg_y</definition>
+        <argsstring></argsstring>
+        <name>fg_y</name>
+        <qualifiedname>Background::fg_y</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="57" column="5" bodyfile="background.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_background_1a07ea32e14e08609a64abb848775dfbc3" prot="private" static="no" mutable="no">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding Background::fg_request_id</definition>
+        <argsstring></argsstring>
+        <name>fg_request_id</name>
+        <qualifiedname>Background::fg_request_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="59" column="20" bodyfile="background.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_background_1a8858649f1f99a3c587064da201f7f64f" prot="private" static="no" mutable="no">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding Background::bg_request_id</definition>
+        <argsstring></argsstring>
+        <name>bg_request_id</name>
+        <qualifiedname>Background::bg_request_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="60" column="20" bodyfile="background.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_background_1a879109a37590e9ab094de530e3782faf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Background::Background</definition>
+        <argsstring>(const std::string &amp;name)</argsstring>
+        <name>Background</name>
+        <qualifiedname>Background::Background</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="31" column="1" bodyfile="background.cpp" bodystart="32" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="class_background_1abcb3750ed925891f167d0215fbe3d994" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Background::Background</definition>
+        <argsstring>(int terrain_id)</argsstring>
+        <name>Background</name>
+        <qualifiedname>Background::Background</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>terrain_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="32" column="1" bodyfile="background.cpp" bodystart="44" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="class_background_1ab356b0802376f1db2c9dd8210aec0607" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Background::Draw</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Background::Draw</qualifiedname>
+        <reimplements refid="class_drawable_1aa8a9b151f40368331f6fd8bbdd20133f">Draw</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="34" column="6" bodyfile="background.cpp" bodystart="118" bodyend="146"/>
+      </memberdef>
+      <memberdef kind="function" id="class_background_1a7271df3353d3e4150c2c6f31a4c67fa7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Background::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>Background::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="35" column="6" bodyfile="background.cpp" bodystart="107" bodyend="112"/>
+      </memberdef>
+      <memberdef kind="function" id="class_background_1a6c90b17f3192eb5182aeb11274fcb72c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+        <definition>Tone Background::GetTone</definition>
+        <argsstring>() const</argsstring>
+        <name>GetTone</name>
+        <qualifiedname>Background::GetTone</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="36" column="6" bodyfile="background.h" bodystart="63" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="class_background_1acbb4ac5726961c09361ed73a073144a1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Background::SetTone</definition>
+        <argsstring>(Tone tone)</argsstring>
+        <name>SetTone</name>
+        <qualifiedname>Background::SetTone</qualifiedname>
+        <param>
+          <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+          <declname>tone</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="37" column="6" bodyfile="background.h" bodystart="67" bodyend="69"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_background_1aaf717771740ff763af0ddd81eb7747fd" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Background::Update</definition>
+        <argsstring>(int &amp;rate, int &amp;value)</argsstring>
+        <name>Update</name>
+        <qualifiedname>Background::Update</qualifiedname>
+        <param>
+          <type>int &amp;</type>
+          <declname>rate</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="40" column="13" bodyfile="background.cpp" bodystart="99" bodyend="105"/>
+      </memberdef>
+      <memberdef kind="function" id="class_background_1a213b6dec2dadc5ee994715de315ca22f" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Background::Scale</definition>
+        <argsstring>(int x)</argsstring>
+        <name>Scale</name>
+        <qualifiedname>Background::Scale</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="41" column="12" bodyfile="background.cpp" bodystart="114" bodyend="116"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_background_1a9e44a62fd2e9d6411224f3ab49c4d159" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Background::OnBackgroundGraphicReady</definition>
+        <argsstring>(FileRequestResult *result)</argsstring>
+        <name>OnBackgroundGraphicReady</name>
+        <qualifiedname>Background::OnBackgroundGraphicReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="43" column="6" bodyfile="background.cpp" bodystart="86" bodyend="93"/>
+      </memberdef>
+      <memberdef kind="function" id="class_background_1a07983e989154ec57cbfd8f28ec90d4d5" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Background::OnForegroundFrameGraphicReady</definition>
+        <argsstring>(FileRequestResult *result)</argsstring>
+        <name>OnForegroundFrameGraphicReady</name>
+        <qualifiedname>Background::OnForegroundFrameGraphicReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="background.h" line="44" column="6" bodyfile="background.cpp" bodystart="95" bodyend="97"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Background</label>
+        <link refid="class_background"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Background</label>
+        <link refid="class_background"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+    </collaborationgraph>
+    <location file="background.h" line="29" column="1" bodyfile="background.h" bodystart="29" bodyend="61"/>
+    <listofallmembers>
+      <member refid="class_background_1a879109a37590e9ab094de530e3782faf" prot="public" virt="non-virtual"><scope>Background</scope><name>Background</name></member>
+      <member refid="class_background_1abcb3750ed925891f167d0215fbe3d994" prot="public" virt="non-virtual"><scope>Background</scope><name>Background</name></member>
+      <member refid="class_background_1ad5db534b56c2ca7dc3822d3c3eb98a73" prot="private" virt="non-virtual"><scope>Background</scope><name>bg_bitmap</name></member>
+      <member refid="class_background_1a587d5e2975fcce220c26c849d50dbedf" prot="private" virt="non-virtual"><scope>Background</scope><name>bg_hscroll</name></member>
+      <member refid="class_background_1a8858649f1f99a3c587064da201f7f64f" prot="private" virt="non-virtual"><scope>Background</scope><name>bg_request_id</name></member>
+      <member refid="class_background_1ab7e0a10a045e88f4bb10371e65c72232" prot="private" virt="non-virtual"><scope>Background</scope><name>bg_vscroll</name></member>
+      <member refid="class_background_1a96f78f440699a0efa1913213614542b8" prot="private" virt="non-virtual"><scope>Background</scope><name>bg_x</name></member>
+      <member refid="class_background_1a0cb274521dfe741afc0daee74579b7b2" prot="private" virt="non-virtual"><scope>Background</scope><name>bg_y</name></member>
+      <member refid="class_background_1a3376060581f66b29c14b647e4855ad53" prot="private" virt="non-virtual"><scope>Background</scope><name>current_tone</name></member>
+      <member refid="class_background_1ab356b0802376f1db2c9dd8210aec0607" prot="public" virt="virtual"><scope>Background</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>Background</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>Background</scope><name>Drawable</name></member>
+      <member refid="class_background_1a8b1537aee9057ae0dff9a486ac25d05b" prot="private" virt="non-virtual"><scope>Background</scope><name>fg_bitmap</name></member>
+      <member refid="class_background_1a40aeea7df5cc216364e26ad0b063325d" prot="private" virt="non-virtual"><scope>Background</scope><name>fg_hscroll</name></member>
+      <member refid="class_background_1a07ea32e14e08609a64abb848775dfbc3" prot="private" virt="non-virtual"><scope>Background</scope><name>fg_request_id</name></member>
+      <member refid="class_background_1a85833eadffc1d2edc24e9191926af574" prot="private" virt="non-virtual"><scope>Background</scope><name>fg_vscroll</name></member>
+      <member refid="class_background_1a912b7fc834764619b45cee46366f3028" prot="private" virt="non-virtual"><scope>Background</scope><name>fg_x</name></member>
+      <member refid="class_background_1ad339fb5605e02c7f712f7534523135df" prot="private" virt="non-virtual"><scope>Background</scope><name>fg_y</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>Background</scope><name>Flags</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>Background</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>Background</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>Background</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>Background</scope><name>GetRenderOy</name></member>
+      <member refid="class_background_1a6c90b17f3192eb5182aeb11274fcb72c" prot="public" virt="non-virtual"><scope>Background</scope><name>GetTone</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>Background</scope><name>GetZ</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>Background</scope><name>IsGlobal</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>Background</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>Background</scope><name>IsVisible</name></member>
+      <member refid="class_background_1a9e44a62fd2e9d6411224f3ab49c4d159" prot="private" virt="non-virtual"><scope>Background</scope><name>OnBackgroundGraphicReady</name></member>
+      <member refid="class_background_1a07983e989154ec57cbfd8f28ec90d4d5" prot="private" virt="non-virtual"><scope>Background</scope><name>OnForegroundFrameGraphicReady</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>Background</scope><name>operator=</name></member>
+      <member refid="class_background_1a213b6dec2dadc5ee994715de315ca22f" prot="private" virt="non-virtual"><scope>Background</scope><name>Scale</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>Background</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>Background</scope><name>SetRenderOy</name></member>
+      <member refid="class_background_1acbb4ac5726961c09361ed73a073144a1" prot="public" virt="non-virtual"><scope>Background</scope><name>SetTone</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>Background</scope><name>SetVisible</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>Background</scope><name>SetZ</name></member>
+      <member refid="class_background_1a53d2a2b2974e7d797f895a9a928d81be" prot="private" virt="non-virtual"><scope>Background</scope><name>tone_effect</name></member>
+      <member refid="class_background_1a7271df3353d3e4150c2c6f31a4c67fa7" prot="public" virt="non-virtual"><scope>Background</scope><name>Update</name></member>
+      <member refid="class_background_1aaf717771740ff763af0ddd81eb7747fd" prot="private" virt="non-virtual"><scope>Background</scope><name>Update</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>Background</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>Background</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

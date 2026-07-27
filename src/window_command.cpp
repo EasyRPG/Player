@@ -91,3 +91,4 @@ void Window_Command::ReplaceCommands(std::vector<std::string> in_commands) {
 
 	Refresh();
 }
+

@@ -196,3 +196,4 @@ void Game_Enemy::ResetBattle() {
 	death_timer = 0;
 	explode_timer = 0;
 }
+

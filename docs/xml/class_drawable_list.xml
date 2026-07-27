@@ -1,0 +1,600 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_drawable_list" kind="class" language="C++" prot="public">
+    <compoundname>DrawableList</compoundname>
+    <includes refid="drawable__list_8h" local="no">drawable_list.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_drawable_list_1aa634c59ca2fc20d318bc4dcdef82b3d1" prot="public" static="no">
+        <type>std::vector&lt; <ref refid="class_drawable" kindref="compound">Drawable</ref> * &gt;::const_iterator</type>
+        <definition>using DrawableList::iterator = std::vector&lt;Drawable*&gt;::const_iterator</definition>
+        <argsstring></argsstring>
+        <name>iterator</name>
+        <qualifiedname>DrawableList::iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Iterator type </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="39" column="1" bodyfile="drawable_list.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_drawable_list_1a71f1296eb366478161f6aabe6072d1ce" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="class_drawable" kindref="compound">Drawable</ref> * &gt;</type>
+        <definition>std::vector&lt;Drawable*&gt; DrawableList::_list</definition>
+        <argsstring></argsstring>
+        <name>_list</name>
+        <qualifiedname>DrawableList::_list</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="136" column="13" bodyfile="drawable_list.h" bodystart="136" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_drawable_list_1a619bc0253f80c045a6993f0284e30c17" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool DrawableList::_dirty</definition>
+        <argsstring></argsstring>
+        <name>_dirty</name>
+        <qualifiedname>DrawableList::_dirty</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="137" column="6" bodyfile="drawable_list.h" bodystart="137" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_drawable_list_1ad22e0dd2b9a444772b6d54daff8d98f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>DrawableList::DrawableList</definition>
+        <argsstring>()=default</argsstring>
+        <name>DrawableList</name>
+        <qualifiedname>DrawableList::DrawableList</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Default Constructor </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="33" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1afa66b5f3be33bc7db7233632b31108fa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>DrawableList::DrawableList</definition>
+        <argsstring>(const DrawableList &amp;)=delete</argsstring>
+        <name>DrawableList</name>
+        <qualifiedname>DrawableList::DrawableList</qualifiedname>
+        <param>
+          <type>const <ref refid="class_drawable_list" kindref="compound">DrawableList</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="34" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1a7e04b85c17fd718f4e39782163ae5745" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_drawable_list" kindref="compound">DrawableList</ref> &amp;</type>
+        <definition>DrawableList &amp; DrawableList::operator=</definition>
+        <argsstring>(const DrawableList &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>DrawableList::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_drawable_list" kindref="compound">DrawableList</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="35" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1a3d2a3b7555f3d224b3f7ea313c14fb3b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>DrawableList::~DrawableList</definition>
+        <argsstring>()</argsstring>
+        <name>~DrawableList</name>
+        <qualifiedname>DrawableList::~DrawableList</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="36" column="1" bodyfile="drawable_list.cpp" bodystart="28" bodyend="32"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1aa93d73e6a48afbd04ee403fcd65c7707" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DrawableList::Sort</definition>
+        <argsstring>()</argsstring>
+        <name>Sort</name>
+        <qualifiedname>DrawableList::Sort</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sorts the drawables and clears the dirty flag. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="42" column="6" bodyfile="drawable_list.cpp" bodystart="43" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1abbc500fd633a0f7f7de0e20dabb78e21" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool DrawableList::IsSorted</definition>
+        <argsstring>() const</argsstring>
+        <name>IsSorted</name>
+        <qualifiedname>DrawableList::IsSorted</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return true if drawables are sorted </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="45" column="6" bodyfile="drawable_list.cpp" bodystart="39" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1af57c098e2302490fa9226fcb17d3a899" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DrawableList::Append</definition>
+        <argsstring>(Drawable *drawable)</argsstring>
+        <name>Append</name>
+        <qualifiedname>DrawableList::Append</qualifiedname>
+        <param>
+          <type><ref refid="class_drawable" kindref="compound">Drawable</ref> *</type>
+          <declname>drawable</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Add a drawable to the list.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>drawable</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the <ref refid="class_drawable" kindref="compound">Drawable</ref> to add </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="52" column="6" bodyfile="drawable_list.cpp" bodystart="50" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1a379341e6eb459bc2c4432fc31f90877b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DrawableList::Clear</definition>
+        <argsstring>()</argsstring>
+        <name>Clear</name>
+        <qualifiedname>DrawableList::Clear</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Removes all drawables </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="55" column="6" bodyfile="drawable_list.cpp" bodystart="34" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1a6dc96745ebc5dce586f9d3ea15ef01f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_drawable" kindref="compound">Drawable</ref> *</type>
+        <definition>Drawable * DrawableList::Take</definition>
+        <argsstring>(Drawable *drawable)</argsstring>
+        <name>Take</name>
+        <qualifiedname>DrawableList::Take</qualifiedname>
+        <param>
+          <type><ref refid="class_drawable" kindref="compound">Drawable</ref> *</type>
+          <declname>drawable</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Searches for the given drawable, if found removes from the list and returns it.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>drawable</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the <ref refid="class_drawable" kindref="compound">Drawable</ref> to remove. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>drawable if drawable was in the list and removed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="63" column="10" bodyfile="drawable_list.cpp" bodystart="63" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1a5922e4725dca868a838a39fb60f681bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T *</type>
+        <definition>T * DrawableList::Take</definition>
+        <argsstring>(std::enable_if_t&lt; IsDrawable&lt; T &gt;, T * &gt; drawable)</argsstring>
+        <name>Take</name>
+        <qualifiedname>DrawableList::Take</qualifiedname>
+        <param>
+          <type>std::enable_if_t&lt; IsDrawable&lt; T &gt;, T * &gt;</type>
+          <declname>drawable</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Searches for the given drawable, if found removes from the list and returns it.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>drawable</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the <ref refid="class_drawable" kindref="compound">Drawable</ref> to remove. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>drawable if drawable was in the list and removed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="72" column="3" bodyfile="drawable_list.h" bodystart="143" bodyend="146"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1a1c4612f80f3eb66378bf0c5d370dcfa6" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void DrawableList::TakeFrom</definition>
+        <argsstring>(DrawableList &amp;other) noexcept</argsstring>
+        <name>TakeFrom</name>
+        <qualifiedname>DrawableList::TakeFrom</qualifiedname>
+        <param>
+          <type><ref refid="class_drawable_list" kindref="compound">DrawableList</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Remove all drawables from other and append them to this.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>other list to take from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="79" column="6" bodyfile="drawable_list.cpp" bodystart="77" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1ac868dd0c099e9abbb143004a3e1f42be" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void DrawableList::TakeFrom</definition>
+        <argsstring>(DrawableList &amp;other, F &amp;&amp;predicate) noexcept</argsstring>
+        <name>TakeFrom</name>
+        <qualifiedname>DrawableList::TakeFrom</qualifiedname>
+        <param>
+          <type><ref refid="class_drawable_list" kindref="compound">DrawableList</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>predicate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Remove all drawables from other which satify preedicate and append them to this.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>other</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>other list to take from </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a function taking a Drawable*. If it returns true, the drawable is taken. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="88" column="6" bodyfile="drawable_list.h" bodystart="149" bodyend="177"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1aa1d234057f9ddbb721fc6aec9a09ddeb" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool DrawableList::IsDirty</definition>
+        <argsstring>() const</argsstring>
+        <name>IsDirty</name>
+        <qualifiedname>DrawableList::IsDirty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if the list is dirty and needs to be sorted </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="91" column="6" bodyfile="drawable_list.h" bodystart="179" bodyend="181"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1a681090e65b9568cb2d416c46e804cdb1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void DrawableList::SetDirty</definition>
+        <argsstring>()</argsstring>
+        <name>SetDirty</name>
+        <qualifiedname>DrawableList::SetDirty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Mark the list as dirty. It will be sorted the next time <ref refid="class_drawable_list_1ab6084a56bd92799dc3984bc63477a378" kindref="member">Draw()</ref> is called </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="94" column="6" bodyfile="drawable_list.h" bodystart="183" bodyend="185"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1a75df8fb162badb2934991870fd472e14" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_drawable_list_1aa634c59ca2fc20d318bc4dcdef82b3d1" kindref="member">iterator</ref></type>
+        <definition>iterator DrawableList::begin</definition>
+        <argsstring>() const</argsstring>
+        <name>begin</name>
+        <qualifiedname>DrawableList::begin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>an iterator to the beginning </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="97" column="10" bodyfile="drawable_list.h" bodystart="97" bodyend="97"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1a27881bd98fc3f6c4649a77316174ea86" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_drawable_list_1aa634c59ca2fc20d318bc4dcdef82b3d1" kindref="member">iterator</ref></type>
+        <definition>iterator DrawableList::end</definition>
+        <argsstring>() const</argsstring>
+        <name>end</name>
+        <qualifiedname>DrawableList::end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>an iterator to the end </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="100" column="10" bodyfile="drawable_list.h" bodystart="100" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1a04adc710af62eacc5c69b83396cb3843" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_drawable" kindref="compound">Drawable</ref> *</type>
+        <definition>Drawable * DrawableList::operator[]</definition>
+        <argsstring>(size_t i) const</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>DrawableList::operator[]</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return drawable at i&apos;th index</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>index of drawable </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>if i &lt; 0 and i &gt;= <ref refid="class_drawable_list_1a9c934d78bf55e588dbad340700f59a5d" kindref="member">size()</ref>, the result is undefined. </para>
+</simplesect>
+<simplesect kind="return"><para>the drawable at i </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="109" column="10" bodyfile="drawable_list.h" bodystart="109" bodyend="111"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1a9c934d78bf55e588dbad340700f59a5d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t DrawableList::size</definition>
+        <argsstring>() const</argsstring>
+        <name>size</name>
+        <qualifiedname>DrawableList::size</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the number of drawables in the list </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="114" column="8" bodyfile="drawable_list.h" bodystart="114" bodyend="114"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1af165191d8d788b2a94a5ea8215637d5d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool DrawableList::empty</definition>
+        <argsstring>() const</argsstring>
+        <name>empty</name>
+        <qualifiedname>DrawableList::empty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>if the list is empty </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="117" column="6" bodyfile="drawable_list.h" bodystart="117" bodyend="117"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1ab6084a56bd92799dc3984bc63477a378" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void DrawableList::Draw</definition>
+        <argsstring>(Bitmap &amp;dst)</argsstring>
+        <name>Draw</name>
+        <qualifiedname>DrawableList::Draw</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sort the list if it&apos;s dirty, then call <ref refid="class_drawable_list_1ab6084a56bd92799dc3984bc63477a378" kindref="member">Draw()</ref> on every drawable in order.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dst</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The bitmap to draw onto </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="124" column="6" bodyfile="drawable_list.h" bodystart="191" bodyend="193"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_list_1ac63daa8c859c9b446fed7e16cb07099e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DrawableList::Draw</definition>
+        <argsstring>(Bitmap &amp;dst, Drawable::Z_t min_z, Drawable::Z_t max_z)</argsstring>
+        <name>Draw</name>
+        <qualifiedname>DrawableList::Draw</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <param>
+          <type><ref refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" kindref="member">Drawable::Z_t</ref></type>
+          <declname>min_z</declname>
+        </param>
+        <param>
+          <type><ref refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" kindref="member">Drawable::Z_t</ref></type>
+          <declname>max_z</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sort the list if it&apos;s dirty, then call <ref refid="class_drawable_list_1ab6084a56bd92799dc3984bc63477a378" kindref="member">Draw()</ref> on every drawable in order.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dst</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The bitmap to draw onto </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>min_z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Skip any drawables with z &lt; min_z </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>max_z</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Skip any drawables with z &gt; max_z </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="133" column="6" bodyfile="drawable_list.cpp" bodystart="93" bodyend="112"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_drawable_list_1a642775164c51111e4c78c9688c9c34c0" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void DrawableList::SetClean</definition>
+        <argsstring>()</argsstring>
+        <name>SetClean</name>
+        <qualifiedname>DrawableList::SetClean</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_list.h" line="139" column="6" bodyfile="drawable_list.h" bodystart="187" bodyend="189"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>A list of <ref refid="class_drawable" kindref="compound">Drawable</ref> objects. These are used by the graphics engine store and to render all drawable objects. </para>
+    </detaileddescription>
+    <location file="drawable_list.h" line="30" column="1" bodyfile="drawable_list.h" bodystart="30" bodyend="140"/>
+    <listofallmembers>
+      <member refid="class_drawable_list_1a619bc0253f80c045a6993f0284e30c17" prot="private" virt="non-virtual"><scope>DrawableList</scope><name>_dirty</name></member>
+      <member refid="class_drawable_list_1a71f1296eb366478161f6aabe6072d1ce" prot="private" virt="non-virtual"><scope>DrawableList</scope><name>_list</name></member>
+      <member refid="class_drawable_list_1af57c098e2302490fa9226fcb17d3a899" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>Append</name></member>
+      <member refid="class_drawable_list_1a75df8fb162badb2934991870fd472e14" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>begin</name></member>
+      <member refid="class_drawable_list_1a379341e6eb459bc2c4432fc31f90877b" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>Clear</name></member>
+      <member refid="class_drawable_list_1ab6084a56bd92799dc3984bc63477a378" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>Draw</name></member>
+      <member refid="class_drawable_list_1ac63daa8c859c9b446fed7e16cb07099e" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>Draw</name></member>
+      <member refid="class_drawable_list_1ad22e0dd2b9a444772b6d54daff8d98f0" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>DrawableList</name></member>
+      <member refid="class_drawable_list_1afa66b5f3be33bc7db7233632b31108fa" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>DrawableList</name></member>
+      <member refid="class_drawable_list_1af165191d8d788b2a94a5ea8215637d5d" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>empty</name></member>
+      <member refid="class_drawable_list_1a27881bd98fc3f6c4649a77316174ea86" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>end</name></member>
+      <member refid="class_drawable_list_1aa1d234057f9ddbb721fc6aec9a09ddeb" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>IsDirty</name></member>
+      <member refid="class_drawable_list_1abbc500fd633a0f7f7de0e20dabb78e21" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>IsSorted</name></member>
+      <member refid="class_drawable_list_1aa634c59ca2fc20d318bc4dcdef82b3d1" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>iterator</name></member>
+      <member refid="class_drawable_list_1a7e04b85c17fd718f4e39782163ae5745" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>operator=</name></member>
+      <member refid="class_drawable_list_1a04adc710af62eacc5c69b83396cb3843" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>operator[]</name></member>
+      <member refid="class_drawable_list_1a642775164c51111e4c78c9688c9c34c0" prot="private" virt="non-virtual"><scope>DrawableList</scope><name>SetClean</name></member>
+      <member refid="class_drawable_list_1a681090e65b9568cb2d416c46e804cdb1" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>SetDirty</name></member>
+      <member refid="class_drawable_list_1a9c934d78bf55e588dbad340700f59a5d" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>size</name></member>
+      <member refid="class_drawable_list_1aa93d73e6a48afbd04ee403fcd65c7707" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>Sort</name></member>
+      <member refid="class_drawable_list_1a6dc96745ebc5dce586f9d3ea15ef01f7" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>Take</name></member>
+      <member refid="class_drawable_list_1a5922e4725dca868a838a39fb60f681bd" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>Take</name></member>
+      <member refid="class_drawable_list_1a1c4612f80f3eb66378bf0c5d370dcfa6" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>TakeFrom</name></member>
+      <member refid="class_drawable_list_1ac868dd0c099e9abbb143004a3e1f42be" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>TakeFrom</name></member>
+      <member refid="class_drawable_list_1a3d2a3b7555f3d224b3f7ea313c14fb3b" prot="public" virt="non-virtual"><scope>DrawableList</scope><name>~DrawableList</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_loc_var" kind="struct" language="C++" prot="public">
+    <compoundname>LocVar</compoundname>
+    <includes refid="lobject_8h" local="no">lobject.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_loc_var_1acf62684d78349320b90b4acfa3b6d22a" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>TString* LocVar::varname</definition>
+        <argsstring></argsstring>
+        <name>varname</name>
+        <qualifiedname>LocVar::varname</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="561" column="11" bodyfile="leasy/lua/lobject.h" bodystart="561" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_loc_var_1ac5a8bf5a59430eea070db5b1a97d8b88" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int LocVar::startpc</definition>
+        <argsstring></argsstring>
+        <name>startpc</name>
+        <qualifiedname>LocVar::startpc</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="562" column="7" bodyfile="leasy/lua/lobject.h" bodystart="562" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_loc_var_1af7f0f7d509579ffec5610e329f85693b" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int LocVar::endpc</definition>
+        <argsstring></argsstring>
+        <name>endpc</name>
+        <qualifiedname>LocVar::endpc</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="563" column="7" bodyfile="leasy/lua/lobject.h" bodystart="563" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>LocVar</label>
+        <link refid="struct_loc_var"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>varname</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lobject.h" line="560" column="1" bodyfile="leasy/lua/lobject.h" bodystart="560" bodyend="564"/>
+    <listofallmembers>
+      <member refid="struct_loc_var_1af7f0f7d509579ffec5610e329f85693b" prot="public" virt="non-virtual"><scope>LocVar</scope><name>endpc</name></member>
+      <member refid="struct_loc_var_1ac5a8bf5a59430eea070db5b1a97d8b88" prot="public" virt="non-virtual"><scope>LocVar</scope><name>startpc</name></member>
+      <member refid="struct_loc_var_1acf62684d78349320b90b4acfa3b6d22a" prot="public" virt="non-virtual"><scope>LocVar</scope><name>varname</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

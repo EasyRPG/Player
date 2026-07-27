@@ -1,0 +1,994 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_window___selectable" kind="class" language="C++" prot="public">
+    <compoundname>Window_Selectable</compoundname>
+    <basecompoundref refid="class_window___base" prot="public" virt="non-virtual">Window_Base</basecompoundref>
+    <derivedcompoundref refid="class_window___actor_target" prot="public" virt="non-virtual">Window_ActorTarget</derivedcompoundref>
+    <derivedcompoundref refid="class_window___battle_status" prot="public" virt="non-virtual">Window_BattleStatus</derivedcompoundref>
+    <derivedcompoundref refid="class_window___command" prot="public" virt="non-virtual">Window_Command</derivedcompoundref>
+    <derivedcompoundref refid="class_window___equip" prot="public" virt="non-virtual">Window_Equip</derivedcompoundref>
+    <derivedcompoundref refid="class_window___game_list" prot="public" virt="non-virtual">Window_GameList</derivedcompoundref>
+    <derivedcompoundref refid="class_window___input_settings" prot="public" virt="non-virtual">Window_InputSettings</derivedcompoundref>
+    <derivedcompoundref refid="class_window___interpreter" prot="public" virt="non-virtual">Window_Interpreter</derivedcompoundref>
+    <derivedcompoundref refid="class_window___item" prot="public" virt="non-virtual">Window_Item</derivedcompoundref>
+    <derivedcompoundref refid="class_window___menu_status" prot="public" virt="non-virtual">Window_MenuStatus</derivedcompoundref>
+    <derivedcompoundref refid="class_window___message" prot="public" virt="non-virtual">Window_Message</derivedcompoundref>
+    <derivedcompoundref refid="class_window___number_input" prot="public" virt="non-virtual">Window_NumberInput</derivedcompoundref>
+    <derivedcompoundref refid="class_window___settings" prot="public" virt="non-virtual">Window_Settings</derivedcompoundref>
+    <derivedcompoundref refid="class_window___shop_buy" prot="public" virt="non-virtual">Window_ShopBuy</derivedcompoundref>
+    <derivedcompoundref refid="class_window___skill" prot="public" virt="non-virtual">Window_Skill</derivedcompoundref>
+    <derivedcompoundref refid="class_window___string_view" prot="public" virt="non-virtual">Window_StringView</derivedcompoundref>
+    <derivedcompoundref refid="class_window___teleport" prot="public" virt="non-virtual">Window_Teleport</derivedcompoundref>
+    <derivedcompoundref refid="class_window___var_list" prot="public" virt="non-virtual">Window_VarList</derivedcompoundref>
+    <includes refid="window__selectable_8h" local="no">window_selectable.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_window___selectable_1a8eacf2a319bd83a3c07849e1ad254dd9" prot="public" static="no" mutable="no">
+        <type>std::function&lt; void(<ref refid="class_window___help" kindref="compound">Window_Help</ref> &amp;, int)&gt;</type>
+        <definition>std::function&lt;void(Window_Help&amp;, int)&gt; Window_Selectable::UpdateHelpFn</definition>
+        <argsstring></argsstring>
+        <name>UpdateHelpFn</name>
+        <qualifiedname>Window_Selectable::UpdateHelpFn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Function called by the base <ref refid="class_window___selectable_1a1dfb10711a23fb5feac2c0392e423b06" kindref="member">UpdateHelp()</ref> implementation. Passes in the Help <ref refid="class_window" kindref="compound">Window</ref> and the current selected index Will not be called if the help_window is null </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="66" column="15" bodyfile="window_selectable.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_window___selectable_1a9b0e8113100fc890a6e54204e7d59d1a" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_window___help" kindref="compound">Window_Help</ref> *</type>
+        <definition>Window_Help* Window_Selectable::help_window</definition>
+        <argsstring></argsstring>
+        <name>help_window</name>
+        <qualifiedname>Window_Selectable::help_window</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="107" column="13" bodyfile="window_selectable.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Selectable::item_max</definition>
+        <argsstring></argsstring>
+        <name>item_max</name>
+        <qualifiedname>Window_Selectable::item_max</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="108" column="5" bodyfile="window_selectable.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Selectable::column_max</definition>
+        <argsstring></argsstring>
+        <name>column_max</name>
+        <qualifiedname>Window_Selectable::column_max</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="109" column="5" bodyfile="window_selectable.h" bodystart="109" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Selectable::index</definition>
+        <argsstring></argsstring>
+        <name>index</name>
+        <qualifiedname>Window_Selectable::index</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="110" column="5" bodyfile="window_selectable.h" bodystart="110" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___selectable_1a039d27bee45f565c75a819923acf3865" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Selectable::arrow_frame</definition>
+        <argsstring></argsstring>
+        <name>arrow_frame</name>
+        <qualifiedname>Window_Selectable::arrow_frame</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="111" column="5" bodyfile="window_selectable.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___selectable_1a429136ca4c7bba644b7ea71a2e82aca4" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Window_Selectable::endless_scrolling</definition>
+        <argsstring></argsstring>
+        <name>endless_scrolling</name>
+        <qualifiedname>Window_Selectable::endless_scrolling</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="113" column="6" bodyfile="window_selectable.h" bodystart="113" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___selectable_1a4042f282e2b3b74896c7e067b679aa17" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Selectable::menu_item_height</definition>
+        <argsstring></argsstring>
+        <name>menu_item_height</name>
+        <qualifiedname>Window_Selectable::menu_item_height</qualifiedname>
+        <initializer>= 16</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="115" column="5" bodyfile="window_selectable.h" bodystart="115" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___selectable_1ae0260f6237e92923599d4cc40254f6c8" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Selectable::scroll_dir</definition>
+        <argsstring></argsstring>
+        <name>scroll_dir</name>
+        <qualifiedname>Window_Selectable::scroll_dir</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="117" column="5" bodyfile="window_selectable.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___selectable_1a75400e1a71780a88c41bd8d89e9c4b3c" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Selectable::scroll_progress</definition>
+        <argsstring></argsstring>
+        <name>scroll_progress</name>
+        <qualifiedname>Window_Selectable::scroll_progress</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="118" column="5" bodyfile="window_selectable.h" bodystart="118" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___selectable_1ad9bec229a50e00bc3a5caa5d78127341" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Selectable::wrap_limit</definition>
+        <argsstring></argsstring>
+        <name>wrap_limit</name>
+        <qualifiedname>Window_Selectable::wrap_limit</qualifiedname>
+        <initializer>= 2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="120" column="5" bodyfile="window_selectable.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_window___selectable_1a432f6e58c02d8f2d6973158af56de9f2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Window_Selectable::Window_Selectable</definition>
+        <argsstring>(int ix, int iy, int iwidth, int iheight)</argsstring>
+        <name>Window_Selectable</name>
+        <qualifiedname>Window_Selectable::Window_Selectable</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>ix</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iy</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iwidth</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iheight</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="32" column="1" bodyfile="window_selectable.cpp" bodystart="28" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1aecc125d715ca5bcd511c23bb6b897648" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Selectable::CreateContents</definition>
+        <argsstring>()</argsstring>
+        <name>CreateContents</name>
+        <qualifiedname>Window_Selectable::CreateContents</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates the contents based on how many items are currently in the window. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="38" column="6" bodyfile="window_selectable.cpp" bodystart="31" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1af12367a9070a2bdc41c3e1ac40f23186" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Window_Selectable::GetIndex</definition>
+        <argsstring>() const</argsstring>
+        <name>GetIndex</name>
+        <qualifiedname>Window_Selectable::GetIndex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="40" column="5" bodyfile="window_selectable.cpp" bodystart="40" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1aaf928ad0ab55c9aaff10ade1d3d0e01b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Selectable::SetIndex</definition>
+        <argsstring>(int nindex)</argsstring>
+        <name>SetIndex</name>
+        <qualifiedname>Window_Selectable::SetIndex</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>nindex</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="41" column="6" bodyfile="window_selectable.cpp" bodystart="43" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1ab8787975859c1af609b10560fb0ee8d5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Window_Selectable::GetColumnMax</definition>
+        <argsstring>() const</argsstring>
+        <name>GetColumnMax</name>
+        <qualifiedname>Window_Selectable::GetColumnMax</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="42" column="5" bodyfile="window_selectable.cpp" bodystart="50" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1ae39cda16f0198a9bd33983b1cf31b5a8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Selectable::SetColumnMax</definition>
+        <argsstring>(int ncolmax)</argsstring>
+        <name>SetColumnMax</name>
+        <qualifiedname>Window_Selectable::SetColumnMax</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>ncolmax</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="43" column="6" bodyfile="window_selectable.cpp" bodystart="53" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1a249bdfb36eff3e53a8ba01057c31dfa1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Window_Selectable::GetRowMax</definition>
+        <argsstring>() const</argsstring>
+        <name>GetRowMax</name>
+        <qualifiedname>Window_Selectable::GetRowMax</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="44" column="5" bodyfile="window_selectable.cpp" bodystart="56" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1ad5eae54b7a337b0aa35871ee22024bdf" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Window_Selectable::GetTopRow</definition>
+        <argsstring>() const</argsstring>
+        <name>GetTopRow</name>
+        <qualifiedname>Window_Selectable::GetTopRow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="45" column="5" bodyfile="window_selectable.cpp" bodystart="59" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1a45ae718509f3677b47ca7d1ed18a55ff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Selectable::SetTopRow</definition>
+        <argsstring>(int row)</argsstring>
+        <name>SetTopRow</name>
+        <qualifiedname>Window_Selectable::SetTopRow</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>row</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="46" column="6" bodyfile="window_selectable.cpp" bodystart="62" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1a7f71a0b8145cf6211abac7cb7472e0dd" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Window_Selectable::GetPageRowMax</definition>
+        <argsstring>() const</argsstring>
+        <name>GetPageRowMax</name>
+        <qualifiedname>Window_Selectable::GetPageRowMax</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="47" column="5" bodyfile="window_selectable.cpp" bodystart="67" bodyend="69"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1a2a2720627e3fbc400800e1de5534a685" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Window_Selectable::GetPageItemMax</definition>
+        <argsstring>()</argsstring>
+        <name>GetPageItemMax</name>
+        <qualifiedname>Window_Selectable::GetPageItemMax</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="48" column="5" bodyfile="window_selectable.cpp" bodystart="70" bodyend="72"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1acab7425fe6681083d35df6d807dce5db" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Selectable::SetItemMax</definition>
+        <argsstring>(int value)</argsstring>
+        <name>SetItemMax</name>
+        <qualifiedname>Window_Selectable::SetItemMax</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Change the max item </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="51" column="6" bodyfile="window_selectable.h" bodystart="123" bodyend="125"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1a8f2add0e27d97659ed742e8d82668dae" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect Window_Selectable::GetItemRect</definition>
+        <argsstring>(int index)</argsstring>
+        <name>GetItemRect</name>
+        <qualifiedname>Window_Selectable::GetItemRect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the Item <ref refid="class_rect" kindref="compound">Rect</ref> used for item drawing.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>index of item. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="class_rect" kindref="compound">Rect</ref> where the item is drawn. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="59" column="14" bodyfile="window_selectable.cpp" bodystart="74" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1ac5cba35d9b5e704f93fbfe32b319e55e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_window___help" kindref="compound">Window_Help</ref> *</type>
+        <definition>Window_Help * Window_Selectable::GetHelpWindow</definition>
+        <argsstring>()</argsstring>
+        <name>GetHelpWindow</name>
+        <qualifiedname>Window_Selectable::GetHelpWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="68" column="13" bodyfile="window_selectable.cpp" bodystart="83" bodyend="85"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1a106200ec57a53c50468bd77ded0faf36" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Selectable::SetHelpWindow</definition>
+        <argsstring>(Window_Help *nhelp_window)</argsstring>
+        <name>SetHelpWindow</name>
+        <qualifiedname>Window_Selectable::SetHelpWindow</qualifiedname>
+        <param>
+          <type><ref refid="class_window___help" kindref="compound">Window_Help</ref> *</type>
+          <declname>nhelp_window</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Assigns a help window that displays a description about the selected item.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>nhelp_window</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the help window. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="76" column="6" bodyfile="window_selectable.cpp" bodystart="87" bodyend="92"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1a57004fa930f77fcfba2442ff45de2f2c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Window_Selectable::UpdateCursorRect</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateCursorRect</name>
+        <qualifiedname>Window_Selectable::UpdateCursorRect</qualifiedname>
+        <reimplementedby refid="class_window___actor_target_1a0ee672568fc7b61042eedd8b19c43df1">UpdateCursorRect</reimplementedby>
+        <reimplementedby refid="class_window___battle_status_1aab485de7644f95cf11c031121a6e224f">UpdateCursorRect</reimplementedby>
+        <reimplementedby refid="class_window___menu_status_1a46a1adc52d820bcdf8a832d9a957535e">UpdateCursorRect</reimplementedby>
+        <reimplementedby refid="class_window___message_1a01382adb3b29d2e396ff31e4abf373d2">UpdateCursorRect</reimplementedby>
+        <reimplementedby refid="class_window___number_input_1a998f6edd516c43994950cf6a92411201">UpdateCursorRect</reimplementedby>
+        <reimplementedby refid="class_window___var_list_1ad9f4afd20a36520cbaf4a91fa551a6f2">UpdateCursorRect</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="77" column="14" bodyfile="window_selectable.cpp" bodystart="101" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1aff3576c095aee4a6de7851305389c628" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Window_Selectable::Update</definition>
+        <argsstring>() override</argsstring>
+        <name>Update</name>
+        <qualifiedname>Window_Selectable::Update</qualifiedname>
+        <reimplements refid="class_window___base_1acaae99eb154cc5e203c2fc87af953725">Update</reimplements>
+        <reimplementedby refid="class_window___string_view_1a5d3a6b767d8d4b302d21cb1869d717b0">Update</reimplementedby>
+        <reimplementedby refid="class_window___var_list_1a4292967b5bb57653ace96486e92619a7">Update</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the window. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="78" column="6" bodyfile="window_selectable.cpp" bodystart="135" bodyend="226"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1a1dfb10711a23fb5feac2c0392e423b06" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Window_Selectable::UpdateHelp</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateHelp</name>
+        <qualifiedname>Window_Selectable::UpdateHelp</qualifiedname>
+        <reimplementedby refid="class_window___equip_1a535d58168400e990e74eb54dfcf40b47">UpdateHelp</reimplementedby>
+        <reimplementedby refid="class_window___item_1aded69e8c523bd146c1c10448d9f666da">UpdateHelp</reimplementedby>
+        <reimplementedby refid="class_window___settings_1a0338b8903564fe2970ca43712cc30844">UpdateHelp</reimplementedby>
+        <reimplementedby refid="class_window___shop_buy_1abc81c1e38c8556753168f176cfb825a6">UpdateHelp</reimplementedby>
+        <reimplementedby refid="class_window___skill_1aee5bee2968be8c5f13463fbfc9419378">UpdateHelp</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="80" column="14" bodyfile="window_selectable.cpp" bodystart="94" bodyend="98"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1aedc274bcfe73547d2f912c107ba5a32b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Selectable::SetEndlessScrolling</definition>
+        <argsstring>(bool state)</argsstring>
+        <name>SetEndlessScrolling</name>
+        <qualifiedname>Window_Selectable::SetEndlessScrolling</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>state</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets if endless scrolling is enabled.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>state</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>true to enable (default), false to disable. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="87" column="6" bodyfile="window_selectable.cpp" bodystart="229" bodyend="231"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1a1bd20b1c0832c3ed15ef1422568c67ad" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Selectable::SetMenuItemHeight</definition>
+        <argsstring>(int height)</argsstring>
+        <name>SetMenuItemHeight</name>
+        <qualifiedname>Window_Selectable::SetMenuItemHeight</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the menu item height.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>height</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the menu item height. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="94" column="6" bodyfile="window_selectable.cpp" bodystart="234" bodyend="236"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___selectable_1aa9a57e76079fbb262feef2ebc7abede1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Selectable::SetSingleColumnWrapping</definition>
+        <argsstring>(bool wrap)</argsstring>
+        <name>SetSingleColumnWrapping</name>
+        <qualifiedname>Window_Selectable::SetSingleColumnWrapping</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>wrap</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Allow left/right input to move cursor up/down when the selectable has only one column. By default this behaviour is only enabled for two and more columns.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>wrap</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>enable/disable single column wrap </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="102" column="6" bodyfile="window_selectable.cpp" bodystart="238" bodyend="240"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_window___selectable_1a8412b5d1eb53e98330447d8e238ab5f2" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Selectable::UpdateArrows</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateArrows</name>
+        <qualifiedname>Window_Selectable::UpdateArrows</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.h" line="105" column="6" bodyfile="window_selectable.cpp" bodystart="122" bodyend="132"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_window" kindref="compound">Window</ref> Selectable class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="4">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="3">
+        <label>Window</label>
+        <link refid="class_window"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Window_ActorTarget</label>
+        <link refid="class_window___actor_target"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Window_Base</label>
+        <link refid="class_window___base"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>Window_BattleSkill</label>
+        <link refid="class_window___battle_skill"/>
+        <childnode refid="21" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Window_BattleStatus</label>
+        <link refid="class_window___battle_status"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Window_Command</label>
+        <link refid="class_window___command"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Window_Command_Horizontal</label>
+        <link refid="class_window___command___horizontal"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>Window_Equip</label>
+        <link refid="class_window___equip"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>Window_EquipItem</label>
+        <link refid="class_window___equip_item"/>
+        <childnode refid="13" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>Window_GameList</label>
+        <link refid="class_window___game_list"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>Window_InputSettings</label>
+        <link refid="class_window___input_settings"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Window_Interpreter</label>
+        <link refid="class_window___interpreter"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>Window_Item</label>
+        <link refid="class_window___item"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>Window_MenuStatus</label>
+        <link refid="class_window___menu_status"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>Window_Message</label>
+        <link refid="class_window___message"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>Window_NumberInput</label>
+        <link refid="class_window___number_input"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Window_Selectable</label>
+        <link refid="class_window___selectable"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>Window_Settings</label>
+        <link refid="class_window___settings"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>Window_ShopBuy</label>
+        <link refid="class_window___shop_buy"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>Window_ShopSell</label>
+        <link refid="class_window___shop_sell"/>
+        <childnode refid="13" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>Window_Skill</label>
+        <link refid="class_window___skill"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>Window_StringView</label>
+        <link refid="class_window___string_view"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>Window_Teleport</label>
+        <link refid="class_window___teleport"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>Window_VarList</label>
+        <link refid="class_window___var_list"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="4">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="5">
+        <label>Rect</label>
+        <link refid="class_rect"/>
+      </node>
+      <node id="3">
+        <label>Window</label>
+        <link refid="class_window"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>cursor_rect</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Window_Base</label>
+        <link refid="class_window___base"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Window_Help</label>
+        <link refid="class_window___help"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Window_Selectable</label>
+        <link refid="class_window___selectable"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>help_window</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="window_selectable.h" line="30" column="1" bodyfile="window_selectable.h" bodystart="30" bodyend="121"/>
+    <listofallmembers>
+      <member refid="class_window_1a30d9a51374e74ae0a59da6bf9ae77d79" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>active</name></member>
+      <member refid="class_window_1a6840c54e5681e5f4109e6e53d538afff" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>animate_arrows</name></member>
+      <member refid="class_window___selectable_1a039d27bee45f565c75a819923acf3865" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>arrow_frame</name></member>
+      <member refid="class_window_1a5fdc8f9bb6859159ceccc34b69ab4518" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>back_opacity</name></member>
+      <member refid="class_window_1a7783ccb4806cd474920af47bfb6e34de" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>border_x</name></member>
+      <member refid="class_window_1acfcd1e1710f455bc7e300a0e1969a819" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>border_y</name></member>
+      <member refid="class_window___base_1ab163ecc97ae4663c3af07fa8d2488d7e" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>CancelFace</name></member>
+      <member refid="class_window_1ad981b3a3e8815b7f3f4c6a4e895849d5" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>closing</name></member>
+      <member refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>column_max</name></member>
+      <member refid="class_window_1aa37669a94405b73515d5bd9b342e07c0" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>contents</name></member>
+      <member refid="class_window_1afea2c4631cc17e44d91eb26014d1ef85" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>contents_opacity</name></member>
+      <member refid="class_window___selectable_1aecc125d715ca5bcd511c23bb6b897648" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>CreateContents</name></member>
+      <member refid="class_window___base_1aae60c3e20ba6ad791731b1f9b62268df" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>current_frame</name></member>
+      <member refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>cursor_rect</name></member>
+      <member refid="class_window_1a1105a74f93c232d0caf4882ce1105d2b" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>down_arrow</name></member>
+      <member refid="class_window_1ae9b28a38c8c5f9dabb89335da45367d5" prot="public" virt="virtual"><scope>Window_Selectable</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>Drawable</name></member>
+      <member refid="class_window___base_1a89865ce16d1053880ad635e4cf4ffca4" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawActorClass</name></member>
+      <member refid="class_window___base_1a7ead18f633dbfa23740626c4d310579c" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawActorExp</name></member>
+      <member refid="class_window___base_1a924448d5c6250588b8372e9e4fe7deb9" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawActorFace</name></member>
+      <member refid="class_window___base_1a1412eeb3d9ced66eef6b53fca5838d87" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawActorHp</name></member>
+      <member refid="class_window___base_1ae5564745ecd1b7b2e8094cd2ff4a4d07" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawActorHpValue</name></member>
+      <member refid="class_window___base_1ad05730fa6d45625484c06ed8aa2a2360" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawActorLevel</name></member>
+      <member refid="class_window___base_1a6839752ce8f91032394dfa0216bafc99" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawActorName</name></member>
+      <member refid="class_window___base_1a38f710cfc58ec6163ceed6b90ad5818a" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawActorParameter</name></member>
+      <member refid="class_window___base_1a2386a07c558b5d5d0eb1f446a66e9c6c" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawActorSp</name></member>
+      <member refid="class_window___base_1a5db54a54646082147def28bc6cc95ecb" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawActorSpValue</name></member>
+      <member refid="class_window___base_1a318e9ce402c5d6e4594c377530ff928a" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawActorState</name></member>
+      <member refid="class_window___base_1a4280d1ba36defe563be65bb50c7dfe20" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawActorTitle</name></member>
+      <member refid="class_window___base_1a4924d3b09574a5fce2c625c163098964" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawCurrencyValue</name></member>
+      <member refid="class_window___base_1ae8953dd148fa5bdb8e8cc85adbed74bc" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawEquipmentType</name></member>
+      <member refid="class_window___base_1aef9378bbfb2d0a01c6e4e5e14e70db91" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawFace</name></member>
+      <member refid="class_window___base_1abb4753c1c25848976404a483bcc0061a" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawGauge</name></member>
+      <member refid="class_window___base_1a6a7cf28705a3033c8f28585000923358" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawItemName</name></member>
+      <member refid="class_window___base_1af2433d82fa056a8a7c6245df02cf2a8c" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>DrawSkillName</name></member>
+      <member refid="class_window___selectable_1a429136ca4c7bba644b7ea71a2e82aca4" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>endless_scrolling</name></member>
+      <member refid="class_window___base_1a1e5d623ae231c9e389f20df787b26605" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>face_request_ids</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>Flags</name></member>
+      <member refid="class_window_1a1f1f44b1ffaef1e628bc8e798b72b2a3" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>font</name></member>
+      <member refid="class_window_1ae7f16566d53bd4e9b8d93f3bb2c706cf" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>frame_opacity</name></member>
+      <member refid="class_window_1a893355559f288910e0c7efe5ebf35e12" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetActive</name></member>
+      <member refid="class_window_1a5c12f9d9b4bc434d194f60920829e924" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetAnimateArrows</name></member>
+      <member refid="class_window_1ae9f575b4d9ee0e89c4f72fb1136b939e" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetBackOpacity</name></member>
+      <member refid="class_window_1a33418d5002643de22c01216ac4a68fab" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetBorderX</name></member>
+      <member refid="class_window_1a85d217a09432cba36ec9917cc9c9bab4" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetBorderY</name></member>
+      <member refid="class_window_1a08d183b2c505ef00895b907f692e3f47" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetBottomY</name></member>
+      <member refid="class_window___selectable_1ab8787975859c1af609b10560fb0ee8d5" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetColumnMax</name></member>
+      <member refid="class_window_1ab7cc2352acb3934c40b7ed427c6e838f" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetContents</name></member>
+      <member refid="class_window_1a3a022f1a61ec8451d78ab8576d40e2c6" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetContentsOpacity</name></member>
+      <member refid="class_window_1aff81a34c4f6d0d9d89eec050a761c15a" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetCursorRect</name></member>
+      <member refid="class_window_1a748df6959ed2db74901f9bb695a43f17" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetDownArrow</name></member>
+      <member refid="class_window_1a31ef08e84da75105464631222e8d9b37" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetFont</name></member>
+      <member refid="class_window_1ab886657884794dd41b189c023ff52463" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetFrameOpacity</name></member>
+      <member refid="class_window_1a2196b5ae099037272cc85b223e80bd6d" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetHeight</name></member>
+      <member refid="class_window___selectable_1ac5cba35d9b5e704f93fbfe32b319e55e" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetHelpWindow</name></member>
+      <member refid="class_window___selectable_1af12367a9070a2bdc41c3e1ac40f23186" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetIndex</name></member>
+      <member refid="class_window___selectable_1a8f2add0e27d97659ed742e8d82668dae" prot="public" virt="virtual"><scope>Window_Selectable</scope><name>GetItemRect</name></member>
+      <member refid="class_window_1a706cc6e9c4247963d7516f8544f97136" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetLeftArrow</name></member>
+      <member refid="class_window_1ad01b3475eb063833bcecf776767120ae" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetOpacity</name></member>
+      <member refid="class_window_1ab5213da374f3de1ed749af5ff3147dd1" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetOx</name></member>
+      <member refid="class_window_1abbb96431e08ed99c32a87e654211cb09" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetOy</name></member>
+      <member refid="class_window___selectable_1a2a2720627e3fbc400800e1de5534a685" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetPageItemMax</name></member>
+      <member refid="class_window___selectable_1a7f71a0b8145cf6211abac7cb7472e0dd" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetPageRowMax</name></member>
+      <member refid="class_window_1a3a9441d1da4a9d4eb4ab5110aaf4a6af" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetPause</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetRenderOy</name></member>
+      <member refid="class_window_1a01e1ab6d941d3d78572ee1458e8bcd82" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetRightArrow</name></member>
+      <member refid="class_window_1a0b3f5d1df18939326ea793be41b2b1aa" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetRightX</name></member>
+      <member refid="class_window___selectable_1a249bdfb36eff3e53a8ba01057c31dfa1" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetRowMax</name></member>
+      <member refid="class_window_1a449845fc5eb2daf2187c403d572fc344" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetStretch</name></member>
+      <member refid="class_window___selectable_1ad5eae54b7a337b0aa35871ee22024bdf" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetTopRow</name></member>
+      <member refid="class_window_1ad01a381061f12942dabc5382fb4c3610" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetUpArrow</name></member>
+      <member refid="class_window___base_1ae53debcc40e44c05e05b0abedb2ac783" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetValueFontColor</name></member>
+      <member refid="class_window_1a451bdfeab37afce97712f23f5c2492aa" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetWidth</name></member>
+      <member refid="class_window_1a2af54bbfd2ded9767a4370b5d9acadab" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetWindowskin</name></member>
+      <member refid="class_window_1a06a511c7b2101cb1c6f5d8125a345699" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetX</name></member>
+      <member refid="class_window_1af457e700afc28ddfebfcf92a23a99e6e" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetY</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>GetZ</name></member>
+      <member refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>height</name></member>
+      <member refid="class_window___selectable_1a9b0e8113100fc890a6e54204e7d59d1a" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>help_window</name></member>
+      <member refid="class_window_1ad5dc18873173a138672e2f18978c4ef6" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>ID</name></member>
+      <member refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>index</name></member>
+      <member refid="class_window___base_1a53052079af4d1e5566c481da04f6ad3d" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>InitMovement</name></member>
+      <member refid="class_window_1af7fe8b2a199785b8c5540e060223865f" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>IsClosing</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>IsGlobal</name></member>
+      <member refid="class_window___base_1a602dd22533d8d8a2752c085660440a70" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>IsMovementActive</name></member>
+      <member refid="class_window_1a146f85a403fb76749a64fd6af5dec64c" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>IsOpening</name></member>
+      <member refid="class_window_1a7a79f00d39f0c83d2e86b7769e20cae9" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>IsOpeningOrClosing</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>IsShared</name></member>
+      <member refid="class_window_1a19febf0d464ca76f13a07f98c2f265fe" prot="protected" virt="virtual"><scope>Window_Selectable</scope><name>IsSystemGraphicUpdateAllowed</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>IsVisible</name></member>
+      <member refid="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>item_max</name></member>
+      <member refid="class_window_1a296f7ddd18340f78bb28ce7afee4127f" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>left_arrow</name></member>
+      <member refid="class_window___selectable_1a4042f282e2b3b74896c7e067b679aa17" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>menu_item_height</name></member>
+      <member refid="class_window___base_1abd5f1ac22be605f031f81b9ddfa33817" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>new_position</name></member>
+      <member refid="class_window___base_1a39cdba2fb84fc798d564538c6f4fd580" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>old_position</name></member>
+      <member refid="class_window___base_1ad0e003956ea90e9705702b6dc4261324" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>OnFaceReady</name></member>
+      <member refid="class_window_1adb5a945a66fa5707debc8a13fd8e8b1d" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>opacity</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>operator=</name></member>
+      <member refid="class_window_1a90d08c9529ad8afee5bb2f97a339f2a8" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>ox</name></member>
+      <member refid="class_window_1a8dde2b1118eb9b211156c78f95e82037" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>oy</name></member>
+      <member refid="class_window_1a3396ddbdbe617dd20d241075b15358e8" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>right_arrow</name></member>
+      <member refid="class_window___selectable_1ae0260f6237e92923599d4cc40254f6c8" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>scroll_dir</name></member>
+      <member refid="class_window___selectable_1a75400e1a71780a88c41bd8d89e9c4b3c" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>scroll_progress</name></member>
+      <member refid="class_window_1afe506cb1f96195a7c07c504ad3846df5" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetActive</name></member>
+      <member refid="class_window_1a13c0012638f137008802abb9797bc7b1" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetAnimateArrows</name></member>
+      <member refid="class_window_1a4b20daad71f636d0cd23cc86a2a2930e" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetBackOpacity</name></member>
+      <member refid="class_window_1adaa5908b1c01ceab63344e4e69b8e2e0" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetBorderX</name></member>
+      <member refid="class_window_1adaf3968702c7a02b6bca586e70642246" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetBorderY</name></member>
+      <member refid="class_window_1accefc4c2da52c1fc1defddf7ccb4d445" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetCloseAnimation</name></member>
+      <member refid="class_window___selectable_1ae39cda16f0198a9bd33983b1cf31b5a8" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetColumnMax</name></member>
+      <member refid="class_window_1ade4932d29b75cdd8f14b474006210505" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetContents</name></member>
+      <member refid="class_window_1a3110b6e41b04b3c3f6fd118187eeba3d" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetContentsOpacity</name></member>
+      <member refid="class_window_1a60601365a7ade2022e7c1445ba04ff6c" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetCursorRect</name></member>
+      <member refid="class_window_1a620068c714ba998fac887fce18b89c38" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetDownArrow</name></member>
+      <member refid="class_window___selectable_1aedc274bcfe73547d2f912c107ba5a32b" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetEndlessScrolling</name></member>
+      <member refid="class_window_1a3c7e82603bb2e26ff111fb2b6a2a7ef9" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetFont</name></member>
+      <member refid="class_window_1a08b70d6821e4f859e2c8292b28076028" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetFrameOpacity</name></member>
+      <member refid="class_window_1a0941f34765c08c3afc77709dbfcab5ca" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetHeight</name></member>
+      <member refid="class_window___selectable_1a106200ec57a53c50468bd77ded0faf36" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetHelpWindow</name></member>
+      <member refid="class_window___selectable_1aaf928ad0ab55c9aaff10ade1d3d0e01b" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetIndex</name></member>
+      <member refid="class_window___selectable_1acab7425fe6681083d35df6d807dce5db" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetItemMax</name></member>
+      <member refid="class_window_1ad72edc704a92811efd71217db95efdb2" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetLeftArrow</name></member>
+      <member refid="class_window___selectable_1a1bd20b1c0832c3ed15ef1422568c67ad" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetMenuItemHeight</name></member>
+      <member refid="class_window_1a256986c2f42bdc56604ceafa771f60a4" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetOpacity</name></member>
+      <member refid="class_window_1a3d95da1b7e47d332042ca263c31458af" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetOpenAnimation</name></member>
+      <member refid="class_window_1aea8bc4e6916566c627c2a3c7d2c2c0a5" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetOx</name></member>
+      <member refid="class_window_1a554315b28175a03de936f5f97cf5e4cd" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetOy</name></member>
+      <member refid="class_window_1ac23bd1bbebfc5f06961fecb26ea5c8fc" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetPause</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetRenderOy</name></member>
+      <member refid="class_window_1a8fd9a81ef3764efa0f467ef689a72d1e" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetRightArrow</name></member>
+      <member refid="class_window___selectable_1aa9a57e76079fbb262feef2ebc7abede1" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetSingleColumnWrapping</name></member>
+      <member refid="class_window_1aacd4df16a8276284d1d5e98bbc7f8db3" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetStretch</name></member>
+      <member refid="class_window___selectable_1a45ae718509f3677b47ca7d1ed18a55ff" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetTopRow</name></member>
+      <member refid="class_window_1ab09359aa2d8084e2dadd5b854e24cff8" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetUpArrow</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetVisible</name></member>
+      <member refid="class_window_1a31699d268cf2806e2c488532493effbd" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetWidth</name></member>
+      <member refid="class_window_1af3ec086d2b5bb619a56cdd9d5f9780f9" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetWindowskin</name></member>
+      <member refid="class_window_1ac3e264eb65626c9acbd383522581ba58" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetX</name></member>
+      <member refid="class_window_1ab08def241a522babd7e8d8a77904488b" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetY</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>SetZ</name></member>
+      <member refid="class_window_1a9f58857036c9515d1aaaf231e61fbe63" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>stretch</name></member>
+      <member refid="class_window___base_1ae56b601a7fef43d20d68bb08be8af46f" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>total_frames</name></member>
+      <member refid="class_window_1a97292cce3dc8deccdbd6e553ae26b8e6" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>up_arrow</name></member>
+      <member refid="class_window___selectable_1aff3576c095aee4a6de7851305389c628" prot="public" virt="virtual"><scope>Window_Selectable</scope><name>Update</name></member>
+      <member refid="class_window___selectable_1a8412b5d1eb53e98330447d8e238ab5f2" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>UpdateArrows</name></member>
+      <member refid="class_window___selectable_1a57004fa930f77fcfba2442ff45de2f2c" prot="public" virt="virtual"><scope>Window_Selectable</scope><name>UpdateCursorRect</name></member>
+      <member refid="class_window___selectable_1a1dfb10711a23fb5feac2c0392e423b06" prot="public" virt="virtual"><scope>Window_Selectable</scope><name>UpdateHelp</name></member>
+      <member refid="class_window___selectable_1a8eacf2a319bd83a3c07849e1ad254dd9" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>UpdateHelpFn</name></member>
+      <member refid="class_window___base_1a7085158c5f55f9b74ddb6abfd601ec65" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>UpdateMovement</name></member>
+      <member refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>width</name></member>
+      <member refid="class_window_1a370186a3a31940d608a8ed9f0d94659b" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>Window</name></member>
+      <member refid="class_window___base_1ab4bd342e1f0f125b9c823b0903979648" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>Window_Base</name></member>
+      <member refid="class_window___selectable_1a432f6e58c02d8f2d6973158af56de9f2" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>Window_Selectable</name></member>
+      <member refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>windowskin</name></member>
+      <member refid="class_window___selectable_1ad9bec229a50e00bc3a5caa5d78127341" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>wrap_limit</name></member>
+      <member refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>x</name></member>
+      <member refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" prot="protected" virt="non-virtual"><scope>Window_Selectable</scope><name>y</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>Window_Selectable</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>Window_Selectable</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

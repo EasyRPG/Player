@@ -1,0 +1,533 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_cache" kind="namespace" language="C++">
+    <compoundname>Cache</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_cache_1ac4fe502224de0fd6266d8fae42c1a29e" prot="public" static="no" extern="yes" mutable="no">
+        <type>std::vector&lt; uint8_t &gt;</type>
+        <definition>std::vector&lt; uint8_t &gt; Cache::exfont_custom</definition>
+        <argsstring></argsstring>
+        <name>exfont_custom</name>
+        <qualifiedname>Cache::exfont_custom</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="80" column="20" bodyfile="cache.cpp" bodystart="338" bodyend="-1" declfile="cache.h" declline="80" declcolumn="20"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_cache_1ac6bf114d26d85a30056d6a98fc847900" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::Backdrop</definition>
+        <argsstring>(std::string_view filename)</argsstring>
+        <name>Backdrop</name>
+        <qualifiedname>Cache::Backdrop</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="41" column="11" bodyfile="cache.cpp" bodystart="340" bodyend="342" declfile="cache.h" declline="41" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a662dab6f7d8825c2ec943a177a23b273" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::Battle</definition>
+        <argsstring>(std::string_view filename)</argsstring>
+        <name>Battle</name>
+        <qualifiedname>Cache::Battle</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="42" column="11" bodyfile="cache.cpp" bodystart="344" bodyend="346" declfile="cache.h" declline="42" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a7e8f7249a2ab350bfdd1f560d0fab8f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::Battle2</definition>
+        <argsstring>(std::string_view filename)</argsstring>
+        <name>Battle2</name>
+        <qualifiedname>Cache::Battle2</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="43" column="11" bodyfile="cache.cpp" bodystart="348" bodyend="350" declfile="cache.h" declline="43" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a4c07c33e6a8be647620b8d2003652c16" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::Battlecharset</definition>
+        <argsstring>(std::string_view filename)</argsstring>
+        <name>Battlecharset</name>
+        <qualifiedname>Cache::Battlecharset</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="44" column="11" bodyfile="cache.cpp" bodystart="352" bodyend="354" declfile="cache.h" declline="44" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a590c3c351ca3768cc20e6ce283ec7a94" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::Battleweapon</definition>
+        <argsstring>(std::string_view filename)</argsstring>
+        <name>Battleweapon</name>
+        <qualifiedname>Cache::Battleweapon</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="45" column="11" bodyfile="cache.cpp" bodystart="356" bodyend="358" declfile="cache.h" declline="45" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a02a70f3751d1ef3f1c22d8a06e3f2156" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::Charset</definition>
+        <argsstring>(std::string_view filename)</argsstring>
+        <name>Charset</name>
+        <qualifiedname>Cache::Charset</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="46" column="11" bodyfile="cache.cpp" bodystart="360" bodyend="362" declfile="cache.h" declline="46" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1ada58752b302567c6402dd92ae9c86757" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::Exfont</definition>
+        <argsstring>()</argsstring>
+        <name>Exfont</name>
+        <qualifiedname>Cache::Exfont</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="47" column="11" bodyfile="cache.cpp" bodystart="404" bodyend="426" declfile="cache.h" declline="47" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a48293c9f5d1b31a92f05dfb0922a9bf6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::Faceset</definition>
+        <argsstring>(std::string_view filename)</argsstring>
+        <name>Faceset</name>
+        <qualifiedname>Cache::Faceset</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="48" column="11" bodyfile="cache.cpp" bodystart="368" bodyend="370" declfile="cache.h" declline="48" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a408b860fc13e80c802b855b4b025d5fa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::Frame</definition>
+        <argsstring>(std::string_view filename, bool transparent=true)</argsstring>
+        <name>Frame</name>
+        <qualifiedname>Cache::Frame</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>transparent</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="49" column="11" bodyfile="cache.cpp" bodystart="372" bodyend="374" declfile="cache.h" declline="49" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1af85a3f8d4598e7719651bad52582d750" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::Gameover</definition>
+        <argsstring>(std::string_view filename)</argsstring>
+        <name>Gameover</name>
+        <qualifiedname>Cache::Gameover</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="50" column="11" bodyfile="cache.cpp" bodystart="376" bodyend="378" declfile="cache.h" declline="50" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a04da64ddcc48968e41d50104e19f5759" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::Monster</definition>
+        <argsstring>(std::string_view filename)</argsstring>
+        <name>Monster</name>
+        <qualifiedname>Cache::Monster</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="51" column="11" bodyfile="cache.cpp" bodystart="380" bodyend="382" declfile="cache.h" declline="51" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a655c7757754044b65b5c2344051a65b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::Panorama</definition>
+        <argsstring>(std::string_view filename)</argsstring>
+        <name>Panorama</name>
+        <qualifiedname>Cache::Panorama</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="52" column="11" bodyfile="cache.cpp" bodystart="384" bodyend="386" declfile="cache.h" declline="52" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1ab2d8db7f8312ea286cf560efae67ea7e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::Picture</definition>
+        <argsstring>(std::string_view filename, bool transparent)</argsstring>
+        <name>Picture</name>
+        <qualifiedname>Cache::Picture</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>transparent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="53" column="11" bodyfile="cache.cpp" bodystart="388" bodyend="390" declfile="cache.h" declline="53" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a6477b0e90e4ab01b74a8213fc50ae3db" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::Chipset</definition>
+        <argsstring>(std::string_view filename)</argsstring>
+        <name>Chipset</name>
+        <qualifiedname>Cache::Chipset</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="54" column="11" bodyfile="cache.cpp" bodystart="364" bodyend="366" declfile="cache.h" declline="54" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a9bd5380af0f471880e64695eefe7d77d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::Title</definition>
+        <argsstring>(std::string_view filename)</argsstring>
+        <name>Title</name>
+        <qualifiedname>Cache::Title</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="55" column="11" bodyfile="cache.cpp" bodystart="396" bodyend="398" declfile="cache.h" declline="55" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1af420409ac6307cbb0cee292ba15c4bf8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::System</definition>
+        <argsstring>(std::string_view filename)</argsstring>
+        <name>System</name>
+        <qualifiedname>Cache::System</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="56" column="11" bodyfile="cache.cpp" bodystart="400" bodyend="402" declfile="cache.h" declline="56" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a7719b5291735ff7afdcb26898f390dfe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::System2</definition>
+        <argsstring>(std::string_view filename)</argsstring>
+        <name>System2</name>
+        <qualifiedname>Cache::System2</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="57" column="11" bodyfile="cache.cpp" bodystart="392" bodyend="394" declfile="cache.h" declline="57" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a9f348ed3fe0d0538f1c43b2e3962847e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::Tile</definition>
+        <argsstring>(std::string_view filename, int tile_id)</argsstring>
+        <name>Tile</name>
+        <qualifiedname>Cache::Tile</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>tile_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="59" column="11" bodyfile="cache.cpp" bodystart="428" bodyend="463" declfile="cache.h" declline="59" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a5a02477d257a0fd63fcc3ca2995efb7e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::SpriteEffect</definition>
+        <argsstring>(const BitmapRef &amp;src_bitmap, const Rect &amp;rect, bool flip_x, bool flip_y, const Tone &amp;tone, const Color &amp;blend)</argsstring>
+        <name>SpriteEffect</name>
+        <qualifiedname>Cache::SpriteEffect</qualifiedname>
+        <param>
+          <type>const <ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref> &amp;</type>
+          <declname>src_bitmap</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_rect" kindref="compound">Rect</ref> &amp;</type>
+          <declname>rect</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>flip_x</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>flip_y</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_tone" kindref="compound">Tone</ref> &amp;</type>
+          <declname>tone</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_color" kindref="compound">Color</ref> &amp;</type>
+          <declname>blend</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="60" column="11" bodyfile="cache.cpp" bodystart="465" bodyend="523" declfile="cache.h" declline="60" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1ac2702ae39bfd908ac1640b6650de645e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Cache::Clear</definition>
+        <argsstring>()</argsstring>
+        <name>Clear</name>
+        <qualifiedname>Cache::Clear</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="62" column="6" bodyfile="cache.cpp" bodystart="525" bodyend="540" declfile="cache.h" declline="62" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a72bcfa8a87bdfbce67d2d30ee3b649e8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Cache::ClearAll</definition>
+        <argsstring>()</argsstring>
+        <name>ClearAll</name>
+        <qualifiedname>Cache::ClearAll</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="63" column="6" bodyfile="cache.cpp" bodystart="542" bodyend="547" declfile="cache.h" declline="63" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a6329140ce8d9a89d3aec236fa5c5b42a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::System</definition>
+        <argsstring>()</argsstring>
+        <name>System</name>
+        <qualifiedname>Cache::System</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the configured system bitmap, or nullptr if there is no system </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="66" column="11" bodyfile="cache.cpp" bodystart="557" bodyend="563" declfile="cache.h" declline="66" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1aa6ed0a4c787fd0ca767bb296ae780923" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::SysBlack</definition>
+        <argsstring>()</argsstring>
+        <name>SysBlack</name>
+        <qualifiedname>Cache::SysBlack</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>a black system graphic bitmap </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="69" column="11" bodyfile="cache.cpp" bodystart="565" bodyend="568" declfile="cache.h" declline="69" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a99b6cb97d9ba0ced35bed05bca1d2150" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::SystemOrBlack</definition>
+        <argsstring>()</argsstring>
+        <name>SystemOrBlack</name>
+        <qualifiedname>Cache::SystemOrBlack</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the configured system bitmap, or a default black bitmap if there is no system </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="72" column="11" bodyfile="cache.cpp" bodystart="570" bodyend="576" declfile="cache.h" declline="72" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1abbe7599b2331df38f5f0a20c6a347a0e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Cache::System2</definition>
+        <argsstring>()</argsstring>
+        <name>System2</name>
+        <qualifiedname>Cache::System2</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the configured system2 bitmap, or nullptr if there is no system2 </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="75" column="11" bodyfile="cache.cpp" bodystart="578" bodyend="584" declfile="cache.h" declline="75" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a1351aecfe7f68012fabbf6194eb93523" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Cache::SetSystemName</definition>
+        <argsstring>(std::string filename)</argsstring>
+        <name>SetSystemName</name>
+        <qualifiedname>Cache::SetSystemName</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="77" column="6" bodyfile="cache.cpp" bodystart="549" bodyend="551" declfile="cache.h" declline="77" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_cache_1a99faff3aa282746c4eb34a2bc0156232" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Cache::SetSystem2Name</definition>
+        <argsstring>(std::string filename)</argsstring>
+        <name>SetSystem2Name</name>
+        <qualifiedname>Cache::SetSystem2Name</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="cache.h" line="78" column="6" bodyfile="cache.cpp" bodystart="553" bodyend="555" declfile="cache.h" declline="78" declcolumn="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="namespace_cache" kindref="compound">Cache</ref> namespace. </para>
+    </detaileddescription>
+    <location file="cache.h" line="40" column="1"/>
+  </compounddef>
+</doxygen>

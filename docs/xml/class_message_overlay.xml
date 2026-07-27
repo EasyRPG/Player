@@ -1,0 +1,359 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_message_overlay" kind="class" language="C++" prot="public">
+    <compoundname>MessageOverlay</compoundname>
+    <basecompoundref refid="class_drawable" prot="public" virt="non-virtual">Drawable</basecompoundref>
+    <includes refid="message__overlay_8h" local="no">message_overlay.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_message_overlay_1a6d2d2e6659e5841acbf54eab865f8f67" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef MessageOverlay::bitmap</definition>
+        <argsstring></argsstring>
+        <name>bitmap</name>
+        <qualifiedname>MessageOverlay::bitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="60" column="11" bodyfile="message_overlay.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_message_overlay_1a089871f74e9587234a795a8d83fe77d2" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef MessageOverlay::black</definition>
+        <argsstring></argsstring>
+        <name>black</name>
+        <qualifiedname>MessageOverlay::black</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="61" column="11" bodyfile="message_overlay.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_message_overlay_1a253009b6372f0755c437e3f40628dcd3" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int MessageOverlay::ox</definition>
+        <argsstring></argsstring>
+        <name>ox</name>
+        <qualifiedname>MessageOverlay::ox</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="63" column="5" bodyfile="message_overlay.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_message_overlay_1ad1e9616b970386fe7d1599e282b25d0f" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int MessageOverlay::oy</definition>
+        <argsstring></argsstring>
+        <name>oy</name>
+        <qualifiedname>MessageOverlay::oy</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="64" column="5" bodyfile="message_overlay.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_message_overlay_1ab2862d0a659e3a448afda6f74a1a41f6" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int MessageOverlay::text_height</definition>
+        <argsstring></argsstring>
+        <name>text_height</name>
+        <qualifiedname>MessageOverlay::text_height</qualifiedname>
+        <initializer>= 12</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="66" column="5" bodyfile="message_overlay.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_message_overlay_1a886301cee19e86b17a653066889582a3" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int MessageOverlay::message_max</definition>
+        <argsstring></argsstring>
+        <name>message_max</name>
+        <qualifiedname>MessageOverlay::message_max</qualifiedname>
+        <initializer>= 10</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="67" column="5" bodyfile="message_overlay.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_message_overlay_1a7f8c41a0556a1c0f84d1274f483a8c9e" prot="private" static="no" mutable="no">
+        <type>std::deque&lt; <ref refid="class_message_overlay_item" kindref="compound">MessageOverlayItem</ref> &gt;</type>
+        <definition>std::deque&lt;MessageOverlayItem&gt; MessageOverlay::messages</definition>
+        <argsstring></argsstring>
+        <name>messages</name>
+        <qualifiedname>MessageOverlay::messages</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="69" column="12" bodyfile="message_overlay.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_message_overlay_1a86e3115ffcd8f0694f28a1a8a7cd2f8f" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string MessageOverlay::last_message</definition>
+        <argsstring></argsstring>
+        <name>last_message</name>
+        <qualifiedname>MessageOverlay::last_message</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Last message added to the console before linebreak processing </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="71" column="13" bodyfile="message_overlay.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_message_overlay_1a744f1cddcde27c3528e57246b9b2007f" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool MessageOverlay::dirty</definition>
+        <argsstring></argsstring>
+        <name>dirty</name>
+        <qualifiedname>MessageOverlay::dirty</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="73" column="6" bodyfile="message_overlay.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_message_overlay_1ab8deea31f173b9d88bd76326a7f37274" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int MessageOverlay::counter</definition>
+        <argsstring></argsstring>
+        <name>counter</name>
+        <qualifiedname>MessageOverlay::counter</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="75" column="5" bodyfile="message_overlay.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_message_overlay_1abde402051915dccf90f7cc3c87bb0f38" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool MessageOverlay::show_all</definition>
+        <argsstring></argsstring>
+        <name>show_all</name>
+        <qualifiedname>MessageOverlay::show_all</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="77" column="6" bodyfile="message_overlay.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_message_overlay_1acdf5c0627a4e906b5f9151aaa7a4f8e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MessageOverlay::MessageOverlay</definition>
+        <argsstring>()</argsstring>
+        <name>MessageOverlay</name>
+        <qualifiedname>MessageOverlay::MessageOverlay</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="45" column="1" bodyfile="message_overlay.cpp" bodystart="27" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="class_message_overlay_1a3356464dc481472c100dce4824673c94" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void MessageOverlay::Draw</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>Draw</name>
+        <qualifiedname>MessageOverlay::Draw</qualifiedname>
+        <reimplements refid="class_drawable_1aa8a9b151f40368331f6fd8bbdd20133f">Draw</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="47" column="6" bodyfile="message_overlay.cpp" bodystart="32" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="class_message_overlay_1a190d28b3cb36ff25b81e7c7d12e341c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MessageOverlay::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>MessageOverlay::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="49" column="6" bodyfile="message_overlay.cpp" bodystart="96" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="class_message_overlay_1a274ec391f9408a02c620959d063ff5b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MessageOverlay::AddMessage</definition>
+        <argsstring>(const std::string &amp;message, Color color)</argsstring>
+        <name>AddMessage</name>
+        <qualifiedname>MessageOverlay::AddMessage</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>message</declname>
+        </param>
+        <param>
+          <type><ref refid="class_color" kindref="compound">Color</ref></type>
+          <declname>color</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="51" column="6" bodyfile="message_overlay.cpp" bodystart="63" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="function" id="class_message_overlay_1a7955666f2b04c95f6a608c617d8298e6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MessageOverlay::SetShowAll</definition>
+        <argsstring>(bool show_all)</argsstring>
+        <name>SetShowAll</name>
+        <qualifiedname>MessageOverlay::SetShowAll</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>show_all</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="53" column="6" bodyfile="message_overlay.cpp" bodystart="121" bodyend="124"/>
+      </memberdef>
+      <memberdef kind="function" id="class_message_overlay_1a3943aecf2727036e5361f6d7c00a1154" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MessageOverlay::OnResolutionChange</definition>
+        <argsstring>()</argsstring>
+        <name>OnResolutionChange</name>
+        <qualifiedname>MessageOverlay::OnResolutionChange</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="55" column="6" bodyfile="message_overlay.cpp" bodystart="126" bodyend="133"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_message_overlay_1a41e790a02faba0f98c80e02e1a6f526c" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool MessageOverlay::IsAnyMessageVisible</definition>
+        <argsstring>() const</argsstring>
+        <name>IsAnyMessageVisible</name>
+        <qualifiedname>MessageOverlay::IsAnyMessageVisible</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="58" column="6" bodyfile="message_overlay.cpp" bodystart="135" bodyend="137"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_message_overlay" kindref="compound">MessageOverlay</ref> class. Displays notifications during the game session. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>MessageOverlay</label>
+        <link refid="class_message_overlay"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>MessageOverlay</label>
+        <link refid="class_message_overlay"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="message_overlay.h" line="43" column="1" bodyfile="message_overlay.h" bodystart="43" bodyend="78"/>
+    <listofallmembers>
+      <member refid="class_message_overlay_1a274ec391f9408a02c620959d063ff5b1" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>AddMessage</name></member>
+      <member refid="class_message_overlay_1a6d2d2e6659e5841acbf54eab865f8f67" prot="private" virt="non-virtual"><scope>MessageOverlay</scope><name>bitmap</name></member>
+      <member refid="class_message_overlay_1a089871f74e9587234a795a8d83fe77d2" prot="private" virt="non-virtual"><scope>MessageOverlay</scope><name>black</name></member>
+      <member refid="class_message_overlay_1ab8deea31f173b9d88bd76326a7f37274" prot="private" virt="non-virtual"><scope>MessageOverlay</scope><name>counter</name></member>
+      <member refid="class_message_overlay_1a744f1cddcde27c3528e57246b9b2007f" prot="private" virt="non-virtual"><scope>MessageOverlay</scope><name>dirty</name></member>
+      <member refid="class_message_overlay_1a3356464dc481472c100dce4824673c94" prot="public" virt="virtual"><scope>MessageOverlay</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>Flags</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>GetRenderOy</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>GetZ</name></member>
+      <member refid="class_message_overlay_1a41e790a02faba0f98c80e02e1a6f526c" prot="private" virt="non-virtual"><scope>MessageOverlay</scope><name>IsAnyMessageVisible</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>IsGlobal</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>IsVisible</name></member>
+      <member refid="class_message_overlay_1a86e3115ffcd8f0694f28a1a8a7cd2f8f" prot="private" virt="non-virtual"><scope>MessageOverlay</scope><name>last_message</name></member>
+      <member refid="class_message_overlay_1a886301cee19e86b17a653066889582a3" prot="private" virt="non-virtual"><scope>MessageOverlay</scope><name>message_max</name></member>
+      <member refid="class_message_overlay_1acdf5c0627a4e906b5f9151aaa7a4f8e1" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>MessageOverlay</name></member>
+      <member refid="class_message_overlay_1a7f8c41a0556a1c0f84d1274f483a8c9e" prot="private" virt="non-virtual"><scope>MessageOverlay</scope><name>messages</name></member>
+      <member refid="class_message_overlay_1a3943aecf2727036e5361f6d7c00a1154" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>OnResolutionChange</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>operator=</name></member>
+      <member refid="class_message_overlay_1a253009b6372f0755c437e3f40628dcd3" prot="private" virt="non-virtual"><scope>MessageOverlay</scope><name>ox</name></member>
+      <member refid="class_message_overlay_1ad1e9616b970386fe7d1599e282b25d0f" prot="private" virt="non-virtual"><scope>MessageOverlay</scope><name>oy</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>SetRenderOy</name></member>
+      <member refid="class_message_overlay_1a7955666f2b04c95f6a608c617d8298e6" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>SetShowAll</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>SetVisible</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>SetZ</name></member>
+      <member refid="class_message_overlay_1abde402051915dccf90f7cc3c87bb0f38" prot="private" virt="non-virtual"><scope>MessageOverlay</scope><name>show_all</name></member>
+      <member refid="class_message_overlay_1ab2862d0a659e3a448afda6f74a1a41f6" prot="private" virt="non-virtual"><scope>MessageOverlay</scope><name>text_height</name></member>
+      <member refid="class_message_overlay_1a190d28b3cb36ff25b81e7c7d12e341c9" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>Update</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>MessageOverlay</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>MessageOverlay</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

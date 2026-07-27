@@ -1,0 +1,333 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_wild_midi_decoder" kind="class" language="C++" prot="public">
+    <compoundname>WildMidiDecoder</compoundname>
+    <basecompoundref refid="class_midi_decoder" prot="public" virt="non-virtual">MidiDecoder</basecompoundref>
+    <includes refid="decoder__wildmidi_8h" local="no">decoder_wildmidi.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_wild_midi_decoder_1ab17f36eb0627ed2b28c41be43efe9e60" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; uint8_t &gt;</type>
+        <definition>std::vector&lt;uint8_t&gt; WildMidiDecoder::file_buffer</definition>
+        <argsstring></argsstring>
+        <name>file_buffer</name>
+        <qualifiedname>WildMidiDecoder::file_buffer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_wildmidi.h" line="64" column="13" bodyfile="decoder_wildmidi.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_wild_midi_decoder_1a21c48c83842a74b30b909d9ca145e4c1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>WildMidiDecoder::~WildMidiDecoder</definition>
+        <argsstring>()</argsstring>
+        <name>~WildMidiDecoder</name>
+        <qualifiedname>WildMidiDecoder::~WildMidiDecoder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_wildmidi.h" line="35" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_wild_midi_decoder_1ad19893090ed5a824c87140e511a5ac4f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool WildMidiDecoder::Open</definition>
+        <argsstring>(std::vector&lt; uint8_t &gt; &amp;data) override</argsstring>
+        <name>Open</name>
+        <qualifiedname>WildMidiDecoder::Open</qualifiedname>
+        <reimplements refid="class_midi_decoder_1a622decc74141fffbb272c8be23af0215">Open</reimplements>
+        <param>
+          <type>std::vector&lt; uint8_t &gt; &amp;</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Passes a buffer containing a Midi file to the Midi Decoder <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Midi Data </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true when the decoder supports this data </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_wildmidi.h" line="41" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_wild_midi_decoder_1a4726b062f68cafe06db4b52732e3c255" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool WildMidiDecoder::Seek</definition>
+        <argsstring>(std::streamoff offset, std::ios_base::seekdir origin) override</argsstring>
+        <name>Seek</name>
+        <qualifiedname>WildMidiDecoder::Seek</qualifiedname>
+        <reimplements refid="class_midi_decoder_1abad45713922fef863804905572041ef0">Seek</reimplements>
+        <param>
+          <type>std::streamoff</type>
+          <declname>offset</declname>
+        </param>
+        <param>
+          <type>std::ios_base::seekdir</type>
+          <declname>origin</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Seeks in the midi stream. The value of offset is implementation defined.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>offset</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Offset to seek to </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>origin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Position to seek from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether seek was successful </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_wildmidi.h" line="43" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_wild_midi_decoder_1ae2f591d1b59bee900c17b5eda536cee6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string WildMidiDecoder::GetName</definition>
+        <argsstring>() override</argsstring>
+        <name>GetName</name>
+        <qualifiedname>WildMidiDecoder::GetName</qualifiedname>
+        <reimplements refid="class_midi_decoder_1af4d40d12d6758967cb2dcb73f3a06900">GetName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the unique name of the Midi decoder.</para>
+<para><simplesect kind="return"><para>decoder name </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_wildmidi.h" line="45" column="13" bodyfile="decoder_wildmidi.h" bodystart="45" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="class_wild_midi_decoder_1ace9cc07d6529bdf2f8c08d6448cc224e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int WildMidiDecoder::FillBuffer</definition>
+        <argsstring>(uint8_t *buffer, int length) override</argsstring>
+        <name>FillBuffer</name>
+        <qualifiedname>WildMidiDecoder::FillBuffer</qualifiedname>
+        <reimplements refid="class_midi_decoder_1a9b662741035e2a82a9b7e2aa9a406bd8">FillBuffer</reimplements>
+        <param>
+          <type>uint8_t *</type>
+          <declname>buffer</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>length</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called when the synthesizer shall write data in a buffer.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>buffer</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Buffer to fill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Buffer size </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>number of bytes read or -1 on error </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_wildmidi.h" line="49" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_wild_midi_decoder_1aa8cab8ffbde3a84b2b8e69d0b8e15b32" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>bool WildMidiDecoder::SetPitch</definition>
+        <argsstring>(int) override</argsstring>
+        <name>SetPitch</name>
+        <qualifiedname>WildMidiDecoder::SetPitch</qualifiedname>
+        <reimplements refid="class_midi_decoder_1ab492d527453d3b8513c2e7c2cb34b237">SetPitch</reimplements>
+        <param>
+          <type>int</type>
+          <declname>pitch</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the pitch multiplier. 100 = normal speed 200 = double speed and so on Not all audio decoders support this. Using the audio hardware is recommended.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pitch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pitch multiplier to use </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if pitch was set, false otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_wildmidi.h" line="51" column="6" bodyfile="decoder_wildmidi.h" bodystart="51" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="class_wild_midi_decoder_1a651e80aa432eb0eac27fbed505794498" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>bool WildMidiDecoder::SupportsMidiMessages</definition>
+        <argsstring>() override</argsstring>
+        <name>SupportsMidiMessages</name>
+        <qualifiedname>WildMidiDecoder::SupportsMidiMessages</qualifiedname>
+        <reimplements refid="class_midi_decoder_1a07adfc534e13ab8dabac2ca2abf68676">SupportsMidiMessages</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>False if the Library is sequencer based </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_wildmidi.h" line="55" column="6" bodyfile="decoder_wildmidi.h" bodystart="55" bodyend="57"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_wild_midi_decoder_1a57aadc1e60863ff7938ebb74037d8f41" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool WildMidiDecoder::Initialize</definition>
+        <argsstring>(std::string &amp;status_message)</argsstring>
+        <name>Initialize</name>
+        <qualifiedname>WildMidiDecoder::Initialize</qualifiedname>
+        <param>
+          <type>std::string &amp;</type>
+          <declname>status_message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_wildmidi.h" line="37" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_wild_midi_decoder_1a91fc614e348ebc966d4a54d99050876e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void WildMidiDecoder::ResetState</definition>
+        <argsstring>()</argsstring>
+        <name>ResetState</name>
+        <qualifiedname>WildMidiDecoder::ResetState</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_wildmidi.h" line="38" column="13"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Audio decoder for MIDI powered by WildMidi </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>MidiDecoder</label>
+        <link refid="class_midi_decoder"/>
+      </node>
+      <node id="1">
+        <label>WildMidiDecoder</label>
+        <link refid="class_wild_midi_decoder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>MidiDecoder</label>
+        <link refid="class_midi_decoder"/>
+      </node>
+      <node id="1">
+        <label>WildMidiDecoder</label>
+        <link refid="class_wild_midi_decoder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="decoder_wildmidi.h" line="33" column="1" bodyfile="decoder_wildmidi.h" bodystart="33" bodyend="65"/>
+    <listofallmembers>
+      <member refid="class_midi_decoder_1a03c883f6c10808ce7f95559018eb9f07" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>ChangeFluidsynthSoundfont</name></member>
+      <member refid="class_midi_decoder_1a3df91771d3a83c4d52c5706af9619fa7" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>CheckFluidsynth</name></member>
+      <member refid="class_midi_decoder_1a9beb09513b83be3c65ace1c700cb7b13" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>CheckWildMidi</name></member>
+      <member refid="class_midi_decoder_1aea38a9c8766ad49ee47cd509b71889f3" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>Create</name></member>
+      <member refid="class_midi_decoder_1ab90e4f43be463ff0f045f320569d6d3f" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>CreateFluidsynth</name></member>
+      <member refid="class_midi_decoder_1a1bfc000db967fff83a03b9737ae22571" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>CreateFmMidi</name></member>
+      <member refid="class_midi_decoder_1ac027fd25d15a3eab594f85448c3e9aac" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>CreateWildMidi</name></member>
+      <member refid="class_wild_midi_decoder_1ab17f36eb0627ed2b28c41be43efe9e60" prot="private" virt="non-virtual"><scope>WildMidiDecoder</scope><name>file_buffer</name></member>
+      <member refid="class_wild_midi_decoder_1ace9cc07d6529bdf2f8c08d6448cc224e" prot="public" virt="virtual"><scope>WildMidiDecoder</scope><name>FillBuffer</name></member>
+      <member refid="class_midi_decoder_1a4cc4e1c89b089d4ebeaab82d89a8332c" prot="protected" virt="non-virtual"><scope>WildMidiDecoder</scope><name>frequency</name></member>
+      <member refid="class_midi_decoder_1a6417064ebe5f3b42299facc0b54f341b" prot="public" virt="virtual"><scope>WildMidiDecoder</scope><name>GetFormat</name></member>
+      <member refid="class_wild_midi_decoder_1ae2f591d1b59bee900c17b5eda536cee6" prot="public" virt="virtual"><scope>WildMidiDecoder</scope><name>GetName</name></member>
+      <member refid="class_wild_midi_decoder_1a57aadc1e60863ff7938ebb74037d8f41" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>Initialize</name></member>
+      <member refid="class_midi_decoder_1a9111f9360e9afe04c4a36e1fb45181e2" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>MidiDecoder</name></member>
+      <member refid="class_midi_decoder_1a282d792c6c08f01e8980bae08bc9be90" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>MidiDecoder</name></member>
+      <member refid="class_midi_decoder_1a83eb8eec90b545be05f4d5506d22a3cd" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>MidiDecoder</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>MidiEvent</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92aefb0f519c3e8dacf7f5e687d0d27c4a6" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>MidiEvent_ChannelPressure</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92adea32a25b2d36ebbfe69c3efac1e1501" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>MidiEvent_Controller</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92ab3c25e6206ee22d077812a5a3b94a211" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>MidiEvent_KeyPressure</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a27cba7e4508b870ae8ea80ca162c4433" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>MidiEvent_NoteOff</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a53a94fde6f981169615b7d5427cccb78" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>MidiEvent_NoteOn</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92aa1ff6af7ff6c70ca07022bf620b3ccd3" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>MidiEvent_PitchBend</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a3509a9d33ea0da16a480395a0ee4af5e" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>MidiEvent_ProgramChange</name></member>
+      <member refid="class_midi_decoder_1afd17f90102463d31d3b739936f3e70dd" prot="public" virt="virtual"><scope>WildMidiDecoder</scope><name>NeedsSoftReset</name></member>
+      <member refid="class_midi_decoder_1a6806f9b6c94b9275b4495d8466692b4a" prot="public" virt="virtual"><scope>WildMidiDecoder</scope><name>OnNewMidi</name></member>
+      <member refid="class_wild_midi_decoder_1ad19893090ed5a824c87140e511a5ac4f" prot="public" virt="virtual"><scope>WildMidiDecoder</scope><name>Open</name></member>
+      <member refid="class_midi_decoder_1a463917459cc34a694f53c50b9e00f267" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>operator=</name></member>
+      <member refid="class_midi_decoder_1a4b5c64f6f1256d07812614519240a6bb" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>operator=</name></member>
+      <member refid="class_midi_decoder_1aa4c0f006466de50a3f7c84460cf0f1ea" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>Reset</name></member>
+      <member refid="class_wild_midi_decoder_1a91fc614e348ebc966d4a54d99050876e" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>ResetState</name></member>
+      <member refid="class_wild_midi_decoder_1a4726b062f68cafe06db4b52732e3c255" prot="public" virt="virtual"><scope>WildMidiDecoder</scope><name>Seek</name></member>
+      <member refid="class_midi_decoder_1a224acd738e2f9c66e4caabdfb4653d61" prot="public" virt="virtual"><scope>WildMidiDecoder</scope><name>SendMidiMessage</name></member>
+      <member refid="class_midi_decoder_1a15e5774605a1d77b05e5d332ebef74c9" prot="public" virt="virtual"><scope>WildMidiDecoder</scope><name>SendSysExMessage</name></member>
+      <member refid="class_midi_decoder_1aecab4ef828716841e2c6f5468a734961" prot="public" virt="virtual"><scope>WildMidiDecoder</scope><name>SetFormat</name></member>
+      <member refid="class_wild_midi_decoder_1aa8cab8ffbde3a84b2b8e69d0b8e15b32" prot="public" virt="virtual"><scope>WildMidiDecoder</scope><name>SetPitch</name></member>
+      <member refid="class_wild_midi_decoder_1a651e80aa432eb0eac27fbed505794498" prot="public" virt="virtual"><scope>WildMidiDecoder</scope><name>SupportsMidiMessages</name></member>
+      <member refid="class_midi_decoder_1a62bb942c2ce3a52b4f8903b80bb94065" prot="public" virt="virtual"><scope>WildMidiDecoder</scope><name>~MidiDecoder</name></member>
+      <member refid="class_wild_midi_decoder_1a21c48c83842a74b30b909d9ca145e4c1" prot="public" virt="non-virtual"><scope>WildMidiDecoder</scope><name>~WildMidiDecoder</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

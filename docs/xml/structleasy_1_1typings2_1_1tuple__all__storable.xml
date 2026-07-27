@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1typings2_1_1tuple__all__storable" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::typings2::tuple_all_storable</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename Tuple</type>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/typings/metatypes.hpp" line="82" column="3" bodyfile="leasy/typings/metatypes.hpp" bodystart="82" bodyend="-1"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

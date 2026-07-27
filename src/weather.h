@@ -78,3 +78,4 @@ inline Tone Weather::GetTone() const {
 }
 
 #endif
+

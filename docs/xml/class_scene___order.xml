@@ -1,0 +1,335 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_scene___order" kind="class" language="C++" prot="public">
+    <compoundname>Scene_Order</compoundname>
+    <basecompoundref refid="class_scene" prot="public" virt="non-virtual">Scene</basecompoundref>
+    <includes refid="scene__order_8h" local="no">scene_order.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_scene___order_1ad4e4f55f85b2dc665e9b9e034280b23b" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; Scene_Order::actors</definition>
+        <argsstring></argsstring>
+        <name>actors</name>
+        <qualifiedname>Scene_Order::actors</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Contains new actor order or 0 if actor wasnt rearranged yet. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_order.h" line="43" column="13" bodyfile="scene_order.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___order_1a3aa2f89e348f9add509a1b5fa0a1a0fc" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Order::actor_counter</definition>
+        <argsstring></argsstring>
+        <name>actor_counter</name>
+        <qualifiedname>Scene_Order::actor_counter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Contains number of rearranged actors. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_order.h" line="45" column="5" bodyfile="scene_order.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___order_1a439ba1dea3411d63b7cba711d055c638" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___command" kindref="compound">Window_Command</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Command&gt; Scene_Order::window_left</definition>
+        <argsstring></argsstring>
+        <name>window_left</name>
+        <qualifiedname>Scene_Order::window_left</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_order.h" line="47" column="16" bodyfile="scene_order.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___order_1a7bd7b3cafe357d97b508667e3de27b6c" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___command" kindref="compound">Window_Command</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Command&gt; Scene_Order::window_right</definition>
+        <argsstring></argsstring>
+        <name>window_right</name>
+        <qualifiedname>Scene_Order::window_right</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_order.h" line="47" column="28" bodyfile="scene_order.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___order_1afb996ef59fbdc88ec455b3b407f3aad8" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___command" kindref="compound">Window_Command</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Command&gt; Scene_Order::window_confirm</definition>
+        <argsstring></argsstring>
+        <name>window_confirm</name>
+        <qualifiedname>Scene_Order::window_confirm</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_order.h" line="47" column="41" bodyfile="scene_order.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_scene___order_1a23ebb4cfd64fefef86b2f8c0e5f23492" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Scene_Order::Scene_Order</definition>
+        <argsstring>()</argsstring>
+        <name>Scene_Order</name>
+        <qualifiedname>Scene_Order::Scene_Order</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_order.h" line="35" column="1" bodyfile="scene_order.cpp" bodystart="31" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___order_1a605ef001b7050dc36d283bd753e01929" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Order::Start</definition>
+        <argsstring>() override</argsstring>
+        <name>Start</name>
+        <qualifiedname>Scene_Order::Start</qualifiedname>
+        <reimplements refid="class_scene_1a31e0e1b9ce39bd9f5ec160835cc94d44">Start</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Start processing. This function is executed while the screen is faded out. All objects needed for the scene should be created here. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_order.h" line="37" column="6" bodyfile="scene_order.cpp" bodystart="36" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___order_1ad30efc95ca230980cff2da2ae7af6805" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Order::Terminate</definition>
+        <argsstring>()</argsstring>
+        <name>Terminate</name>
+        <qualifiedname>Scene_Order::Terminate</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_order.h" line="38" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___order_1a7a41e0962f37dd37d0460bee894e746b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Order::vUpdate</definition>
+        <argsstring>() override</argsstring>
+        <name>vUpdate</name>
+        <qualifiedname>Scene_Order::vUpdate</qualifiedname>
+        <reimplements refid="class_scene_1a8111b81e59b90b6711e9a39a507a32eb">vUpdate</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called every frame from Update. The scene should redraw all elements. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_order.h" line="39" column="6" bodyfile="scene_order.cpp" bodystart="42" bodyend="52"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_scene___order_1abdb03552c8dec6e60e7ea82ec511f7c7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Order::CreateCommandWindow</definition>
+        <argsstring>()</argsstring>
+        <name>CreateCommandWindow</name>
+        <qualifiedname>Scene_Order::CreateCommandWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_order.h" line="49" column="6" bodyfile="scene_order.cpp" bodystart="102" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___order_1a0b40fb3131655e18af3a4ef1e8ff95f7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Order::UpdateOrder</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateOrder</name>
+        <qualifiedname>Scene_Order::UpdateOrder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_order.h" line="51" column="6" bodyfile="scene_order.cpp" bodystart="54" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___order_1adc4d82e6203e0095cffbe4857713161d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Order::UpdateConfirm</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateConfirm</name>
+        <qualifiedname>Scene_Order::UpdateConfirm</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_order.h" line="52" column="6" bodyfile="scene_order.cpp" bodystart="89" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___order_1ab9817434dd62487deaa53e16695e75ba" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Order::Redo</definition>
+        <argsstring>()</argsstring>
+        <name>Redo</name>
+        <qualifiedname>Scene_Order::Redo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_order.h" line="54" column="6" bodyfile="scene_order.cpp" bodystart="133" bodyend="157"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___order_1a45be8492ccad9453c13f486b7785b8d7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Order::Confirm</definition>
+        <argsstring>()</argsstring>
+        <name>Confirm</name>
+        <qualifiedname>Scene_Order::Confirm</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_order.h" line="55" column="6" bodyfile="scene_order.cpp" bodystart="159" bodyend="175"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_scene" kindref="compound">Scene</ref> Order class. Allows changing the order of the party actors. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="1">
+        <label>Scene_Order</label>
+        <link refid="class_scene___order"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="1">
+        <label>Scene_Order</label>
+        <link refid="class_scene___order"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="scene_order.h" line="30" column="1" bodyfile="scene_order.h" bodystart="30" bodyend="56"/>
+    <listofallmembers>
+      <member refid="class_scene___order_1a3aa2f89e348f9add509a1b5fa0a1a0fc" prot="private" virt="non-virtual"><scope>Scene_Order</scope><name>actor_counter</name></member>
+      <member refid="class_scene___order_1ad4e4f55f85b2dc665e9b9e034280b23b" prot="private" virt="non-virtual"><scope>Scene_Order</scope><name>actors</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea525fafbc764da0de39c27dea3ffeb3d0" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>ActorTarget</name></member>
+      <member refid="class_scene_1a6091a98761b264c35a150bc28ee4a505" prot="protected" virt="non-virtual"><scope>Scene_Order</scope><name>async_continuation</name></member>
+      <member refid="class_scene_1a30c5c46dd99e4825df2d69518748c8ac" prot="protected" virt="non-virtual"><scope>Scene_Order</scope><name>AsyncContinuation</name></member>
+      <member refid="class_scene_1a40aec0ae8ed38526531911eea247398b" prot="protected" virt="non-virtual"><scope>Scene_Order</scope><name>AsyncNext</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea705f705b65bac2369f3cb10f5e89453a" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Battle</name></member>
+      <member refid="class_scene_1a91e354ab86259cd3bc94c094036280da" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>CheckSceneExit</name></member>
+      <member refid="class_scene___order_1a45be8492ccad9453c13f486b7785b8d7" prot="private" virt="non-virtual"><scope>Scene_Order</scope><name>Confirm</name></member>
+      <member refid="class_scene_1ac612b681d0de7c100f580b4bc446887b" prot="public" virt="virtual"><scope>Scene_Order</scope><name>Continue</name></member>
+      <member refid="class_scene___order_1abdb03552c8dec6e60e7ea82ec511f7c7" prot="private" virt="non-virtual"><scope>Scene_Order</scope><name>CreateCommandWindow</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea418b00b4c130e675ac7512610ed3f473" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Debug</name></member>
+      <member refid="class_scene_1a1fcc0d5308270cc967966da917957bdf" prot="public" virt="virtual"><scope>Scene_Order</scope><name>DrawBackground</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaee9d4a8ee40ca6e8310597315e07b978" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>End</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea302637f5f0048f4433949f10fc6c8f58" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Equip</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea85a7c5a46a3ca806d41de80e68da80e1" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>File</name></member>
+      <member refid="class_scene_1aa8b96a758c0f1ea4cf28808089ff7123" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Find</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea895a9b137f215eee5613d6a546275f5b" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>GameBrowser</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ead885a8fd6d0f378a99ee56a676029bca" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Gameover</name></member>
+      <member refid="class_scene_1ad837b22dff59e9c21f31204d958a24d7" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>GetDrawableList</name></member>
+      <member refid="class_scene_1ab9edda06ab170512d308c0c9fb38056b" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>GetRequestedSceneType</name></member>
+      <member refid="class_scene_1a203eba321fedc8a26c8802f4b9a84e01" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>HasDelayFrames</name></member>
+      <member refid="class_scene_1a1acd1e4345dfecb30c7c35f6d3e8130b" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>HasRequestedScene</name></member>
+      <member refid="class_scene_1ac348fc3b0beb12093144a1f03d81449d" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>instance</name></member>
+      <member refid="class_scene_1a5a8c37138fc3a2dda1e0e077b472ab7b" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>IsAsyncPending</name></member>
+      <member refid="class_scene_1a0e0d605d080b286e73a07587d72dfe70" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>IsInitialized</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea70390d274c6e9c167ac095faaa160c7c" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Item</name></member>
+      <member refid="class_scene_1a119de9e0876281a6eee15c7d15618d87" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>kReturnTitleDelayFrames</name></member>
+      <member refid="class_scene_1a563850d0f01381b76420c22ac335a103" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>kStartGameDelayFrames</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea16a3c57786ccf0d21f72a774d43957ab" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>LanguageMenu</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eac3db6576c8c7dc6e5d007d989f5022ea" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Load</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea4615e1aa6a92b7860d342a6aaf642611" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Logo</name></member>
+      <member refid="class_scene_1ae7f0f916c29e55b282dfe4ae522d2096" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>MainFunction</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eae39f3115e47e2cc1a161ab73db4819a6" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Map</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea2412b59539890965aeb61a22141a781b" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Menu</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea05b82d049724f3ca8838b9800e8f3f3e" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Name</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea352ebbd390cdf4d31336a52af54fca32" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Null</name></member>
+      <member refid="class_scene_1a71555af047b54446dfc4fd2b0e6f78bd" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>old_instances</name></member>
+      <member refid="class_scene_1a7388cece257333bb2c98a202135adf51" prot="public" virt="virtual"><scope>Scene_Order</scope><name>OnEventHpChanged</name></member>
+      <member refid="class_scene_1a80c10e8f0c10921300be168e67ddf3ed" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>OnFinishAsync</name></member>
+      <member refid="class_scene_1a05be417a18748b38a3cd18566edd6d2d" prot="public" virt="virtual"><scope>Scene_Order</scope><name>OnPartyChanged</name></member>
+      <member refid="class_scene_1ac6fa936fd2dc55f41889400d36d855e6" prot="public" virt="virtual"><scope>Scene_Order</scope><name>OnTranslationChanged</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea26ab4613edf5d94d74a5e1ad4ec37fa3" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Order</name></member>
+      <member refid="class_scene_1a29b08fddcde74b786ec01129847454ba" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Peek</name></member>
+      <member refid="class_scene_1a713d07a297477318624fada11415f5e3" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Pop</name></member>
+      <member refid="class_scene_1ac657b33df6c856847d87aa976ae9a9eb" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>PopUntil</name></member>
+      <member refid="class_scene_1a61c10b38185eac9925da70d7fb915890" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Push</name></member>
+      <member refid="class_scene_1afb9e8385131d0524f0d9afa946096709" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>PushTitleScene</name></member>
+      <member refid="class_scene___order_1ab9817434dd62487deaa53e16695e75ba" prot="private" virt="non-virtual"><scope>Scene_Order</scope><name>Redo</name></member>
+      <member refid="class_scene_1a5ecd59170e0a54d6216ccebd76702dd6" prot="public" virt="virtual"><scope>Scene_Order</scope><name>Refresh</name></member>
+      <member refid="class_scene_1a902f2993901187b05d8e42188b7e8156" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>ReturnToTitleScene</name></member>
+      <member refid="class_scene_1a495973012445184e00a31dd31e217b7e" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>rpgRtSceneFromSceneType</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc195dbdbaa61f7b6b3ecb3236592d17" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Save</name></member>
+      <member refid="class_scene_1ad10176d75a9cc0da56626f682d083507" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Scene</name></member>
+      <member refid="class_scene_1a300d6b1274f226a1e69a552858414ba3" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>scene_names</name></member>
+      <member refid="class_scene___order_1a23ebb4cfd64fefef86b2f8c0e5f23492" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Scene_Order</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea7484d8e1128440652139839089e85604" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>SceneMax</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09e" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>SceneType</name></member>
+      <member refid="class_scene_1a40c9e3ffb2917b1e3880e2ff5733b1b6" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>SetDelayFrames</name></member>
+      <member refid="class_scene_1a9f641fa0061cebf4294009cb1d860cbe" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>SetRequestedScene</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc93e55e9b1ff9b798d1fb0ee22abab0" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Settings</name></member>
+      <member refid="class_scene_1a287b3a8a6fdaa0eb6e9b43ae7c774c8b" prot="protected" virt="non-virtual"><scope>Scene_Order</scope><name>SetUseSharedDrawables</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea40484f6fb0aae90d36b27e9f7abfee9c" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Shop</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafd156984a4436ea28706dc0c7873c8fc" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Skill</name></member>
+      <member refid="class_scene___order_1a605ef001b7050dc36d283bd753e01929" prot="public" virt="virtual"><scope>Scene_Order</scope><name>Start</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eabe141c1b0922ac825b014da56774c2dc" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Status</name></member>
+      <member refid="class_scene_1ac6413c7a3e405e57e415bec3c3096f26" prot="public" virt="virtual"><scope>Scene_Order</scope><name>Suspend</name></member>
+      <member refid="class_scene_1a2ac1629e5d081accb6b3d2682c8aac18" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>TakeRequestedScene</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eadce8e1c84d0a06f5a005b24a6e602424" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Teleport</name></member>
+      <member refid="class_scene___order_1ad30efc95ca230980cff2da2ae7af6805" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Terminate</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaf3446103059a7e7c2333b8e0f81377d0" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Title</name></member>
+      <member refid="class_scene_1a1e97664b3509e2eb64b1aa621634703c" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>TransferDrawablesFrom</name></member>
+      <member refid="class_scene_1a4a594aefe6bd86e17042acf7c76eb0e6" prot="public" virt="virtual"><scope>Scene_Order</scope><name>TransitionIn</name></member>
+      <member refid="class_scene_1a64d36508ee1971f89c7d5e8513d777b1" prot="public" virt="virtual"><scope>Scene_Order</scope><name>TransitionOut</name></member>
+      <member refid="class_scene_1a8320189e28f3918a4f0200aedb97ccb5" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>type</name></member>
+      <member refid="class_scene_1a71a71b4f7752b853ff8032b0941a9d8d" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>Update</name></member>
+      <member refid="class_scene___order_1adc4d82e6203e0095cffbe4857713161d" prot="private" virt="non-virtual"><scope>Scene_Order</scope><name>UpdateConfirm</name></member>
+      <member refid="class_scene_1a85503cbb64a2f88b227d926768ed0100" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>UpdateDelayFrames</name></member>
+      <member refid="class_scene_1affa07b015ecebcf18cc0d652ab9a2fd4" prot="public" virt="virtual"><scope>Scene_Order</scope><name>UpdateGraphics</name></member>
+      <member refid="class_scene___order_1a0b40fb3131655e18af3a4ef1e8ff95f7" prot="private" virt="non-virtual"><scope>Scene_Order</scope><name>UpdateOrder</name></member>
+      <member refid="class_scene_1ac41adc09c7fed6609df594bf5bcdc1c5" prot="public" virt="non-virtual"><scope>Scene_Order</scope><name>UsesSharedDrawables</name></member>
+      <member refid="class_scene___order_1a7a41e0962f37dd37d0460bee894e746b" prot="public" virt="virtual"><scope>Scene_Order</scope><name>vUpdate</name></member>
+      <member refid="class_scene___order_1afb996ef59fbdc88ec455b3b407f3aad8" prot="private" virt="non-virtual"><scope>Scene_Order</scope><name>window_confirm</name></member>
+      <member refid="class_scene___order_1a439ba1dea3411d63b7cba711d055c638" prot="private" virt="non-virtual"><scope>Scene_Order</scope><name>window_left</name></member>
+      <member refid="class_scene___order_1a7bd7b3cafe357d97b508667e3de27b6c" prot="private" virt="non-virtual"><scope>Scene_Order</scope><name>window_right</name></member>
+      <member refid="class_scene_1aa0a5be58e2ee2d1fdafc5fb46b5e661e" prot="public" virt="virtual"><scope>Scene_Order</scope><name>~Scene</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

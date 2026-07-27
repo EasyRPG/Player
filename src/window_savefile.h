@@ -110,3 +110,4 @@ inline bool Window_SaveFile::IsSystemGraphicUpdateAllowed() const {
 }
 
 #endif
+

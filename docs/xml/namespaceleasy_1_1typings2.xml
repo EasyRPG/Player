@@ -1,0 +1,234 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1typings2" kind="namespace" language="C++">
+    <compoundname>leasy::typings2</compoundname>
+    <innerclass refid="structleasy_1_1typings2_1_1unknown__t" prot="public">leasy::typings2::unknown_t</innerclass>
+    <innerclass refid="structleasy_1_1typings2_1_1is__complete" prot="public">leasy::typings2::is_complete</innerclass>
+    <innerclass refid="structleasy_1_1typings2_1_1is__complete_3_01_t_00_01std_1_1void__t_3_01decltype_07sizeof_07_t_08_08_4_01_4" prot="public">leasy::typings2::is_complete&lt; T, std::void_t&lt; decltype(sizeof(T))&gt; &gt;</innerclass>
+    <innerclass refid="structleasy_1_1typings2_1_1is__nonabstract" prot="public">leasy::typings2::is_nonabstract</innerclass>
+    <innerclass refid="structleasy_1_1typings2_1_1is__nonabstract_3_01_t_00_01true_01_4" prot="public">leasy::typings2::is_nonabstract&lt; T, true &gt;</innerclass>
+    <innerclass refid="structleasy_1_1typings2_1_1tuple__all__storable" prot="public">leasy::typings2::tuple_all_storable</innerclass>
+    <innerclass refid="structleasy_1_1typings2_1_1tuple__all__storable_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4" prot="public">leasy::typings2::tuple_all_storable&lt; std::tuple&lt; Ts... &gt; &gt;</innerclass>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespaceleasy_1_1typings2_1ab5c523ea16f82dfea25364fb88965d3a" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>using leasy::typings2::_leasy_ensure_type = T</definition>
+        <argsstring></argsstring>
+        <name>_leasy_ensure_type</name>
+        <qualifiedname>leasy::typings2::_leasy_ensure_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/typings/metatypes.hpp" line="79" column="3" bodyfile="leasy/typings/metatypes.hpp" bodystart="79" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceleasy_1_1typings2_1a0fa28aa0518573256600314babc89a2d" prot="public" static="no" constexpr="yes" mutable="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool leasy::typings2::is_complete_v</definition>
+        <argsstring></argsstring>
+        <name>is_complete_v</name>
+        <qualifiedname>leasy::typings2::is_complete_v</qualifiedname>
+        <initializer>= <ref refid="structleasy_1_1typings2_1_1is__complete" kindref="compound">is_complete</ref>&lt;T&gt;::value</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/typings/metatypes.hpp" line="41" column="25" bodyfile="leasy/typings/metatypes.hpp" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1typings2_1a915c7bc6515c39c692e4cdedb0b4897d" prot="public" static="no" constexpr="yes" mutable="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool leasy::typings2::can_store_by_value</definition>
+        <argsstring></argsstring>
+        <name>can_store_by_value</name>
+        <qualifiedname>leasy::typings2::can_store_by_value</qualifiedname>
+        <initializer>= <ref refid="namespaceleasy_1_1typings2_1a0fa28aa0518573256600314babc89a2d" kindref="member">is_complete_v</ref>&lt;T&gt; &amp;&amp; <ref refid="structleasy_1_1typings2_1_1is__nonabstract" kindref="compound">is_nonabstract</ref>&lt;T&gt;::value &amp;&amp; std::is_copy_constructible_v&lt;T&gt;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/typings/metatypes.hpp" line="76" column="25" bodyfile="leasy/typings/metatypes.hpp" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1typings2_1ad43ac919ebe9d0371493d9b4a4994c26" prot="public" static="no" constexpr="yes" mutable="no">
+        <templateparamlist>
+          <param>
+            <type>typename Tuple</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool leasy::typings2::tuple_all_storable_v</definition>
+        <argsstring></argsstring>
+        <name>tuple_all_storable_v</name>
+        <qualifiedname>leasy::typings2::tuple_all_storable_v</qualifiedname>
+        <initializer>= <ref refid="structleasy_1_1typings2_1_1tuple__all__storable" kindref="compound">tuple_all_storable</ref>&lt;Tuple&gt;::value</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/typings/metatypes.hpp" line="89" column="25" bodyfile="leasy/typings/metatypes.hpp" bodystart="89" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceleasy_1_1typings2_1af8c2991784c540f1b9010f2c1d834308" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::type_index</type>
+        <definition>std::type_index leasy::typings2::leasy_typeid</definition>
+        <argsstring>()</argsstring>
+        <name>leasy_typeid</name>
+        <qualifiedname>leasy::typings2::leasy_typeid</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/typings/metatypes.hpp" line="44" column="19" bodyfile="leasy/typings/metatypes.hpp" bodystart="44" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1typings2_1af8c2991784c540f1b9010f2c1d834308" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>template&lt; typename... &gt; typename</type>
+            <declname>T</declname>
+            <defname>T</defname>
+          </param>
+        </templateparamlist>
+        <type>std::type_index</type>
+        <definition>std::type_index leasy::typings2::leasy_typeid</definition>
+        <argsstring>()</argsstring>
+        <name>leasy_typeid</name>
+        <qualifiedname>leasy::typings2::leasy_typeid</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/typings/metatypes.hpp" line="50" column="19" bodyfile="leasy/typings/metatypes.hpp" bodystart="50" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1typings2_1a9804ad24b5bd6bcad4de003b97f21bcf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto leasy::typings2::activate</definition>
+        <argsstring>(Args &amp;&amp;... args)</argsstring>
+        <name>activate</name>
+        <qualifiedname>leasy::typings2::activate</qualifiedname>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/typings/metatypes.hpp" line="55" column="8" bodyfile="leasy/typings/metatypes.hpp" bodystart="55" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1typings2_1a9eb58d2a69e5407d3e87450748dadce2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Param</type>
+          </param>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>decltype(auto)</type>
+        <definition>decltype(auto) leasy::typings2::pass</definition>
+        <argsstring>(T &amp;&amp;value)</argsstring>
+        <name>pass</name>
+        <qualifiedname>leasy::typings2::pass</qualifiedname>
+        <param>
+          <type>T &amp;&amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/typings/metatypes.hpp" line="92" column="12" bodyfile="leasy/typings/metatypes.hpp" bodystart="92" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1typings2_1aaae30e3d5a661bedfd33f38e0bf532ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>auto</type>
+            <declname>F</declname>
+            <defname>F</defname>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto leasy::typings2::call</definition>
+        <argsstring>(Args &amp;&amp;... args)</argsstring>
+        <name>call</name>
+        <qualifiedname>leasy::typings2::call</qualifiedname>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/typings/metatypes.hpp" line="111" column="8" bodyfile="leasy/typings/metatypes.hpp" bodystart="111" bodyend="120"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para>0xEF9087A </para>
+    </detaileddescription>
+    <location file="leasy/typings/metatypes.hpp" line="30" column="1"/>
+  </compounddef>
+</doxygen>

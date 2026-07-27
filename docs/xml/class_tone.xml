@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_tone" kind="class" language="C++" prot="public">
+    <compoundname>Tone</compoundname>
+    <includes refid="tone_8h" local="no">tone.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_tone_1ad67023c977ebe7aadffc381f777049bc" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Tone::red</definition>
+        <argsstring></argsstring>
+        <name>red</name>
+        <qualifiedname>Tone::red</qualifiedname>
+        <initializer>= 128</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Red component. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tone.h" line="47" column="5" bodyfile="tone.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tone_1a2717e37d41e22af6a7f03c332feae47e" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Tone::green</definition>
+        <argsstring></argsstring>
+        <name>green</name>
+        <qualifiedname>Tone::green</qualifiedname>
+        <initializer>= 128</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Green component. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tone.h" line="50" column="5" bodyfile="tone.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tone_1ada2e249e369061c9a73af9cbc1854872" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Tone::blue</definition>
+        <argsstring></argsstring>
+        <name>blue</name>
+        <qualifiedname>Tone::blue</qualifiedname>
+        <initializer>= 128</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blue component. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tone.h" line="53" column="5" bodyfile="tone.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tone_1ae9cb9f19d33dbb6fe40c4248dbc258c1" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Tone::gray</definition>
+        <argsstring></argsstring>
+        <name>gray</name>
+        <qualifiedname>Tone::gray</qualifiedname>
+        <initializer>= 128</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gray component. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tone.h" line="56" column="5" bodyfile="tone.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_tone_1aea5502e75becdfe4b05cc7f7a3bd18ec" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>Tone::Tone</definition>
+        <argsstring>()=default</argsstring>
+        <name>Tone</name>
+        <qualifiedname>Tone::Tone</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor. All values are set to 128. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tone.h" line="34" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tone_1a47325c4ccb12dc9783f9bd7f6c9bca83" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>Tone::Tone</definition>
+        <argsstring>(int red, int green, int blue, int gray)</argsstring>
+        <name>Tone</name>
+        <qualifiedname>Tone::Tone</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>red</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>green</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>blue</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>gray</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>red</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>red component. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>green</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>green component. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>blue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>blue component. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>gray</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>gray component. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tone.h" line="44" column="11" bodyfile="tone.h" bodystart="88" bodyend="93"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_tone" kindref="compound">Tone</ref> class. </para>
+    </detaileddescription>
+    <location file="tone.h" line="29" column="1" bodyfile="tone.h" bodystart="29" bodyend="57"/>
+    <listofallmembers>
+      <member refid="class_tone_1ada2e249e369061c9a73af9cbc1854872" prot="public" virt="non-virtual"><scope>Tone</scope><name>blue</name></member>
+      <member refid="class_tone_1ae9cb9f19d33dbb6fe40c4248dbc258c1" prot="public" virt="non-virtual"><scope>Tone</scope><name>gray</name></member>
+      <member refid="class_tone_1a2717e37d41e22af6a7f03c332feae47e" prot="public" virt="non-virtual"><scope>Tone</scope><name>green</name></member>
+      <member refid="class_tone_1ad67023c977ebe7aadffc381f777049bc" prot="public" virt="non-virtual"><scope>Tone</scope><name>red</name></member>
+      <member refid="class_tone_1aea5502e75becdfe4b05cc7f7a3bd18ec" prot="public" virt="non-virtual"><scope>Tone</scope><name>Tone</name></member>
+      <member refid="class_tone_1a47325c4ccb12dc9783f9bd7f6c9bca83" prot="public" virt="non-virtual"><scope>Tone</scope><name>Tone</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

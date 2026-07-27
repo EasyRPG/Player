@@ -1115,3 +1115,4 @@ inline void Game_BattleAlgorithm::Skill::SetTreatEnemiesAsIfInFrontRow(bool v) {
 } //namespace Game_BattleAlgorithm
 
 #endif
+

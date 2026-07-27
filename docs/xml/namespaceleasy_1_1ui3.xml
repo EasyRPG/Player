@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1ui3" kind="namespace" language="C++">
+    <compoundname>leasy::ui3</compoundname>
+    <innerclass refid="structleasy_1_1ui3_1_1_graphical_string" prot="public">leasy::ui3::GraphicalString</innerclass>
+    <innerclass refid="classleasy_1_1ui3_1_1_graphical_console" prot="public">leasy::ui3::GraphicalConsole</innerclass>
+    <innerclass refid="classleasy_1_1ui3_1_1gui__sink" prot="public">leasy::ui3::gui_sink</innerclass>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespaceleasy_1_1ui3_1a9cc8ce19f68ead9de9ddf3940ed1642e" prot="public" static="no">
+        <type>std::chrono::high_resolution_clock</type>
+        <definition>using leasy::ui3::clock = std::chrono::high_resolution_clock</definition>
+        <argsstring></argsstring>
+        <name>clock</name>
+        <qualifiedname>leasy::ui3::clock</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ui/winstream.hpp" line="37" column="3" bodyfile="leasy/ui/winstream.hpp" bodystart="37" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceleasy_1_1ui3_1aa0e4da9b7e9bfa0d23f1b1ad0b83155a" prot="public" static="no" mutable="no">
+        <type>std::unordered_map&lt; unsigned long long, std::weak_ptr&lt; <ref refid="class_base_ui" kindref="compound">BaseUi</ref> &gt; &gt;</type>
+        <definition>std::unordered_map&lt;unsigned long long, std::weak_ptr&lt;BaseUi&gt; &gt; leasy::ui3::windows</definition>
+        <argsstring></argsstring>
+        <name>windows</name>
+        <qualifiedname>leasy::ui3::windows</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ui/window.cpp" line="31" column="22" bodyfile="leasy/ui/window.cpp" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ui3_1ac45be088b0a65ea09344e8dd79f9c2ba" prot="public" static="no" mutable="no">
+        <type>unsigned long long</type>
+        <definition>unsigned long long leasy::ui3::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <qualifiedname>leasy::ui3::id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ui/window.cpp" line="32" column="22" bodyfile="leasy/ui/window.cpp" bodystart="32" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceleasy_1_1ui3_1a9b4144324cfd1b1cfdbf47c52e916ca8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::shared_ptr&lt; <ref refid="class_base_ui" kindref="compound">BaseUi</ref> &gt;</type>
+        <definition>std::shared_ptr&lt; BaseUi &gt; leasy::ui3::make_win</definition>
+        <argsstring>(int w, int h, int xpos, int ypos, int maxfps)</argsstring>
+        <name>make_win</name>
+        <qualifiedname>leasy::ui3::make_win</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>w</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>h</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>xpos</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>ypos</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>maxfps</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ui/window.cpp" line="34" column="19" bodyfile="leasy/ui/window.cpp" bodystart="34" bodyend="48" declfile="leasy/ui/window.hpp" declline="30" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ui3_1a9605f39228c12a5b0014ce53a9562abe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ui3::update_windows</definition>
+        <argsstring>()</argsstring>
+        <name>update_windows</name>
+        <qualifiedname>leasy::ui3::update_windows</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ui/window.cpp" line="50" column="8" bodyfile="leasy/ui/window.cpp" bodystart="50" bodyend="65" declfile="leasy/ui/window.hpp" declline="32" declcolumn="8"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para>0xEF9087A </para>
+    </detaileddescription>
+    <location file="leasy/ui/window.cpp" line="30" column="1"/>
+  </compounddef>
+</doxygen>

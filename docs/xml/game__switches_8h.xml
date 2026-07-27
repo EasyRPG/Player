@@ -1,0 +1,484 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="game__switches_8h" kind="file" language="C++">
+    <compoundname>game_switches.h</compoundname>
+    <includes local="no">vector</includes>
+    <includes local="no">string</includes>
+    <includes refid="data_8h" local="no">lcf/data.h</includes>
+    <includes refid="compiler_8h" local="yes">compiler.h</includes>
+    <includes refid="string__view_8h" local="yes">string_view.h</includes>
+    <includedby refid="enemyai_8cpp" local="yes">enemyai.cpp</includedby>
+    <includedby refid="game__battle_8cpp" local="yes">game_battle.cpp</includedby>
+    <includedby refid="game__battlealgorithm_8cpp" local="yes">game_battlealgorithm.cpp</includedby>
+    <includedby refid="game__battler_8cpp" local="yes">game_battler.cpp</includedby>
+    <includedby refid="game__character_8cpp" local="yes">game_character.cpp</includedby>
+    <includedby refid="game__commonevent_8cpp" local="yes">game_commonevent.cpp</includedby>
+    <includedby refid="game__enemy_8cpp" local="yes">game_enemy.cpp</includedby>
+    <includedby refid="game__event_8cpp" local="yes">game_event.cpp</includedby>
+    <includedby refid="game__interpreter_8cpp" local="yes">game_interpreter.cpp</includedby>
+    <includedby refid="game__interpreter__battle_8cpp" local="yes">game_interpreter_battle.cpp</includedby>
+    <includedby refid="game__interpreter__map_8cpp" local="yes">game_interpreter_map.cpp</includedby>
+    <includedby refid="game__interpreter__shared_8cpp" local="yes">game_interpreter_shared.cpp</includedby>
+    <includedby refid="game__map_8cpp" local="yes">game_map.cpp</includedby>
+    <includedby refid="game__player_8cpp" local="yes">game_player.cpp</includedby>
+    <includedby refid="game__strings_8cpp" local="yes">game_strings.cpp</includedby>
+    <includedby refid="game__switches_8cpp" local="yes">game_switches.cpp</includedby>
+    <includedby refid="main__data_8cpp" local="yes">main_data.cpp</includedby>
+    <includedby refid="maniac__patch_8cpp" local="yes">maniac_patch.cpp</includedby>
+    <includedby refid="pending__message_8cpp" local="yes">pending_message.cpp</includedby>
+    <includedby refid="player_8cpp" local="yes">player.cpp</includedby>
+    <includedby refid="scene__debug_8cpp" local="yes">scene_debug.cpp</includedby>
+    <includedby refid="scene__item_8cpp" local="yes">scene_item.cpp</includedby>
+    <includedby refid="scene__save_8cpp" local="yes">scene_save.cpp</includedby>
+    <includedby refid="window__varlist_8cpp" local="yes">window_varlist.cpp</includedby>
+    <incdepgraph>
+      <node id="26">
+        <label>compiler.h</label>
+        <link refid="compiler_8h"/>
+      </node>
+      <node id="1">
+        <label>game_switches.h</label>
+        <link refid="game__switches_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>lcf/data.h</label>
+        <link refid="data_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="31">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="29">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="5">
+        <label>lcf/rpg/actor.h</label>
+      </node>
+      <node id="13">
+        <label>lcf/rpg/animation.h</label>
+      </node>
+      <node id="10">
+        <label>lcf/rpg/attribute.h</label>
+      </node>
+      <node id="19">
+        <label>lcf/rpg/battlecommand.h</label>
+      </node>
+      <node id="20">
+        <label>lcf/rpg/battleranimation.h</label>
+      </node>
+      <node id="14">
+        <label>lcf/rpg/chipset.h</label>
+      </node>
+      <node id="18">
+        <label>lcf/rpg/class.h</label>
+      </node>
+      <node id="17">
+        <label>lcf/rpg/commonevent.h</label>
+      </node>
+      <node id="25">
+        <label>lcf/rpg/database.h</label>
+      </node>
+      <node id="8">
+        <label>lcf/rpg/enemy.h</label>
+      </node>
+      <node id="23">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="7">
+        <label>lcf/rpg/item.h</label>
+      </node>
+      <node id="22">
+        <label>lcf/rpg/music.h</label>
+      </node>
+      <node id="6">
+        <label>lcf/rpg/skill.h</label>
+      </node>
+      <node id="21">
+        <label>lcf/rpg/sound.h</label>
+      </node>
+      <node id="11">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="16">
+        <label>lcf/rpg/system.h</label>
+      </node>
+      <node id="15">
+        <label>lcf/rpg/terms.h</label>
+      </node>
+      <node id="12">
+        <label>lcf/rpg/terrain.h</label>
+      </node>
+      <node id="24">
+        <label>lcf/rpg/treemap.h</label>
+      </node>
+      <node id="9">
+        <label>lcf/rpg/troop.h</label>
+      </node>
+      <node id="28">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="3">
+        <label>string</label>
+      </node>
+      <node id="2">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>enemyai.cpp</label>
+        <link refid="enemyai_8cpp"/>
+      </node>
+      <node id="3">
+        <label>game_battle.cpp</label>
+        <link refid="game__battle_8cpp"/>
+      </node>
+      <node id="4">
+        <label>game_battlealgorithm.cpp</label>
+        <link refid="game__battlealgorithm_8cpp"/>
+      </node>
+      <node id="5">
+        <label>game_battler.cpp</label>
+        <link refid="game__battler_8cpp"/>
+      </node>
+      <node id="6">
+        <label>game_character.cpp</label>
+        <link refid="game__character_8cpp"/>
+      </node>
+      <node id="7">
+        <label>game_commonevent.cpp</label>
+        <link refid="game__commonevent_8cpp"/>
+      </node>
+      <node id="8">
+        <label>game_enemy.cpp</label>
+        <link refid="game__enemy_8cpp"/>
+      </node>
+      <node id="9">
+        <label>game_event.cpp</label>
+        <link refid="game__event_8cpp"/>
+      </node>
+      <node id="10">
+        <label>game_interpreter.cpp</label>
+        <link refid="game__interpreter_8cpp"/>
+      </node>
+      <node id="11">
+        <label>game_interpreter_battle.cpp</label>
+        <link refid="game__interpreter__battle_8cpp"/>
+      </node>
+      <node id="12">
+        <label>game_interpreter_map.cpp</label>
+        <link refid="game__interpreter__map_8cpp"/>
+      </node>
+      <node id="13">
+        <label>game_interpreter_shared.cpp</label>
+        <link refid="game__interpreter__shared_8cpp"/>
+      </node>
+      <node id="14">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="15">
+        <label>game_player.cpp</label>
+        <link refid="game__player_8cpp"/>
+      </node>
+      <node id="16">
+        <label>game_strings.cpp</label>
+        <link refid="game__strings_8cpp"/>
+      </node>
+      <node id="17">
+        <label>game_switches.cpp</label>
+        <link refid="game__switches_8cpp"/>
+      </node>
+      <node id="1">
+        <label>game_switches.h</label>
+        <link refid="game__switches_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>main_data.cpp</label>
+        <link refid="main__data_8cpp"/>
+      </node>
+      <node id="19">
+        <label>maniac_patch.cpp</label>
+        <link refid="maniac__patch_8cpp"/>
+      </node>
+      <node id="20">
+        <label>pending_message.cpp</label>
+        <link refid="pending__message_8cpp"/>
+      </node>
+      <node id="21">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="22">
+        <label>scene_debug.cpp</label>
+        <link refid="scene__debug_8cpp"/>
+      </node>
+      <node id="23">
+        <label>scene_item.cpp</label>
+        <link refid="scene__item_8cpp"/>
+      </node>
+      <node id="24">
+        <label>scene_save.cpp</label>
+        <link refid="scene__save_8cpp"/>
+      </node>
+      <node id="25">
+        <label>window_varlist.cpp</label>
+        <link refid="window__varlist_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_game___switches" prot="public">Game_Switches</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="game__switches_8h_1a1336f73f9cc9837195dafccf67db4c6b" prot="public" static="no">
+        <name>EP_GAME_SWITCHES_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="20" column="9" bodyfile="game_switches.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_GAME_SWITCHES_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="game__switches_8h_1a1336f73f9cc9837195dafccf67db4c6b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_GAME_SWITCHES_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="data_8h" kindref="compound">lcf/data.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="compiler_8h" kindref="compound">compiler.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="string__view_8h" kindref="compound">string_view.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="class_game___switches" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_game___switches_1a9c2f2c9398c488addf49c908bf733c57" kindref="member">Game_Switches</ref><sp/>{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="34" refid="class_game___switches_1a8bc41f0d26672afd80f5ab34225f05a0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_game___switches_1a8bc41f0d26672afd80f5ab34225f05a0" kindref="member">Switches_t</ref><sp/>=<sp/>std::vector&lt;bool&gt;;</highlight></codeline>
+<codeline lineno="35" refid="class_game___switches_1ac250bb9ff154a749888f99017d43c0d5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1ac250bb9ff154a749888f99017d43c0d5" kindref="member">kMaxWarnings</ref><sp/>=<sp/>10;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="class_game___switches_1a9c2f2c9398c488addf49c908bf733c57" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___switches_1a9c2f2c9398c488addf49c908bf733c57" kindref="member">Game_Switches</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1a21f23430073b56f3063dffeb86786914" kindref="member">SetData</ref>(<ref refid="class_game___switches_1a8bc41f0d26672afd80f5ab34225f05a0" kindref="member">Switches_t</ref><sp/>s);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1a8bc41f0d26672afd80f5ab34225f05a0" kindref="member">Switches_t</ref>&amp;<sp/><ref refid="class_game___switches_1a167a81cb5b3ab63a073e944c6d25c9bb" kindref="member">GetData</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1a2f63817a7f25d8f72d858fe84592c624" kindref="member">SetLowerLimit</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>limit);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1adb7bcee8ad2a64d897dc5f9b66cebcb9" kindref="member">Get</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>switch_id)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1a18189dc3f2b2903df4429df729caff21" kindref="member">GetInt</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>switch_id)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1a4c4baade273b1d21f5fb577e31650a93" kindref="member">Set</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>switch_id,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1a4cd2ab62419709146af8b190bc8b5b78" kindref="member">SetRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1a2f4e3e60603011d1eb676fb09c3ffe25" kindref="member">Flip</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>switch_id);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1a2b3b88ca801350245de3b4dea1653aca" kindref="member">FlipRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string_view<sp/><ref refid="class_game___switches_1ac7e80d9dcacabf396cb65d5d68df807c" kindref="member">GetName</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>switch_id)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1aa9f4386416a1f520330b9660be59307d" kindref="member">IsValid</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>switch_id)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1a96f299c2d3f9dc0a4d421be4320fa9db" kindref="member">GetSize</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1a3e7be7de2ad9ece7c1b1b758d786c515" kindref="member">GetSizeWithLimit</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1ac67b800aa24e0cf1896bfb3847e2184d" kindref="member">SetWarning</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>w);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ShouldWarn(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>WarnGet(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___switches_1a8bc41f0d26672afd80f5ab34225f05a0" kindref="member">Switches_t</ref><sp/>_switches;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>lower_limit<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">mutable</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>_warnings<sp/>=<sp/><ref refid="class_game___switches_1ac250bb9ff154a749888f99017d43c0d5" kindref="member">kMaxWarnings</ref>;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72" refid="class_game___switches_1a21f23430073b56f3063dffeb86786914" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1a21f23430073b56f3063dffeb86786914" kindref="member">Game_Switches::SetData</ref>(<ref refid="class_game___switches_1a8bc41f0d26672afd80f5ab34225f05a0" kindref="member">Switches_t</ref><sp/>s)<sp/>{</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>_switches<sp/>=<sp/>std::move(s);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76" refid="class_game___switches_1a167a81cb5b3ab63a073e944c6d25c9bb" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1a8bc41f0d26672afd80f5ab34225f05a0" kindref="member">Game_Switches::Switches_t</ref>&amp;<sp/><ref refid="class_game___switches_1a167a81cb5b3ab63a073e944c6d25c9bb" kindref="member">Game_Switches::GetData</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_switches;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80" refid="class_game___switches_1a2f63817a7f25d8f72d858fe84592c624" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1a2f63817a7f25d8f72d858fe84592c624" kindref="member">Game_Switches::SetLowerLimit</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>limit)<sp/>{</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>lower_limit<sp/>=<sp/>limit;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84" refid="class_game___switches_1a96f299c2d3f9dc0a4d421be4320fa9db" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1a96f299c2d3f9dc0a4d421be4320fa9db" kindref="member">Game_Switches::GetSize</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(_switches.size());</highlight></codeline>
+<codeline lineno="86"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88" refid="class_game___switches_1a3e7be7de2ad9ece7c1b1b758d786c515" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1a3e7be7de2ad9ece7c1b1b758d786c515" kindref="member">Game_Switches::GetSizeWithLimit</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::max&lt;int&gt;(lower_limit,<sp/>_switches.size());</highlight></codeline>
+<codeline lineno="90"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92" refid="class_game___switches_1aa9f4386416a1f520330b9660be59307d" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1aa9f4386416a1f520330b9660be59307d" kindref="member">Game_Switches::IsValid</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>variable_id<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>variable_id<sp/>&lt;=<sp/><ref refid="class_game___switches_1a3e7be7de2ad9ece7c1b1b758d786c515" kindref="member">GetSizeWithLimit</ref>();</highlight></codeline>
+<codeline lineno="94"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>Game_Switches::ShouldWarn(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(first_id<sp/>&lt;=<sp/>0<sp/>||<sp/>last_id<sp/>&gt;<sp/><ref refid="class_game___switches_1a3e7be7de2ad9ece7c1b1b758d786c515" kindref="member">GetSizeWithLimit</ref>())<sp/>&amp;&amp;<sp/>(_warnings<sp/>&gt;<sp/>0);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100" refid="class_game___switches_1adb7bcee8ad2a64d897dc5f9b66cebcb9" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1adb7bcee8ad2a64d897dc5f9b66cebcb9" kindref="member">Game_Switches::Get</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>switch_id)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="compiler_8h_1a6193ed68030ec53b5e6be36887041873" kindref="member">EP_UNLIKELY</ref>(ShouldWarn(switch_id,<sp/>switch_id)))<sp/>{</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>WarnGet(switch_id);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(switch_id<sp/>&lt;=<sp/>0<sp/>||<sp/>switch_id<sp/>&gt;<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(_switches.size()))<sp/>{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_switches[switch_id<sp/>-<sp/>1];</highlight></codeline>
+<codeline lineno="108"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110" refid="class_game___switches_1a18189dc3f2b2903df4429df729caff21" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1a18189dc3f2b2903df4429df729caff21" kindref="member">Game_Switches::GetInt</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>switch_id)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1adb7bcee8ad2a64d897dc5f9b66cebcb9" kindref="member">Get</ref>(switch_id)<sp/>?<sp/>1<sp/>:<sp/>0;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114" refid="class_game___switches_1ac67b800aa24e0cf1896bfb3847e2184d" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___switches_1ac67b800aa24e0cf1896bfb3847e2184d" kindref="member">Game_Switches::SetWarning</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>w)<sp/>{</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>_warnings<sp/>=<sp/>w;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="game_switches.h"/>
+  </compounddef>
+</doxygen>

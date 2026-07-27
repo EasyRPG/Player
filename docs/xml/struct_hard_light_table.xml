@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_hard_light_table" kind="struct" language="C++" prot="public">
+    <compoundname>HardLightTable</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_hard_light_table_1a21c4b6c95883bc52f665db3534ea769a" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t HardLightTable::table[256][256]</definition>
+        <argsstring>[256][256]</argsstring>
+        <name>table</name>
+        <qualifiedname>HardLightTable::table</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.cpp" line="799" column="9" bodyfile="bitmap.cpp" bodystart="799" bodyend="799"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="bitmap.cpp" line="798" column="1" bodyfile="bitmap.cpp" bodystart="798" bodyend="800"/>
+    <listofallmembers>
+      <member refid="struct_hard_light_table_1a21c4b6c95883bc52f665db3534ea769a" prot="public" virt="non-virtual"><scope>HardLightTable</scope><name>table</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

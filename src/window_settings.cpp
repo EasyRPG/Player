@@ -740,3 +740,4 @@ void Window_Settings::RefreshButtonList() {
 			});
 	}
 }
+

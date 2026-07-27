@@ -1,0 +1,509 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_directory_tree" kind="class" language="C++" prot="public">
+    <compoundname>DirectoryTree</compoundname>
+    <includes refid="directory__tree_8h" local="no">directory_tree.h</includes>
+    <innerclass refid="struct_directory_tree_1_1_entry" prot="public">DirectoryTree::Entry</innerclass>
+    <innerclass refid="struct_directory_tree_1_1_args" prot="public">DirectoryTree::Args</innerclass>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_directory_tree_1a5125eceb043bf8c21630d6e90b7f46c4" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>FileType</name>
+        <qualifiedname>DirectoryTree::FileType</qualifiedname>
+        <enumvalue id="class_directory_tree_1a5125eceb043bf8c21630d6e90b7f46c4ad2203cb1237cb6460cbad94564e39345" prot="public">
+          <name>Regular</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Regular file </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_directory_tree_1a5125eceb043bf8c21630d6e90b7f46c4ae73cda510e8bb947f7e61089e5581494" prot="public">
+          <name>Directory</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Directory </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_directory_tree_1a5125eceb043bf8c21630d6e90b7f46c4a6311ae17c1ee52b36e68aaf4ad066387" prot="public">
+          <name>Other</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Anything of no interest such as block devices </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Type of a <ref refid="struct_directory_tree_1_1_entry" kindref="compound">Entry</ref> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="42" column="1" bodyfile="directory_tree.h" bodystart="42" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_directory_tree_1a656e188f1ce2bd38f963744de360d627" prot="public" static="no">
+        <type>std::vector&lt; std::pair&lt; std::string, <ref refid="class_entry" kindref="compound">Entry</ref> &gt; &gt;</type>
+        <definition>using DirectoryTree::DirectoryListType = std::vector&lt;std::pair&lt;std::string, Entry&gt;&gt;</definition>
+        <argsstring></argsstring>
+        <name>DirectoryListType</name>
+        <qualifiedname>DirectoryTree::DirectoryListType</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="83" column="1" bodyfile="directory_tree.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="class_directory_tree_1a9de8172b68eb9656deb6de10a120b7ec" prot="private" static="no">
+        <type>std::pair&lt; std::string, <ref refid="class_directory_tree_1a656e188f1ce2bd38f963744de360d627" kindref="member">DirectoryListType</ref> &gt;</type>
+        <definition>using DirectoryTree::fs_cache_pair = std::pair&lt;std::string, DirectoryListType&gt;</definition>
+        <argsstring></argsstring>
+        <name>fs_cache_pair</name>
+        <qualifiedname>DirectoryTree::fs_cache_pair</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>lowered dir (full path from root) -&gt; <itemizedlist>
+</itemizedlist>
+file -&gt; <ref refid="struct_directory_tree_1_1_entry" kindref="compound">Entry</ref> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="143" column="1" bodyfile="directory_tree.h" bodystart="143" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_directory_tree_1a9f5afe632158305e69fdb7d7747ab180" prot="private" static="no">
+        <type>std::pair&lt; std::string, std::string &gt;</type>
+        <definition>using DirectoryTree::dir_cache_pair = std::pair&lt;std::string, std::string&gt;</definition>
+        <argsstring></argsstring>
+        <name>dir_cache_pair</name>
+        <qualifiedname>DirectoryTree::dir_cache_pair</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>lowered dir -&gt; real dir (both full path from root) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="147" column="1" bodyfile="directory_tree.h" bodystart="147" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_directory_tree_1ab7ee1cb78a95a014d371b95880578df3" prot="private" static="no" mutable="no">
+        <type><ref refid="class_filesystem" kindref="compound">Filesystem</ref> *</type>
+        <definition>Filesystem* DirectoryTree::fs</definition>
+        <argsstring></argsstring>
+        <name>fs</name>
+        <qualifiedname>DirectoryTree::fs</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="137" column="12" bodyfile="directory_tree.h" bodystart="137" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_directory_tree_1adade7dccf7deaba819f4c1d30af03dc9" prot="private" static="no" mutable="yes">
+        <type>std::vector&lt; fs_cache_pair &gt;</type>
+        <definition>std::vector&lt;fs_cache_pair&gt; DirectoryTree::fs_cache</definition>
+        <argsstring></argsstring>
+        <name>fs_cache</name>
+        <qualifiedname>DirectoryTree::fs_cache</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="144" column="21" bodyfile="directory_tree.h" bodystart="144" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_directory_tree_1a2bca4d1ae40d6a8d42ee49c9cf7b0502" prot="private" static="no" mutable="yes">
+        <type>std::vector&lt; dir_cache_pair &gt;</type>
+        <definition>std::vector&lt;dir_cache_pair&gt; DirectoryTree::dir_cache</definition>
+        <argsstring></argsstring>
+        <name>dir_cache</name>
+        <qualifiedname>DirectoryTree::dir_cache</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="148" column="21" bodyfile="directory_tree.h" bodystart="148" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_directory_tree_1ab8c045196e47c465ac4fe8123aa2e0e5" prot="private" static="no" mutable="yes">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt;std::string&gt; DirectoryTree::dir_missing_cache</definition>
+        <argsstring></argsstring>
+        <name>dir_missing_cache</name>
+        <qualifiedname>DirectoryTree::dir_missing_cache</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>lowered dir (full path from root) of missing directories </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="151" column="21" bodyfile="directory_tree.h" bodystart="151" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_directory_tree_1a512e947725c63596a47763c128f00ac4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unique_ptr&lt; <ref refid="class_directory_tree" kindref="compound">DirectoryTree</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; DirectoryTree &gt; DirectoryTree::Create</definition>
+        <argsstring>()</argsstring>
+        <name>Create</name>
+        <qualifiedname>DirectoryTree::Create</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Constructs an empty, invalid <ref refid="class_directory_tree" kindref="compound">DirectoryTree</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="86" column="24" bodyfile="directory_tree.cpp" bodystart="43" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="class_directory_tree_1a6caaa28dbda98ce3fd565d2d74a505ce" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unique_ptr&lt; <ref refid="class_directory_tree" kindref="compound">DirectoryTree</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; DirectoryTree &gt; DirectoryTree::Create</definition>
+        <argsstring>(Filesystem &amp;fs)</argsstring>
+        <name>Create</name>
+        <qualifiedname>DirectoryTree::Create</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem" kindref="compound">Filesystem</ref> &amp;</type>
+          <declname>fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates a new <ref refid="class_directory_tree" kindref="compound">DirectoryTree</ref></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_filesystem" kindref="compound">Filesystem</ref> this tree belongs to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>new <ref refid="class_directory_tree" kindref="compound">DirectoryTree</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="94" column="24" bodyfile="directory_tree.cpp" bodystart="47" bodyend="52"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_directory_tree_1a548e7bf2f6d8a81527eaaa8ce20b9026" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string DirectoryTree::FindFile</definition>
+        <argsstring>(std::string_view filename, const Span&lt; const std::string_view &gt; exts={}) const</argsstring>
+        <name>FindFile</name>
+        <qualifiedname>DirectoryTree::FindFile</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>const Span&lt; const std::string_view &gt;</type>
+          <declname>exts</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Does a case insensitive search for the file.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a path relative to the filesystem root </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>exts</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>List of file extensions to probe </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Path to file or empty string when not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="103" column="13" bodyfile="directory_tree.cpp" bodystart="217" bodyend="219"/>
+      </memberdef>
+      <memberdef kind="function" id="class_directory_tree_1a83c48e14b625b66bf45e63a3ebb9842f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string DirectoryTree::FindFile</definition>
+        <argsstring>(std::string_view directory, std::string_view filename, const Span&lt; const std::string_view &gt; exts={}) const</argsstring>
+        <name>FindFile</name>
+        <qualifiedname>DirectoryTree::FindFile</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>directory</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>const Span&lt; const std::string_view &gt;</type>
+          <declname>exts</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Does a case insensitive search for the file in a specific directory.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>directory</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a path relative to the filesystem root </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the file to search </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>exts</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>List of file extensions to probe </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Path to file or empty string when not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="114" column="13" bodyfile="directory_tree.cpp" bodystart="221" bodyend="223"/>
+      </memberdef>
+      <memberdef kind="function" id="class_directory_tree_1ab641b53c2855816119d6381eb3010ffb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string DirectoryTree::FindFile</definition>
+        <argsstring>(const DirectoryTree::Args &amp;args) const</argsstring>
+        <name>FindFile</name>
+        <qualifiedname>DirectoryTree::FindFile</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_directory_tree_1_1_args" kindref="compound">DirectoryTree::Args</ref> &amp;</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Does a case insensitive search for a file. Advanced version for special purposes searches. Usually not needed.</para>
+<para><simplesect kind="see"><para><ref refid="struct_directory_tree_1_1_args" kindref="compound">DirectoryTree::Args</ref> </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>args</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>See documentation of <ref refid="struct_directory_tree_1_1_args" kindref="compound">DirectoryTree::Args</ref> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Path to file or empty string when not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="124" column="13" bodyfile="directory_tree.cpp" bodystart="225" bodyend="274"/>
+      </memberdef>
+      <memberdef kind="function" id="class_directory_tree_1a50de341de0fa9a477bae4d4715f71aa6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_directory_tree_1a656e188f1ce2bd38f963744de360d627" kindref="member">DirectoryListType</ref> *</type>
+        <definition>DirectoryTree::DirectoryListType * DirectoryTree::ListDirectory</definition>
+        <argsstring>(std::string_view path=&quot;&quot;) const</argsstring>
+        <name>ListDirectory</name>
+        <qualifiedname>DirectoryTree::ListDirectory</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Enumerates a directory.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to enumerate, empty for root path </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>list of directory entries or nullptr on failure </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="132" column="19" bodyfile="directory_tree.cpp" bodystart="88" bodyend="191"/>
+      </memberdef>
+      <memberdef kind="function" id="class_directory_tree_1adf5b8aeadca1ca525d4e727b03ea3593" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void DirectoryTree::ClearCache</definition>
+        <argsstring>(std::string_view path) const</argsstring>
+        <name>ClearCache</name>
+        <qualifiedname>DirectoryTree::ClearCache</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="134" column="6" bodyfile="directory_tree.cpp" bodystart="193" bodyend="215"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_directory_tree_1a5473cf487cf4a1b24f3965bdd6c8a58d" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool DirectoryTree::WildcardMatch</definition>
+        <argsstring>(const std::string_view &amp;pattern, const std::string_view &amp;text)</argsstring>
+        <name>WildcardMatch</name>
+        <qualifiedname>DirectoryTree::WildcardMatch</qualifiedname>
+        <param>
+          <type>const std::string_view &amp;</type>
+          <declname>pattern</declname>
+        </param>
+        <param>
+          <type>const std::string_view &amp;</type>
+          <declname>text</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="153" column="13" bodyfile="directory_tree.cpp" bodystart="54" bodyend="86"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_directory_tree_1a881cde5431d5dd710a9730764224702e" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto DirectoryTree::Find</definition>
+        <argsstring>(T &amp;cache, std::string_view what, bool process_wildcards=false) const</argsstring>
+        <name>Find</name>
+        <qualifiedname>DirectoryTree::Find</qualifiedname>
+        <param>
+          <type>T &amp;</type>
+          <declname>cache</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>what</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>process_wildcards</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="156" column="6" bodyfile="directory_tree.h" bodystart="156" bodyend="176"/>
+      </memberdef>
+      <memberdef kind="function" id="class_directory_tree_1aadf8835f81dd8a0633d113f683156552" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+          <param>
+            <type>class U</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void DirectoryTree::InsertSorted</definition>
+        <argsstring>(T &amp;cache, std::string key, U &amp;&amp;value) const</argsstring>
+        <name>InsertSorted</name>
+        <qualifiedname>DirectoryTree::InsertSorted</qualifiedname>
+        <param>
+          <type>T &amp;</type>
+          <declname>cache</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type>U &amp;&amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="179" column="6" bodyfile="directory_tree.h" bodystart="179" bodyend="185"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>A directory tree manages case-insenseitive file searching in a root folder and its subdirectories. <ref refid="class_translation" kindref="compound">Translation</ref> support can be enabled via advanced arguments. For performance reasons the entries are cached. </para>
+    </detaileddescription>
+    <location file="directory_tree.h" line="39" column="1" bodyfile="directory_tree.h" bodystart="39" bodyend="186"/>
+    <listofallmembers>
+      <member refid="class_directory_tree_1adf5b8aeadca1ca525d4e727b03ea3593" prot="public" virt="non-virtual"><scope>DirectoryTree</scope><name>ClearCache</name></member>
+      <member refid="class_directory_tree_1a512e947725c63596a47763c128f00ac4" prot="public" virt="non-virtual"><scope>DirectoryTree</scope><name>Create</name></member>
+      <member refid="class_directory_tree_1a6caaa28dbda98ce3fd565d2d74a505ce" prot="public" virt="non-virtual"><scope>DirectoryTree</scope><name>Create</name></member>
+      <member refid="class_directory_tree_1a2bca4d1ae40d6a8d42ee49c9cf7b0502" prot="private" virt="non-virtual"><scope>DirectoryTree</scope><name>dir_cache</name></member>
+      <member refid="class_directory_tree_1a9f5afe632158305e69fdb7d7747ab180" prot="private" virt="non-virtual"><scope>DirectoryTree</scope><name>dir_cache_pair</name></member>
+      <member refid="class_directory_tree_1ab8c045196e47c465ac4fe8123aa2e0e5" prot="private" virt="non-virtual"><scope>DirectoryTree</scope><name>dir_missing_cache</name></member>
+      <member refid="class_directory_tree_1a656e188f1ce2bd38f963744de360d627" prot="public" virt="non-virtual"><scope>DirectoryTree</scope><name>DirectoryListType</name></member>
+      <member refid="class_directory_tree_1a5125eceb043bf8c21630d6e90b7f46c4" prot="public" virt="non-virtual"><scope>DirectoryTree</scope><name>FileType</name></member>
+      <member refid="class_directory_tree_1a881cde5431d5dd710a9730764224702e" prot="private" virt="non-virtual"><scope>DirectoryTree</scope><name>Find</name></member>
+      <member refid="class_directory_tree_1a548e7bf2f6d8a81527eaaa8ce20b9026" prot="public" virt="non-virtual"><scope>DirectoryTree</scope><name>FindFile</name></member>
+      <member refid="class_directory_tree_1a83c48e14b625b66bf45e63a3ebb9842f" prot="public" virt="non-virtual"><scope>DirectoryTree</scope><name>FindFile</name></member>
+      <member refid="class_directory_tree_1ab641b53c2855816119d6381eb3010ffb" prot="public" virt="non-virtual"><scope>DirectoryTree</scope><name>FindFile</name></member>
+      <member refid="class_directory_tree_1ab7ee1cb78a95a014d371b95880578df3" prot="private" virt="non-virtual"><scope>DirectoryTree</scope><name>fs</name></member>
+      <member refid="class_directory_tree_1adade7dccf7deaba819f4c1d30af03dc9" prot="private" virt="non-virtual"><scope>DirectoryTree</scope><name>fs_cache</name></member>
+      <member refid="class_directory_tree_1a9de8172b68eb9656deb6de10a120b7ec" prot="private" virt="non-virtual"><scope>DirectoryTree</scope><name>fs_cache_pair</name></member>
+      <member refid="class_directory_tree_1aadf8835f81dd8a0633d113f683156552" prot="private" virt="non-virtual"><scope>DirectoryTree</scope><name>InsertSorted</name></member>
+      <member refid="class_directory_tree_1a50de341de0fa9a477bae4d4715f71aa6" prot="public" virt="non-virtual"><scope>DirectoryTree</scope><name>ListDirectory</name></member>
+      <member refid="class_directory_tree_1a5473cf487cf4a1b24f3965bdd6c8a58d" prot="private" virt="non-virtual"><scope>DirectoryTree</scope><name>WildcardMatch</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

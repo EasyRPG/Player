@@ -1,0 +1,323 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_file_finder___r_t_p" kind="class" language="C++" prot="public">
+    <compoundname>FileFinder_RTP</compoundname>
+    <includes refid="filefinder__rtp_8h" local="no">filefinder_rtp.h</includes>
+    <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="class_file_finder___r_t_p_1a3467fc4d8b48f411f0e76071bdef9a08" prot="private" static="no">
+        <type>std::vector&lt; <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> &gt;</type>
+        <definition>using FileFinder_RTP::search_path_list = std::vector&lt;FilesystemView&gt;</definition>
+        <argsstring></argsstring>
+        <name>search_path_list</name>
+        <qualifiedname>FileFinder_RTP::search_path_list</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder_rtp.h" line="52" column="1" bodyfile="filefinder_rtp.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_file_finder___r_t_p_1a553c2afd59085c8d33169ef9e4d49b41" prot="private" static="no" mutable="no">
+        <type>search_path_list</type>
+        <definition>search_path_list FileFinder_RTP::search_paths</definition>
+        <argsstring></argsstring>
+        <name>search_paths</name>
+        <qualifiedname>FileFinder_RTP::search_paths</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>all <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> search paths </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder_rtp.h" line="55" column="18" bodyfile="filefinder_rtp.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_file_finder___r_t_p_1a2871c20fb456914e88c978d22e188668" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool FileFinder_RTP::disable_rtp</definition>
+        <argsstring></argsstring>
+        <name>disable_rtp</name>
+        <qualifiedname>FileFinder_RTP::disable_rtp</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="namespace_r_t_p" kindref="compound">RTP</ref> was disabled with <ndash/>disable-rtp </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder_rtp.h" line="57" column="6" bodyfile="filefinder_rtp.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_file_finder___r_t_p_1ad43b307bb375c16d6db4f58c76a90457" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool FileFinder_RTP::game_has_full_package_flag</definition>
+        <argsstring></argsstring>
+        <name>game_has_full_package_flag</name>
+        <qualifiedname>FileFinder_RTP::game_has_full_package_flag</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Game has FullPackageFlag=1, <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> will still be used as RPG_RT does </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder_rtp.h" line="59" column="6" bodyfile="filefinder_rtp.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_file_finder___r_t_p_1a61128492f0e4906885392958adb4dec1" prot="private" static="no" mutable="yes">
+        <type>bool</type>
+        <definition>bool FileFinder_RTP::warning_broken_rtp_game_shown</definition>
+        <argsstring></argsstring>
+        <name>warning_broken_rtp_game_shown</name>
+        <qualifiedname>FileFinder_RTP::warning_broken_rtp_game_shown</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>warning about &quot;game has FullPackageFlag=1 but needs RTP&quot; shown </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder_rtp.h" line="61" column="14" bodyfile="filefinder_rtp.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_file_finder___r_t_p_1aff7934f4d01d063c49b2e2b4d2cddcbc" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="struct_r_t_p_1_1_rtp_hit_info" kindref="compound">RTP::RtpHitInfo</ref> &gt;</type>
+        <definition>std::vector&lt;RTP::RtpHitInfo&gt; FileFinder_RTP::detected_rtp</definition>
+        <argsstring></argsstring>
+        <name>detected_rtp</name>
+        <qualifiedname>FileFinder_RTP::detected_rtp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="namespace_r_t_p" kindref="compound">RTP</ref> candidates per search_path </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder_rtp.h" line="63" column="13" bodyfile="filefinder_rtp.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_file_finder___r_t_p_1ab46efdb7bcac10f4f70f22fe07b87ca2" prot="private" static="no" mutable="yes">
+        <type>std::vector&lt; <ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0a" kindref="member">RTP::Type</ref> &gt;</type>
+        <definition>std::vector&lt;RTP::Type&gt; FileFinder_RTP::game_rtp</definition>
+        <argsstring></argsstring>
+        <name>game_rtp</name>
+        <qualifiedname>FileFinder_RTP::game_rtp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>the <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> the game uses, when only one left the <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> of the game is known </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder_rtp.h" line="65" column="21" bodyfile="filefinder_rtp.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_file_finder___r_t_p_1aee7ece686e9cfb18f6cf450e29561856" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>FileFinder_RTP::FileFinder_RTP</definition>
+        <argsstring>(bool no_rtp, bool no_rtp_warnings, std::string rtp_path)</argsstring>
+        <name>FileFinder_RTP</name>
+        <qualifiedname>FileFinder_RTP::FileFinder_RTP</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>no_rtp</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>no_rtp_warnings</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>rtp_path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Manages <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> folders.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>no_rtp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true disables <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> support completely </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>no_rtp_warnings</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true disables warnings when a <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> asset is used </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rtp_path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Custom <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> path to use </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder_rtp.h" line="35" column="1" bodyfile="filefinder_rtp.cpp" bodystart="34" bodyend="179"/>
+      </memberdef>
+      <memberdef kind="function" id="class_file_finder___r_t_p_1a8c57499c5bdf6c3595ea40aa2663d7fc" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream FileFinder_RTP::Lookup</definition>
+        <argsstring>(std::string_view dir, std::string_view name, const Span&lt; const std::string_view &gt; exts) const</argsstring>
+        <name>Lookup</name>
+        <qualifiedname>FileFinder_RTP::Lookup</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>dir</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>const Span&lt; const std::string_view &gt;</type>
+          <declname>exts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Looks up a file in the list of RTPs</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dir</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Directory containing the file </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filename </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>exts</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Extensions to probe </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A handle to the file or an invalid handle if not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder_rtp.h" line="45" column="33" bodyfile="filefinder_rtp.cpp" bodystart="309" bodyend="332"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_file_finder___r_t_p_1a5eec0a62799b9f93fc0d2d2e89fb7273" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void FileFinder_RTP::AddPath</definition>
+        <argsstring>(std::string_view p)</argsstring>
+        <name>AddPath</name>
+        <qualifiedname>FileFinder_RTP::AddPath</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder_rtp.h" line="48" column="6" bodyfile="filefinder_rtp.cpp" bodystart="181" bodyend="214"/>
+      </memberdef>
+      <memberdef kind="function" id="class_file_finder___r_t_p_1a8e93a426bd20fb8f31a4c9c40bf3b2ab" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void FileFinder_RTP::ReadRegistry</definition>
+        <argsstring>(std::string_view company, std::string_view product, std::string_view key)</argsstring>
+        <name>ReadRegistry</name>
+        <qualifiedname>FileFinder_RTP::ReadRegistry</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>company</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>product</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder_rtp.h" line="49" column="6" bodyfile="filefinder_rtp.cpp" bodystart="216" bodyend="234"/>
+      </memberdef>
+      <memberdef kind="function" id="class_file_finder___r_t_p_1a838be8bfb6b0bfe4a50604d45df2792a" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream FileFinder_RTP::LookupInternal</definition>
+        <argsstring>(std::string_view dir, std::string_view name, const Span&lt; const std::string_view &gt; exts, bool &amp;is_rtp_asset) const</argsstring>
+        <name>LookupInternal</name>
+        <qualifiedname>FileFinder_RTP::LookupInternal</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>dir</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>const Span&lt; const std::string_view &gt;</type>
+          <declname>exts</declname>
+        </param>
+        <param>
+          <type>bool &amp;</type>
+          <declname>is_rtp_asset</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder_rtp.h" line="50" column="32" bodyfile="filefinder_rtp.cpp" bodystart="236" bodyend="307"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="filefinder_rtp.h" line="26" column="1" bodyfile="filefinder_rtp.h" bodystart="26" bodyend="66"/>
+    <listofallmembers>
+      <member refid="class_file_finder___r_t_p_1a5eec0a62799b9f93fc0d2d2e89fb7273" prot="private" virt="non-virtual"><scope>FileFinder_RTP</scope><name>AddPath</name></member>
+      <member refid="class_file_finder___r_t_p_1aff7934f4d01d063c49b2e2b4d2cddcbc" prot="private" virt="non-virtual"><scope>FileFinder_RTP</scope><name>detected_rtp</name></member>
+      <member refid="class_file_finder___r_t_p_1a2871c20fb456914e88c978d22e188668" prot="private" virt="non-virtual"><scope>FileFinder_RTP</scope><name>disable_rtp</name></member>
+      <member refid="class_file_finder___r_t_p_1aee7ece686e9cfb18f6cf450e29561856" prot="public" virt="non-virtual"><scope>FileFinder_RTP</scope><name>FileFinder_RTP</name></member>
+      <member refid="class_file_finder___r_t_p_1ad43b307bb375c16d6db4f58c76a90457" prot="private" virt="non-virtual"><scope>FileFinder_RTP</scope><name>game_has_full_package_flag</name></member>
+      <member refid="class_file_finder___r_t_p_1ab46efdb7bcac10f4f70f22fe07b87ca2" prot="private" virt="non-virtual"><scope>FileFinder_RTP</scope><name>game_rtp</name></member>
+      <member refid="class_file_finder___r_t_p_1a8c57499c5bdf6c3595ea40aa2663d7fc" prot="public" virt="non-virtual"><scope>FileFinder_RTP</scope><name>Lookup</name></member>
+      <member refid="class_file_finder___r_t_p_1a838be8bfb6b0bfe4a50604d45df2792a" prot="private" virt="non-virtual"><scope>FileFinder_RTP</scope><name>LookupInternal</name></member>
+      <member refid="class_file_finder___r_t_p_1a8e93a426bd20fb8f31a4c9c40bf3b2ab" prot="private" virt="non-virtual"><scope>FileFinder_RTP</scope><name>ReadRegistry</name></member>
+      <member refid="class_file_finder___r_t_p_1a3467fc4d8b48f411f0e76071bdef9a08" prot="private" virt="non-virtual"><scope>FileFinder_RTP</scope><name>search_path_list</name></member>
+      <member refid="class_file_finder___r_t_p_1a553c2afd59085c8d33169ef9e4d49b41" prot="private" virt="non-virtual"><scope>FileFinder_RTP</scope><name>search_paths</name></member>
+      <member refid="class_file_finder___r_t_p_1a61128492f0e4906885392958adb4dec1" prot="private" virt="non-virtual"><scope>FileFinder_RTP</scope><name>warning_broken_rtp_game_shown</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

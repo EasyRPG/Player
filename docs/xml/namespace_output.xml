@@ -1,0 +1,686 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_output" kind="namespace" language="C++">
+    <compoundname>Output</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_output_1a61bed751cfa26f9af0b8e0cde74d213d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="output_8h_1aca1fd1d8935433e6ba2e3918214e07f9" kindref="member">LogLevel</ref></type>
+        <definition>LogLevel Output::GetLogLevel</definition>
+        <argsstring>()</argsstring>
+        <name>GetLogLevel</name>
+        <qualifiedname>Output::GetLogLevel</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the configurated log level </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="44" column="10" bodyfile="output.cpp" bodystart="112" bodyend="114" declfile="output.h" declline="44" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1a6c7e9bf7118561c25f00f2a34c5659e3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Output::SetLogLevel</definition>
+        <argsstring>(LogLevel lvl)</argsstring>
+        <name>SetLogLevel</name>
+        <qualifiedname>Output::SetLogLevel</qualifiedname>
+        <param>
+          <type><ref refid="output_8h_1aca1fd1d8935433e6ba2e3918214e07f9" kindref="member">LogLevel</ref></type>
+          <declname>lvl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the log level for filtering logs</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>lvl</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the new log level </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="51" column="6" bodyfile="output.cpp" bodystart="116" bodyend="118" declfile="output.h" declline="51" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1a7d54e30025fa063681f77c5bb976fe68" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Output::SetTermColor</definition>
+        <argsstring>(bool colored)</argsstring>
+        <name>SetTermColor</name>
+        <qualifiedname>Output::SetTermColor</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>colored</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets terminal log colors</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>colored</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>whether to color terminal log </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="58" column="6" bodyfile="output.cpp" bodystart="120" bodyend="122" declfile="output.h" declline="58" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1a9712e490c9da144af32285dc7b518303" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Output::Quit</definition>
+        <argsstring>()</argsstring>
+        <name>Quit</name>
+        <qualifiedname>Output::Quit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Closes the log file handle and trims the file. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="63" column="6" bodyfile="output.cpp" bodystart="196" bodyend="198" declfile="output.h" declline="63" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1ab6cceff327ed2c8401a84fb51f4c4172" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Output::TakeScreenshot</definition>
+        <argsstring>(bool is_auto_screenshot=false)</argsstring>
+        <name>TakeScreenshot</name>
+        <qualifiedname>Output::TakeScreenshot</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>is_auto_screenshot</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Takes screenshot and save it in the save directory.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>is_auto_screenshot</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if success, otherwise false. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="71" column="6" bodyfile="output.cpp" bodystart="200" bodyend="209" declfile="output.h" declline="71" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1a4bd71ca745a799972e7c4240f4d2880c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Output::TakeScreenshot</definition>
+        <argsstring>(std::string_view file)</argsstring>
+        <name>TakeScreenshot</name>
+        <qualifiedname>Output::TakeScreenshot</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>file</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Takes screenshot and save it to specified file.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>file</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>file to save. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if success, otherwise false. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="79" column="6" bodyfile="output.cpp" bodystart="211" bodyend="219" declfile="output.h" declline="79" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1a70e3b800ecb319288544cafb1c499030" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Output::TakeScreenshot</definition>
+        <argsstring>(std::ostream &amp;os)</argsstring>
+        <name>TakeScreenshot</name>
+        <qualifiedname>Output::TakeScreenshot</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>os</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Takes screenshot and save it to specified stream.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>os</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>output stream that PNG will be stored. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if success, otherwise false. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="87" column="6" bodyfile="output.cpp" bodystart="221" bodyend="231" declfile="output.h" declline="87" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1aa49c2b8802c5c6536557efe33ab571d5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Output::GetScreenshotName</definition>
+        <argsstring>(bool is_auto_screenshot)</argsstring>
+        <name>GetScreenshotName</name>
+        <qualifiedname>Output::GetScreenshotName</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>is_auto_screenshot</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="89" column="13" bodyfile="output.cpp" bodystart="233" bodyend="243" declfile="output.h" declline="89" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1af560a1d47efdfb999692e52e62c2ed61" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Output::GetNextScreenshotFileName</definition>
+        <argsstring>(FilesystemView fs, bool is_auto_screenshot)</argsstring>
+        <name>GetNextScreenshotFileName</name>
+        <qualifiedname>Output::GetNextScreenshotFileName</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>is_auto_screenshot</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the next available file name for a screenshot</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the output path where to store the file </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>is_auto_screenshot</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the file name </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="98" column="13" bodyfile="output.cpp" bodystart="245" bodyend="263" declfile="output.h" declline="98" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1aaecb079cac3143916699d02288cee89a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Output::ToggleLog</definition>
+        <argsstring>()</argsstring>
+        <name>ToggleLog</name>
+        <qualifiedname>Output::ToggleLog</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Shows/Hides the output log overlay. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="103" column="6" bodyfile="output.cpp" bodystart="265" bodyend="269" declfile="output.h" declline="103" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1a78541f31edf1e46ba2c9d38722afe1f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Output::IgnorePause</definition>
+        <argsstring>(bool val)</argsstring>
+        <name>IgnorePause</name>
+        <qualifiedname>Output::IgnorePause</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Ignores pause in Warning and Error.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>whether to ignore pause. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="110" column="6" bodyfile="output.cpp" bodystart="124" bodyend="126" declfile="output.h" declline="110" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1a20bd02aaef8bb69d14be430887508c19" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Output::SetLogCallback</definition>
+        <argsstring>(LogCallbackFn fn, LogCallbackUserData userdata=nullptr)</argsstring>
+        <name>SetLogCallback</name>
+        <qualifiedname>Output::SetLogCallback</qualifiedname>
+        <param>
+          <type><ref refid="output_8h_1ac71bc153c3cd8e815e28e9b29b562c46" kindref="member">LogCallbackFn</ref></type>
+          <declname>fn</declname>
+        </param>
+        <param>
+          <type><ref refid="output_8h_1a262c9e136640715819532d061ac63252" kindref="member">LogCallbackUserData</ref></type>
+          <declname>userdata</declname>
+          <defval>nullptr</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Outputs debug messages over custom logger. Useful for emulators.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fn</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>custom callback function </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>userdata</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>passed as is to callback </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="118" column="6" bodyfile="output.cpp" bodystart="128" bodyend="136" declfile="output.h" declline="118" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1adcee2b724563f14cc3766e2189cbdaf1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Output::LogLevelToString</definition>
+        <argsstring>(LogLevel lvl)</argsstring>
+        <name>LogLevelToString</name>
+        <qualifiedname>Output::LogLevelToString</qualifiedname>
+        <param>
+          <type><ref refid="output_8h_1aca1fd1d8935433e6ba2e3918214e07f9" kindref="member">LogLevel</ref></type>
+          <declname>lvl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the Loglevel as string </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="121" column="13" bodyfile="output.cpp" bodystart="108" bodyend="110" declfile="output.h" declline="121" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1a18cdb15a3ce38d69947ab2c3febde618" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FmtStr</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Output::Info</definition>
+        <argsstring>(FmtStr &amp;&amp;fmtstr, Args &amp;&amp;... args)</argsstring>
+        <name>Info</name>
+        <qualifiedname>Output::Info</qualifiedname>
+        <param>
+          <type>FmtStr &amp;&amp;</type>
+          <declname>fmtstr</declname>
+        </param>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Displays an info string with formatted string.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fmtstr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the format string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>args</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>formatting arguments </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="130" column="6" bodyfile="output.h" bodystart="191" bodyend="193" declfile="output.h" declline="130" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1a20023c3bdcfb59fba537292e2ba77585" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Output::InfoStr</definition>
+        <argsstring>(std::string const &amp;msg)</argsstring>
+        <name>InfoStr</name>
+        <qualifiedname>Output::InfoStr</qualifiedname>
+        <param>
+          <type>std::string const &amp;</type>
+          <declname>msg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Displays an info string msg.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>string to display. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="137" column="6" bodyfile="output.cpp" bodystart="311" bodyend="316" declfile="output.h" declline="137" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1a0bc5fd9a98e30fdec1570fcc6d1368e2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FmtStr</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Output::Warning</definition>
+        <argsstring>(FmtStr &amp;&amp;fmtstr, Args &amp;&amp;... args)</argsstring>
+        <name>Warning</name>
+        <qualifiedname>Output::Warning</qualifiedname>
+        <param>
+          <type>FmtStr &amp;&amp;</type>
+          <declname>fmtstr</declname>
+        </param>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Display a warning with formatted string.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fmtstr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the format string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>args</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>formatting arguments </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="146" column="6" bodyfile="output.h" bodystart="201" bodyend="203" declfile="output.h" declline="146" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1ab9487a95c8de83363e3ed8e914d0d709" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Output::WarningStr</definition>
+        <argsstring>(std::string const &amp;warn)</argsstring>
+        <name>WarningStr</name>
+        <qualifiedname>Output::WarningStr</qualifiedname>
+        <param>
+          <type>std::string const &amp;</type>
+          <declname>warn</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Display a warning.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>warn</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: warning to display. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="153" column="6" bodyfile="output.cpp" bodystart="304" bodyend="309" declfile="output.h" declline="153" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1a15be3bb1abcecb6696cae716c208ed34" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FmtStr</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Output::Error</definition>
+        <argsstring>(FmtStr &amp;&amp;fmtstr, Args &amp;&amp;... args)</argsstring>
+        <name>Error</name>
+        <qualifiedname>Output::Error</qualifiedname>
+        <param>
+          <type>FmtStr &amp;&amp;</type>
+          <declname>fmtstr</declname>
+        </param>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Raises an error message with formatted string and closes the player afterwards.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fmtstr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the format string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>args</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>formatting arguments </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="163" column="7" bodyfile="output.h" bodystart="196" bodyend="198" declfile="output.h" declline="163" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1ab3051210a2e4d12e00fdea538f9907d8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Output::ErrorStr</definition>
+        <argsstring>(std::string const &amp;err)</argsstring>
+        <name>ErrorStr</name>
+        <qualifiedname>Output::ErrorStr</qualifiedname>
+        <param>
+          <type>std::string const &amp;</type>
+          <declname>err</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Display an error message and closes the player afterwards.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>err</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>error to display. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="171" column="7" bodyfile="output.cpp" bodystart="271" bodyend="302" declfile="output.h" declline="171" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1aec7bcd2124d7576a8b20873585de07cd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename FmtStr</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Output::Debug</definition>
+        <argsstring>(FmtStr &amp;&amp;fmtstr, Args &amp;&amp;... args)</argsstring>
+        <name>Debug</name>
+        <qualifiedname>Output::Debug</qualifiedname>
+        <param>
+          <type>FmtStr &amp;&amp;</type>
+          <declname>fmtstr</declname>
+        </param>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Prints a debug message to the console.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fmtstr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the format string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>args</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>formatting arguments </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="180" column="6" bodyfile="output.h" bodystart="206" bodyend="208" declfile="output.h" declline="180" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_output_1a33bbd3650c3f2baa51570238b525f9e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Output::DebugStr</definition>
+        <argsstring>(std::string const &amp;msg)</argsstring>
+        <name>DebugStr</name>
+        <qualifiedname>Output::DebugStr</qualifiedname>
+        <param>
+          <type>std::string const &amp;</type>
+          <declname>msg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Prints a debug message to the console.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>formatted debug text to display. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="output.h" line="187" column="6" bodyfile="output.cpp" bodystart="318" bodyend="323" declfile="output.h" declline="187" declcolumn="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="namespace_output" kindref="compound">Output</ref> Namespace. </para>
+    </detaileddescription>
+    <location file="output.h" line="42" column="1"/>
+  </compounddef>
+</doxygen>

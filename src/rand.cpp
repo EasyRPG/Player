@@ -133,3 +133,4 @@ void Rand::LockGuard::Release() noexcept {
 		Dismiss();
 	}
 }
+

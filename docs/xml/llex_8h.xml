@@ -1,0 +1,737 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="llex_8h" kind="file" language="C++">
+    <compoundname>llex.h</compoundname>
+    <includes local="no">limits.h</includes>
+    <includes refid="lobject_8h" local="yes">lobject.h</includes>
+    <includes refid="lzio_8h" local="yes">lzio.h</includes>
+    <includedby refid="lcode_8c" local="yes">leasy/lua/lcode.c</includedby>
+    <includedby refid="lcode_8h" local="yes">leasy/lua/lcode.h</includedby>
+    <includedby refid="llex_8c" local="yes">leasy/lua/llex.c</includedby>
+    <includedby refid="lparser_8c" local="yes">leasy/lua/lparser.c</includedby>
+    <includedby refid="lstate_8c" local="yes">leasy/lua/lstate.c</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/lua/llex.h</label>
+        <link refid="llex_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>lmem.h</label>
+        <link refid="lmem_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>lobject.h</label>
+        <link refid="lobject_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>lzio.h</label>
+        <link refid="lzio_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>limits.h</label>
+      </node>
+      <node id="4">
+        <label>stdarg.h</label>
+      </node>
+      <node id="6">
+        <label>stddef.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>leasy/lua/lcode.c</label>
+        <link refid="lcode_8c"/>
+      </node>
+      <node id="3">
+        <label>leasy/lua/lcode.h</label>
+        <link refid="lcode_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>leasy/lua/ldebug.c</label>
+        <link refid="ldebug_8c"/>
+      </node>
+      <node id="6">
+        <label>leasy/lua/llex.c</label>
+        <link refid="llex_8c"/>
+      </node>
+      <node id="1">
+        <label>leasy/lua/llex.h</label>
+        <link refid="llex_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>leasy/lua/lparser.c</label>
+        <link refid="lparser_8c"/>
+      </node>
+      <node id="7">
+        <label>leasy/lua/lstate.c</label>
+        <link refid="lstate_8c"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="union_sem_info" prot="public">SemInfo</innerclass>
+    <innerclass refid="struct_token" prot="public">Token</innerclass>
+    <innerclass refid="struct_lex_state" prot="public">LexState</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="llex_8h_1a6bc8e20ff15b7aa178aceea51e691e44" prot="public" static="no">
+        <name>FIRST_RESERVED</name>
+        <initializer>(UCHAR_MAX + 1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="20" column="9" bodyfile="leasy/lua/llex.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llex_8h_1af868e4c2b4c8551dad769502e7c3ec32" prot="public" static="no">
+        <name>LUA_ENV</name>
+        <initializer>&quot;_ENV&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="24" column="9" bodyfile="leasy/lua/llex.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llex_8h_1a24f40ac0891b0d584c0e432b2c6e1c71" prot="public" static="no">
+        <name>NUM_RESERVED</name>
+        <initializer>(<ref refid="llimits_8h_1a37a9e2c4b53433d34bad0f12a1500c08" kindref="member">cast_int</ref>(<ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a592e99387742b5748aa5e341c99dffd0" kindref="member">TK_WHILE</ref>-<ref refid="llex_8h_1a6bc8e20ff15b7aa178aceea51e691e44" kindref="member">FIRST_RESERVED</ref> + 1))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="46" column="9" bodyfile="leasy/lua/llex.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04" prot="public" static="no" strong="no">
+        <type></type>
+        <name>RESERVED</name>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04adbea546e357b70d29f631824a4f9cfed" prot="public">
+          <name>TK_AND</name>
+          <initializer>= FIRST_RESERVED</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a37065a9cb3cc1cc8a17537dc1ee5e0f0" prot="public">
+          <name>TK_BREAK</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a2fbaee0c1e87c30a1809ff22893fe2f9" prot="public">
+          <name>TK_DO</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a3f50a3a010dc1ba1401d460900575b47" prot="public">
+          <name>TK_ELSE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04af85f1d50bab033c17f7341b5e71f4d60" prot="public">
+          <name>TK_ELSEIF</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a541ef482a7317bd2a54032f165d90db7" prot="public">
+          <name>TK_END</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a065bdf8569f3a1ab4130f7e1ff2203ae" prot="public">
+          <name>TK_FALSE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a7dcf533a644fc9cb697137a8a9b54f4b" prot="public">
+          <name>TK_FOR</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04aafc8fa070d8d0bb9569b875cbc6b1a8c" prot="public">
+          <name>TK_FUNCTION</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a029358423b3a98a79a57c761f276f47e" prot="public">
+          <name>TK_GLOBAL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04af41cf088c658a62b2381424416171445" prot="public">
+          <name>TK_GOTO</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a601b374145c8554a0dc2d1663cbdfeb1" prot="public">
+          <name>TK_IF</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a88b8f5e56057cb0d4e633046b2b9e66e" prot="public">
+          <name>TK_IN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a5d6f51dd7b248ee46da5de8e33f34992" prot="public">
+          <name>TK_LOCAL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a905f67bd8b8ac9b5e0236aa5dec2e7b5" prot="public">
+          <name>TK_NIL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a985342409492de2e599c6202e9180ad9" prot="public">
+          <name>TK_NOT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04ab4578d7ddbacda8286ad2205d3d917e9" prot="public">
+          <name>TK_OR</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a9f9929bcc6f4a87310869eaf9efed4cd" prot="public">
+          <name>TK_REPEAT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04aba4fafc284c6c6aa99340efdba0b76e8" prot="public">
+          <name>TK_RETURN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a757e31c13acf13af22615dca8c1b7c97" prot="public">
+          <name>TK_THEN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a67fdd8ec6c80ac2163c8d3e7d0ac50c1" prot="public">
+          <name>TK_TRUE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04ab7232de731ef17fbc644b370c783719c" prot="public">
+          <name>TK_UNTIL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a592e99387742b5748aa5e341c99dffd0" prot="public">
+          <name>TK_WHILE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a7f7c69f2e524e3ab183318cf52575ba8" prot="public">
+          <name>TK_IDIV</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a8367a7a9a88e9ea3cef16ab15887a278" prot="public">
+          <name>TK_CONCAT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a500efed658259c56ef30938c20c3b6c4" prot="public">
+          <name>TK_DOTS</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04ae9b97178246db483138ab3d18039bfb2" prot="public">
+          <name>TK_EQ</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a39306a802115256cf2099f6c724a95b0" prot="public">
+          <name>TK_GE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04ace38c3f7b08d6ffe00acdd0706ba35de" prot="public">
+          <name>TK_LE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a6897243f49a32e90ca094af33c16374b" prot="public">
+          <name>TK_NE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04afe39400ab62457e9a823aa8521d0610b" prot="public">
+          <name>TK_SHL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04ad15c43ae39b99d8f834419ec74183185" prot="public">
+          <name>TK_SHR</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a3a767e0c4ce0407785d87a1a56980de2" prot="public">
+          <name>TK_DBCOLON</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a9fcd34e2e50a0afb82f0dae65836187b" prot="public">
+          <name>TK_EOS</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a81df881e62ebf1fe93b4820b7b54984d" prot="public">
+          <name>TK_FLT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a9f48ed12541fab691e25e3ca9e38ac9f" prot="public">
+          <name>TK_INT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a84e5aed35515b2881005d88dccaf0c30" prot="public">
+          <name>TK_NAME</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a2f748d118b4a20e2b1dc12538ccd9876" prot="public">
+          <name>TK_STRING</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="32" column="1" bodyfile="leasy/lua/llex.h" bodystart="32" bodyend="43"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="llex_8h_1ae88d5c0259051080fda097b92d99d7ee" prot="public" static="no">
+        <type>struct Token</type>
+        <definition>typedef struct Token Token</definition>
+        <argsstring></argsstring>
+        <name>Token</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="59" column="7"/>
+      </memberdef>
+      <memberdef kind="typedef" id="llex_8h_1a9f82fde07775e272863638db15ba8401" prot="public" static="no">
+        <type>struct LexState</type>
+        <definition>typedef struct LexState LexState</definition>
+        <argsstring></argsstring>
+        <name>LexState</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="80" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="llex_8h_1a5f7573e2f03006437bd01422a0e390df" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaX_init</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaX_init</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="83" column="16" bodyfile="leasy/lua/llex.c" bodystart="75" bodyend="84" declfile="leasy/lua/llex.h" declline="83" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8h_1aac9c3f80c74f7d861348e74f5fda1452" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaX_setinput</definition>
+        <argsstring>(lua_State *L, LexState *ls, ZIO *z, TString *source, int firstchar)</argsstring>
+        <name>luaX_setinput</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref> *</type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>firstchar</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="84" column="16" bodyfile="leasy/lua/llex.c" bodystart="176" bodyend="197" declfile="leasy/lua/llex.h" declline="84" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8h_1a26726604b0988a0595c135ef12ef5494" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>LUAI_FUNC TString * luaX_newstring</definition>
+        <argsstring>(LexState *ls, const char *str, size_t l)</argsstring>
+        <name>luaX_newstring</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>str</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>l</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="86" column="19" bodyfile="leasy/lua/llex.c" bodystart="156" bodyend="158" declfile="leasy/lua/llex.h" declline="86" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8h_1a626896648b5c598666b1e051fd70a568" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaX_next</definition>
+        <argsstring>(LexState *ls)</argsstring>
+        <name>luaX_next</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="87" column="16" bodyfile="leasy/lua/llex.c" bodystart="588" bodyend="596" declfile="leasy/lua/llex.h" declline="87" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8h_1ad024d435463fc54e7e592d9bb8a7b26b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaX_lookahead</definition>
+        <argsstring>(LexState *ls)</argsstring>
+        <name>luaX_lookahead</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="88" column="15" bodyfile="leasy/lua/llex.c" bodystart="599" bodyend="603" declfile="leasy/lua/llex.h" declline="88" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8h_1a189ff2bb7bd23c89531fdad321fccd02" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref></type>
+        <definition>LUAI_FUNC l_noret luaX_syntaxerror</definition>
+        <argsstring>(LexState *ls, const char *s)</argsstring>
+        <name>luaX_syntaxerror</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="89" column="19" bodyfile="leasy/lua/llex.c" bodystart="124" bodyend="126" declfile="leasy/lua/llex.h" declline="89" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8h_1a7eca11f667896bba4957267d6bff5823" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> const char *</type>
+        <definition>LUAI_FUNC const char * luaX_token2str</definition>
+        <argsstring>(LexState *ls, int token)</argsstring>
+        <name>luaX_token2str</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>token</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="90" column="22" bodyfile="leasy/lua/llex.c" bodystart="87" bodyend="101" declfile="leasy/lua/llex.h" declline="90" declcolumn="22"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>llex.h<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Lexical<sp/>Analyzer</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>llex_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>llex_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;limits.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lobject_8h" kindref="compound">lobject.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lzio_8h" kindref="compound">lzio.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="17"><highlight class="comment">**<sp/>Single-char<sp/>tokens<sp/>(terminal<sp/>symbols)<sp/>are<sp/>represented<sp/>by<sp/>their<sp/>own</highlight></codeline>
+<codeline lineno="18"><highlight class="comment">**<sp/>numeric<sp/>code.<sp/>Other<sp/>tokens<sp/>start<sp/>at<sp/>the<sp/>following<sp/>value.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="llex_8h_1a6bc8e20ff15b7aa178aceea51e691e44" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>FIRST_RESERVED<sp/><sp/>(UCHAR_MAX<sp/>+<sp/>1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(LUA_ENV)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="llex_8h_1af868e4c2b4c8551dad769502e7c3ec32" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_ENV<sp/><sp/><sp/><sp/><sp/>&quot;_ENV&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="29"><highlight class="comment">*<sp/>WARNING:<sp/>if<sp/>you<sp/>change<sp/>the<sp/>order<sp/>of<sp/>this<sp/>enumeration,</highlight></codeline>
+<codeline lineno="30"><highlight class="comment">*<sp/>grep<sp/>&quot;ORDER<sp/>RESERVED&quot;</highlight></codeline>
+<codeline lineno="31"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04" kindref="member">RESERVED</ref><sp/>{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>terminal<sp/>symbols<sp/>denoted<sp/>by<sp/>reserved<sp/>words<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04adbea546e357b70d29f631824a4f9cfed" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04adbea546e357b70d29f631824a4f9cfed" kindref="member">TK_AND</ref><sp/>=<sp/><ref refid="llex_8h_1a6bc8e20ff15b7aa178aceea51e691e44" kindref="member">FIRST_RESERVED</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a37065a9cb3cc1cc8a17537dc1ee5e0f0" kindref="member">TK_BREAK</ref>,</highlight></codeline>
+<codeline lineno="35" refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a2fbaee0c1e87c30a1809ff22893fe2f9" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a2fbaee0c1e87c30a1809ff22893fe2f9" kindref="member">TK_DO</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a3f50a3a010dc1ba1401d460900575b47" kindref="member">TK_ELSE</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04af85f1d50bab033c17f7341b5e71f4d60" kindref="member">TK_ELSEIF</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a541ef482a7317bd2a54032f165d90db7" kindref="member">TK_END</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a065bdf8569f3a1ab4130f7e1ff2203ae" kindref="member">TK_FALSE</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a7dcf533a644fc9cb697137a8a9b54f4b" kindref="member">TK_FOR</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04aafc8fa070d8d0bb9569b875cbc6b1a8c" kindref="member">TK_FUNCTION</ref>,</highlight></codeline>
+<codeline lineno="36" refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a029358423b3a98a79a57c761f276f47e" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a029358423b3a98a79a57c761f276f47e" kindref="member">TK_GLOBAL</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04af41cf088c658a62b2381424416171445" kindref="member">TK_GOTO</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a601b374145c8554a0dc2d1663cbdfeb1" kindref="member">TK_IF</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a88b8f5e56057cb0d4e633046b2b9e66e" kindref="member">TK_IN</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a5d6f51dd7b248ee46da5de8e33f34992" kindref="member">TK_LOCAL</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a905f67bd8b8ac9b5e0236aa5dec2e7b5" kindref="member">TK_NIL</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a985342409492de2e599c6202e9180ad9" kindref="member">TK_NOT</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04ab4578d7ddbacda8286ad2205d3d917e9" kindref="member">TK_OR</ref>,</highlight></codeline>
+<codeline lineno="37" refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a9f9929bcc6f4a87310869eaf9efed4cd" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a9f9929bcc6f4a87310869eaf9efed4cd" kindref="member">TK_REPEAT</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04aba4fafc284c6c6aa99340efdba0b76e8" kindref="member">TK_RETURN</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a757e31c13acf13af22615dca8c1b7c97" kindref="member">TK_THEN</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a67fdd8ec6c80ac2163c8d3e7d0ac50c1" kindref="member">TK_TRUE</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04ab7232de731ef17fbc644b370c783719c" kindref="member">TK_UNTIL</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a592e99387742b5748aa5e341c99dffd0" kindref="member">TK_WHILE</ref>,</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>other<sp/>terminal<sp/>symbols<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a8367a7a9a88e9ea3cef16ab15887a278" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a7f7c69f2e524e3ab183318cf52575ba8" kindref="member">TK_IDIV</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a8367a7a9a88e9ea3cef16ab15887a278" kindref="member">TK_CONCAT</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a500efed658259c56ef30938c20c3b6c4" kindref="member">TK_DOTS</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04ae9b97178246db483138ab3d18039bfb2" kindref="member">TK_EQ</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a39306a802115256cf2099f6c724a95b0" kindref="member">TK_GE</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04ace38c3f7b08d6ffe00acdd0706ba35de" kindref="member">TK_LE</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a6897243f49a32e90ca094af33c16374b" kindref="member">TK_NE</ref>,</highlight></codeline>
+<codeline lineno="40" refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04afe39400ab62457e9a823aa8521d0610b" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04afe39400ab62457e9a823aa8521d0610b" kindref="member">TK_SHL</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04ad15c43ae39b99d8f834419ec74183185" kindref="member">TK_SHR</ref>,</highlight></codeline>
+<codeline lineno="41" refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a3a767e0c4ce0407785d87a1a56980de2" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a3a767e0c4ce0407785d87a1a56980de2" kindref="member">TK_DBCOLON</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a9fcd34e2e50a0afb82f0dae65836187b" kindref="member">TK_EOS</ref>,</highlight></codeline>
+<codeline lineno="42" refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a81df881e62ebf1fe93b4820b7b54984d" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a81df881e62ebf1fe93b4820b7b54984d" kindref="member">TK_FLT</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a9f48ed12541fab691e25e3ca9e38ac9f" kindref="member">TK_INT</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a84e5aed35515b2881005d88dccaf0c30" kindref="member">TK_NAME</ref>,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a2f748d118b4a20e2b1dc12538ccd9876" kindref="member">TK_STRING</ref></highlight></codeline>
+<codeline lineno="43"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>number<sp/>of<sp/>reserved<sp/>words<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="llex_8h_1a24f40ac0891b0d584c0e432b2c6e1c71" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NUM_RESERVED<sp/><sp/><sp/><sp/>(cast_int(TK_WHILE-FIRST_RESERVED<sp/>+<sp/>1))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="union_sem_info" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">union<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="50" refid="union_sem_info_1a43b00f784510a2d500550b81578177d8" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref><sp/><ref refid="union_sem_info_1a43b00f784510a2d500550b81578177d8" kindref="member">r</ref>;</highlight></codeline>
+<codeline lineno="51" refid="union_sem_info_1a6ed52b8a8b415d8f16089445f93e5391" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/><ref refid="union_sem_info_1a6ed52b8a8b415d8f16089445f93e5391" kindref="member">i</ref>;</highlight></codeline>
+<codeline lineno="52" refid="union_sem_info_1a393ebb62432ff3e689283e54e113b33e" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="union_sem_info_1a393ebb62432ff3e689283e54e113b33e" kindref="member">ts</ref>;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal">}<sp/><ref refid="union_sem_info" kindref="compound">SemInfo</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>semantics<sp/>information<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="struct_token" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_token" kindref="compound">Token</ref><sp/>{</highlight></codeline>
+<codeline lineno="57" refid="struct_token_1a92d1dfeae343659449f1bc29d6731c5d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_token_1a92d1dfeae343659449f1bc29d6731c5d" kindref="member">token</ref>;</highlight></codeline>
+<codeline lineno="58" refid="struct_token_1a87067a25b1e511befc45d56cf535ef59" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="union_sem_info" kindref="compound">SemInfo</ref><sp/><ref refid="struct_token_1a87067a25b1e511befc45d56cf535ef59" kindref="member">seminfo</ref>;</highlight></codeline>
+<codeline lineno="59" refid="llex_8h_1ae88d5c0259051080fda097b92d99d7ee" refkind="member"><highlight class="normal">}<sp/><ref refid="struct_token" kindref="compound">Token</ref>;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>state<sp/>of<sp/>the<sp/>scanner<sp/>plus<sp/>state<sp/>of<sp/>the<sp/>parser<sp/>when<sp/>shared<sp/>by<sp/>all</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/><sp/><sp/>functions<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64" refid="struct_lex_state" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>{</highlight></codeline>
+<codeline lineno="65" refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>current<sp/>character<sp/>(charint)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="struct_lex_state_1a9047632ca93c760b66b6303c819099d5" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_lex_state_1a9047632ca93c760b66b6303c819099d5" kindref="member">linenumber</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>input<sp/>line<sp/>counter<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67" refid="struct_lex_state_1aaadb237d4fc6b81d2242e666de885bf7" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_lex_state_1aaadb237d4fc6b81d2242e666de885bf7" kindref="member">lastline</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>line<sp/>of<sp/>last<sp/>token<sp/>&apos;consumed&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="struct_lex_state_1a597c734626136f4ddb8232e8fc3abfc4" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_token" kindref="compound">Token</ref><sp/><ref refid="struct_lex_state_1a597c734626136f4ddb8232e8fc3abfc4" kindref="member">t</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>current<sp/>token<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="struct_lex_state_1ad3c75c11dbbdae006057cb4b847a4f91" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_token" kindref="compound">Token</ref><sp/><ref refid="struct_lex_state_1ad3c75c11dbbdae006057cb4b847a4f91" kindref="member">lookahead</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>look<sp/>ahead<sp/>token<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70" refid="struct_lex_state_1a01999e4f68cc6a3bd0b9eb6ebd241f7b" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*<ref refid="struct_lex_state_1a01999e4f68cc6a3bd0b9eb6ebd241f7b" kindref="member">fs</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>current<sp/>function<sp/>(parser)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71" refid="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*<ref refid="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" kindref="member">L</ref>;</highlight></codeline>
+<codeline lineno="72" refid="struct_lex_state_1a591ffaffa1f3c21653904dccf81a4377" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref><sp/>*<ref refid="struct_lex_state_1a591ffaffa1f3c21653904dccf81a4377" kindref="member">z</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>input<sp/>stream<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73" refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_mbuffer" kindref="compound">Mbuffer</ref><sp/>*<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>buffer<sp/>for<sp/>tokens<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="struct_lex_state_1a0fcd03e58c52d100bc9dcd52787724f4" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*<ref refid="struct_lex_state_1a0fcd03e58c52d100bc9dcd52787724f4" kindref="member">h</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>to<sp/>avoid<sp/>collection/reuse<sp/>strings<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75" refid="struct_lex_state_1a3275102e0a909a24d21e8dd183847a2b" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_dyndata" kindref="compound">Dyndata</ref><sp/>*<ref refid="struct_lex_state_1a3275102e0a909a24d21e8dd183847a2b" kindref="member">dyd</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>dynamic<sp/>structures<sp/>used<sp/>by<sp/>the<sp/>parser<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76" refid="struct_lex_state_1a054af516711cc3d173a73a301497ff27" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="struct_lex_state_1a054af516711cc3d173a73a301497ff27" kindref="member">source</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>current<sp/>source<sp/>name<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77" refid="struct_lex_state_1a1f3368576038a65ab629da91de3edfaf" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="struct_lex_state_1a1f3368576038a65ab629da91de3edfaf" kindref="member">envn</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>environment<sp/>variable<sp/>name<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78" refid="struct_lex_state_1a857e26bd0a34d69d72e98193f068be57" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="struct_lex_state_1a857e26bd0a34d69d72e98193f068be57" kindref="member">brkn</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>&quot;break&quot;<sp/>name<sp/>(used<sp/>as<sp/>a<sp/>label)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79" refid="struct_lex_state_1a13134d7e5b4ef8430baee3284bd41068" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="struct_lex_state_1a13134d7e5b4ef8430baee3284bd41068" kindref="member">glbn</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>&quot;global&quot;<sp/>name<sp/>(when<sp/>not<sp/>a<sp/>reserved<sp/>word)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80" refid="llex_8h_1a9f82fde07775e272863638db15ba8401" refkind="member"><highlight class="normal">}<sp/><ref refid="struct_lex_state" kindref="compound">LexState</ref>;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1a5f7573e2f03006437bd01422a0e390df" kindref="member">luaX_init</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1aac9c3f80c74f7d861348e74f5fda1452" kindref="member">luaX_setinput</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref><sp/>*z,</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*source,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>firstchar);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="llex_8h_1a26726604b0988a0595c135ef12ef5494" kindref="member">luaX_newstring</ref><sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*str,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>l);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1a626896648b5c598666b1e051fd70a568" kindref="member">luaX_next</ref><sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ad024d435463fc54e7e592d9bb8a7b26b" kindref="member">luaX_lookahead</ref><sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref><sp/><ref refid="llex_8h_1a189ff2bb7bd23c89531fdad321fccd02" kindref="member">luaX_syntaxerror</ref><sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*<ref refid="llex_8h_1a7eca11f667896bba4957267d6bff5823" kindref="member">luaX_token2str</ref><sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>token);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/llex.h"/>
+  </compounddef>
+</doxygen>

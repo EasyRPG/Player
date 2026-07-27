@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_9c56f63ac7bdaa25a54ae94d4c6c1540" kind="dir">
+    <compoundname>platform/wiiu</compoundname>
+    <innerfile refid="wiiu_2input__buttons_8cpp">input_buttons.cpp</innerfile>
+    <innerfile refid="wiiu_2main_8cpp">main.cpp</innerfile>
+    <innerfile refid="main_8h">main.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/wiiu/"/>
+  </compounddef>
+</doxygen>

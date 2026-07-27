@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="core1_8hpp" kind="file" language="C++">
+    <compoundname>core1.hpp</compoundname>
+    <includes local="no">iostream</includes>
+    <includes local="no">string</includes>
+    <includedby refid="core1_8cpp" local="yes">leasy/test/core1.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/test/core1.hpp</label>
+        <link refid="core1_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>iostream</label>
+      </node>
+      <node id="3">
+        <label>string</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>leasy/test/core1.cpp</label>
+        <link refid="core1_8cpp"/>
+      </node>
+      <node id="1">
+        <label>leasy/test/core1.hpp</label>
+        <link refid="core1_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classleasy_1_1tests_1_1_test1" prot="public">leasy::tests::Test1</innerclass>
+    <innernamespace refid="namespaceleasy">leasy</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1tests">leasy::tests</innernamespace>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="core1_8hpp_1a1b791202ed22578442480d5cd02f0afd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classleasy_1_1tests_1_1_test1" kindref="compound">leasy::tests::Test1</ref></type>
+        <definition>leasy::tests::Test1 foo</definition>
+        <argsstring>()</argsstring>
+        <name>foo</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para>0xEF9087A </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/test/core1.hpp" line="51" column="21" bodyfile="leasy/test/core1.cpp" bodystart="24" bodyend="26" declfile="leasy/test/core1.hpp" declline="51" declcolumn="21"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="namespaceleasy_1_1tests" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1tests" kindref="compound">leasy::tests</ref><sp/>{</highlight></codeline>
+<codeline lineno="29" refid="classleasy_1_1tests_1_1_test1" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classleasy_1_1tests_1_1_test1_1a837a83b6870f82c9b3c171c89d855956" kindref="member">Test1</ref><sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="31" refid="classleasy_1_1tests_1_1_test1_1a4fa34a305663814b1f818196fe8e5e75" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1tests_1_1_test1_1a4fa34a305663814b1f818196fe8e5e75" kindref="member">foo</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/>__func__<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>has<sp/>been<sp/>called<sp/>!!&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="classleasy_1_1tests_1_1_test1_1a2e9c8f47085339a23a544906de7957de" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="classleasy_1_1tests_1_1_test1_1a2e9c8f47085339a23a544906de7957de" kindref="member">opt</ref>;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="classleasy_1_1tests_1_1_test1_1a8bc624d19d6af81b7e89da4f33bd8f56" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1tests_1_1_test1_1a8bc624d19d6af81b7e89da4f33bd8f56" kindref="member">foo2</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/><ref refid="classleasy_1_1tests_1_1_test1_1a2e9c8f47085339a23a544906de7957de" kindref="member">opt</ref><sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="classleasy_1_1tests_1_1_test1_1a837a83b6870f82c9b3c171c89d855956" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1tests_1_1_test1_1a837a83b6870f82c9b3c171c89d855956" kindref="member">Test1</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="42" refid="classleasy_1_1tests_1_1_test1_1a0f128d6635587c4c015a7433ca5bd90c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1tests_1_1_test1_1a0f128d6635587c4c015a7433ca5bd90c" kindref="member">Test1</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>c)</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="classleasy_1_1tests_1_1_test1_1a2e9c8f47085339a23a544906de7957de" kindref="member">opt</ref>(c)<sp/>{}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="45" refid="classleasy_1_1tests_1_1_test1_1ae032f11095ef6bd57e30c0f4c90f3748" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1tests_1_1_test1_1ae032f11095ef6bd57e30c0f4c90f3748" kindref="member">Test1</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;c)</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="classleasy_1_1tests_1_1_test1_1a2e9c8f47085339a23a544906de7957de" kindref="member">opt</ref>(c)<sp/>{}</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="49"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><ref refid="classleasy_1_1tests_1_1_test1" kindref="compound">leasy::tests::Test1</ref><sp/><ref refid="core1_8hpp_1a1b791202ed22578442480d5cd02f0afd" kindref="member">foo</ref>();</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/test/core1.hpp"/>
+  </compounddef>
+</doxygen>

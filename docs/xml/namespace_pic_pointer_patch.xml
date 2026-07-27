@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_pic_pointer_patch" kind="namespace" language="C++">
+    <compoundname>PicPointerPatch</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_pic_pointer_patch_1a9e23cdc1f3f678dce9087c09d9ccbbf2" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void PicPointerPatch::AdjustId</definition>
+        <argsstring>(int &amp;pic_id)</argsstring>
+        <name>AdjustId</name>
+        <qualifiedname>PicPointerPatch::AdjustId</qualifiedname>
+        <param>
+          <type>int &amp;</type>
+          <declname>pic_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.cpp" line="2639" column="13" bodyfile="game_interpreter.cpp" bodystart="2639" bodyend="2653"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_pic_pointer_patch_1aceda5622d152cbc21c359014bc9b8b6e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void PicPointerPatch::AdjustParams</definition>
+        <argsstring>(Game_Pictures::Params &amp;params)</argsstring>
+        <name>AdjustParams</name>
+        <qualifiedname>PicPointerPatch::AdjustParams</qualifiedname>
+        <param>
+          <type><ref refid="struct_game___pictures_1_1_params" kindref="compound">Game_Pictures::Params</ref> &amp;</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.cpp" line="2655" column="13" bodyfile="game_interpreter.cpp" bodystart="2655" bodyend="2674"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_pic_pointer_patch_1a4cdece4cdc1310425764a19b04ce3fd1" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>static std::string PicPointerPatch::ReplaceName</definition>
+        <argsstring>(const std::string &amp;str, int value, int digits)</argsstring>
+        <name>ReplaceName</name>
+        <qualifiedname>PicPointerPatch::ReplaceName</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>str</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>digits</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.cpp" line="2676" column="20" bodyfile="game_interpreter.cpp" bodystart="2676" bodyend="2700"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_pic_pointer_patch_1a14bf24f7f6356f0596ac794ce82f8f98" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void PicPointerPatch::AdjustShowParams</definition>
+        <argsstring>(int &amp;pic_id, Game_Pictures::ShowParams &amp;params)</argsstring>
+        <name>AdjustShowParams</name>
+        <qualifiedname>PicPointerPatch::AdjustShowParams</qualifiedname>
+        <param>
+          <type>int &amp;</type>
+          <declname>pic_id</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_game___pictures_1_1_show_params" kindref="compound">Game_Pictures::ShowParams</ref> &amp;</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.cpp" line="2702" column="13" bodyfile="game_interpreter.cpp" bodystart="2702" bodyend="2715"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_pic_pointer_patch_1a9cb940a07917619bb2a2d1d5470940ce" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void PicPointerPatch::AdjustMoveParams</definition>
+        <argsstring>(int &amp;pic_id, Game_Pictures::MoveParams &amp;params)</argsstring>
+        <name>AdjustMoveParams</name>
+        <qualifiedname>PicPointerPatch::AdjustMoveParams</qualifiedname>
+        <param>
+          <type>int &amp;</type>
+          <declname>pic_id</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_game___pictures_1_1_move_params" kindref="compound">Game_Pictures::MoveParams</ref> &amp;</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.cpp" line="2717" column="13" bodyfile="game_interpreter.cpp" bodystart="2717" bodyend="2726"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_interpreter.cpp" line="2637" column="1"/>
+  </compounddef>
+</doxygen>

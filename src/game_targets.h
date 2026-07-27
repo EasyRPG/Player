@@ -62,3 +62,4 @@ inline const lcf::rpg::SaveTarget& Game_Targets::GetEscapeTarget() const {
 
 
 #endif
+

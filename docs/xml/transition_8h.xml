@@ -1,0 +1,814 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="transition_8h" kind="file" language="C++">
+    <compoundname>transition.h</compoundname>
+    <includes local="no">cstdint</includes>
+    <includes local="no">vector</includes>
+    <includes local="no">string</includes>
+    <includes refid="drawable_8h" local="yes">drawable.h</includes>
+    <includes refid="system_8h" local="yes">system.h</includes>
+    <includes refid="scene_8h" local="yes">scene.h</includes>
+    <includes refid="color_8h" local="yes">color.h</includes>
+    <includedby refid="async__handler_8cpp" local="yes">async_handler.cpp</includedby>
+    <includedby refid="game__interpreter_8cpp" local="yes">game_interpreter.cpp</includedby>
+    <includedby refid="game__system_8cpp" local="yes">game_system.cpp</includedby>
+    <includedby refid="game__system_8h" local="yes">game_system.h</includedby>
+    <includedby refid="graphics_8cpp" local="yes">graphics.cpp</includedby>
+    <includedby refid="player_8cpp" local="yes">player.cpp</includedby>
+    <includedby refid="scene_8cpp" local="yes">scene.cpp</includedby>
+    <includedby refid="scene__battle_8cpp" local="yes">scene_battle.cpp</includedby>
+    <includedby refid="scene__debug_8cpp" local="yes">scene_debug.cpp</includedby>
+    <includedby refid="scene__gameover_8cpp" local="yes">scene_gameover.cpp</includedby>
+    <includedby refid="scene__item_8cpp" local="yes">scene_item.cpp</includedby>
+    <includedby refid="scene__map_8cpp" local="yes">scene_map.cpp</includedby>
+    <includedby refid="scene__skill_8cpp" local="yes">scene_skill.cpp</includedby>
+    <includedby refid="scene__teleport_8cpp" local="yes">scene_teleport.cpp</includedby>
+    <includedby refid="scene__title_8cpp" local="yes">scene_title.cpp</includedby>
+    <includedby refid="transition_8cpp" local="yes">transition.cpp</includedby>
+    <incdepgraph>
+      <node id="11">
+        <label>async_op.h</label>
+        <link refid="async__op_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>drawable_list.h</label>
+        <link refid="drawable__list_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="10">
+        <label>scene.h</label>
+        <link refid="scene_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>transition.h</label>
+        <link refid="transition_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>cassert</label>
+      </node>
+      <node id="2">
+        <label>cstdint</label>
+      </node>
+      <node id="15">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="16">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="21">
+        <label>functional</label>
+      </node>
+      <node id="14">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="22">
+        <label>lcf/rpg/savesystem.h</label>
+      </node>
+      <node id="13">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="20">
+        <label>limits</label>
+      </node>
+      <node id="6">
+        <label>memory</label>
+      </node>
+      <node id="25">
+        <label>ostream</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="24">
+        <label>tuple</label>
+      </node>
+      <node id="17">
+        <label>utility</label>
+      </node>
+      <node id="3">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="6">
+        <label>algo.cpp</label>
+        <link refid="algo_8cpp"/>
+      </node>
+      <node id="2">
+        <label>async_handler.cpp</label>
+        <link refid="async__handler_8cpp"/>
+      </node>
+      <node id="7">
+        <label>battle_animation.cpp</label>
+        <link refid="battle__animation_8cpp"/>
+      </node>
+      <node id="8">
+        <label>font.cpp</label>
+        <link refid="font_8cpp"/>
+      </node>
+      <node id="9">
+        <label>game_battle.cpp</label>
+        <link refid="game__battle_8cpp"/>
+      </node>
+      <node id="10">
+        <label>game_battlealgorithm.cpp</label>
+        <link refid="game__battlealgorithm_8cpp"/>
+      </node>
+      <node id="11">
+        <label>game_battler.cpp</label>
+        <link refid="game__battler_8cpp"/>
+      </node>
+      <node id="12">
+        <label>game_character.cpp</label>
+        <link refid="game__character_8cpp"/>
+      </node>
+      <node id="13">
+        <label>game_event.cpp</label>
+        <link refid="game__event_8cpp"/>
+      </node>
+      <node id="3">
+        <label>game_interpreter.cpp</label>
+        <link refid="game__interpreter_8cpp"/>
+      </node>
+      <node id="14">
+        <label>game_interpreter_battle.cpp</label>
+        <link refid="game__interpreter__battle_8cpp"/>
+      </node>
+      <node id="15">
+        <label>game_interpreter_control_variables.cpp</label>
+        <link refid="game__interpreter__control__variables_8cpp"/>
+      </node>
+      <node id="16">
+        <label>game_interpreter_map.cpp</label>
+        <link refid="game__interpreter__map_8cpp"/>
+      </node>
+      <node id="17">
+        <label>game_interpreter_shared.cpp</label>
+        <link refid="game__interpreter__shared_8cpp"/>
+      </node>
+      <node id="18">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="19">
+        <label>game_message.cpp</label>
+        <link refid="game__message_8cpp"/>
+      </node>
+      <node id="20">
+        <label>game_party.cpp</label>
+        <link refid="game__party_8cpp"/>
+      </node>
+      <node id="21">
+        <label>game_player.cpp</label>
+        <link refid="game__player_8cpp"/>
+      </node>
+      <node id="22">
+        <label>game_screen.cpp</label>
+        <link refid="game__screen_8cpp"/>
+      </node>
+      <node id="4">
+        <label>game_system.cpp</label>
+        <link refid="game__system_8cpp"/>
+      </node>
+      <node id="5">
+        <label>game_system.h</label>
+        <link refid="game__system_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>game_vehicle.cpp</label>
+        <link refid="game__vehicle_8cpp"/>
+      </node>
+      <node id="70">
+        <label>graphics.cpp</label>
+        <link refid="graphics_8cpp"/>
+      </node>
+      <node id="24">
+        <label>input_source.cpp</label>
+        <link refid="input__source_8cpp"/>
+      </node>
+      <node id="25">
+        <label>main_data.cpp</label>
+        <link refid="main__data_8cpp"/>
+      </node>
+      <node id="26">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="27">
+        <label>scene.cpp</label>
+        <link refid="scene_8cpp"/>
+      </node>
+      <node id="28">
+        <label>scene_actortarget.cpp</label>
+        <link refid="scene__actortarget_8cpp"/>
+      </node>
+      <node id="29">
+        <label>scene_battle.cpp</label>
+        <link refid="scene__battle_8cpp"/>
+      </node>
+      <node id="30">
+        <label>scene_battle_rpg2k.cpp</label>
+        <link refid="scene__battle__rpg2k_8cpp"/>
+      </node>
+      <node id="31">
+        <label>scene_battle_rpg2k3.cpp</label>
+        <link refid="scene__battle__rpg2k3_8cpp"/>
+      </node>
+      <node id="32">
+        <label>scene_debug.cpp</label>
+        <link refid="scene__debug_8cpp"/>
+      </node>
+      <node id="33">
+        <label>scene_end.cpp</label>
+        <link refid="scene__end_8cpp"/>
+      </node>
+      <node id="34">
+        <label>scene_equip.cpp</label>
+        <link refid="scene__equip_8cpp"/>
+      </node>
+      <node id="35">
+        <label>scene_file.cpp</label>
+        <link refid="scene__file_8cpp"/>
+      </node>
+      <node id="36">
+        <label>scene_gamebrowser.cpp</label>
+        <link refid="scene__gamebrowser_8cpp"/>
+      </node>
+      <node id="37">
+        <label>scene_gameover.cpp</label>
+        <link refid="scene__gameover_8cpp"/>
+      </node>
+      <node id="38">
+        <label>scene_import.cpp</label>
+        <link refid="scene__import_8cpp"/>
+      </node>
+      <node id="39">
+        <label>scene_item.cpp</label>
+        <link refid="scene__item_8cpp"/>
+      </node>
+      <node id="40">
+        <label>scene_language.cpp</label>
+        <link refid="scene__language_8cpp"/>
+      </node>
+      <node id="41">
+        <label>scene_map.cpp</label>
+        <link refid="scene__map_8cpp"/>
+      </node>
+      <node id="42">
+        <label>scene_menu.cpp</label>
+        <link refid="scene__menu_8cpp"/>
+      </node>
+      <node id="43">
+        <label>scene_name.cpp</label>
+        <link refid="scene__name_8cpp"/>
+      </node>
+      <node id="44">
+        <label>scene_order.cpp</label>
+        <link refid="scene__order_8cpp"/>
+      </node>
+      <node id="45">
+        <label>scene_save.cpp</label>
+        <link refid="scene__save_8cpp"/>
+      </node>
+      <node id="46">
+        <label>scene_settings.cpp</label>
+        <link refid="scene__settings_8cpp"/>
+      </node>
+      <node id="47">
+        <label>scene_shop.cpp</label>
+        <link refid="scene__shop_8cpp"/>
+      </node>
+      <node id="48">
+        <label>scene_skill.cpp</label>
+        <link refid="scene__skill_8cpp"/>
+      </node>
+      <node id="49">
+        <label>scene_status.cpp</label>
+        <link refid="scene__status_8cpp"/>
+      </node>
+      <node id="50">
+        <label>scene_teleport.cpp</label>
+        <link refid="scene__teleport_8cpp"/>
+      </node>
+      <node id="51">
+        <label>scene_title.cpp</label>
+        <link refid="scene__title_8cpp"/>
+      </node>
+      <node id="52">
+        <label>sprite_airshipshadow.cpp</label>
+        <link refid="sprite__airshipshadow_8cpp"/>
+      </node>
+      <node id="53">
+        <label>sprite_timer.cpp</label>
+        <link refid="sprite__timer_8cpp"/>
+      </node>
+      <node id="54">
+        <label>tilemap_layer.cpp</label>
+        <link refid="tilemap__layer_8cpp"/>
+      </node>
+      <node id="71">
+        <label>transition.cpp</label>
+        <link refid="transition_8cpp"/>
+      </node>
+      <node id="1">
+        <label>transition.h</label>
+        <link refid="transition_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+      </node>
+      <node id="55">
+        <label>window_base.cpp</label>
+        <link refid="window__base_8cpp"/>
+      </node>
+      <node id="56">
+        <label>window_battlestatus.cpp</label>
+        <link refid="window__battlestatus_8cpp"/>
+      </node>
+      <node id="57">
+        <label>window_interpreter.cpp</label>
+        <link refid="window__interpreter_8cpp"/>
+      </node>
+      <node id="58">
+        <label>window_keyboard.cpp</label>
+        <link refid="window__keyboard_8cpp"/>
+      </node>
+      <node id="59">
+        <label>window_message.cpp</label>
+        <link refid="window__message_8cpp"/>
+      </node>
+      <node id="60">
+        <label>window_name.cpp</label>
+        <link refid="window__name_8cpp"/>
+      </node>
+      <node id="61">
+        <label>window_numberinput.cpp</label>
+        <link refid="window__numberinput_8cpp"/>
+      </node>
+      <node id="62">
+        <label>window_savefile.cpp</label>
+        <link refid="window__savefile_8cpp"/>
+      </node>
+      <node id="63">
+        <label>window_selectable.cpp</label>
+        <link refid="window__selectable_8cpp"/>
+      </node>
+      <node id="64">
+        <label>window_settings.cpp</label>
+        <link refid="window__settings_8cpp"/>
+      </node>
+      <node id="65">
+        <label>window_shop.cpp</label>
+        <link refid="window__shop_8cpp"/>
+      </node>
+      <node id="66">
+        <label>window_shopbuy.cpp</label>
+        <link refid="window__shopbuy_8cpp"/>
+      </node>
+      <node id="67">
+        <label>window_shopnumber.cpp</label>
+        <link refid="window__shopnumber_8cpp"/>
+      </node>
+      <node id="68">
+        <label>window_stringview.cpp</label>
+        <link refid="window__stringview_8cpp"/>
+      </node>
+      <node id="69">
+        <label>window_varlist.cpp</label>
+        <link refid="window__varlist_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_transition" prot="public">Transition</innerclass>
+    <innerclass refid="struct_transition_1_1_flash_data" prot="private">Transition::FlashData</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="transition_8h_1a5af1af674e83cb7bccf1ac784f4fb360" prot="public" static="no">
+        <name>EP_TRANSITION_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="20" column="9" bodyfile="transition.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_TRANSITION_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="transition_8h_1a5af1af674e83cb7bccf1ac784f4fb360" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_TRANSITION_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstdint&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="drawable_8h" kindref="compound">drawable.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="system_8h" kindref="compound">system.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="scene_8h" kindref="compound">scene.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="color_8h" kindref="compound">color.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="class_transition" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Transition<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" kindref="member">Drawable</ref><sp/>{</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="38" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253" kindref="member">Type</ref><sp/>{</highlight></codeline>
+<codeline lineno="39" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a7e76e1288a234e99db2facd73cc6138f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a7e76e1288a234e99db2facd73cc6138f" kindref="member">TransitionFadeIn</ref>,</highlight></codeline>
+<codeline lineno="40" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253aa95a5916db1124dad99e452e6db812b5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253aa95a5916db1124dad99e452e6db812b5" kindref="member">TransitionFadeOut</ref>,</highlight></codeline>
+<codeline lineno="41" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a9e6500d7f7ac9144afd4e7aa6ab09171" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a9e6500d7f7ac9144afd4e7aa6ab09171" kindref="member">TransitionRandomBlocks</ref>,</highlight></codeline>
+<codeline lineno="42" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ad3404650245ae576cec7645a33201c91" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ad3404650245ae576cec7645a33201c91" kindref="member">TransitionRandomBlocksDown</ref>,</highlight></codeline>
+<codeline lineno="43" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a9a52fbb4ebb068c728aac706cab3ee97" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a9a52fbb4ebb068c728aac706cab3ee97" kindref="member">TransitionRandomBlocksUp</ref>,</highlight></codeline>
+<codeline lineno="44" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253acaba35aaa2925084b64e03ac172bf2e3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253acaba35aaa2925084b64e03ac172bf2e3" kindref="member">TransitionBlindOpen</ref>,</highlight></codeline>
+<codeline lineno="45" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ad3f030d137dea0a58f6093b2209a48ab" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ad3f030d137dea0a58f6093b2209a48ab" kindref="member">TransitionBlindClose</ref>,</highlight></codeline>
+<codeline lineno="46" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a96145e9750e4118827758b0e09882ce2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a96145e9750e4118827758b0e09882ce2" kindref="member">TransitionVerticalStripesIn</ref>,</highlight></codeline>
+<codeline lineno="47" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253adda37dd3bc44ff73db134b482b9a9dc8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253adda37dd3bc44ff73db134b482b9a9dc8" kindref="member">TransitionVerticalStripesOut</ref>,</highlight></codeline>
+<codeline lineno="48" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a57088c67944b3c0fef4c557d5b9c4a4f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a57088c67944b3c0fef4c557d5b9c4a4f" kindref="member">TransitionHorizontalStripesIn</ref>,</highlight></codeline>
+<codeline lineno="49" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253acae4b7a06d2069d5c456a14c3907458f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253acae4b7a06d2069d5c456a14c3907458f" kindref="member">TransitionHorizontalStripesOut</ref>,</highlight></codeline>
+<codeline lineno="50" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253af0f2c05c8670f462224eada341d92a51" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253af0f2c05c8670f462224eada341d92a51" kindref="member">TransitionBorderToCenterIn</ref>,</highlight></codeline>
+<codeline lineno="51" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ace8160d2368fc53d70078a429875ecd8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ace8160d2368fc53d70078a429875ecd8" kindref="member">TransitionBorderToCenterOut</ref>,</highlight></codeline>
+<codeline lineno="52" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a75614f18ff753f8f01a091e44703c4b9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a75614f18ff753f8f01a091e44703c4b9" kindref="member">TransitionCenterToBorderIn</ref>,</highlight></codeline>
+<codeline lineno="53" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a07dc54f0ce52d3f6c0fb82b6d3a09698" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a07dc54f0ce52d3f6c0fb82b6d3a09698" kindref="member">TransitionCenterToBorderOut</ref>,</highlight></codeline>
+<codeline lineno="54" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a48a97bbcf08b2b3ca599bd718358def1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a48a97bbcf08b2b3ca599bd718358def1" kindref="member">TransitionScrollUpIn</ref>,</highlight></codeline>
+<codeline lineno="55" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a59da8037aea885ce502080784af46d68" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a59da8037aea885ce502080784af46d68" kindref="member">TransitionScrollDownIn</ref>,</highlight></codeline>
+<codeline lineno="56" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253aac01593d905fdf4b231beb0eddddaa77" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253aac01593d905fdf4b231beb0eddddaa77" kindref="member">TransitionScrollLeftIn</ref>,</highlight></codeline>
+<codeline lineno="57" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a82d679199832ed6780cbab53d87870f2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a82d679199832ed6780cbab53d87870f2" kindref="member">TransitionScrollRightIn</ref>,</highlight></codeline>
+<codeline lineno="58" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a9e4d13e27d5d02a73ca1bd7f2df39495" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a9e4d13e27d5d02a73ca1bd7f2df39495" kindref="member">TransitionScrollUpOut</ref>,</highlight></codeline>
+<codeline lineno="59" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ac7cdc4b12e38e515e0f821d18810982b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ac7cdc4b12e38e515e0f821d18810982b" kindref="member">TransitionScrollDownOut</ref>,</highlight></codeline>
+<codeline lineno="60" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a0b9b4f5d63a13da001424cb8f8b1b69f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a0b9b4f5d63a13da001424cb8f8b1b69f" kindref="member">TransitionScrollLeftOut</ref>,</highlight></codeline>
+<codeline lineno="61" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a19946df1f8e4ffb58d8dd9b6317fb16d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a19946df1f8e4ffb58d8dd9b6317fb16d" kindref="member">TransitionScrollRightOut</ref>,</highlight></codeline>
+<codeline lineno="62" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a2f3259bf6fea026de2d5eea5d3e02a37" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a2f3259bf6fea026de2d5eea5d3e02a37" kindref="member">TransitionVerticalCombine</ref>,</highlight></codeline>
+<codeline lineno="63" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ad88bc76526c86ead411693b64d4dcb7e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ad88bc76526c86ead411693b64d4dcb7e" kindref="member">TransitionVerticalDivision</ref>,</highlight></codeline>
+<codeline lineno="64" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a193b6ef85afa58cf4746691d58a2c10b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a193b6ef85afa58cf4746691d58a2c10b" kindref="member">TransitionHorizontalCombine</ref>,</highlight></codeline>
+<codeline lineno="65" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a055893d8a1298e8edfa58708a3e4bde7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a055893d8a1298e8edfa58708a3e4bde7" kindref="member">TransitionHorizontalDivision</ref>,</highlight></codeline>
+<codeline lineno="66" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a1aab3856bd257cee320bb35f47aa5901" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a1aab3856bd257cee320bb35f47aa5901" kindref="member">TransitionCrossCombine</ref>,</highlight></codeline>
+<codeline lineno="67" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253aac02523d5328dc55f9426f03079e413a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253aac02523d5328dc55f9426f03079e413a" kindref="member">TransitionCrossDivision</ref>,</highlight></codeline>
+<codeline lineno="68" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a41242083c66fc01286f8c19d3466dd89" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a41242083c66fc01286f8c19d3466dd89" kindref="member">TransitionZoomIn</ref>,</highlight></codeline>
+<codeline lineno="69" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253adcb7c794dbd153d4beb301f8d36e6166" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253adcb7c794dbd153d4beb301f8d36e6166" kindref="member">TransitionZoomOut</ref>,</highlight></codeline>
+<codeline lineno="70" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a5001cf7d558ec239c529cc4e29d5cc23" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a5001cf7d558ec239c529cc4e29d5cc23" kindref="member">TransitionMosaicIn</ref>,</highlight></codeline>
+<codeline lineno="71" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253aa61d261b49a1f19323cf4ae365a56b9d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253aa61d261b49a1f19323cf4ae365a56b9d" kindref="member">TransitionMosaicOut</ref>,</highlight></codeline>
+<codeline lineno="72" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a91cb6b840086af9b664a776b1f411b5c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a91cb6b840086af9b664a776b1f411b5c" kindref="member">TransitionWaveIn</ref>,</highlight></codeline>
+<codeline lineno="73" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a08e86068e40261a8fb6e6f054c0169c8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a08e86068e40261a8fb6e6f054c0169c8" kindref="member">TransitionWaveOut</ref>,</highlight></codeline>
+<codeline lineno="74" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a6d67e9c2fc7edd52f8f3acc2e0604c41" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a6d67e9c2fc7edd52f8f3acc2e0604c41" kindref="member">TransitionCutIn</ref>,</highlight></codeline>
+<codeline lineno="75" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ac8b9d4d03561c847c226e0d65852db7f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ac8b9d4d03561c847c226e0d65852db7f" kindref="member">TransitionCutOut</ref>,</highlight></codeline>
+<codeline lineno="76" refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253adb0f42499bb57d5827b1f476615c9803" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253adb0f42499bb57d5827b1f476615c9803" kindref="member">TransitionNone</ref></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_transition_1a1819e681c210353e4005f76cbd7b6379" kindref="member">GetDefaultFrames</ref>(<ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253" kindref="member">Type</ref><sp/>type);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_transition" kindref="compound">Transition</ref>&amp;<sp/><ref refid="class_transition_1a2ea3a30e9e6eb45adf260cbf5d921a67" kindref="member">instance</ref>();</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_transition_1ad992ecd8cedd44d743862098d1243ef9" kindref="member">InitShow</ref>(<ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253" kindref="member">Type</ref><sp/>type,<sp/><ref refid="class_scene" kindref="compound">Scene</ref><sp/>*linked_scene,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>duration<sp/>=<sp/>-1);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_transition_1a5089f4dd8662d8e0e85319b8fd47c329" kindref="member">InitErase</ref>(<ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253" kindref="member">Type</ref><sp/>type,<sp/><ref refid="class_scene" kindref="compound">Scene</ref><sp/>*linked_scene,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>duration<sp/>=<sp/>-1);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_transition_1ae8c7e9d3239ebea79fd9e1fefb691dbd" kindref="member">PrependFlashes</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>r,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>g,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>b,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>power,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>duration,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iterations);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_transition_1a1529a72ac0e0cae8e2b8f1e2f64feab6" kindref="member">Draw</ref>(<ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>dst)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_transition_1afa699138288c6a552aff575d50fe599b" kindref="member">Update</ref>();</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_transition_1a690fdf34cd2d381c5491ece8cbbcfdc9" kindref="member">IsActive</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_transition_1af70ff4d34a05454aec2ee5691eb4b0d5" kindref="member">IsErasedNotActive</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_transition_1a1d80545a15225a4c9fbc8163fb28170a" kindref="member">FromErase</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_transition_1ad94161ad6e44e74492c82e56145a9165" kindref="member">ToErase</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_transition" kindref="compound">Transition</ref>();</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Init(<ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253" kindref="member">Type</ref><sp/>type,<sp/><ref refid="class_scene" kindref="compound">Scene</ref><sp/>*linked_scene,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>duration,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>erase);</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint32_t<sp/>size_random_blocks<sp/>=<sp/>4;</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/>screen1;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/>screen2;</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/>random_block_transition;</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253" kindref="member">Type</ref><sp/>transition_type<sp/>=<sp/><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253adb0f42499bb57d5827b1f476615c9803" kindref="member">TransitionNone</ref>;</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene" kindref="compound">Scene</ref><sp/>*scene<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>current_frame<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>total_frames<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>from_erase<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>to_erase<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">FlashData<sp/>{</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int32_t<sp/>red<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int32_t<sp/>blue<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int32_t<sp/>green<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>current_level<sp/>=<sp/>0.0;</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int32_t<sp/>time_left<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>FlashData<sp/>flash;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>flash_power<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>flash_duration<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>flash_iterations<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>zoom_position;</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;uint32_t&gt;<sp/>random_blocks;</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/>current_blocks_print;</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>SetAttributesTransitions();</highlight></codeline>
+<codeline lineno="155"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157" refid="class_transition_1a2ea3a30e9e6eb45adf260cbf5d921a67" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>Transition&amp;<sp/><ref refid="class_transition_1a2ea3a30e9e6eb45adf260cbf5d921a67" kindref="member">Transition::instance</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>Transition<sp/>transition;</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>transition;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162" refid="class_transition_1ad992ecd8cedd44d743862098d1243ef9" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_transition_1ad992ecd8cedd44d743862098d1243ef9" kindref="member">Transition::InitShow</ref>(<ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253" kindref="member">Type</ref><sp/>type,<sp/><ref refid="class_scene" kindref="compound">Scene</ref><sp/>*linked_scene,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>duration)<sp/>{</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/>Init(type,<sp/>linked_scene,<sp/>duration,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="164"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166" refid="class_transition_1a5089f4dd8662d8e0e85319b8fd47c329" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_transition_1a5089f4dd8662d8e0e85319b8fd47c329" kindref="member">Transition::InitErase</ref>(<ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253" kindref="member">Type</ref><sp/>type,<sp/><ref refid="class_scene" kindref="compound">Scene</ref><sp/>*linked_scene,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>duration)<sp/>{</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/>Init(type,<sp/>linked_scene,<sp/>duration,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="168"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="170" refid="class_transition_1a690fdf34cd2d381c5491ece8cbbcfdc9" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_transition_1a690fdf34cd2d381c5491ece8cbbcfdc9" kindref="member">Transition::IsActive</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>current_frame<sp/>&lt;<sp/>total_frames<sp/>||<sp/>flash_iterations<sp/>!=<sp/>0;</highlight></codeline>
+<codeline lineno="172"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174" refid="class_transition_1af70ff4d34a05454aec2ee5691eb4b0d5" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_transition_1af70ff4d34a05454aec2ee5691eb4b0d5" kindref="member">Transition::IsErasedNotActive</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_transition_1ad94161ad6e44e74492c82e56145a9165" kindref="member">ToErase</ref>()<sp/>&amp;&amp;<sp/>!<ref refid="class_transition_1a690fdf34cd2d381c5491ece8cbbcfdc9" kindref="member">IsActive</ref>();</highlight></codeline>
+<codeline lineno="176"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178" refid="class_transition_1a1d80545a15225a4c9fbc8163fb28170a" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_transition_1a1d80545a15225a4c9fbc8163fb28170a" kindref="member">Transition::FromErase</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>from_erase;</highlight></codeline>
+<codeline lineno="180"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="182" refid="class_transition_1ad94161ad6e44e74492c82e56145a9165" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_transition_1ad94161ad6e44e74492c82e56145a9165" kindref="member">Transition::ToErase</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>to_erase;</highlight></codeline>
+<codeline lineno="184"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="transition.h"/>
+  </compounddef>
+</doxygen>

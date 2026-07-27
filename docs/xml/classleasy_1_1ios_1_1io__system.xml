@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1ios_1_1io__system" kind="class" language="C++" prot="public">
+    <compoundname>leasy::ios::io_system</compoundname>
+    <includes refid="lio_8hpp" local="no">lio.hpp</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1io__system_1a4459526199984317b2effead7c84e7b5" prot="public" static="no" mutable="no">
+        <type><ref refid="classleasy_1_1ios_1_1channel" kindref="compound">channel</ref></type>
+        <definition>channel leasy::ios::io_system::System</definition>
+        <argsstring></argsstring>
+        <name>System</name>
+        <qualifiedname>leasy::ios::io_system::System</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="410" column="11" bodyfile="leasy/lio.hpp" bodystart="410" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1io__system_1ab5b41f6767920316f11d2d83712a7af7" prot="public" static="no" mutable="no">
+        <type><ref refid="classleasy_1_1ios_1_1channel" kindref="compound">channel</ref></type>
+        <definition>channel leasy::ios::io_system::Debug</definition>
+        <argsstring></argsstring>
+        <name>Debug</name>
+        <qualifiedname>leasy::ios::io_system::Debug</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="411" column="11" bodyfile="leasy/lio.hpp" bodystart="411" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1io__system_1aa39825d134b45494dc869094cbad128b" prot="public" static="no" mutable="no">
+        <type><ref refid="classleasy_1_1ios_1_1channel" kindref="compound">channel</ref></type>
+        <definition>channel leasy::ios::io_system::Warning</definition>
+        <argsstring></argsstring>
+        <name>Warning</name>
+        <qualifiedname>leasy::ios::io_system::Warning</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="412" column="11" bodyfile="leasy/lio.hpp" bodystart="412" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1io__system_1aebba1da8036af8d6e484153dd6c7d0de" prot="public" static="no" mutable="no">
+        <type><ref refid="classleasy_1_1ios_1_1channel" kindref="compound">channel</ref></type>
+        <definition>channel leasy::ios::io_system::Error</definition>
+        <argsstring></argsstring>
+        <name>Error</name>
+        <qualifiedname>leasy::ios::io_system::Error</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="413" column="11" bodyfile="leasy/lio.hpp" bodystart="413" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1io__system_1a8b8cf33c732fbca1ab437ee5c4a6a571" prot="private" static="no" mutable="no">
+        <type><ref refid="classleasy_1_1ios_1_1attachment" kindref="compound">attachment</ref></type>
+        <definition>attachment leasy::ios::io_system::system_console_</definition>
+        <argsstring></argsstring>
+        <name>system_console_</name>
+        <qualifiedname>leasy::ios::io_system::system_console_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="441" column="14" bodyfile="leasy/lio.hpp" bodystart="441" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1io__system_1a3a19ede9fef3c23f3b8fbda884c53963" prot="private" static="no" mutable="no">
+        <type><ref refid="classleasy_1_1ios_1_1attachment" kindref="compound">attachment</ref></type>
+        <definition>attachment leasy::ios::io_system::debug_console_</definition>
+        <argsstring></argsstring>
+        <name>debug_console_</name>
+        <qualifiedname>leasy::ios::io_system::debug_console_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="442" column="14" bodyfile="leasy/lio.hpp" bodystart="442" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1io__system_1acbb5556cb18081838349c8426c91002e" prot="private" static="no" mutable="no">
+        <type><ref refid="classleasy_1_1ios_1_1attachment" kindref="compound">attachment</ref></type>
+        <definition>attachment leasy::ios::io_system::warning_console_</definition>
+        <argsstring></argsstring>
+        <name>warning_console_</name>
+        <qualifiedname>leasy::ios::io_system::warning_console_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="443" column="14" bodyfile="leasy/lio.hpp" bodystart="443" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1io__system_1a90aea0a6cdf5fcaab95f9d9c4c93f0a7" prot="private" static="no" mutable="no">
+        <type><ref refid="classleasy_1_1ios_1_1attachment" kindref="compound">attachment</ref></type>
+        <definition>attachment leasy::ios::io_system::error_console_</definition>
+        <argsstring></argsstring>
+        <name>error_console_</name>
+        <qualifiedname>leasy::ios::io_system::error_console_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="444" column="14" bodyfile="leasy/lio.hpp" bodystart="444" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1ios_1_1io__system_1afbf1b116e59be798d783234e46180c0d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ios::io_system::io_system</definition>
+        <argsstring>()</argsstring>
+        <name>io_system</name>
+        <qualifiedname>leasy::ios::io_system::io_system</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="415" column="10" bodyfile="leasy/lio.hpp" bodystart="415" bodyend="421"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classleasy_1_1ios_1_1io__system_1a36ca4dd3ecfd92a6f04d1f62a71ce55e" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ios::io_system::basicsetup</definition>
+        <argsstring>()</argsstring>
+        <name>basicsetup</name>
+        <qualifiedname>leasy::ios::io_system::basicsetup</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="424" column="15" bodyfile="leasy/lio.hpp" bodystart="424" bodyend="439"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>leasy::ios::channel</label>
+        <link refid="classleasy_1_1ios_1_1channel"/>
+      </node>
+      <node id="1">
+        <label>leasy::ios::io_system</label>
+        <link refid="classleasy_1_1ios_1_1io__system"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>Debug</edgelabel>
+          <edgelabel>Error</edgelabel>
+          <edgelabel>System</edgelabel>
+          <edgelabel>Warning</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lio.hpp" line="408" column="1" bodyfile="leasy/lio.hpp" bodystart="408" bodyend="445"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1ios_1_1io__system_1a36ca4dd3ecfd92a6f04d1f62a71ce55e" prot="private" virt="non-virtual"><scope>leasy::ios::io_system</scope><name>basicsetup</name></member>
+      <member refid="classleasy_1_1ios_1_1io__system_1ab5b41f6767920316f11d2d83712a7af7" prot="public" virt="non-virtual"><scope>leasy::ios::io_system</scope><name>Debug</name></member>
+      <member refid="classleasy_1_1ios_1_1io__system_1a3a19ede9fef3c23f3b8fbda884c53963" prot="private" virt="non-virtual"><scope>leasy::ios::io_system</scope><name>debug_console_</name></member>
+      <member refid="classleasy_1_1ios_1_1io__system_1aebba1da8036af8d6e484153dd6c7d0de" prot="public" virt="non-virtual"><scope>leasy::ios::io_system</scope><name>Error</name></member>
+      <member refid="classleasy_1_1ios_1_1io__system_1a90aea0a6cdf5fcaab95f9d9c4c93f0a7" prot="private" virt="non-virtual"><scope>leasy::ios::io_system</scope><name>error_console_</name></member>
+      <member refid="classleasy_1_1ios_1_1io__system_1afbf1b116e59be798d783234e46180c0d" prot="public" virt="non-virtual"><scope>leasy::ios::io_system</scope><name>io_system</name></member>
+      <member refid="classleasy_1_1ios_1_1io__system_1a4459526199984317b2effead7c84e7b5" prot="public" virt="non-virtual"><scope>leasy::ios::io_system</scope><name>System</name></member>
+      <member refid="classleasy_1_1ios_1_1io__system_1a8b8cf33c732fbca1ab437ee5c4a6a571" prot="private" virt="non-virtual"><scope>leasy::ios::io_system</scope><name>system_console_</name></member>
+      <member refid="classleasy_1_1ios_1_1io__system_1aa39825d134b45494dc869094cbad128b" prot="public" virt="non-virtual"><scope>leasy::ios::io_system</scope><name>Warning</name></member>
+      <member refid="classleasy_1_1ios_1_1io__system_1acbb5556cb18081838349c8426c91002e" prot="private" virt="non-virtual"><scope>leasy::ios::io_system</scope><name>warning_console_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

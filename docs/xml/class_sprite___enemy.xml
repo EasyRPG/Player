@@ -1,0 +1,394 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_sprite___enemy" kind="class" language="C++" prot="public">
+    <compoundname>Sprite_Enemy</compoundname>
+    <basecompoundref refid="class_sprite___battler" prot="public" virt="non-virtual">Sprite_Battler</basecompoundref>
+    <includes refid="sprite__enemy_8h" local="no">sprite_enemy.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_sprite___enemy_1a6858fcf3715e824972f3a8331e632c18" prot="protected" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Sprite_Enemy::sprite_name</definition>
+        <argsstring></argsstring>
+        <name>sprite_name</name>
+        <qualifiedname>Sprite_Enemy::sprite_name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_enemy.h" line="56" column="13" bodyfile="sprite_enemy.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___enemy_1a63392ae0cf90b8cf2399c1b58edde71c" prot="protected" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Sprite_Enemy::graphic</definition>
+        <argsstring></argsstring>
+        <name>graphic</name>
+        <qualifiedname>Sprite_Enemy::graphic</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_enemy.h" line="57" column="11" bodyfile="sprite_enemy.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___enemy_1a704b7c0225e1c0de240673ee540eb285" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite_Enemy::hue</definition>
+        <argsstring></argsstring>
+        <name>hue</name>
+        <qualifiedname>Sprite_Enemy::hue</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_enemy.h" line="58" column="5" bodyfile="sprite_enemy.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___enemy_1a719a8e5d4a53af65254ccd90a8f2052a" prot="protected" static="no" mutable="no">
+        <type>float</type>
+        <definition>float Sprite_Enemy::zoom</definition>
+        <argsstring></argsstring>
+        <name>zoom</name>
+        <qualifiedname>Sprite_Enemy::zoom</qualifiedname>
+        <initializer>= 1.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_enemy.h" line="59" column="7" bodyfile="sprite_enemy.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___enemy_1aee7eaf8acc813996ee12f2723defec93" prot="protected" static="no" mutable="no">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding Sprite_Enemy::request_id</definition>
+        <argsstring></argsstring>
+        <name>request_id</name>
+        <qualifiedname>Sprite_Enemy::request_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_enemy.h" line="61" column="20" bodyfile="sprite_enemy.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_sprite___enemy_1a635ca33e429aa4338dafd657a814b4f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Sprite_Enemy::Sprite_Enemy</definition>
+        <argsstring>(Game_Enemy *battler)</argsstring>
+        <name>Sprite_Enemy</name>
+        <qualifiedname>Sprite_Enemy::Sprite_Enemy</qualifiedname>
+        <param>
+          <type><ref refid="class_game___enemy" kindref="compound">Game_Enemy</ref> *</type>
+          <declname>battler</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>battler</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>game battler to display </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_enemy.h" line="40" column="1" bodyfile="sprite_enemy.cpp" bodystart="32" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___enemy_1a1b614562fbe69720ac0b9979b3b9ad4e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Sprite_Enemy::~Sprite_Enemy</definition>
+        <argsstring>() override</argsstring>
+        <name>~Sprite_Enemy</name>
+        <qualifiedname>Sprite_Enemy::~Sprite_Enemy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_enemy.h" line="42" column="1" bodyfile="sprite_enemy.cpp" bodystart="42" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___enemy_1a75e73445a851e236c7868e31ce637a25" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Sprite_Enemy::Draw</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Sprite_Enemy::Draw</qualifiedname>
+        <reimplements refid="class_sprite_1a0a4a3bd44c2556cbbe47b4480fae2a5b">Draw</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_enemy.h" line="44" column="6" bodyfile="sprite_enemy.cpp" bodystart="91" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___enemy_1a9d76fb9074b0d860adff24b9034f2f6b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___enemy" kindref="compound">Game_Enemy</ref> *</type>
+        <definition>Game_Enemy * Sprite_Enemy::GetBattler</definition>
+        <argsstring>() const</argsstring>
+        <name>GetBattler</name>
+        <qualifiedname>Sprite_Enemy::GetBattler</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_enemy.h" line="46" column="12" bodyfile="sprite_enemy.cpp" bodystart="45" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___enemy_1ac2d422b941e00450af6924b04f8c465b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Enemy::Refresh</definition>
+        <argsstring>()</argsstring>
+        <name>Refresh</name>
+        <qualifiedname>Sprite_Enemy::Refresh</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_enemy.h" line="48" column="6" bodyfile="sprite_enemy.cpp" bodystart="138" bodyend="142"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___enemy_1adc563c36aeaebad3e4962ae1829d1189" prot="public" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+        <type>void</type>
+        <definition>void Sprite_Enemy::ResetZ</definition>
+        <argsstring>() final</argsstring>
+        <name>ResetZ</name>
+        <qualifiedname>Sprite_Enemy::ResetZ</qualifiedname>
+        <reimplements refid="class_sprite___battler_1aa1ba47b22d364377fb41ac0a425b5bf2">ResetZ</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Recompute the Z value for the sprite from it&apos;s Y coordinate. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_enemy.h" line="50" column="6" bodyfile="sprite_enemy.cpp" bodystart="144" bodyend="146"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_sprite___enemy_1ae03e2f6eef1650c2055166051a2da5fb" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Enemy::CreateSprite</definition>
+        <argsstring>()</argsstring>
+        <name>CreateSprite</name>
+        <qualifiedname>Sprite_Enemy::CreateSprite</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_enemy.h" line="53" column="6" bodyfile="sprite_enemy.cpp" bodystart="49" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___enemy_1a4be85402a138c9432771eec5de9ba54f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Enemy::OnMonsterSpriteReady</definition>
+        <argsstring>(FileRequestResult *result)</argsstring>
+        <name>OnMonsterSpriteReady</name>
+        <qualifiedname>Sprite_Enemy::OnMonsterSpriteReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_enemy.h" line="54" column="6" bodyfile="sprite_enemy.cpp" bodystart="72" bodyend="89"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_sprite___battler" kindref="compound">Sprite_Battler</ref> class, used for battle sprites </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="4">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="3">
+        <label>Sprite</label>
+        <link refid="class_sprite"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Sprite_Battler</label>
+        <link refid="class_sprite___battler"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Sprite_Enemy</label>
+        <link refid="class_sprite___enemy"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="4">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="5">
+        <label>Game_Battler</label>
+        <link refid="class_game___battler"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>shake</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>flash</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Game_Battler::FlashData</label>
+        <link refid="struct_game___battler_1_1_flash_data"/>
+      </node>
+      <node id="7">
+        <label>Game_Battler::ShakeData</label>
+        <link refid="struct_game___battler_1_1_shake_data"/>
+      </node>
+      <node id="6">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="3">
+        <label>Sprite</label>
+        <link refid="class_sprite"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Sprite_Battler</label>
+        <link refid="class_sprite___battler"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>battler</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Sprite_Enemy</label>
+        <link refid="class_sprite___enemy"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="sprite_enemy.h" line="33" column="1" bodyfile="sprite_enemy.h" bodystart="33" bodyend="62"/>
+    <listofallmembers>
+      <member refid="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100adcf24fd0d84e2081d39c1dae389bb99d" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>AlwaysFlipped</name></member>
+      <member refid="class_sprite___battler_1a1e9fffec9533724d3b3e0db55b4b10c0" prot="protected" virt="non-virtual"><scope>Sprite_Enemy</scope><name>battle_index</name></member>
+      <member refid="class_sprite___battler_1aefecefca702c55e25357a862fb0f81a7" prot="protected" virt="non-virtual"><scope>Sprite_Enemy</scope><name>battler</name></member>
+      <member refid="class_sprite___enemy_1ae03e2f6eef1650c2055166051a2da5fb" prot="protected" virt="non-virtual"><scope>Sprite_Enemy</scope><name>CreateSprite</name></member>
+      <member refid="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100a4de921bd4ae612dae74340a23896153c" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>Disabled</name></member>
+      <member refid="class_sprite___enemy_1a75e73445a851e236c7868e31ce637a25" prot="public" virt="virtual"><scope>Sprite_Enemy</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>Drawable</name></member>
+      <member refid="class_sprite___battler_1a6f5a019ba3025ed5deeea396c7fb1b63" prot="protected" virt="non-virtual"><scope>Sprite_Enemy</scope><name>fixed_facing</name></member>
+      <member refid="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>FixedFacing</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>Flags</name></member>
+      <member refid="class_sprite_1ade47ec9b2fc6b79921a978ac85508eb4" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetAngle</name></member>
+      <member refid="class_sprite___enemy_1a9d76fb9074b0d860adff24b9034f2f6b" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetBattler</name></member>
+      <member refid="class_sprite_1a8692649cce1320c23d7216207805b990" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetBitmap</name></member>
+      <member refid="class_sprite_1aa34fbb968bfb9441bca6a7be8a1e9629" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetBitmap</name></member>
+      <member refid="class_sprite_1a699b7b199c7e2ea838878d9058401911" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetBlendColor</name></member>
+      <member refid="class_sprite_1ae5eb51cb5b55c057cbcafe69d13929a6" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetBlendType</name></member>
+      <member refid="class_sprite_1a9a5a480bc86ea9712a94303a53082da3" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetBushDepth</name></member>
+      <member refid="class_sprite___battler_1ac38cd5f01626278780bbe848d6c9b69f" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetFixedFacing</name></member>
+      <member refid="class_sprite_1a120a7dccaeea0d7fd7bac4f87b4b9d00" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetFlipX</name></member>
+      <member refid="class_sprite_1a7217243249b11d9046369cd3f0141adb" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetFlipY</name></member>
+      <member refid="class_sprite_1ab10bdecf4bf20472b53a3102315180c2" prot="public" virt="virtual"><scope>Sprite_Enemy</scope><name>GetHeight</name></member>
+      <member refid="class_sprite_1ae6b8f3dd521db97853b3f2719e298db5" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetOpacity</name></member>
+      <member refid="class_sprite_1aa5c54c0b59a4f4247157e8446d588645" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetOx</name></member>
+      <member refid="class_sprite_1a8acf5af95db9d7f29958277c2625b8c7" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetOy</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetRenderOy</name></member>
+      <member refid="class_sprite_1ac50818cd2774516c70f2583d54845f98" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetSrcRect</name></member>
+      <member refid="class_sprite_1af315f162b8f1d0374d2bb4788f15eb59" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetTone</name></member>
+      <member refid="class_sprite_1add7a9fa3823099c15d04bd98764c00b8" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetWaverDepth</name></member>
+      <member refid="class_sprite_1a5781eeeb12fd97b447809efd0f14afea" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetWaverPhase</name></member>
+      <member refid="class_sprite_1a190fdb389450b2a425d3b7256b10b041" prot="public" virt="virtual"><scope>Sprite_Enemy</scope><name>GetWidth</name></member>
+      <member refid="class_sprite_1aa87fb1678e6d814923b390085c8b47ca" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetX</name></member>
+      <member refid="class_sprite_1af3bb2ded3b6d29905c717031e8e873e4" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetY</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetZ</name></member>
+      <member refid="class_sprite_1afdc1630a767fef01cb29f81983a25825" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetZoomX</name></member>
+      <member refid="class_sprite_1a7fc9c4d33c7fade504f93a86c34a2b66" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>GetZoomY</name></member>
+      <member refid="class_sprite___enemy_1a63392ae0cf90b8cf2399c1b58edde71c" prot="protected" virt="non-virtual"><scope>Sprite_Enemy</scope><name>graphic</name></member>
+      <member refid="class_sprite___enemy_1a704b7c0225e1c0de240673ee540eb285" prot="protected" virt="non-virtual"><scope>Sprite_Enemy</scope><name>hue</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>IsGlobal</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>IsVisible</name></member>
+      <member refid="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100a4e3ad56006f393cd0caabfd0705364c9" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>NeverFlipped</name></member>
+      <member refid="class_sprite___enemy_1a4be85402a138c9432771eec5de9ba54f" prot="protected" virt="non-virtual"><scope>Sprite_Enemy</scope><name>OnMonsterSpriteReady</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>operator=</name></member>
+      <member refid="class_sprite___enemy_1ac2d422b941e00450af6924b04f8c465b" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>Refresh</name></member>
+      <member refid="class_sprite___enemy_1aee7eaf8acc813996ee12f2723defec93" prot="protected" virt="non-virtual"><scope>Sprite_Enemy</scope><name>request_id</name></member>
+      <member refid="class_sprite___battler_1a4ef70833dc352d79533bdd1eac71ac08" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>ResetFixedFacingDirection</name></member>
+      <member refid="class_sprite___enemy_1adc563c36aeaebad3e4962ae1829d1189" prot="public" virt="virtual"><scope>Sprite_Enemy</scope><name>ResetZ</name></member>
+      <member refid="class_sprite_1ab2ac97d71f9af168477ff5114e895021" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetAngle</name></member>
+      <member refid="class_sprite___battler_1a878c5e04cc96c771bb9430e4dac9e2a7" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetBattler</name></member>
+      <member refid="class_sprite_1a0b1f8eb93adbfffb165acb30699ddd78" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetBitmap</name></member>
+      <member refid="class_sprite_1a5a80440fb552919c24e3320544554a62" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetBlendColor</name></member>
+      <member refid="class_sprite_1a662cbae14d3628d670b865157b247df1" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetBlendType</name></member>
+      <member refid="class_sprite_1a48f4b1522175b8aab5e7f2d6b11a9425" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetBushDepth</name></member>
+      <member refid="class_sprite___battler_1a661a77fe65c8a70060564d723101a097" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetFixedFlipX</name></member>
+      <member refid="class_sprite_1a88b06fec2499b21fb21445269cbee15f" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetFlashEffect</name></member>
+      <member refid="class_sprite_1a85222d16191092db3e0d731f8a78d4a8" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetFlipX</name></member>
+      <member refid="class_sprite_1a909b9d49b660fa592b0b753f602dddef" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetFlipY</name></member>
+      <member refid="class_sprite_1a00ec8dcc661ae5acea3c013dc12c07f0" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetOpacity</name></member>
+      <member refid="class_sprite_1ae2504fad70205dd8064392da7ceb4f71" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetOx</name></member>
+      <member refid="class_sprite_1a0e189abc78607a4a6e011d6e394a43d7" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetOy</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetRenderOy</name></member>
+      <member refid="class_sprite_1ae0a9b0248ce543551c1486c824b2949c" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetSpriteRect</name></member>
+      <member refid="class_sprite_1a890398eafe1a9135d7baa939842a798a" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetSrcRect</name></member>
+      <member refid="class_sprite_1a89865e8080e634db19ab6409efc0ef2c" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetTone</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetVisible</name></member>
+      <member refid="class_sprite_1a505321681169327d559b7f59146fdec9" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetWaverDepth</name></member>
+      <member refid="class_sprite_1a85f701cd0eb6033b471f84bb24f192b8" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetWaverPhase</name></member>
+      <member refid="class_sprite_1a57277e7b2c107f36f587c46e99f7a48f" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetX</name></member>
+      <member refid="class_sprite_1a0012676d8951dbf2342de94acc18eecd" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetY</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetZ</name></member>
+      <member refid="class_sprite_1a3e7151dfb8645a3fbb71395625af985c" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetZoomX</name></member>
+      <member refid="class_sprite_1aad6019d133e5abac3323d671af4ed06b" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>SetZoomY</name></member>
+      <member refid="class_sprite_1aa3a20244c338653f65beaa26d6189581" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>Sprite</name></member>
+      <member refid="class_sprite___battler_1a079962b6477cbd32e8292baf3f479338" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>Sprite_Battler</name></member>
+      <member refid="class_sprite___enemy_1a635ca33e429aa4338dafd657a814b4f1" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>Sprite_Enemy</name></member>
+      <member refid="class_sprite___enemy_1a6858fcf3715e824972f3a8331e632c18" prot="protected" virt="non-virtual"><scope>Sprite_Enemy</scope><name>sprite_name</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>Z_t</name></member>
+      <member refid="class_sprite___enemy_1a719a8e5d4a53af65254ccd90a8f2052a" prot="protected" virt="non-virtual"><scope>Sprite_Enemy</scope><name>zoom</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>Sprite_Enemy</scope><name>~Drawable</name></member>
+      <member refid="class_sprite___battler_1aab1830d72b0f149998831d8a922dd68b" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>~Sprite_Battler</name></member>
+      <member refid="class_sprite___enemy_1a1b614562fbe69720ac0b9979b3b9ad4e" prot="public" virt="non-virtual"><scope>Sprite_Enemy</scope><name>~Sprite_Enemy</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

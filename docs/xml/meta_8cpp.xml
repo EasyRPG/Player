@@ -1,0 +1,1158 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="meta_8cpp" kind="file" language="C++">
+    <compoundname>meta.cpp</compoundname>
+    <includes local="no">iostream</includes>
+    <includes local="no">fstream</includes>
+    <includes local="no">iomanip</includes>
+    <includes local="no">memory</includes>
+    <includes local="no">sstream</includes>
+    <includes refid="data_8h" local="no">lcf/data.h</includes>
+    <includes refid="filefinder_8h" local="yes">filefinder.h</includes>
+    <includes local="no">lcf/lmt/reader.h</includes>
+    <includes local="no">lcf/lsd/reader.h</includes>
+    <includes refid="main__data_8h" local="yes">main_data.h</includes>
+    <includes refid="meta_8h" local="yes">meta.h</includes>
+    <includes refid="output_8h" local="yes">output.h</includes>
+    <includes refid="player_8h" local="yes">player.h</includes>
+    <includes refid="translation_8h" local="yes">translation.h</includes>
+    <includes local="no">lcf/reader_util.h</includes>
+    <incdepgraph>
+      <node id="68">
+        <label>async_handler.h</label>
+        <link refid="async__handler_8h"/>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+      </node>
+      <node id="90">
+        <label>compiler.h</label>
+        <link refid="compiler_8h"/>
+      </node>
+      <node id="77">
+        <label>config_param.h</label>
+        <link refid="config__param_8h"/>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+      </node>
+      <node id="65">
+        <label>fileext_guesser.h</label>
+        <link refid="fileext__guesser_8h"/>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="83">
+        <label>flat_map.h</label>
+        <link refid="flat__map_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+      </node>
+      <node id="69">
+        <label>game_clock.h</label>
+        <link refid="game__clock_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+      </node>
+      <node id="76">
+        <label>game_config.h</label>
+        <link refid="game__config_8h"/>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+      </node>
+      <node id="85">
+        <label>game_config_game.h</label>
+        <link refid="game__config__game_8h"/>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="86">
+        <label>game_interpreter_shared.h</label>
+        <link refid="game__interpreter__shared_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+      </node>
+      <node id="81">
+        <label>input_buttons.h</label>
+        <link refid="input__buttons_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+      </node>
+      <node id="84">
+        <label>keys.h</label>
+        <link refid="keys_8h"/>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>lcf/data.h</label>
+        <link refid="data_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="58">
+        <label>main_data.h</label>
+        <link refid="main__data_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>meta.cpp</label>
+        <link refid="meta_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+      </node>
+      <node id="59">
+        <label>meta.h</label>
+        <link refid="meta_8h"/>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="62">
+        <label>output.h</label>
+        <link refid="output_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="71">
+        <label>platform/clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+      </node>
+      <node id="64">
+        <label>player.h</label>
+        <link refid="player_8h"/>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="44" relation="include">
+        </childnode>
+      </node>
+      <node id="74">
+        <label>std_clock.h</label>
+        <link refid="std__clock_8h"/>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="67">
+        <label>translation.h</label>
+        <link refid="translation_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="75">
+        <label>algorithm</label>
+      </node>
+      <node id="78">
+        <label>array</label>
+      </node>
+      <node id="36">
+        <label>cassert</label>
+      </node>
+      <node id="70">
+        <label>chrono</label>
+      </node>
+      <node id="40">
+        <label>cstdint</label>
+      </node>
+      <node id="54">
+        <label>cstdio</label>
+      </node>
+      <node id="51">
+        <label>ctime</label>
+      </node>
+      <node id="48">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="49">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="3">
+        <label>fstream</label>
+      </node>
+      <node id="52">
+        <label>functional</label>
+      </node>
+      <node id="82">
+        <label>initializer_list</label>
+      </node>
+      <node id="4">
+        <label>iomanip</label>
+      </node>
+      <node id="55">
+        <label>ios</label>
+      </node>
+      <node id="63">
+        <label>iosfwd</label>
+      </node>
+      <node id="2">
+        <label>iostream</label>
+      </node>
+      <node id="37">
+        <label>istream</label>
+      </node>
+      <node id="47">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="53">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="80">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="61">
+        <label>lcf/inireader.h</label>
+      </node>
+      <node id="56">
+        <label>lcf/lmt/reader.h</label>
+      </node>
+      <node id="57">
+        <label>lcf/lsd/reader.h</label>
+      </node>
+      <node id="92">
+        <label>lcf/reader_util.h</label>
+      </node>
+      <node id="10">
+        <label>lcf/rpg/actor.h</label>
+      </node>
+      <node id="18">
+        <label>lcf/rpg/animation.h</label>
+      </node>
+      <node id="15">
+        <label>lcf/rpg/attribute.h</label>
+      </node>
+      <node id="24">
+        <label>lcf/rpg/battlecommand.h</label>
+      </node>
+      <node id="25">
+        <label>lcf/rpg/battleranimation.h</label>
+      </node>
+      <node id="19">
+        <label>lcf/rpg/chipset.h</label>
+      </node>
+      <node id="23">
+        <label>lcf/rpg/class.h</label>
+      </node>
+      <node id="22">
+        <label>lcf/rpg/commonevent.h</label>
+      </node>
+      <node id="30">
+        <label>lcf/rpg/database.h</label>
+      </node>
+      <node id="13">
+        <label>lcf/rpg/enemy.h</label>
+      </node>
+      <node id="28">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="12">
+        <label>lcf/rpg/item.h</label>
+      </node>
+      <node id="87">
+        <label>lcf/rpg/movecommand.h</label>
+      </node>
+      <node id="27">
+        <label>lcf/rpg/music.h</label>
+      </node>
+      <node id="89">
+        <label>lcf/rpg/saveeventexecframe.h</label>
+      </node>
+      <node id="88">
+        <label>lcf/rpg/saveeventexecstate.h</label>
+      </node>
+      <node id="11">
+        <label>lcf/rpg/skill.h</label>
+      </node>
+      <node id="26">
+        <label>lcf/rpg/sound.h</label>
+      </node>
+      <node id="16">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="21">
+        <label>lcf/rpg/system.h</label>
+      </node>
+      <node id="20">
+        <label>lcf/rpg/terms.h</label>
+      </node>
+      <node id="17">
+        <label>lcf/rpg/terrain.h</label>
+      </node>
+      <node id="29">
+        <label>lcf/rpg/treemap.h</label>
+      </node>
+      <node id="14">
+        <label>lcf/rpg/troop.h</label>
+      </node>
+      <node id="44">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="46">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="79">
+        <label>limits</label>
+      </node>
+      <node id="60">
+        <label>map</label>
+      </node>
+      <node id="5">
+        <label>memory</label>
+      </node>
+      <node id="91">
+        <label>optional</label>
+      </node>
+      <node id="38">
+        <label>ostream</label>
+      </node>
+      <node id="6">
+        <label>sstream</label>
+      </node>
+      <node id="8">
+        <label>string</label>
+      </node>
+      <node id="73">
+        <label>thread</label>
+      </node>
+      <node id="72">
+        <label>type_traits</label>
+      </node>
+      <node id="41">
+        <label>unordered_map</label>
+      </node>
+      <node id="66">
+        <label>utility</label>
+      </node>
+      <node id="9">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="meta_8cpp_1a932345e6a9960e5af3f0254de471cf22" prot="public" static="no">
+        <name>MTINI_NAME</name>
+        <initializer>&quot;Name&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.cpp" line="38" column="9" bodyfile="meta.cpp" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meta_8cpp_1a8297dafacb62969b6b923f43e465e139" prot="public" static="no">
+        <name>MTINI_IMPORT_SAVE_PIVOT_MAP</name>
+        <initializer>&quot;ImportSavePivotMap&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.cpp" line="39" column="9" bodyfile="meta.cpp" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meta_8cpp_1abe1879afe1a72921bfea44f611929dd7" prot="public" static="no">
+        <name>MTINI_IMPORT_SAVE_PARENT</name>
+        <initializer>&quot;ImportSaveParent&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.cpp" line="40" column="9" bodyfile="meta.cpp" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meta_8cpp_1aa829e1b77d4eecbbc7b57b6c88bf5751" prot="public" static="no">
+        <name>MTINI_EASY_RPG_SECTION</name>
+        <initializer>&quot;EasyRPG&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.cpp" line="41" column="9" bodyfile="meta.cpp" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meta_8cpp_1a3a0d9b1f58cf6e5a6d992286d10c860c" prot="public" static="no">
+        <name>MTINI_FILE_FORMAT_VERSION</name>
+        <initializer>&quot;FileFormatVersion&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.cpp" line="42" column="9" bodyfile="meta.cpp" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meta_8cpp_1a4b1d590524f6bb14102a1a4207b62054" prot="public" static="no">
+        <name>MTINI_FILEXT_LDB_ALIAS</name>
+        <initializer>&quot;LdbFileAlias&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.cpp" line="43" column="9" bodyfile="meta.cpp" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meta_8cpp_1aa20e11db6dc05f1339d17616dcf0a0cb" prot="public" static="no">
+        <name>MTINI_FILEXT_LMT_ALIAS</name>
+        <initializer>&quot;LmtFileAlias&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.cpp" line="44" column="9" bodyfile="meta.cpp" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meta_8cpp_1a398c2c937de04ea2a426bbf56d453024" prot="public" static="no">
+        <name>MTINI_FILEXT_LMU_ALIAS</name>
+        <initializer>&quot;LmuFileAlias&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.cpp" line="45" column="9" bodyfile="meta.cpp" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meta_8cpp_1a0513ab35e878ecd98f54797503863ed1" prot="public" static="no">
+        <name>MTINI_EXVOCAB_IMPORT_SAVE_HELP_KEY</name>
+        <initializer>&quot;Vocab_ImportSaveHelp&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.cpp" line="48" column="9" bodyfile="meta.cpp" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meta_8cpp_1af9c841b3c989e14f481e81b37abe5ea1" prot="public" static="no">
+        <name>MTINI_EXVOCAB_IMPORT_SAVE_HELP_VALUE</name>
+        <initializer>&quot;Import Existing Save (Multi-Games Only)&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.cpp" line="49" column="9" bodyfile="meta.cpp" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meta_8cpp_1ac54e604a2f4c116f93c38ffb6e6176d8" prot="public" static="no">
+        <name>MTINI_EXVOCAB_IMPORT_SAVE_TITLE_KEY</name>
+        <initializer>&quot;Vocab_ImportSave&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.cpp" line="50" column="9" bodyfile="meta.cpp" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meta_8cpp_1a44f663558093c0bf6a5d0036bc0b6c10" prot="public" static="no">
+        <name>MTINI_EXVOCAB_IMPORT_SAVE_TITLE_VALUE</name>
+        <initializer>&quot;Import Save&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.cpp" line="51" column="9" bodyfile="meta.cpp" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meta_8cpp_1aeb83089e2a4b7f8ca91789b4fec9115e" prot="public" static="no">
+        <name>MTINI_EXVOCAB_TRANSLATE_TITLE_KEY</name>
+        <initializer>&quot;Vocab_Translate&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.cpp" line="52" column="9" bodyfile="meta.cpp" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="meta_8cpp_1a829b91e6e8eecbe76ee6bb68c3824ec4" prot="public" static="no">
+        <name>MTINI_EXVOCAB_TRANSLATE_TITLE_VALUE</name>
+        <initializer>&quot;Language&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.cpp" line="53" column="9" bodyfile="meta.cpp" bodystart="53" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="meta_8cpp_1a2d5ac7d9b870fe1d675458ce343ef0b5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string crc32file</definition>
+        <argsstring>(std::string file_name)</argsstring>
+        <name>crc32file</name>
+        <param>
+          <type>std::string</type>
+          <declname>file_name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.cpp" line="57" column="13" bodyfile="meta.cpp" bodystart="57" bodyend="68"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;fstream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iomanip&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;memory&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;sstream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="data_8h" kindref="compound">lcf/data.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="filefinder_8h" kindref="compound">filefinder.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/lmt/reader.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/lsd/reader.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="main__data_8h" kindref="compound">main_data.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="meta_8h" kindref="compound">meta.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="output_8h" kindref="compound">output.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="player_8h" kindref="compound">player.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="translation_8h" kindref="compound">translation.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/reader_util.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Constants<sp/>used<sp/>for<sp/>identifying<sp/>fields<sp/>in<sp/>the<sp/>easyrpg.ini<sp/>file.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="meta_8cpp_1a932345e6a9960e5af3f0254de471cf22" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MTINI_NAME<sp/>&quot;Name&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="meta_8cpp_1a8297dafacb62969b6b923f43e465e139" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MTINI_IMPORT_SAVE_PIVOT_MAP<sp/>&quot;ImportSavePivotMap&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="meta_8cpp_1abe1879afe1a72921bfea44f611929dd7" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MTINI_IMPORT_SAVE_PARENT<sp/>&quot;ImportSaveParent&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="meta_8cpp_1aa829e1b77d4eecbbc7b57b6c88bf5751" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MTINI_EASY_RPG_SECTION<sp/>&quot;EasyRPG&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="meta_8cpp_1a3a0d9b1f58cf6e5a6d992286d10c860c" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MTINI_FILE_FORMAT_VERSION<sp/>&quot;FileFormatVersion&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="meta_8cpp_1a4b1d590524f6bb14102a1a4207b62054" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MTINI_FILEXT_LDB_ALIAS<sp/>&quot;LdbFileAlias&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="meta_8cpp_1aa20e11db6dc05f1339d17616dcf0a0cb" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MTINI_FILEXT_LMT_ALIAS<sp/>&quot;LmtFileAlias&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="meta_8cpp_1a398c2c937de04ea2a426bbf56d453024" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MTINI_FILEXT_LMU_ALIAS<sp/>&quot;LmuFileAlias&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Extended<sp/>vocab<sp/>key/value<sp/>pairs</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="meta_8cpp_1a0513ab35e878ecd98f54797503863ed1" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MTINI_EXVOCAB_IMPORT_SAVE_HELP_KEY<sp/>&quot;Vocab_ImportSaveHelp&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="meta_8cpp_1af9c841b3c989e14f481e81b37abe5ea1" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MTINI_EXVOCAB_IMPORT_SAVE_HELP_VALUE<sp/>&quot;Import<sp/>Existing<sp/>Save<sp/>(Multi-Games<sp/>Only)&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50" refid="meta_8cpp_1ac54e604a2f4c116f93c38ffb6e6176d8" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MTINI_EXVOCAB_IMPORT_SAVE_TITLE_KEY<sp/>&quot;Vocab_ImportSave&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="meta_8cpp_1a44f663558093c0bf6a5d0036bc0b6c10" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MTINI_EXVOCAB_IMPORT_SAVE_TITLE_VALUE<sp/>&quot;Import<sp/>Save&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52" refid="meta_8cpp_1aeb83089e2a4b7f8ca91789b4fec9115e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MTINI_EXVOCAB_TRANSLATE_TITLE_KEY<sp/>&quot;Vocab_Translate&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="meta_8cpp_1a829b91e6e8eecbe76ee6bb68c3824ec4" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MTINI_EXVOCAB_TRANSLATE_TITLE_VALUE<sp/>&quot;Language&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Helper:<sp/>Get<sp/>the<sp/>CRC32<sp/>of<sp/>a<sp/>given<sp/>file<sp/>as<sp/>a<sp/>hex<sp/>string</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57" refid="meta_8cpp_1a2d5ac7d9b870fe1d675458ce343ef0b5" refkind="member"><highlight class="normal">std::string<sp/><ref refid="meta_8cpp_1a2d5ac7d9b870fe1d675458ce343ef0b5" kindref="member">crc32file</ref>(std::string<sp/>file_name)<sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!file_name.empty())<sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>in<sp/>=<sp/><ref refid="namespace_file_finder_1a61591fb755d88f0c37a3bd804bf0af92" kindref="member">FileFinder::Game</ref>().<ref refid="class_filesystem_view_1a98b4d2eae589baa1c8adeddf3eb66d67" kindref="member">OpenInputStream</ref>(file_name);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(in)<sp/>{</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>crc<sp/>=<sp/><ref refid="namespace_utils_1a76b66639f2241a2e892f9f95974e1bdd" kindref="member">Utils::CRC32</ref>(in);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::stringstream<sp/>res;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>res<sp/>&lt;&lt;std::hex<sp/>&lt;&lt;<sp/>std::setfill(</highlight><highlight class="charliteral">&apos;0&apos;</highlight><highlight class="normal">)<sp/>&lt;&lt;std::setw(8)<sp/>&lt;&lt;crc;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>res.str();</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71" refid="class_meta_1acbd02f4aa1f955d9e53c85ee5d930311" refkind="member"><highlight class="normal"><ref refid="class_meta_1acbd02f4aa1f955d9e53c85ee5d930311" kindref="member">Meta::Meta</ref>(std::string_view<sp/>meta_file)<sp/>{</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>is<sp/>=<sp/><ref refid="namespace_file_finder_1a61591fb755d88f0c37a3bd804bf0af92" kindref="member">FileFinder::Game</ref>().<ref refid="class_filesystem_view_1a98b4d2eae589baa1c8adeddf3eb66d67" kindref="member">OpenInputStream</ref>(meta_file);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!is)<sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>ini<sp/>=<sp/>std::make_unique&lt;lcf::INIReader&gt;(is);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Cache<sp/>per-game<sp/>lookups</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!Empty())<sp/>{</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>version<sp/>=<sp/>ini-&gt;GetString(<ref refid="meta_8cpp_1aa829e1b77d4eecbbc7b57b6c88bf5751" kindref="member">MTINI_EASY_RPG_SECTION</ref>,<sp/><ref refid="meta_8cpp_1a3a0d9b1f58cf6e5a6d992286d10c860c" kindref="member">MTINI_FILE_FORMAT_VERSION</ref>,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(version<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;1&quot;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>IdentifyCanonName(<ref refid="options_8h_1a21bd2d54bd1ee2d7448010f97fa0313b" kindref="member">TREEMAP_NAME</ref>,<sp/><ref refid="options_8h_1a9f4bb50e3fdcef4560fcdec270801e2b" kindref="member">DATABASE_NAME</ref>);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1a0bc5fd9a98e30fdec1570fcc6d1368e2" kindref="member">Output::Warning</ref>(</highlight><highlight class="stringliteral">&quot;Metadata<sp/>error<sp/>in<sp/>{},<sp/>format<sp/>property<sp/>{}:{}<sp/>is<sp/>missing<sp/>or<sp/>invalid:<sp/>&apos;{}&apos;&quot;</highlight><highlight class="normal">,<sp/>meta_file,<sp/><ref refid="meta_8cpp_1aa829e1b77d4eecbbc7b57b6c88bf5751" kindref="member">MTINI_EASY_RPG_SECTION</ref>,<sp/><ref refid="meta_8cpp_1a3a0d9b1f58cf6e5a6d992286d10c860c" kindref="member">MTINI_FILE_FORMAT_VERSION</ref>,<sp/>version);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ini.reset();</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91" refid="class_meta_1a83427cb3ff066fe00a52e28d2eb5f3c4" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_meta_1a83427cb3ff066fe00a52e28d2eb5f3c4" kindref="member">Meta::ReInitForNonStandardExtensions</ref>(std::string_view<sp/>file1,<sp/>std::string_view<sp/>file2)<sp/>{</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!Empty())<sp/>{</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(canon_ini_lookup.empty())<sp/>{</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>IdentifyCanonName(file1,<sp/>file2);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(canon_ini_lookup.empty())<sp/>{</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>IdentifyCanonName(file2,<sp/>file1);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103" refid="class_meta_1ae4f5a45ffdaca5a7b39e2e05b46ff76b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_meta_1ae4f5a45ffdaca5a7b39e2e05b46ff76b" kindref="member">Meta::GetPivotMap</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!Empty())<sp/>{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ini-&gt;GetInteger(canon_ini_lookup,<sp/><ref refid="meta_8cpp_1a8297dafacb62969b6b923f43e465e139" kindref="member">MTINI_IMPORT_SAVE_PIVOT_MAP</ref>,<sp/>0);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111" refid="class_meta_1a8efbb67e52fffea67eec67869e027928" refkind="member"><highlight class="normal">std::string<sp/><ref refid="class_meta_1a8efbb67e52fffea67eec67869e027928" kindref="member">Meta::GetParentGame</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!Empty())<sp/>{</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::string(ini-&gt;GetString(canon_ini_lookup,<sp/><ref refid="meta_8cpp_1abe1879afe1a72921bfea44f611929dd7" kindref="member">MTINI_IMPORT_SAVE_PARENT</ref>,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119" refid="class_meta_1ac40d8f829ca16c365507f3da1cbd2a8f" refkind="member"><highlight class="normal">std::vector&lt;std::string&gt;<sp/><ref refid="class_meta_1ac40d8f829ca16c365507f3da1cbd2a8f" kindref="member">Meta::GetImportChildPaths</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref>&amp;<sp/>parent_fs)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/>res;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!Empty())<sp/>{</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>entries<sp/>=<sp/>parent_fs.<ref refid="class_filesystem_view_1aad4efb9cd59aaffcdeab8d7d75178e8e" kindref="member">ListDirectory</ref>();</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(entries)<sp/>{</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>&amp;item:<sp/>*entries)<sp/>{</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(item.second.type<sp/>!=<sp/><ref refid="class_directory_tree_1a5125eceb043bf8c21630d6e90b7f46c4ae73cda510e8bb947f7e61089e5581494" kindref="member">DirectoryTree::FileType::Directory</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>res.push_back(item.second.name);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>res;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137" refid="class_meta_1a04b2c0df729ea27ec71e1c44973c3956" refkind="member"><highlight class="normal">std::vector&lt;Meta::FileItem&gt;<sp/><ref refid="class_meta_1a04b2c0df729ea27ec71e1c44973c3956" kindref="member">Meta::SearchImportPaths</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref>&amp;<sp/>parent_fs,<sp/>std::string_view<sp/>child_path)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!Empty())<sp/>{</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pivotMapId<sp/>=<sp/><ref refid="class_meta_1ae4f5a45ffdaca5a7b39e2e05b46ff76b" kindref="member">GetPivotMap</ref>();</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>parent<sp/>=<sp/><ref refid="class_meta_1a8efbb67e52fffea67eec67869e027928" kindref="member">GetParentGame</ref>();</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>BuildImportCandidateList(parent_fs,<sp/>child_path,<sp/>parent,<sp/>pivotMapId);</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::vector&lt;Meta::FileItem&gt;();</highlight></codeline>
+<codeline lineno="145"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal">std::vector&lt;Meta::FileItem&gt;<sp/>Meta::BuildImportCandidateList(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref>&amp;<sp/>parent_fs,<sp/>std::string_view<sp/>child_path,<sp/>std::string_view<sp/>parent_game_name,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pivot_map_id)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Scan<sp/>each<sp/>folder,<sp/>looking<sp/>for<sp/>an<sp/>ini<sp/>file</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>For<sp/>now,<sp/>this<sp/>only<sp/>works<sp/>with<sp/>&quot;standard&quot;<sp/>folder<sp/>layouts,<sp/>since<sp/>we<sp/>need<sp/>Game<sp/>files<sp/>+<sp/>Save<sp/>files</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;Meta::FileItem&gt;<sp/>res;</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Try<sp/>to<sp/>read<sp/>the<sp/>game<sp/>name.<sp/>Note<sp/>that<sp/>we<sp/>assume<sp/>the<sp/>games<sp/>all<sp/>have<sp/>the<sp/>same<sp/>encoding<sp/>(and<sp/>use<sp/>Player::encoding)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_match<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>NOTE:<sp/>FindFile<sp/>doesn&apos;t<sp/>work<sp/>outside<sp/>the<sp/>root<sp/>of<sp/>the<sp/>FileSystemView,<sp/>so<sp/>we<sp/>use<sp/>Exists()<sp/>and<sp/>pass<sp/>a<sp/>relative<sp/>path.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/>This<sp/>will<sp/>likely<sp/>only<sp/>work<sp/>on<sp/>Native<sp/>filesystems;<sp/>the<sp/>Exists(&quot;.&quot;)<sp/>attempts<sp/>to<sp/>sanity<sp/>check<sp/>this.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>child_tree<sp/>=<sp/>parent_fs.<ref refid="class_filesystem_view_1a08f0a0847777b98ad5f6844765e83243" kindref="member">Subtree</ref>(child_path);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(child_tree.Exists(</highlight><highlight class="stringliteral">&quot;.&quot;</highlight><highlight class="normal">))<sp/>{</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Try<sp/>to<sp/>match<sp/>the<sp/>parent<sp/>game<sp/>name.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>lmtPath<sp/>=<sp/>child_tree.GetSubPath()<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;/&quot;</highlight><highlight class="normal"><sp/>+<sp/><ref refid="options_8h_1a21bd2d54bd1ee2d7448010f97fa0313b" kindref="member">TREEMAP_NAME</ref>;</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>crcLMT<sp/>=<sp/><ref refid="meta_8cpp_1a2d5ac7d9b870fe1d675458ce343ef0b5" kindref="member">crc32file</ref>(lmtPath);</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>crcLDB<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;*&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(parent_game_name.find(crcLMT)==0)<sp/>{</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(parent_game_name<sp/>==<sp/>crcLMT<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;/&quot;</highlight><highlight class="normal"><sp/>+<sp/>crcLDB)<sp/>{</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>is_match<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>ldbPath<sp/>=<sp/>child_tree.GetSubPath()<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;/&quot;</highlight><highlight class="normal"><sp/>+<sp/><ref refid="options_8h_1a9f4bb50e3fdcef4560fcdec270801e2b" kindref="member">DATABASE_NAME</ref>;</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>crcLDB<sp/>=<sp/><ref refid="meta_8cpp_1a2d5ac7d9b870fe1d675458ce343ef0b5" kindref="member">crc32file</ref>(ldbPath);</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(parent_game_name<sp/>==<sp/>crcLMT<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;/&quot;</highlight><highlight class="normal"><sp/>+<sp/>crcLDB)<sp/>{</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>is_match<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(is_match)<sp/>{</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Scan<sp/>over<sp/>every<sp/>possible<sp/>save<sp/>file<sp/>and<sp/>see<sp/>if<sp/>any<sp/>match.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>saveId<sp/>=<sp/>0;<sp/>saveId<sp/>&lt;<sp/>15;<sp/>saveId++)<sp/>{</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::stringstream<sp/>ss;</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ss<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Save&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>(saveId<sp/>&lt;=<sp/>8<sp/>?<sp/></highlight><highlight class="stringliteral">&quot;0&quot;</highlight><highlight class="normal"><sp/>:<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">)<sp/>&lt;&lt;<sp/>(saveId<sp/>+<sp/>1)<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;.lsd&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Check<sp/>for<sp/>an<sp/>existing,<sp/>non-corrupt<sp/>file<sp/>with<sp/>the<sp/>right<sp/>mapID</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Note<sp/>that<sp/>corruptness<sp/>is<sp/>checked<sp/>later<sp/>(in<sp/>window_savefile.cpp)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(child_tree.Exists(ss.str()))<sp/>{</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>filePath=<sp/>child_tree.GetSubPath()<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;/&quot;</highlight><highlight class="normal"><sp/>+<sp/>ss.str();</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::unique_ptr&lt;lcf::rpg::Save&gt;<sp/>savegame<sp/>=<sp/>lcf::LSD_Reader::Load(filePath,<sp/><ref refid="namespace_player_1a94c8dab462fe6c04595bb340861157c2" kindref="member">Player::encoding</ref>);</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(savegame<sp/>!=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(savegame-&gt;party_location.map_id<sp/>==<sp/>pivot_map_id<sp/>||<sp/>pivot_map_id==0)<sp/>{</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_meta_1_1_file_item" kindref="compound">FileItem</ref><sp/>item;</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>item.<ref refid="struct_meta_1_1_file_item_1ae277c274e637108ec1eb5109c7e6562a" kindref="member">full_path</ref><sp/>=<sp/>filePath;</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>item.short_path<sp/>=<sp/><ref refid="namespace_file_finder_1a649f8f8b3d4b37a6758c5bb9ca9333b1" kindref="member">FileFinder::MakeCanonical</ref>(child_path,<sp/>1);</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>item.file_id<sp/>=<sp/>saveId<sp/>+<sp/>1;</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>res.push_back(item);</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>res;</highlight></codeline>
+<codeline lineno="202"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight></codeline>
+<codeline lineno="204" refid="class_meta_1ac2cb072204436c5f923ccf7349ad419f" refkind="member"><highlight class="normal">std::string<sp/><ref refid="class_meta_1ac2cb072204436c5f923ccf7349ad419f" kindref="member">Meta::GetLdbAlias</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!Empty())<sp/>{</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::string(ini-&gt;GetString(canon_ini_lookup,<sp/><ref refid="meta_8cpp_1a4b1d590524f6bb14102a1a4207b62054" kindref="member">MTINI_FILEXT_LDB_ALIAS</ref>,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="209"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"></highlight></codeline>
+<codeline lineno="211" refid="class_meta_1a319d082ee1109702c9d1862ceb25070d" refkind="member"><highlight class="normal">std::string<sp/><ref refid="class_meta_1a319d082ee1109702c9d1862ceb25070d" kindref="member">Meta::GetLmtAlias</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!Empty())<sp/>{</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::string(ini-&gt;GetString(canon_ini_lookup,<sp/><ref refid="meta_8cpp_1aa20e11db6dc05f1339d17616dcf0a0cb" kindref="member">MTINI_FILEXT_LMT_ALIAS</ref>,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="216"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight></codeline>
+<codeline lineno="218" refid="class_meta_1ae6923da8e5de5ed9b2ef91bbfbcd6b18" refkind="member"><highlight class="normal">std::string<sp/><ref refid="class_meta_1ae6923da8e5de5ed9b2ef91bbfbcd6b18" kindref="member">Meta::GetLmuAlias</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!Empty())<sp/>{</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::string(ini-&gt;GetString(canon_ini_lookup,<sp/><ref refid="meta_8cpp_1a398c2c937de04ea2a426bbf56d453024" kindref="member">MTINI_FILEXT_LMU_ALIAS</ref>,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="223"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"></highlight></codeline>
+<codeline lineno="225"><highlight class="normal"></highlight></codeline>
+<codeline lineno="226" refid="class_meta_1aa2270fec9572fbb4a0a739ead52aeb69" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_meta_1aa2270fec9572fbb4a0a739ead52aeb69" kindref="member">Meta::IsImportEnabled</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>!<ref refid="class_meta_1a8efbb67e52fffea67eec67869e027928" kindref="member">GetParentGame</ref>().empty();</highlight></codeline>
+<codeline lineno="228"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight></codeline>
+<codeline lineno="230"><highlight class="normal"></highlight></codeline>
+<codeline lineno="231" refid="class_meta_1aad3ab31d45d894567d8296ff2b0ed319" refkind="member"><highlight class="normal">std::string<sp/><ref refid="class_meta_1aad3ab31d45d894567d8296ff2b0ed319" kindref="member">Meta::GetExVocabImportSaveHelpText</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>GetExVocab(<ref refid="meta_8cpp_1a0513ab35e878ecd98f54797503863ed1" kindref="member">MTINI_EXVOCAB_IMPORT_SAVE_HELP_KEY</ref>,<sp/><ref refid="meta_8cpp_1af9c841b3c989e14f481e81b37abe5ea1" kindref="member">MTINI_EXVOCAB_IMPORT_SAVE_HELP_VALUE</ref>);</highlight></codeline>
+<codeline lineno="233"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight></codeline>
+<codeline lineno="235" refid="class_meta_1a53db6abbecce54d1e5cfa07d402a5e1f" refkind="member"><highlight class="normal">std::string<sp/><ref refid="class_meta_1a53db6abbecce54d1e5cfa07d402a5e1f" kindref="member">Meta::GetExVocabImportSaveTitleText</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>GetExVocab(<ref refid="meta_8cpp_1ac54e604a2f4c116f93c38ffb6e6176d8" kindref="member">MTINI_EXVOCAB_IMPORT_SAVE_TITLE_KEY</ref>,<sp/><ref refid="meta_8cpp_1a44f663558093c0bf6a5d0036bc0b6c10" kindref="member">MTINI_EXVOCAB_IMPORT_SAVE_TITLE_VALUE</ref>);</highlight></codeline>
+<codeline lineno="237"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"></highlight></codeline>
+<codeline lineno="239" refid="class_meta_1a2a43d901f70a0874cc6ca94d0f6b97fe" refkind="member"><highlight class="normal">std::string<sp/><ref refid="class_meta_1a2a43d901f70a0874cc6ca94d0f6b97fe" kindref="member">Meta::GetExVocabTranslateTitleText</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>term;</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"></highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_tr_1a1f7099b676600f2f0d71c7092f226290" kindref="member">Tr::HasActiveTranslation</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>term<sp/>=<sp/><ref refid="namespace_player_1a1840a19f06595fb6dfac7efbe622b921" kindref="member">Player::translation</ref>.GetCurrentLanguage().lang_term;</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>term<sp/>=<sp/><ref refid="namespace_player_1a1840a19f06595fb6dfac7efbe622b921" kindref="member">Player::translation</ref>.GetDefaultLanguage().lang_term;</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"></highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!term.empty())<sp/>{</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>term;</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"></highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>GetExVocab(<ref refid="meta_8cpp_1aeb83089e2a4b7f8ca91789b4fec9115e" kindref="member">MTINI_EXVOCAB_TRANSLATE_TITLE_KEY</ref>,<sp/><ref refid="meta_8cpp_1a829b91e6e8eecbe76ee6bb68c3824ec4" kindref="member">MTINI_EXVOCAB_TRANSLATE_TITLE_VALUE</ref>);</highlight></codeline>
+<codeline lineno="253"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"></highlight></codeline>
+<codeline lineno="255"><highlight class="normal">std::string<sp/>Meta::GetExVocab(std::string_view<sp/>term,<sp/>std::string_view<sp/>def_value)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!Empty())<sp/>{</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::string(ini-&gt;GetString(canon_ini_lookup,<sp/>term,<sp/>def_value));</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"></highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ToString(def_value);</highlight></codeline>
+<codeline lineno="261"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Meta::IdentifyCanonName(std::string_view<sp/>lmtFile,<sp/>std::string_view<sp/>ldbFile)<sp/>{</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Calculate<sp/>the<sp/>lookup<sp/>based<sp/>on<sp/>the<sp/>LMT/LDB<sp/>hashes,<sp/>preferring<sp/>to<sp/>use<sp/>LMT<sp/>only<sp/>if<sp/>possible.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>This<sp/>requires<sp/>a<sp/>mandatory<sp/>field,<sp/>for<sp/>which<sp/>we<sp/>will<sp/>use<sp/>&quot;Name&quot;.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!Empty())<sp/>{</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>lmtPath<sp/>=<sp/><ref refid="namespace_file_finder_1a61591fb755d88f0c37a3bd804bf0af92" kindref="member">FileFinder::Game</ref>().<ref refid="class_filesystem_view_1abcab7f2060f92a8905c4d83f4cce8f5e" kindref="member">FindFile</ref>(ToString(lmtFile));</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>crcLMT<sp/>=<sp/><ref refid="meta_8cpp_1a2d5ac7d9b870fe1d675458ce343ef0b5" kindref="member">crc32file</ref>(lmtPath);</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>crcLDB<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;*&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1aec7bcd2124d7576a8b20873585de07cd" kindref="member">Output::Debug</ref>(</highlight><highlight class="stringliteral">&quot;CRC32<sp/>of<sp/>&apos;LMT&apos;<sp/>file<sp/>(&apos;{}&apos;)<sp/>is<sp/>{}&quot;</highlight><highlight class="normal">,<sp/>lmtFile,<sp/>crcLMT);</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ini-&gt;HasValue(crcLMT<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;/&quot;</highlight><highlight class="normal"><sp/>+<sp/>crcLDB<sp/>,<sp/><ref refid="meta_8cpp_1a932345e6a9960e5af3f0254de471cf22" kindref="member">MTINI_NAME</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>canon_ini_lookup<sp/>=<sp/>crcLMT<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;/&quot;</highlight><highlight class="normal"><sp/>+<sp/>crcLDB;</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>ldbPath<sp/>=<sp/><ref refid="namespace_file_finder_1a61591fb755d88f0c37a3bd804bf0af92" kindref="member">FileFinder::Game</ref>().<ref refid="class_filesystem_view_1abcab7f2060f92a8905c4d83f4cce8f5e" kindref="member">FindFile</ref>(ToString(ldbFile));</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>crcLDB<sp/>=<sp/><ref refid="meta_8cpp_1a2d5ac7d9b870fe1d675458ce343ef0b5" kindref="member">crc32file</ref>(ldbPath);</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ini-&gt;HasValue(crcLMT<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;/&quot;</highlight><highlight class="normal"><sp/>+<sp/>crcLDB<sp/>,<sp/><ref refid="meta_8cpp_1a932345e6a9960e5af3f0254de471cf22" kindref="member">MTINI_NAME</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>canon_ini_lookup<sp/>=<sp/>crcLMT<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;/&quot;</highlight><highlight class="normal"><sp/>+<sp/>crcLDB;</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1aec7bcd2124d7576a8b20873585de07cd" kindref="member">Output::Debug</ref>(</highlight><highlight class="stringliteral">&quot;CRC32<sp/>of<sp/>&apos;LDB&apos;<sp/>file<sp/>(&apos;{}&apos;)<sp/>file<sp/>is<sp/>{}&quot;</highlight><highlight class="normal">,<sp/>ldbFile,<sp/>crcLDB);</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="282"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"></highlight></codeline>
+<codeline lineno="284"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>Meta::Empty()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ini<sp/>==<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal"><sp/>||<sp/>ini-&gt;ParseError()<sp/>==<sp/>-1;</highlight></codeline>
+<codeline lineno="286"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="meta.cpp"/>
+  </compounddef>
+</doxygen>

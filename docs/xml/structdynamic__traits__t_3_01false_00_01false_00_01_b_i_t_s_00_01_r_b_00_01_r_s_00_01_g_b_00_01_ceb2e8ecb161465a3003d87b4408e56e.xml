@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdynamic__traits__t_3_01false_00_01false_00_01_b_i_t_s_00_01_r_b_00_01_r_s_00_01_g_b_00_01_ceb2e8ecb161465a3003d87b4408e56e" kind="struct" language="C++" prot="public">
+    <compoundname>dynamic_traits_t&lt; false, false, BITS, RB, RS, GB, GS, BB, BS, AB, AS, ALPHA &gt;</compoundname>
+    <includes refid="pixel__format_8h" local="no">pixel_format.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>BITS</declname>
+        <defname>BITS</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>RB</declname>
+        <defname>RB</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>RS</declname>
+        <defname>RS</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>GB</declname>
+        <defname>GB</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>GS</declname>
+        <defname>GS</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BB</declname>
+        <defname>BB</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BS</declname>
+        <defname>BS</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>AB</declname>
+        <defname>AB</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>AS</declname>
+        <defname>AS</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>ALPHA</declname>
+        <defname>ALPHA</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="structdynamic__traits__t_3_01false_00_01false_00_01_b_i_t_s_00_01_r_b_00_01_r_s_00_01_g_b_00_01_ceb2e8ecb161465a3003d87b4408e56e_1ac89b2f0838bc9691fec096c2daaaa608" prot="public" static="yes" mutable="no">
+        <type>const <ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref></type>
+        <definition>const DynamicFormat dynamic_traits_t&lt; false, false, BITS, RB, RS, GB, GS, BB, BS, AB, AS, ALPHA &gt;::format</definition>
+        <argsstring></argsstring>
+        <name>format</name>
+        <qualifiedname>dynamic_traits_t&lt; false, false, BITS, RB, RS, GB, GS, BB, BS, AB, AS, ALPHA &gt;::format</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="474" column="28" bodyfile="pixel_format.h" bodystart="474" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structdynamic__traits__t_3_01false_00_01false_00_01_b_i_t_s_00_01_r_b_00_01_r_s_00_01_g_b_00_01_ceb2e8ecb161465a3003d87b4408e56e_1adea61711866410e4d65c88109a01ddc2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>dynamic_traits_t&lt; false, false, BITS, RB, RS, GB, GS, BB, BS, AB, AS, ALPHA &gt;::dynamic_traits_t</definition>
+        <argsstring>(const DynamicFormat &amp;)</argsstring>
+        <name>dynamic_traits_t</name>
+        <qualifiedname>dynamic_traits_t&lt; false, false, BITS, RB, RS, GB, GS, BB, BS, AB, AS, ALPHA &gt;::dynamic_traits_t</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="475" column="1" bodyfile="pixel_format.h" bodystart="475" bodyend="475"/>
+      </memberdef>
+      <memberdef kind="function" id="structdynamic__traits__t_3_01false_00_01false_00_01_b_i_t_s_00_01_r_b_00_01_r_s_00_01_g_b_00_01_ceb2e8ecb161465a3003d87b4408e56e_1a891ca10c7475204c1e9a0c3b9d29aff1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void dynamic_traits_t&lt; false, false, BITS, RB, RS, GB, GS, BB, BS, AB, AS, ALPHA &gt;::set_format</definition>
+        <argsstring>(const DynamicFormat &amp;) const</argsstring>
+        <name>set_format</name>
+        <qualifiedname>dynamic_traits_t&lt; false, false, BITS, RB, RS, GB, GS, BB, BS, AB, AS, ALPHA &gt;::set_format</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="476" column="6" bodyfile="pixel_format.h" bodystart="476" bodyend="476"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="3">
+        <label>Component</label>
+        <link refid="struct_component"/>
+      </node>
+      <node id="2">
+        <label>DynamicFormat</label>
+        <link refid="class_dynamic_format"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>a</edgelabel>
+          <edgelabel>b</edgelabel>
+          <edgelabel>g</edgelabel>
+          <edgelabel>r</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>dynamic_traits_t&lt; false, false, BITS, RB, RS, GB, GS, BB, BS, AB, AS, ALPHA &gt;</label>
+        <link refid="structdynamic__traits__t_3_01false_00_01false_00_01_b_i_t_s_00_01_r_b_00_01_r_s_00_01_g_b_00_01_ceb2e8ecb161465a3003d87b4408e56e"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>format</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="pixel_format.h" line="473" column="1" bodyfile="pixel_format.h" bodystart="473" bodyend="477"/>
+    <listofallmembers>
+      <member refid="structdynamic__traits__t_3_01false_00_01false_00_01_b_i_t_s_00_01_r_b_00_01_r_s_00_01_g_b_00_01_ceb2e8ecb161465a3003d87b4408e56e_1adea61711866410e4d65c88109a01ddc2" prot="public" virt="non-virtual"><scope>dynamic_traits_t&lt; false, false, BITS, RB, RS, GB, GS, BB, BS, AB, AS, ALPHA &gt;</scope><name>dynamic_traits_t</name></member>
+      <member refid="structdynamic__traits__t_3_01false_00_01false_00_01_b_i_t_s_00_01_r_b_00_01_r_s_00_01_g_b_00_01_ceb2e8ecb161465a3003d87b4408e56e_1ac89b2f0838bc9691fec096c2daaaa608" prot="public" virt="non-virtual"><scope>dynamic_traits_t&lt; false, false, BITS, RB, RS, GB, GS, BB, BS, AB, AS, ALPHA &gt;</scope><name>format</name></member>
+      <member refid="structdynamic__traits__t_3_01false_00_01false_00_01_b_i_t_s_00_01_r_b_00_01_r_s_00_01_g_b_00_01_ceb2e8ecb161465a3003d87b4408e56e_1a891ca10c7475204c1e9a0c3b9d29aff1" prot="public" virt="non-virtual"><scope>dynamic_traits_t&lt; false, false, BITS, RB, RS, GB, GS, BB, BS, AB, AS, ALPHA &gt;</scope><name>set_format</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

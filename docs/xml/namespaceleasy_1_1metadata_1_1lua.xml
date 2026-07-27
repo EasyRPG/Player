@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1metadata_1_1lua" kind="namespace" language="C++">
+    <compoundname>leasy::metadata::lua</compoundname>
+    <innerclass refid="structleasy_1_1metadata_1_1lua_1_1options" prot="public">leasy::metadata::lua::options</innerclass>
+    <innernamespace refid="namespaceleasy_1_1metadata_1_1lua_1_1detail">leasy::metadata::lua::detail</innernamespace>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceleasy_1_1metadata_1_1lua_1a488ef02e96af4d87479a5d991fdfb9e7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::metadata::lua::write</definition>
+        <argsstring>(std::ostream &amp;, const object &amp;, const options &amp;={})</argsstring>
+        <name>write</name>
+        <qualifiedname>leasy::metadata::lua::write</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <defname>os</defname>
+        </param>
+        <param>
+          <type>const object &amp;</type>
+          <defname>obj</defname>
+        </param>
+        <param>
+          <type>const <ref refid="structleasy_1_1metadata_1_1lua_1_1options" kindref="compound">options</ref> &amp;</type>
+          <defname>opts</defname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/lua.hpp" line="117" column="15" bodyfile="leasy/metadata/lua.hpp" bodystart="117" bodyend="119" declfile="leasy/metadata/lua.hpp" declline="39" declcolumn="9"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1metadata_1_1lua_1a2a5aae51f65d6a9def26329487c052e5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string leasy::metadata::lua::dump</definition>
+        <argsstring>(const object &amp;, const options &amp;={})</argsstring>
+        <name>dump</name>
+        <qualifiedname>leasy::metadata::lua::dump</qualifiedname>
+        <param>
+          <type>const object &amp;</type>
+          <defname>obj</defname>
+        </param>
+        <param>
+          <type>const <ref refid="structleasy_1_1metadata_1_1lua_1_1options" kindref="compound">options</ref> &amp;</type>
+          <defname>opts</defname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/lua.hpp" line="121" column="22" bodyfile="leasy/metadata/lua.hpp" bodystart="121" bodyend="125" declfile="leasy/metadata/lua.hpp" declline="40" declcolumn="16"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para><ulink url="mailto:0xEF9087A@wys-prog.https">0xEF9087A@wys-prog.https</ulink>://github.com/wys-prog/leasy </para>
+    </detaileddescription>
+    <location file="leasy/metadata/lua.hpp" line="32" column="1"/>
+  </compounddef>
+</doxygen>

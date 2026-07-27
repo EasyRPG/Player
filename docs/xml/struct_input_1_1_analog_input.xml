@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_input_1_1_analog_input" kind="struct" language="C++" prot="public">
+    <compoundname>Input::AnalogInput</compoundname>
+    <includes refid="input__source_8h" local="no">input_source.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_input_1_1_analog_input_1a9ea411e3044add964242dcbdfa4615dd" prot="public" static="no" mutable="no">
+        <type><ref refid="point_8h_1afc45a9d39240d132363a18d95ce82b27" kindref="member">PointF</ref></type>
+        <definition>PointF Input::AnalogInput::primary</definition>
+        <argsstring></argsstring>
+        <name>primary</name>
+        <qualifiedname>Input::AnalogInput::primary</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="53" column="8" bodyfile="input_source.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_input_1_1_analog_input_1a5bcd782a3cd58374517a7678250d05a6" prot="public" static="no" mutable="no">
+        <type><ref refid="point_8h_1afc45a9d39240d132363a18d95ce82b27" kindref="member">PointF</ref></type>
+        <definition>PointF Input::AnalogInput::secondary</definition>
+        <argsstring></argsstring>
+        <name>secondary</name>
+        <qualifiedname>Input::AnalogInput::secondary</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="54" column="8" bodyfile="input_source.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_input_1_1_analog_input_1af7600e09fefa28dd10a381cf7b46182a" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float Input::AnalogInput::trigger_left</definition>
+        <argsstring></argsstring>
+        <name>trigger_left</name>
+        <qualifiedname>Input::AnalogInput::trigger_left</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="55" column="7" bodyfile="input_source.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_input_1_1_analog_input_1a8949ee0f340517f82ab94c5bb64b8ba1" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float Input::AnalogInput::trigger_right</definition>
+        <argsstring></argsstring>
+        <name>trigger_right</name>
+        <qualifiedname>Input::AnalogInput::trigger_right</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="56" column="7" bodyfile="input_source.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="struct_input_1_1_analog_input_1a18d65ec5cf8c37d468eb5a86660ccd31" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>float</type>
+        <definition>float Input::AnalogInput::kMaxValue</definition>
+        <argsstring></argsstring>
+        <name>kMaxValue</name>
+        <qualifiedname>Input::AnalogInput::kMaxValue</qualifiedname>
+        <initializer>= 1.0f</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="58" column="24" bodyfile="input_source.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_input_1_1_analog_input_1a92992f055b04d9c6c5d15d8becab9844" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>float</type>
+        <definition>float Input::AnalogInput::kMinValue</definition>
+        <argsstring></argsstring>
+        <name>kMinValue</name>
+        <qualifiedname>Input::AnalogInput::kMinValue</qualifiedname>
+        <initializer>= -1.0f</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="59" column="24" bodyfile="input_source.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Primary and Secondary range from -1.0 to +1.0 ^ -1 | -1 &lt;-----&gt; 1 | v 1 Trigger range from 0.0 (neutral) to 1.0 (pressed) </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>Input::AnalogInput</label>
+        <link refid="struct_input_1_1_analog_input"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>primary</edgelabel>
+          <edgelabel>secondary</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PointT&lt; float &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+    </collaborationgraph>
+    <location file="input_source.h" line="52" column="1" bodyfile="input_source.h" bodystart="52" bodyend="60"/>
+    <listofallmembers>
+      <member refid="struct_input_1_1_analog_input_1a18d65ec5cf8c37d468eb5a86660ccd31" prot="public" virt="non-virtual"><scope>Input::AnalogInput</scope><name>kMaxValue</name></member>
+      <member refid="struct_input_1_1_analog_input_1a92992f055b04d9c6c5d15d8becab9844" prot="public" virt="non-virtual"><scope>Input::AnalogInput</scope><name>kMinValue</name></member>
+      <member refid="struct_input_1_1_analog_input_1a9ea411e3044add964242dcbdfa4615dd" prot="public" virt="non-virtual"><scope>Input::AnalogInput</scope><name>primary</name></member>
+      <member refid="struct_input_1_1_analog_input_1a5bcd782a3cd58374517a7678250d05a6" prot="public" virt="non-virtual"><scope>Input::AnalogInput</scope><name>secondary</name></member>
+      <member refid="struct_input_1_1_analog_input_1af7600e09fefa28dd10a381cf7b46182a" prot="public" virt="non-virtual"><scope>Input::AnalogInput</scope><name>trigger_left</name></member>
+      <member refid="struct_input_1_1_analog_input_1a8949ee0f340517f82ab94c5bb64b8ba1" prot="public" virt="non-virtual"><scope>Input::AnalogInput</scope><name>trigger_right</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,704 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_spriteset___map" kind="class" language="C++" prot="public">
+    <compoundname>Spriteset_Map</compoundname>
+    <includes refid="spriteset__map_8h" local="no">spriteset_map.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_spriteset___map_1a7066c9a5e23dc2c092c008e3764f8446" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_tilemap" kindref="compound">Tilemap</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Tilemap&gt; Spriteset_Map::tilemap</definition>
+        <argsstring></argsstring>
+        <name>tilemap</name>
+        <qualifiedname>Spriteset_Map::tilemap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="107" column="17" bodyfile="spriteset_map.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1ade3ba05b3a1378f8546115464a61bd45" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_plane" kindref="compound">Plane</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Plane&gt; Spriteset_Map::panorama</definition>
+        <argsstring></argsstring>
+        <name>panorama</name>
+        <qualifiedname>Spriteset_Map::panorama</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="108" column="17" bodyfile="spriteset_map.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1a0a4cb45039412a2718069a41fb8ae69e" prot="protected" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Spriteset_Map::panorama_name</definition>
+        <argsstring></argsstring>
+        <name>panorama_name</name>
+        <qualifiedname>Spriteset_Map::panorama_name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="109" column="13" bodyfile="spriteset_map.h" bodystart="109" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1a5a7ed7e9ac345d177cdd1fb84b8c553f" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; std::unique_ptr&lt; <ref refid="class_sprite___character" kindref="compound">Sprite_Character</ref> &gt; &gt;</type>
+        <definition>std::vector&lt;std::unique_ptr&lt;Sprite_Character&gt; &gt; Spriteset_Map::character_sprites</definition>
+        <argsstring></argsstring>
+        <name>character_sprites</name>
+        <qualifiedname>Spriteset_Map::character_sprites</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="110" column="13" bodyfile="spriteset_map.h" bodystart="110" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1ab95dc662fdbf2ad53fa66531314cdceb" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; std::unique_ptr&lt; <ref refid="class_sprite___airship_shadow" kindref="compound">Sprite_AirshipShadow</ref> &gt; &gt;</type>
+        <definition>std::vector&lt;std::unique_ptr&lt;Sprite_AirshipShadow&gt; &gt; Spriteset_Map::airship_shadows</definition>
+        <argsstring></argsstring>
+        <name>airship_shadows</name>
+        <qualifiedname>Spriteset_Map::airship_shadows</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="111" column="13" bodyfile="spriteset_map.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1a2db7649dc3dd77cd91f78e145b668ff2" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_sprite___timer" kindref="compound">Sprite_Timer</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Sprite_Timer&gt; Spriteset_Map::timer1</definition>
+        <argsstring></argsstring>
+        <name>timer1</name>
+        <qualifiedname>Spriteset_Map::timer1</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="112" column="17" bodyfile="spriteset_map.h" bodystart="112" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1add6b21f0366bb58d8c325e9283fd4ef1" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_sprite___timer" kindref="compound">Sprite_Timer</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Sprite_Timer&gt; Spriteset_Map::timer2</definition>
+        <argsstring></argsstring>
+        <name>timer2</name>
+        <qualifiedname>Spriteset_Map::timer2</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="113" column="17" bodyfile="spriteset_map.h" bodystart="113" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1aca0a2f0d2254f2b58c4f46eea2a83452" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_screen" kindref="compound">Screen</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Screen&gt; Spriteset_Map::screen</definition>
+        <argsstring></argsstring>
+        <name>screen</name>
+        <qualifiedname>Spriteset_Map::screen</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="114" column="17" bodyfile="spriteset_map.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1ae80559fcd4f944b8c0f0330c9fe9e39a" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_frame" kindref="compound">Frame</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Frame&gt; Spriteset_Map::frame</definition>
+        <argsstring></argsstring>
+        <name>frame</name>
+        <qualifiedname>Spriteset_Map::frame</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="115" column="17" bodyfile="spriteset_map.h" bodystart="115" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1aca0976c8e27fc4bfddbb6551ba1201b5" prot="protected" static="no" mutable="no">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding Spriteset_Map::panorama_request_id</definition>
+        <argsstring></argsstring>
+        <name>panorama_request_id</name>
+        <qualifiedname>Spriteset_Map::panorama_request_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="123" column="20" bodyfile="spriteset_map.h" bodystart="123" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1a0c2a6b2bd081744da357d93c8081482c" prot="protected" static="no" mutable="no">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding Spriteset_Map::tilemap_request_id</definition>
+        <argsstring></argsstring>
+        <name>tilemap_request_id</name>
+        <qualifiedname>Spriteset_Map::tilemap_request_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="124" column="20" bodyfile="spriteset_map.h" bodystart="124" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1ae6f5dc802af37d51e4565bf7412ba1b7" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Spriteset_Map::need_x_clone</definition>
+        <argsstring></argsstring>
+        <name>need_x_clone</name>
+        <qualifiedname>Spriteset_Map::need_x_clone</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="126" column="6" bodyfile="spriteset_map.h" bodystart="126" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1a497ed97381646d429992545caf9ecc1a" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Spriteset_Map::need_y_clone</definition>
+        <argsstring></argsstring>
+        <name>need_y_clone</name>
+        <qualifiedname>Spriteset_Map::need_y_clone</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="127" column="6" bodyfile="spriteset_map.h" bodystart="127" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1ad08bc6e73fc15b5f5a0f5fdff3416553" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Spriteset_Map::map_render_ox</definition>
+        <argsstring></argsstring>
+        <name>map_render_ox</name>
+        <qualifiedname>Spriteset_Map::map_render_ox</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="129" column="5" bodyfile="spriteset_map.h" bodystart="129" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1adaa1a07b0700f140522901b5ffcf5ccf" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Spriteset_Map::map_render_oy</definition>
+        <argsstring></argsstring>
+        <name>map_render_oy</name>
+        <qualifiedname>Spriteset_Map::map_render_oy</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="130" column="5" bodyfile="spriteset_map.h" bodystart="130" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1a98279b8610be9cb9d7d1c8ced43bad74" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Spriteset_Map::map_tiles_x</definition>
+        <argsstring></argsstring>
+        <name>map_tiles_x</name>
+        <qualifiedname>Spriteset_Map::map_tiles_x</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="131" column="5" bodyfile="spriteset_map.h" bodystart="131" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1ae95f519b352a66082e34927545f5f475" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Spriteset_Map::map_tiles_y</definition>
+        <argsstring></argsstring>
+        <name>map_tiles_y</name>
+        <qualifiedname>Spriteset_Map::map_tiles_y</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="132" column="5" bodyfile="spriteset_map.h" bodystart="132" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1a0f0772ac2c1aeb365ed28048da9f8b98" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Spriteset_Map::vehicle_loaded[3]</definition>
+        <argsstring>[3]</argsstring>
+        <name>vehicle_loaded</name>
+        <qualifiedname>Spriteset_Map::vehicle_loaded</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="134" column="6" bodyfile="spriteset_map.h" bodystart="134" bodyend="134"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___map_1a273bc4930ec06dc28066901ef3131bce" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+        <definition>Tone Spriteset_Map::last_tone</definition>
+        <argsstring></argsstring>
+        <name>last_tone</name>
+        <qualifiedname>Spriteset_Map::last_tone</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="136" column="6" bodyfile="spriteset_map.h" bodystart="136" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_spriteset___map_1a16a32af220ecbfae557e397f9b43a73d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Spriteset_Map::Spriteset_Map</definition>
+        <argsstring>()</argsstring>
+        <name>Spriteset_Map</name>
+        <qualifiedname>Spriteset_Map::Spriteset_Map</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="44" column="1" bodyfile="spriteset_map.cpp" bodystart="35" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___map_1aa5c3ffa0a8195437474683b1b95cadcf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Spriteset_Map::Refresh</definition>
+        <argsstring>()</argsstring>
+        <name>Refresh</name>
+        <qualifiedname>Spriteset_Map::Refresh</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="46" column="6" bodyfile="spriteset_map.cpp" bodystart="55" bodyend="83"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___map_1a62a0458d578ff12125d7c8c7e189c75c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Spriteset_Map::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>Spriteset_Map::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="48" column="6" bodyfile="spriteset_map.cpp" bodystart="86" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___map_1a36fda61fc7838c08fb631417da7b39cf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Spriteset_Map::ChipsetUpdated</definition>
+        <argsstring>()</argsstring>
+        <name>ChipsetUpdated</name>
+        <qualifiedname>Spriteset_Map::ChipsetUpdated</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Notifies that the map&apos;s chipset has changed. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="53" column="6" bodyfile="spriteset_map.cpp" bodystart="121" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___map_1a277095bee4d27a4a1db57968722f7e98" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Spriteset_Map::ParallaxUpdated</definition>
+        <argsstring>()</argsstring>
+        <name>ParallaxUpdated</name>
+        <qualifiedname>Spriteset_Map::ParallaxUpdated</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Notifies that the map&apos;s parallax has changed. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="58" column="6" bodyfile="spriteset_map.cpp" bodystart="138" bodyend="155"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___map_1aa1afc25bf2fbcbf7fed6d6f4ec883061" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Spriteset_Map::SystemGraphicUpdated</definition>
+        <argsstring>()</argsstring>
+        <name>SystemGraphicUpdated</name>
+        <qualifiedname>Spriteset_Map::SystemGraphicUpdated</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Notifies that the System graphic has changed. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="63" column="6" bodyfile="spriteset_map.cpp" bodystart="157" bodyend="161"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___map_1a3298d46c58ca851b1064a318173fe234" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Spriteset_Map::SubstituteDown</definition>
+        <argsstring>(int old_id, int new_id)</argsstring>
+        <name>SubstituteDown</name>
+        <qualifiedname>Spriteset_Map::SubstituteDown</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>old_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>new_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Substitutes tile in lower layer. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="68" column="6" bodyfile="spriteset_map.cpp" bodystart="163" bodyend="168"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___map_1a82bf4b3c1bf35ae8ac3c6f1d2414dd00" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Spriteset_Map::SubstituteUp</definition>
+        <argsstring>(int old_id, int new_id)</argsstring>
+        <name>SubstituteUp</name>
+        <qualifiedname>Spriteset_Map::SubstituteUp</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>old_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>new_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Substitutes tile in upper layer. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="73" column="6" bodyfile="spriteset_map.cpp" bodystart="170" bodyend="175"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___map_1a4ad06becb2ee018d6314ee206af19c2c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Spriteset_Map::ReplaceDownAt</definition>
+        <argsstring>(int x, int y, int tile_index, bool disable_autotile)</argsstring>
+        <name>ReplaceDownAt</name>
+        <qualifiedname>Spriteset_Map::ReplaceDownAt</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>tile_index</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>disable_autotile</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Replaces a single tile in lower layer at the given coordinates. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="78" column="6" bodyfile="spriteset_map.cpp" bodystart="177" bodyend="182"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___map_1a5c16dd00a0951c3f342c4a4ff0583d3f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Spriteset_Map::ReplaceUpAt</definition>
+        <argsstring>(int x, int y, int tile_index)</argsstring>
+        <name>ReplaceUpAt</name>
+        <qualifiedname>Spriteset_Map::ReplaceUpAt</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>tile_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Replaces a single tile in upper layer at the given coordinates. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="83" column="6" bodyfile="spriteset_map.cpp" bodystart="184" bodyend="190"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___map_1a1e6cfcfda26e5b8b5ae03465c9e5b373" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Spriteset_Map::RequireClear</definition>
+        <argsstring>(DrawableList &amp;drawable_list)</argsstring>
+        <name>RequireClear</name>
+        <qualifiedname>Spriteset_Map::RequireClear</qualifiedname>
+        <param>
+          <type><ref refid="class_drawable_list" kindref="compound">DrawableList</ref> &amp;</type>
+          <declname>drawable_list</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if we should clear the screen before drawing the map </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="88" column="6" bodyfile="spriteset_map.cpp" bodystart="192" bodyend="224"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___map_1a726e25cb845dd73dddcd188c19dc58fa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Spriteset_Map::CalculateMapRenderOffset</definition>
+        <argsstring>()</argsstring>
+        <name>CalculateMapRenderOffset</name>
+        <qualifiedname>Spriteset_Map::CalculateMapRenderOffset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines the map render offset when Fake Resolution is used and sets the viewport of the screen for cropping. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="93" column="6" bodyfile="spriteset_map.cpp" bodystart="297" bodyend="325"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___map_1afbd2a65742bdd46dabf940bdffa03b6a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Spriteset_Map::CalculatePanoramaRenderOffset</definition>
+        <argsstring>()</argsstring>
+        <name>CalculatePanoramaRenderOffset</name>
+        <qualifiedname>Spriteset_Map::CalculatePanoramaRenderOffset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines the panorama offset when Fake Resolution is used. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="98" column="6" bodyfile="spriteset_map.cpp" bodystart="327" bodyend="337"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___map_1a958009557b72e2ffa80192a4c7ea114e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Spriteset_Map::GetRenderOx</definition>
+        <argsstring>() const</argsstring>
+        <name>GetRenderOx</name>
+        <qualifiedname>Spriteset_Map::GetRenderOx</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>x offset for the rendering of the tilemap and events </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="101" column="5" bodyfile="spriteset_map.h" bodystart="139" bodyend="141"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___map_1a4ec5a383aedcbbcd553facf1716aeec9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Spriteset_Map::GetRenderOy</definition>
+        <argsstring>() const</argsstring>
+        <name>GetRenderOy</name>
+        <qualifiedname>Spriteset_Map::GetRenderOy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>y offset for the rendering of the tilemap and events </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="104" column="5" bodyfile="spriteset_map.h" bodystart="143" bodyend="145"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_spriteset___map_1ab55bf0cf6bf3def3367c458c500e5081" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Spriteset_Map::CreateSprite</definition>
+        <argsstring>(Game_Character *character, bool create_x_clone, bool create_y_clone)</argsstring>
+        <name>CreateSprite</name>
+        <qualifiedname>Spriteset_Map::CreateSprite</qualifiedname>
+        <param>
+          <type><ref refid="class_game___character" kindref="compound">Game_Character</ref> *</type>
+          <declname>character</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>create_x_clone</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>create_y_clone</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="117" column="6" bodyfile="spriteset_map.cpp" bodystart="226" bodyend="248"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___map_1a5911017bd083b7fb8821026726e687b0" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Spriteset_Map::CreateAirshipShadowSprite</definition>
+        <argsstring>(bool create_x_clone, bool create_y_clone)</argsstring>
+        <name>CreateAirshipShadowSprite</name>
+        <qualifiedname>Spriteset_Map::CreateAirshipShadowSprite</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>create_x_clone</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>create_y_clone</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="118" column="6" bodyfile="spriteset_map.cpp" bodystart="250" bodyend="272"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___map_1a1ffd722e447114593912288283bb9627" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Spriteset_Map::OnTilemapSpriteReady</definition>
+        <argsstring>(FileRequestResult *)</argsstring>
+        <name>OnTilemapSpriteReady</name>
+        <qualifiedname>Spriteset_Map::OnTilemapSpriteReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="120" column="6" bodyfile="spriteset_map.cpp" bodystart="274" bodyend="288"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___map_1a8a87f5a6894b430d3133841536504219" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Spriteset_Map::OnPanoramaSpriteReady</definition>
+        <argsstring>(FileRequestResult *result)</argsstring>
+        <name>OnPanoramaSpriteReady</name>
+        <qualifiedname>Spriteset_Map::OnPanoramaSpriteReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_map.h" line="121" column="6" bodyfile="spriteset_map.cpp" bodystart="290" bodyend="295"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_spriteset___map" kindref="compound">Spriteset_Map</ref> class. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>Spriteset_Map</label>
+        <link refid="class_spriteset___map"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>last_tone</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Tone</label>
+        <link refid="class_tone"/>
+      </node>
+    </collaborationgraph>
+    <location file="spriteset_map.h" line="42" column="1" bodyfile="spriteset_map.h" bodystart="42" bodyend="137"/>
+    <listofallmembers>
+      <member refid="class_spriteset___map_1ab95dc662fdbf2ad53fa66531314cdceb" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>airship_shadows</name></member>
+      <member refid="class_spriteset___map_1a726e25cb845dd73dddcd188c19dc58fa" prot="public" virt="non-virtual"><scope>Spriteset_Map</scope><name>CalculateMapRenderOffset</name></member>
+      <member refid="class_spriteset___map_1afbd2a65742bdd46dabf940bdffa03b6a" prot="public" virt="non-virtual"><scope>Spriteset_Map</scope><name>CalculatePanoramaRenderOffset</name></member>
+      <member refid="class_spriteset___map_1a5a7ed7e9ac345d177cdd1fb84b8c553f" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>character_sprites</name></member>
+      <member refid="class_spriteset___map_1a36fda61fc7838c08fb631417da7b39cf" prot="public" virt="non-virtual"><scope>Spriteset_Map</scope><name>ChipsetUpdated</name></member>
+      <member refid="class_spriteset___map_1a5911017bd083b7fb8821026726e687b0" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>CreateAirshipShadowSprite</name></member>
+      <member refid="class_spriteset___map_1ab55bf0cf6bf3def3367c458c500e5081" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>CreateSprite</name></member>
+      <member refid="class_spriteset___map_1ae80559fcd4f944b8c0f0330c9fe9e39a" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>frame</name></member>
+      <member refid="class_spriteset___map_1a958009557b72e2ffa80192a4c7ea114e" prot="public" virt="non-virtual"><scope>Spriteset_Map</scope><name>GetRenderOx</name></member>
+      <member refid="class_spriteset___map_1a4ec5a383aedcbbcd553facf1716aeec9" prot="public" virt="non-virtual"><scope>Spriteset_Map</scope><name>GetRenderOy</name></member>
+      <member refid="class_spriteset___map_1a273bc4930ec06dc28066901ef3131bce" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>last_tone</name></member>
+      <member refid="class_spriteset___map_1ad08bc6e73fc15b5f5a0f5fdff3416553" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>map_render_ox</name></member>
+      <member refid="class_spriteset___map_1adaa1a07b0700f140522901b5ffcf5ccf" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>map_render_oy</name></member>
+      <member refid="class_spriteset___map_1a98279b8610be9cb9d7d1c8ced43bad74" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>map_tiles_x</name></member>
+      <member refid="class_spriteset___map_1ae95f519b352a66082e34927545f5f475" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>map_tiles_y</name></member>
+      <member refid="class_spriteset___map_1ae6f5dc802af37d51e4565bf7412ba1b7" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>need_x_clone</name></member>
+      <member refid="class_spriteset___map_1a497ed97381646d429992545caf9ecc1a" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>need_y_clone</name></member>
+      <member refid="class_spriteset___map_1a8a87f5a6894b430d3133841536504219" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>OnPanoramaSpriteReady</name></member>
+      <member refid="class_spriteset___map_1a1ffd722e447114593912288283bb9627" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>OnTilemapSpriteReady</name></member>
+      <member refid="class_spriteset___map_1ade3ba05b3a1378f8546115464a61bd45" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>panorama</name></member>
+      <member refid="class_spriteset___map_1a0a4cb45039412a2718069a41fb8ae69e" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>panorama_name</name></member>
+      <member refid="class_spriteset___map_1aca0976c8e27fc4bfddbb6551ba1201b5" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>panorama_request_id</name></member>
+      <member refid="class_spriteset___map_1a277095bee4d27a4a1db57968722f7e98" prot="public" virt="non-virtual"><scope>Spriteset_Map</scope><name>ParallaxUpdated</name></member>
+      <member refid="class_spriteset___map_1aa5c3ffa0a8195437474683b1b95cadcf" prot="public" virt="non-virtual"><scope>Spriteset_Map</scope><name>Refresh</name></member>
+      <member refid="class_spriteset___map_1a4ad06becb2ee018d6314ee206af19c2c" prot="public" virt="non-virtual"><scope>Spriteset_Map</scope><name>ReplaceDownAt</name></member>
+      <member refid="class_spriteset___map_1a5c16dd00a0951c3f342c4a4ff0583d3f" prot="public" virt="non-virtual"><scope>Spriteset_Map</scope><name>ReplaceUpAt</name></member>
+      <member refid="class_spriteset___map_1a1e6cfcfda26e5b8b5ae03465c9e5b373" prot="public" virt="non-virtual"><scope>Spriteset_Map</scope><name>RequireClear</name></member>
+      <member refid="class_spriteset___map_1aca0a2f0d2254f2b58c4f46eea2a83452" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>screen</name></member>
+      <member refid="class_spriteset___map_1a16a32af220ecbfae557e397f9b43a73d" prot="public" virt="non-virtual"><scope>Spriteset_Map</scope><name>Spriteset_Map</name></member>
+      <member refid="class_spriteset___map_1a3298d46c58ca851b1064a318173fe234" prot="public" virt="non-virtual"><scope>Spriteset_Map</scope><name>SubstituteDown</name></member>
+      <member refid="class_spriteset___map_1a82bf4b3c1bf35ae8ac3c6f1d2414dd00" prot="public" virt="non-virtual"><scope>Spriteset_Map</scope><name>SubstituteUp</name></member>
+      <member refid="class_spriteset___map_1aa1afc25bf2fbcbf7fed6d6f4ec883061" prot="public" virt="non-virtual"><scope>Spriteset_Map</scope><name>SystemGraphicUpdated</name></member>
+      <member refid="class_spriteset___map_1a7066c9a5e23dc2c092c008e3764f8446" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>tilemap</name></member>
+      <member refid="class_spriteset___map_1a0c2a6b2bd081744da357d93c8081482c" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>tilemap_request_id</name></member>
+      <member refid="class_spriteset___map_1a2db7649dc3dd77cd91f78e145b668ff2" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>timer1</name></member>
+      <member refid="class_spriteset___map_1add6b21f0366bb58d8c325e9283fd4ef1" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>timer2</name></member>
+      <member refid="class_spriteset___map_1a62a0458d578ff12125d7c8c7e189c75c" prot="public" virt="non-virtual"><scope>Spriteset_Map</scope><name>Update</name></member>
+      <member refid="class_spriteset___map_1a0f0772ac2c1aeb365ed28048da9f8b98" prot="protected" virt="non-virtual"><scope>Spriteset_Map</scope><name>vehicle_loaded</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,960 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="ldo_8h" kind="file" language="C++">
+    <compoundname>ldo.h</compoundname>
+    <includes refid="llimits_8h" local="yes">llimits.h</includes>
+    <includes refid="lobject_8h" local="yes">lobject.h</includes>
+    <includes refid="lstate_8h" local="yes">lstate.h</includes>
+    <includes refid="lzio_8h" local="yes">lzio.h</includes>
+    <includedby refid="lapi_8c" local="yes">leasy/lua/lapi.c</includedby>
+    <includedby refid="lcode_8c" local="yes">leasy/lua/lcode.c</includedby>
+    <includedby refid="ldebug_8c" local="yes">leasy/lua/ldebug.c</includedby>
+    <includedby refid="ldo_8c" local="yes">leasy/lua/ldo.c</includedby>
+    <includedby refid="lfunc_8c" local="yes">leasy/lua/lfunc.c</includedby>
+    <includedby refid="lgc_8c" local="yes">leasy/lua/lgc.c</includedby>
+    <includedby refid="llex_8c" local="yes">leasy/lua/llex.c</includedby>
+    <includedby refid="lmem_8c" local="yes">leasy/lua/lmem.c</includedby>
+    <includedby refid="lobject_8c" local="yes">leasy/lua/lobject.c</includedby>
+    <includedby refid="lparser_8c" local="yes">leasy/lua/lparser.c</includedby>
+    <includedby refid="lstate_8c" local="yes">leasy/lua/lstate.c</includedby>
+    <includedby refid="lstring_8c" local="yes">leasy/lua/lstring.c</includedby>
+    <includedby refid="ltable_8c" local="yes">leasy/lua/ltable.c</includedby>
+    <includedby refid="ltm_8c" local="yes">leasy/lua/ltm.c</includedby>
+    <includedby refid="lundump_8c" local="yes">leasy/lua/lundump.c</includedby>
+    <includedby refid="lvm_8c" local="yes">leasy/lua/lvm.c</includedby>
+    <includedby refid="lvm_8h" local="yes">leasy/lua/lvm.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/lua/ldo.h</label>
+        <link refid="ldo_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>lmem.h</label>
+        <link refid="lmem_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>lobject.h</label>
+        <link refid="lobject_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>lstate.h</label>
+        <link refid="lstate_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>ltm.h</label>
+        <link refid="ltm_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>lzio.h</label>
+        <link refid="lzio_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>limits.h</label>
+      </node>
+      <node id="13">
+        <label>signal.h</label>
+      </node>
+      <node id="6">
+        <label>stdarg.h</label>
+      </node>
+      <node id="4">
+        <label>stddef.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>leasy/lua/lapi.c</label>
+        <link refid="lapi_8c"/>
+      </node>
+      <node id="3">
+        <label>leasy/lua/lcode.c</label>
+        <link refid="lcode_8c"/>
+      </node>
+      <node id="4">
+        <label>leasy/lua/ldebug.c</label>
+        <link refid="ldebug_8c"/>
+      </node>
+      <node id="5">
+        <label>leasy/lua/ldo.c</label>
+        <link refid="ldo_8c"/>
+      </node>
+      <node id="1">
+        <label>leasy/lua/ldo.h</label>
+        <link refid="ldo_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>leasy/lua/lfunc.c</label>
+        <link refid="lfunc_8c"/>
+      </node>
+      <node id="7">
+        <label>leasy/lua/lgc.c</label>
+        <link refid="lgc_8c"/>
+      </node>
+      <node id="8">
+        <label>leasy/lua/llex.c</label>
+        <link refid="llex_8c"/>
+      </node>
+      <node id="9">
+        <label>leasy/lua/lmem.c</label>
+        <link refid="lmem_8c"/>
+      </node>
+      <node id="10">
+        <label>leasy/lua/lobject.c</label>
+        <link refid="lobject_8c"/>
+      </node>
+      <node id="11">
+        <label>leasy/lua/lparser.c</label>
+        <link refid="lparser_8c"/>
+      </node>
+      <node id="12">
+        <label>leasy/lua/lstate.c</label>
+        <link refid="lstate_8c"/>
+      </node>
+      <node id="13">
+        <label>leasy/lua/lstring.c</label>
+        <link refid="lstring_8c"/>
+      </node>
+      <node id="14">
+        <label>leasy/lua/ltable.c</label>
+        <link refid="ltable_8c"/>
+      </node>
+      <node id="15">
+        <label>leasy/lua/ltm.c</label>
+        <link refid="ltm_8c"/>
+      </node>
+      <node id="16">
+        <label>leasy/lua/lundump.c</label>
+        <link refid="lundump_8c"/>
+      </node>
+      <node id="17">
+        <label>leasy/lua/lvm.c</label>
+        <link refid="lvm_8c"/>
+      </node>
+      <node id="18">
+        <label>leasy/lua/lvm.h</label>
+        <link refid="lvm_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="ldo_8h_1a51890ff33a337eee53fc73934fa7ba89" prot="public" static="no">
+        <name>condmovestack</name>
+        <param><defname>L</defname></param>
+        <param><defname>pre</defname></param>
+        <param><defname>pos</defname></param>
+        <initializer>((void)0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="28" column="9" bodyfile="leasy/lua/ldo.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ldo_8h_1acb25d187c7a97397acc30a95b20d80af" prot="public" static="no">
+        <name>luaD_checkstackaux</name>
+        <param><defname>L</defname></param>
+        <param><defname>n</defname></param>
+        <param><defname>pre</defname></param>
+        <param><defname>pos</defname></param>
+        <initializer>if (<ref refid="llimits_8h_1ae9c389231436634605d75b0c31f8c3be" kindref="member">l_unlikely</ref>(L-&gt;stack_last.p - L-&gt;top.p &lt;= (n))) \
+  { pre; <ref refid="ldo_8h_1a65231426ec94e3bca44e117d7198604a" kindref="member">luaD_growstack</ref>(L, n, 1); pos; } \
+else { <ref refid="ldo_8h_1a51890ff33a337eee53fc73934fa7ba89" kindref="member">condmovestack</ref>(L,pre,pos); }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="35" column="9" bodyfile="leasy/lua/ldo.h" bodystart="35" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="define" id="ldo_8h_1ab1500a6449b9cdf335e3c7ce23aa85d7" prot="public" static="no">
+        <name>luaD_checkstack</name>
+        <param><defname>L</defname></param>
+        <param><defname>n</defname></param>
+        <initializer><ref refid="ldo_8h_1acb25d187c7a97397acc30a95b20d80af" kindref="member">luaD_checkstackaux</ref>(L,n,(void)0,(void)0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="41" column="9" bodyfile="leasy/lua/ldo.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ldo_8h_1a49fcb6f4b1b2f21c2caca544e3c5a028" prot="public" static="no">
+        <name>savestack</name>
+        <param><defname>L</defname></param>
+        <param><defname>pt</defname></param>
+        <initializer>(<ref refid="llimits_8h_1a1d905979f8c901b7143b43ee98341206" kindref="member">cast_charp</ref>(pt) - <ref refid="llimits_8h_1a1d905979f8c901b7143b43ee98341206" kindref="member">cast_charp</ref>(L-&gt;stack.p))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="45" column="9" bodyfile="leasy/lua/ldo.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ldo_8h_1a3fbde7f289e6bf661575e9b802da9e78" prot="public" static="no">
+        <name>restorestack</name>
+        <param><defname>L</defname></param>
+        <param><defname>n</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(<ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref>, <ref refid="llimits_8h_1a1d905979f8c901b7143b43ee98341206" kindref="member">cast_charp</ref>(L-&gt;stack.p) + (n))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="46" column="9" bodyfile="leasy/lua/ldo.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ldo_8h_1a40f82b578048e3e808fe707fa49f9aa9" prot="public" static="no">
+        <name>checkstackp</name>
+        <param><defname>L</defname></param>
+        <param><defname>n</defname></param>
+        <param><defname>p</defname></param>
+        <initializer><ref refid="ldo_8h_1acb25d187c7a97397acc30a95b20d80af" kindref="member">luaD_checkstackaux</ref>(L, n, \
+  ptrdiff_t t__ = <ref refid="ldo_8h_1a49fcb6f4b1b2f21c2caca544e3c5a028" kindref="member">savestack</ref>(L, p),  /* save &apos;p&apos; */ \
+  p = <ref refid="ldo_8h_1a3fbde7f289e6bf661575e9b802da9e78" kindref="member">restorestack</ref>(L, t__))  /* &apos;pos&apos; part: restore &apos;p&apos; */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="50" column="9" bodyfile="leasy/lua/ldo.h" bodystart="50" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="define" id="ldo_8h_1a0787aa9ccb00f5d9b11ad4f7174e4bdb" prot="public" static="no">
+        <name>LUAI_MAXCCALLS</name>
+        <initializer>200</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="63" column="9" bodyfile="leasy/lua/ldo.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="ldo_8h_1a078cb45ebb3f039a69795174f45d204c" prot="public" static="no">
+        <type>void(*</type>
+        <definition>typedef void(* Pfunc) (lua_State *L, void *ud)</definition>
+        <argsstring>)(lua_State *L, void *ud)</argsstring>
+        <name>Pfunc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="68" column="9" bodyfile="leasy/lua/ldo.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="ldo_8h_1afddbc7b0278cd2f84d0948a0ceb08688" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref></type>
+        <definition>LUAI_FUNC l_noret luaD_errerr</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaD_errerr</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="70" column="19" bodyfile="leasy/lua/ldo.c" bodystart="215" bodyend="220" declfile="leasy/lua/ldo.h" declline="70" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1af1aa242d37b6ba942768541e7a87ca4e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaD_seterrorobj</definition>
+        <argsstring>(lua_State *L, TStatus errcode, StkId oldtop)</argsstring>
+        <name>luaD_seterrorobj</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref></type>
+          <declname>errcode</declname>
+        </param>
+        <param>
+          <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+          <declname>oldtop</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="71" column="16" bodyfile="leasy/lua/ldo.c" bodystart="112" bodyend="122" declfile="leasy/lua/ldo.h" declline="71" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1acc74898376f56b9bc223ae78d100f898" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref></type>
+        <definition>LUAI_FUNC TStatus luaD_protectedparser</definition>
+        <argsstring>(lua_State *L, ZIO *z, const char *name, const char *mode)</argsstring>
+        <name>luaD_protectedparser</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref> *</type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="72" column="19" bodyfile="leasy/lua/ldo.c" bodystart="1145" bodyend="1162" declfile="leasy/lua/ldo.h" declline="72" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1a060cfb719bf195b2e3dc8dd643a4ff88" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaD_hook</definition>
+        <argsstring>(lua_State *L, int event, int line, int fTransfer, int nTransfer)</argsstring>
+        <name>luaD_hook</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>event</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>line</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>fTransfer</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nTransfer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="75" column="16" bodyfile="leasy/lua/ldo.c" bodystart="439" bodyend="468" declfile="leasy/lua/ldo.h" declline="75" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1a6c91c75f4177f4d5f7d45e934d4a8a02" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaD_hookcall</definition>
+        <argsstring>(lua_State *L, CallInfo *ci)</argsstring>
+        <name>luaD_hookcall</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_call_info" kindref="compound">CallInfo</ref> *</type>
+          <declname>ci</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="77" column="16" bodyfile="leasy/lua/ldo.c" bodystart="476" bodyend="486" declfile="leasy/lua/ldo.h" declline="77" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1a7c249b63b687c83168f6647b36eff2f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaD_pretailcall</definition>
+        <argsstring>(lua_State *L, CallInfo *ci, StkId func, int narg1, int delta)</argsstring>
+        <name>luaD_pretailcall</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_call_info" kindref="compound">CallInfo</ref> *</type>
+          <declname>ci</declname>
+        </param>
+        <param>
+          <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+          <declname>func</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>narg1</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>delta</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="78" column="15" bodyfile="leasy/lua/ldo.c" bodystart="669" bodyend="704" declfile="leasy/lua/ldo.h" declline="78" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1a35dac5e865b09bba0e4229d8ef75076a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="struct_call_info" kindref="compound">CallInfo</ref> *</type>
+        <definition>LUAI_FUNC CallInfo * luaD_precall</definition>
+        <argsstring>(lua_State *L, StkId func, int nResults)</argsstring>
+        <name>luaD_precall</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+          <declname>func</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nResults</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="80" column="20" bodyfile="leasy/lua/ldo.c" bodystart="715" bodyend="746" declfile="leasy/lua/ldo.h" declline="80" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1a4797364de1dd297aac52f9c10565523f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaD_call</definition>
+        <argsstring>(lua_State *L, StkId func, int nResults)</argsstring>
+        <name>luaD_call</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+          <declname>func</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nResults</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="81" column="16" bodyfile="leasy/lua/ldo.c" bodystart="775" bodyend="777" declfile="leasy/lua/ldo.h" declline="81" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1a5315637506edcbdd30e9271e75416ae1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaD_callnoyield</definition>
+        <argsstring>(lua_State *L, StkId func, int nResults)</argsstring>
+        <name>luaD_callnoyield</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+          <declname>func</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nResults</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="82" column="16" bodyfile="leasy/lua/ldo.c" bodystart="783" bodyend="785" declfile="leasy/lua/ldo.h" declline="82" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1a9c0872e620bb95e9365f6437a99bd602" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref></type>
+        <definition>LUAI_FUNC TStatus luaD_closeprotected</definition>
+        <argsstring>(lua_State *L, ptrdiff_t level, TStatus status)</argsstring>
+        <name>luaD_closeprotected</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>ptrdiff_t</type>
+          <declname>level</declname>
+        </param>
+        <param>
+          <type><ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref></type>
+          <declname>status</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="83" column="19" bodyfile="leasy/lua/ldo.c" bodystart="1059" bodyend="1073" declfile="leasy/lua/ldo.h" declline="83" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1ae7b562a20f9c279b33b2204ac7f3da32" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref></type>
+        <definition>LUAI_FUNC TStatus luaD_pcall</definition>
+        <argsstring>(lua_State *L, Pfunc func, void *u, ptrdiff_t oldtop, ptrdiff_t ef)</argsstring>
+        <name>luaD_pcall</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="ldo_8h_1a078cb45ebb3f039a69795174f45d204c" kindref="member">Pfunc</ref></type>
+          <declname>func</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>u</declname>
+        </param>
+        <param>
+          <type>ptrdiff_t</type>
+          <declname>oldtop</declname>
+        </param>
+        <param>
+          <type>ptrdiff_t</type>
+          <declname>ef</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="85" column="19" bodyfile="leasy/lua/ldo.c" bodystart="1081" bodyend="1098" declfile="leasy/lua/ldo.h" declline="85" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1aad708050f55765598080827d799e60fb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaD_poscall</definition>
+        <argsstring>(lua_State *L, CallInfo *ci, int nres)</argsstring>
+        <name>luaD_poscall</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_call_info" kindref="compound">CallInfo</ref> *</type>
+          <declname>ci</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nres</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="87" column="16" bodyfile="leasy/lua/ldo.c" bodystart="605" bodyend="615" declfile="leasy/lua/ldo.h" declline="87" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1a5746aab4e55af0e04b32445e4673e7a9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaD_reallocstack</definition>
+        <argsstring>(lua_State *L, int newsize, int raiseerror)</argsstring>
+        <name>luaD_reallocstack</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>newsize</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>raiseerror</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="88" column="15" bodyfile="leasy/lua/ldo.c" bodystart="322" bodyend="346" declfile="leasy/lua/ldo.h" declline="88" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1a65231426ec94e3bca44e117d7198604a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaD_growstack</definition>
+        <argsstring>(lua_State *L, int n, int raiseerror)</argsstring>
+        <name>luaD_growstack</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>raiseerror</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="89" column="15" bodyfile="leasy/lua/ldo.c" bodystart="353" bodyend="380" declfile="leasy/lua/ldo.h" declline="89" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1a14e1a8d3ba0e5f6d55decb8b48826750" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaD_shrinkstack</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaD_shrinkstack</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="90" column="16" bodyfile="leasy/lua/ldo.c" bodystart="411" bodyend="423" declfile="leasy/lua/ldo.h" declline="90" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1add74ee2069a98380598ae06b509db9a6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaD_inctop</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaD_inctop</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="91" column="16" bodyfile="leasy/lua/ldo.c" bodystart="426" bodyend="429" declfile="leasy/lua/ldo.h" declline="91" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1a6b356e00a8d62979af278c85cfc2a6c2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaD_checkminstack</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaD_checkminstack</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="92" column="15" bodyfile="leasy/lua/ldo.c" bodystart="228" bodyend="231" declfile="leasy/lua/ldo.h" declline="92" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1a2ae74fde0d38b7eb652fc0f74facedb9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref></type>
+        <definition>LUAI_FUNC l_noret luaD_throw</definition>
+        <argsstring>(lua_State *L, TStatus errcode)</argsstring>
+        <name>luaD_throw</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref></type>
+          <declname>errcode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="94" column="19" bodyfile="leasy/lua/ldo.c" bodystart="125" bodyend="147" declfile="leasy/lua/ldo.h" declline="94" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1ae1c52718b47b5542af8ad7e2d929890f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref></type>
+        <definition>LUAI_FUNC l_noret luaD_throwbaselevel</definition>
+        <argsstring>(lua_State *L, TStatus errcode)</argsstring>
+        <name>luaD_throwbaselevel</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref></type>
+          <declname>errcode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="95" column="19" bodyfile="leasy/lua/ldo.c" bodystart="150" bodyend="157" declfile="leasy/lua/ldo.h" declline="95" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="ldo_8h_1aae7efc01bf2929bb1f3f06f4c403c963" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref></type>
+        <definition>LUAI_FUNC TStatus luaD_rawrunprotected</definition>
+        <argsstring>(lua_State *L, Pfunc f, void *ud)</argsstring>
+        <name>luaD_rawrunprotected</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="ldo_8h_1a078cb45ebb3f039a69795174f45d204c" kindref="member">Pfunc</ref></type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>ud</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.h" line="96" column="19" bodyfile="leasy/lua/ldo.c" bodystart="160" bodyend="170" declfile="leasy/lua/ldo.h" declline="96" declcolumn="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>ldo.h<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Stack<sp/>and<sp/>Call<sp/>structure<sp/>of<sp/>Lua</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ldo_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ldo_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="llimits_8h" kindref="compound">llimits.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lobject_8h" kindref="compound">lobject.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lstate_8h" kindref="compound">lstate.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lzio_8h" kindref="compound">lzio.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment">**<sp/>Macro<sp/>to<sp/>check<sp/>stack<sp/>size<sp/>and<sp/>grow<sp/>stack<sp/>if<sp/>needed.<sp/><sp/>Parameters</highlight></codeline>
+<codeline lineno="19"><highlight class="comment">**<sp/>&apos;pre&apos;/&apos;pos&apos;<sp/>allow<sp/>the<sp/>macro<sp/>to<sp/>preserve<sp/>a<sp/>pointer<sp/>into<sp/>the</highlight></codeline>
+<codeline lineno="20"><highlight class="comment">**<sp/>stack<sp/>across<sp/>reallocations,<sp/>doing<sp/>the<sp/>work<sp/>only<sp/>when<sp/>needed.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment">**<sp/>It<sp/>also<sp/>allows<sp/>the<sp/>running<sp/>of<sp/>one<sp/>GC<sp/>step<sp/>when<sp/>the<sp/>stack<sp/>is</highlight></codeline>
+<codeline lineno="22"><highlight class="comment">**<sp/>reallocated.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment">**<sp/>&apos;condmovestack&apos;<sp/>is<sp/>used<sp/>in<sp/>heavy<sp/>tests<sp/>to<sp/>force<sp/>a<sp/>stack<sp/>reallocation</highlight></codeline>
+<codeline lineno="24"><highlight class="comment">**<sp/>at<sp/>every<sp/>check.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(HARDSTACKTESTS)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="ldo_8h_1a51890ff33a337eee53fc73934fa7ba89" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>condmovestack(L,pre,pos)<sp/><sp/><sp/><sp/>((void)0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>realloc<sp/>stack<sp/>keeping<sp/>its<sp/>size<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>condmovestack(L,pre,pos)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="32"><highlight class="preprocessor"><sp/><sp/>{<sp/>int<sp/>sz_<sp/>=<sp/>stacksize(L);<sp/>pre;<sp/>luaD_reallocstack((L),<sp/>sz_,<sp/>0);<sp/>pos;<sp/>}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="ldo_8h_1acb25d187c7a97397acc30a95b20d80af" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaD_checkstackaux(L,n,pre,pos)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="36"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>if<sp/>(l_unlikely(L-&gt;stack_last.p<sp/>-<sp/>L-&gt;top.p<sp/>&lt;=<sp/>(n)))<sp/>\</highlight></codeline>
+<codeline lineno="37"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/>pre;<sp/>luaD_growstack(L,<sp/>n,<sp/>1);<sp/>pos;<sp/>}<sp/>\</highlight></codeline>
+<codeline lineno="38"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>else<sp/>{<sp/>condmovestack(L,pre,pos);<sp/>}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>In<sp/>general,<sp/>&apos;pre&apos;/&apos;pos&apos;<sp/>are<sp/>empty<sp/>(nothing<sp/>to<sp/>save)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="ldo_8h_1ab1500a6449b9cdf335e3c7ce23aa85d7" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaD_checkstack(L,n)<sp/><sp/><sp/><sp/>luaD_checkstackaux(L,n,(void)0,(void)0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="ldo_8h_1a49fcb6f4b1b2f21c2caca544e3c5a028" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>savestack(L,pt)<sp/><sp/><sp/><sp/><sp/>(cast_charp(pt)<sp/>-<sp/>cast_charp(L-&gt;stack.p))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="ldo_8h_1a3fbde7f289e6bf661575e9b802da9e78" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>restorestack(L,n)<sp/><sp/><sp/>cast(StkId,<sp/>cast_charp(L-&gt;stack.p)<sp/>+<sp/>(n))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>macro<sp/>to<sp/>check<sp/>stack<sp/>size,<sp/>preserving<sp/>&apos;p&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50" refid="ldo_8h_1a40f82b578048e3e808fe707fa49f9aa9" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>checkstackp(L,n,p)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="51"><highlight class="preprocessor"><sp/><sp/>luaD_checkstackaux(L,<sp/>n,<sp/>\</highlight></codeline>
+<codeline lineno="52"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>ptrdiff_t<sp/>t__<sp/>=<sp/>savestack(L,<sp/>p),<sp/><sp/></highlight><highlight class="comment">/*<sp/>save<sp/>&apos;p&apos;<sp/>*/</highlight><highlight class="preprocessor"><sp/>\</highlight></codeline>
+<codeline lineno="53"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>p<sp/>=<sp/>restorestack(L,<sp/>t__))<sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;pos&apos;<sp/>part:<sp/>restore<sp/>&apos;p&apos;<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="57"><highlight class="comment">**<sp/>Maximum<sp/>depth<sp/>for<sp/>nested<sp/>C<sp/>calls,<sp/>syntactical<sp/>nested<sp/>non-terminals,</highlight></codeline>
+<codeline lineno="58"><highlight class="comment">**<sp/>and<sp/>other<sp/>features<sp/>implemented<sp/>through<sp/>recursion<sp/>in<sp/>C.<sp/>(Value<sp/>must</highlight></codeline>
+<codeline lineno="59"><highlight class="comment">**<sp/>fit<sp/>in<sp/>a<sp/>16-bit<sp/>unsigned<sp/>integer.<sp/>It<sp/>must<sp/>also<sp/>be<sp/>compatible<sp/>with</highlight></codeline>
+<codeline lineno="60"><highlight class="comment">**<sp/>the<sp/>size<sp/>of<sp/>the<sp/>C<sp/>stack.)</highlight></codeline>
+<codeline lineno="61"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(LUAI_MAXCCALLS)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63" refid="ldo_8h_1a0787aa9ccb00f5d9b11ad4f7174e4bdb" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUAI_MAXCCALLS<sp/><sp/><sp/><sp/><sp/><sp/>200</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>type<sp/>of<sp/>protected<sp/>functions,<sp/>to<sp/>be<sp/>ran<sp/>by<sp/>&apos;runprotected&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="ldo_8h_1a078cb45ebb3f039a69795174f45d204c" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>void<sp/>(*<ref refid="ldo_8h_1a078cb45ebb3f039a69795174f45d204c" kindref="member">Pfunc</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*ud);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref><sp/><ref refid="ldo_8h_1afddbc7b0278cd2f84d0948a0ceb08688" kindref="member">luaD_errerr</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ldo_8h_1af1aa242d37b6ba942768541e7a87ca4e" kindref="member">luaD_seterrorobj</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref><sp/>errcode,<sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>oldtop);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref><sp/><ref refid="ldo_8h_1acc74898376f56b9bc223ae78d100f898" kindref="member">luaD_protectedparser</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref><sp/>*z,</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*name,</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*mode);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ldo_8h_1a060cfb719bf195b2e3dc8dd643a4ff88" kindref="member">luaD_hook</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>event,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>line,</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>fTransfer,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nTransfer);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ldo_8h_1a6c91c75f4177f4d5f7d45e934d4a8a02" kindref="member">luaD_hookcall</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_call_info" kindref="compound">CallInfo</ref><sp/>*ci);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="ldo_8h_1a7c249b63b687c83168f6647b36eff2f8" kindref="member">luaD_pretailcall</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_call_info" kindref="compound">CallInfo</ref><sp/>*ci,<sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>func,</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>narg1,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>delta);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="struct_call_info" kindref="compound">CallInfo</ref><sp/>*<ref refid="ldo_8h_1a35dac5e865b09bba0e4229d8ef75076a" kindref="member">luaD_precall</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>func,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nResults);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ldo_8h_1a4797364de1dd297aac52f9c10565523f" kindref="member">luaD_call</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>func,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nResults);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ldo_8h_1a5315637506edcbdd30e9271e75416ae1" kindref="member">luaD_callnoyield</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>func,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nResults);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref><sp/><ref refid="ldo_8h_1a9c0872e620bb95e9365f6437a99bd602" kindref="member">luaD_closeprotected</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/>ptrdiff_t<sp/>level,</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref><sp/>status);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref><sp/><ref refid="ldo_8h_1ae7b562a20f9c279b33b2204ac7f3da32" kindref="member">luaD_pcall</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="ldo_8h_1a078cb45ebb3f039a69795174f45d204c" kindref="member">Pfunc</ref><sp/>func,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*u,</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ptrdiff_t<sp/>oldtop,<sp/>ptrdiff_t<sp/>ef);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ldo_8h_1aad708050f55765598080827d799e60fb" kindref="member">luaD_poscall</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_call_info" kindref="compound">CallInfo</ref><sp/>*ci,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nres);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="ldo_8h_1a5746aab4e55af0e04b32445e4673e7a9" kindref="member">luaD_reallocstack</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>newsize,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>raiseerror);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="ldo_8h_1a65231426ec94e3bca44e117d7198604a" kindref="member">luaD_growstack</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>raiseerror);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ldo_8h_1a14e1a8d3ba0e5f6d55decb8b48826750" kindref="member">luaD_shrinkstack</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ldo_8h_1add74ee2069a98380598ae06b509db9a6" kindref="member">luaD_inctop</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="ldo_8h_1a6b356e00a8d62979af278c85cfc2a6c2" kindref="member">luaD_checkminstack</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref><sp/><ref refid="ldo_8h_1a2ae74fde0d38b7eb652fc0f74facedb9" kindref="member">luaD_throw</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref><sp/>errcode);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref><sp/><ref refid="ldo_8h_1ae1c52718b47b5542af8ad7e2d929890f" kindref="member">luaD_throwbaselevel</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref><sp/>errcode);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref><sp/><ref refid="ldo_8h_1aae7efc01bf2929bb1f3f06f4c403c963" kindref="member">luaD_rawrunprotected</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="ldo_8h_1a078cb45ebb3f039a69795174f45d204c" kindref="member">Pfunc</ref><sp/>f,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*ud);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/ldo.h"/>
+  </compounddef>
+</doxygen>

@@ -5788,3 +5788,4 @@ int Game_Interpreter::ManiacBitmask(int value, int mask) const {
 
 	return value;
 }
+

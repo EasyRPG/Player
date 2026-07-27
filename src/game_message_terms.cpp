@@ -668,3 +668,4 @@ std::string GetItemReceivedMessage(const lcf::rpg::Item* item) {
 }
 
 } // namespace PartyMessage
+

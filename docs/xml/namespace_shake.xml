@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_shake" kind="namespace" language="C++">
+    <compoundname>Shake</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_shake_1af66a32b9a5692e6e4a3d67ccc7d5345c" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Shake::kShakeContinuousTimeStart</definition>
+        <argsstring></argsstring>
+        <name>kShakeContinuousTimeStart</name>
+        <qualifiedname>Shake::kShakeContinuousTimeStart</qualifiedname>
+        <initializer>= 65535</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="shake.h" line="28" column="22" bodyfile="shake.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_shake_1a88e370ca99795c54202e8d68cd72eb01" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Shake::NextPosition</definition>
+        <argsstring>(int strength, int speed, int time_left, int position)</argsstring>
+        <name>NextPosition</name>
+        <qualifiedname>Shake::NextPosition</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>strength</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>speed</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>time_left</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>position</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes new shake position from inputs</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>strength</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>strength of shake effect </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>speed</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>speed of shake effect </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>time_left</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>amount of time left for shake effect </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>position</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>current shake position </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="shake.h" line="38" column="12" bodyfile="shake.h" bodystart="38" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_shake_1a53fc3d282181728e8444d5e978f2ac63" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Shake::Update</definition>
+        <argsstring>(int32_t &amp;position, int32_t &amp;time_left, int32_t strength, int32_t speed, bool continuous)</argsstring>
+        <name>Update</name>
+        <qualifiedname>Shake::Update</qualifiedname>
+        <param>
+          <type>int32_t &amp;</type>
+          <declname>position</declname>
+        </param>
+        <param>
+          <type>int32_t &amp;</type>
+          <declname>time_left</declname>
+        </param>
+        <param>
+          <type>int32_t</type>
+          <declname>strength</declname>
+        </param>
+        <param>
+          <type>int32_t</type>
+          <declname>speed</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>continuous</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Perform one time step of shake animation</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>position</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>shake position </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>time_left</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>amount of time left for shake effect </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>strength</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>strength of shake effect </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>speed</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>speed of shake effect </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>continous</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>whether this is a continuous shake </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="shake.h" line="55" column="13" bodyfile="shake.h" bodystart="55" bodyend="73"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Contains helper functions for flash effect </para>
+    </detaileddescription>
+    <location file="shake.h" line="27" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,309 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_rand" kind="namespace" language="C++">
+    <compoundname>Rand</compoundname>
+    <innerclass refid="class_rand_1_1_lock_guard" prot="public">Rand::LockGuard</innerclass>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespace_rand_1a422ce889f95d08869cf54b185baa95b8" prot="public" static="no">
+        <type>std::mt19937</type>
+        <definition>using Rand::RNG = std::mt19937</definition>
+        <argsstring></argsstring>
+        <name>RNG</name>
+        <qualifiedname>Rand::RNG</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The random number generator object to use </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="36" column="1" bodyfile="rand.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_rand_1a1c0fe37f0d80509213973f2b5765931f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int32_t</type>
+        <definition>int32_t Rand::GetRandomNumber</definition>
+        <argsstring>(int32_t from, int32_t to)</argsstring>
+        <name>GetRandomNumber</name>
+        <qualifiedname>Rand::GetRandomNumber</qualifiedname>
+        <param>
+          <type>int32_t</type>
+          <declname>from</declname>
+        </param>
+        <param>
+          <type>int32_t</type>
+          <declname>to</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets a random number in the inclusive range from - to.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>from</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Interval start </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>to</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Interval end </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Random number in inclusive interval </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="45" column="9" bodyfile="rand.cpp" bodystart="60" bodyend="75" declfile="rand.h" declline="45" declcolumn="9"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_rand_1adde7e33a40cb28170efe6b79e6dbfff2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespace_rand_1a422ce889f95d08869cf54b185baa95b8" kindref="member">RNG</ref> &amp;</type>
+        <definition>Rand::RNG &amp; Rand::GetRNG</definition>
+        <argsstring>()</argsstring>
+        <name>GetRNG</name>
+        <qualifiedname>Rand::GetRNG</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the seeded Random Number Generator (<ref refid="namespace_rand_1a422ce889f95d08869cf54b185baa95b8" kindref="member">RNG</ref>).</para>
+<para><simplesect kind="return"><para>the random number generator </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="52" column="5" bodyfile="rand.cpp" bodystart="77" bodyend="79" declfile="rand.h" declline="52" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_rand_1abea06593507b0e10f011083bacb688e9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Rand::ChanceOf</definition>
+        <argsstring>(int32_t n, int32_t m)</argsstring>
+        <name>ChanceOf</name>
+        <qualifiedname>Rand::ChanceOf</qualifiedname>
+        <param>
+          <type>int32_t</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>int32_t</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Has an n/m chance of returning true. If n&gt;m, always returns true.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of times out of m to return true (non-negative) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>denominator of the probability (positive) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true with probability n/m, false with probability 1-n/m </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="61" column="6" bodyfile="rand.cpp" bodystart="81" bodyend="84" declfile="rand.h" declline="61" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_rand_1acb944e57feeca8e16ce711831cc2c69f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Rand::PercentChance</definition>
+        <argsstring>(float rate)</argsstring>
+        <name>PercentChance</name>
+        <qualifiedname>Rand::PercentChance</qualifiedname>
+        <param>
+          <type>float</type>
+          <declname>rate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Rolls a random number in [0.0f, 1.0f) returns true if it&apos;s less than rate.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>rate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a value in [0.0f, 1.0f]. Values out of this range are clamped. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true with probability rate. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="69" column="6" bodyfile="rand.cpp" bodystart="86" bodyend="89" declfile="rand.h" declline="69" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_rand_1a80ea5b081edef9248aba0bfbc388405a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Rand::PercentChance</definition>
+        <argsstring>(int rate)</argsstring>
+        <name>PercentChance</name>
+        <qualifiedname>Rand::PercentChance</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>rate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Rolls a random number in [0, 99] and returns true if it&apos;s less than rate.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>rate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a value in [0, 100]. Values out of this range are clamped. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true with probability rate. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="77" column="6" bodyfile="rand.cpp" bodystart="91" bodyend="93" declfile="rand.h" declline="77" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_rand_1a1f2375dc8445bf30e76f02324aecc2fc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Rand::PercentChance</definition>
+        <argsstring>(long rate)</argsstring>
+        <name>PercentChance</name>
+        <qualifiedname>Rand::PercentChance</qualifiedname>
+        <param>
+          <type>long</type>
+          <declname>rate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="142" column="13" bodyfile="rand.h" bodystart="142" bodyend="144" declfile="rand.h" declline="78" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_rand_1a86018b4e911dc4e87b4d948349b5f128" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Rand::SeedRandomNumberGenerator</definition>
+        <argsstring>(int32_t seed)</argsstring>
+        <name>SeedRandomNumberGenerator</name>
+        <qualifiedname>Rand::SeedRandomNumberGenerator</qualifiedname>
+        <param>
+          <type>int32_t</type>
+          <declname>seed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Seeds the <ref refid="namespace_rand_1a422ce889f95d08869cf54b185baa95b8" kindref="member">RNG</ref> used by GetRandomNumber and ChanceOf.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>seed</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Seed to use </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="85" column="6" bodyfile="rand.cpp" bodystart="95" bodyend="98" declfile="rand.h" declline="85" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_rand_1a875500296e4f62559db26b8ab621df7b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Rand::LockRandom</definition>
+        <argsstring>(int32_t lock_value)</argsstring>
+        <name>LockRandom</name>
+        <qualifiedname>Rand::LockRandom</qualifiedname>
+        <param>
+          <type>int32_t</type>
+          <declname>lock_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Forces <ref refid="namespace_rand_1a1c0fe37f0d80509213973f2b5765931f" kindref="member">GetRandomNumber()</ref> and all dervative functions to return a fixed value. Useful for testing.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>lock_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the value to set. A calls to GetRandomNumber(a, b) will return clamp(lock_value, a, b) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="post"><para>All calls to GetRandomNumber(a, b) will return clamp(lock_value, a, b) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="94" column="6" bodyfile="rand.cpp" bodystart="100" bodyend="103" declfile="rand.h" declline="94" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_rand_1a79daa8470a49c5c13d808ba21c4355ae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Rand::UnlockRandom</definition>
+        <argsstring>()</argsstring>
+        <name>UnlockRandom</name>
+        <qualifiedname>Rand::UnlockRandom</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Disables locked random number and returns <ref refid="namespace_rand_1a422ce889f95d08869cf54b185baa95b8" kindref="member">RNG</ref> to original state. <simplesect kind="post"><para>All calls to GetRandomNumber(a, b) will return random values. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="100" column="6" bodyfile="rand.cpp" bodystart="105" bodyend="107" declfile="rand.h" declline="100" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_rand_1a72a9ec88fad246a78991d0ddcd1f3804" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::pair&lt; bool, int32_t &gt;</type>
+        <definition>std::pair&lt; bool, int32_t &gt; Rand::GetRandomLocked</definition>
+        <argsstring>()</argsstring>
+        <name>GetRandomLocked</name>
+        <qualifiedname>Rand::GetRandomLocked</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrive whether random numbers are locked and if so, which value they are locked to. <simplesect kind="return"><para>whether or not random numbers are locked and if so, to what value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="106" column="11" bodyfile="rand.cpp" bodystart="109" bodyend="111" declfile="rand.h" declline="106" declcolumn="11"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="rand.h" line="32" column="1"/>
+  </compounddef>
+</doxygen>

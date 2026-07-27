@@ -1,0 +1,667 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_scene___settings" kind="class" language="C++" prot="public">
+    <compoundname>Scene_Settings</compoundname>
+    <basecompoundref refid="class_scene" prot="public" virt="non-virtual">Scene</basecompoundref>
+    <includes refid="scene__settings_8h" local="no">scene_settings.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_scene___settings_1a9af74be12778d2328e5eb4815f2110ca" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___command" kindref="compound">Window_Command</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Command&gt; Scene_Settings::main_window</definition>
+        <argsstring></argsstring>
+        <name>main_window</name>
+        <qualifiedname>Scene_Settings::main_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="77" column="17" bodyfile="scene_settings.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___settings_1a931f2d9fcb6122b0d2c93b941a012ef5" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___help" kindref="compound">Window_Help</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Help&gt; Scene_Settings::help_window</definition>
+        <argsstring></argsstring>
+        <name>help_window</name>
+        <qualifiedname>Scene_Settings::help_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="78" column="17" bodyfile="scene_settings.h" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___settings_1a2db11f382602b386671e70cc06e9ac88" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___help" kindref="compound">Window_Help</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Help&gt; Scene_Settings::help_window2</definition>
+        <argsstring></argsstring>
+        <name>help_window2</name>
+        <qualifiedname>Scene_Settings::help_window2</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="79" column="17" bodyfile="scene_settings.h" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___settings_1af7658a44c89d007b12caa4b4131f2619" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___about" kindref="compound">Window_About</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_About&gt; Scene_Settings::about_window</definition>
+        <argsstring></argsstring>
+        <name>about_window</name>
+        <qualifiedname>Scene_Settings::about_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="80" column="17" bodyfile="scene_settings.h" bodystart="80" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___settings_1a70fdb3fce3cc6d09c3fb52c645a6a848" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___settings" kindref="compound">Window_Settings</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Settings&gt; Scene_Settings::options_window</definition>
+        <argsstring></argsstring>
+        <name>options_window</name>
+        <qualifiedname>Scene_Settings::options_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="81" column="17" bodyfile="scene_settings.h" bodystart="81" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___settings_1adf10c9f364db9508feb1ad5b77514180" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___input_settings" kindref="compound">Window_InputSettings</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_InputSettings&gt; Scene_Settings::input_window</definition>
+        <argsstring></argsstring>
+        <name>input_window</name>
+        <qualifiedname>Scene_Settings::input_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="82" column="17" bodyfile="scene_settings.h" bodystart="82" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___settings_1acc486e776a3f836e4488594f17b85406" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___help" kindref="compound">Window_Help</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Help&gt; Scene_Settings::input_help_window</definition>
+        <argsstring></argsstring>
+        <name>input_help_window</name>
+        <qualifiedname>Scene_Settings::input_help_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="83" column="17" bodyfile="scene_settings.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___settings_1ac08d9730f0d5eafd6a8240210f60c518" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___command___horizontal" kindref="compound">Window_Command_Horizontal</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Command_Horizontal&gt; Scene_Settings::input_mode_window</definition>
+        <argsstring></argsstring>
+        <name>input_mode_window</name>
+        <qualifiedname>Scene_Settings::input_mode_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="84" column="17" bodyfile="scene_settings.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___settings_1af8043336060c46558982b2115e0196ed" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___command" kindref="compound">Window_Command</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Command&gt; Scene_Settings::picker_window</definition>
+        <argsstring></argsstring>
+        <name>picker_window</name>
+        <qualifiedname>Scene_Settings::picker_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="85" column="17" bodyfile="scene_settings.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___settings_1af8d6ec8e47746a725e0031f629f45681" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___number_input" kindref="compound">Window_NumberInput</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_NumberInput&gt; Scene_Settings::number_window</definition>
+        <argsstring></argsstring>
+        <name>number_window</name>
+        <qualifiedname>Scene_Settings::number_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="86" column="17" bodyfile="scene_settings.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___settings_1adeb6b9245f36b1c4b9bce188c9159e91" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___help" kindref="compound">Window_Help</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Help&gt; Scene_Settings::font_size_window</definition>
+        <argsstring></argsstring>
+        <name>font_size_window</name>
+        <qualifiedname>Scene_Settings::font_size_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="87" column="17" bodyfile="scene_settings.h" bodystart="87" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___settings_1a2476b69d7de15137f5b47ead4835113c" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_sprite" kindref="compound">Sprite</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Sprite&gt; Scene_Settings::title</definition>
+        <argsstring></argsstring>
+        <name>title</name>
+        <qualifiedname>Scene_Settings::title</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="89" column="17" bodyfile="scene_settings.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___settings_1a6aa2fd7f59562cc1714e8911375da6a7" prot="private" static="no" mutable="no">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding Scene_Settings::request_id</definition>
+        <argsstring></argsstring>
+        <name>request_id</name>
+        <qualifiedname>Scene_Settings::request_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="90" column="20" bodyfile="scene_settings.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___settings_1a1a78537788c83c912ebc4bca30200c56" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Settings::input_reset_counter</definition>
+        <argsstring></argsstring>
+        <name>input_reset_counter</name>
+        <qualifiedname>Scene_Settings::input_reset_counter</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="91" column="5" bodyfile="scene_settings.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___settings_1af2998524e71cfa77071d9c5cdce8cd8a" prot="private" static="no" mutable="no">
+        <type><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562" kindref="member">Window_Settings::UiMode</ref></type>
+        <definition>Window_Settings::UiMode Scene_Settings::mode</definition>
+        <argsstring></argsstring>
+        <name>mode</name>
+        <qualifiedname>Scene_Settings::mode</qualifiedname>
+        <initializer>= <ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a32c65fb5e75649fd5b7023df88c972da" kindref="member">Window_Settings::eNone</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="93" column="25" bodyfile="scene_settings.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___settings_1ab3e2e44a099be8638e68ff817d2f15c2" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::pair&lt; <ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562" kindref="member">Window_Settings::UiMode</ref>, std::string &gt; &gt;</type>
+        <definition>std::vector&lt;std::pair&lt;Window_Settings::UiMode, std::string&gt; &gt; Scene_Settings::root_options</definition>
+        <argsstring></argsstring>
+        <name>root_options</name>
+        <qualifiedname>Scene_Settings::root_options</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="95" column="13" bodyfile="scene_settings.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_scene___settings_1a31bf818c3a5586fb5f64b06c815bffce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Scene_Settings::Scene_Settings</definition>
+        <argsstring>()</argsstring>
+        <name>Scene_Settings</name>
+        <qualifiedname>Scene_Settings::Scene_Settings</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="45" column="1" bodyfile="scene_settings.cpp" bodystart="47" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___settings_1a301ab8cdb10b864ed04f51b1d8ba29c4" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Settings::Start</definition>
+        <argsstring>() override</argsstring>
+        <name>Start</name>
+        <qualifiedname>Scene_Settings::Start</qualifiedname>
+        <reimplements refid="class_scene_1a31e0e1b9ce39bd9f5ec160835cc94d44">Start</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Start processing. This function is executed while the screen is faded out. All objects needed for the scene should be created here. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="47" column="6" bodyfile="scene_settings.cpp" bodystart="133" bodyend="140"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___settings_1a3dc8d7b40d82b73006bad55ad378305e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Settings::Refresh</definition>
+        <argsstring>() override</argsstring>
+        <name>Refresh</name>
+        <qualifiedname>Scene_Settings::Refresh</qualifiedname>
+        <reimplements refid="class_scene_1a5ecd59170e0a54d6216ccebd76702dd6">Refresh</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called when data was modified from the outside and must be reloaded. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="48" column="6" bodyfile="scene_settings.cpp" bodystart="209" bodyend="211"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___settings_1a413dd04c7e7d36756606892201f77461" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Settings::vUpdate</definition>
+        <argsstring>() override</argsstring>
+        <name>vUpdate</name>
+        <qualifiedname>Scene_Settings::vUpdate</qualifiedname>
+        <reimplements refid="class_scene_1a8111b81e59b90b6711e9a39a507a32eb">vUpdate</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called every frame from Update. The scene should redraw all elements. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="49" column="6" bodyfile="scene_settings.cpp" bodystart="213" bodyend="299"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_scene___settings_1adf592fcc29f8355aec020a696805bef4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Settings::SaveConfig</definition>
+        <argsstring>(bool silent=false)</argsstring>
+        <name>SaveConfig</name>
+        <qualifiedname>Scene_Settings::SaveConfig</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>silent</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Saves the configuration to the global config file. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>silent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>When true only log messages instead of displaying them </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether saving was successful </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="56" column="13" bodyfile="scene_settings.cpp" bodystart="652" bodyend="681"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_scene___settings_1a32c5030ef2afbd56c771f4a6beb87e7f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Settings::CreateMainWindow</definition>
+        <argsstring>()</argsstring>
+        <name>CreateMainWindow</name>
+        <qualifiedname>Scene_Settings::CreateMainWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="59" column="6" bodyfile="scene_settings.cpp" bodystart="63" bodyend="97"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___settings_1a9b253f266d45e1d81ba5e462125d6015" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Settings::CreateOptionsWindow</definition>
+        <argsstring>()</argsstring>
+        <name>CreateOptionsWindow</name>
+        <qualifiedname>Scene_Settings::CreateOptionsWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="60" column="6" bodyfile="scene_settings.cpp" bodystart="99" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___settings_1a5d95c953a4e7f1bb8f84e5e32e6fd6e6" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Settings::CreateTitleGraphic</definition>
+        <argsstring>()</argsstring>
+        <name>CreateTitleGraphic</name>
+        <qualifiedname>Scene_Settings::CreateTitleGraphic</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="62" column="6" bodyfile="scene_settings.cpp" bodystart="51" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___settings_1a2b2e27af78b67289a6946257e77ca2e5" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Settings::OnTitleSpriteReady</definition>
+        <argsstring>(FileRequestResult *result)</argsstring>
+        <name>OnTitleSpriteReady</name>
+        <qualifiedname>Scene_Settings::OnTitleSpriteReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="63" column="6" bodyfile="scene_settings.cpp" bodystart="301" bodyend="313"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___settings_1ad58bbd206bfc45233d4d1144e4b3b0d3" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Settings::SetMode</definition>
+        <argsstring>(Window_Settings::UiMode new_mode)</argsstring>
+        <name>SetMode</name>
+        <qualifiedname>Scene_Settings::SetMode</qualifiedname>
+        <param>
+          <type><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562" kindref="member">Window_Settings::UiMode</ref></type>
+          <declname>new_mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="65" column="6" bodyfile="scene_settings.cpp" bodystart="142" bodyend="207"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___settings_1af4f2e25c7392b7b7b48d4fc5dad5b94f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Settings::UpdateMain</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateMain</name>
+        <qualifiedname>Scene_Settings::UpdateMain</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="67" column="6" bodyfile="scene_settings.cpp" bodystart="315" bodyend="347"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___settings_1a626bcd24184ca952b7f85bcc6c71b148" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Settings::UpdateOptions</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateOptions</name>
+        <qualifiedname>Scene_Settings::UpdateOptions</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="68" column="6" bodyfile="scene_settings.cpp" bodystart="349" bodyend="464"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___settings_1aa10f657a626d039c27c89b4af53eba0b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Settings::UpdateFont</definition>
+        <argsstring>(bool mincho)</argsstring>
+        <name>UpdateFont</name>
+        <qualifiedname>Scene_Settings::UpdateFont</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>mincho</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="69" column="6" bodyfile="scene_settings.cpp" bodystart="466" bodyend="526"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___settings_1ac27aa8859453d1553eae5ae69e54568e" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Settings::UpdateButtonOption</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateButtonOption</name>
+        <qualifiedname>Scene_Settings::UpdateButtonOption</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="70" column="6" bodyfile="scene_settings.cpp" bodystart="528" bodyend="554"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___settings_1aea238dda5cb2d45f04a95ecfdc127659" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Settings::UpdateButtonAdd</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateButtonAdd</name>
+        <qualifiedname>Scene_Settings::UpdateButtonAdd</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="71" column="6" bodyfile="scene_settings.cpp" bodystart="556" bodyend="591"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___settings_1a1219b87ad9cd5265dc1f9635bd31b722" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Settings::UpdateButtonRemove</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateButtonRemove</name>
+        <qualifiedname>Scene_Settings::UpdateButtonRemove</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="72" column="6" bodyfile="scene_settings.cpp" bodystart="593" bodyend="602"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___settings_1ac369fa6fb011c6487af184041dab36e9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Settings::RefreshInputEmergencyReset</definition>
+        <argsstring>()</argsstring>
+        <name>RefreshInputEmergencyReset</name>
+        <qualifiedname>Scene_Settings::RefreshInputEmergencyReset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="74" column="6" bodyfile="scene_settings.cpp" bodystart="604" bodyend="643"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___settings_1a5243dddd32fadcd72dd8f29011a4e23c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Settings::RefreshInputActionAllowed</definition>
+        <argsstring>()</argsstring>
+        <name>RefreshInputActionAllowed</name>
+        <qualifiedname>Scene_Settings::RefreshInputActionAllowed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_settings.h" line="75" column="6" bodyfile="scene_settings.cpp" bodystart="645" bodyend="650"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_scene" kindref="compound">Scene</ref> allowing configuration of system state. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="1">
+        <label>Scene_Settings</label>
+        <link refid="class_scene___settings"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="1">
+        <label>Scene_Settings</label>
+        <link refid="class_scene___settings"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="scene_settings.h" line="39" column="1" bodyfile="scene_settings.h" bodystart="39" bodyend="96"/>
+    <listofallmembers>
+      <member refid="class_scene___settings_1af7658a44c89d007b12caa4b4131f2619" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>about_window</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea525fafbc764da0de39c27dea3ffeb3d0" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>ActorTarget</name></member>
+      <member refid="class_scene_1a6091a98761b264c35a150bc28ee4a505" prot="protected" virt="non-virtual"><scope>Scene_Settings</scope><name>async_continuation</name></member>
+      <member refid="class_scene_1a30c5c46dd99e4825df2d69518748c8ac" prot="protected" virt="non-virtual"><scope>Scene_Settings</scope><name>AsyncContinuation</name></member>
+      <member refid="class_scene_1a40aec0ae8ed38526531911eea247398b" prot="protected" virt="non-virtual"><scope>Scene_Settings</scope><name>AsyncNext</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea705f705b65bac2369f3cb10f5e89453a" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Battle</name></member>
+      <member refid="class_scene_1a91e354ab86259cd3bc94c094036280da" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>CheckSceneExit</name></member>
+      <member refid="class_scene_1ac612b681d0de7c100f580b4bc446887b" prot="public" virt="virtual"><scope>Scene_Settings</scope><name>Continue</name></member>
+      <member refid="class_scene___settings_1a32c5030ef2afbd56c771f4a6beb87e7f" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>CreateMainWindow</name></member>
+      <member refid="class_scene___settings_1a9b253f266d45e1d81ba5e462125d6015" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>CreateOptionsWindow</name></member>
+      <member refid="class_scene___settings_1a5d95c953a4e7f1bb8f84e5e32e6fd6e6" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>CreateTitleGraphic</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea418b00b4c130e675ac7512610ed3f473" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Debug</name></member>
+      <member refid="class_scene_1a1fcc0d5308270cc967966da917957bdf" prot="public" virt="virtual"><scope>Scene_Settings</scope><name>DrawBackground</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaee9d4a8ee40ca6e8310597315e07b978" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>End</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea302637f5f0048f4433949f10fc6c8f58" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Equip</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea85a7c5a46a3ca806d41de80e68da80e1" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>File</name></member>
+      <member refid="class_scene_1aa8b96a758c0f1ea4cf28808089ff7123" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Find</name></member>
+      <member refid="class_scene___settings_1adeb6b9245f36b1c4b9bce188c9159e91" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>font_size_window</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea895a9b137f215eee5613d6a546275f5b" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>GameBrowser</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ead885a8fd6d0f378a99ee56a676029bca" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Gameover</name></member>
+      <member refid="class_scene_1ad837b22dff59e9c21f31204d958a24d7" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>GetDrawableList</name></member>
+      <member refid="class_scene_1ab9edda06ab170512d308c0c9fb38056b" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>GetRequestedSceneType</name></member>
+      <member refid="class_scene_1a203eba321fedc8a26c8802f4b9a84e01" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>HasDelayFrames</name></member>
+      <member refid="class_scene_1a1acd1e4345dfecb30c7c35f6d3e8130b" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>HasRequestedScene</name></member>
+      <member refid="class_scene___settings_1a931f2d9fcb6122b0d2c93b941a012ef5" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>help_window</name></member>
+      <member refid="class_scene___settings_1a2db11f382602b386671e70cc06e9ac88" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>help_window2</name></member>
+      <member refid="class_scene___settings_1acc486e776a3f836e4488594f17b85406" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>input_help_window</name></member>
+      <member refid="class_scene___settings_1ac08d9730f0d5eafd6a8240210f60c518" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>input_mode_window</name></member>
+      <member refid="class_scene___settings_1a1a78537788c83c912ebc4bca30200c56" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>input_reset_counter</name></member>
+      <member refid="class_scene___settings_1adf10c9f364db9508feb1ad5b77514180" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>input_window</name></member>
+      <member refid="class_scene_1ac348fc3b0beb12093144a1f03d81449d" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>instance</name></member>
+      <member refid="class_scene_1a5a8c37138fc3a2dda1e0e077b472ab7b" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>IsAsyncPending</name></member>
+      <member refid="class_scene_1a0e0d605d080b286e73a07587d72dfe70" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>IsInitialized</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea70390d274c6e9c167ac095faaa160c7c" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Item</name></member>
+      <member refid="class_scene_1a119de9e0876281a6eee15c7d15618d87" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>kReturnTitleDelayFrames</name></member>
+      <member refid="class_scene_1a563850d0f01381b76420c22ac335a103" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>kStartGameDelayFrames</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea16a3c57786ccf0d21f72a774d43957ab" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>LanguageMenu</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eac3db6576c8c7dc6e5d007d989f5022ea" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Load</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea4615e1aa6a92b7860d342a6aaf642611" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Logo</name></member>
+      <member refid="class_scene___settings_1a9af74be12778d2328e5eb4815f2110ca" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>main_window</name></member>
+      <member refid="class_scene_1ae7f0f916c29e55b282dfe4ae522d2096" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>MainFunction</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eae39f3115e47e2cc1a161ab73db4819a6" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Map</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea2412b59539890965aeb61a22141a781b" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Menu</name></member>
+      <member refid="class_scene___settings_1af2998524e71cfa77071d9c5cdce8cd8a" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>mode</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea05b82d049724f3ca8838b9800e8f3f3e" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Name</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea352ebbd390cdf4d31336a52af54fca32" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Null</name></member>
+      <member refid="class_scene___settings_1af8d6ec8e47746a725e0031f629f45681" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>number_window</name></member>
+      <member refid="class_scene_1a71555af047b54446dfc4fd2b0e6f78bd" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>old_instances</name></member>
+      <member refid="class_scene_1a7388cece257333bb2c98a202135adf51" prot="public" virt="virtual"><scope>Scene_Settings</scope><name>OnEventHpChanged</name></member>
+      <member refid="class_scene_1a80c10e8f0c10921300be168e67ddf3ed" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>OnFinishAsync</name></member>
+      <member refid="class_scene_1a05be417a18748b38a3cd18566edd6d2d" prot="public" virt="virtual"><scope>Scene_Settings</scope><name>OnPartyChanged</name></member>
+      <member refid="class_scene___settings_1a2b2e27af78b67289a6946257e77ca2e5" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>OnTitleSpriteReady</name></member>
+      <member refid="class_scene_1ac6fa936fd2dc55f41889400d36d855e6" prot="public" virt="virtual"><scope>Scene_Settings</scope><name>OnTranslationChanged</name></member>
+      <member refid="class_scene___settings_1a70fdb3fce3cc6d09c3fb52c645a6a848" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>options_window</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea26ab4613edf5d94d74a5e1ad4ec37fa3" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Order</name></member>
+      <member refid="class_scene_1a29b08fddcde74b786ec01129847454ba" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Peek</name></member>
+      <member refid="class_scene___settings_1af8043336060c46558982b2115e0196ed" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>picker_window</name></member>
+      <member refid="class_scene_1a713d07a297477318624fada11415f5e3" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Pop</name></member>
+      <member refid="class_scene_1ac657b33df6c856847d87aa976ae9a9eb" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>PopUntil</name></member>
+      <member refid="class_scene_1a61c10b38185eac9925da70d7fb915890" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Push</name></member>
+      <member refid="class_scene_1afb9e8385131d0524f0d9afa946096709" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>PushTitleScene</name></member>
+      <member refid="class_scene___settings_1a3dc8d7b40d82b73006bad55ad378305e" prot="public" virt="virtual"><scope>Scene_Settings</scope><name>Refresh</name></member>
+      <member refid="class_scene___settings_1a5243dddd32fadcd72dd8f29011a4e23c" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>RefreshInputActionAllowed</name></member>
+      <member refid="class_scene___settings_1ac369fa6fb011c6487af184041dab36e9" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>RefreshInputEmergencyReset</name></member>
+      <member refid="class_scene___settings_1a6aa2fd7f59562cc1714e8911375da6a7" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>request_id</name></member>
+      <member refid="class_scene_1a902f2993901187b05d8e42188b7e8156" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>ReturnToTitleScene</name></member>
+      <member refid="class_scene___settings_1ab3e2e44a099be8638e68ff817d2f15c2" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>root_options</name></member>
+      <member refid="class_scene_1a495973012445184e00a31dd31e217b7e" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>rpgRtSceneFromSceneType</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc195dbdbaa61f7b6b3ecb3236592d17" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Save</name></member>
+      <member refid="class_scene___settings_1adf592fcc29f8355aec020a696805bef4" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>SaveConfig</name></member>
+      <member refid="class_scene_1ad10176d75a9cc0da56626f682d083507" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Scene</name></member>
+      <member refid="class_scene_1a300d6b1274f226a1e69a552858414ba3" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>scene_names</name></member>
+      <member refid="class_scene___settings_1a31bf818c3a5586fb5f64b06c815bffce" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Scene_Settings</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea7484d8e1128440652139839089e85604" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>SceneMax</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09e" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>SceneType</name></member>
+      <member refid="class_scene_1a40c9e3ffb2917b1e3880e2ff5733b1b6" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>SetDelayFrames</name></member>
+      <member refid="class_scene___settings_1ad58bbd206bfc45233d4d1144e4b3b0d3" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>SetMode</name></member>
+      <member refid="class_scene_1a9f641fa0061cebf4294009cb1d860cbe" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>SetRequestedScene</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc93e55e9b1ff9b798d1fb0ee22abab0" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Settings</name></member>
+      <member refid="class_scene_1a287b3a8a6fdaa0eb6e9b43ae7c774c8b" prot="protected" virt="non-virtual"><scope>Scene_Settings</scope><name>SetUseSharedDrawables</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea40484f6fb0aae90d36b27e9f7abfee9c" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Shop</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafd156984a4436ea28706dc0c7873c8fc" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Skill</name></member>
+      <member refid="class_scene___settings_1a301ab8cdb10b864ed04f51b1d8ba29c4" prot="public" virt="virtual"><scope>Scene_Settings</scope><name>Start</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eabe141c1b0922ac825b014da56774c2dc" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Status</name></member>
+      <member refid="class_scene_1ac6413c7a3e405e57e415bec3c3096f26" prot="public" virt="virtual"><scope>Scene_Settings</scope><name>Suspend</name></member>
+      <member refid="class_scene_1a2ac1629e5d081accb6b3d2682c8aac18" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>TakeRequestedScene</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eadce8e1c84d0a06f5a005b24a6e602424" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Teleport</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaf3446103059a7e7c2333b8e0f81377d0" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Title</name></member>
+      <member refid="class_scene___settings_1a2476b69d7de15137f5b47ead4835113c" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>title</name></member>
+      <member refid="class_scene_1a1e97664b3509e2eb64b1aa621634703c" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>TransferDrawablesFrom</name></member>
+      <member refid="class_scene_1a4a594aefe6bd86e17042acf7c76eb0e6" prot="public" virt="virtual"><scope>Scene_Settings</scope><name>TransitionIn</name></member>
+      <member refid="class_scene_1a64d36508ee1971f89c7d5e8513d777b1" prot="public" virt="virtual"><scope>Scene_Settings</scope><name>TransitionOut</name></member>
+      <member refid="class_scene_1a8320189e28f3918a4f0200aedb97ccb5" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>type</name></member>
+      <member refid="class_scene_1a71a71b4f7752b853ff8032b0941a9d8d" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>Update</name></member>
+      <member refid="class_scene___settings_1aea238dda5cb2d45f04a95ecfdc127659" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>UpdateButtonAdd</name></member>
+      <member refid="class_scene___settings_1ac27aa8859453d1553eae5ae69e54568e" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>UpdateButtonOption</name></member>
+      <member refid="class_scene___settings_1a1219b87ad9cd5265dc1f9635bd31b722" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>UpdateButtonRemove</name></member>
+      <member refid="class_scene_1a85503cbb64a2f88b227d926768ed0100" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>UpdateDelayFrames</name></member>
+      <member refid="class_scene___settings_1aa10f657a626d039c27c89b4af53eba0b" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>UpdateFont</name></member>
+      <member refid="class_scene_1affa07b015ecebcf18cc0d652ab9a2fd4" prot="public" virt="virtual"><scope>Scene_Settings</scope><name>UpdateGraphics</name></member>
+      <member refid="class_scene___settings_1af4f2e25c7392b7b7b48d4fc5dad5b94f" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>UpdateMain</name></member>
+      <member refid="class_scene___settings_1a626bcd24184ca952b7f85bcc6c71b148" prot="private" virt="non-virtual"><scope>Scene_Settings</scope><name>UpdateOptions</name></member>
+      <member refid="class_scene_1ac41adc09c7fed6609df594bf5bcdc1c5" prot="public" virt="non-virtual"><scope>Scene_Settings</scope><name>UsesSharedDrawables</name></member>
+      <member refid="class_scene___settings_1a413dd04c7e7d36756606892201f77461" prot="public" virt="virtual"><scope>Scene_Settings</scope><name>vUpdate</name></member>
+      <member refid="class_scene_1aa0a5be58e2ee2d1fdafc5fb46b5e661e" prot="public" virt="virtual"><scope>Scene_Settings</scope><name>~Scene</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

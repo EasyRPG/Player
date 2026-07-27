@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_scene___debug_1_1_stack_frame" kind="struct" language="C++" prot="private">
+    <compoundname>Scene_Debug::StackFrame</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_scene___debug_1_1_stack_frame_1a22f0784ded21b28d4f19e56f07e790db" prot="public" static="no" mutable="no">
+        <type><ref refid="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85" kindref="member">UiMode</ref></type>
+        <definition>UiMode Scene_Debug::StackFrame::uimode</definition>
+        <argsstring></argsstring>
+        <name>uimode</name>
+        <qualifiedname>Scene_Debug::StackFrame::uimode</qualifiedname>
+        <initializer>= <ref refid="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85aadb11e95808cf9e7707dcc76cf1a19aa" kindref="member">eUiMain</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="157" column="8" bodyfile="scene_debug.h" bodystart="157" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_scene___debug_1_1_stack_frame_1a2729b22ca642b775de77ca20de784cc7" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Debug::StackFrame::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>Scene_Debug::StackFrame::value</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="158" column="5" bodyfile="scene_debug.h" bodystart="158" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="scene_debug.h" line="156" column="1" bodyfile="scene_debug.h" bodystart="156" bodyend="159"/>
+    <listofallmembers>
+      <member refid="struct_scene___debug_1_1_stack_frame_1a22f0784ded21b28d4f19e56f07e790db" prot="public" virt="non-virtual"><scope>Scene_Debug::StackFrame</scope><name>uimode</name></member>
+      <member refid="struct_scene___debug_1_1_stack_frame_1a2729b22ca642b775de77ca20de784cc7" prot="public" virt="non-virtual"><scope>Scene_Debug::StackFrame</scope><name>value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

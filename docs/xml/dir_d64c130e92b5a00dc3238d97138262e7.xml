@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_d64c130e92b5a00dc3238d97138262e7" kind="dir">
+    <compoundname>platform/sdl</compoundname>
+    <innerfile refid="axis_8h">axis.h</innerfile>
+    <innerfile refid="sdl_2main_8cpp">main.cpp</innerfile>
+    <innerfile refid="sdl2__audio_8cpp">sdl2_audio.cpp</innerfile>
+    <innerfile refid="sdl2__audio_8h">sdl2_audio.h</innerfile>
+    <innerfile refid="sdl2__ui_8cpp">sdl2_ui.cpp</innerfile>
+    <innerfile refid="sdl2__ui_8h">sdl2_ui.h</innerfile>
+    <innerfile refid="sdl3__audio_8cpp">sdl3_audio.cpp</innerfile>
+    <innerfile refid="sdl3__audio_8h">sdl3_audio.h</innerfile>
+    <innerfile refid="sdl3__ui_8cpp">sdl3_ui.cpp</innerfile>
+    <innerfile refid="sdl3__ui_8h">sdl3_ui.h</innerfile>
+    <innerfile refid="sdl__audio_8cpp">sdl_audio.cpp</innerfile>
+    <innerfile refid="sdl__audio_8h">sdl_audio.h</innerfile>
+    <innerfile refid="sdl__ui_8cpp">sdl_ui.cpp</innerfile>
+    <innerfile refid="sdl__ui_8h">sdl_ui.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/sdl/"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,434 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___base_interpreter_context" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Game_BaseInterpreterContext</compoundname>
+    <derivedcompoundref refid="class_game___interpreter" prot="public" virt="non-virtual">Game_Interpreter</derivedcompoundref>
+    <includes refid="game__interpreter__shared_8h" local="no">game_interpreter_shared.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___base_interpreter_context_1af5a2804abcfd66518de598fa8bb297df" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type></type>
+        <definition>virtual Game_BaseInterpreterContext::~Game_BaseInterpreterContext</definition>
+        <argsstring>()</argsstring>
+        <name>~Game_BaseInterpreterContext</name>
+        <qualifiedname>Game_BaseInterpreterContext::~Game_BaseInterpreterContext</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="159" column="9" bodyfile="game_interpreter_shared.h" bodystart="159" bodyend="159"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___base_interpreter_context_1a3d5b45cb46d26bd52f3d1e49889e0a6a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int Game_BaseInterpreterContext::GetThisEventId</definition>
+        <argsstring>() const =0</argsstring>
+        <name>GetThisEventId</name>
+        <qualifiedname>Game_BaseInterpreterContext::GetThisEventId</qualifiedname>
+        <reimplementedby refid="class_game___interpreter_1ae32a9cf670563f96f7aedb46aa148314">GetThisEventId</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="161" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___base_interpreter_context_1a6cb103dcd7c8cf4a4b6ffad3577193f0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_game___character" kindref="compound">Game_Character</ref> *</type>
+        <definition>virtual Game_Character * Game_BaseInterpreterContext::GetCharacter</definition>
+        <argsstring>(int event_id, std::string_view origin) const =0</argsstring>
+        <name>GetCharacter</name>
+        <qualifiedname>Game_BaseInterpreterContext::GetCharacter</qualifiedname>
+        <reimplementedby refid="class_game___interpreter_1a7d1705d3b6f9cd6c2bca2a9f0269b2b2">GetCharacter</reimplementedby>
+        <param>
+          <type>int</type>
+          <declname>event_id</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>origin</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="162" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___base_interpreter_context_1aee053407ee965cdf8f9544bece117414" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const lcf::rpg::SaveEventExecState &amp;</type>
+        <definition>virtual const lcf::rpg::SaveEventExecState &amp; Game_BaseInterpreterContext::GetState</definition>
+        <argsstring>() const =0</argsstring>
+        <name>GetState</name>
+        <qualifiedname>Game_BaseInterpreterContext::GetState</qualifiedname>
+        <reimplementedby refid="class_game___interpreter_1a2f98f13b6209d7586523f9242a58f90e">GetState</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="164" column="44"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___base_interpreter_context_1a22a59c88838a3595b838bcde4bcddc91" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const lcf::rpg::SaveEventExecFrame &amp;</type>
+        <definition>virtual const lcf::rpg::SaveEventExecFrame &amp; Game_BaseInterpreterContext::GetFrame</definition>
+        <argsstring>() const =0</argsstring>
+        <name>GetFrame</name>
+        <qualifiedname>Game_BaseInterpreterContext::GetFrame</qualifiedname>
+        <reimplementedby refid="class_game___interpreter_1a44b03a0b5ea2f0b298fa259d7f05c135">GetFrame</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="165" column="44"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___base_interpreter_context_1a10142f54bf1363ba3b88a4d00944ef03" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::optional&lt; bool &gt;</type>
+        <definition>std::optional&lt; bool &gt; Game_BaseInterpreterContext::GetRuntimeFlag</definition>
+        <argsstring>(Game_Interpreter_Shared::StateRuntimeFlagRef const field_on, Game_Interpreter_Shared::StateRuntimeFlagRef const field_off) const</argsstring>
+        <name>GetRuntimeFlag</name>
+        <qualifiedname>Game_BaseInterpreterContext::GetRuntimeFlag</qualifiedname>
+        <param>
+          <type><ref refid="namespace_game___interpreter___shared_1aa988fbaba0ebd6cdb28a6222e1ef2575" kindref="member">Game_Interpreter_Shared::StateRuntimeFlagRef</ref> const</type>
+          <declname>field_on</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_game___interpreter___shared_1aa988fbaba0ebd6cdb28a6222e1ef2575" kindref="member">Game_Interpreter_Shared::StateRuntimeFlagRef</ref> const</type>
+          <declname>field_off</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="168" column="22" bodyfile="game_interpreter_shared.h" bodystart="168" bodyend="170"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_game___base_interpreter_context_1a1a41c3fde574ddf2c9b7fae7c9e81214" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>bool</type>
+            <declname>validate_patches</declname>
+            <defname>validate_patches</defname>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_range_indirect</declname>
+            <defname>support_range_indirect</defname>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_expressions</declname>
+            <defname>support_expressions</defname>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_bitmask</declname>
+            <defname>support_bitmask</defname>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_scopes</declname>
+            <defname>support_scopes</defname>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_named</declname>
+            <defname>support_named</defname>
+            <defval>false</defval>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Game_BaseInterpreterContext::DecodeTargetEvaluationMode</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com, int &amp;id_0, int &amp;id_1) const</argsstring>
+        <name>DecodeTargetEvaluationMode</name>
+        <qualifiedname>Game_BaseInterpreterContext::DecodeTargetEvaluationMode</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>id_0</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>id_1</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="175" column="13" bodyfile="game_interpreter_shared.h" bodystart="175" bodyend="177"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___base_interpreter_context_1a48d3d7b4929dd127af559e2a924aa19f" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>bool</type>
+            <declname>validate_patches</declname>
+            <defname>validate_patches</defname>
+            <defval>true</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_indirect_and_switch</declname>
+            <defname>support_indirect_and_switch</defname>
+            <defval>true</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_scopes</declname>
+            <defname>support_scopes</defname>
+            <defval>false</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_named</declname>
+            <defname>support_named</defname>
+            <defval>false</defval>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>int Game_BaseInterpreterContext::ValueOrVariable</definition>
+        <argsstring>(int mode, int val) const</argsstring>
+        <name>ValueOrVariable</name>
+        <qualifiedname>Game_BaseInterpreterContext::ValueOrVariable</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>mode</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="180" column="12" bodyfile="game_interpreter_shared.h" bodystart="180" bodyend="182"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___base_interpreter_context_1a53974070e68b2083235aaac836526c54" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>bool</type>
+            <declname>validate_patches</declname>
+            <defname>validate_patches</defname>
+            <defval>true</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_indirect_and_switch</declname>
+            <defname>support_indirect_and_switch</defname>
+            <defval>true</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_scopes</declname>
+            <defname>support_scopes</defname>
+            <defval>false</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_named</declname>
+            <defname>support_named</defname>
+            <defval>false</defval>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>int Game_BaseInterpreterContext::ValueOrVariableBitfield</definition>
+        <argsstring>(int mode, int shift, int val) const</argsstring>
+        <name>ValueOrVariableBitfield</name>
+        <qualifiedname>Game_BaseInterpreterContext::ValueOrVariableBitfield</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>mode</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>shift</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="184" column="12" bodyfile="game_interpreter_shared.h" bodystart="184" bodyend="186"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___base_interpreter_context_1a07cd3d4bd8419c2fbe6ae2ad33eae3cf" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>bool</type>
+            <declname>validate_patches</declname>
+            <defname>validate_patches</defname>
+            <defval>true</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_indirect_and_switch</declname>
+            <defname>support_indirect_and_switch</defname>
+            <defval>true</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_scopes</declname>
+            <defname>support_scopes</defname>
+            <defval>false</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_named</declname>
+            <defname>support_named</defname>
+            <defval>false</defval>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>int Game_BaseInterpreterContext::ValueOrVariableBitfield</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com, int mode_idx, int shift, int val_idx) const</argsstring>
+        <name>ValueOrVariableBitfield</name>
+        <qualifiedname>Game_BaseInterpreterContext::ValueOrVariableBitfield</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>mode_idx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>shift</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>val_idx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="189" column="12" bodyfile="game_interpreter_shared.h" bodystart="189" bodyend="191"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___base_interpreter_context_1a61f153febc72e303b78c27f8eb05dba4" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename RetType</type>
+          </param>
+          <param>
+            <type>typename ClsType</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>ClsType</type>
+        <definition>ClsType Game_BaseInterpreterContext::MemFnCls</definition>
+        <argsstring>(RetType(ClsType::*)(Args...))</argsstring>
+        <name>MemFnCls</name>
+        <qualifiedname>Game_BaseInterpreterContext::MemFnCls</qualifiedname>
+        <param>
+          <type>RetType(ClsType::*)(Args...)</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="194" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___base_interpreter_context_1afceb98cd2f1e559f0da86c25d77657ab" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>auto</type>
+            <declname>CMDFN</declname>
+            <defname>CMDFN</defname>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>MIN_SIZE</declname>
+            <defname>MIN_SIZE</defname>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Game_BaseInterpreterContext::CmdSetup</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CmdSetup</name>
+        <qualifiedname>Game_BaseInterpreterContext::CmdSetup</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="197" column="6" bodyfile="game_interpreter_shared.h" bodystart="197" bodyend="214"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Game_BaseInterpreterContext</label>
+        <link refid="class_game___base_interpreter_context"/>
+      </node>
+      <node id="2">
+        <label>Game_Interpreter</label>
+        <link refid="class_game___interpreter"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Game_Interpreter_Battle</label>
+        <link refid="class_game___interpreter___battle"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Game_Interpreter_Map</label>
+        <link refid="class_game___interpreter___map"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="game_interpreter_shared.h" line="157" column="1" bodyfile="game_interpreter_shared.h" bodystart="157" bodyend="215"/>
+    <listofallmembers>
+      <member refid="class_game___base_interpreter_context_1afceb98cd2f1e559f0da86c25d77657ab" prot="protected" virt="non-virtual"><scope>Game_BaseInterpreterContext</scope><name>CmdSetup</name></member>
+      <member refid="class_game___base_interpreter_context_1a1a41c3fde574ddf2c9b7fae7c9e81214" prot="protected" virt="non-virtual"><scope>Game_BaseInterpreterContext</scope><name>DecodeTargetEvaluationMode</name></member>
+      <member refid="class_game___base_interpreter_context_1a6cb103dcd7c8cf4a4b6ffad3577193f0" prot="public" virt="pure-virtual"><scope>Game_BaseInterpreterContext</scope><name>GetCharacter</name></member>
+      <member refid="class_game___base_interpreter_context_1a22a59c88838a3595b838bcde4bcddc91" prot="public" virt="pure-virtual"><scope>Game_BaseInterpreterContext</scope><name>GetFrame</name></member>
+      <member refid="class_game___base_interpreter_context_1a10142f54bf1363ba3b88a4d00944ef03" prot="public" virt="non-virtual"><scope>Game_BaseInterpreterContext</scope><name>GetRuntimeFlag</name></member>
+      <member refid="class_game___base_interpreter_context_1aee053407ee965cdf8f9544bece117414" prot="public" virt="pure-virtual"><scope>Game_BaseInterpreterContext</scope><name>GetState</name></member>
+      <member refid="class_game___base_interpreter_context_1a3d5b45cb46d26bd52f3d1e49889e0a6a" prot="public" virt="pure-virtual"><scope>Game_BaseInterpreterContext</scope><name>GetThisEventId</name></member>
+      <member refid="class_game___base_interpreter_context_1a61f153febc72e303b78c27f8eb05dba4" prot="protected" virt="non-virtual"><scope>Game_BaseInterpreterContext</scope><name>MemFnCls</name></member>
+      <member refid="class_game___base_interpreter_context_1a48d3d7b4929dd127af559e2a924aa19f" prot="protected" virt="non-virtual"><scope>Game_BaseInterpreterContext</scope><name>ValueOrVariable</name></member>
+      <member refid="class_game___base_interpreter_context_1a53974070e68b2083235aaac836526c54" prot="protected" virt="non-virtual"><scope>Game_BaseInterpreterContext</scope><name>ValueOrVariableBitfield</name></member>
+      <member refid="class_game___base_interpreter_context_1a07cd3d4bd8419c2fbe6ae2ad33eae3cf" prot="protected" virt="non-virtual"><scope>Game_BaseInterpreterContext</scope><name>ValueOrVariableBitfield</name></member>
+      <member refid="class_game___base_interpreter_context_1af5a2804abcfd66518de598fa8bb297df" prot="public" virt="virtual"><scope>Game_BaseInterpreterContext</scope><name>~Game_BaseInterpreterContext</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

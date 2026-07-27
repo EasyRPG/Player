@@ -246,3 +246,4 @@ void Scene_GameBrowser::BootGame() {
 
 	Scene::PushTitleScene();
 }
+

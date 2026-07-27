@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___character_1_1_calculate_move_route_args" kind="struct" language="C++" prot="public">
+    <compoundname>Game_Character::CalculateMoveRouteArgs</compoundname>
+    <includes refid="game__character_8h" local="no">game_character.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___character_1_1_calculate_move_route_args_1a4c70c5c665af7d2f72cb053225d8c975" prot="public" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t Game_Character::CalculateMoveRouteArgs::dest_x</definition>
+        <argsstring></argsstring>
+        <name>dest_x</name>
+        <qualifiedname>Game_Character::CalculateMoveRouteArgs::dest_x</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.h" line="711" column="9" bodyfile="game_character.h" bodystart="711" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___character_1_1_calculate_move_route_args_1acd1d03df17d7ea0001f7281315ebd1f6" prot="public" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t Game_Character::CalculateMoveRouteArgs::dest_y</definition>
+        <argsstring></argsstring>
+        <name>dest_y</name>
+        <qualifiedname>Game_Character::CalculateMoveRouteArgs::dest_y</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.h" line="712" column="9" bodyfile="game_character.h" bodystart="712" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___character_1_1_calculate_move_route_args_1a14be47b213a11a8129603cf96cb211f2" prot="public" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t Game_Character::CalculateMoveRouteArgs::steps_max</definition>
+        <argsstring></argsstring>
+        <name>steps_max</name>
+        <qualifiedname>Game_Character::CalculateMoveRouteArgs::steps_max</qualifiedname>
+        <initializer>= std::numeric_limits&lt;int32_t&gt;<ref refid="util__macro_8h_1a3f4ae913e2a7b3479faa6afe7c6948cd" kindref="member">::max</ref>()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.h" line="713" column="9" bodyfile="game_character.h" bodystart="713" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___character_1_1_calculate_move_route_args_1a0fd3ede66c1ae6a93c685bfba076b061" prot="public" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t Game_Character::CalculateMoveRouteArgs::search_max</definition>
+        <argsstring></argsstring>
+        <name>search_max</name>
+        <qualifiedname>Game_Character::CalculateMoveRouteArgs::search_max</qualifiedname>
+        <initializer>= std::numeric_limits&lt;int32_t&gt;<ref refid="util__macro_8h_1a3f4ae913e2a7b3479faa6afe7c6948cd" kindref="member">::max</ref>()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.h" line="714" column="9" bodyfile="game_character.h" bodystart="714" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___character_1_1_calculate_move_route_args_1a5ffb17626d50b36168f2139ca5f8160e" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Character::CalculateMoveRouteArgs::allow_diagonal</definition>
+        <argsstring></argsstring>
+        <name>allow_diagonal</name>
+        <qualifiedname>Game_Character::CalculateMoveRouteArgs::allow_diagonal</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.h" line="715" column="6" bodyfile="game_character.h" bodystart="715" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___character_1_1_calculate_move_route_args_1aaa960c7294634c47475f52987eadedf2" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Character::CalculateMoveRouteArgs::debug_print</definition>
+        <argsstring></argsstring>
+        <name>debug_print</name>
+        <qualifiedname>Game_Character::CalculateMoveRouteArgs::debug_print</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.h" line="716" column="6" bodyfile="game_character.h" bodystart="716" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___character_1_1_calculate_move_route_args_1a8599fa4e0dd58e3991356e065026f3e0" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Character::CalculateMoveRouteArgs::skip_when_failed</definition>
+        <argsstring></argsstring>
+        <name>skip_when_failed</name>
+        <qualifiedname>Game_Character::CalculateMoveRouteArgs::skip_when_failed</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.h" line="717" column="6" bodyfile="game_character.h" bodystart="717" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___character_1_1_calculate_move_route_args_1abc2c5c3a86735844f2ea99e21350ef9b" prot="public" static="no" mutable="no">
+        <type>Span&lt; int &gt;</type>
+        <definition>Span&lt;int&gt; Game_Character::CalculateMoveRouteArgs::event_id_ignore_list</definition>
+        <argsstring></argsstring>
+        <name>event_id_ignore_list</name>
+        <qualifiedname>Game_Character::CalculateMoveRouteArgs::event_id_ignore_list</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.h" line="718" column="6" bodyfile="game_character.h" bodystart="718" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___character_1_1_calculate_move_route_args_1a095ce1c95fdb894be317e8b9898582b8" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Character::CalculateMoveRouteArgs::frequency</definition>
+        <argsstring></argsstring>
+        <name>frequency</name>
+        <qualifiedname>Game_Character::CalculateMoveRouteArgs::frequency</qualifiedname>
+        <initializer>= 3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.h" line="719" column="5" bodyfile="game_character.h" bodystart="719" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Argument struct for more complex find operations </para>
+    </detaileddescription>
+    <location file="game_character.h" line="710" column="1" bodyfile="game_character.h" bodystart="710" bodyend="720"/>
+    <listofallmembers>
+      <member refid="struct_game___character_1_1_calculate_move_route_args_1a5ffb17626d50b36168f2139ca5f8160e" prot="public" virt="non-virtual"><scope>Game_Character::CalculateMoveRouteArgs</scope><name>allow_diagonal</name></member>
+      <member refid="struct_game___character_1_1_calculate_move_route_args_1aaa960c7294634c47475f52987eadedf2" prot="public" virt="non-virtual"><scope>Game_Character::CalculateMoveRouteArgs</scope><name>debug_print</name></member>
+      <member refid="struct_game___character_1_1_calculate_move_route_args_1a4c70c5c665af7d2f72cb053225d8c975" prot="public" virt="non-virtual"><scope>Game_Character::CalculateMoveRouteArgs</scope><name>dest_x</name></member>
+      <member refid="struct_game___character_1_1_calculate_move_route_args_1acd1d03df17d7ea0001f7281315ebd1f6" prot="public" virt="non-virtual"><scope>Game_Character::CalculateMoveRouteArgs</scope><name>dest_y</name></member>
+      <member refid="struct_game___character_1_1_calculate_move_route_args_1abc2c5c3a86735844f2ea99e21350ef9b" prot="public" virt="non-virtual"><scope>Game_Character::CalculateMoveRouteArgs</scope><name>event_id_ignore_list</name></member>
+      <member refid="struct_game___character_1_1_calculate_move_route_args_1a095ce1c95fdb894be317e8b9898582b8" prot="public" virt="non-virtual"><scope>Game_Character::CalculateMoveRouteArgs</scope><name>frequency</name></member>
+      <member refid="struct_game___character_1_1_calculate_move_route_args_1a0fd3ede66c1ae6a93c685bfba076b061" prot="public" virt="non-virtual"><scope>Game_Character::CalculateMoveRouteArgs</scope><name>search_max</name></member>
+      <member refid="struct_game___character_1_1_calculate_move_route_args_1a8599fa4e0dd58e3991356e065026f3e0" prot="public" virt="non-virtual"><scope>Game_Character::CalculateMoveRouteArgs</scope><name>skip_when_failed</name></member>
+      <member refid="struct_game___character_1_1_calculate_move_route_args_1a14be47b213a11a8129603cf96cb211f2" prot="public" virt="non-virtual"><scope>Game_Character::CalculateMoveRouteArgs</scope><name>steps_max</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

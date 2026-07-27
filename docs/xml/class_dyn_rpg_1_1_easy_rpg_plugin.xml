@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_dyn_rpg_1_1_easy_rpg_plugin" kind="class" language="C++" prot="public">
+    <compoundname>DynRpg::EasyRpgPlugin</compoundname>
+    <basecompoundref refid="class_dyn_rpg_plugin" prot="public" virt="non-virtual">DynRpgPlugin</basecompoundref>
+    <includes refid="dynrpg__easyrpg_8h" local="no">dynrpg_easyrpg.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_dyn_rpg_1_1_easy_rpg_plugin_1a2910cf9a83fbb03f5d516b844302044d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>DynRpg::EasyRpgPlugin::EasyRpgPlugin</definition>
+        <argsstring>(Game_DynRpg &amp;instance)</argsstring>
+        <name>EasyRpgPlugin</name>
+        <qualifiedname>DynRpg::EasyRpgPlugin::EasyRpgPlugin</qualifiedname>
+        <param>
+          <type><ref refid="class_game___dyn_rpg" kindref="compound">Game_DynRpg</ref> &amp;</type>
+          <declname>instance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_easyrpg.h" line="33" column="1" bodyfile="dynrpg_easyrpg.h" bodystart="33" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_1_1_easy_rpg_plugin_1a958864e491efe059471bee7870d21916" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool DynRpg::EasyRpgPlugin::Invoke</definition>
+        <argsstring>(std::string_view func, dyn_arg_list args, bool &amp;do_yield, Game_Interpreter *interpreter) override</argsstring>
+        <name>Invoke</name>
+        <qualifiedname>DynRpg::EasyRpgPlugin::Invoke</qualifiedname>
+        <reimplements refid="class_dyn_rpg_plugin_1a7be6e589cf86951092eb137fa893d698">Invoke</reimplements>
+        <param>
+          <type>std::string_view</type>
+          <declname>func</declname>
+        </param>
+        <param>
+          <type><ref refid="game__dynrpg_8h_1a06857b7795496bb79087d64b6cd3b07e" kindref="member">dyn_arg_list</ref></type>
+          <declname>args</declname>
+        </param>
+        <param>
+          <type>bool &amp;</type>
+          <declname>do_yield</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___interpreter" kindref="compound">Game_Interpreter</ref> *</type>
+          <declname>interpreter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_easyrpg.h" line="35" column="6" bodyfile="dynrpg_easyrpg.cpp" bodystart="91" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_1_1_easy_rpg_plugin_1af09ff406c8fb428729362c49bab2d7fc" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void DynRpg::EasyRpgPlugin::Load</definition>
+        <argsstring>(const std::vector&lt; uint8_t &gt; &amp;buffer) override</argsstring>
+        <name>Load</name>
+        <qualifiedname>DynRpg::EasyRpgPlugin::Load</qualifiedname>
+        <reimplements refid="class_dyn_rpg_plugin_1a9d25ce0f2b50da723a837f267caf2401">Load</reimplements>
+        <param>
+          <type>const std::vector&lt; uint8_t &gt; &amp;</type>
+          <declname>buffer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_easyrpg.h" line="36" column="6" bodyfile="dynrpg_easyrpg.cpp" bodystart="102" bodyend="111"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_1_1_easy_rpg_plugin_1a6556ff41bb4574e4d181a0defb95d866" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>std::vector&lt; uint8_t &gt;</type>
+        <definition>std::vector&lt; uint8_t &gt; DynRpg::EasyRpgPlugin::Save</definition>
+        <argsstring>() override</argsstring>
+        <name>Save</name>
+        <qualifiedname>DynRpg::EasyRpgPlugin::Save</qualifiedname>
+        <reimplements refid="class_dyn_rpg_plugin_1ab210b1204b729aefb1bc497afe05cbb4">Save</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_easyrpg.h" line="37" column="13" bodyfile="dynrpg_easyrpg.cpp" bodystart="113" bodyend="122"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_dyn_rpg_1_1_easy_rpg_plugin_1a4dc33359917977c8059dee9e4dc89ad9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool DynRpg::EasyRpgPlugin::EasyCall</definition>
+        <argsstring>(dyn_arg_list args, bool &amp;do_yield, Game_Interpreter *interpreter)</argsstring>
+        <name>EasyCall</name>
+        <qualifiedname>DynRpg::EasyRpgPlugin::EasyCall</qualifiedname>
+        <param>
+          <type><ref refid="game__dynrpg_8h_1a06857b7795496bb79087d64b6cd3b07e" kindref="member">dyn_arg_list</ref></type>
+          <declname>args</declname>
+        </param>
+        <param>
+          <type>bool &amp;</type>
+          <declname>do_yield</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___interpreter" kindref="compound">Game_Interpreter</ref> *</type>
+          <declname>interpreter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_easyrpg.h" line="40" column="6" bodyfile="dynrpg_easyrpg.cpp" bodystart="51" bodyend="68"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>A DynRPG plugin that provides EasyRPG specific built-in functions. Mostly for testing. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>DynRpg::EasyRpgPlugin</label>
+        <link refid="class_dyn_rpg_1_1_easy_rpg_plugin"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>DynRpgPlugin</label>
+        <link refid="class_dyn_rpg_plugin"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>DynRpg::EasyRpgPlugin</label>
+        <link refid="class_dyn_rpg_1_1_easy_rpg_plugin"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>DynRpgPlugin</label>
+        <link refid="class_dyn_rpg_plugin"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>instance</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Game_DynRpg</label>
+        <link refid="class_game___dyn_rpg"/>
+      </node>
+    </collaborationgraph>
+    <location file="dynrpg_easyrpg.h" line="31" column="1" bodyfile="dynrpg_easyrpg.h" bodystart="31" bodyend="41"/>
+    <listofallmembers>
+      <member refid="class_dyn_rpg_plugin_1a1b41ccb11aea261f8e55e139f8be6c70" prot="public" virt="non-virtual"><scope>DynRpg::EasyRpgPlugin</scope><name>DynRpgPlugin</name></member>
+      <member refid="class_dyn_rpg_plugin_1a5a6dac0e7a2541abe8533330bc176791" prot="public" virt="non-virtual"><scope>DynRpg::EasyRpgPlugin</scope><name>DynRpgPlugin</name></member>
+      <member refid="class_dyn_rpg_1_1_easy_rpg_plugin_1a4dc33359917977c8059dee9e4dc89ad9" prot="private" virt="non-virtual"><scope>DynRpg::EasyRpgPlugin</scope><name>EasyCall</name></member>
+      <member refid="class_dyn_rpg_1_1_easy_rpg_plugin_1a2910cf9a83fbb03f5d516b844302044d" prot="public" virt="non-virtual"><scope>DynRpg::EasyRpgPlugin</scope><name>EasyRpgPlugin</name></member>
+      <member refid="class_dyn_rpg_plugin_1a90ee1d66270a9b10daa69056e25efeba" prot="public" virt="non-virtual"><scope>DynRpg::EasyRpgPlugin</scope><name>GetIdentifier</name></member>
+      <member refid="class_dyn_rpg_plugin_1a5fb12d4ea55c3def42a0a9bd8648ab1d" prot="protected" virt="non-virtual"><scope>DynRpg::EasyRpgPlugin</scope><name>instance</name></member>
+      <member refid="class_dyn_rpg_1_1_easy_rpg_plugin_1a958864e491efe059471bee7870d21916" prot="public" virt="virtual"><scope>DynRpg::EasyRpgPlugin</scope><name>Invoke</name></member>
+      <member refid="class_dyn_rpg_1_1_easy_rpg_plugin_1af09ff406c8fb428729362c49bab2d7fc" prot="public" virt="virtual"><scope>DynRpg::EasyRpgPlugin</scope><name>Load</name></member>
+      <member refid="class_dyn_rpg_1_1_easy_rpg_plugin_1a6556ff41bb4574e4d181a0defb95d866" prot="public" virt="virtual"><scope>DynRpg::EasyRpgPlugin</scope><name>Save</name></member>
+      <member refid="class_dyn_rpg_plugin_1ab8b8bdec068e59c56dc5ff3e01fbb380" prot="public" virt="virtual"><scope>DynRpg::EasyRpgPlugin</scope><name>Update</name></member>
+      <member refid="class_dyn_rpg_plugin_1a140e190a33a5025c9a125eac0fcba2a7" prot="public" virt="virtual"><scope>DynRpg::EasyRpgPlugin</scope><name>~DynRpgPlugin</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

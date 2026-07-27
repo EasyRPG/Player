@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="game__interpreter__control__variables_8h" kind="file" language="C++">
+    <compoundname>game_interpreter_control_variables.h</compoundname>
+    <includes local="no">lcf/rpg/eventcommand.h</includes>
+    <includedby refid="game__interpreter_8cpp" local="yes">game_interpreter.cpp</includedby>
+    <includedby refid="game__interpreter__control__variables_8cpp" local="yes">game_interpreter_control_variables.cpp</includedby>
+    <includedby refid="maniac__patch_8cpp" local="yes">maniac_patch.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>game_interpreter_control_variables.h</label>
+        <link refid="game__interpreter__control__variables_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>game_interpreter.cpp</label>
+        <link refid="game__interpreter_8cpp"/>
+      </node>
+      <node id="3">
+        <label>game_interpreter_control_variables.cpp</label>
+        <link refid="game__interpreter__control__variables_8cpp"/>
+      </node>
+      <node id="1">
+        <label>game_interpreter_control_variables.h</label>
+        <link refid="game__interpreter__control__variables_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>maniac_patch.cpp</label>
+        <link refid="maniac__patch_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespace_control_variables">ControlVariables</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="game__interpreter__control__variables_8h_1a74dac528f795ee5b3c32fcb72eefa0f6" prot="public" static="no">
+        <name>EP_GAME_INTERPRETER_CONTROL_VARIABLES</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="21" column="9" bodyfile="game_interpreter_control_variables.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_GAME_INTERPRETER_CONTROL_VARIABLES</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21" refid="game__interpreter__control__variables_8h_1a74dac528f795ee5b3c32fcb72eefa0f6" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_GAME_INTERPRETER_CONTROL_VARIABLES</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/eventcommand.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_game___base_interpreter_context" kindref="compound">Game_BaseInterpreterContext</ref>;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27" refid="namespace_control_variables" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_control_variables" kindref="compound">ControlVariables</ref><sp/>{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1ac9470fc05d2c80a98b6fc86cf70cf1e1" kindref="member">Random</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value2);</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1a9a499d83059caef8146e72dd0331fe34" kindref="member">Item</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>op,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>item);</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="game__interpreter__battle_8cpp_1a0d59972970c855496cb4c877501e668fa3b9f212e9793e1c86386382b21ed076b" kindref="member">Actor</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>op,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>actor_id);</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1a16ebf5b39577ab9dd72b94945f55aba2" kindref="member">Party</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>op,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>party_idx);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1a2c1c6345a3740f8087988402fcd6305a" kindref="member">Event</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>op,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>event_id,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___base_interpreter_context" kindref="compound">Game_BaseInterpreterContext</ref>&amp;<sp/>interpreter);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1a18bb3352bcddf17ff649e73d4a56865b" kindref="member">Other</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>op);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="game__interpreter__battle_8cpp_1a0d59972970c855496cb4c877501e668fa1d3a30883fde8ef6d1493b80155a870b" kindref="member">Enemy</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>op,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>enemy_idx);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1a3d87d7e13572878799766213d2e39009" kindref="member">Pow</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg1,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg2);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1a67592df50967eadb28e017b337fa853e" kindref="member">Sqrt</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mul);</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1a66839cbf4720a67b211cf899a5902eec" kindref="member">Sin</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg1,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg2,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mul);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1aae4de40f49259f9764915022d7abb299" kindref="member">Cos</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg1,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg2,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mul);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1a5f7cc6f5891696c25e2a9e2bb429b4af" kindref="member">Atan2</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg1,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg2,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mul);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1a4932720ba4a628fe028cbc45de527ff1" kindref="member">Min</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg1,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg2);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1a195ca13c987553fdc3637f9de15e989c" kindref="member">Max</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg1,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg2);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1af370acb178631f4a03916fc945c2d8aa" kindref="member">Abs</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1acf76915c3561093ed27c82583f9fa1c1" kindref="member">Binary</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>op,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg1,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg2);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Functions<sp/>only<sp/>used<sp/>by<sp/>expressions</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1ae3c92db0712f585858a3947943d10ce0" kindref="member">Clamp</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg1,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg2,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg3);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1adccc6b1d1c7bbdff54937ad83b6c348e" kindref="member">Muldiv</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg1,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg2,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg3);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1ad284b308c72a79851f2def2d3d175f63" kindref="member">Divmul</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg1,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg2,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg3);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_control_variables_1a8237fec307c4041a7696b63d4657fe13" kindref="member">Between</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg1,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg2,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg3);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="game_interpreter_control_variables.h"/>
+  </compounddef>
+</doxygen>

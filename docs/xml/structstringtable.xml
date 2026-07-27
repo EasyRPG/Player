@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structstringtable" kind="struct" language="C++" prot="public">
+    <compoundname>stringtable</compoundname>
+    <includes refid="lstate_8h" local="no">lstate.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structstringtable_1a9df803a7c6c84f39218c95ca34c21f8d" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_string" kindref="compound">TString</ref> **</type>
+        <definition>TString** stringtable::hash</definition>
+        <argsstring></argsstring>
+        <name>hash</name>
+        <qualifiedname>stringtable::hash</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="168" column="11" bodyfile="leasy/lua/lstate.h" bodystart="168" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structstringtable_1a557fecd2a88632f53ac14bb5f933590a" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int stringtable::nuse</definition>
+        <argsstring></argsstring>
+        <name>nuse</name>
+        <qualifiedname>stringtable::nuse</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="169" column="7" bodyfile="leasy/lua/lstate.h" bodystart="169" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structstringtable_1a10674affaad79ff819b6aa3b4618b94e" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int stringtable::size</definition>
+        <argsstring></argsstring>
+        <name>size</name>
+        <qualifiedname>stringtable::size</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="170" column="7" bodyfile="leasy/lua/lstate.h" bodystart="170" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>stringtable</label>
+        <link refid="structstringtable"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>hash</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lstate.h" line="167" column="1" bodyfile="leasy/lua/lstate.h" bodystart="167" bodyend="171"/>
+    <listofallmembers>
+      <member refid="structstringtable_1a9df803a7c6c84f39218c95ca34c21f8d" prot="public" virt="non-virtual"><scope>stringtable</scope><name>hash</name></member>
+      <member refid="structstringtable_1a557fecd2a88632f53ac14bb5f933590a" prot="public" virt="non-virtual"><scope>stringtable</scope><name>nuse</name></member>
+      <member refid="structstringtable_1a10674affaad79ff819b6aa3b4618b94e" prot="public" virt="non-virtual"><scope>stringtable</scope><name>size</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

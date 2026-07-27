@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_0d353155103324010305050366003146017052201210207231" kind="namespace" language="C++">
+    <compoundname>@353155103324010305050366003146017052201210207231</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="fileext_guesser.cpp" line="27" column="1"/>
+  </compounddef>
+</doxygen>

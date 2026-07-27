@@ -1,0 +1,331 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_load_state" kind="struct" language="C++" prot="public">
+    <compoundname>LoadState</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_load_state_1a8eabd10510332ab5eaf5244bb347bac2" prot="public" static="no" mutable="no">
+        <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+        <definition>lua_State* LoadState::L</definition>
+        <argsstring></argsstring>
+        <name>L</name>
+        <qualifiedname>LoadState::L</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="35" column="13" bodyfile="leasy/lua/lundump.c" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_load_state_1a53f2d5fa2c176bdf96701c983afb8182" prot="public" static="no" mutable="no">
+        <type><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref> *</type>
+        <definition>ZIO* LoadState::Z</definition>
+        <argsstring></argsstring>
+        <name>Z</name>
+        <qualifiedname>LoadState::Z</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="36" column="7" bodyfile="leasy/lua/lundump.c" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_load_state_1a0cd70a73d5f61472258ebb5256abbaef" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* LoadState::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>LoadState::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="37" column="14" bodyfile="leasy/lua/lundump.c" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_load_state_1a3db1e21c4eb6791e4660915b8590d5bd" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+        <definition>Table* LoadState::h</definition>
+        <argsstring></argsstring>
+        <name>h</name>
+        <qualifiedname>LoadState::h</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="38" column="9" bodyfile="leasy/lua/lundump.c" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_load_state_1ade5f6d2738be5ef6a2c372f75d74d9ba" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t LoadState::offset</definition>
+        <argsstring></argsstring>
+        <name>offset</name>
+        <qualifiedname>LoadState::offset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="39" column="10" bodyfile="leasy/lua/lundump.c" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_load_state_1a1026b355ed4e6dc3964d871bed93499d" prot="public" static="no" mutable="no">
+        <type><ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref></type>
+        <definition>lua_Unsigned LoadState::nstr</definition>
+        <argsstring></argsstring>
+        <name>nstr</name>
+        <qualifiedname>LoadState::nstr</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="40" column="16" bodyfile="leasy/lua/lundump.c" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_load_state_1a0b5e45fc200ee82d1a8224db13717b7a" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte LoadState::fixed</definition>
+        <argsstring></argsstring>
+        <name>fixed</name>
+        <qualifiedname>LoadState::fixed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="41" column="11" bodyfile="leasy/lua/lundump.c" bodystart="41" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="15">
+        <label>CallInfo</label>
+        <link refid="struct_call_info"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>func</edgelabel>
+          <edgelabel>top</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>next</edgelabel>
+          <edgelabel>previous</edgelabel>
+        </childnode>
+        <childnode refid="2" relation="usage">
+          <edgelabel>k</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>GCObject</label>
+        <link refid="struct_g_c_object"/>
+      </node>
+      <node id="14">
+        <label>LX</label>
+        <link refid="struct_l_x"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>l</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>LoadState</label>
+        <link refid="struct_load_state"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>L</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>Z</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>h</edgelabel>
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Node</label>
+        <link refid="union_node"/>
+        <childnode refid="13" relation="usage">
+          <edgelabel>u</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>i_val</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>Node::NodeKey</label>
+        <link refid="struct_node_1_1_node_key"/>
+        <childnode refid="11" relation="usage">
+          <edgelabel>key_val</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>StackValue</label>
+        <link refid="union_stack_value"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>val</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>StkIdRel</label>
+        <link refid="union_stk_id_rel"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>p</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="8" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>TValue</label>
+        <link refid="struct_t_value"/>
+      </node>
+      <node id="10">
+        <label>Table</label>
+        <link refid="struct_table"/>
+        <childnode refid="11" relation="usage">
+          <edgelabel>array</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>node</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>metatable</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>gclist</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>UpVal</label>
+        <link refid="struct_up_val"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>p</edgelabel>
+          <edgelabel>value</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>next</edgelabel>
+          <edgelabel>previous</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>Value</label>
+        <link refid="union_value"/>
+        <childnode refid="9" relation="usage">
+          <edgelabel>gc</edgelabel>
+        </childnode>
+        <childnode refid="2" relation="usage">
+          <edgelabel>f</edgelabel>
+        </childnode>
+      </node>
+      <node id="18">
+        <label>Zio</label>
+        <link refid="struct_zio"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>L</edgelabel>
+          <edgelabel>reader</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>global_State</label>
+        <link refid="structglobal___state"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>strt</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>l_registry</edgelabel>
+          <edgelabel>nilvalue</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>allgc</edgelabel>
+          <edgelabel>allweak</edgelabel>
+          <edgelabel>ephemeron</edgelabel>
+          <edgelabel>finobj</edgelabel>
+          <edgelabel>finobjold1</edgelabel>
+          <edgelabel>finobjrold</edgelabel>
+          <edgelabel>finobjsur</edgelabel>
+          <edgelabel>firstold1</edgelabel>
+          <edgelabel>fixedgc</edgelabel>
+          <edgelabel>gray</edgelabel>
+          <edgelabel>  ...</edgelabel>
+        </childnode>
+        <childnode refid="2" relation="usage">
+          <edgelabel>panic</edgelabel>
+          <edgelabel>twups</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>memerrmsg</edgelabel>
+          <edgelabel>strcache</edgelabel>
+          <edgelabel>tmname</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>mt</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>mainth</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>lua_State</label>
+        <link refid="structlua___state"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>stack</edgelabel>
+          <edgelabel>stack_last</edgelabel>
+          <edgelabel>tbclist</edgelabel>
+          <edgelabel>top</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>l_G</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>base_ci</edgelabel>
+          <edgelabel>ci</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>openupval</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>gclist</edgelabel>
+        </childnode>
+        <childnode refid="2" relation="usage">
+          <edgelabel>twups</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>errorJmp</edgelabel>
+        </childnode>
+      </node>
+      <node id="17">
+        <label>lua_longjmp</label>
+        <link refid="structlua__longjmp"/>
+        <childnode refid="17" relation="usage">
+          <edgelabel>previous</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>stringtable</label>
+        <link refid="structstringtable"/>
+        <childnode refid="8" relation="usage">
+          <edgelabel>hash</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lundump.c" line="34" column="1" bodyfile="leasy/lua/lundump.c" bodystart="34" bodyend="42"/>
+    <listofallmembers>
+      <member refid="struct_load_state_1a0b5e45fc200ee82d1a8224db13717b7a" prot="public" virt="non-virtual"><scope>LoadState</scope><name>fixed</name></member>
+      <member refid="struct_load_state_1a3db1e21c4eb6791e4660915b8590d5bd" prot="public" virt="non-virtual"><scope>LoadState</scope><name>h</name></member>
+      <member refid="struct_load_state_1a8eabd10510332ab5eaf5244bb347bac2" prot="public" virt="non-virtual"><scope>LoadState</scope><name>L</name></member>
+      <member refid="struct_load_state_1a0cd70a73d5f61472258ebb5256abbaef" prot="public" virt="non-virtual"><scope>LoadState</scope><name>name</name></member>
+      <member refid="struct_load_state_1a1026b355ed4e6dc3964d871bed93499d" prot="public" virt="non-virtual"><scope>LoadState</scope><name>nstr</name></member>
+      <member refid="struct_load_state_1ade5f6d2738be5ef6a2c372f75d74d9ba" prot="public" virt="non-virtual"><scope>LoadState</scope><name>offset</name></member>
+      <member refid="struct_load_state_1a53f2d5fa2c176bdf96701c983afb8182" prot="public" virt="non-virtual"><scope>LoadState</scope><name>Z</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

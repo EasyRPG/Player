@@ -506,3 +506,4 @@ std::vector<uint8_t> DynRpg::TextPlugin::Save() {
 
 	return DynRpgPlugin::Save();
 }
+

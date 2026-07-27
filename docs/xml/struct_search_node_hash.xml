@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_search_node_hash" kind="struct" language="C++" prot="public">
+    <compoundname>SearchNodeHash</compoundname>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_search_node_hash_1a34601b83230ed9eb5e30a6455107fa72" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t SearchNodeHash::operator()</definition>
+        <argsstring>(const SearchNode &amp;p) const</argsstring>
+        <name>operator()</name>
+        <qualifiedname>SearchNodeHash::operator()</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_search_node" kindref="compound">SearchNode</ref> &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.cpp" line="828" column="8" bodyfile="game_character.cpp" bodystart="828" bodyend="830"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_character.cpp" line="827" column="1" bodyfile="game_character.cpp" bodystart="827" bodyend="831"/>
+    <listofallmembers>
+      <member refid="struct_search_node_hash_1a34601b83230ed9eb5e30a6455107fa72" prot="public" virt="non-virtual"><scope>SearchNodeHash</scope><name>operator()</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

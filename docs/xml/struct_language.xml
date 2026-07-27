@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_language" kind="struct" language="C++" prot="public">
+    <compoundname>Language</compoundname>
+    <includes refid="translation_8h" local="no">translation.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_language_1aad65dfe0c06c6775ec04ab9ea40bff75" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Language::lang_dir</definition>
+        <argsstring></argsstring>
+        <name>lang_dir</name>
+        <qualifiedname>Language::lang_dir</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="150" column="13" bodyfile="translation.h" bodystart="150" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_language_1ad11e123a8a9faea45fc2b2fec7b063b1" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Language::lang_name</definition>
+        <argsstring></argsstring>
+        <name>lang_name</name>
+        <qualifiedname>Language::lang_name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="151" column="13" bodyfile="translation.h" bodystart="151" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_language_1a56e402fd8864d59ae7efbe78928a1d25" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Language::lang_desc</definition>
+        <argsstring></argsstring>
+        <name>lang_desc</name>
+        <qualifiedname>Language::lang_desc</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="152" column="13" bodyfile="translation.h" bodystart="152" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_language_1a7bbd90c3cdebe7f8ba251804bfc53a5f" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Language::lang_code</definition>
+        <argsstring></argsstring>
+        <name>lang_code</name>
+        <qualifiedname>Language::lang_code</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="153" column="13" bodyfile="translation.h" bodystart="153" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_language_1ad8860c677e696cbf7a1a392dc7396e3f" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Language::lang_term</definition>
+        <argsstring></argsstring>
+        <name>lang_term</name>
+        <qualifiedname>Language::lang_term</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="154" column="13" bodyfile="translation.h" bodystart="154" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_language_1a8c57c0593ea6499bbb903fcb93a30855" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Language::game_title</definition>
+        <argsstring></argsstring>
+        <name>game_title</name>
+        <qualifiedname>Language::game_title</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="155" column="13" bodyfile="translation.h" bodystart="155" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_language_1ab5eafd0188f5d732a727d9bd087f8420" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Language::use_builtin_font</definition>
+        <argsstring></argsstring>
+        <name>use_builtin_font</name>
+        <qualifiedname>Language::use_builtin_font</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="156" column="6" bodyfile="translation.h" bodystart="156" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Properties of a language </para>
+    </detaileddescription>
+    <location file="translation.h" line="149" column="1" bodyfile="translation.h" bodystart="149" bodyend="157"/>
+    <listofallmembers>
+      <member refid="struct_language_1a8c57c0593ea6499bbb903fcb93a30855" prot="public" virt="non-virtual"><scope>Language</scope><name>game_title</name></member>
+      <member refid="struct_language_1a7bbd90c3cdebe7f8ba251804bfc53a5f" prot="public" virt="non-virtual"><scope>Language</scope><name>lang_code</name></member>
+      <member refid="struct_language_1a56e402fd8864d59ae7efbe78928a1d25" prot="public" virt="non-virtual"><scope>Language</scope><name>lang_desc</name></member>
+      <member refid="struct_language_1aad65dfe0c06c6775ec04ab9ea40bff75" prot="public" virt="non-virtual"><scope>Language</scope><name>lang_dir</name></member>
+      <member refid="struct_language_1ad11e123a8a9faea45fc2b2fec7b063b1" prot="public" virt="non-virtual"><scope>Language</scope><name>lang_name</name></member>
+      <member refid="struct_language_1ad8860c677e696cbf7a1a392dc7396e3f" prot="public" virt="non-virtual"><scope>Language</scope><name>lang_term</name></member>
+      <member refid="struct_language_1ab5eafd0188f5d732a727d9bd087f8420" prot="public" virt="non-virtual"><scope>Language</scope><name>use_builtin_font</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

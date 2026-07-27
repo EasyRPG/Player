@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="__lua__scripts_8cpp" kind="file" language="C++">
+    <compoundname>_lua_scripts.cpp</compoundname>
+    <innernamespace refid="namespaceleasy">leasy</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1lscripts">leasy::lscripts</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23" refid="namespaceleasy_1_1lscripts" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1lscripts" kindref="compound">leasy::lscripts</ref><sp/>{</highlight></codeline>
+<codeline lineno="24" refid="namespaceleasy_1_1lscripts_1aa0708778b7f8b231e05f152188fb63f7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*<ref refid="namespaceleasy_1_1lscripts_1aa0708778b7f8b231e05f152188fb63f7" kindref="member">set_require</ref><sp/>=<sp/>R</highlight><highlight class="stringliteral">&quot;(local<sp/>old_require<sp/>=<sp/>require</highlight></codeline>
+<codeline lineno="25"><highlight class="stringliteral">function<sp/>require(module_name)</highlight></codeline>
+<codeline lineno="26"><highlight class="stringliteral"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>not<sp/>package.loaded[module_name]<sp/>then</highlight></codeline>
+<codeline lineno="27"><highlight class="stringliteral"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print(&quot;<sp/>loading&quot;,<sp/>module_name,<sp/>&quot;not<sp/>loaded&quot;)</highlight></codeline>
+<codeline lineno="28"><highlight class="stringliteral"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>else</highlight></codeline>
+<codeline lineno="29"><highlight class="stringliteral"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>print(&quot;loading&quot;,<sp/>module_name,<sp/>&quot;chached&quot;)</highlight></codeline>
+<codeline lineno="30"><highlight class="stringliteral"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>end</highlight></codeline>
+<codeline lineno="31"><highlight class="stringliteral"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>old_require(module_name)</highlight></codeline>
+<codeline lineno="32"><highlight class="stringliteral">end)&quot;;</highlight></codeline>
+<codeline lineno="33"><highlight class="stringliteral">}</highlight></codeline>
+    </programlisting>
+    <location file="leasy/ily3/_lua_scripts.cpp"/>
+  </compounddef>
+</doxygen>

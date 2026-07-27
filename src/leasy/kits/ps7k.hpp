@@ -119,3 +119,4 @@ constexpr bool cmp_greater_equal(T t, U u) noexcept {
 #else
 #warning leasy.System.Compiler: [WARNING] This mod was designed to support C++17 — C++20 may cause issues.
 #endif
+

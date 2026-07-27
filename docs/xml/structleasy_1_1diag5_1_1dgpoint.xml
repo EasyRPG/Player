@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1diag5_1_1dgpoint" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::diag5::dgpoint</compoundname>
+    <includes refid="diagnostics_8hpp" local="no">diagnostics.hpp</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structleasy_1_1diag5_1_1dgpoint_1a76be930df695d09b7213600de9f2f66e" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string leasy::diag5::dgpoint::_name</definition>
+        <argsstring></argsstring>
+        <name>_name</name>
+        <qualifiedname>leasy::diag5::dgpoint::_name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/diag5/diagnostics.hpp" line="32" column="17" bodyfile="leasy/diag5/diagnostics.hpp" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1diag5_1_1dgpoint_1a88dbabd9f41298c8b6ef675f46f9a036" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string leasy::diag5::dgpoint::_id</definition>
+        <argsstring></argsstring>
+        <name>_id</name>
+        <qualifiedname>leasy::diag5::dgpoint::_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/diag5/diagnostics.hpp" line="33" column="17" bodyfile="leasy/diag5/diagnostics.hpp" bodystart="33" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structleasy_1_1diag5_1_1dgpoint_1a758febbb855c145a11da5319494e0c90" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>leasy::diag5::dgpoint::dgpoint</definition>
+        <argsstring>(const std::string &amp;name, Args &amp;&amp;... args)</argsstring>
+        <name>dgpoint</name>
+        <qualifiedname>leasy::diag5::dgpoint::dgpoint</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/diag5/diagnostics.hpp" line="36" column="12" bodyfile="leasy/diag5/diagnostics.hpp" bodystart="36" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1diag5_1_1dgpoint_1a85c92335e1e1dd8c34194ddab555bf78" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::diag5::dgpoint::~dgpoint</definition>
+        <argsstring>()</argsstring>
+        <name>~dgpoint</name>
+        <qualifiedname>leasy::diag5::dgpoint::~dgpoint</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/diag5/diagnostics.hpp" line="42" column="12" bodyfile="leasy/diag5/diagnostics.hpp" bodystart="42" bodyend="44"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/diag5/diagnostics.hpp" line="31" column="3" bodyfile="leasy/diag5/diagnostics.hpp" bodystart="31" bodyend="45"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1diag5_1_1dgpoint_1a88dbabd9f41298c8b6ef675f46f9a036" prot="public" virt="non-virtual"><scope>leasy::diag5::dgpoint</scope><name>_id</name></member>
+      <member refid="structleasy_1_1diag5_1_1dgpoint_1a76be930df695d09b7213600de9f2f66e" prot="public" virt="non-virtual"><scope>leasy::diag5::dgpoint</scope><name>_name</name></member>
+      <member refid="structleasy_1_1diag5_1_1dgpoint_1a758febbb855c145a11da5319494e0c90" prot="public" virt="non-virtual"><scope>leasy::diag5::dgpoint</scope><name>dgpoint</name></member>
+      <member refid="structleasy_1_1diag5_1_1dgpoint_1a85c92335e1e1dd8c34194ddab555bf78" prot="public" virt="non-virtual"><scope>leasy::diag5::dgpoint</scope><name>~dgpoint</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

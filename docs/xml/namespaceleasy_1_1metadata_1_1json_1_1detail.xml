@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1metadata_1_1json_1_1detail" kind="namespace" language="C++">
+    <compoundname>leasy::metadata::json::detail</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceleasy_1_1metadata_1_1json_1_1detail_1ae44e903fc0ef11f6c78943679e28983e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::metadata::json::detail::pad</definition>
+        <argsstring>(std::ostream &amp;, const options &amp;, size_t depth)</argsstring>
+        <name>pad</name>
+        <qualifiedname>leasy::metadata::json::detail::pad</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <defname>os</defname>
+        </param>
+        <param>
+          <type>const <ref refid="structleasy_1_1metadata_1_1json_1_1options" kindref="compound">options</ref> &amp;</type>
+          <defname>opts</defname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>depth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/json.hpp" line="42" column="11" bodyfile="leasy/metadata/json.hpp" bodystart="47" bodyend="51" declfile="leasy/metadata/json.hpp" declline="42" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1metadata_1_1json_1_1detail_1a4e55d516ff7785a61f29c165cda8e0fa" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::metadata::json::detail::escape</definition>
+        <argsstring>(std::ostream &amp;, const string &amp;)</argsstring>
+        <name>escape</name>
+        <qualifiedname>leasy::metadata::json::detail::escape</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <defname>os</defname>
+        </param>
+        <param>
+          <type>const <ref refid="namespaceleasy_1_1metadata_1a6a91c63d6b7d38496def2d40cdf3463e" kindref="member">string</ref> &amp;</type>
+          <defname>s</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/json.hpp" line="43" column="11" bodyfile="leasy/metadata/json.hpp" bodystart="53" bodyend="73" declfile="leasy/metadata/json.hpp" declline="43" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1metadata_1_1json_1_1detail_1a09ccf96fdb212d6d3be3fd524adb4747" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::metadata::json::detail::emit</definition>
+        <argsstring>(std::ostream &amp;, const Object &amp;, const options &amp;, size_t depth)</argsstring>
+        <name>emit</name>
+        <qualifiedname>leasy::metadata::json::detail::emit</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <defname>os</defname>
+        </param>
+        <param>
+          <type>const <ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref> &amp;</type>
+          <defname>obj</defname>
+        </param>
+        <param>
+          <type>const <ref refid="structleasy_1_1metadata_1_1json_1_1options" kindref="compound">options</ref> &amp;</type>
+          <defname>opts</defname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>depth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/json.hpp" line="44" column="11" bodyfile="leasy/metadata/json.hpp" bodystart="75" bodyend="110" declfile="leasy/metadata/json.hpp" declline="44" declcolumn="11"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/metadata/json.hpp" line="41" column="3"/>
+  </compounddef>
+</doxygen>

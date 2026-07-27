@@ -1,0 +1,1175 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="ltm_8c" kind="file" language="C++">
+    <compoundname>ltm.c</compoundname>
+    <includes refid="lprefix_8h" local="yes">lprefix.h</includes>
+    <includes local="no">string.h</includes>
+    <includes refid="lua_8h" local="yes">lua.h</includes>
+    <includes refid="ldebug_8h" local="yes">ldebug.h</includes>
+    <includes refid="ldo_8h" local="yes">ldo.h</includes>
+    <includes refid="lgc_8h" local="yes">lgc.h</includes>
+    <includes refid="lobject_8h" local="yes">lobject.h</includes>
+    <includes refid="lstate_8h" local="yes">lstate.h</includes>
+    <includes refid="lstring_8h" local="yes">lstring.h</includes>
+    <includes refid="ltable_8h" local="yes">ltable.h</includes>
+    <includes refid="ltm_8h" local="yes">ltm.h</includes>
+    <includes refid="lvm_8h" local="yes">lvm.h</includes>
+    <incdepgraph>
+      <node id="9">
+        <label>ldebug.h</label>
+        <link refid="ldebug_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>ldo.h</label>
+        <link refid="ldo_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>lgc.h</label>
+        <link refid="lgc_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>lmem.h</label>
+        <link refid="lmem_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>lobject.h</label>
+        <link refid="lobject_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>lprefix.h</label>
+        <link refid="lprefix_8h"/>
+      </node>
+      <node id="10">
+        <label>lstate.h</label>
+        <link refid="lstate_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>lstring.h</label>
+        <link refid="lstring_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>ltable.h</label>
+        <link refid="ltable_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/ltm.c</label>
+        <link refid="ltm_8c"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>ltm.h</label>
+        <link refid="ltm_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>lvm.h</label>
+        <link refid="lvm_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>lzio.h</label>
+        <link refid="lzio_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>limits.h</label>
+      </node>
+      <node id="16">
+        <label>signal.h</label>
+      </node>
+      <node id="5">
+        <label>stdarg.h</label>
+      </node>
+      <node id="6">
+        <label>stddef.h</label>
+      </node>
+      <node id="3">
+        <label>string.h</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="ltm_8c_1ac6bbd12ef7157b1211e6017d50efe715" prot="public" static="no">
+        <name>ltm_c</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="7" column="9" bodyfile="leasy/lua/ltm.c" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltm_8c_1abf0b3947b59218777a8e928a10be205b" prot="public" static="no">
+        <name>LUA_CORE</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="8" column="9" bodyfile="leasy/lua/ltm.c" bodystart="8" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="ltm_8c_1ae2358d68d4806fe5f2e404428c1779e5" prot="public" static="yes" mutable="no">
+        <type>const char</type>
+        <definition>const char udatatypename[]</definition>
+        <argsstring>[]</argsstring>
+        <name>udatatypename</name>
+        <initializer>= &quot;userdata&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="28" column="19" bodyfile="leasy/lua/ltm.c" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="ltm_8c_1a56a6ffbcfc64ddd03dca836db6463705" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1affa3a74c87c69373c262fdbdc7f97837" kindref="member">LUAI_DDEF</ref> const char *const</type>
+        <definition>LUAI_DDEF const char* const luaT_typenames_[LUA_TOTALTYPES]</definition>
+        <argsstring>[LUA_TOTALTYPES]</argsstring>
+        <name>luaT_typenames_</name>
+        <initializer>                                           = {
+  &quot;no value&quot;,
+  &quot;nil&quot;, &quot;boolean&quot;, udatatypename, &quot;number&quot;,
+  &quot;string&quot;, &quot;table&quot;, &quot;function&quot;, udatatypename, &quot;thread&quot;,
+  &quot;upvalue&quot;, &quot;proto&quot; 
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="30" column="28" bodyfile="leasy/lua/ltm.c" bodystart="30" bodyend="35"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="ltm_8c_1af0ec8a91a71f8e0fdcc4affdc1f57b3d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void luaT_init</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaT_init</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="38" column="6" bodyfile="leasy/lua/ltm.c" bodystart="38" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1a9e4bc96d5d42c0e9c205d0e7b3eb5454" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+        <definition>const TValue * luaT_gettm</definition>
+        <argsstring>(Table *events, TMS event, TString *ename)</argsstring>
+        <name>luaT_gettm</name>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>events</declname>
+        </param>
+        <param>
+          <type><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1" kindref="member">TMS</ref></type>
+          <declname>event</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+          <declname>ename</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="60" column="14" bodyfile="leasy/lua/ltm.c" bodystart="60" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1acf53fe424e6d4098428c85e252a20836" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+        <definition>const TValue * luaT_gettmbyobj</definition>
+        <argsstring>(lua_State *L, const TValue *o, TMS event)</argsstring>
+        <name>luaT_gettmbyobj</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1" kindref="member">TMS</ref></type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="71" column="14" bodyfile="leasy/lua/ltm.c" bodystart="71" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1af2d87694e75cf07977250efb1d85d497" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const char *</type>
+        <definition>const char * luaT_objtypename</definition>
+        <argsstring>(lua_State *L, const TValue *o)</argsstring>
+        <name>luaT_objtypename</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>o</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="91" column="12" bodyfile="leasy/lua/ltm.c" bodystart="91" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1a719f499f44a66a0fe32eef5a2c485ba3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void luaT_callTM</definition>
+        <argsstring>(lua_State *L, const TValue *f, const TValue *p1, const TValue *p2, const TValue *p3)</argsstring>
+        <name>luaT_callTM</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>p2</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>p3</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="103" column="6" bodyfile="leasy/lua/ltm.c" bodystart="103" bodyend="116"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1acf358402b779b8750a2539c806c80b77" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte luaT_callTMres</definition>
+        <argsstring>(lua_State *L, const TValue *f, const TValue *p1, const TValue *p2, StkId res)</argsstring>
+        <name>luaT_callTMres</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>p2</declname>
+        </param>
+        <param>
+          <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+          <declname>res</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="119" column="9" bodyfile="leasy/lua/ltm.c" bodystart="119" bodyend="135"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1a68751e8f9bf0714d8c761a5b6ce4daf9" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int callbinTM</definition>
+        <argsstring>(lua_State *L, const TValue *p1, const TValue *p2, StkId res, TMS event)</argsstring>
+        <name>callbinTM</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>p2</declname>
+        </param>
+        <param>
+          <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+          <declname>res</declname>
+        </param>
+        <param>
+          <type><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1" kindref="member">TMS</ref></type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="138" column="12" bodyfile="leasy/lua/ltm.c" bodystart="138" bodyend="147"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1a2adc638eccb971b8abaf27f60611e913" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void luaT_trybinTM</definition>
+        <argsstring>(lua_State *L, const TValue *p1, const TValue *p2, StkId res, TMS event)</argsstring>
+        <name>luaT_trybinTM</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>p2</declname>
+        </param>
+        <param>
+          <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+          <declname>res</declname>
+        </param>
+        <param>
+          <type><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1" kindref="member">TMS</ref></type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="150" column="6" bodyfile="leasy/lua/ltm.c" bodystart="150" bodyend="166"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1addc61bf94c111c5a5bd3fe0032cb9be0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void luaT_tryconcatTM</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaT_tryconcatTM</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="173" column="6" bodyfile="leasy/lua/ltm.c" bodystart="173" bodyend="177"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1a7846e77f88b80370e536c5d8d6fe4abf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void luaT_trybinassocTM</definition>
+        <argsstring>(lua_State *L, const TValue *p1, const TValue *p2, int flip, StkId res, TMS event)</argsstring>
+        <name>luaT_trybinassocTM</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>p2</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>flip</declname>
+        </param>
+        <param>
+          <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+          <declname>res</declname>
+        </param>
+        <param>
+          <type><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1" kindref="member">TMS</ref></type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="180" column="6" bodyfile="leasy/lua/ltm.c" bodystart="180" bodyend="186"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1a18a26597986e82535c3d37fd5351eb6e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void luaT_trybiniTM</definition>
+        <argsstring>(lua_State *L, const TValue *p1, lua_Integer i2, int flip, StkId res, TMS event)</argsstring>
+        <name>luaT_trybiniTM</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+          <declname>i2</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>flip</declname>
+        </param>
+        <param>
+          <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+          <declname>res</declname>
+        </param>
+        <param>
+          <type><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1" kindref="member">TMS</ref></type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="189" column="6" bodyfile="leasy/lua/ltm.c" bodystart="189" bodyend="194"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1a74d6ee402705616e54549d1066fd1e37" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int luaT_callorderTM</definition>
+        <argsstring>(lua_State *L, const TValue *p1, const TValue *p2, TMS event)</argsstring>
+        <name>luaT_callorderTM</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>p2</declname>
+        </param>
+        <param>
+          <type><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1" kindref="member">TMS</ref></type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="200" column="5" bodyfile="leasy/lua/ltm.c" bodystart="200" bodyend="207"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1a690946d84a71c365611e06711cb5beb7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int luaT_callorderiTM</definition>
+        <argsstring>(lua_State *L, const TValue *p1, int v2, int flip, int isfloat, TMS event)</argsstring>
+        <name>luaT_callorderiTM</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>p1</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>v2</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>flip</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>isfloat</declname>
+        </param>
+        <param>
+          <type><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1" kindref="member">TMS</ref></type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="210" column="5" bodyfile="leasy/lua/ltm.c" bodystart="210" bodyend="224"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1ae3bf8db6908cf2c53968dfeb12eac0b8" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void createvarargtab</definition>
+        <argsstring>(lua_State *L, StkId f, int n)</argsstring>
+        <name>createvarargtab</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="231" column="13" bodyfile="leasy/lua/ltm.c" bodystart="231" bodyend="246"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1a1e00c3de307944023735acfd81d98de6" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void buildhiddenargs</definition>
+        <argsstring>(lua_State *L, CallInfo *ci, const Proto *p, int totalargs, int nfixparams, int nextra)</argsstring>
+        <name>buildhiddenargs</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_call_info" kindref="compound">CallInfo</ref> *</type>
+          <declname>ci</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_proto" kindref="compound">Proto</ref> *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>totalargs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nfixparams</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nextra</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="255" column="13" bodyfile="leasy/lua/ltm.c" bodystart="255" bodyend="269"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1af89df0a33f6232a4f9978c7519f0f4a1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void luaT_adjustvarargs</definition>
+        <argsstring>(lua_State *L, CallInfo *ci, const Proto *p)</argsstring>
+        <name>luaT_adjustvarargs</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_call_info" kindref="compound">CallInfo</ref> *</type>
+          <declname>ci</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_proto" kindref="compound">Proto</ref> *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="272" column="6" bodyfile="leasy/lua/ltm.c" bodystart="272" bodyend="289"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1aae743d9c5e8068d96173612043b85357" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void luaT_getvararg</definition>
+        <argsstring>(CallInfo *ci, StkId ra, TValue *rc)</argsstring>
+        <name>luaT_getvararg</name>
+        <param>
+          <type><ref refid="struct_call_info" kindref="compound">CallInfo</ref> *</type>
+          <declname>ci</declname>
+        </param>
+        <param>
+          <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+          <declname>ra</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>rc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="292" column="6" bodyfile="leasy/lua/ltm.c" bodystart="292" bodyend="311"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1a8b8e0ab17487fd924c40b947bff68501" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int getnumargs</definition>
+        <argsstring>(lua_State *L, CallInfo *ci, Table *h)</argsstring>
+        <name>getnumargs</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_call_info" kindref="compound">CallInfo</ref> *</type>
+          <declname>ci</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>h</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="321" column="12" bodyfile="leasy/lua/ltm.c" bodystart="321" bodyend="331"/>
+      </memberdef>
+      <memberdef kind="function" id="ltm_8c_1a008d451406f111fc234aa0c0eb032bca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void luaT_getvarargs</definition>
+        <argsstring>(lua_State *L, CallInfo *ci, StkId where, int wanted, int vatab)</argsstring>
+        <name>luaT_getvarargs</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_call_info" kindref="compound">CallInfo</ref> *</type>
+          <declname>ci</declname>
+        </param>
+        <param>
+          <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+          <declname>where</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>wanted</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>vatab</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltm.c" line="338" column="6" bodyfile="leasy/lua/ltm.c" bodystart="338" bodyend="363"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>ltm.c<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Tag<sp/>methods</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="ltm_8c_1ac6bbd12ef7157b1211e6017d50efe715" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ltm_c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="ltm_8c_1abf0b3947b59218777a8e928a10be205b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_CORE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lprefix_8h" kindref="compound">lprefix.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lua_8h" kindref="compound">lua.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ldebug_8h" kindref="compound">ldebug.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ldo_8h" kindref="compound">ldo.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lgc_8h" kindref="compound">lgc.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lobject_8h" kindref="compound">lobject.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lstate_8h" kindref="compound">lstate.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lstring_8h" kindref="compound">lstring.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ltable_8h" kindref="compound">ltable.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ltm_8h" kindref="compound">ltm.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lvm_8h" kindref="compound">lvm.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>udatatypename[]<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;userdata&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="ltm_8c_1a56a6ffbcfc64ddd03dca836db6463705" refkind="member"><highlight class="normal"><ref refid="llimits_8h_1affa3a74c87c69373c262fdbdc7f97837" kindref="member">LUAI_DDEF</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="ltm_8c_1a56a6ffbcfc64ddd03dca836db6463705" kindref="member">luaT_typenames_</ref>[<ref refid="lobject_8h_1a19bae920c9c442143f021d1c4301b8cb" kindref="member">LUA_TOTALTYPES</ref>]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/></highlight><highlight class="stringliteral">&quot;no<sp/>value&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/></highlight><highlight class="stringliteral">&quot;nil&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;boolean&quot;</highlight><highlight class="normal">,<sp/>udatatypename,<sp/></highlight><highlight class="stringliteral">&quot;number&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/></highlight><highlight class="stringliteral">&quot;string&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;table&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;function&quot;</highlight><highlight class="normal">,<sp/>udatatypename,<sp/></highlight><highlight class="stringliteral">&quot;thread&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/></highlight><highlight class="stringliteral">&quot;upvalue&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;proto&quot;</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">/*<sp/>these<sp/>last<sp/>cases<sp/>are<sp/>used<sp/>for<sp/>tests<sp/>only<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="ltm_8c_1af0ec8a91a71f8e0fdcc4affdc1f57b3d" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ltm_8c_1af0ec8a91a71f8e0fdcc4affdc1f57b3d" kindref="member">luaT_init</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>luaT_eventname[]<sp/>=<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>ORDER<sp/>TM<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;__index&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__newindex&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;__gc&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__mode&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__len&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__eq&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;__add&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__sub&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__mul&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__mod&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__pow&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;__div&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__idiv&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;__band&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__bor&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__bxor&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__shl&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__shr&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;__unm&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__bnot&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__lt&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__le&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;__concat&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__call&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;__close&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=0;<sp/>i&lt;<ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1a0d06a30ffbc1d1f7e21a96f52da3ef56" kindref="member">TM_N</ref>;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lstate_8h_1a103db2de6edf3420c6c6c9a282562406" kindref="member">G</ref>(L)-&gt;tmname[i]<sp/>=<sp/><ref refid="lstring_8c_1ac9397504696e5cbc6c4cec7649c497ec" kindref="member">luaS_new</ref>(L,<sp/>luaT_eventname[i]);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lgc_8c_1a77a9b70a49730bb007a8a9492687d0eb" kindref="member">luaC_fix</ref>(L,<sp/><ref refid="lstate_8h_1a254ca29aba03e47440082d4591a9734e" kindref="member">obj2gco</ref>(<ref refid="lstate_8h_1a103db2de6edf3420c6c6c9a282562406" kindref="member">G</ref>(L)-&gt;tmname[i]));<sp/><sp/></highlight><highlight class="comment">/*<sp/>never<sp/>collect<sp/>these<sp/>names<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="53"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="57"><highlight class="comment">**<sp/>function<sp/>to<sp/>be<sp/>used<sp/>with<sp/>macro<sp/>&quot;fasttm&quot;:<sp/>optimized<sp/>for<sp/>absence<sp/>of</highlight></codeline>
+<codeline lineno="58"><highlight class="comment">**<sp/>tag<sp/>methods</highlight></codeline>
+<codeline lineno="59"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60" refid="ltm_8c_1a9e4bc96d5d42c0e9c205d0e7b3eb5454" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*<ref refid="ltm_8c_1a9e4bc96d5d42c0e9c205d0e7b3eb5454" kindref="member">luaT_gettm</ref><sp/>(<ref refid="struct_table" kindref="compound">Table</ref><sp/>*events,<sp/><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1" kindref="member">TMS</ref><sp/>event,<sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*ename)<sp/>{</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*tm<sp/>=<sp/><ref refid="ltable_8c_1ae6890a53f6940a93c62858b0b73b2f83" kindref="member">luaH_Hgetshortstr</ref>(events,<sp/>ename);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(event<sp/>&lt;=<sp/><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1aa0074eac874e7e19d5e7c0c8a22ea592" kindref="member">TM_EQ</ref>);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="ltm_8h_1a219a766ba661fa51758627615c22e632" kindref="member">notm</ref>(tm))<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>no<sp/>tag<sp/>method?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>events-&gt;<ref refid="struct_table_1a643cf38ebbab9e5af99ff8a980ffbae5" kindref="member">flags</ref><sp/>|=<sp/><ref refid="llimits_8h_1a596f5b6e992f53a5a4e5732083448dd4" kindref="member">cast_byte</ref>(1u&lt;&lt;event);<sp/><sp/></highlight><highlight class="comment">/*<sp/>cache<sp/>this<sp/>fact<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>tm;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71" refid="ltm_8c_1acf53fe424e6d4098428c85e252a20836" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*<ref refid="ltm_8c_1acf53fe424e6d4098428c85e252a20836" kindref="member">luaT_gettmbyobj</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*o,<sp/><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1" kindref="member">TMS</ref><sp/>event)<sp/>{</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*mt;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(<ref refid="lobject_8h_1acd205ab396b96fba48e1f758c17a2cf3" kindref="member">ttype</ref>(o))<sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lua_8h_1a31620fd8da5b655b7879e16a116ec31a" kindref="member">LUA_TTABLE</ref>:</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>mt<sp/>=<sp/><ref refid="lobject_8h_1a336a6ce5e8340e6de133ec249cf47ebf" kindref="member">hvalue</ref>(o)-&gt;<ref refid="struct_table_1a99c20fa696fb6a4e89890efa3819ebdc" kindref="member">metatable</ref>;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lua_8h_1a84fd4c52cea4073671a4cd0eb7026dc7" kindref="member">LUA_TUSERDATA</ref>:</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>mt<sp/>=<sp/><ref refid="lobject_8h_1a1c49f55d93297e833141fb62903af3ad" kindref="member">uvalue</ref>(o)-&gt;<ref refid="struct_table_1a99c20fa696fb6a4e89890efa3819ebdc" kindref="member">metatable</ref>;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>mt<sp/>=<sp/><ref refid="lstate_8h_1a103db2de6edf3420c6c6c9a282562406" kindref="member">G</ref>(L)-&gt;mt[<ref refid="lobject_8h_1acd205ab396b96fba48e1f758c17a2cf3" kindref="member">ttype</ref>(o)];</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(mt<sp/>?<sp/><ref refid="ltable_8c_1ae6890a53f6940a93c62858b0b73b2f83" kindref="member">luaH_Hgetshortstr</ref>(mt,<sp/><ref refid="lstate_8h_1a103db2de6edf3420c6c6c9a282562406" kindref="member">G</ref>(L)-&gt;tmname[event])<sp/>:<sp/>&amp;<ref refid="lstate_8h_1a103db2de6edf3420c6c6c9a282562406" kindref="member">G</ref>(L)-&gt;nilvalue);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="88"><highlight class="comment">**<sp/>Return<sp/>the<sp/>name<sp/>of<sp/>the<sp/>type<sp/>of<sp/>an<sp/>object.<sp/>For<sp/>tables<sp/>and<sp/>userdata</highlight></codeline>
+<codeline lineno="89"><highlight class="comment">**<sp/>with<sp/>metatable,<sp/>use<sp/>their<sp/>&apos;__name&apos;<sp/>metafield,<sp/>if<sp/>present.</highlight></codeline>
+<codeline lineno="90"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91" refid="ltm_8c_1af2d87694e75cf07977250efb1d85d497" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*<ref refid="ltm_8c_1af2d87694e75cf07977250efb1d85d497" kindref="member">luaT_objtypename</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*o)<sp/>{</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*mt;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((<ref refid="lobject_8h_1ac5338f5fe3885d1ee65412e00a44384e" kindref="member">ttistable</ref>(o)<sp/>&amp;&amp;<sp/>(mt<sp/>=<sp/><ref refid="lobject_8h_1a336a6ce5e8340e6de133ec249cf47ebf" kindref="member">hvalue</ref>(o)-&gt;metatable)<sp/>!=<sp/>NULL)<sp/>||</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>(<ref refid="lobject_8h_1a2b0d95af67f53d9fe2bdde605f9cd957" kindref="member">ttisfulluserdata</ref>(o)<sp/>&amp;&amp;<sp/>(mt<sp/>=<sp/><ref refid="lobject_8h_1a1c49f55d93297e833141fb62903af3ad" kindref="member">uvalue</ref>(o)-&gt;metatable)<sp/>!=<sp/>NULL))<sp/>{</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*name<sp/>=<sp/><ref refid="ltable_8c_1ae6890a53f6940a93c62858b0b73b2f83" kindref="member">luaH_Hgetshortstr</ref>(mt,<sp/><ref refid="lstring_8c_1ac9397504696e5cbc6c4cec7649c497ec" kindref="member">luaS_new</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;__name&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lobject_8h_1a9bdf057a0de8da2ffae3ac35662dd255" kindref="member">ttisstring</ref>(name))<sp/><sp/></highlight><highlight class="comment">/*<sp/>is<sp/>&apos;__name&apos;<sp/>a<sp/>string?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lobject_8h_1acb05d3ab238923581a9c629b8e11a6ac" kindref="member">getstr</ref>(<ref refid="lobject_8h_1a8661397faed512ccc9c70a4661f1a83d" kindref="member">tsvalue</ref>(name));<sp/><sp/></highlight><highlight class="comment">/*<sp/>use<sp/>it<sp/>as<sp/>type<sp/>name<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="ltm_8h_1a7e8b7062137f42da8f8478d7e48004b3" kindref="member">ttypename</ref>(<ref refid="lobject_8h_1acd205ab396b96fba48e1f758c17a2cf3" kindref="member">ttype</ref>(o));<sp/><sp/></highlight><highlight class="comment">/*<sp/>else<sp/>use<sp/>standard<sp/>type<sp/>name<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103" refid="ltm_8c_1a719f499f44a66a0fe32eef5a2c485ba3" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ltm_8c_1a719f499f44a66a0fe32eef5a2c485ba3" kindref="member">luaT_callTM</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*f,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*p1,</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*p2,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*p3)<sp/>{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>func<sp/>=<sp/>L-&gt;top.p;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1add70d29b431f66a1dee29a0cb286de6e" kindref="member">setobj2s</ref>(L,<sp/>func,<sp/>f);<sp/><sp/></highlight><highlight class="comment">/*<sp/>push<sp/>function<sp/>(assume<sp/>EXTRA_STACK)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1add70d29b431f66a1dee29a0cb286de6e" kindref="member">setobj2s</ref>(L,<sp/>func<sp/>+<sp/>1,<sp/>p1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>1st<sp/>argument<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1add70d29b431f66a1dee29a0cb286de6e" kindref="member">setobj2s</ref>(L,<sp/>func<sp/>+<sp/>2,<sp/>p2);<sp/><sp/></highlight><highlight class="comment">/*<sp/>2nd<sp/>argument<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1add70d29b431f66a1dee29a0cb286de6e" kindref="member">setobj2s</ref>(L,<sp/>func<sp/>+<sp/>3,<sp/>p3);<sp/><sp/></highlight><highlight class="comment">/*<sp/>3rd<sp/>argument<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/>L-&gt;top.p<sp/>=<sp/>func<sp/>+<sp/>4;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>metamethod<sp/>may<sp/>yield<sp/>only<sp/>when<sp/>called<sp/>from<sp/>Lua<sp/>code<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lstate_8h_1abf81b7132f7940af70784ccaf75a0e49" kindref="member">isLuacode</ref>(L-&gt;ci))</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ldo_8c_1a5483fddd87ca999e7d037bf397ab7997" kindref="member">luaD_call</ref>(L,<sp/>func,<sp/>0);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ldo_8c_1a61c0a0185ef5ae1493dad10027f4db7e" kindref="member">luaD_callnoyield</ref>(L,<sp/>func,<sp/>0);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119" refid="ltm_8c_1acf358402b779b8750a2539c806c80b77" refkind="member"><highlight class="normal"><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="ltm_8c_1acf358402b779b8750a2539c806c80b77" kindref="member">luaT_callTMres</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*f,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*p1,</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*p2,<sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>res)<sp/>{</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/>ptrdiff_t<sp/>result<sp/>=<sp/><ref refid="ldo_8h_1a49fcb6f4b1b2f21c2caca544e3c5a028" kindref="member">savestack</ref>(L,<sp/>res);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>func<sp/>=<sp/>L-&gt;top.p;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1add70d29b431f66a1dee29a0cb286de6e" kindref="member">setobj2s</ref>(L,<sp/>func,<sp/>f);<sp/><sp/></highlight><highlight class="comment">/*<sp/>push<sp/>function<sp/>(assume<sp/>EXTRA_STACK)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1add70d29b431f66a1dee29a0cb286de6e" kindref="member">setobj2s</ref>(L,<sp/>func<sp/>+<sp/>1,<sp/>p1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>1st<sp/>argument<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1add70d29b431f66a1dee29a0cb286de6e" kindref="member">setobj2s</ref>(L,<sp/>func<sp/>+<sp/>2,<sp/>p2);<sp/><sp/></highlight><highlight class="comment">/*<sp/>2nd<sp/>argument<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/>L-&gt;top.p<sp/>+=<sp/>3;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>metamethod<sp/>may<sp/>yield<sp/>only<sp/>when<sp/>called<sp/>from<sp/>Lua<sp/>code<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lstate_8h_1abf81b7132f7940af70784ccaf75a0e49" kindref="member">isLuacode</ref>(L-&gt;ci))</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ldo_8c_1a5483fddd87ca999e7d037bf397ab7997" kindref="member">luaD_call</ref>(L,<sp/>func,<sp/>1);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ldo_8c_1a61c0a0185ef5ae1493dad10027f4db7e" kindref="member">luaD_callnoyield</ref>(L,<sp/>func,<sp/>1);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/>res<sp/>=<sp/><ref refid="ldo_8h_1a3fbde7f289e6bf661575e9b802da9e78" kindref="member">restorestack</ref>(L,<sp/>result);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1af9258d87e8f082be8a2adb731d90f1a5" kindref="member">setobjs2s</ref>(L,<sp/>res,<sp/>--L-&gt;top.p);<sp/><sp/></highlight><highlight class="comment">/*<sp/>move<sp/>result<sp/>to<sp/>its<sp/>place<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lobject_8h_1a01db083f8bc8b2eb51a45c0ba9967043" kindref="member">ttypetag</ref>(<ref refid="lobject_8h_1a8c21cbb67def90b23342840cd08a5cfd" kindref="member">s2v</ref>(res));<sp/><sp/></highlight><highlight class="comment">/*<sp/>return<sp/>tag<sp/>of<sp/>the<sp/>result<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>callbinTM<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*p1,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*p2,</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>res,<sp/><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1" kindref="member">TMS</ref><sp/>event)<sp/>{</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*tm<sp/>=<sp/><ref refid="ltm_8c_1acf53fe424e6d4098428c85e252a20836" kindref="member">luaT_gettmbyobj</ref>(L,<sp/>p1,<sp/>event);<sp/><sp/></highlight><highlight class="comment">/*<sp/>try<sp/>first<sp/>operand<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="ltm_8h_1a219a766ba661fa51758627615c22e632" kindref="member">notm</ref>(tm))</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/>tm<sp/>=<sp/><ref refid="ltm_8c_1acf53fe424e6d4098428c85e252a20836" kindref="member">luaT_gettmbyobj</ref>(L,<sp/>p2,<sp/>event);<sp/><sp/></highlight><highlight class="comment">/*<sp/>try<sp/>second<sp/>operand<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="ltm_8h_1a219a766ba661fa51758627615c22e632" kindref="member">notm</ref>(tm))</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>-1;<sp/><sp/></highlight><highlight class="comment">/*<sp/>tag<sp/>method<sp/>not<sp/>found<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>call<sp/>tag<sp/>method<sp/>and<sp/>return<sp/>the<sp/>tag<sp/>of<sp/>the<sp/>result<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="ltm_8c_1acf358402b779b8750a2539c806c80b77" kindref="member">luaT_callTMres</ref>(L,<sp/>tm,<sp/>p1,<sp/>p2,<sp/>res);</highlight></codeline>
+<codeline lineno="147"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150" refid="ltm_8c_1a2adc638eccb971b8abaf27f60611e913" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ltm_8c_1a2adc638eccb971b8abaf27f60611e913" kindref="member">luaT_trybinTM</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*p1,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*p2,</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>res,<sp/><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1" kindref="member">TMS</ref><sp/>event)<sp/>{</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="llimits_8h_1ae9c389231436634605d75b0c31f8c3be" kindref="member">l_unlikely</ref>(callbinTM(L,<sp/>p1,<sp/>p2,<sp/>res,<sp/>event)<sp/>&lt;<sp/>0))<sp/>{</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(event)<sp/>{</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1a31cb5bcae367d5cfec150a489c6472b6" kindref="member">TM_BAND</ref>:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1a8f1f4fdbc05573cd376bf9704c31d494" kindref="member">TM_BOR</ref>:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1a7c95694d2607b50b86ef8cf1a4f2eb05" kindref="member">TM_BXOR</ref>:</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1ac0c09418341a5d115650a2cb4a6724a1" kindref="member">TM_SHL</ref>:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1a893cb9ea636210f2e65dbf0bf784121b" kindref="member">TM_SHR</ref>:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1a695b7da29958a1275089c619b5139091" kindref="member">TM_BNOT</ref>:<sp/>{</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lobject_8h_1a7a1392f89b1f29ed3b1afa37a22d0be2" kindref="member">ttisnumber</ref>(p1)<sp/>&amp;&amp;<sp/><ref refid="lobject_8h_1a7a1392f89b1f29ed3b1afa37a22d0be2" kindref="member">ttisnumber</ref>(p2))</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ldebug_8c_1ada97dce3c670f83e257a5b27299bf09b" kindref="member">luaG_tointerror</ref>(L,<sp/>p1,<sp/>p2);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ldebug_8c_1a5a3d4fd14bbb9329188c53a9548b7402" kindref="member">luaG_opinterror</ref>(L,<sp/>p1,<sp/>p2,<sp/></highlight><highlight class="stringliteral">&quot;perform<sp/>bitwise<sp/>operation<sp/>on&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>calls<sp/>never<sp/>return,<sp/>but<sp/>to<sp/>avoid<sp/>warnings:<sp/>*/</highlight><highlight class="comment">/*<sp/>FALLTHROUGH<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ldebug_8c_1a5a3d4fd14bbb9329188c53a9548b7402" kindref="member">luaG_opinterror</ref>(L,<sp/>p1,<sp/>p2,<sp/></highlight><highlight class="stringliteral">&quot;perform<sp/>arithmetic<sp/>on&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="166"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="170"><highlight class="comment">**<sp/>The<sp/>use<sp/>of<sp/>&apos;p1&apos;<sp/>after<sp/>&apos;callbinTM&apos;<sp/>is<sp/>safe<sp/>because,<sp/>when<sp/>a<sp/>tag</highlight></codeline>
+<codeline lineno="171"><highlight class="comment">**<sp/>method<sp/>is<sp/>not<sp/>found,<sp/>&apos;callbinTM&apos;<sp/>cannot<sp/>change<sp/>the<sp/>stack.</highlight></codeline>
+<codeline lineno="172"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="173" refid="ltm_8c_1addc61bf94c111c5a5bd3fe0032cb9be0" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ltm_8c_1addc61bf94c111c5a5bd3fe0032cb9be0" kindref="member">luaT_tryconcatTM</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>p1<sp/>=<sp/>L-&gt;top.p<sp/>-<sp/>2;<sp/><sp/></highlight><highlight class="comment">/*<sp/>first<sp/>argument<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="llimits_8h_1ae9c389231436634605d75b0c31f8c3be" kindref="member">l_unlikely</ref>(callbinTM(L,<sp/><ref refid="lobject_8h_1a8c21cbb67def90b23342840cd08a5cfd" kindref="member">s2v</ref>(p1),<sp/><ref refid="lobject_8h_1a8c21cbb67def90b23342840cd08a5cfd" kindref="member">s2v</ref>(p1<sp/>+<sp/>1),<sp/>p1,<sp/><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1aef8c5f56efb01cf7a514270559237343" kindref="member">TM_CONCAT</ref>)<sp/>&lt;<sp/>0))</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ldebug_8c_1a04641ef359f3943a2ca88f52c3fe283c" kindref="member">luaG_concaterror</ref>(L,<sp/><ref refid="lobject_8h_1a8c21cbb67def90b23342840cd08a5cfd" kindref="member">s2v</ref>(p1),<sp/><ref refid="lobject_8h_1a8c21cbb67def90b23342840cd08a5cfd" kindref="member">s2v</ref>(p1<sp/>+<sp/>1));</highlight></codeline>
+<codeline lineno="177"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight></codeline>
+<codeline lineno="180" refid="ltm_8c_1a7846e77f88b80370e536c5d8d6fe4abf" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ltm_8c_1a7846e77f88b80370e536c5d8d6fe4abf" kindref="member">luaT_trybinassocTM</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*p1,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*p2,</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>flip,<sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>res,<sp/><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1" kindref="member">TMS</ref><sp/>event)<sp/>{</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(flip)</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ltm_8c_1a2adc638eccb971b8abaf27f60611e913" kindref="member">luaT_trybinTM</ref>(L,<sp/>p2,<sp/>p1,<sp/>res,<sp/>event);</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ltm_8c_1a2adc638eccb971b8abaf27f60611e913" kindref="member">luaT_trybinTM</ref>(L,<sp/>p1,<sp/>p2,<sp/>res,<sp/>event);</highlight></codeline>
+<codeline lineno="186"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189" refid="ltm_8c_1a18a26597986e82535c3d37fd5351eb6e" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ltm_8c_1a18a26597986e82535c3d37fd5351eb6e" kindref="member">luaT_trybiniTM</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*p1,<sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>i2,</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>flip,<sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>res,<sp/><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1" kindref="member">TMS</ref><sp/>event)<sp/>{</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>aux;</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1af9dd109ba186841ab26efb2d62baf4f6" kindref="member">setivalue</ref>(&amp;aux,<sp/>i2);</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><ref refid="ltm_8c_1a7846e77f88b80370e536c5d8d6fe4abf" kindref="member">luaT_trybinassocTM</ref>(L,<sp/>p1,<sp/>&amp;aux,<sp/>flip,<sp/>res,<sp/>event);</highlight></codeline>
+<codeline lineno="194"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="198"><highlight class="comment">**<sp/>Calls<sp/>an<sp/>order<sp/>tag<sp/>method.</highlight></codeline>
+<codeline lineno="199"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="200" refid="ltm_8c_1a74d6ee402705616e54549d1066fd1e37" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="ltm_8c_1a74d6ee402705616e54549d1066fd1e37" kindref="member">luaT_callorderTM</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*p1,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*p2,</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1" kindref="member">TMS</ref><sp/>event)<sp/>{</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>tag<sp/>=<sp/>callbinTM(L,<sp/>p1,<sp/>p2,<sp/>L-&gt;top.p,<sp/>event);<sp/><sp/></highlight><highlight class="comment">/*<sp/>try<sp/>original<sp/>event<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(tag<sp/>&gt;=<sp/>0)<sp/><sp/></highlight><highlight class="comment">/*<sp/>found<sp/>tag<sp/>method?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>!<ref refid="lobject_8h_1a902f21e6ff8ffb8468240fed504cfa79" kindref="member">tagisfalse</ref>(tag);</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><ref refid="ldebug_8c_1ad0c51ce500c5a0a448f62bc680d80926" kindref="member">luaG_ordererror</ref>(L,<sp/>p1,<sp/>p2);<sp/><sp/></highlight><highlight class="comment">/*<sp/>no<sp/>metamethod<sp/>found<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;<sp/><sp/></highlight><highlight class="comment">/*<sp/>to<sp/>avoid<sp/>warnings<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight></codeline>
+<codeline lineno="210" refid="ltm_8c_1a690946d84a71c365611e06711cb5beb7" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="ltm_8c_1a690946d84a71c365611e06711cb5beb7" kindref="member">luaT_callorderiTM</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*p1,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>v2,</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>flip,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>isfloat,<sp/><ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1" kindref="member">TMS</ref><sp/>event)<sp/>{</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>aux;<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*p2;</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(isfloat)<sp/>{</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1ae357382324a8220a3cf77607752de887" kindref="member">setfltvalue</ref>(&amp;aux,<sp/><ref refid="llimits_8h_1ac92cecb12c5aba1164877e81e76e2cb6" kindref="member">cast_num</ref>(v2));</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1af9dd109ba186841ab26efb2d62baf4f6" kindref="member">setivalue</ref>(&amp;aux,<sp/>v2);</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(flip)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>arguments<sp/>were<sp/>exchanged?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/>p2<sp/>=<sp/>p1;<sp/>p1<sp/>=<sp/>&amp;aux;<sp/><sp/></highlight><highlight class="comment">/*<sp/>correct<sp/>them<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/>p2<sp/>=<sp/>&amp;aux;</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="ltm_8c_1a74d6ee402705616e54549d1066fd1e37" kindref="member">luaT_callorderTM</ref>(L,<sp/>p1,<sp/>p2,<sp/>event);</highlight></codeline>
+<codeline lineno="224"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"></highlight></codeline>
+<codeline lineno="226"><highlight class="normal"></highlight></codeline>
+<codeline lineno="227"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="228"><highlight class="comment">**<sp/>Create<sp/>a<sp/>vararg<sp/>table<sp/>at<sp/>the<sp/>top<sp/>of<sp/>the<sp/>stack,<sp/>with<sp/>&apos;n&apos;<sp/>elements</highlight></codeline>
+<codeline lineno="229"><highlight class="comment">**<sp/>starting<sp/>at<sp/>&apos;f&apos;.</highlight></codeline>
+<codeline lineno="230"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="231"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>createvarargtab<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>f,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n)<sp/>{</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i;</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/>value;</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*t<sp/>=<sp/><ref refid="ltable_8c_1a47b1a680f251e08074df2b9a5a7c028e" kindref="member">luaH_new</ref>(L);</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1ab9379699ac579d54410e3542f061bbad" kindref="member">sethvalue</ref>(L,<sp/><ref refid="lobject_8h_1a8c21cbb67def90b23342840cd08a5cfd" kindref="member">s2v</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a076002258aeaaa674bb44896d5167c65" kindref="member">L</ref>-&gt;top.p),<sp/>t);</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a076002258aeaaa674bb44896d5167c65" kindref="member">L</ref>-&gt;top.p++;</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><ref refid="ltable_8c_1a20f25e74a230cea147cb1e800794eab1" kindref="member">luaH_resize</ref>(L,<sp/>t,<sp/><ref refid="llimits_8h_1a6ce2ddc5b419ed6f302573db3cc03e56" kindref="member">cast_uint</ref>(n),<sp/>1);</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1a251a2d3bada66aaed6249a89a0afe5f0" kindref="member">setsvalue</ref>(L,<sp/>&amp;<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/><ref refid="lstring_8c_1ac9397504696e5cbc6c4cec7649c497ec" kindref="member">luaS_new</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;n&quot;</highlight><highlight class="normal">));<sp/><sp/></highlight><highlight class="comment">/*<sp/>key<sp/>is<sp/>&quot;n&quot;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1af9dd109ba186841ab26efb2d62baf4f6" kindref="member">setivalue</ref>(&amp;value,<sp/>n);<sp/><sp/></highlight><highlight class="comment">/*<sp/>value<sp/>is<sp/>n<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>No<sp/>need<sp/>to<sp/>anchor<sp/>the<sp/>key:<sp/>Due<sp/>to<sp/>the<sp/>resize,<sp/>the<sp/>next<sp/>operation</highlight></codeline>
+<codeline lineno="241"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>cannot<sp/>trigger<sp/>a<sp/>garbage<sp/>collection<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><ref refid="ltable_8c_1a2ea4f5ea50911a03375ba4d22ef72419" kindref="member">luaH_set</ref>(L,<sp/>t,<sp/>&amp;<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/>&amp;value);<sp/><sp/></highlight><highlight class="comment">/*<sp/>t.n<sp/>=<sp/>n<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ltable_8c_1a9eefa8191c63f55cffb6b7b58217467c" kindref="member">luaH_setint</ref>(L,<sp/>t,<sp/>i<sp/>+<sp/>1,<sp/><ref refid="lobject_8h_1a8c21cbb67def90b23342840cd08a5cfd" kindref="member">s2v</ref>(f<sp/>+<sp/>i));</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><ref refid="lgc_8h_1ad013db5004ccc5fbe8a6450caa1f1ad9" kindref="member">luaC_checkGC</ref>(L);</highlight></codeline>
+<codeline lineno="246"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"></highlight></codeline>
+<codeline lineno="248"><highlight class="normal"></highlight></codeline>
+<codeline lineno="249"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="250"><highlight class="comment">**<sp/>initial<sp/>stack:<sp/><sp/>func<sp/>arg1<sp/>...<sp/>argn<sp/>extra1<sp/>...</highlight></codeline>
+<codeline lineno="251"><highlight class="comment">**<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>^<sp/>ci-&gt;func<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>^<sp/>L-&gt;top</highlight></codeline>
+<codeline lineno="252"><highlight class="comment">**<sp/>final<sp/>stack:<sp/>func<sp/>nil<sp/>...<sp/>nil<sp/>extra1<sp/>...<sp/>func<sp/>arg1<sp/>...<sp/>argn</highlight></codeline>
+<codeline lineno="253"><highlight class="comment">**<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>^<sp/>ci-&gt;func</highlight></codeline>
+<codeline lineno="254"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>buildhiddenargs<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_call_info" kindref="compound">CallInfo</ref><sp/>*ci,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*p,</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>totalargs,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nfixparams,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nextra)<sp/>{</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i;</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/>ci-&gt;<ref refid="struct_call_info_1ac9377793eea84cbe67b5059f956c0331" kindref="member">u</ref>.<ref refid="struct_call_info_1a3dfa112bc5d6a4dbf3695b89f51899f3" kindref="member">l</ref>.<ref refid="struct_call_info_1a14e42d92bc824c3f470152b2ba3ac334" kindref="member">nextraargs</ref><sp/>=<sp/>nextra;</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><ref refid="ldo_8h_1ab1500a6449b9cdf335e3c7ce23aa85d7" kindref="member">luaD_checkstack</ref>(L,<sp/>p-&gt;<ref refid="struct_proto_1a9c9ed4e9d996233f75cdf56b912e4803" kindref="member">maxstacksize</ref><sp/>+<sp/>1);</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>copy<sp/>function<sp/>to<sp/>the<sp/>top<sp/>of<sp/>the<sp/>stack,<sp/>after<sp/>extra<sp/>arguments<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1af9258d87e8f082be8a2adb731d90f1a5" kindref="member">setobjs2s</ref>(L,<sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a076002258aeaaa674bb44896d5167c65" kindref="member">L</ref>-&gt;top.p++,<sp/>ci-&gt;<ref refid="struct_call_info_1a3307de33f6da067897418f5e98e63167" kindref="member">func</ref>.<ref refid="union_stk_id_rel_1a217d7edba31898cdfe8fdd91df893d26" kindref="member">p</ref>);</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>move<sp/>fixed<sp/>parameters<sp/>to<sp/>after<sp/>the<sp/>copied<sp/>function<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>1;<sp/>i<sp/>&lt;=<sp/>nfixparams;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1af9258d87e8f082be8a2adb731d90f1a5" kindref="member">setobjs2s</ref>(L,<sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a076002258aeaaa674bb44896d5167c65" kindref="member">L</ref>-&gt;top.p++,<sp/>ci-&gt;<ref refid="struct_call_info_1a3307de33f6da067897418f5e98e63167" kindref="member">func</ref>.<ref refid="union_stk_id_rel_1a217d7edba31898cdfe8fdd91df893d26" kindref="member">p</ref><sp/>+<sp/>i);</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1ad9034def7bbc1965ec3d714d84620b07" kindref="member">setnilvalue</ref>(<ref refid="lobject_8h_1a8c21cbb67def90b23342840cd08a5cfd" kindref="member">s2v</ref>(ci-&gt;<ref refid="struct_call_info_1a3307de33f6da067897418f5e98e63167" kindref="member">func</ref>.<ref refid="union_stk_id_rel_1a217d7edba31898cdfe8fdd91df893d26" kindref="member">p</ref><sp/>+<sp/>i));<sp/><sp/></highlight><highlight class="comment">/*<sp/>erase<sp/>original<sp/>parameter<sp/>(for<sp/>GC)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/>ci-&gt;<ref refid="struct_call_info_1a3307de33f6da067897418f5e98e63167" kindref="member">func</ref>.<ref refid="union_stk_id_rel_1a217d7edba31898cdfe8fdd91df893d26" kindref="member">p</ref><sp/>+=<sp/>totalargs<sp/>+<sp/>1;<sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;func&apos;<sp/>now<sp/>lives<sp/>after<sp/>hidden<sp/>arguments<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/>ci-&gt;<ref refid="struct_call_info_1a896b6484f4e0c4f76768913ffb91e88b" kindref="member">top</ref>.<ref refid="union_stk_id_rel_1a217d7edba31898cdfe8fdd91df893d26" kindref="member">p</ref><sp/>+=<sp/>totalargs<sp/>+<sp/>1;</highlight></codeline>
+<codeline lineno="269"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"></highlight></codeline>
+<codeline lineno="271"><highlight class="normal"></highlight></codeline>
+<codeline lineno="272" refid="ltm_8c_1af89df0a33f6232a4f9978c7519f0f4a1" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ltm_8c_1af89df0a33f6232a4f9978c7519f0f4a1" kindref="member">luaT_adjustvarargs</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_call_info" kindref="compound">CallInfo</ref><sp/>*ci,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*p)<sp/>{</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>totalargs<sp/>=<sp/><ref refid="llimits_8h_1a37a9e2c4b53433d34bad0f12a1500c08" kindref="member">cast_int</ref>(L-&gt;top.p<sp/>-<sp/>ci-&gt;<ref refid="struct_call_info_1a3307de33f6da067897418f5e98e63167" kindref="member">func</ref>.<ref refid="union_stk_id_rel_1a217d7edba31898cdfe8fdd91df893d26" kindref="member">p</ref>)<sp/>-<sp/>1;</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nfixparams<sp/>=<sp/>p-&gt;<ref refid="struct_proto_1a3f106f177af6c68ffd8b042713266b98" kindref="member">numparams</ref>;</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nextra<sp/>=<sp/>totalargs<sp/>-<sp/>nfixparams;<sp/><sp/></highlight><highlight class="comment">/*<sp/>number<sp/>of<sp/>extra<sp/>arguments<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p-&gt;<ref refid="struct_proto_1a16d8b2f349f89bdeabda995cf96c1fb0" kindref="member">flag</ref><sp/>&amp;<sp/><ref refid="lobject_8h_1a537550afe7dd14d7cf2e5a8f6d438490" kindref="member">PF_VATAB</ref>)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>does<sp/>it<sp/>need<sp/>a<sp/>vararg<sp/>table?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(!(p-&gt;<ref refid="struct_proto_1a16d8b2f349f89bdeabda995cf96c1fb0" kindref="member">flag</ref><sp/>&amp;<sp/><ref refid="lobject_8h_1afcdc78bd96b64ec611012547081dfd27" kindref="member">PF_VAHID</ref>));</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/>createvarargtab(L,<sp/>ci-&gt;<ref refid="struct_call_info_1a3307de33f6da067897418f5e98e63167" kindref="member">func</ref>.<ref refid="union_stk_id_rel_1a217d7edba31898cdfe8fdd91df893d26" kindref="member">p</ref><sp/>+<sp/>nfixparams<sp/>+<sp/>1,<sp/>nextra);</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>move<sp/>table<sp/>to<sp/>proper<sp/>place<sp/>(last<sp/>parameter)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1af9258d87e8f082be8a2adb731d90f1a5" kindref="member">setobjs2s</ref>(L,<sp/>ci-&gt;<ref refid="struct_call_info_1a3307de33f6da067897418f5e98e63167" kindref="member">func</ref>.<ref refid="union_stk_id_rel_1a217d7edba31898cdfe8fdd91df893d26" kindref="member">p</ref><sp/>+<sp/>nfixparams<sp/>+<sp/>1,<sp/>L-&gt;top.p<sp/>-<sp/>1);</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>no<sp/>table<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(p-&gt;<ref refid="struct_proto_1a16d8b2f349f89bdeabda995cf96c1fb0" kindref="member">flag</ref><sp/>&amp;<sp/><ref refid="lobject_8h_1afcdc78bd96b64ec611012547081dfd27" kindref="member">PF_VAHID</ref>);</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/>buildhiddenargs(L,<sp/>ci,<sp/>p,<sp/>totalargs,<sp/>nfixparams,<sp/>nextra);</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>set<sp/>vararg<sp/>parameter<sp/>to<sp/>nil<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1ad9034def7bbc1965ec3d714d84620b07" kindref="member">setnilvalue</ref>(<ref refid="lobject_8h_1a8c21cbb67def90b23342840cd08a5cfd" kindref="member">s2v</ref>(ci-&gt;<ref refid="struct_call_info_1a3307de33f6da067897418f5e98e63167" kindref="member">func</ref>.<ref refid="union_stk_id_rel_1a217d7edba31898cdfe8fdd91df893d26" kindref="member">p</ref><sp/>+<sp/>nfixparams<sp/>+<sp/>1));</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(L-&gt;top.p<sp/>&lt;=<sp/>ci-&gt;<ref refid="struct_call_info_1a896b6484f4e0c4f76768913ffb91e88b" kindref="member">top</ref>.<ref refid="union_stk_id_rel_1a217d7edba31898cdfe8fdd91df893d26" kindref="member">p</ref><sp/>&amp;&amp;<sp/>ci-&gt;<ref refid="struct_call_info_1a896b6484f4e0c4f76768913ffb91e88b" kindref="member">top</ref>.<ref refid="union_stk_id_rel_1a217d7edba31898cdfe8fdd91df893d26" kindref="member">p</ref><sp/>&lt;=<sp/>L-&gt;stack_last.p);</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="289"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"></highlight></codeline>
+<codeline lineno="291"><highlight class="normal"></highlight></codeline>
+<codeline lineno="292" refid="ltm_8c_1aae743d9c5e8068d96173612043b85357" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ltm_8c_1aae743d9c5e8068d96173612043b85357" kindref="member">luaT_getvararg</ref><sp/>(<ref refid="struct_call_info" kindref="compound">CallInfo</ref><sp/>*ci,<sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>ra,<sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*rc)<sp/>{</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nextra<sp/>=<sp/>ci-&gt;<ref refid="struct_call_info_1ac9377793eea84cbe67b5059f956c0331" kindref="member">u</ref>.<ref refid="struct_call_info_1a3dfa112bc5d6a4dbf3695b89f51899f3" kindref="member">l</ref>.<ref refid="struct_call_info_1a14e42d92bc824c3f470152b2ba3ac334" kindref="member">nextraargs</ref>;</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>n;</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lvm_8h_1a0b3a6eff12747eacea6551dbc2d42707" kindref="member">tointegerns</ref>(rc,<sp/>&amp;n))<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>integral<sp/>value?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="llimits_8h_1a5871309e671ba9f938fcb1e0d3bcbeca" kindref="member">l_castS2U</ref>(n)<sp/>-<sp/>1<sp/>&lt;<sp/><ref refid="llimits_8h_1a6ce2ddc5b419ed6f302573db3cc03e56" kindref="member">cast_uint</ref>(nextra))<sp/>{</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>slot<sp/>=<sp/>ci-&gt;<ref refid="struct_call_info_1a3307de33f6da067897418f5e98e63167" kindref="member">func</ref>.<ref refid="union_stk_id_rel_1a217d7edba31898cdfe8fdd91df893d26" kindref="member">p</ref><sp/>-<sp/>nextra<sp/>+<sp/><ref refid="llimits_8h_1a37a9e2c4b53433d34bad0f12a1500c08" kindref="member">cast_int</ref>(n)<sp/>-<sp/>1;</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1af9258d87e8f082be8a2adb731d90f1a5" kindref="member">setobjs2s</ref>(((<ref refid="structlua___state" kindref="compound">lua_State</ref>*)NULL),<sp/>ra,<sp/>slot);</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lobject_8h_1a9bdf057a0de8da2ffae3ac35662dd255" kindref="member">ttisstring</ref>(rc))<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>string<sp/>value?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>len;</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s<sp/>=<sp/><ref refid="lobject_8h_1ae4aa3e739eca19baaa815852b81c4ed1" kindref="member">getlstr</ref>(<ref refid="lobject_8h_1a8661397faed512ccc9c70a4661f1a83d" kindref="member">tsvalue</ref>(rc),<sp/>len);</highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(len<sp/>==<sp/>1<sp/>&amp;&amp;<sp/>s[0]<sp/>==<sp/></highlight><highlight class="charliteral">&apos;n&apos;</highlight><highlight class="normal">)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>key<sp/>is<sp/>&quot;n&quot;?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1af9dd109ba186841ab26efb2d62baf4f6" kindref="member">setivalue</ref>(<ref refid="lobject_8h_1a8c21cbb67def90b23342840cd08a5cfd" kindref="member">s2v</ref>(ra),<sp/>nextra);</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1ad9034def7bbc1965ec3d714d84620b07" kindref="member">setnilvalue</ref>(<ref refid="lobject_8h_1a8c21cbb67def90b23342840cd08a5cfd" kindref="member">s2v</ref>(ra));<sp/><sp/></highlight><highlight class="comment">/*<sp/>else<sp/>produce<sp/>nil<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="311"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"></highlight></codeline>
+<codeline lineno="313"><highlight class="normal"></highlight></codeline>
+<codeline lineno="314"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="315"><highlight class="comment">**<sp/>Get<sp/>the<sp/>number<sp/>of<sp/>extra<sp/>arguments<sp/>in<sp/>a<sp/>vararg<sp/>function.<sp/>If<sp/>vararg</highlight></codeline>
+<codeline lineno="316"><highlight class="comment">**<sp/>table<sp/>has<sp/>been<sp/>optimized<sp/>away,<sp/>that<sp/>number<sp/>is<sp/>in<sp/>the<sp/>call<sp/>info.</highlight></codeline>
+<codeline lineno="317"><highlight class="comment">**<sp/>Otherwise,<sp/>get<sp/>the<sp/>field<sp/>&apos;n&apos;<sp/>from<sp/>the<sp/>vararg<sp/>table<sp/>and<sp/>check<sp/>that<sp/>it</highlight></codeline>
+<codeline lineno="318"><highlight class="comment">**<sp/>has<sp/>a<sp/>proper<sp/>value<sp/>(non-negative<sp/>integer<sp/>not<sp/>larger<sp/>than<sp/>the<sp/>stack</highlight></codeline>
+<codeline lineno="319"><highlight class="comment">**<sp/>limit).</highlight></codeline>
+<codeline lineno="320"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="321"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>getnumargs<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_call_info" kindref="compound">CallInfo</ref><sp/>*ci,<sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*h)<sp/>{</highlight></codeline>
+<codeline lineno="322"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(h<sp/>==<sp/>NULL)<sp/><sp/></highlight><highlight class="comment">/*<sp/>no<sp/>vararg<sp/>table?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ci-&gt;<ref refid="struct_call_info_1ac9377793eea84cbe67b5059f956c0331" kindref="member">u</ref>.<ref refid="struct_call_info_1a3dfa112bc5d6a4dbf3695b89f51899f3" kindref="member">l</ref>.<ref refid="struct_call_info_1a14e42d92bc824c3f470152b2ba3ac334" kindref="member">nextraargs</ref>;</highlight></codeline>
+<codeline lineno="324"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="325"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>res;</highlight></codeline>
+<codeline lineno="326"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="ltable_8c_1a6368bfbd667f854eea4c08faf0ae17cc" kindref="member">luaH_getshortstr</ref>(h,<sp/><ref refid="lstring_8c_1ac9397504696e5cbc6c4cec7649c497ec" kindref="member">luaS_new</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;n&quot;</highlight><highlight class="normal">),<sp/>&amp;res)<sp/>!=<sp/><ref refid="lobject_8h_1a69aa5cae89d634d458e0da4957257745" kindref="member">LUA_VNUMINT</ref><sp/>||</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1a5871309e671ba9f938fcb1e0d3bcbeca" kindref="member">l_castS2U</ref>(<ref refid="lobject_8h_1af1a59636db050b842a791cd19086d925" kindref="member">ivalue</ref>(&amp;res))<sp/>&gt;<sp/><ref refid="llimits_8h_1a6ce2ddc5b419ed6f302573db3cc03e56" kindref="member">cast_uint</ref>(INT_MAX/2))</highlight></codeline>
+<codeline lineno="328"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ldebug_8c_1a88d38ca5da2e7a1492fc9d5ad70c32c5" kindref="member">luaG_runerror</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;vararg<sp/>table<sp/>has<sp/>no<sp/>proper<sp/>&apos;n&apos;&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="329"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1a37a9e2c4b53433d34bad0f12a1500c08" kindref="member">cast_int</ref>(<ref refid="lobject_8h_1af1a59636db050b842a791cd19086d925" kindref="member">ivalue</ref>(&amp;res));</highlight></codeline>
+<codeline lineno="330"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="331"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"></highlight></codeline>
+<codeline lineno="333"><highlight class="normal"></highlight></codeline>
+<codeline lineno="334"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="335"><highlight class="comment">**<sp/>Get<sp/>&apos;wanted&apos;<sp/>vararg<sp/>arguments<sp/>and<sp/>put<sp/>them<sp/>in<sp/>&apos;where&apos;.<sp/>&apos;vatab&apos;<sp/>is</highlight></codeline>
+<codeline lineno="336"><highlight class="comment">**<sp/>the<sp/>register<sp/>of<sp/>the<sp/>vararg<sp/>table<sp/>or<sp/>-1<sp/>if<sp/>there<sp/>is<sp/>no<sp/>vararg<sp/>table.</highlight></codeline>
+<codeline lineno="337"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="338" refid="ltm_8c_1a008d451406f111fc234aa0c0eb032bca" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ltm_8c_1a008d451406f111fc234aa0c0eb032bca" kindref="member">luaT_getvarargs</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_call_info" kindref="compound">CallInfo</ref><sp/>*ci,<sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/>where,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>wanted,</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>vatab)<sp/>{</highlight></codeline>
+<codeline lineno="340"><highlight class="normal"><sp/><sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*h<sp/>=<sp/>(vatab<sp/>&lt;<sp/>0)<sp/>?<sp/>NULL<sp/>:<sp/><ref refid="lobject_8h_1a336a6ce5e8340e6de133ec249cf47ebf" kindref="member">hvalue</ref>(<ref refid="lobject_8h_1a8c21cbb67def90b23342840cd08a5cfd" kindref="member">s2v</ref>(ci-&gt;<ref refid="struct_call_info_1a3307de33f6da067897418f5e98e63167" kindref="member">func</ref>.<ref refid="union_stk_id_rel_1a217d7edba31898cdfe8fdd91df893d26" kindref="member">p</ref><sp/>+<sp/>vatab<sp/>+<sp/>1));</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nargs<sp/>=<sp/>getnumargs(L,<sp/>ci,<sp/>h);<sp/><sp/></highlight><highlight class="comment">/*<sp/>number<sp/>of<sp/>available<sp/>vararg<sp/>args.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="342"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i,<sp/>touse;<sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;touse&apos;<sp/>is<sp/>minimum<sp/>between<sp/>&apos;wanted&apos;<sp/>and<sp/>&apos;nargs&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="343"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(wanted<sp/>&lt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/>touse<sp/>=<sp/>wanted<sp/>=<sp/>nargs;<sp/><sp/></highlight><highlight class="comment">/*<sp/>get<sp/>all<sp/>extra<sp/>arguments<sp/>available<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="345"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ldo_8h_1a40f82b578048e3e808fe707fa49f9aa9" kindref="member">checkstackp</ref>(L,<sp/>nargs,<sp/>where);<sp/><sp/></highlight><highlight class="comment">/*<sp/>ensure<sp/>stack<sp/>space<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="346"><highlight class="normal"><sp/><sp/><sp/><sp/>L-&gt;top.p<sp/>=<sp/>where<sp/>+<sp/>nargs;<sp/><sp/></highlight><highlight class="comment">/*<sp/>next<sp/>instruction<sp/>will<sp/>need<sp/>top<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="349"><highlight class="normal"><sp/><sp/><sp/><sp/>touse<sp/>=<sp/>(nargs<sp/>&gt;<sp/>wanted)<sp/>?<sp/>wanted<sp/>:<sp/>nargs;</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(h<sp/>==<sp/>NULL)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>no<sp/>vararg<sp/>table?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="351"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>touse;<sp/>i++)<sp/><sp/></highlight><highlight class="comment">/*<sp/>get<sp/>vararg<sp/>values<sp/>from<sp/>the<sp/>stack<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="352"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1af9258d87e8f082be8a2adb731d90f1a5" kindref="member">setobjs2s</ref>(L,<sp/>where<sp/>+<sp/>i,<sp/>ci-&gt;<ref refid="struct_call_info_1a3307de33f6da067897418f5e98e63167" kindref="member">func</ref>.<ref refid="union_stk_id_rel_1a217d7edba31898cdfe8fdd91df893d26" kindref="member">p</ref><sp/>-<sp/>nargs<sp/>+<sp/>i);</highlight></codeline>
+<codeline lineno="353"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="354"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>get<sp/>vararg<sp/>values<sp/>from<sp/>vararg<sp/>table<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="355"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>touse;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="356"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/>tag<sp/>=<sp/><ref refid="ltable_8c_1a964d855012301ec7d38a05add149924a" kindref="member">luaH_getint</ref>(h,<sp/>i<sp/>+<sp/>1,<sp/><ref refid="lobject_8h_1a8c21cbb67def90b23342840cd08a5cfd" kindref="member">s2v</ref>(where<sp/>+<sp/>i));</highlight></codeline>
+<codeline lineno="357"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lobject_8h_1aec4fc2bddf98a2fc76c443e0653aedf3" kindref="member">tagisempty</ref>(tag))</highlight></codeline>
+<codeline lineno="358"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1ad9034def7bbc1965ec3d714d84620b07" kindref="member">setnilvalue</ref>(<ref refid="lobject_8h_1a8c21cbb67def90b23342840cd08a5cfd" kindref="member">s2v</ref>(where<sp/>+<sp/>i));</highlight></codeline>
+<codeline lineno="359"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="360"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="361"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>i<sp/>&lt;<sp/>wanted;<sp/>i++)<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>complete<sp/>required<sp/>results<sp/>with<sp/>nil<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="362"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1ad9034def7bbc1965ec3d714d84620b07" kindref="member">setnilvalue</ref>(<ref refid="lobject_8h_1a8c21cbb67def90b23342840cd08a5cfd" kindref="member">s2v</ref>(where<sp/>+<sp/>i));</highlight></codeline>
+<codeline lineno="363"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="364"><highlight class="normal"></highlight></codeline>
+<codeline lineno="365"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/ltm.c"/>
+  </compounddef>
+</doxygen>

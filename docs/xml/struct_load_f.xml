@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_load_f" kind="struct" language="C++" prot="public">
+    <compoundname>LoadF</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_load_f_1a9f7722c4ee47b075c87267c2c4ec7cbf" prot="public" static="no" mutable="no">
+        <type>unsigned</type>
+        <definition>unsigned LoadF::n</definition>
+        <argsstring></argsstring>
+        <name>n</name>
+        <qualifiedname>LoadF::n</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.c" line="737" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="737" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_load_f_1aa799802294df0b9f2778e0fc5c04aaf5" prot="public" static="no" mutable="no">
+        <type>FILE *</type>
+        <definition>FILE* LoadF::f</definition>
+        <argsstring></argsstring>
+        <name>f</name>
+        <qualifiedname>LoadF::f</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.c" line="738" column="8" bodyfile="leasy/lua/lauxlib.c" bodystart="738" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_load_f_1a360b1183ab02b4a17d77346237e4cc8e" prot="public" static="no" mutable="no">
+        <type>char</type>
+        <definition>char LoadF::buff[BUFSIZ]</definition>
+        <argsstring>[BUFSIZ]</argsstring>
+        <name>buff</name>
+        <qualifiedname>LoadF::buff</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.c" line="739" column="8" bodyfile="leasy/lua/lauxlib.c" bodystart="739" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/lua/lauxlib.c" line="736" column="1" bodyfile="leasy/lua/lauxlib.c" bodystart="736" bodyend="740"/>
+    <listofallmembers>
+      <member refid="struct_load_f_1a360b1183ab02b4a17d77346237e4cc8e" prot="public" virt="non-virtual"><scope>LoadF</scope><name>buff</name></member>
+      <member refid="struct_load_f_1aa799802294df0b9f2778e0fc5c04aaf5" prot="public" virt="non-virtual"><scope>LoadF</scope><name>f</name></member>
+      <member refid="struct_load_f_1a9f7722c4ee47b075c87267c2c4ec7cbf" prot="public" virt="non-virtual"><scope>LoadF</scope><name>n</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

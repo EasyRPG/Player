@@ -139,3 +139,4 @@ bool Contains(const json& json_obj, std::string_view json_path);
 
 #endif // HAVE_NLOHMANN_JSON
 #endif // JSON_HELPER_H
+

@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_message_overlay_item" kind="class" language="C++" prot="public">
+    <compoundname>MessageOverlayItem</compoundname>
+    <includes refid="message__overlay_8h" local="no">message_overlay.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_message_overlay_item_1a011b157e4e58be53985e11b78273a565" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string MessageOverlayItem::text</definition>
+        <argsstring></argsstring>
+        <name>text</name>
+        <qualifiedname>MessageOverlayItem::text</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="33" column="13" bodyfile="message_overlay.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_message_overlay_item_1a653482a75527a4bf5f4666cd04557a2d" prot="public" static="no" mutable="no">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color MessageOverlayItem::color</definition>
+        <argsstring></argsstring>
+        <name>color</name>
+        <qualifiedname>MessageOverlayItem::color</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="34" column="7" bodyfile="message_overlay.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_message_overlay_item_1a474d1db6f535d1046b5f0123d919ab82" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool MessageOverlayItem::hidden</definition>
+        <argsstring></argsstring>
+        <name>hidden</name>
+        <qualifiedname>MessageOverlayItem::hidden</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="35" column="6" bodyfile="message_overlay.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_message_overlay_item_1ad04a278e77bb794b6b3e24f1f26aba1c" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int MessageOverlayItem::repeat_count</definition>
+        <argsstring></argsstring>
+        <name>repeat_count</name>
+        <qualifiedname>MessageOverlayItem::repeat_count</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="36" column="5" bodyfile="message_overlay.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_message_overlay_item_1ab9fb771288454c582332642b27fd7e6b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MessageOverlayItem::MessageOverlayItem</definition>
+        <argsstring>(const std::string &amp;text, Color color)</argsstring>
+        <name>MessageOverlayItem</name>
+        <qualifiedname>MessageOverlayItem::MessageOverlayItem</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>text</declname>
+        </param>
+        <param>
+          <type><ref refid="class_color" kindref="compound">Color</ref></type>
+          <declname>color</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="message_overlay.h" line="31" column="1" bodyfile="message_overlay.cpp" bodystart="139" bodyend="143"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>Color</label>
+        <link refid="class_color"/>
+      </node>
+      <node id="1">
+        <label>MessageOverlayItem</label>
+        <link refid="class_message_overlay_item"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>color</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="message_overlay.h" line="29" column="1" bodyfile="message_overlay.h" bodystart="29" bodyend="37"/>
+    <listofallmembers>
+      <member refid="class_message_overlay_item_1a653482a75527a4bf5f4666cd04557a2d" prot="public" virt="non-virtual"><scope>MessageOverlayItem</scope><name>color</name></member>
+      <member refid="class_message_overlay_item_1a474d1db6f535d1046b5f0123d919ab82" prot="public" virt="non-virtual"><scope>MessageOverlayItem</scope><name>hidden</name></member>
+      <member refid="class_message_overlay_item_1ab9fb771288454c582332642b27fd7e6b" prot="public" virt="non-virtual"><scope>MessageOverlayItem</scope><name>MessageOverlayItem</name></member>
+      <member refid="class_message_overlay_item_1ad04a278e77bb794b6b3e24f1f26aba1c" prot="public" virt="non-virtual"><scope>MessageOverlayItem</scope><name>repeat_count</name></member>
+      <member refid="class_message_overlay_item_1a011b157e4e58be53985e11b78273a565" prot="public" virt="non-virtual"><scope>MessageOverlayItem</scope><name>text</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

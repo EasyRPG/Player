@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_e_x_e_reader_1_1_file_info" kind="struct" language="C++" prot="public">
+    <compoundname>EXEReader::FileInfo</compoundname>
+    <includes refid="exe__reader_8h" local="no">exe_reader.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_e_x_e_reader_1_1_file_info_1a71996f7df45c9f78bc6b338cf3d4ceaa" prot="public" static="no" mutable="no">
+        <type>uint64_t</type>
+        <definition>uint64_t EXEReader::FileInfo::version</definition>
+        <argsstring></argsstring>
+        <name>version</name>
+        <qualifiedname>EXEReader::FileInfo::version</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="60" column="10" bodyfile="exe_reader.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_e_x_e_reader_1_1_file_info_1ae6670d7ec1f35dd8af65e084a80d6dbc" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int EXEReader::FileInfo::logos</definition>
+        <argsstring></argsstring>
+        <name>logos</name>
+        <qualifiedname>EXEReader::FileInfo::logos</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="61" column="5" bodyfile="exe_reader.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_e_x_e_reader_1_1_file_info_1aa7047961d75c64ad1e596a07f96cc2f8" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string EXEReader::FileInfo::version_str</definition>
+        <argsstring></argsstring>
+        <name>version_str</name>
+        <qualifiedname>EXEReader::FileInfo::version_str</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="62" column="13" bodyfile="exe_reader.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_e_x_e_reader_1_1_file_info_1a07ab36178e97dd26b8828d9d2f269811" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t EXEReader::FileInfo::code_size</definition>
+        <argsstring></argsstring>
+        <name>code_size</name>
+        <qualifiedname>EXEReader::FileInfo::code_size</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="63" column="10" bodyfile="exe_reader.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_e_x_e_reader_1_1_file_info_1a77d4d01ddf3ed64013c27458d5d06c51" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t EXEReader::FileInfo::cherry_size</definition>
+        <argsstring></argsstring>
+        <name>cherry_size</name>
+        <qualifiedname>EXEReader::FileInfo::cherry_size</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="64" column="10" bodyfile="exe_reader.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_e_x_e_reader_1_1_file_info_1ad6915bf860acbc06b3e6075b67bfeb42" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t EXEReader::FileInfo::geep_size</definition>
+        <argsstring></argsstring>
+        <name>geep_size</name>
+        <qualifiedname>EXEReader::FileInfo::geep_size</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="65" column="10" bodyfile="exe_reader.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_e_x_e_reader_1_1_file_info_1aa84d576c6d73b2c68a305bab546cf7a2" prot="public" static="no" mutable="no">
+        <type><ref refid="class_e_x_e_reader_1ab57a54b73977485d8485ad161289a2c8" kindref="member">MachineType</ref></type>
+        <definition>MachineType EXEReader::FileInfo::machine_type</definition>
+        <argsstring></argsstring>
+        <name>machine_type</name>
+        <qualifiedname>EXEReader::FileInfo::machine_type</qualifiedname>
+        <initializer>= <ref refid="class_e_x_e_reader_1ab57a54b73977485d8485ad161289a2c8a88183b946cc5f0e8c96b2e66e1c74a7e" kindref="member">MachineType::Unknown</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="66" column="13" bodyfile="exe_reader.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_e_x_e_reader_1_1_file_info_1a189d854012cceefbd4aeadbec4d766ea" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool EXEReader::FileInfo::is_easyrpg_player</definition>
+        <argsstring></argsstring>
+        <name>is_easyrpg_player</name>
+        <qualifiedname>EXEReader::FileInfo::is_easyrpg_player</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="67" column="6" bodyfile="exe_reader.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_e_x_e_reader_1_1_file_info_1ac94d450290087fdbfc38b1502dfbcc9e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int EXEReader::FileInfo::GetEngineType</definition>
+        <argsstring>(bool &amp;is_maniac_patch) const</argsstring>
+        <name>GetEngineType</name>
+        <qualifiedname>EXEReader::FileInfo::GetEngineType</qualifiedname>
+        <param>
+          <type>bool &amp;</type>
+          <declname>is_maniac_patch</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="69" column="5" bodyfile="exe_reader.cpp" bodystart="459" bodyend="537"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_e_x_e_reader_1_1_file_info_1ab9fd43b847a6913b73e60e1f688b2a2f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void EXEReader::FileInfo::Print</definition>
+        <argsstring>() const</argsstring>
+        <name>Print</name>
+        <qualifiedname>EXEReader::FileInfo::Print</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="70" column="6" bodyfile="exe_reader.cpp" bodystart="455" bodyend="457"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="exe_reader.h" line="59" column="1" bodyfile="exe_reader.h" bodystart="59" bodyend="71"/>
+    <listofallmembers>
+      <member refid="struct_e_x_e_reader_1_1_file_info_1a77d4d01ddf3ed64013c27458d5d06c51" prot="public" virt="non-virtual"><scope>EXEReader::FileInfo</scope><name>cherry_size</name></member>
+      <member refid="struct_e_x_e_reader_1_1_file_info_1a07ab36178e97dd26b8828d9d2f269811" prot="public" virt="non-virtual"><scope>EXEReader::FileInfo</scope><name>code_size</name></member>
+      <member refid="struct_e_x_e_reader_1_1_file_info_1ad6915bf860acbc06b3e6075b67bfeb42" prot="public" virt="non-virtual"><scope>EXEReader::FileInfo</scope><name>geep_size</name></member>
+      <member refid="struct_e_x_e_reader_1_1_file_info_1ac94d450290087fdbfc38b1502dfbcc9e" prot="public" virt="non-virtual"><scope>EXEReader::FileInfo</scope><name>GetEngineType</name></member>
+      <member refid="struct_e_x_e_reader_1_1_file_info_1a189d854012cceefbd4aeadbec4d766ea" prot="public" virt="non-virtual"><scope>EXEReader::FileInfo</scope><name>is_easyrpg_player</name></member>
+      <member refid="struct_e_x_e_reader_1_1_file_info_1ae6670d7ec1f35dd8af65e084a80d6dbc" prot="public" virt="non-virtual"><scope>EXEReader::FileInfo</scope><name>logos</name></member>
+      <member refid="struct_e_x_e_reader_1_1_file_info_1aa84d576c6d73b2c68a305bab546cf7a2" prot="public" virt="non-virtual"><scope>EXEReader::FileInfo</scope><name>machine_type</name></member>
+      <member refid="struct_e_x_e_reader_1_1_file_info_1ab9fd43b847a6913b73e60e1f688b2a2f" prot="public" virt="non-virtual"><scope>EXEReader::FileInfo</scope><name>Print</name></member>
+      <member refid="struct_e_x_e_reader_1_1_file_info_1a71996f7df45c9f78bc6b338cf3d4ceaa" prot="public" virt="non-virtual"><scope>EXEReader::FileInfo</scope><name>version</name></member>
+      <member refid="struct_e_x_e_reader_1_1_file_info_1aa7047961d75c64ad1e596a07f96cc2f8" prot="public" virt="non-virtual"><scope>EXEReader::FileInfo</scope><name>version_str</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

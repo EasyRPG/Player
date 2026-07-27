@@ -144,3 +144,4 @@ void Scene_Import::Action(int index) {
 bool Scene_Import::IsSlotValid(int index) {
 	return index < static_cast<int>(files.size());
 }
+

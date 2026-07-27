@@ -1,0 +1,557 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_libretro_ui" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>LibretroUi</compoundname>
+    <basecompoundref refid="class_base_ui" prot="public" virt="non-virtual">BaseUi</basecompoundref>
+    <includes refid="libretro_2ui_8h" local="no">ui.h</includes>
+    <sectiondef kind="user-defined">
+      <memberdef kind="function" id="class_libretro_ui_1acba58e993094d47b321777ee56b5df15" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool LibretroUi::vChangeDisplaySurfaceResolution</definition>
+        <argsstring>(int new_width, int new_height) override</argsstring>
+        <name>vChangeDisplaySurfaceResolution</name>
+        <qualifiedname>LibretroUi::vChangeDisplaySurfaceResolution</qualifiedname>
+        <reimplements refid="class_base_ui_1a58f5dc89bb89fae57b3d8512a5c5810a">vChangeDisplaySurfaceResolution</reimplements>
+        <param>
+          <type>int</type>
+          <declname>new_width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>new_height</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Inherited from <ref refid="class_base_ui" kindref="compound">BaseUi</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/ui.h" line="48" column="6" bodyfile="platform/libretro/ui.cpp" bodystart="112" bodyend="139"/>
+      </memberdef>
+      <memberdef kind="function" id="class_libretro_ui_1a6886fbd02fbdd584bcab2bf545ab1cd1" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void LibretroUi::UpdateDisplay</definition>
+        <argsstring>() override</argsstring>
+        <name>UpdateDisplay</name>
+        <qualifiedname>LibretroUi::UpdateDisplay</qualifiedname>
+        <reimplements refid="class_base_ui_1ad0ac519b67b66dda5df6289a3f9e25c2">UpdateDisplay</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates video buffer. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/ui.h" line="49" column="6" bodyfile="platform/libretro/ui.cpp" bodystart="104" bodyend="110"/>
+      </memberdef>
+      <memberdef kind="function" id="class_libretro_ui_1a208421b01aa72b50827a6e000251c90f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool LibretroUi::ProcessEvents</definition>
+        <argsstring>() override</argsstring>
+        <name>ProcessEvents</name>
+        <qualifiedname>LibretroUi::ProcessEvents</qualifiedname>
+        <reimplements refid="class_base_ui_1aa5adf73d350d9cf4635084df16849461">ProcessEvents</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Processes events queue.</para>
+<para><simplesect kind="return"><para>When false requests an immediate <ref refid="namespace_player" kindref="compound">Player</ref> shutdown </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/ui.h" line="50" column="6" bodyfile="platform/libretro/ui.cpp" bodystart="141" bodyend="189"/>
+      </memberdef>
+      <memberdef kind="function" id="class_libretro_ui_1adfa05f536212d5629a263170cb7b3915" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void LibretroUi::vGetConfig</definition>
+        <argsstring>(Game_ConfigVideo &amp;cfg) const override</argsstring>
+        <name>vGetConfig</name>
+        <qualifiedname>LibretroUi::vGetConfig</qualifiedname>
+        <reimplements refid="class_base_ui_1aef921da0d7b4ec1e7ee45f62097e2e5a">vGetConfig</reimplements>
+        <param>
+          <type><ref refid="struct_game___config_video" kindref="compound">Game_ConfigVideo</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/ui.h" line="51" column="6" bodyfile="platform/libretro/ui.cpp" bodystart="231" bodyend="234"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_libretro_ui_1a2933ec11fc615307d11ad9cd9509a421" prot="public" static="yes" mutable="no">
+        <type>retro_environment_t</type>
+        <definition>retro_environment_t LibretroUi::environ_cb</definition>
+        <argsstring></argsstring>
+        <name>environ_cb</name>
+        <qualifiedname>LibretroUi::environ_cb</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/ui.h" line="62" column="28" bodyfile="platform/libretro/ui.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_libretro_ui_1a7782e2b606cfaf1d6e5b9e30f7d14668" prot="public" static="yes" mutable="no">
+        <type>retro_input_poll_t</type>
+        <definition>retro_input_poll_t LibretroUi::input_poll_cb</definition>
+        <argsstring></argsstring>
+        <name>input_poll_cb</name>
+        <qualifiedname>LibretroUi::input_poll_cb</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/ui.h" line="63" column="27" bodyfile="platform/libretro/ui.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_libretro_ui_1a6d13e209f69eef35e52da49bcd255413" prot="public" static="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool LibretroUi::player_exit_called</definition>
+        <argsstring></argsstring>
+        <name>player_exit_called</name>
+        <qualifiedname>LibretroUi::player_exit_called</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/ui.h" line="64" column="13" bodyfile="platform/libretro/ui.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_libretro_ui_1aac55971facdef4c2bdefbf1f16c6d301" prot="public" static="yes" mutable="no">
+        <type><ref refid="struct_game___config_input" kindref="compound">Game_ConfigInput</ref></type>
+        <definition>Game_ConfigInput LibretroUi::cfg_input</definition>
+        <argsstring></argsstring>
+        <name>cfg_input</name>
+        <qualifiedname>LibretroUi::cfg_input</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/ui.h" line="66" column="25" bodyfile="platform/libretro/ui.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="class_libretro_ui_1a22bed20722ca8a43adce9e4f940d2c53" prot="private" static="yes" mutable="no">
+        <type>retro_video_refresh_t</type>
+        <definition>retro_video_refresh_t LibretroUi::UpdateWindow</definition>
+        <argsstring></argsstring>
+        <name>UpdateWindow</name>
+        <qualifiedname>LibretroUi::UpdateWindow</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/ui.h" line="68" column="30" bodyfile="platform/libretro/ui.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_libretro_ui_1ae08b6c8ddfac83adb19c43c9e020eb3b" prot="private" static="yes" mutable="no">
+        <type>retro_input_state_t</type>
+        <definition>retro_input_state_t LibretroUi::CheckInputState</definition>
+        <argsstring></argsstring>
+        <name>CheckInputState</name>
+        <qualifiedname>LibretroUi::CheckInputState</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/ui.h" line="69" column="28" bodyfile="platform/libretro/ui.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_libretro_ui_1a9beaa0389620d95c4618d1ddd15d3eae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>LibretroUi::LibretroUi</definition>
+        <argsstring>(int width, int height, const Game_Config &amp;cfg)</argsstring>
+        <name>LibretroUi</name>
+        <qualifiedname>LibretroUi::LibretroUi</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_game___config" kindref="compound">Game_Config</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>width</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>window client width. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>height</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>window client height. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cfg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>video config options </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/ui.h" line="42" column="1" bodyfile="platform/libretro/ui.cpp" bodystart="66" bodyend="102"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_libretro_ui_1acf067e1dcf6effff55404028ee655fdc" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LibretroUi::SetRetroVideoCallback</definition>
+        <argsstring>(retro_video_refresh_t cb)</argsstring>
+        <name>SetRetroVideoCallback</name>
+        <qualifiedname>LibretroUi::SetRetroVideoCallback</qualifiedname>
+        <param>
+          <type>retro_video_refresh_t</type>
+          <declname>cb</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/ui.h" line="59" column="13" bodyfile="platform/libretro/ui.cpp" bodystart="192" bodyend="194"/>
+      </memberdef>
+      <memberdef kind="function" id="class_libretro_ui_1a10d6ab83162f1f240744bf5512148874" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LibretroUi::SetRetroInputStateCallback</definition>
+        <argsstring>(retro_input_state_t cb)</argsstring>
+        <name>SetRetroInputStateCallback</name>
+        <qualifiedname>LibretroUi::SetRetroInputStateCallback</qualifiedname>
+        <param>
+          <type>retro_input_state_t</type>
+          <declname>cb</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/ui.h" line="60" column="13" bodyfile="platform/libretro/ui.cpp" bodystart="197" bodyend="199"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_libretro_ui_1a50e44b03aed4eb3a4b4221c56ed50a64" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void LibretroUi::UpdateVariables</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateVariables</name>
+        <qualifiedname>LibretroUi::UpdateVariables</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/ui.h" line="71" column="6" bodyfile="platform/libretro/ui.cpp" bodystart="201" bodyend="206"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_libretro_ui" kindref="compound">LibretroUi</ref> class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>BaseUi</label>
+        <link refid="class_base_ui"/>
+      </node>
+      <node id="1">
+        <label>LibretroUi</label>
+        <link refid="class_libretro_ui"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>BaseUi</label>
+        <link refid="class_base_ui"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>vcfg</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>current_display_mode</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>mouse_pos</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>analog_input</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>back_color</edgelabel>
+        </childnode>
+      </node>
+      <node id="18">
+        <label>BaseUi::DisplayMode</label>
+        <link refid="struct_base_ui_1_1_display_mode"/>
+      </node>
+      <node id="7">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>Color</label>
+        <link refid="class_color"/>
+      </node>
+      <node id="13">
+        <label>ConfigParam&lt; int &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="12" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>ConfigParam&lt; std::string &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>ConfigParamBase&lt; ConfigEnum::GameResolution &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="15">
+        <label>ConfigParamBase&lt; ConfigEnum::ScalingMode &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="10">
+        <label>ConfigParamBase&lt; ConfigEnum::ShowFps &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="8">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="12">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="6">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="16">
+        <label>EnumConfigParam&lt; ConfigEnum::GameResolution, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="17" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>EnumConfigParam&lt; ConfigEnum::ScalingMode, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="15" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>EnumConfigParam&lt; ConfigEnum::ShowFps, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>FlatUniqueMultiMap&lt; InputButton, Keys::InputKey &gt;</label>
+        <link refid="class_flat_unique_multi_map"/>
+      </node>
+      <node id="23">
+        <label>Game_ConfigInput</label>
+        <link refid="struct_game___config_input"/>
+        <childnode refid="11" relation="usage">
+          <edgelabel>speed_modifier_a</edgelabel>
+          <edgelabel>speed_modifier_b</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>gamepad_swap_ab_and_xy</edgelabel>
+          <edgelabel>gamepad_swap_analog</edgelabel>
+          <edgelabel>gamepad_swap_dpad_with_buttons</edgelabel>
+        </childnode>
+        <childnode refid="24" relation="usage">
+          <edgelabel>buttons</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Game_ConfigVideo</label>
+        <link refid="struct_game___config_video"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>renderer</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>fullscreen</edgelabel>
+          <edgelabel>pause_when_focus_lost</edgelabel>
+          <edgelabel>stretch</edgelabel>
+          <edgelabel>touch_ui</edgelabel>
+          <edgelabel>vsync</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>fps</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>fps_limit</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>window_height</edgelabel>
+          <edgelabel>window_width</edgelabel>
+          <edgelabel>window_x</edgelabel>
+          <edgelabel>window_y</edgelabel>
+          <edgelabel>window_zoom</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>scaling_mode</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>game_resolution</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>Input::AnalogInput</label>
+        <link refid="struct_input_1_1_analog_input"/>
+        <childnode refid="21" relation="usage">
+          <edgelabel>primary</edgelabel>
+          <edgelabel>secondary</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>LibretroUi</label>
+        <link refid="class_libretro_ui"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="23" relation="usage">
+          <edgelabel>cfg_input</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>LockedConfigParam&lt; std::string &gt;</label>
+        <link refid="class_locked_config_param"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>PointT&lt; float &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="19">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="11">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="12" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="platform/libretro/ui.h" line="33" column="1" bodyfile="platform/libretro/ui.h" bodystart="33" bodyend="72"/>
+    <listofallmembers>
+      <member refid="class_base_ui_1a96512cebf65e9153cb3b377a1080eaef" prot="protected" virt="non-virtual"><scope>LibretroUi</scope><name>analog_input</name></member>
+      <member refid="class_base_ui_1ae38aec6a7306ee56bdd3c4a0d0bb76e6" prot="protected" virt="non-virtual"><scope>LibretroUi</scope><name>back_color</name></member>
+      <member refid="class_base_ui_1abc04d498f5fac11ee11f9c9122207c13" prot="protected" virt="non-virtual"><scope>LibretroUi</scope><name>BaseUi</name></member>
+      <member refid="class_base_ui_1a6705177f2e26c41cd38aedf809b3ff96" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>CaptureScreen</name></member>
+      <member refid="class_libretro_ui_1aac55971facdef4c2bdefbf1f16c6d301" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>cfg_input</name></member>
+      <member refid="class_base_ui_1ab3cb68a47aa7a742bd2aba62c3c93830" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>ChangeDisplaySurfaceResolution</name></member>
+      <member refid="class_libretro_ui_1ae08b6c8ddfac83adb19c43c9e020eb3b" prot="private" virt="non-virtual"><scope>LibretroUi</scope><name>CheckInputState</name></member>
+      <member refid="class_base_ui_1a0c76ff69fe6792d43cdfefdad462c48a" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>CleanDisplay</name></member>
+      <member refid="class_base_ui_1a1259ecf0abbfeca8f798dc05ec7cf973" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>CreateUi</name></member>
+      <member refid="class_base_ui_1ad968d67d945a727f6be3556cb4e15dfb" prot="protected" virt="non-virtual"><scope>LibretroUi</scope><name>current_display_mode</name></member>
+      <member refid="class_base_ui_1a3fcf56158d2dbfa1a2dddf5b62dd8c86" prot="protected" virt="non-virtual"><scope>LibretroUi</scope><name>cursor_visible</name></member>
+      <member refid="class_libretro_ui_1a2933ec11fc615307d11ad9cd9509a421" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>environ_cb</name></member>
+      <member refid="class_base_ui_1aeae86a5ea89c8717b55692b023768373" prot="protected" virt="non-virtual"><scope>LibretroUi</scope><name>external_frame_rate</name></member>
+      <member refid="class_base_ui_1afbefd1cf3f059e1613cdb93a92ddfae2" prot="protected" virt="non-virtual"><scope>LibretroUi</scope><name>finger_input</name></member>
+      <member refid="class_base_ui_1a8277cb2800b716f1775d74a71a752ec7" prot="protected" virt="non-virtual"><scope>LibretroUi</scope><name>frame_limit</name></member>
+      <member refid="class_base_ui_1a1743a7957049618f9092313ef3643ff8" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>GetAnalogInput</name></member>
+      <member refid="class_base_ui_1a1d9ab96f32fc80f68ea299a56c588b48" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>GetConfig</name></member>
+      <member refid="class_base_ui_1ac58c799344c947f74f7680ac92b29f46" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>GetDisplaySurface</name></member>
+      <member refid="class_base_ui_1a6a12e3b17421efa5ab8be3789bba01d6" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>GetDisplaySurface</name></member>
+      <member refid="class_base_ui_1a29fb87f2f0bea382c9e07a4787546155" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>GetFrameLimit</name></member>
+      <member refid="class_base_ui_1acaea0726d275e4cfe660d450c15613ff" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>GetHeight</name></member>
+      <member refid="class_base_ui_1a26429a01230e03334c6d534b50aea481" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>GetKeyStates</name></member>
+      <member refid="class_base_ui_1a749ed505a2e01d7c3f09304ef8d66e27" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>GetMouseFocus</name></member>
+      <member refid="class_base_ui_1ab8e3ba8ce6415a4c706b628093d07d08" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>GetMousePosition</name></member>
+      <member refid="class_base_ui_1a665686e47cf5b94d8fe84b7fb255330a" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>GetTouchInput</name></member>
+      <member refid="class_base_ui_1afc0660dcf3b0a7c3e6354b215b409e2a" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>GetWidth</name></member>
+      <member refid="class_base_ui_1a8a6e1bfb68cd5283b9ba510eae44453c" prot="public" virt="virtual"><scope>LibretroUi</scope><name>GetWindowMetrics</name></member>
+      <member refid="class_base_ui_1ad2f8960e9e9b562cf67d249557f6259a" prot="public" virt="virtual"><scope>LibretroUi</scope><name>HandleErrorOutput</name></member>
+      <member refid="class_libretro_ui_1a7782e2b606cfaf1d6e5b9e30f7d14668" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>input_poll_cb</name></member>
+      <member refid="class_base_ui_1a783a7b0dbc389c5230011b4e7ba72fcf" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>IsFrameRateSynchronized</name></member>
+      <member refid="class_base_ui_1a1e7122e1da0ce80c92fc4bbd70ab3529" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>IsFullscreen</name></member>
+      <member refid="class_base_ui_1acb63c6d48a74e7c111a5d8d54eb9bc44" prot="protected" virt="non-virtual"><scope>LibretroUi</scope><name>keys</name></member>
+      <member refid="class_base_ui_1aa55d38974520aa1b75d19ac8fc78184b" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>KeyStatus</name></member>
+      <member refid="class_libretro_ui_1a9beaa0389620d95c4618d1ddd15d3eae" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>LibretroUi</name></member>
+      <member refid="class_base_ui_1a77e2002cc546f7326d1bf154192ec99c" prot="protected" virt="non-virtual"><scope>LibretroUi</scope><name>main_surface</name></member>
+      <member refid="class_base_ui_1a59b0524cf6d37e9d5ce7ff5c749e620c" prot="protected" virt="non-virtual"><scope>LibretroUi</scope><name>mouse_focus</name></member>
+      <member refid="class_base_ui_1ad40db5525bb26ed0fd1b5e258da45b7c" prot="protected" virt="non-virtual"><scope>LibretroUi</scope><name>mouse_pos</name></member>
+      <member refid="class_base_ui_1a1d3a2649b6ee63174afd8d8aff879658" prot="public" virt="virtual"><scope>LibretroUi</scope><name>OpenURL</name></member>
+      <member refid="class_base_ui_1abdffe1380198934a10588fd57081eba6" prot="protected" virt="non-virtual"><scope>LibretroUi</scope><name>original_fps_show_state</name></member>
+      <member refid="class_libretro_ui_1a6d13e209f69eef35e52da49bcd255413" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>player_exit_called</name></member>
+      <member refid="class_libretro_ui_1a208421b01aa72b50827a6e000251c90f" prot="public" virt="virtual"><scope>LibretroUi</scope><name>ProcessEvents</name></member>
+      <member refid="class_base_ui_1ad7dcb52dbf687ea604d2c4994c0215c7" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>RenderFps</name></member>
+      <member refid="class_base_ui_1a9b36faf7ba0bdd8c0fb78a1b1241be4f" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>SetFrameLimit</name></member>
+      <member refid="class_base_ui_1a6f97cd92275f9c2a0bbe357171d7b9b7" prot="protected" virt="non-virtual"><scope>LibretroUi</scope><name>SetFrameRateSynchronized</name></member>
+      <member refid="class_base_ui_1aeaa4e3a8c3f70be2c7bbf18ba89d5a1a" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>SetGameResolution</name></member>
+      <member refid="class_base_ui_1aa4c8869422507e9d9b216eff0465413c" prot="protected" virt="non-virtual"><scope>LibretroUi</scope><name>SetIsFullscreen</name></member>
+      <member refid="class_base_ui_1a2b870c00dadecb6351d14dacca1d9b02" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>SetPauseWhenFocusLost</name></member>
+      <member refid="class_libretro_ui_1a10d6ab83162f1f240744bf5512148874" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>SetRetroInputStateCallback</name></member>
+      <member refid="class_libretro_ui_1acf067e1dcf6effff55404028ee655fdc" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>SetRetroVideoCallback</name></member>
+      <member refid="class_base_ui_1a1edf200ee8e139d481ed571c4705a31b" prot="public" virt="virtual"><scope>LibretroUi</scope><name>SetScalingMode</name></member>
+      <member refid="class_base_ui_1a34ccc599af3eb7185a41f45f042d5d66" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>SetShowFps</name></member>
+      <member refid="class_base_ui_1ac838b906c382e0bd53eae5f775ef5dfb" prot="public" virt="virtual"><scope>LibretroUi</scope><name>SetTitle</name></member>
+      <member refid="class_base_ui_1ae0d4c82612a9c1e8b76dcde91dd90217" prot="public" virt="virtual"><scope>LibretroUi</scope><name>ShowCursor</name></member>
+      <member refid="class_base_ui_1acfec1d72d810c6b6adc2fecf6ef322cc" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>ShowFpsOnTitle</name></member>
+      <member refid="class_base_ui_1a7cf7aa4d9d0c4c86bcec4ff6ef15c4f9" prot="public" virt="virtual"><scope>LibretroUi</scope><name>ToggleFullscreen</name></member>
+      <member refid="class_base_ui_1abca78fd083436f0a9d036d949fc5e371" prot="public" virt="non-virtual"><scope>LibretroUi</scope><name>ToggleShowFps</name></member>
+      <member refid="class_base_ui_1a16737efd977c20b828b477086915da89" prot="public" virt="virtual"><scope>LibretroUi</scope><name>ToggleStretch</name></member>
+      <member refid="class_base_ui_1ad21fdbce0abcbd781791071dd7bb3bd1" prot="public" virt="virtual"><scope>LibretroUi</scope><name>ToggleTouchUi</name></member>
+      <member refid="class_base_ui_1a4325b9a6266e1f202ea1f887a3c2f022" prot="public" virt="virtual"><scope>LibretroUi</scope><name>ToggleVsync</name></member>
+      <member refid="class_base_ui_1abb92ae64151143bc0a186fa934ffafa6" prot="public" virt="virtual"><scope>LibretroUi</scope><name>ToggleZoom</name></member>
+      <member refid="class_base_ui_1a18ee3fdd88366c546ceb2daf3382f425" prot="protected" virt="non-virtual"><scope>LibretroUi</scope><name>touch_input</name></member>
+      <member refid="class_libretro_ui_1a6886fbd02fbdd584bcab2bf545ab1cd1" prot="public" virt="virtual"><scope>LibretroUi</scope><name>UpdateDisplay</name></member>
+      <member refid="class_libretro_ui_1a50e44b03aed4eb3a4b4221c56ed50a64" prot="private" virt="non-virtual"><scope>LibretroUi</scope><name>UpdateVariables</name></member>
+      <member refid="class_libretro_ui_1a22bed20722ca8a43adce9e4f940d2c53" prot="private" virt="non-virtual"><scope>LibretroUi</scope><name>UpdateWindow</name></member>
+      <member refid="class_base_ui_1a2d3af98fda6d7a8b33b71235bfe1bc62" prot="protected" virt="non-virtual"><scope>LibretroUi</scope><name>vcfg</name></member>
+      <member refid="class_libretro_ui_1acba58e993094d47b321777ee56b5df15" prot="public" virt="virtual"><scope>LibretroUi</scope><name>vChangeDisplaySurfaceResolution</name></member>
+      <member refid="class_libretro_ui_1adfa05f536212d5629a263170cb7b3915" prot="public" virt="virtual"><scope>LibretroUi</scope><name>vGetConfig</name></member>
+      <member refid="class_base_ui_1acb710126bbe5950a70d4dd6348d4bed1" prot="public" virt="virtual"><scope>LibretroUi</scope><name>~BaseUi</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

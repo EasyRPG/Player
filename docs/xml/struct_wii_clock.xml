@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_wii_clock" kind="struct" language="C++" prot="public">
+    <compoundname>WiiClock</compoundname>
+    <includes refid="wii_2clock_8h" local="no">clock.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="struct_wii_clock_1ae160a832f423bbd8cb1f47fa0ab87be3" prot="public" static="no">
+        <type>uint64_t</type>
+        <definition>using WiiClock::rep = uint64_t</definition>
+        <argsstring></argsstring>
+        <name>rep</name>
+        <qualifiedname>WiiClock::rep</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/wii/clock.h" line="29" column="1" bodyfile="platform/wii/clock.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_wii_clock_1ab3081f2d8bcbdfd01fa818a917cecab9" prot="public" static="no">
+        <type>std::ratio&lt; 1, <ref refid="struct_wii_clock_1a5172408a94a81e897e1237b945f08438" kindref="member">ticks_per_sec</ref> &gt;</type>
+        <definition>using WiiClock::period = std::ratio&lt;1,ticks_per_sec&gt;</definition>
+        <argsstring></argsstring>
+        <name>period</name>
+        <qualifiedname>WiiClock::period</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/wii/clock.h" line="30" column="1" bodyfile="platform/wii/clock.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_wii_clock_1a949223742dd2bcaaa4e918dfec4cdf34" prot="public" static="no">
+        <type>std::chrono::duration&lt; <ref refid="struct_wii_clock_1ae160a832f423bbd8cb1f47fa0ab87be3" kindref="member">rep</ref>, <ref refid="struct_wii_clock_1ab3081f2d8bcbdfd01fa818a917cecab9" kindref="member">period</ref> &gt;</type>
+        <definition>using WiiClock::duration = std::chrono::duration&lt;rep,period&gt;</definition>
+        <argsstring></argsstring>
+        <name>duration</name>
+        <qualifiedname>WiiClock::duration</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/wii/clock.h" line="31" column="1" bodyfile="platform/wii/clock.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_wii_clock_1a98571027f3d35d4d39c40317e038d482" prot="public" static="no">
+        <type>std::chrono::time_point&lt; <ref refid="struct_wii_clock" kindref="compound">WiiClock</ref>, <ref refid="struct_wii_clock_1a949223742dd2bcaaa4e918dfec4cdf34" kindref="member">duration</ref> &gt;</type>
+        <definition>using WiiClock::time_point = std::chrono::time_point&lt;WiiClock,duration&gt;</definition>
+        <argsstring></argsstring>
+        <name>time_point</name>
+        <qualifiedname>WiiClock::time_point</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/wii/clock.h" line="32" column="1" bodyfile="platform/wii/clock.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="struct_wii_clock_1a5172408a94a81e897e1237b945f08438" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int64_t</type>
+        <definition>int64_t WiiClock::ticks_per_sec</definition>
+        <argsstring></argsstring>
+        <name>ticks_per_sec</name>
+        <qualifiedname>WiiClock::ticks_per_sec</qualifiedname>
+        <initializer>= TB_TIMER_CLOCK * 1000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/wii/clock.h" line="27" column="26" bodyfile="platform/wii/clock.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_wii_clock_1a0978a4181ebe9280c5855643c7d9574c" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool WiiClock::is_steady</definition>
+        <argsstring></argsstring>
+        <name>is_steady</name>
+        <qualifiedname>WiiClock::is_steady</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/wii/clock.h" line="34" column="23" bodyfile="platform/wii/clock.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="struct_wii_clock_1a8edf7a6b22fdaf60109dbc786adb4aa3" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="struct_wii_clock_1a98571027f3d35d4d39c40317e038d482" kindref="member">time_point</ref></type>
+        <definition>WiiClock::time_point WiiClock::now</definition>
+        <argsstring>()</argsstring>
+        <name>now</name>
+        <qualifiedname>WiiClock::now</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/wii/clock.h" line="36" column="19" bodyfile="platform/wii/clock.h" bodystart="44" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_wii_clock_1a522e6d3ac3d99030d31799c4d6b9c167" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename R</type>
+          </param>
+          <param>
+            <type>typename P</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void WiiClock::SleepFor</definition>
+        <argsstring>(std::chrono::duration&lt; R, P &gt; dt)</argsstring>
+        <name>SleepFor</name>
+        <qualifiedname>WiiClock::SleepFor</qualifiedname>
+        <param>
+          <type>std::chrono::duration&lt; R, P &gt;</type>
+          <declname>dt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/wii/clock.h" line="39" column="13" bodyfile="platform/wii/clock.h" bodystart="50" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_wii_clock_1a20aaa6b631448169f7e1e8bb790d2b55" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const char *</type>
+        <definition>const char * WiiClock::Name</definition>
+        <argsstring>()</argsstring>
+        <name>Name</name>
+        <qualifiedname>WiiClock::Name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/wii/clock.h" line="41" column="29" bodyfile="platform/wii/clock.h" bodystart="54" bodyend="56"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/wii/clock.h" line="26" column="1" bodyfile="platform/wii/clock.h" bodystart="26" bodyend="42"/>
+    <listofallmembers>
+      <member refid="struct_wii_clock_1a949223742dd2bcaaa4e918dfec4cdf34" prot="public" virt="non-virtual"><scope>WiiClock</scope><name>duration</name></member>
+      <member refid="struct_wii_clock_1a0978a4181ebe9280c5855643c7d9574c" prot="public" virt="non-virtual"><scope>WiiClock</scope><name>is_steady</name></member>
+      <member refid="struct_wii_clock_1a20aaa6b631448169f7e1e8bb790d2b55" prot="public" virt="non-virtual"><scope>WiiClock</scope><name>Name</name></member>
+      <member refid="struct_wii_clock_1a8edf7a6b22fdaf60109dbc786adb4aa3" prot="public" virt="non-virtual"><scope>WiiClock</scope><name>now</name></member>
+      <member refid="struct_wii_clock_1ab3081f2d8bcbdfd01fa818a917cecab9" prot="public" virt="non-virtual"><scope>WiiClock</scope><name>period</name></member>
+      <member refid="struct_wii_clock_1ae160a832f423bbd8cb1f47fa0ab87be3" prot="public" virt="non-virtual"><scope>WiiClock</scope><name>rep</name></member>
+      <member refid="struct_wii_clock_1a522e6d3ac3d99030d31799c4d6b9c167" prot="public" virt="non-virtual"><scope>WiiClock</scope><name>SleepFor</name></member>
+      <member refid="struct_wii_clock_1a5172408a94a81e897e1237b945f08438" prot="public" virt="non-virtual"><scope>WiiClock</scope><name>ticks_per_sec</name></member>
+      <member refid="struct_wii_clock_1a98571027f3d35d4d39c40317e038d482" prot="public" virt="non-virtual"><scope>WiiClock</scope><name>time_point</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ul2_1_1any__function" kind="struct" language="C++" prot="public" abstract="yes">
+    <compoundname>leasy::ul2::any_function</compoundname>
+    <derivedcompoundref refid="classleasy_1_1ul2_1_1function__wrapper" prot="public" virt="non-virtual">leasy::ul2::function_wrapper&lt; F &gt;</derivedcompoundref>
+    <includes refid="any__function_8hpp" local="no">any_function.hpp</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structleasy_1_1ul2_1_1any__function_1abe3f9d82c9ad4b59d1f2d596d1cb4d22" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual leasy::ul2::any_function::~any_function</definition>
+        <argsstring>()=default</argsstring>
+        <name>~any_function</name>
+        <qualifiedname>leasy::ul2::any_function::~any_function</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/any_function.hpp" line="56" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1ul2_1_1any__function_1a916dcedb52930f14a9394fead47a952b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int leasy::ul2::any_function::invoke_lua</definition>
+        <argsstring>(lua_State *L) const =0</argsstring>
+        <name>invoke_lua</name>
+        <qualifiedname>leasy::ul2::any_function::invoke_lua</qualifiedname>
+        <reimplementedby refid="classleasy_1_1ul2_1_1function__wrapper_1a5fe8c0564ea3e2ff17b4f0266191d29f">invoke_lua</reimplementedby>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/any_function.hpp" line="61" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1ul2_1_1any__function_1a2d47d41ebb59fa7a61d5ea4aba146db1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::any</type>
+        <definition>virtual std::any leasy::ul2::any_function::invoke_any</definition>
+        <argsstring>(const std::vector&lt; std::any &gt; &amp;args) const =0</argsstring>
+        <name>invoke_any</name>
+        <qualifiedname>leasy::ul2::any_function::invoke_any</qualifiedname>
+        <reimplementedby refid="classleasy_1_1ul2_1_1function__wrapper_1a9ea506cfa583cc047a2a5071f13535b2">invoke_any</reimplementedby>
+        <param>
+          <type>const std::vector&lt; std::any &gt; &amp;</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/any_function.hpp" line="66" column="22"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1ul2_1_1any__function_1a81ec0020aeebcd480c5309982c9f3b68" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::size_t</type>
+        <definition>virtual std::size_t leasy::ul2::any_function::arity</definition>
+        <argsstring>() const =0</argsstring>
+        <name>arity</name>
+        <qualifiedname>leasy::ul2::any_function::arity</qualifiedname>
+        <reimplementedby refid="classleasy_1_1ul2_1_1function__wrapper_1a130c17846360b476bbad4747522660ee">arity</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/any_function.hpp" line="68" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1ul2_1_1any__function_1ac17837eddd0ad87a6db2e916459ff620" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::type_index</type>
+        <definition>virtual std::type_index leasy::ul2::any_function::return_type</definition>
+        <argsstring>() const =0</argsstring>
+        <name>return_type</name>
+        <qualifiedname>leasy::ul2::any_function::return_type</qualifiedname>
+        <reimplementedby refid="classleasy_1_1ul2_1_1function__wrapper_1a8e6d9a553fb9b236fa309838e3a7932c">return_type</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/any_function.hpp" line="69" column="29"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1ul2_1_1any__function_1ad163126fd55406c8b5ade64fa5c88e98" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::vector&lt; std::type_index &gt;</type>
+        <definition>virtual std::vector&lt; std::type_index &gt; leasy::ul2::any_function::argument_types</definition>
+        <argsstring>() const =0</argsstring>
+        <name>argument_types</name>
+        <qualifiedname>leasy::ul2::any_function::argument_types</qualifiedname>
+        <reimplementedby refid="classleasy_1_1ul2_1_1function__wrapper_1a031367e91a4ce4ba0d501307b6dd12cc">argument_types</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/any_function.hpp" line="70" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1ul2_1_1any__function_1a5f7bd5ad4147fa0b00cefac12bfe0e86" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::vector&lt; <ref refid="structleasy_1_1ul2_1_1lua__arg__info" kindref="compound">lua_arg_info</ref> &gt;</type>
+        <definition>virtual std::vector&lt; lua_arg_info &gt; leasy::ul2::any_function::lua_argument_info</definition>
+        <argsstring>() const =0</argsstring>
+        <name>lua_argument_info</name>
+        <qualifiedname>leasy::ul2::any_function::lua_argument_info</qualifiedname>
+        <reimplementedby refid="classleasy_1_1ul2_1_1function__wrapper_1a2e8775e7e971d8baa1ace6da33935718">lua_argument_info</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/any_function.hpp" line="71" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1ul2_1_1any__function_1ad2b5659eac4333a8a910840043b6804b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool leasy::ul2::any_function::is_member</definition>
+        <argsstring>() const =0</argsstring>
+        <name>is_member</name>
+        <qualifiedname>leasy::ul2::any_function::is_member</qualifiedname>
+        <reimplementedby refid="classleasy_1_1ul2_1_1function__wrapper_1a288c883abba3611a7693f3000c33c19e">is_member</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/any_function.hpp" line="72" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>leasy::ul2::any_function</label>
+        <link refid="structleasy_1_1ul2_1_1any__function"/>
+      </node>
+      <node id="2">
+        <label>leasy::ul2::function_wrapper&lt; F &gt;</label>
+        <link refid="classleasy_1_1ul2_1_1function__wrapper"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="leasy/ul2/any_function.hpp" line="55" column="1" bodyfile="leasy/ul2/any_function.hpp" bodystart="55" bodyend="73"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ul2_1_1any__function_1ad163126fd55406c8b5ade64fa5c88e98" prot="public" virt="pure-virtual"><scope>leasy::ul2::any_function</scope><name>argument_types</name></member>
+      <member refid="structleasy_1_1ul2_1_1any__function_1a81ec0020aeebcd480c5309982c9f3b68" prot="public" virt="pure-virtual"><scope>leasy::ul2::any_function</scope><name>arity</name></member>
+      <member refid="structleasy_1_1ul2_1_1any__function_1a2d47d41ebb59fa7a61d5ea4aba146db1" prot="public" virt="pure-virtual"><scope>leasy::ul2::any_function</scope><name>invoke_any</name></member>
+      <member refid="structleasy_1_1ul2_1_1any__function_1a916dcedb52930f14a9394fead47a952b" prot="public" virt="pure-virtual"><scope>leasy::ul2::any_function</scope><name>invoke_lua</name></member>
+      <member refid="structleasy_1_1ul2_1_1any__function_1ad2b5659eac4333a8a910840043b6804b" prot="public" virt="pure-virtual"><scope>leasy::ul2::any_function</scope><name>is_member</name></member>
+      <member refid="structleasy_1_1ul2_1_1any__function_1a5f7bd5ad4147fa0b00cefac12bfe0e86" prot="public" virt="pure-virtual"><scope>leasy::ul2::any_function</scope><name>lua_argument_info</name></member>
+      <member refid="structleasy_1_1ul2_1_1any__function_1ac17837eddd0ad87a6db2e916459ff620" prot="public" virt="pure-virtual"><scope>leasy::ul2::any_function</scope><name>return_type</name></member>
+      <member refid="structleasy_1_1ul2_1_1any__function_1abe3f9d82c9ad4b59d1f2d596d1cb4d22" prot="public" virt="virtual"><scope>leasy::ul2::any_function</scope><name>~any_function</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

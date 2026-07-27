@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespacedetail" kind="namespace" language="C++">
+    <compoundname>detail</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespacedetail_1a2efa9592d4dd9c1946d58381178342ca" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::string_view</type>
+        <definition>std::string_view detail::wrapped_type_name</definition>
+        <argsstring>()</argsstring>
+        <name>wrapped_type_name</name>
+        <qualifiedname>detail::wrapped_type_name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/iky7/nameof.hpp" line="31" column="28" bodyfile="leasy/iky7/nameof.hpp" bodystart="31" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacedetail_1ae593d7ca260a77fc62b4ed08d9de9fbe" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view detail::parse_type_name</definition>
+        <argsstring>(std::string_view wrapped)</argsstring>
+        <name>parse_type_name</name>
+        <qualifiedname>detail::parse_type_name</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>wrapped</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/iky7/nameof.hpp" line="41" column="28" bodyfile="leasy/iky7/nameof.hpp" bodystart="41" bodyend="64"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para><ulink url="mailto:0xEF9087A@wys-prog.https">0xEF9087A@wys-prog.https</ulink>://github.com/wys-prog/leasy </para>
+    </detaileddescription>
+    <location file="leasy/iky7/nameof.hpp" line="28" column="1"/>
+  </compounddef>
+</doxygen>

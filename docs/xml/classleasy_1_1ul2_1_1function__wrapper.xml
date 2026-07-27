@@ -1,0 +1,435 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1ul2_1_1function__wrapper" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>leasy::ul2::function_wrapper</compoundname>
+    <basecompoundref refid="structleasy_1_1ul2_1_1any__function" prot="public" virt="non-virtual">leasy::ul2::any_function</basecompoundref>
+    <includes refid="function__wrapper_8hpp" local="no">function_wrapper.hpp</includes>
+    <innerclass refid="structleasy_1_1ul2_1_1function__wrapper_1_1void__tag" prot="private">leasy::ul2::function_wrapper::void_tag</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename F</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classleasy_1_1ul2_1_1function__wrapper_1a291f5a6f370e10d575cd086074dda532" prot="public" static="no">
+        <type><ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">function_traits</ref>&lt; <ref refid="cvref_8hpp_1a0145b6a2065b471f88b59d95dd1ee578" kindref="member">remove_cvref_t</ref>&lt; F &gt; &gt;</type>
+        <definition>using leasy::ul2::function_wrapper&lt; F &gt;::traits = function_traits&lt;remove_cvref_t&lt;F&gt;&gt;</definition>
+        <argsstring></argsstring>
+        <name>traits</name>
+        <qualifiedname>leasy::ul2::function_wrapper::traits</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="40" column="5" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classleasy_1_1ul2_1_1function__wrapper_1a1e7dbd6eb5cbc03a3d24c86f67d6ecbf" prot="public" static="no">
+        <type>typename traits::return_type</type>
+        <definition>using leasy::ul2::function_wrapper&lt; F &gt;::ret_t = typename traits::return_type</definition>
+        <argsstring></argsstring>
+        <name>ret_t</name>
+        <qualifiedname>leasy::ul2::function_wrapper::ret_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="41" column="5" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classleasy_1_1ul2_1_1function__wrapper_1a0d9cca61a68bbf842a982ae0edfeb041" prot="public" static="no">
+        <type>typename traits::args_tuple</type>
+        <definition>using leasy::ul2::function_wrapper&lt; F &gt;::args_tuple = typename traits::args_tuple</definition>
+        <argsstring></argsstring>
+        <name>args_tuple</name>
+        <qualifiedname>leasy::ul2::function_wrapper::args_tuple</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="42" column="5" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="42" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="classleasy_1_1ul2_1_1function__wrapper_1af6129ff7fc5577f9c132564a5be90a19" prot="private" static="no">
+        <type>std::conditional_t&lt; std::is_void_v&lt; <ref refid="classleasy_1_1ul2_1_1function__wrapper_1a1e7dbd6eb5cbc03a3d24c86f67d6ecbf" kindref="member">ret_t</ref> &gt;, void_tag, <ref refid="classleasy_1_1ul2_1_1function__wrapper_1a1e7dbd6eb5cbc03a3d24c86f67d6ecbf" kindref="member">ret_t</ref> &gt;</type>
+        <definition>using leasy::ul2::function_wrapper&lt; F &gt;::reportable_ret_t = std::conditional_t&lt;std::is_void_v&lt;ret_t&gt;, void_tag, ret_t&gt;</definition>
+        <argsstring></argsstring>
+        <name>reportable_ret_t</name>
+        <qualifiedname>leasy::ul2::function_wrapper::reportable_ret_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="77" column="5" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classleasy_1_1ul2_1_1function__wrapper_1aa7823843581410c01d3e1e3403f2c685" prot="private" static="no">
+        <templateparamlist>
+          <param>
+            <type>std::size_t</type>
+            <declname>I</declname>
+            <defname>I</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="cvref_8hpp_1a0145b6a2065b471f88b59d95dd1ee578" kindref="member">remove_cvref_t</ref>&lt; std::tuple_element_t&lt; I, <ref refid="classleasy_1_1ul2_1_1function__wrapper_1a0d9cca61a68bbf842a982ae0edfeb041" kindref="member">args_tuple</ref> &gt; &gt;</type>
+        <definition>using leasy::ul2::function_wrapper&lt; F &gt;::arg_t = remove_cvref_t&lt;std::tuple_element_t&lt;I, args_tuple&gt;&gt;</definition>
+        <argsstring></argsstring>
+        <name>arg_t</name>
+        <qualifiedname>leasy::ul2::function_wrapper::arg_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="81" column="5" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="81" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classleasy_1_1ul2_1_1function__wrapper_1abaf9536005d968ae1fb9265e431b92ae" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>std::size_t</type>
+        <definition>std::size_t leasy::ul2::function_wrapper&lt; F &gt;::arity_v</definition>
+        <argsstring></argsstring>
+        <name>arity_v</name>
+        <qualifiedname>leasy::ul2::function_wrapper::arity_v</qualifiedname>
+        <initializer>= traits::arity</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="44" column="34" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="44" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classleasy_1_1ul2_1_1function__wrapper_1a29042fc8bde6f8bc17fac9efc088edbc" prot="private" static="no" mutable="no">
+        <type>F</type>
+        <definition>F leasy::ul2::function_wrapper&lt; F &gt;::fn_</definition>
+        <argsstring></argsstring>
+        <name>fn_</name>
+        <qualifiedname>leasy::ul2::function_wrapper::fn_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="73" column="7" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="73" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1function__wrapper_1ad20d289b74a693ca2aa556dec5c49dc0" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ul2::function_wrapper&lt; F &gt;::function_wrapper</definition>
+        <argsstring>(F fn)</argsstring>
+        <name>function_wrapper</name>
+        <qualifiedname>leasy::ul2::function_wrapper::function_wrapper</qualifiedname>
+        <param>
+          <type>F</type>
+          <declname>fn</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="46" column="14" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="46" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1function__wrapper_1a5fe8c0564ea3e2ff17b4f0266191d29f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int leasy::ul2::function_wrapper&lt; F &gt;::invoke_lua</definition>
+        <argsstring>(lua_State *L) const override</argsstring>
+        <name>invoke_lua</name>
+        <qualifiedname>leasy::ul2::function_wrapper::invoke_lua</qualifiedname>
+        <reimplements refid="structleasy_1_1ul2_1_1any__function_1a916dcedb52930f14a9394fead47a952b">invoke_lua</reimplements>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="48" column="9" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="48" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1function__wrapper_1a9ea506cfa583cc047a2a5071f13535b2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::any</type>
+        <definition>std::any leasy::ul2::function_wrapper&lt; F &gt;::invoke_any</definition>
+        <argsstring>(const std::vector&lt; std::any &gt; &amp;args) const override</argsstring>
+        <name>invoke_any</name>
+        <qualifiedname>leasy::ul2::function_wrapper::invoke_any</qualifiedname>
+        <reimplements refid="structleasy_1_1ul2_1_1any__function_1a2d47d41ebb59fa7a61d5ea4aba146db1">invoke_any</reimplements>
+        <param>
+          <type>const std::vector&lt; std::any &gt; &amp;</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="52" column="14" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="52" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1function__wrapper_1a130c17846360b476bbad4747522660ee" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::size_t</type>
+        <definition>std::size_t leasy::ul2::function_wrapper&lt; F &gt;::arity</definition>
+        <argsstring>() const override</argsstring>
+        <name>arity</name>
+        <qualifiedname>leasy::ul2::function_wrapper::arity</qualifiedname>
+        <reimplements refid="structleasy_1_1ul2_1_1any__function_1a81ec0020aeebcd480c5309982c9f3b68">arity</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="56" column="17" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="56" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1function__wrapper_1a8e6d9a553fb9b236fa309838e3a7932c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::type_index</type>
+        <definition>std::type_index leasy::ul2::function_wrapper&lt; F &gt;::return_type</definition>
+        <argsstring>() const override</argsstring>
+        <name>return_type</name>
+        <qualifiedname>leasy::ul2::function_wrapper::return_type</qualifiedname>
+        <reimplements refid="structleasy_1_1ul2_1_1any__function_1ac17837eddd0ad87a6db2e916459ff620">return_type</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="58" column="21" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="58" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1function__wrapper_1a031367e91a4ce4ba0d501307b6dd12cc" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::vector&lt; std::type_index &gt;</type>
+        <definition>std::vector&lt; std::type_index &gt; leasy::ul2::function_wrapper&lt; F &gt;::argument_types</definition>
+        <argsstring>() const override</argsstring>
+        <name>argument_types</name>
+        <qualifiedname>leasy::ul2::function_wrapper::argument_types</qualifiedname>
+        <reimplements refid="structleasy_1_1ul2_1_1any__function_1ad163126fd55406c8b5ade64fa5c88e98">argument_types</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="62" column="17" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="62" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1function__wrapper_1a2e8775e7e971d8baa1ace6da33935718" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::vector&lt; <ref refid="structleasy_1_1ul2_1_1lua__arg__info" kindref="compound">lua_arg_info</ref> &gt;</type>
+        <definition>std::vector&lt; lua_arg_info &gt; leasy::ul2::function_wrapper&lt; F &gt;::lua_argument_info</definition>
+        <argsstring>() const override</argsstring>
+        <name>lua_argument_info</name>
+        <qualifiedname>leasy::ul2::function_wrapper::lua_argument_info</qualifiedname>
+        <reimplements refid="structleasy_1_1ul2_1_1any__function_1a5f7bd5ad4147fa0b00cefac12bfe0e86">lua_argument_info</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="66" column="17" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="66" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1function__wrapper_1a288c883abba3611a7693f3000c33c19e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>bool leasy::ul2::function_wrapper&lt; F &gt;::is_member</definition>
+        <argsstring>() const override</argsstring>
+        <name>is_member</name>
+        <qualifiedname>leasy::ul2::function_wrapper::is_member</qualifiedname>
+        <reimplements refid="structleasy_1_1ul2_1_1any__function_1ad2b5659eac4333a8a910840043b6804b">is_member</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="70" column="10" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="70" bodyend="70"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1function__wrapper_1acd7b520a013909f7ba2114823c9c770a" prot="private" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::type_info &amp;</type>
+        <definition>static const std::type_info &amp; leasy::ul2::function_wrapper&lt; F &gt;::return_type_or_void</definition>
+        <argsstring>()</argsstring>
+        <name>return_type_or_void</name>
+        <qualifiedname>leasy::ul2::function_wrapper::return_type_or_void</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="78" column="33" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="78" bodyend="78"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1function__wrapper_1a021d4a7ebe3c987dcf81f27e978e88ce" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>std::size_t...</type>
+            <declname>I</declname>
+            <defname>I</defname>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>int leasy::ul2::function_wrapper&lt; F &gt;::invoke_lua_impl</definition>
+        <argsstring>(lua_State *L, std::index_sequence&lt; I... &gt;) const</argsstring>
+        <name>invoke_lua_impl</name>
+        <qualifiedname>leasy::ul2::function_wrapper::invoke_lua_impl</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>std::index_sequence&lt; I... &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="84" column="9" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="84" bodyend="93"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1function__wrapper_1a5d002c30dd6e0151516defad35c5ed11" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>std::size_t...</type>
+            <declname>I</declname>
+            <defname>I</defname>
+          </param>
+        </templateparamlist>
+        <type>std::any</type>
+        <definition>std::any leasy::ul2::function_wrapper&lt; F &gt;::invoke_any_impl</definition>
+        <argsstring>(const std::vector&lt; std::any &gt; &amp;args, std::index_sequence&lt; I... &gt;) const</argsstring>
+        <name>invoke_any_impl</name>
+        <qualifiedname>leasy::ul2::function_wrapper::invoke_any_impl</qualifiedname>
+        <param>
+          <type>const std::vector&lt; std::any &gt; &amp;</type>
+          <declname>args</declname>
+        </param>
+        <param>
+          <type>std::index_sequence&lt; I... &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="96" column="14" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="96" bodyend="105"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1function__wrapper_1a3ec87e5a54a621b06d4b447711e34331" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>std::size_t...</type>
+            <declname>I</declname>
+            <defname>I</defname>
+          </param>
+        </templateparamlist>
+        <type>std::vector&lt; std::type_index &gt;</type>
+        <definition>std::vector&lt; std::type_index &gt; leasy::ul2::function_wrapper&lt; F &gt;::argument_types_impl</definition>
+        <argsstring>(std::index_sequence&lt; I... &gt;) const</argsstring>
+        <name>argument_types_impl</name>
+        <qualifiedname>leasy::ul2::function_wrapper::argument_types_impl</qualifiedname>
+        <param>
+          <type>std::index_sequence&lt; I... &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="108" column="17" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="108" bodyend="110"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1function__wrapper_1a7d46e5402ee48271ab37b654267d27f4" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>std::size_t...</type>
+            <declname>I</declname>
+            <defname>I</defname>
+          </param>
+        </templateparamlist>
+        <type>std::vector&lt; <ref refid="structleasy_1_1ul2_1_1lua__arg__info" kindref="compound">lua_arg_info</ref> &gt;</type>
+        <definition>std::vector&lt; lua_arg_info &gt; leasy::ul2::function_wrapper&lt; F &gt;::lua_argument_info_impl</definition>
+        <argsstring>(std::index_sequence&lt; I... &gt;) const</argsstring>
+        <name>lua_argument_info_impl</name>
+        <qualifiedname>leasy::ul2::function_wrapper::lua_argument_info_impl</qualifiedname>
+        <param>
+          <type>std::index_sequence&lt; I... &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="113" column="17" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="113" bodyend="123"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>leasy::ul2::any_function</label>
+        <link refid="structleasy_1_1ul2_1_1any__function"/>
+      </node>
+      <node id="1">
+        <label>leasy::ul2::function_wrapper&lt; F &gt;</label>
+        <link refid="classleasy_1_1ul2_1_1function__wrapper"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>leasy::ul2::any_function</label>
+        <link refid="structleasy_1_1ul2_1_1any__function"/>
+      </node>
+      <node id="1">
+        <label>leasy::ul2::function_wrapper&lt; F &gt;</label>
+        <link refid="classleasy_1_1ul2_1_1function__wrapper"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/ul2/function_wrapper.hpp" line="38" column="1" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="38" bodyend="124"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1aa7823843581410c01d3e1e3403f2c685" prot="private" virt="non-virtual"><scope>leasy::ul2::function_wrapper</scope><name>arg_t</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1a0d9cca61a68bbf842a982ae0edfeb041" prot="public" virt="non-virtual"><scope>leasy::ul2::function_wrapper</scope><name>args_tuple</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1a031367e91a4ce4ba0d501307b6dd12cc" prot="public" virt="virtual"><scope>leasy::ul2::function_wrapper</scope><name>argument_types</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1a3ec87e5a54a621b06d4b447711e34331" prot="private" virt="non-virtual"><scope>leasy::ul2::function_wrapper</scope><name>argument_types_impl</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1a130c17846360b476bbad4747522660ee" prot="public" virt="virtual"><scope>leasy::ul2::function_wrapper</scope><name>arity</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1abaf9536005d968ae1fb9265e431b92ae" prot="public" virt="non-virtual"><scope>leasy::ul2::function_wrapper</scope><name>arity_v</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1a29042fc8bde6f8bc17fac9efc088edbc" prot="private" virt="non-virtual"><scope>leasy::ul2::function_wrapper</scope><name>fn_</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1ad20d289b74a693ca2aa556dec5c49dc0" prot="public" virt="non-virtual"><scope>leasy::ul2::function_wrapper</scope><name>function_wrapper</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1a9ea506cfa583cc047a2a5071f13535b2" prot="public" virt="virtual"><scope>leasy::ul2::function_wrapper</scope><name>invoke_any</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1a5d002c30dd6e0151516defad35c5ed11" prot="private" virt="non-virtual"><scope>leasy::ul2::function_wrapper</scope><name>invoke_any_impl</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1a5fe8c0564ea3e2ff17b4f0266191d29f" prot="public" virt="virtual"><scope>leasy::ul2::function_wrapper</scope><name>invoke_lua</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1a021d4a7ebe3c987dcf81f27e978e88ce" prot="private" virt="non-virtual"><scope>leasy::ul2::function_wrapper</scope><name>invoke_lua_impl</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1a288c883abba3611a7693f3000c33c19e" prot="public" virt="virtual"><scope>leasy::ul2::function_wrapper</scope><name>is_member</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1a2e8775e7e971d8baa1ace6da33935718" prot="public" virt="virtual"><scope>leasy::ul2::function_wrapper</scope><name>lua_argument_info</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1a7d46e5402ee48271ab37b654267d27f4" prot="private" virt="non-virtual"><scope>leasy::ul2::function_wrapper</scope><name>lua_argument_info_impl</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1af6129ff7fc5577f9c132564a5be90a19" prot="private" virt="non-virtual"><scope>leasy::ul2::function_wrapper</scope><name>reportable_ret_t</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1a1e7dbd6eb5cbc03a3d24c86f67d6ecbf" prot="public" virt="non-virtual"><scope>leasy::ul2::function_wrapper</scope><name>ret_t</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1a8e6d9a553fb9b236fa309838e3a7932c" prot="public" virt="virtual"><scope>leasy::ul2::function_wrapper</scope><name>return_type</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1acd7b520a013909f7ba2114823c9c770a" prot="private" virt="non-virtual"><scope>leasy::ul2::function_wrapper</scope><name>return_type_or_void</name></member>
+      <member refid="classleasy_1_1ul2_1_1function__wrapper_1a291f5a6f370e10d575cd086074dda532" prot="public" virt="non-virtual"><scope>leasy::ul2::function_wrapper</scope><name>traits</name></member>
+      <member refid="structleasy_1_1ul2_1_1any__function_1abe3f9d82c9ad4b59d1f2d596d1cb4d22" prot="public" virt="virtual"><scope>leasy::ul2::function_wrapper</scope><name>~any_function</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

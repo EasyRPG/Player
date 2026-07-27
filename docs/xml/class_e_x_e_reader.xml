@@ -1,0 +1,320 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_e_x_e_reader" kind="class" language="C++" prot="public">
+    <compoundname>EXEReader</compoundname>
+    <includes refid="exe__reader_8h" local="no">exe_reader.h</includes>
+    <innerclass refid="struct_e_x_e_reader_1_1_file_info" prot="public">EXEReader::FileInfo</innerclass>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_e_x_e_reader_1ab57a54b73977485d8485ad161289a2c8" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>MachineType</name>
+        <qualifiedname>EXEReader::MachineType</qualifiedname>
+        <enumvalue id="class_e_x_e_reader_1ab57a54b73977485d8485ad161289a2c8a88183b946cc5f0e8c96b2e66e1c74a7e" prot="public">
+          <name>Unknown</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_e_x_e_reader_1ab57a54b73977485d8485ad161289a2c8a8a9da7865483c5fd359f3acef178d26d" prot="public">
+          <name>x86</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_e_x_e_reader_1ab57a54b73977485d8485ad161289a2c8ac71a96e493463b7d7437da5e490f56af" prot="public">
+          <name>amd64</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="47" column="1" bodyfile="exe_reader.h" bodystart="47" bodyend="51"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_e_x_e_reader_1aa35f5dae705599d87fa4e259753376cc" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto EXEReader::kMachineTypes</definition>
+        <argsstring></argsstring>
+        <name>kMachineTypes</name>
+        <qualifiedname>EXEReader::kMachineTypes</qualifiedname>
+        <initializer>                                = lcf::makeEnumTags&lt;<ref refid="class_e_x_e_reader_1ab57a54b73977485d8485ad161289a2c8" kindref="member">MachineType</ref>&gt;(
+    &quot;Unknown&quot;,
+    &quot;x86&quot;,
+    &quot;amd64&quot;
+)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="53" column="23" bodyfile="exe_reader.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_e_x_e_reader_1a5d40c442b344c6d7a912745ea99893e8" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t EXEReader::resource_ofs</definition>
+        <argsstring></argsstring>
+        <name>resource_ofs</name>
+        <qualifiedname>EXEReader::resource_ofs</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="88" column="10" bodyfile="exe_reader.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_e_x_e_reader_1a47e76e396a973a505cb045e2223d2304" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t EXEReader::resource_rva</definition>
+        <argsstring></argsstring>
+        <name>resource_rva</name>
+        <qualifiedname>EXEReader::resource_rva</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="89" column="10" bodyfile="exe_reader.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_e_x_e_reader_1a7fe8ddf481d466d8b8fa2f173214ef16" prot="private" static="no" mutable="no">
+        <type><ref refid="struct_e_x_e_reader_1_1_file_info" kindref="compound">FileInfo</ref></type>
+        <definition>FileInfo EXEReader::file_info</definition>
+        <argsstring></argsstring>
+        <name>file_info</name>
+        <qualifiedname>EXEReader::file_info</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="91" column="10" bodyfile="exe_reader.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_e_x_e_reader_1a865b48f3cd0a3320d1bcc564e029ddf8" prot="private" static="no" mutable="no">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream EXEReader::corefile</definition>
+        <argsstring></argsstring>
+        <name>corefile</name>
+        <qualifiedname>EXEReader::corefile</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="92" column="32" bodyfile="exe_reader.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_e_x_e_reader_1a48b1070328a029cb728b8f7343bd9ae5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>EXEReader::EXEReader</definition>
+        <argsstring>(Filesystem_Stream::InputStream core)</argsstring>
+        <name>EXEReader</name>
+        <qualifiedname>EXEReader::EXEReader</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+          <declname>core</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="40" column="1" bodyfile="exe_reader.cpp" bodystart="81" bodyend="157"/>
+      </memberdef>
+      <memberdef kind="function" id="class_e_x_e_reader_1aee923940f773fe391e6ad41e14ad931f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; uint8_t &gt;</type>
+        <definition>std::vector&lt; uint8_t &gt; EXEReader::GetExFont</definition>
+        <argsstring>()</argsstring>
+        <name>GetExFont</name>
+        <qualifiedname>EXEReader::GetExFont</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="44" column="13" bodyfile="exe_reader.cpp" bodystart="218" bodyend="253"/>
+      </memberdef>
+      <memberdef kind="function" id="class_e_x_e_reader_1a3627dbe372942aba2f4d37e3879448a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::vector&lt; uint8_t &gt; &gt;</type>
+        <definition>std::vector&lt; std::vector&lt; uint8_t &gt; &gt; EXEReader::GetLogos</definition>
+        <argsstring>()</argsstring>
+        <name>GetLogos</name>
+        <qualifiedname>EXEReader::GetLogos</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="45" column="13" bodyfile="exe_reader.cpp" bodystart="255" bodyend="327"/>
+      </memberdef>
+      <memberdef kind="function" id="class_e_x_e_reader_1a2752d21e22627710e210f33535824eb4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="struct_e_x_e_reader_1_1_file_info" kindref="compound">FileInfo</ref> &amp;</type>
+        <definition>const EXEReader::FileInfo &amp; EXEReader::GetFileInfo</definition>
+        <argsstring>()</argsstring>
+        <name>GetFileInfo</name>
+        <qualifiedname>EXEReader::GetFileInfo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="73" column="16" bodyfile="exe_reader.cpp" bodystart="329" bodyend="387"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_e_x_e_reader_1a466ae86f388c1236eb1d2c1fd2e8907b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t EXEReader::GetU8</definition>
+        <argsstring>(uint32_t point)</argsstring>
+        <name>GetU8</name>
+        <qualifiedname>EXEReader::GetU8</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>point</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="79" column="9" bodyfile="exe_reader.cpp" bodystart="389" bodyend="395"/>
+      </memberdef>
+      <memberdef kind="function" id="class_e_x_e_reader_1a5d2998a5959a7b29ab528b03ba85a43d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint16_t</type>
+        <definition>uint16_t EXEReader::GetU16</definition>
+        <argsstring>(uint32_t point)</argsstring>
+        <name>GetU16</name>
+        <qualifiedname>EXEReader::GetU16</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>point</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="80" column="10" bodyfile="exe_reader.cpp" bodystart="397" bodyend="401"/>
+      </memberdef>
+      <memberdef kind="function" id="class_e_x_e_reader_1a5fb1c419ec4dc6d55ddfea7f760764a2" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t EXEReader::GetU32</definition>
+        <argsstring>(uint32_t point)</argsstring>
+        <name>GetU32</name>
+        <qualifiedname>EXEReader::GetU32</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>point</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="81" column="10" bodyfile="exe_reader.cpp" bodystart="403" bodyend="407"/>
+      </memberdef>
+      <memberdef kind="function" id="class_e_x_e_reader_1a364f5674140d54380340a165a1de5cf0" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t EXEReader::ResOffsetByType</definition>
+        <argsstring>(uint32_t type)</argsstring>
+        <name>ResOffsetByType</name>
+        <qualifiedname>EXEReader::ResOffsetByType</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="83" column="10" bodyfile="exe_reader.cpp" bodystart="409" bodyend="425"/>
+      </memberdef>
+      <memberdef kind="function" id="class_e_x_e_reader_1a435cc6604edb915564cc595f279b70e5" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t EXEReader::GetLogoCount</definition>
+        <argsstring>()</argsstring>
+        <name>GetLogoCount</name>
+        <qualifiedname>EXEReader::GetLogoCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="84" column="10" bodyfile="exe_reader.cpp" bodystart="427" bodyend="441"/>
+      </memberdef>
+      <memberdef kind="function" id="class_e_x_e_reader_1a28009bb8afaabe6d0220ad60f2a293e7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool EXEReader::ResNameCheck</definition>
+        <argsstring>(uint32_t namepoint, const char *name)</argsstring>
+        <name>ResNameCheck</name>
+        <qualifiedname>EXEReader::ResNameCheck</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>namepoint</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exe_reader.h" line="85" column="6" bodyfile="exe_reader.cpp" bodystart="443" bodyend="453"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Extracts resources from an EXE. The istream given is still owned by the parent, but it is in use by the reader. </para>
+    </detaileddescription>
+    <location file="exe_reader.h" line="34" column="1" bodyfile="exe_reader.h" bodystart="34" bodyend="93"/>
+    <listofallmembers>
+      <member refid="class_e_x_e_reader_1a865b48f3cd0a3320d1bcc564e029ddf8" prot="private" virt="non-virtual"><scope>EXEReader</scope><name>corefile</name></member>
+      <member refid="class_e_x_e_reader_1a48b1070328a029cb728b8f7343bd9ae5" prot="public" virt="non-virtual"><scope>EXEReader</scope><name>EXEReader</name></member>
+      <member refid="class_e_x_e_reader_1a7fe8ddf481d466d8b8fa2f173214ef16" prot="private" virt="non-virtual"><scope>EXEReader</scope><name>file_info</name></member>
+      <member refid="class_e_x_e_reader_1aee923940f773fe391e6ad41e14ad931f" prot="public" virt="non-virtual"><scope>EXEReader</scope><name>GetExFont</name></member>
+      <member refid="class_e_x_e_reader_1a2752d21e22627710e210f33535824eb4" prot="public" virt="non-virtual"><scope>EXEReader</scope><name>GetFileInfo</name></member>
+      <member refid="class_e_x_e_reader_1a435cc6604edb915564cc595f279b70e5" prot="private" virt="non-virtual"><scope>EXEReader</scope><name>GetLogoCount</name></member>
+      <member refid="class_e_x_e_reader_1a3627dbe372942aba2f4d37e3879448a5" prot="public" virt="non-virtual"><scope>EXEReader</scope><name>GetLogos</name></member>
+      <member refid="class_e_x_e_reader_1a5d2998a5959a7b29ab528b03ba85a43d" prot="private" virt="non-virtual"><scope>EXEReader</scope><name>GetU16</name></member>
+      <member refid="class_e_x_e_reader_1a5fb1c419ec4dc6d55ddfea7f760764a2" prot="private" virt="non-virtual"><scope>EXEReader</scope><name>GetU32</name></member>
+      <member refid="class_e_x_e_reader_1a466ae86f388c1236eb1d2c1fd2e8907b" prot="private" virt="non-virtual"><scope>EXEReader</scope><name>GetU8</name></member>
+      <member refid="class_e_x_e_reader_1aa35f5dae705599d87fa4e259753376cc" prot="public" virt="non-virtual"><scope>EXEReader</scope><name>kMachineTypes</name></member>
+      <member refid="class_e_x_e_reader_1ab57a54b73977485d8485ad161289a2c8" prot="public" virt="non-virtual"><scope>EXEReader</scope><name>MachineType</name></member>
+      <member refid="class_e_x_e_reader_1a28009bb8afaabe6d0220ad60f2a293e7" prot="private" virt="non-virtual"><scope>EXEReader</scope><name>ResNameCheck</name></member>
+      <member refid="class_e_x_e_reader_1a364f5674140d54380340a165a1de5cf0" prot="private" virt="non-virtual"><scope>EXEReader</scope><name>ResOffsetByType</name></member>
+      <member refid="class_e_x_e_reader_1a5d40c442b344c6d7a912745ea99893e8" prot="private" virt="non-virtual"><scope>EXEReader</scope><name>resource_ofs</name></member>
+      <member refid="class_e_x_e_reader_1a47e76e396a973a505cb045e2223d2304" prot="private" virt="non-virtual"><scope>EXEReader</scope><name>resource_rva</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

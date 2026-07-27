@@ -184,3 +184,4 @@ void MidiDecoder::Reset() {
 	FluidSynthDecoder::ResetState();
 #endif
 }
+

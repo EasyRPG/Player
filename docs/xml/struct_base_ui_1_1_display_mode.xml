@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_base_ui_1_1_display_mode" kind="struct" language="C++" prot="protected">
+    <compoundname>BaseUi::DisplayMode</compoundname>
+    <includes refid="baseui_8h" local="no">baseui.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_base_ui_1_1_display_mode_1a9bd68de27b872eaa02bc7bd8fd6b5345" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int BaseUi::DisplayMode::zoom</definition>
+        <argsstring></argsstring>
+        <name>zoom</name>
+        <qualifiedname>BaseUi::DisplayMode::zoom</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="280" column="5" bodyfile="baseui.h" bodystart="280" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_base_ui_1_1_display_mode_1a8d62119e7b800f50437b5d5c389a92c5" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int BaseUi::DisplayMode::width</definition>
+        <argsstring></argsstring>
+        <name>width</name>
+        <qualifiedname>BaseUi::DisplayMode::width</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="281" column="5" bodyfile="baseui.h" bodystart="281" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_base_ui_1_1_display_mode_1a0a512e52d8d40ad5b72d34e9d968f426" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int BaseUi::DisplayMode::height</definition>
+        <argsstring></argsstring>
+        <name>height</name>
+        <qualifiedname>BaseUi::DisplayMode::height</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="282" column="5" bodyfile="baseui.h" bodystart="282" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_base_ui_1_1_display_mode_1a09243d8586e9681e99eaf124ad3dea9d" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t BaseUi::DisplayMode::flags</definition>
+        <argsstring></argsstring>
+        <name>flags</name>
+        <qualifiedname>BaseUi::DisplayMode::flags</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="283" column="10" bodyfile="baseui.h" bodystart="283" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_base_ui_1_1_display_mode_1a663825171f628d03c98944f7d07c09e4" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t BaseUi::DisplayMode::bpp</definition>
+        <argsstring></argsstring>
+        <name>bpp</name>
+        <qualifiedname>BaseUi::DisplayMode::bpp</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="284" column="9" bodyfile="baseui.h" bodystart="284" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_base_ui_1_1_display_mode_1a7e049125332b173a4c08adb1c997179a" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool BaseUi::DisplayMode::effective</definition>
+        <argsstring></argsstring>
+        <name>effective</name>
+        <qualifiedname>BaseUi::DisplayMode::effective</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="285" column="6" bodyfile="baseui.h" bodystart="285" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_base_ui_1_1_display_mode_1af524a75ba22ee6fbddfe4d60ea5cf70d" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool BaseUi::DisplayMode::vsync</definition>
+        <argsstring></argsstring>
+        <name>vsync</name>
+        <qualifiedname>BaseUi::DisplayMode::vsync</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="286" column="6" bodyfile="baseui.h" bodystart="286" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Display mode data struct. </para>
+    </detaileddescription>
+    <location file="baseui.h" line="279" column="1" bodyfile="baseui.h" bodystart="279" bodyend="287"/>
+    <listofallmembers>
+      <member refid="struct_base_ui_1_1_display_mode_1a663825171f628d03c98944f7d07c09e4" prot="public" virt="non-virtual"><scope>BaseUi::DisplayMode</scope><name>bpp</name></member>
+      <member refid="struct_base_ui_1_1_display_mode_1a7e049125332b173a4c08adb1c997179a" prot="public" virt="non-virtual"><scope>BaseUi::DisplayMode</scope><name>effective</name></member>
+      <member refid="struct_base_ui_1_1_display_mode_1a09243d8586e9681e99eaf124ad3dea9d" prot="public" virt="non-virtual"><scope>BaseUi::DisplayMode</scope><name>flags</name></member>
+      <member refid="struct_base_ui_1_1_display_mode_1a0a512e52d8d40ad5b72d34e9d968f426" prot="public" virt="non-virtual"><scope>BaseUi::DisplayMode</scope><name>height</name></member>
+      <member refid="struct_base_ui_1_1_display_mode_1af524a75ba22ee6fbddfe4d60ea5cf70d" prot="public" virt="non-virtual"><scope>BaseUi::DisplayMode</scope><name>vsync</name></member>
+      <member refid="struct_base_ui_1_1_display_mode_1a8d62119e7b800f50437b5d5c389a92c5" prot="public" virt="non-virtual"><scope>BaseUi::DisplayMode</scope><name>width</name></member>
+      <member refid="struct_base_ui_1_1_display_mode_1a9bd68de27b872eaa02bc7bd8fd6b5345" prot="public" virt="non-virtual"><scope>BaseUi::DisplayMode</scope><name>zoom</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

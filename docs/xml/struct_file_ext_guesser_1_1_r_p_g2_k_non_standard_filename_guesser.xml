@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser" kind="struct" language="C++" prot="public">
+    <compoundname>FileExtGuesser::RPG2KNonStandardFilenameGuesser</compoundname>
+    <includes refid="fileext__guesser_8h" local="no">fileext_guesser.h</includes>
+    <innerclass refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1_1_ext_and_size" prot="public">FileExtGuesser::RPG2KNonStandardFilenameGuesser::ExtAndSize</innerclass>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1aec262acfe3c906eab24b026d92b4187d" prot="public" static="no" mutable="no">
+        <type>std::pair&lt; <ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1_1_ext_and_size" kindref="compound">ExtAndSize</ref>, <ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1_1_ext_and_size" kindref="compound">ExtAndSize</ref> &gt;</type>
+        <definition>std::pair&lt;ExtAndSize,ExtAndSize&gt; FileExtGuesser::RPG2KNonStandardFilenameGuesser::rpgRTs</definition>
+        <argsstring></argsstring>
+        <name>rpgRTs</name>
+        <qualifiedname>FileExtGuesser::RPG2KNonStandardFilenameGuesser::rpgRTs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fileext_guesser.h" line="69" column="11" bodyfile="fileext_guesser.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1ad8316268d0cd569c71aaae546084fe2e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FileExtGuesser::RPG2KNonStandardFilenameGuesser::Empty</definition>
+        <argsstring>() const</argsstring>
+        <name>Empty</name>
+        <qualifiedname>FileExtGuesser::RPG2KNonStandardFilenameGuesser::Empty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Is this struct &apos;empty&apos; <ndash/>i.e., does it contain no useful information?</para>
+<para><simplesect kind="return"><para>true if both rpgTRs&apos;s &apos;ext&apos; properties are empty; false otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fileext_guesser.h" line="76" column="6" bodyfile="fileext_guesser.cpp" bodystart="147" bodyend="149"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1ae217321917c0315c7c31162dae5bd566" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap" kindref="compound">RPG2KFileExtRemap</ref></type>
+        <definition>FileExtGuesser::RPG2KFileExtRemap FileExtGuesser::RPG2KNonStandardFilenameGuesser::guessExtensions</definition>
+        <argsstring>(Meta &amp;meta)</argsstring>
+        <name>guessExtensions</name>
+        <qualifiedname>FileExtGuesser::RPG2KNonStandardFilenameGuesser::guessExtensions</qualifiedname>
+        <param>
+          <type><ref refid="class_meta" kindref="compound">Meta</ref> &amp;</type>
+          <declname>meta</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Perform a series of heuristical guesses to determine what the LDB/LMT extensions are.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>meta</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A <ref refid="class_meta" kindref="compound">Meta</ref> object loaded from the INI file </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A mapping for the LDB and LMT extensions (may be empty if no guess could be made). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fileext_guesser.h" line="84" column="19" bodyfile="fileext_guesser.cpp" bodystart="105" bodyend="145"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="fileext_guesser.h" line="60" column="1" bodyfile="fileext_guesser.h" bodystart="60" bodyend="85"/>
+    <listofallmembers>
+      <member refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1ad8316268d0cd569c71aaae546084fe2e" prot="public" virt="non-virtual"><scope>FileExtGuesser::RPG2KNonStandardFilenameGuesser</scope><name>Empty</name></member>
+      <member refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1ae217321917c0315c7c31162dae5bd566" prot="public" virt="non-virtual"><scope>FileExtGuesser::RPG2KNonStandardFilenameGuesser</scope><name>guessExtensions</name></member>
+      <member refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1aec262acfe3c906eab24b026d92b4187d" prot="public" virt="non-virtual"><scope>FileExtGuesser::RPG2KNonStandardFilenameGuesser</scope><name>rpgRTs</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

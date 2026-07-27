@@ -177,3 +177,4 @@ inline void Window_VarList::SetShowDetail(bool show_detail) {
 }
 
 #endif
+

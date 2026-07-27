@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_auto_battle_1_1_rpg_rt_compat" kind="class" language="C++" prot="public">
+    <compoundname>AutoBattle::RpgRtCompat</compoundname>
+    <basecompoundref refid="class_auto_battle_1_1_algorithm_base" prot="public" virt="non-virtual">AutoBattle::AlgorithmBase</basecompoundref>
+    <includes refid="autobattle_8h" local="no">autobattle.h</includes>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_auto_battle_1_1_rpg_rt_compat_1ab27df5835464b6a950f73b319d22b06d" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto AutoBattle::RpgRtCompat::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <qualifiedname>AutoBattle::RpgRtCompat::id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.h" line="72" column="23" bodyfile="autobattle.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_auto_battle_1_1_rpg_rt_compat_1a2612c187a2e858473bc2f03a7ea45f77" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto AutoBattle::RpgRtCompat::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>AutoBattle::RpgRtCompat::name</qualifiedname>
+        <initializer>= &quot;RPG_RT&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.h" line="74" column="23" bodyfile="autobattle.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_auto_battle_1_1_rpg_rt_compat_1a72ae5dde42986eb2c3eaaa749836c12b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int AutoBattle::RpgRtCompat::GetId</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetId</name>
+        <qualifiedname>AutoBattle::RpgRtCompat::GetId</qualifiedname>
+        <reimplements refid="class_auto_battle_1_1_algorithm_base_1a927162bcaf7a41e4bc55a3d8a04a7d87">GetId</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the id of this algorithm </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.h" line="76" column="5" bodyfile="autobattle.h" bodystart="76" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="class_auto_battle_1_1_rpg_rt_compat_1a3796ffebd9b7f7c4dbb59dfe459950f5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view AutoBattle::RpgRtCompat::GetName</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetName</name>
+        <qualifiedname>AutoBattle::RpgRtCompat::GetName</qualifiedname>
+        <reimplements refid="class_auto_battle_1_1_algorithm_base_1a4737b80596a012416167c7db89e5cc4d">GetName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the name of this algorithm </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.h" line="78" column="18" bodyfile="autobattle.h" bodystart="78" bodyend="78"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_auto_battle_1_1_rpg_rt_compat_1a39383f9e28905bac1b980202c2cf1dd9" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AutoBattle::RpgRtCompat::vSetAutoBattleAction</definition>
+        <argsstring>(Game_Actor &amp;source) override</argsstring>
+        <name>vSetAutoBattleAction</name>
+        <qualifiedname>AutoBattle::RpgRtCompat::vSetAutoBattleAction</qualifiedname>
+        <reimplements refid="class_auto_battle_1_1_algorithm_base_1af95cabd1ec9c2d331310c69a62095411">vSetAutoBattleAction</reimplements>
+        <param>
+          <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.h" line="80" column="6" bodyfile="autobattle.cpp" bodystart="67" bodyend="69"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>The default autobattle algorithm which is strictly compatible with RPG_RT, bugs included. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>AutoBattle::AlgorithmBase</label>
+        <link refid="class_auto_battle_1_1_algorithm_base"/>
+      </node>
+      <node id="1">
+        <label>AutoBattle::RpgRtCompat</label>
+        <link refid="class_auto_battle_1_1_rpg_rt_compat"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>AutoBattle::AlgorithmBase</label>
+        <link refid="class_auto_battle_1_1_algorithm_base"/>
+      </node>
+      <node id="1">
+        <label>AutoBattle::RpgRtCompat</label>
+        <link refid="class_auto_battle_1_1_rpg_rt_compat"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="autobattle.h" line="70" column="1" bodyfile="autobattle.h" bodystart="70" bodyend="81"/>
+    <listofallmembers>
+      <member refid="class_auto_battle_1_1_rpg_rt_compat_1a72ae5dde42986eb2c3eaaa749836c12b" prot="public" virt="virtual"><scope>AutoBattle::RpgRtCompat</scope><name>GetId</name></member>
+      <member refid="class_auto_battle_1_1_rpg_rt_compat_1a3796ffebd9b7f7c4dbb59dfe459950f5" prot="public" virt="virtual"><scope>AutoBattle::RpgRtCompat</scope><name>GetName</name></member>
+      <member refid="class_auto_battle_1_1_rpg_rt_compat_1ab27df5835464b6a950f73b319d22b06d" prot="public" virt="non-virtual"><scope>AutoBattle::RpgRtCompat</scope><name>id</name></member>
+      <member refid="class_auto_battle_1_1_rpg_rt_compat_1a2612c187a2e858473bc2f03a7ea45f77" prot="public" virt="non-virtual"><scope>AutoBattle::RpgRtCompat</scope><name>name</name></member>
+      <member refid="class_auto_battle_1_1_algorithm_base_1ab6a2cf5715d9783c77bbaceafd377c36" prot="public" virt="non-virtual"><scope>AutoBattle::RpgRtCompat</scope><name>SetAutoBattleAction</name></member>
+      <member refid="class_auto_battle_1_1_rpg_rt_compat_1a39383f9e28905bac1b980202c2cf1dd9" prot="private" virt="virtual"><scope>AutoBattle::RpgRtCompat</scope><name>vSetAutoBattleAction</name></member>
+      <member refid="class_auto_battle_1_1_algorithm_base_1a4e86b75994f7727c5598496b6d712006" prot="public" virt="virtual"><scope>AutoBattle::RpgRtCompat</scope><name>~AlgorithmBase</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

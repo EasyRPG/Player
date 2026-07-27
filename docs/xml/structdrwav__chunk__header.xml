@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdrwav__chunk__header" kind="struct" language="C++" prot="public">
+    <compoundname>drwav_chunk_header</compoundname>
+    <includes refid="dr__wav_8h" local="no">dr_wav.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdrwav__chunk__header_1a1358819813c1f1904fafedf81d8e9229" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ae433204b3e47bded80161f89f5d52895" kindref="member">drwav_uint8</ref></type>
+        <definition>drwav_uint8 drwav_chunk_header::fourcc[4]</definition>
+        <argsstring>[4]</argsstring>
+        <name>fourcc</name>
+        <qualifiedname>drwav_chunk_header::fourcc</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="325" column="21" bodyfile="external/dr_wav.h" bodystart="325" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__chunk__header_1a45f2d3ba26c61347d49fa2831612c691" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ae433204b3e47bded80161f89f5d52895" kindref="member">drwav_uint8</ref></type>
+        <definition>drwav_uint8 drwav_chunk_header::guid[16]</definition>
+        <argsstring>[16]</argsstring>
+        <name>guid</name>
+        <qualifiedname>drwav_chunk_header::guid</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="326" column="21" bodyfile="external/dr_wav.h" bodystart="326" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__chunk__header_1ab3817ee936b5b3395ad5079e9fd8008d" prot="public" static="no" mutable="no">
+        <type>union drwav_chunk_header::@330276061335251117377000237157222006123335105073</type>
+        <definition>union drwav_chunk_header::@330276061335251117377000237157222006123335105073 drwav_chunk_header::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <qualifiedname>drwav_chunk_header::id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="327" column="8"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__chunk__header_1aa1cb86d096c1402276dabaab65c76cd2" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ad25b608525a9683bf6eb2f7cb21dd783" kindref="member">drwav_uint64</ref></type>
+        <definition>drwav_uint64 drwav_chunk_header::sizeInBytes</definition>
+        <argsstring></argsstring>
+        <name>sizeInBytes</name>
+        <qualifiedname>drwav_chunk_header::sizeInBytes</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="330" column="18" bodyfile="external/dr_wav.h" bodystart="330" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__chunk__header_1ad9da64cda7715e1a7714c30b4e2e91a2" prot="public" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int drwav_chunk_header::paddingSize</definition>
+        <argsstring></argsstring>
+        <name>paddingSize</name>
+        <qualifiedname>drwav_chunk_header::paddingSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="336" column="18" bodyfile="external/dr_wav.h" bodystart="336" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="external/dr_wav.h" line="321" column="1" bodyfile="external/dr_wav.h" bodystart="322" bodyend="337"/>
+    <listofallmembers>
+      <member refid="structdrwav__chunk__header_1a1358819813c1f1904fafedf81d8e9229" prot="public" virt="non-virtual"><scope>drwav_chunk_header</scope><name>fourcc</name></member>
+      <member refid="structdrwav__chunk__header_1a45f2d3ba26c61347d49fa2831612c691" prot="public" virt="non-virtual"><scope>drwav_chunk_header</scope><name>guid</name></member>
+      <member refid="structdrwav__chunk__header_1ab3817ee936b5b3395ad5079e9fd8008d" prot="public" virt="non-virtual"><scope>drwav_chunk_header</scope><name>id</name></member>
+      <member refid="structdrwav__chunk__header_1ad9da64cda7715e1a7714c30b4e2e91a2" prot="public" virt="non-virtual"><scope>drwav_chunk_header</scope><name>paddingSize</name></member>
+      <member refid="structdrwav__chunk__header_1aa1cb86d096c1402276dabaab65c76cd2" prot="public" virt="non-virtual"><scope>drwav_chunk_header</scope><name>sizeInBytes</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

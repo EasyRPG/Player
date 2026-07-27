@@ -1,0 +1,487 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_ctr_ui" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>CtrUi</compoundname>
+    <basecompoundref refid="class_base_ui" prot="public" virt="non-virtual">BaseUi</basecompoundref>
+    <includes refid="3ds_2ui_8h" local="no">ui.h</includes>
+    <sectiondef kind="user-defined">
+      <memberdef kind="function" id="class_ctr_ui_1ae99c19782498453ff14294e32974906b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CtrUi::UpdateDisplay</definition>
+        <argsstring>() override</argsstring>
+        <name>UpdateDisplay</name>
+        <qualifiedname>CtrUi::UpdateDisplay</qualifiedname>
+        <reimplements refid="class_base_ui_1ad0ac519b67b66dda5df6289a3f9e25c2">UpdateDisplay</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Inherited from <ref refid="class_base_ui" kindref="compound">BaseUi</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/ui.h" line="52" column="6" bodyfile="platform/3ds/ui.cpp" bodystart="332" bodyend="433"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_ui_1af905280aa444ab2a44374e2397dd219c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool CtrUi::ProcessEvents</definition>
+        <argsstring>() override</argsstring>
+        <name>ProcessEvents</name>
+        <qualifiedname>CtrUi::ProcessEvents</qualifiedname>
+        <reimplements refid="class_base_ui_1aa5adf73d350d9cf4635084df16849461">ProcessEvents</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Processes events queue.</para>
+<para><simplesect kind="return"><para>When false requests an immediate <ref refid="namespace_player" kindref="compound">Player</ref> shutdown </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/ui.h" line="53" column="6" bodyfile="platform/3ds/ui.cpp" bodystart="220" bodyend="330"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_ui_1a60b0a67f180f2c1feaa9b720624181d0" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CtrUi::ToggleStretch</definition>
+        <argsstring>() override</argsstring>
+        <name>ToggleStretch</name>
+        <qualifiedname>CtrUi::ToggleStretch</qualifiedname>
+        <reimplements refid="class_base_ui_1a16737efd977c20b828b477086915da89">ToggleStretch</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Toggles &quot;stretch to screen width&quot; on or off </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/ui.h" line="54" column="6" bodyfile="platform/3ds/ui.cpp" bodystart="435" bodyend="443"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_ui_1a9d4b7fb54037a0c9833330428af2f03b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CtrUi::ToggleTouchUi</definition>
+        <argsstring>() override</argsstring>
+        <name>ToggleTouchUi</name>
+        <qualifiedname>CtrUi::ToggleTouchUi</qualifiedname>
+        <reimplements refid="class_base_ui_1ad21fdbce0abcbd781791071dd7bb3bd1">ToggleTouchUi</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Turns a touch ui on or off. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/ui.h" line="55" column="6" bodyfile="platform/3ds/ui.cpp" bodystart="445" bodyend="447"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_ui_1afa2dfec0d50a34ed276198fe03fd4635" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CtrUi::vGetConfig</definition>
+        <argsstring>(Game_ConfigVideo &amp;cfg) const override</argsstring>
+        <name>vGetConfig</name>
+        <qualifiedname>CtrUi::vGetConfig</qualifiedname>
+        <reimplements refid="class_base_ui_1aef921da0d7b4ec1e7ee45f62097e2e5a">vGetConfig</reimplements>
+        <param>
+          <type><ref refid="struct_game___config_video" kindref="compound">Game_ConfigVideo</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/ui.h" line="56" column="6" bodyfile="platform/3ds/ui.cpp" bodystart="449" bodyend="457"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_ui_1ab7ea841931fdc07ea20ec697b429d88a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool CtrUi::HandleErrorOutput</definition>
+        <argsstring>(const std::string &amp;message) override</argsstring>
+        <name>HandleErrorOutput</name>
+        <qualifiedname>CtrUi::HandleErrorOutput</qualifiedname>
+        <reimplements refid="class_base_ui_1ad2f8960e9e9b562cf67d249557f6259a">HandleErrorOutput</reimplements>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Outputs the error message in a custom way depending on platform</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>message string. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>wether error has been handled </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/ui.h" line="57" column="6" bodyfile="platform/3ds/ui.cpp" bodystart="459" bodyend="469"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_ctr_ui_1ad1116b87571aaa4d720a22b9e0e34d32" prot="private" static="no" mutable="no">
+        <type>C3D_RenderTarget *</type>
+        <definition>C3D_RenderTarget* CtrUi::top_screen</definition>
+        <argsstring></argsstring>
+        <name>top_screen</name>
+        <qualifiedname>CtrUi::top_screen</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/ui.h" line="65" column="18" bodyfile="platform/3ds/ui.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_ctr_ui_1adcbf98b09ca846929bb53303fe6894f8" prot="private" static="no" mutable="no">
+        <type>C3D_RenderTarget *</type>
+        <definition>C3D_RenderTarget * CtrUi::bottom_screen</definition>
+        <argsstring></argsstring>
+        <name>bottom_screen</name>
+        <qualifiedname>CtrUi::bottom_screen</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/ui.h" line="65" column="29" bodyfile="platform/3ds/ui.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_ctr_ui_1a4f9fc83a42d0e1634af07df6d3905263" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CtrUi::CtrUi</definition>
+        <argsstring>(int width, int height, const Game_Config &amp;cfg)</argsstring>
+        <name>CtrUi</name>
+        <qualifiedname>CtrUi::CtrUi</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_game___config" kindref="compound">Game_Config</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>width</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>window client width. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>height</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>window client height. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cfg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>config options </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/ui.h" line="41" column="1" bodyfile="platform/3ds/ui.cpp" bodystart="136" bodyend="198"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_ui_1a5894601024488b7213efe85512db6b16" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CtrUi::~CtrUi</definition>
+        <argsstring>()</argsstring>
+        <name>~CtrUi</name>
+        <qualifiedname>CtrUi::~CtrUi</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Destructor. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/ui.h" line="46" column="1" bodyfile="platform/3ds/ui.cpp" bodystart="200" bodyend="218"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_ctr_ui_1a3eb04cf473b56b690ee0c90875c89cef" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void CtrUi::ToggleBottomScreen</definition>
+        <argsstring>(bool state)</argsstring>
+        <name>ToggleBottomScreen</name>
+        <qualifiedname>CtrUi::ToggleBottomScreen</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>state</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/ui.h" line="66" column="6" bodyfile="platform/3ds/ui.cpp" bodystart="114" bodyend="134"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_ctr_ui" kindref="compound">CtrUi</ref> class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>BaseUi</label>
+        <link refid="class_base_ui"/>
+      </node>
+      <node id="1">
+        <label>CtrUi</label>
+        <link refid="class_ctr_ui"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>BaseUi</label>
+        <link refid="class_base_ui"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>vcfg</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>current_display_mode</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>mouse_pos</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>analog_input</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>back_color</edgelabel>
+        </childnode>
+      </node>
+      <node id="18">
+        <label>BaseUi::DisplayMode</label>
+        <link refid="struct_base_ui_1_1_display_mode"/>
+      </node>
+      <node id="7">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>Color</label>
+        <link refid="class_color"/>
+      </node>
+      <node id="13">
+        <label>ConfigParam&lt; int &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="12" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>ConfigParam&lt; std::string &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>ConfigParamBase&lt; ConfigEnum::GameResolution &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="15">
+        <label>ConfigParamBase&lt; ConfigEnum::ScalingMode &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="10">
+        <label>ConfigParamBase&lt; ConfigEnum::ShowFps &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="8">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="12">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="6">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="1">
+        <label>CtrUi</label>
+        <link refid="class_ctr_ui"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>EnumConfigParam&lt; ConfigEnum::GameResolution, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="17" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>EnumConfigParam&lt; ConfigEnum::ScalingMode, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="15" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>EnumConfigParam&lt; ConfigEnum::ShowFps, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Game_ConfigVideo</label>
+        <link refid="struct_game___config_video"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>renderer</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>fullscreen</edgelabel>
+          <edgelabel>pause_when_focus_lost</edgelabel>
+          <edgelabel>stretch</edgelabel>
+          <edgelabel>touch_ui</edgelabel>
+          <edgelabel>vsync</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>fps</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>fps_limit</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>window_height</edgelabel>
+          <edgelabel>window_width</edgelabel>
+          <edgelabel>window_x</edgelabel>
+          <edgelabel>window_y</edgelabel>
+          <edgelabel>window_zoom</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>scaling_mode</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>game_resolution</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>Input::AnalogInput</label>
+        <link refid="struct_input_1_1_analog_input"/>
+        <childnode refid="21" relation="usage">
+          <edgelabel>primary</edgelabel>
+          <edgelabel>secondary</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>LockedConfigParam&lt; std::string &gt;</label>
+        <link refid="class_locked_config_param"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>PointT&lt; float &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="19">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="11">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="12" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="platform/3ds/ui.h" line="32" column="1" bodyfile="platform/3ds/ui.h" bodystart="32" bodyend="72"/>
+    <listofallmembers>
+      <member refid="class_base_ui_1a96512cebf65e9153cb3b377a1080eaef" prot="protected" virt="non-virtual"><scope>CtrUi</scope><name>analog_input</name></member>
+      <member refid="class_base_ui_1ae38aec6a7306ee56bdd3c4a0d0bb76e6" prot="protected" virt="non-virtual"><scope>CtrUi</scope><name>back_color</name></member>
+      <member refid="class_base_ui_1abc04d498f5fac11ee11f9c9122207c13" prot="protected" virt="non-virtual"><scope>CtrUi</scope><name>BaseUi</name></member>
+      <member refid="class_ctr_ui_1adcbf98b09ca846929bb53303fe6894f8" prot="private" virt="non-virtual"><scope>CtrUi</scope><name>bottom_screen</name></member>
+      <member refid="class_base_ui_1a6705177f2e26c41cd38aedf809b3ff96" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>CaptureScreen</name></member>
+      <member refid="class_base_ui_1ab3cb68a47aa7a742bd2aba62c3c93830" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>ChangeDisplaySurfaceResolution</name></member>
+      <member refid="class_base_ui_1a0c76ff69fe6792d43cdfefdad462c48a" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>CleanDisplay</name></member>
+      <member refid="class_base_ui_1a1259ecf0abbfeca8f798dc05ec7cf973" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>CreateUi</name></member>
+      <member refid="class_ctr_ui_1a4f9fc83a42d0e1634af07df6d3905263" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>CtrUi</name></member>
+      <member refid="class_base_ui_1ad968d67d945a727f6be3556cb4e15dfb" prot="protected" virt="non-virtual"><scope>CtrUi</scope><name>current_display_mode</name></member>
+      <member refid="class_base_ui_1a3fcf56158d2dbfa1a2dddf5b62dd8c86" prot="protected" virt="non-virtual"><scope>CtrUi</scope><name>cursor_visible</name></member>
+      <member refid="class_base_ui_1aeae86a5ea89c8717b55692b023768373" prot="protected" virt="non-virtual"><scope>CtrUi</scope><name>external_frame_rate</name></member>
+      <member refid="class_base_ui_1afbefd1cf3f059e1613cdb93a92ddfae2" prot="protected" virt="non-virtual"><scope>CtrUi</scope><name>finger_input</name></member>
+      <member refid="class_base_ui_1a8277cb2800b716f1775d74a71a752ec7" prot="protected" virt="non-virtual"><scope>CtrUi</scope><name>frame_limit</name></member>
+      <member refid="class_base_ui_1a1743a7957049618f9092313ef3643ff8" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>GetAnalogInput</name></member>
+      <member refid="class_base_ui_1a1d9ab96f32fc80f68ea299a56c588b48" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>GetConfig</name></member>
+      <member refid="class_base_ui_1ac58c799344c947f74f7680ac92b29f46" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>GetDisplaySurface</name></member>
+      <member refid="class_base_ui_1a6a12e3b17421efa5ab8be3789bba01d6" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>GetDisplaySurface</name></member>
+      <member refid="class_base_ui_1a29fb87f2f0bea382c9e07a4787546155" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>GetFrameLimit</name></member>
+      <member refid="class_base_ui_1acaea0726d275e4cfe660d450c15613ff" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>GetHeight</name></member>
+      <member refid="class_base_ui_1a26429a01230e03334c6d534b50aea481" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>GetKeyStates</name></member>
+      <member refid="class_base_ui_1a749ed505a2e01d7c3f09304ef8d66e27" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>GetMouseFocus</name></member>
+      <member refid="class_base_ui_1ab8e3ba8ce6415a4c706b628093d07d08" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>GetMousePosition</name></member>
+      <member refid="class_base_ui_1a665686e47cf5b94d8fe84b7fb255330a" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>GetTouchInput</name></member>
+      <member refid="class_base_ui_1afc0660dcf3b0a7c3e6354b215b409e2a" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>GetWidth</name></member>
+      <member refid="class_base_ui_1a8a6e1bfb68cd5283b9ba510eae44453c" prot="public" virt="virtual"><scope>CtrUi</scope><name>GetWindowMetrics</name></member>
+      <member refid="class_ctr_ui_1ab7ea841931fdc07ea20ec697b429d88a" prot="public" virt="virtual"><scope>CtrUi</scope><name>HandleErrorOutput</name></member>
+      <member refid="class_base_ui_1a783a7b0dbc389c5230011b4e7ba72fcf" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>IsFrameRateSynchronized</name></member>
+      <member refid="class_base_ui_1a1e7122e1da0ce80c92fc4bbd70ab3529" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>IsFullscreen</name></member>
+      <member refid="class_base_ui_1acb63c6d48a74e7c111a5d8d54eb9bc44" prot="protected" virt="non-virtual"><scope>CtrUi</scope><name>keys</name></member>
+      <member refid="class_base_ui_1aa55d38974520aa1b75d19ac8fc78184b" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>KeyStatus</name></member>
+      <member refid="class_base_ui_1a77e2002cc546f7326d1bf154192ec99c" prot="protected" virt="non-virtual"><scope>CtrUi</scope><name>main_surface</name></member>
+      <member refid="class_base_ui_1a59b0524cf6d37e9d5ce7ff5c749e620c" prot="protected" virt="non-virtual"><scope>CtrUi</scope><name>mouse_focus</name></member>
+      <member refid="class_base_ui_1ad40db5525bb26ed0fd1b5e258da45b7c" prot="protected" virt="non-virtual"><scope>CtrUi</scope><name>mouse_pos</name></member>
+      <member refid="class_base_ui_1a1d3a2649b6ee63174afd8d8aff879658" prot="public" virt="virtual"><scope>CtrUi</scope><name>OpenURL</name></member>
+      <member refid="class_base_ui_1abdffe1380198934a10588fd57081eba6" prot="protected" virt="non-virtual"><scope>CtrUi</scope><name>original_fps_show_state</name></member>
+      <member refid="class_ctr_ui_1af905280aa444ab2a44374e2397dd219c" prot="public" virt="virtual"><scope>CtrUi</scope><name>ProcessEvents</name></member>
+      <member refid="class_base_ui_1ad7dcb52dbf687ea604d2c4994c0215c7" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>RenderFps</name></member>
+      <member refid="class_base_ui_1a9b36faf7ba0bdd8c0fb78a1b1241be4f" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>SetFrameLimit</name></member>
+      <member refid="class_base_ui_1a6f97cd92275f9c2a0bbe357171d7b9b7" prot="protected" virt="non-virtual"><scope>CtrUi</scope><name>SetFrameRateSynchronized</name></member>
+      <member refid="class_base_ui_1aeaa4e3a8c3f70be2c7bbf18ba89d5a1a" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>SetGameResolution</name></member>
+      <member refid="class_base_ui_1aa4c8869422507e9d9b216eff0465413c" prot="protected" virt="non-virtual"><scope>CtrUi</scope><name>SetIsFullscreen</name></member>
+      <member refid="class_base_ui_1a2b870c00dadecb6351d14dacca1d9b02" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>SetPauseWhenFocusLost</name></member>
+      <member refid="class_base_ui_1a1edf200ee8e139d481ed571c4705a31b" prot="public" virt="virtual"><scope>CtrUi</scope><name>SetScalingMode</name></member>
+      <member refid="class_base_ui_1a34ccc599af3eb7185a41f45f042d5d66" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>SetShowFps</name></member>
+      <member refid="class_base_ui_1ac838b906c382e0bd53eae5f775ef5dfb" prot="public" virt="virtual"><scope>CtrUi</scope><name>SetTitle</name></member>
+      <member refid="class_base_ui_1ae0d4c82612a9c1e8b76dcde91dd90217" prot="public" virt="virtual"><scope>CtrUi</scope><name>ShowCursor</name></member>
+      <member refid="class_base_ui_1acfec1d72d810c6b6adc2fecf6ef322cc" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>ShowFpsOnTitle</name></member>
+      <member refid="class_ctr_ui_1a3eb04cf473b56b690ee0c90875c89cef" prot="private" virt="non-virtual"><scope>CtrUi</scope><name>ToggleBottomScreen</name></member>
+      <member refid="class_base_ui_1a7cf7aa4d9d0c4c86bcec4ff6ef15c4f9" prot="public" virt="virtual"><scope>CtrUi</scope><name>ToggleFullscreen</name></member>
+      <member refid="class_base_ui_1abca78fd083436f0a9d036d949fc5e371" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>ToggleShowFps</name></member>
+      <member refid="class_ctr_ui_1a60b0a67f180f2c1feaa9b720624181d0" prot="public" virt="virtual"><scope>CtrUi</scope><name>ToggleStretch</name></member>
+      <member refid="class_ctr_ui_1a9d4b7fb54037a0c9833330428af2f03b" prot="public" virt="virtual"><scope>CtrUi</scope><name>ToggleTouchUi</name></member>
+      <member refid="class_base_ui_1a4325b9a6266e1f202ea1f887a3c2f022" prot="public" virt="virtual"><scope>CtrUi</scope><name>ToggleVsync</name></member>
+      <member refid="class_base_ui_1abb92ae64151143bc0a186fa934ffafa6" prot="public" virt="virtual"><scope>CtrUi</scope><name>ToggleZoom</name></member>
+      <member refid="class_ctr_ui_1ad1116b87571aaa4d720a22b9e0e34d32" prot="private" virt="non-virtual"><scope>CtrUi</scope><name>top_screen</name></member>
+      <member refid="class_base_ui_1a18ee3fdd88366c546ceb2daf3382f425" prot="protected" virt="non-virtual"><scope>CtrUi</scope><name>touch_input</name></member>
+      <member refid="class_ctr_ui_1ae99c19782498453ff14294e32974906b" prot="public" virt="virtual"><scope>CtrUi</scope><name>UpdateDisplay</name></member>
+      <member refid="class_base_ui_1a2d3af98fda6d7a8b33b71235bfe1bc62" prot="protected" virt="non-virtual"><scope>CtrUi</scope><name>vcfg</name></member>
+      <member refid="class_base_ui_1a58f5dc89bb89fae57b3d8512a5c5810a" prot="protected" virt="virtual"><scope>CtrUi</scope><name>vChangeDisplaySurfaceResolution</name></member>
+      <member refid="class_ctr_ui_1afa2dfec0d50a34ed276198fe03fd4635" prot="public" virt="virtual"><scope>CtrUi</scope><name>vGetConfig</name></member>
+      <member refid="class_base_ui_1acb710126bbe5950a70d4dd6348d4bed1" prot="public" virt="virtual"><scope>CtrUi</scope><name>~BaseUi</name></member>
+      <member refid="class_ctr_ui_1a5894601024488b7213efe85512db6b16" prot="public" virt="non-virtual"><scope>CtrUi</scope><name>~CtrUi</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

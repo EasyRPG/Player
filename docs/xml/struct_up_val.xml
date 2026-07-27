@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_up_val" kind="struct" language="C++" prot="public">
+    <compoundname>UpVal</compoundname>
+    <includes refid="lobject_8h" local="no">lobject.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_up_val_1a4e31d0a4bda814a7173a9ef5ca88ba3c" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>UpVal::CommonHeader</definition>
+        <argsstring></argsstring>
+        <name>CommonHeader</name>
+        <qualifiedname>UpVal::CommonHeader</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="680" column="3" bodyfile="leasy/lua/lobject.h" bodystart="680" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_up_val_1a8e9dff354074323b0df2bd0795b6e9d3" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+        <definition>TValue* UpVal::p</definition>
+        <argsstring></argsstring>
+        <name>p</name>
+        <qualifiedname>UpVal::p</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="682" column="12" bodyfile="leasy/lua/lobject.h" bodystart="682" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_up_val_1a5181153fb4139bfe1246bfff44700216" prot="public" static="no" mutable="no">
+        <type>ptrdiff_t</type>
+        <definition>ptrdiff_t UpVal::offset</definition>
+        <argsstring></argsstring>
+        <name>offset</name>
+        <qualifiedname>UpVal::offset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="683" column="15" bodyfile="leasy/lua/lobject.h" bodystart="683" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_up_val_1aaff8f7374aff063fb0cf6df9d244c35a" prot="public" static="no" mutable="no">
+        <type>union UpVal::@166161333303133200024026235036045275363311360173</type>
+        <definition>union UpVal::@166161333303133200024026235036045275363311360173 UpVal::v</definition>
+        <argsstring></argsstring>
+        <name>v</name>
+        <qualifiedname>UpVal::v</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="684" column="5"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_up_val_1ad60d3e0af32d663d3cde2e033bbdefd8" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="struct_up_val" kindref="compound">UpVal</ref> *</type>
+        <definition>struct UpVal* UpVal::next</definition>
+        <argsstring></argsstring>
+        <name>next</name>
+        <qualifiedname>UpVal::next</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="687" column="18" bodyfile="leasy/lua/lobject.h" bodystart="687" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_up_val_1af88c50a2df90e5e84a6abedde641771a" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="struct_up_val" kindref="compound">UpVal</ref> **</type>
+        <definition>struct UpVal** UpVal::previous</definition>
+        <argsstring></argsstring>
+        <name>previous</name>
+        <qualifiedname>UpVal::previous</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="688" column="18" bodyfile="leasy/lua/lobject.h" bodystart="688" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_up_val_1aebd1dc4bdc13c8dfd52c65a150185ef5" prot="public" static="no" mutable="no">
+        <type>struct UpVal::@145133144237114331235327264006320333045105144300::@135023104064344146363206237134115314142154070013</type>
+        <definition>struct UpVal::@145133144237114331235327264006320333045105144300::@135023104064344146363206237134115314142154070013 UpVal::open</definition>
+        <argsstring></argsstring>
+        <name>open</name>
+        <qualifiedname>UpVal::open</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="689" column="10"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_up_val_1abc22d06bbcaf3f197af9c6069c562505" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_value" kindref="compound">TValue</ref></type>
+        <definition>TValue UpVal::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>UpVal::value</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="690" column="12" bodyfile="leasy/lua/lobject.h" bodystart="690" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_up_val_1a4c8df9b5bed6ab6aeec78297df163bb8" prot="public" static="no" mutable="no">
+        <type>union UpVal::@145133144237114331235327264006320333045105144300</type>
+        <definition>union UpVal::@145133144237114331235327264006320333045105144300 UpVal::u</definition>
+        <argsstring></argsstring>
+        <name>u</name>
+        <qualifiedname>UpVal::u</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="691" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>TValue</label>
+        <link refid="struct_t_value"/>
+      </node>
+      <node id="1">
+        <label>UpVal</label>
+        <link refid="struct_up_val"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>p</edgelabel>
+          <edgelabel>value</edgelabel>
+        </childnode>
+        <childnode refid="1" relation="usage">
+          <edgelabel>next</edgelabel>
+          <edgelabel>previous</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lobject.h" line="679" column="1" bodyfile="leasy/lua/lobject.h" bodystart="679" bodyend="692"/>
+    <listofallmembers>
+      <member refid="struct_up_val_1a4e31d0a4bda814a7173a9ef5ca88ba3c" prot="public" virt="non-virtual"><scope>UpVal</scope><name>CommonHeader</name></member>
+      <member refid="struct_up_val_1ad60d3e0af32d663d3cde2e033bbdefd8" prot="public" virt="non-virtual"><scope>UpVal</scope><name>next</name></member>
+      <member refid="struct_up_val_1a5181153fb4139bfe1246bfff44700216" prot="public" virt="non-virtual"><scope>UpVal</scope><name>offset</name></member>
+      <member refid="struct_up_val_1aebd1dc4bdc13c8dfd52c65a150185ef5" prot="public" virt="non-virtual"><scope>UpVal</scope><name>open</name></member>
+      <member refid="struct_up_val_1a8e9dff354074323b0df2bd0795b6e9d3" prot="public" virt="non-virtual"><scope>UpVal</scope><name>p</name></member>
+      <member refid="struct_up_val_1af88c50a2df90e5e84a6abedde641771a" prot="public" virt="non-virtual"><scope>UpVal</scope><name>previous</name></member>
+      <member refid="struct_up_val_1a4c8df9b5bed6ab6aeec78297df163bb8" prot="public" virt="non-virtual"><scope>UpVal</scope><name>u</name></member>
+      <member refid="struct_up_val_1aaff8f7374aff063fb0cf6df9d244c35a" prot="public" virt="non-virtual"><scope>UpVal</scope><name>v</name></member>
+      <member refid="struct_up_val_1abc22d06bbcaf3f197af9c6069c562505" prot="public" virt="non-virtual"><scope>UpVal</scope><name>value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

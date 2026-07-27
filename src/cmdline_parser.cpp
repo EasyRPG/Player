@@ -125,3 +125,4 @@ void CmdlineParser::RewindBy(int rewind) {
 	index -= rewind;
 	assert(index >= 0);
 }
+

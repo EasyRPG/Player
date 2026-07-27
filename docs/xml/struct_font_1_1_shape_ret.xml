@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_font_1_1_shape_ret" kind="struct" language="C++" prot="public">
+    <compoundname>Font::ShapeRet</compoundname>
+    <includes refid="font_8h" local="no">font.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_font_1_1_shape_ret_1aa4a6bc8e722fa87fff6d4eb579bcd667" prot="public" static="no" mutable="no">
+        <type>char32_t</type>
+        <definition>char32_t Font::ShapeRet::code</definition>
+        <argsstring></argsstring>
+        <name>code</name>
+        <qualifiedname>Font::ShapeRet::code</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Codepoint of this glyph after shaping </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="64" column="10" bodyfile="font.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_font_1_1_shape_ret_1a82b7b533bc5f220cc0dece3d08f1e1d3" prot="public" static="no" mutable="no">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Font::ShapeRet::advance</definition>
+        <argsstring></argsstring>
+        <name>advance</name>
+        <qualifiedname>Font::ShapeRet::advance</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>How far to advance the x/y offset after drawing for the next glyph. y value is only relevant for vertical layouts. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="69" column="7" bodyfile="font.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_font_1_1_shape_ret_1a72cb873e5576742230f7f3442c7a25f0" prot="public" static="no" mutable="no">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Font::ShapeRet::offset</definition>
+        <argsstring></argsstring>
+        <name>offset</name>
+        <qualifiedname>Font::ShapeRet::offset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>x/y position in the buffer where the glyph is rendered at </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="71" column="7" bodyfile="font.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_font_1_1_shape_ret_1aedea384f267e60e719fb4293e8e2d4e3" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Font::ShapeRet::not_found</definition>
+        <argsstring></argsstring>
+        <name>not_found</name>
+        <qualifiedname>Font::ShapeRet::not_found</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>When true the glyph was not found. In that case code contains the original codepoint usable for a fallback. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="76" column="6" bodyfile="font.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Contains metrics of a glyph shaped by Harfbuzz </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>Font::ShapeRet</label>
+        <link refid="struct_font_1_1_shape_ret"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>advance</edgelabel>
+          <edgelabel>offset</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+    </collaborationgraph>
+    <location file="font.h" line="62" column="1" bodyfile="font.h" bodystart="62" bodyend="77"/>
+    <listofallmembers>
+      <member refid="struct_font_1_1_shape_ret_1a82b7b533bc5f220cc0dece3d08f1e1d3" prot="public" virt="non-virtual"><scope>Font::ShapeRet</scope><name>advance</name></member>
+      <member refid="struct_font_1_1_shape_ret_1aa4a6bc8e722fa87fff6d4eb579bcd667" prot="public" virt="non-virtual"><scope>Font::ShapeRet</scope><name>code</name></member>
+      <member refid="struct_font_1_1_shape_ret_1aedea384f267e60e719fb4293e8e2d4e3" prot="public" virt="non-virtual"><scope>Font::ShapeRet</scope><name>not_found</name></member>
+      <member refid="struct_font_1_1_shape_ret_1a72cb873e5576742230f7f3442c7a25f0" prot="public" virt="non-virtual"><scope>Font::ShapeRet</scope><name>offset</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

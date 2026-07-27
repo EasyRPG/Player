@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="union_u_value" kind="union" language="C++" prot="public">
+    <compoundname>UValue</compoundname>
+    <includes refid="lobject_8h" local="no">lobject.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="union_u_value_1afaa156bae31b8f21eb9743c2a757ce89" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_value" kindref="compound">TValue</ref></type>
+        <definition>TValue UValue::uv</definition>
+        <argsstring></argsstring>
+        <name>uv</name>
+        <qualifiedname>UValue::uv</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="482" column="10" bodyfile="leasy/lua/lobject.h" bodystart="482" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="union_u_value_1a3257500ea5d9b5b592f1ff8f31f1dda3" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>UValue::LUAI_MAXALIGN</definition>
+        <argsstring></argsstring>
+        <name>LUAI_MAXALIGN</name>
+        <qualifiedname>UValue::LUAI_MAXALIGN</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="483" column="3" bodyfile="leasy/lua/lobject.h" bodystart="483" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>TValue</label>
+        <link refid="struct_t_value"/>
+      </node>
+      <node id="1">
+        <label>UValue</label>
+        <link refid="union_u_value"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>uv</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lobject.h" line="481" column="1" bodyfile="leasy/lua/lobject.h" bodystart="481" bodyend="484"/>
+    <listofallmembers>
+      <member refid="union_u_value_1a3257500ea5d9b5b592f1ff8f31f1dda3" prot="public" virt="non-virtual"><scope>UValue</scope><name>LUAI_MAXALIGN</name></member>
+      <member refid="union_u_value_1afaa156bae31b8f21eb9743c2a757ce89" prot="public" virt="non-virtual"><scope>UValue</scope><name>uv</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

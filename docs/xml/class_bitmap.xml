@@ -1,0 +1,4013 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_bitmap" kind="class" language="C++" prot="public">
+    <compoundname>Bitmap</compoundname>
+    <includes refid="bitmap_8h" local="no">bitmap.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_bitmap_1a40bd5adcb54c3dfb84455e1fb39092c9" prot="public" static="no" strong="no">
+        <type></type>
+        <name>Flags</name>
+        <qualifiedname>Bitmap::Flags</qualifiedname>
+        <enumvalue id="class_bitmap_1a40bd5adcb54c3dfb84455e1fb39092c9a053986b1110fe3cf46f02feca588c939" prot="public">
+          <name>Flag_System</name>
+          <initializer>= 1 &lt;&lt; 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_bitmap_1a40bd5adcb54c3dfb84455e1fb39092c9aa4518acf6635bbb8105e2f0699837a99" prot="public">
+          <name>Flag_Chipset</name>
+          <initializer>= 1 &lt;&lt; 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_bitmap_1a40bd5adcb54c3dfb84455e1fb39092c9abc67ea80e31daa5e2aec1ab7de61c817" prot="public">
+          <name>Flag_ReadOnly</name>
+          <initializer>= 1 &lt;&lt; 16</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="147" column="1" bodyfile="bitmap.h" bodystart="147" bodyend="156"/>
+      </memberdef>
+      <memberdef kind="enum" id="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20e" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>BlendMode</name>
+        <qualifiedname>Bitmap::BlendMode</qualifiedname>
+        <enumvalue id="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea7a1920d61156abc05a60135aefe8bc67" prot="public">
+          <name>Default</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea960b44c579bc2f6818d2daaf9e4c16f0" prot="public">
+          <name>Normal</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea9b920c9465dc4131036f31595ea412cc" prot="public">
+          <name>NormalWithoutAlpha</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea97675eb3f268048604dc5155511a2a4d" prot="public">
+          <name>XOR</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea3f7b3d8ee7bf0d542bd50821c083888f" prot="public">
+          <name>Additive</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20eae257376d913f3b53cbb4a9b19d770648" prot="public">
+          <name>Multiply</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea6b551379c3c0b59326abdaf3b4395bd3" prot="public">
+          <name>Overlay</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20eafbf427bdeb4244eecca41246de32b36d" prot="public">
+          <name>Saturate</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20eaf367cda25ead743bb0d2ab9c217e0b99" prot="public">
+          <name>Darken</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea1371ecd5df513d77a001392435cf4d12" prot="public">
+          <name>Lighten</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20eaee9ea3fbc70cb0f07c7ec4c48712d900" prot="public">
+          <name>ColorDodge</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20eaa061fdf49738be2999f722b45661e825" prot="public">
+          <name>ColorBurn</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea28ed2ac6c29f64a3692c956004b8ff7a" prot="public">
+          <name>Difference</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea25218e43e67f1b1c1c833bc48c7ca7bb" prot="public">
+          <name>Exclusion</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea0110233d77ea3a1b09b5a5a5e3e48ec3" prot="public">
+          <name>SoftLight</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ead509708d332760c4dac5299aee3aa518" prot="public">
+          <name>HardLight</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="158" column="1" bodyfile="bitmap.h" bodystart="158" bodyend="175"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_bitmap_1a2eda8338c15e5e0ae35317145c8025c4" prot="public" static="yes" mutable="no">
+        <type><ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref></type>
+        <definition>DynamicFormat Bitmap::pixel_format</definition>
+        <argsstring></argsstring>
+        <name>pixel_format</name>
+        <qualifiedname>Bitmap::pixel_format</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="595" column="22" bodyfile="bitmap.h" bodystart="595" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_bitmap_1a77c2c562f1b9759dfb767dd26025a521" prot="public" static="yes" mutable="no">
+        <type><ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref></type>
+        <definition>DynamicFormat Bitmap::opaque_pixel_format</definition>
+        <argsstring></argsstring>
+        <name>opaque_pixel_format</name>
+        <qualifiedname>Bitmap::opaque_pixel_format</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="596" column="22" bodyfile="bitmap.h" bodystart="596" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_bitmap_1a24490e27694140e8be0ca4bd7d96c764" prot="public" static="yes" mutable="no">
+        <type><ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref></type>
+        <definition>DynamicFormat Bitmap::image_format</definition>
+        <argsstring></argsstring>
+        <name>image_format</name>
+        <qualifiedname>Bitmap::image_format</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="597" column="22" bodyfile="bitmap.h" bodystart="597" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_bitmap_1a11896ee056ecd79ad130fc5bc19dfae3" prot="public" static="yes" mutable="no">
+        <type><ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref></type>
+        <definition>DynamicFormat Bitmap::opaque_image_format</definition>
+        <argsstring></argsstring>
+        <name>opaque_image_format</name>
+        <qualifiedname>Bitmap::opaque_image_format</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="598" column="22" bodyfile="bitmap.h" bodystart="598" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_bitmap_1ad28d8101c843a67af8a51dfd44c0880d" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref></type>
+        <definition>DynamicFormat Bitmap::format</definition>
+        <argsstring></argsstring>
+        <name>format</name>
+        <qualifiedname>Bitmap::format</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="614" column="15" bodyfile="bitmap.h" bodystart="614" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_bitmap_1a732512de505cb30a2b2d158e7449dbf5" prot="protected" static="no" mutable="no">
+        <type><ref refid="opacity_8h_1ae32dbd7fc9d6e0307c162debc4857907" kindref="member">ImageOpacity</ref></type>
+        <definition>ImageOpacity Bitmap::image_opacity</definition>
+        <argsstring></argsstring>
+        <name>image_opacity</name>
+        <qualifiedname>Bitmap::image_opacity</qualifiedname>
+        <initializer>= <ref refid="opacity_8h_1ae32dbd7fc9d6e0307c162debc4857907aa1e69e656768dbe8e8a01c0490d78e86" kindref="member">ImageOpacity::Alpha_8Bit</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="616" column="14" bodyfile="bitmap.h" bodystart="616" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_bitmap_1a23465a57d68337fd1b19d7a2fdf5459b" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_tile_opacity" kindref="compound">TileOpacity</ref></type>
+        <definition>TileOpacity Bitmap::tile_opacity</definition>
+        <argsstring></argsstring>
+        <name>tile_opacity</name>
+        <qualifiedname>Bitmap::tile_opacity</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="617" column="13" bodyfile="bitmap.h" bodystart="617" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_bitmap_1a1961a97c8f3e21de432465874705b9d3" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color Bitmap::bg_color</definition>
+        <argsstring></argsstring>
+        <name>bg_color</name>
+        <qualifiedname>Bitmap::bg_color</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="618" column="7" bodyfile="bitmap.h" bodystart="618" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_bitmap_1a057f061c3bed7443ddf7862e9bbb7874" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color Bitmap::sh_color</definition>
+        <argsstring></argsstring>
+        <name>sh_color</name>
+        <qualifiedname>Bitmap::sh_color</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="618" column="16" bodyfile="bitmap.h" bodystart="618" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_bitmap_1a197f44bdf971a8d4229b257a54ea40e1" prot="protected" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1aaf8ae77b19585a8879a7c74d841e8baa" kindref="member">FontRef</ref></type>
+        <definition>FontRef Bitmap::font</definition>
+        <argsstring></argsstring>
+        <name>font</name>
+        <qualifiedname>Bitmap::font</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="619" column="9" bodyfile="bitmap.h" bodystart="619" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_bitmap_1a24adfc761dd0a5085f7794ae2fc4e2bf" prot="protected" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Bitmap::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <qualifiedname>Bitmap::id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="621" column="13" bodyfile="bitmap.h" bodystart="621" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_bitmap_1a655bc5db8e0a62909cc55cbcb6efee45" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Bitmap::original_bpp</definition>
+        <argsstring></argsstring>
+        <name>original_bpp</name>
+        <qualifiedname>Bitmap::original_bpp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Bpp of the source image </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="624" column="5" bodyfile="bitmap.h" bodystart="624" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_bitmap_1ac61645861a973310c7444140da87e3fe" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_pixman_image_ptr" kindref="compound">PixmanImagePtr</ref></type>
+        <definition>PixmanImagePtr Bitmap::bitmap</definition>
+        <argsstring></argsstring>
+        <name>bitmap</name>
+        <qualifiedname>Bitmap::bitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_bitmap" kindref="compound">Bitmap</ref> data. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="627" column="16" bodyfile="bitmap.h" bodystart="627" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_bitmap_1abaa7cdf45efea8c319f774b0d02c395d" prot="protected" static="no" mutable="no">
+        <type>pixman_format_code_t</type>
+        <definition>pixman_format_code_t Bitmap::pixman_format</definition>
+        <argsstring></argsstring>
+        <name>pixman_format</name>
+        <qualifiedname>Bitmap::pixman_format</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="628" column="22" bodyfile="bitmap.h" bodystart="628" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_bitmap_1a97cc8fd1b59f54fe1611024c27950d8a" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Bitmap::read_only</definition>
+        <argsstring></argsstring>
+        <name>read_only</name>
+        <qualifiedname>Bitmap::read_only</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="660" column="6" bodyfile="bitmap.h" bodystart="660" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_bitmap_1a891b66af37d944992f953d647535b9ac" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Bitmap::Create</definition>
+        <argsstring>(int width, int height, const Color &amp;color)</argsstring>
+        <name>Create</name>
+        <qualifiedname>Bitmap::Create</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_color" kindref="compound">Color</ref> &amp;</type>
+          <declname>color</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates bitmap with empty surface.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>width</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>surface width. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>height</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>surface height. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>color for filling. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="55" column="18" bodyfile="bitmap.cpp" bodystart="43" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1abc2bf7c5487d3667abbd386abf33abeb" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Bitmap::Create</definition>
+        <argsstring>(Filesystem_Stream::InputStream stream, bool transparent=true, uint32_t flags=0)</argsstring>
+        <name>Create</name>
+        <qualifiedname>Bitmap::Create</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+          <declname>stream</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>transparent</declname>
+          <defval>true</defval>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>flags</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Loads a bitmap from a stream.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>stream to read image from. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>transparent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>allow transparency on bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>flags</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>bitmap flags. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="64" column="18" bodyfile="bitmap.cpp" bodystart="49" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1ae924bd341004733dd6f7c5253cddab9b" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Bitmap::Create</definition>
+        <argsstring>(const uint8_t *data, unsigned bytes, bool transparent=true, uint32_t flags=0)</argsstring>
+        <name>Create</name>
+        <qualifiedname>Bitmap::Create</qualifiedname>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>bytes</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>transparent</declname>
+          <defval>true</defval>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>flags</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="74" column="18" bodyfile="bitmap.cpp" bodystart="59" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a9b319ab300a947213752ca1e6f14d060" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Bitmap::Create</definition>
+        <argsstring>(Bitmap const &amp;source, Rect const &amp;src_rect, bool transparent=true)</argsstring>
+        <name>Create</name>
+        <qualifiedname>Bitmap::Create</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>transparent</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates a bitmap from another.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>rect to copy from source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>transparent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>allow transparency on bitmap. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="83" column="18" bodyfile="bitmap.cpp" bodystart="69" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a5c9fe97594f15cebb517b43a7c318d99" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Bitmap::Create</definition>
+        <argsstring>(int width, int height, bool transparent=true, int bpp=0)</argsstring>
+        <name>Create</name>
+        <qualifiedname>Bitmap::Create</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>transparent</declname>
+          <defval>true</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>bpp</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates a surface.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>width</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>surface width. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>height</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>surface height. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>bpp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>surface bpp. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>transparent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>allow transparency on surface. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="93" column="18" bodyfile="bitmap.cpp" bodystart="73" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a69d1cac9856befcfd3d2513f64f0ccee" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Bitmap::Create</definition>
+        <argsstring>(void *pixels, int width, int height, int pitch, const DynamicFormat &amp;format)</argsstring>
+        <name>Create</name>
+        <qualifiedname>Bitmap::Create</qualifiedname>
+        <param>
+          <type>void *</type>
+          <declname>pixels</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>pitch</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref> &amp;</type>
+          <declname>format</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates a surface wrapper around existing pixel data.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pixels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer to pixel data. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>width</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>surface width. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>height</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>surface height. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pitch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>surface pitch. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pixel format. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="104" column="18" bodyfile="bitmap.cpp" bodystart="77" bodyend="79"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1af822dc12d3240f047f71f77768d9994f" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect Bitmap::TransformRectangle</definition>
+        <argsstring>(const Transform &amp;m, const Rect &amp;rect)</argsstring>
+        <name>TransformRectangle</name>
+        <qualifiedname>Bitmap::TransformRectangle</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_transform" kindref="compound">Transform</ref> &amp;</type>
+          <declname>m</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_rect" kindref="compound">Rect</ref> &amp;</type>
+          <declname>rect</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calculates the bounding rectangle of a transformed rectangle.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>transformation matrix. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source rectangle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the bounding rectangle. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="565" column="13" bodyfile="bitmap.cpp" bodystart="402" bodyend="412"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a276fb551f6ee3f89742cc8144fa9c0d1" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref></type>
+        <definition>DynamicFormat Bitmap::ChooseFormat</definition>
+        <argsstring>(const DynamicFormat &amp;format)</argsstring>
+        <name>ChooseFormat</name>
+        <qualifiedname>Bitmap::ChooseFormat</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref> &amp;</type>
+          <declname>format</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="592" column="22" bodyfile="bitmap.cpp" bodystart="479" bodyend="500"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a8cead62caa7a35568ac43d45064f6a34" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::SetFormat</definition>
+        <argsstring>(const DynamicFormat &amp;format)</argsstring>
+        <name>SetFormat</name>
+        <qualifiedname>Bitmap::SetFormat</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref> &amp;</type>
+          <declname>format</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="593" column="13" bodyfile="bitmap.cpp" bodystart="471" bodyend="477"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_bitmap_1a06c98214cfa909f26e8c80cd0dba1fa7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Bitmap::Bitmap</definition>
+        <argsstring>(int width, int height, bool transparent)</argsstring>
+        <name>Bitmap</name>
+        <qualifiedname>Bitmap::Bitmap</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>transparent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="106" column="1" bodyfile="bitmap.cpp" bodystart="81" bodyend="85"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1aec1a33e51d4afaaced2af939fc6ac98a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Bitmap::Bitmap</definition>
+        <argsstring>(Filesystem_Stream::InputStream stream, bool transparent, uint32_t flags)</argsstring>
+        <name>Bitmap</name>
+        <qualifiedname>Bitmap::Bitmap</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+          <declname>stream</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>transparent</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>flags</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="107" column="1" bodyfile="bitmap.cpp" bodystart="93" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1abf6fc6b2fea068b9ac2624f75e55eae8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Bitmap::Bitmap</definition>
+        <argsstring>(const uint8_t *data, unsigned bytes, bool transparent, uint32_t flags)</argsstring>
+        <name>Bitmap</name>
+        <qualifiedname>Bitmap::Bitmap</qualifiedname>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>bytes</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>transparent</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>flags</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="108" column="1" bodyfile="bitmap.cpp" bodystart="135" bodyend="164"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1ad795d2936e9fe050c93fd8a7d71c8276" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Bitmap::Bitmap</definition>
+        <argsstring>(Bitmap const &amp;source, Rect const &amp;src_rect, bool transparent)</argsstring>
+        <name>Bitmap</name>
+        <qualifiedname>Bitmap::Bitmap</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>transparent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="109" column="1" bodyfile="bitmap.cpp" bodystart="166" bodyend="173"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1af45c06ccd9f081c6bf4d63704b3768e9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Bitmap::Bitmap</definition>
+        <argsstring>(void *pixels, int width, int height, int pitch, const DynamicFormat &amp;format)</argsstring>
+        <name>Bitmap</name>
+        <qualifiedname>Bitmap::Bitmap</qualifiedname>
+        <param>
+          <type>void *</type>
+          <declname>pixels</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>pitch</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref> &amp;</type>
+          <declname>format</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="110" column="1" bodyfile="bitmap.cpp" bodystart="87" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a8f6990bace1ee118b4799987ff619ad1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Bitmap::GetWidth</definition>
+        <argsstring>() const</argsstring>
+        <name>GetWidth</name>
+        <qualifiedname>Bitmap::GetWidth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the bitmap width.</para>
+<para><simplesect kind="return"><para>the bitmap width. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="117" column="5" bodyfile="bitmap.h" bodystart="686" bodyend="688"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a7007912b0cf48167e69900f5bc0e889c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Bitmap::GetHeight</definition>
+        <argsstring>() const</argsstring>
+        <name>GetHeight</name>
+        <qualifiedname>Bitmap::GetHeight</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the bitmap height.</para>
+<para><simplesect kind="return"><para>the bitmap height. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="124" column="5" bodyfile="bitmap.h" bodystart="690" bodyend="692"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a4cf1ab8d5ea7758211b3db046565ff43" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect Bitmap::GetRect</definition>
+        <argsstring>() const</argsstring>
+        <name>GetRect</name>
+        <qualifiedname>Bitmap::GetRect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets bitmap bounds rect.</para>
+<para><simplesect kind="return"><para>bitmap bounds rect. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="131" column="6" bodyfile="bitmap.h" bodystart="694" bodyend="696"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1ad6d2d97f3114a4af3f221d0b26499bd9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t Bitmap::GetSize</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSize</name>
+        <qualifiedname>Bitmap::GetSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets how many bytes the bitmap consumes.</para>
+<para><simplesect kind="return"><para>bitmap size in bytes </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="138" column="8" bodyfile="bitmap.cpp" bodystart="194" bodyend="200"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1ae960b4164f8138fca0d4a780de13986b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Bitmap::GetTransparent</definition>
+        <argsstring>() const</argsstring>
+        <name>GetTransparent</name>
+        <qualifiedname>Bitmap::GetTransparent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if bitmap allows transparency.</para>
+<para><simplesect kind="return"><para>if bitmap allows transparency. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="145" column="6" bodyfile="bitmap.h" bodystart="698" bodyend="700"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a335d9d58662593158c051232bf4e34a7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="opacity_8h_1ae32dbd7fc9d6e0307c162debc4857907" kindref="member">ImageOpacity</ref></type>
+        <definition>ImageOpacity Bitmap::GetImageOpacity</definition>
+        <argsstring>() const</argsstring>
+        <name>GetImageOpacity</name>
+        <qualifiedname>Bitmap::GetImageOpacity</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Provides opacity information about the image. This influences the selected operator when blitting.</para>
+<para><simplesect kind="return"><para>opacity information </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="183" column="14" bodyfile="bitmap.h" bodystart="670" bodyend="672"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a39b2dbd791a0e99c214fc6e55b61bf9c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="opacity_8h_1ae32dbd7fc9d6e0307c162debc4857907" kindref="member">ImageOpacity</ref></type>
+        <definition>ImageOpacity Bitmap::GetTileOpacity</definition>
+        <argsstring>(int x, int y) const</argsstring>
+        <name>GetTileOpacity</name>
+        <qualifiedname>Bitmap::GetTileOpacity</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Provides opacity information about a tile on a tilemap. This influences the selected operator when blitting a tile.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile x coordinate </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile y coordinate</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>opacity information </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="194" column="14" bodyfile="bitmap.h" bodystart="674" bodyend="676"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1af57243143857ff2416ae897db891db5b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Bitmap::WritePNG</definition>
+        <argsstring>(std::ostream &amp;os) const</argsstring>
+        <name>WritePNG</name>
+        <qualifiedname>Bitmap::WritePNG</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>os</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Writes PNG converted bitmap to output stream.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>os</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>output stream that PNG will be output. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if success, otherwise false. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="202" column="6" bodyfile="bitmap.cpp" bodystart="175" bodyend="192"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a0f64185fb067b955098e42e5c4730b3b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color Bitmap::GetBackgroundColor</definition>
+        <argsstring>() const</argsstring>
+        <name>GetBackgroundColor</name>
+        <qualifiedname>Bitmap::GetBackgroundColor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the background color <ref refid="class_bitmap" kindref="compound">Bitmap</ref> must have been loaded with the Bitmap::System flag</para>
+<para><simplesect kind="return"><para>background color. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="210" column="7" bodyfile="bitmap.h" bodystart="678" bodyend="680"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1affac52e086461c8c7cd54f159fd0f49f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color Bitmap::GetShadowColor</definition>
+        <argsstring>() const</argsstring>
+        <name>GetShadowColor</name>
+        <qualifiedname>Bitmap::GetShadowColor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the shadow color <ref refid="class_bitmap" kindref="compound">Bitmap</ref> must have been loaded with the Bitmap::System flag</para>
+<para><simplesect kind="return"><para>shadow color. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="218" column="7" bodyfile="bitmap.h" bodystart="682" bodyend="684"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a6fd6f18c0e23fb06131ebb9415b62807" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Bitmap::GetId</definition>
+        <argsstring>() const</argsstring>
+        <name>GetId</name>
+        <qualifiedname>Bitmap::GetId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns an identifier for the bitmap. When the bitmap was loaded from a file this contains the filename. In all other cases this is implementation defined (and can be empty).</para>
+<para><simplesect kind="return"><para><ref refid="class_bitmap" kindref="compound">Bitmap</ref> identifier </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="227" column="18" bodyfile="bitmap.h" bodystart="702" bodyend="704"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a062f256832e57e37138727c3803374cc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::SetId</definition>
+        <argsstring>(std::string id)</argsstring>
+        <name>SetId</name>
+        <qualifiedname>Bitmap::SetId</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the identifier of the bitmap. To avoid bugs the function will reject changing non-empty IDs.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new identifier </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="235" column="6" bodyfile="bitmap.h" bodystart="706" bodyend="709"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a950f803fdd63acecaf8314934ad2f745" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Bitmap::GetOriginalBpp</definition>
+        <argsstring>() const</argsstring>
+        <name>GetOriginalBpp</name>
+        <qualifiedname>Bitmap::GetOriginalBpp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets bpp of the source image.</para>
+<para><simplesect kind="return"><para>Bpp </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="242" column="5" bodyfile="bitmap.h" bodystart="719" bodyend="721"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a7eca40be625fef73320c9860197e48aa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::CheckPixels</definition>
+        <argsstring>(uint32_t flags)</argsstring>
+        <name>CheckPixels</name>
+        <qualifiedname>Bitmap::CheckPixels</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>flags</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="244" column="6" bodyfile="bitmap.cpp" bodystart="259" bodyend="291"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a8afd1b4b9f4ffcdd711bd9187d6fb049" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color Bitmap::GetColorAt</definition>
+        <argsstring>(int x, int y) const</argsstring>
+        <name>GetColorAt</name>
+        <qualifiedname>Bitmap::GetColorAt</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x-coordinate </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y-coordinate </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>color at the pixel location </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="251" column="7" bodyfile="bitmap.cpp" bodystart="293" bodyend="305"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a5e3a66fccad9e6c3a67ad4c39426027c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Bitmap::TextDraw</definition>
+        <argsstring>(int x, int y, int color, std::string_view text, Text::Alignment align=Text::AlignLeft)</argsstring>
+        <name>TextDraw</name>
+        <qualifiedname>Bitmap::TextDraw</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>color</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>text</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_text_1ace337f3aba6969890e84befaae8d7767" kindref="member">Text::Alignment</ref></type>
+          <declname>align</declname>
+          <defval><ref refid="namespace_text_1ace337f3aba6969890e84befaae8d7767a040a1d53457ab65214c336178a36f152" kindref="member">Text::AlignLeft</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draws text to bitmap using the configured <ref refid="class_font" kindref="compound">Font</ref> or the <ref refid="class_font_1a0c0af671fc4de3e9ba8b758869080142" kindref="member">Font::Default()</ref> font.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x coordinate where text rendering starts. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y coordinate where text rendering starts. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>system color index. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>text</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>text to draw. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>align</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>text alignment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Where to draw the next glyph </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="263" column="7" bodyfile="bitmap.cpp" bodystart="366" bodyend="370"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a2cc3424830a0c2ef43e59b25ada15c37" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Bitmap::TextDraw</definition>
+        <argsstring>(Rect const &amp;rect, int color, std::string_view text, Text::Alignment align=Text::AlignLeft)</argsstring>
+        <name>TextDraw</name>
+        <qualifiedname>Bitmap::TextDraw</qualifiedname>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>rect</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>color</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>text</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_text_1ace337f3aba6969890e84befaae8d7767" kindref="member">Text::Alignment</ref></type>
+          <declname>align</declname>
+          <defval><ref refid="namespace_text_1ace337f3aba6969890e84befaae8d7767a040a1d53457ab65214c336178a36f152" kindref="member">Text::AlignLeft</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draws text to bitmap using the configured <ref refid="class_font" kindref="compound">Font</ref> or the <ref refid="class_font_1a0c0af671fc4de3e9ba8b758869080142" kindref="member">Font::Default()</ref> font.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>bounding rectangle. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>system color index. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>text</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>text to draw. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>align</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>text alignment inside bounding rectangle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Where to draw the next glyph </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="274" column="7" bodyfile="bitmap.cpp" bodystart="341" bodyend="364"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1aacf9803c856e61e4db885d7d4bcf3772" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Bitmap::TextDraw</definition>
+        <argsstring>(int x, int y, Color color, std::string_view text)</argsstring>
+        <name>TextDraw</name>
+        <qualifiedname>Bitmap::TextDraw</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type><ref refid="class_color" kindref="compound">Color</ref></type>
+          <declname>color</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>text</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draws text to bitmap using the configured <ref refid="class_font" kindref="compound">Font</ref> or the <ref refid="class_font_1a0c0af671fc4de3e9ba8b758869080142" kindref="member">Font::Default()</ref> font.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x coordinate where text rendering starts. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y coordinate where text rendering starts. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>text color. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>text</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>text to draw. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Where to draw the next glyph </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="285" column="7" bodyfile="bitmap.cpp" bodystart="397" bodyend="400"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1aec92a6e00ca42767c7c690a21d288ae0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Bitmap::TextDraw</definition>
+        <argsstring>(Rect const &amp;rect, Color color, std::string_view, Text::Alignment align=Text::AlignLeft)</argsstring>
+        <name>TextDraw</name>
+        <qualifiedname>Bitmap::TextDraw</qualifiedname>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>rect</declname>
+        </param>
+        <param>
+          <type><ref refid="class_color" kindref="compound">Color</ref></type>
+          <declname>color</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <defname>text</defname>
+        </param>
+        <param>
+          <type><ref refid="namespace_text_1ace337f3aba6969890e84befaae8d7767" kindref="member">Text::Alignment</ref></type>
+          <declname>align</declname>
+          <defval><ref refid="namespace_text_1ace337f3aba6969890e84befaae8d7767a040a1d53457ab65214c336178a36f152" kindref="member">Text::AlignLeft</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draws text to bitmap using the configured <ref refid="class_font" kindref="compound">Font</ref> or the <ref refid="class_font_1a0c0af671fc4de3e9ba8b758869080142" kindref="member">Font::Default()</ref> font.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>bounding rectangle. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>text color. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>text</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>text to draw. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>align</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>text alignment inside bounding rectangle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="295" column="7" bodyfile="bitmap.cpp" bodystart="372" bodyend="395"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::Blit</definition>
+        <argsstring>(int x, int y, Bitmap const &amp;src, Rect const &amp;src_rect, Opacity const &amp;opacity, BlendMode blend_mode=BlendMode::Default)</argsstring>
+        <name>Blit</name>
+        <qualifiedname>Bitmap::Blit</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_opacity" kindref="compound">Opacity</ref> const &amp;</type>
+          <declname>opacity</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20e" kindref="member">BlendMode</ref></type>
+          <declname>blend_mode</declname>
+          <defval><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea7a1920d61156abc05a60135aefe8bc67" kindref="member">BlendMode::Default</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blits source bitmap to this one.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>opacity</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>opacity for blending with bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>blend_mode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Blend mode to use. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="307" column="6" bodyfile="bitmap.cpp" bodystart="614" bodyend="628"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1ab877983ea65bfb2a21118cadbc6da330" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::BlitFast</definition>
+        <argsstring>(int x, int y, Bitmap const &amp;src, Rect const &amp;src_rect, Opacity const &amp;opacity)</argsstring>
+        <name>BlitFast</name>
+        <qualifiedname>Bitmap::BlitFast</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_opacity" kindref="compound">Opacity</ref> const &amp;</type>
+          <declname>opacity</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blits source bitmap to this one ignoring alpha (faster)</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>opacity</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>opacity for blending with bitmap. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="319" column="6" bodyfile="bitmap.cpp" bodystart="630" bodyend="642"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a48a65e430ae428112d598c5502031f91" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::TiledBlit</definition>
+        <argsstring>(Rect const &amp;src_rect, Bitmap const &amp;src, Rect const &amp;dst_rect, Opacity const &amp;opacity, BlendMode blend_mode=BlendMode::Default)</argsstring>
+        <name>TiledBlit</name>
+        <qualifiedname>Bitmap::TiledBlit</qualifiedname>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>dst_rect</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_opacity" kindref="compound">Opacity</ref> const &amp;</type>
+          <declname>opacity</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20e" kindref="member">BlendMode</ref></type>
+          <declname>blend_mode</declname>
+          <defval><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea7a1920d61156abc05a60135aefe8bc67" kindref="member">BlendMode::Default</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blits source bitmap in tiles to this one.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>src_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dst_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>destination rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>opacity</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>opacity for blending with bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>blend_mode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Blend mode to use. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="331" column="6" bodyfile="bitmap.cpp" bodystart="650" bodyend="652"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a65729c80be4fe3af49d6dd320762984c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::TiledBlit</definition>
+        <argsstring>(int ox, int oy, Rect const &amp;src_rect, Bitmap const &amp;src, Rect const &amp;dst_rect, Opacity const &amp;opacity, BlendMode blend_mode=BlendMode::Default)</argsstring>
+        <name>TiledBlit</name>
+        <qualifiedname>Bitmap::TiledBlit</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>ox</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>oy</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>dst_rect</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_opacity" kindref="compound">Opacity</ref> const &amp;</type>
+          <declname>opacity</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20e" kindref="member">BlendMode</ref></type>
+          <declname>blend_mode</declname>
+          <defval><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea7a1920d61156abc05a60135aefe8bc67" kindref="member">BlendMode::Default</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blits source bitmap in tiles to this one.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ox</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile start x offset. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>oy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile start y offset. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dst_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>destination rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>opacity</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>opacity for blending with bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>blend_mode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Blend mode to use. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="345" column="6" bodyfile="bitmap.cpp" bodystart="654" bodyend="676"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1ad063eadc7a1759d49492c6765010d73d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::EdgeMirrorBlit</definition>
+        <argsstring>(int x, int y, Bitmap const &amp;src, Rect const &amp;src_rect, bool mirror_x, bool mirror_y, Opacity const &amp;opacity)</argsstring>
+        <name>EdgeMirrorBlit</name>
+        <qualifiedname>Bitmap::EdgeMirrorBlit</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>mirror_x</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>mirror_y</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_opacity" kindref="compound">Opacity</ref> const &amp;</type>
+          <declname>opacity</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blits source bitmap to this one, making clones across the edges if src crossed a boundary of this.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mirror_x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Blit a clone in x direction </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mirror_Y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>BLit a clone in y direction </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>opacity</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>opacity for blending with bitmap. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="359" column="6" bodyfile="bitmap.cpp" bodystart="1273" bodyend="1307"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a35e526e2b966e1da0ab56de5d63e428c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::StretchBlit</definition>
+        <argsstring>(Bitmap const &amp;src, Rect const &amp;src_rect, Opacity const &amp;opacity, BlendMode blend_mode=BlendMode::Default)</argsstring>
+        <name>StretchBlit</name>
+        <qualifiedname>Bitmap::StretchBlit</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_opacity" kindref="compound">Opacity</ref> const &amp;</type>
+          <declname>opacity</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20e" kindref="member">BlendMode</ref></type>
+          <declname>blend_mode</declname>
+          <defval><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea7a1920d61156abc05a60135aefe8bc67" kindref="member">BlendMode::Default</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blits source bitmap stretched to this one.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>opacity</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>opacity for blending with bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>blend_mode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Blend mode to use. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="369" column="6" bodyfile="bitmap.cpp" bodystart="678" bodyend="680"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a5b8caf41feb99334c7bce464766955fb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::StretchBlit</definition>
+        <argsstring>(Rect const &amp;dst_rect, Bitmap const &amp;src, Rect const &amp;src_rect, Opacity const &amp;opacity, BlendMode blend_mode=BlendMode::Default)</argsstring>
+        <name>StretchBlit</name>
+        <qualifiedname>Bitmap::StretchBlit</qualifiedname>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>dst_rect</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_opacity" kindref="compound">Opacity</ref> const &amp;</type>
+          <declname>opacity</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20e" kindref="member">BlendMode</ref></type>
+          <declname>blend_mode</declname>
+          <defval><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea7a1920d61156abc05a60135aefe8bc67" kindref="member">BlendMode::Default</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blits source bitmap stretched to this one.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dst_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>destination rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>opacity</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>opacity for blending with bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>blend_mode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Blend mode to use. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="381" column="6" bodyfile="bitmap.cpp" bodystart="682" bodyend="704"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a210a1071d4e02e116965e464a8b6a8d0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::FlipBlit</definition>
+        <argsstring>(int x, int y, Bitmap const &amp;src, Rect const &amp;src_rect, bool horizontal, bool vertical, Opacity const &amp;opacity, BlendMode blend_mode=BlendMode::Default)</argsstring>
+        <name>FlipBlit</name>
+        <qualifiedname>Bitmap::FlipBlit</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>horizontal</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>vertical</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_opacity" kindref="compound">Opacity</ref> const &amp;</type>
+          <declname>opacity</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20e" kindref="member">BlendMode</ref></type>
+          <declname>blend_mode</declname>
+          <defval><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea7a1920d61156abc05a60135aefe8bc67" kindref="member">BlendMode::Default</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blit source bitmap flipped.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>horizontal</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>flip horizontally. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>vertical</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>flip vertically. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>opacity</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>opacity to apply. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>blend_mode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Blend mode to use. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="396" column="6" bodyfile="bitmap.cpp" bodystart="1044" bodyend="1070"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a47b4f2697b0802f1f7ad7a8bf0104309" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::WaverBlit</definition>
+        <argsstring>(int x, int y, double zoom_x, double zoom_y, Bitmap const &amp;src, Rect const &amp;src_rect, int depth, double phase, Opacity const &amp;opacity, BlendMode blend_mode=BlendMode::Default)</argsstring>
+        <name>WaverBlit</name>
+        <qualifiedname>Bitmap::WaverBlit</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>zoom_x</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>zoom_y</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>depth</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>phase</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_opacity" kindref="compound">Opacity</ref> const &amp;</type>
+          <declname>opacity</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20e" kindref="member">BlendMode</ref></type>
+          <declname>blend_mode</declname>
+          <defval><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea7a1920d61156abc05a60135aefe8bc67" kindref="member">BlendMode::Default</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blits source bitmap with waver, zoom, and opacity effects.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>zoom_x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x scale factor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>zoom_y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y scale factor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>depth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>wave magnitude. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>phase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>wave phase. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>opacity</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>opacity. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>blend_mode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Blend mode to use. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="413" column="6" bodyfile="bitmap.cpp" bodystart="706" bodyend="740"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a7fb844f0717a2eee78af42803e623be4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::RotateZoomOpacityBlit</definition>
+        <argsstring>(int x, int y, int ox, int oy, Bitmap const &amp;src, Rect const &amp;src_rect, double angle, double zoom_x, double zoom_y, Opacity const &amp;opacity, BlendMode blend_mode=BlendMode::Normal)</argsstring>
+        <name>RotateZoomOpacityBlit</name>
+        <qualifiedname>Bitmap::RotateZoomOpacityBlit</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>ox</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>oy</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>angle</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>zoom_x</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>zoom_y</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_opacity" kindref="compound">Opacity</ref> const &amp;</type>
+          <declname>opacity</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20e" kindref="member">BlendMode</ref></type>
+          <declname>blend_mode</declname>
+          <defval><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea960b44c579bc2f6818d2daaf9e4c16f0" kindref="member">BlendMode::Normal</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blits source bitmap with rotation, zoom, and opacity effects.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ox</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source origin x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>oy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source origin y. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>angle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>rotation angle in radians. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>zoom_x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x scale factor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>zoom_y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y scale factor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>opacity</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>opacity. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>blend_mode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Blend mode to use. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="431" column="6" bodyfile="bitmap.cpp" bodystart="1165" bodyend="1209"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1ac20cbb579cc5cde40d35b788649e59a2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::ZoomOpacityBlit</definition>
+        <argsstring>(int x, int y, int ox, int oy, Bitmap const &amp;src, Rect const &amp;src_rect, double zoom_x, double zoom_y, Opacity const &amp;opacity, BlendMode blend_mode=BlendMode::Default)</argsstring>
+        <name>ZoomOpacityBlit</name>
+        <qualifiedname>Bitmap::ZoomOpacityBlit</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>ox</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>oy</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>zoom_x</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>zoom_y</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_opacity" kindref="compound">Opacity</ref> const &amp;</type>
+          <declname>opacity</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20e" kindref="member">BlendMode</ref></type>
+          <declname>blend_mode</declname>
+          <defval><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea7a1920d61156abc05a60135aefe8bc67" kindref="member">BlendMode::Default</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blits source bitmap with zoom and opacity scaling.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ox</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source origin x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>oy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source origin y. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap rectangle. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>zoom_x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x scale factor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>zoom_y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y scale factor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>opacity</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>opacity. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>blend_mode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Blend mode to use. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="450" column="6" bodyfile="bitmap.cpp" bodystart="1211" bodyend="1226"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a83d16562c7dee6508a9eea49376c1739" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::Fill</definition>
+        <argsstring>(const Color &amp;color)</argsstring>
+        <name>Fill</name>
+        <qualifiedname>Bitmap::Fill</qualifiedname>
+        <param>
+          <type>const <ref refid="class_color" kindref="compound">Color</ref> &amp;</type>
+          <declname>color</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Fills entire bitmap with color.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>color for filling. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="460" column="6" bodyfile="bitmap.cpp" bodystart="751" bodyend="757"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a588bff93972d74eb9e0d6a4443492d5b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::FillRect</definition>
+        <argsstring>(Rect const &amp;dst_rect, const Color &amp;color)</argsstring>
+        <name>FillRect</name>
+        <qualifiedname>Bitmap::FillRect</qualifiedname>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>dst_rect</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_color" kindref="compound">Color</ref> &amp;</type>
+          <declname>color</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Fills bitmap rect with color.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dst_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>destination rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>color for filling. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="468" column="6" bodyfile="bitmap.cpp" bodystart="759" bodyend="770"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1aece2773d4c9cdab4e43aed0535bd7aed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::Clear</definition>
+        <argsstring>()</argsstring>
+        <name>Clear</name>
+        <qualifiedname>Bitmap::Clear</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Clears the bitmap with transparent pixels. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="473" column="6" bodyfile="bitmap.cpp" bodystart="772" bodyend="779"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a8f0377fe8450c75fd462ab8760859bb6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::ClearRect</definition>
+        <argsstring>(Rect const &amp;dst_rect)</argsstring>
+        <name>ClearRect</name>
+        <qualifiedname>Bitmap::ClearRect</qualifiedname>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>dst_rect</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Clears the bitmap rect with transparent pixels.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dst_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>destination rect. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="480" column="6" bodyfile="bitmap.cpp" bodystart="781" bodyend="794"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a9348dcf9c89e854c86f1023f5a35e432" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::HueChangeBlit</definition>
+        <argsstring>(int x, int y, Bitmap const &amp;src, Rect const &amp;src_rect, double hue)</argsstring>
+        <name>HueChangeBlit</name>
+        <qualifiedname>Bitmap::HueChangeBlit</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>hue</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Rotates bitmap hue.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>hue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>hue change, degrees. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="491" column="6" bodyfile="bitmap.cpp" bodystart="307" bodyend="339"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a9635e394633c59edab36aa624bd46f1f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::ToneBlit</definition>
+        <argsstring>(int x, int y, Bitmap const &amp;src, Rect const &amp;src_rect, const Tone &amp;tone, Opacity const &amp;opacity)</argsstring>
+        <name>ToneBlit</name>
+        <qualifiedname>Bitmap::ToneBlit</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_tone" kindref="compound">Tone</ref> &amp;</type>
+          <declname>tone</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_opacity" kindref="compound">Opacity</ref> const &amp;</type>
+          <declname>opacity</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adjusts bitmap tone.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tone</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tone to apply. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>opacity</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>opacity to apply. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="503" column="6" bodyfile="bitmap.cpp" bodystart="859" bodyend="1012"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1ae47580b679e887a4279d7e4eedbfee43" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::BlendBlit</definition>
+        <argsstring>(int x, int y, Bitmap const &amp;src, Rect const &amp;src_rect, const Color &amp;color, Opacity const &amp;opacity)</argsstring>
+        <name>BlendBlit</name>
+        <qualifiedname>Bitmap::BlendBlit</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_color" kindref="compound">Color</ref> &amp;</type>
+          <declname>color</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_opacity" kindref="compound">Opacity</ref> const &amp;</type>
+          <declname>opacity</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blends bitmap with color.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>color to apply. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>opacity</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>opacity to apply. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="515" column="6" bodyfile="bitmap.cpp" bodystart="1014" bodyend="1042"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a96a5d52e2fa3031acefba42793364d03" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::Flip</definition>
+        <argsstring>(bool horizontal, bool vertical)</argsstring>
+        <name>Flip</name>
+        <qualifiedname>Bitmap::Flip</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>horizontal</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>vertical</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Flips the bitmap pixels.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>horizontal</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>flip horizontally (mirror). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>vertical</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>flip vertically. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="523" column="6" bodyfile="bitmap.cpp" bodystart="1072" bodyend="1094"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a5ebc02600527d5687f4734e8e3cc9a7c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::MaskedBlit</definition>
+        <argsstring>(Rect const &amp;dst_rect, Bitmap const &amp;mask, int mx, int my, Bitmap const &amp;src, int sx, int sy)</argsstring>
+        <name>MaskedBlit</name>
+        <qualifiedname>Bitmap::MaskedBlit</qualifiedname>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>dst_rect</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>mask</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>mx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>my</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>sx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>sy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blits source bitmap to this one through a mask bitmap.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dst_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>destination rectangle. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mask</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>mask bitmap </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>mask x position </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>my</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>mask y position </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source x position </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source y position </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="536" column="6" bodyfile="bitmap.cpp" bodystart="1113" bodyend="1120"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1aaa48956afd8ce71c8b649ed683131329" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::MaskedBlit</definition>
+        <argsstring>(Rect const &amp;dst_rect, Bitmap const &amp;mask, int mx, int my, Color const &amp;color)</argsstring>
+        <name>MaskedBlit</name>
+        <qualifiedname>Bitmap::MaskedBlit</qualifiedname>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>dst_rect</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>mask</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>mx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>my</declname>
+        </param>
+        <param>
+          <type><ref refid="class_color" kindref="compound">Color</ref> const &amp;</type>
+          <declname>color</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blits constant color to this one through a mask bitmap.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dst_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>destination rectangle. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mask</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>mask bitmap </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>mask x position </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>my</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>mask y position </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source color. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="547" column="6" bodyfile="bitmap.cpp" bodystart="1096" bodyend="1111"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a569a85272e617d808a80055561d41ba3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::Blit2x</definition>
+        <argsstring>(Rect const &amp;dst_rect, Bitmap const &amp;src, Rect const &amp;src_rect)</argsstring>
+        <name>Blit2x</name>
+        <qualifiedname>Bitmap::Blit2x</qualifiedname>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>dst_rect</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blits source bitmap scaled 2:1, with no transparency.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dst_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>destination rectangle. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap rectangle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="556" column="6" bodyfile="bitmap.cpp" bodystart="1122" bodyend="1135"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1ae6131806604a14c104b1b8063c1ce46b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::EffectsBlit</definition>
+        <argsstring>(int x, int y, int ox, int oy, Bitmap const &amp;src, Rect const &amp;src_rect, Opacity const &amp;opacity, double zoom_x, double zoom_y, double angle, int waver_depth, double waver_phase, BlendMode blend_mode=BlendMode::Default)</argsstring>
+        <name>EffectsBlit</name>
+        <qualifiedname>Bitmap::EffectsBlit</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>ox</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>oy</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_opacity" kindref="compound">Opacity</ref> const &amp;</type>
+          <declname>opacity</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>zoom_x</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>zoom_y</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>angle</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>waver_depth</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>waver_phase</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20e" kindref="member">BlendMode</ref></type>
+          <declname>blend_mode</declname>
+          <defval><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea7a1920d61156abc05a60135aefe8bc67" kindref="member">BlendMode::Default</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blits source bitmap with effects. Note: rotation and waver are mutually exclusive.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>destination x position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>destination y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ox</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source origin x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>oy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source origin y. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source bitmap rectangle. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>opacity</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>opacity to apply. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>zoom_x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x scale factor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>zoom_y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y scale factor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>angle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>rotation angle. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>waver_depth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>wave magnitude. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>waver_phase</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>wave phase. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>blend_mode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Blend mode to use. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="585" column="6" bodyfile="bitmap.cpp" bodystart="1137" bodyend="1163"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a503a42e9099efff9f54934da61a694ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void *</type>
+        <definition>void * Bitmap::pixels</definition>
+        <argsstring>()</argsstring>
+        <name>pixels</name>
+        <qualifiedname>Bitmap::pixels</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="600" column="6" bodyfile="bitmap.cpp" bodystart="559" bodyend="565"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a990bc151bb1d07af49274b27be860bc2" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void const *</type>
+        <definition>void const  * Bitmap::pixels</definition>
+        <argsstring>() const</argsstring>
+        <name>pixels</name>
+        <qualifiedname>Bitmap::pixels</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="601" column="12" bodyfile="bitmap.cpp" bodystart="566" bodyend="568"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a024d56da8ce9d02a8f37fef652cdf557" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Bitmap::width</definition>
+        <argsstring>() const</argsstring>
+        <name>width</name>
+        <qualifiedname>Bitmap::width</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="602" column="5" bodyfile="bitmap.cpp" bodystart="574" bodyend="576"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1ac07c19225e1dd2da89ba2fc3072028fa" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Bitmap::height</definition>
+        <argsstring>() const</argsstring>
+        <name>height</name>
+        <qualifiedname>Bitmap::height</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="603" column="5" bodyfile="bitmap.cpp" bodystart="578" bodyend="580"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1aaa3f1c3020e2113f6efb0f22246b2f76" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Bitmap::bpp</definition>
+        <argsstring>() const</argsstring>
+        <name>bpp</name>
+        <qualifiedname>Bitmap::bpp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="604" column="5" bodyfile="bitmap.cpp" bodystart="570" bodyend="572"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a1a61fde28282baa56d0c0d1ac6bad1fd" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Bitmap::pitch</definition>
+        <argsstring>() const</argsstring>
+        <name>pitch</name>
+        <qualifiedname>Bitmap::pitch</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="605" column="5" bodyfile="bitmap.cpp" bodystart="582" bodyend="584"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1ad38ebfeb25e54d948a88c8f5ebc0a342" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1aaf8ae77b19585a8879a7c74d841e8baa" kindref="member">FontRef</ref></type>
+        <definition>FontRef Bitmap::GetFont</definition>
+        <argsstring>() const</argsstring>
+        <name>GetFont</name>
+        <qualifiedname>Bitmap::GetFont</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="607" column="9" bodyfile="bitmap.h" bodystart="711" bodyend="713"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a19bdeb36dc115a9f99d6b20f91dfea2e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::SetFont</definition>
+        <argsstring>(FontRef font)</argsstring>
+        <name>SetFont</name>
+        <qualifiedname>Bitmap::SetFont</qualifiedname>
+        <param>
+          <type><ref refid="memory__management_8h_1aaf8ae77b19585a8879a7c74d841e8baa" kindref="member">FontRef</ref></type>
+          <declname>font</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="608" column="6" bodyfile="bitmap.h" bodystart="715" bodyend="717"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a1750d53782926ab96669d59dbfb9cac8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="opacity_8h_1ae32dbd7fc9d6e0307c162debc4857907" kindref="member">ImageOpacity</ref></type>
+        <definition>ImageOpacity Bitmap::ComputeImageOpacity</definition>
+        <argsstring>() const</argsstring>
+        <name>ComputeImageOpacity</name>
+        <qualifiedname>Bitmap::ComputeImageOpacity</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="610" column="14" bodyfile="bitmap.cpp" bodystart="202" bodyend="225"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a6f362eb289f926a18aeb14ac394af1bb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="opacity_8h_1ae32dbd7fc9d6e0307c162debc4857907" kindref="member">ImageOpacity</ref></type>
+        <definition>ImageOpacity Bitmap::ComputeImageOpacity</definition>
+        <argsstring>(Rect rect) const</argsstring>
+        <name>ComputeImageOpacity</name>
+        <qualifiedname>Bitmap::ComputeImageOpacity</qualifiedname>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+          <declname>rect</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="611" column="14" bodyfile="bitmap.cpp" bodystart="227" bodyend="257"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_bitmap_1ad2c564762dcf167de08407ba0feee96d" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::Init</definition>
+        <argsstring>(int width, int height, void *data, int pitch=0, bool destroy=true)</argsstring>
+        <name>Init</name>
+        <qualifiedname>Bitmap::Init</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>pitch</declname>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>destroy</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="630" column="6" bodyfile="bitmap.cpp" bodystart="519" bodyend="536"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1ae933f8d68c579586ee6ca64d422bafb5" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Bitmap::ConvertImage</definition>
+        <argsstring>(int &amp;width, int &amp;height, void *&amp;pixels, bool transparent)</argsstring>
+        <name>ConvertImage</name>
+        <qualifiedname>Bitmap::ConvertImage</qualifiedname>
+        <param>
+          <type>int &amp;</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>height</declname>
+        </param>
+        <param>
+          <type>void *&amp;</type>
+          <declname>pixels</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>transparent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="631" column="6" bodyfile="bitmap.cpp" bodystart="538" bodyend="557"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a9fb8ea27900a04d2376f20b5fd4c0aab" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>pixman_op_t</type>
+        <definition>pixman_op_t Bitmap::GetOperator</definition>
+        <argsstring>(pixman_image_t *mask=nullptr, BlendMode blend_mode=BlendMode::Default) const</argsstring>
+        <name>GetOperator</name>
+        <qualifiedname>Bitmap::GetOperator</qualifiedname>
+        <param>
+          <type>pixman_image_t *</type>
+          <declname>mask</declname>
+          <defval>nullptr</defval>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20e" kindref="member">BlendMode</ref></type>
+          <declname>blend_mode</declname>
+          <defval><ref refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20ea7a1920d61156abc05a60135aefe8bc67" kindref="member">BlendMode::Default</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="659" column="13" bodyfile="bitmap.cpp" bodystart="1228" bodyend="1271"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-static-func">
+      <memberdef kind="function" id="class_bitmap_1a8b7e45262b919380e75bf1c2fed94a91" prot="protected" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_pixman_image_ptr" kindref="compound">PixmanImagePtr</ref></type>
+        <definition>PixmanImagePtr Bitmap::GetSubimage</definition>
+        <argsstring>(Bitmap const &amp;src, const Rect &amp;src_rect)</argsstring>
+        <name>GetSubimage</name>
+        <qualifiedname>Bitmap::GetSubimage</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_rect" kindref="compound">Rect</ref> &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="633" column="23" bodyfile="bitmap.cpp" bodystart="644" bodyend="648"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a2edfb9b9099ee419ad6e76b689fdb4a7" prot="protected" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void Bitmap::MultiplyAlpha</definition>
+        <argsstring>(uint8_t &amp;r, uint8_t &amp;g, uint8_t &amp;b, const uint8_t &amp;a)</argsstring>
+        <name>MultiplyAlpha</name>
+        <qualifiedname>Bitmap::MultiplyAlpha</qualifiedname>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="634" column="20" bodyfile="bitmap.h" bodystart="634" bodyend="638"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1aed50ab1ef336b46094886841b42d530e" prot="protected" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void Bitmap::DivideAlpha</definition>
+        <argsstring>(uint8_t &amp;r, uint8_t &amp;g, uint8_t &amp;b, const uint8_t &amp;a)</argsstring>
+        <name>DivideAlpha</name>
+        <qualifiedname>Bitmap::DivideAlpha</qualifiedname>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="639" column="20" bodyfile="bitmap.h" bodystart="639" bodyend="647"/>
+      </memberdef>
+      <memberdef kind="function" id="class_bitmap_1a956e10607ac3b32aa56ff37ccb351e46" prot="protected" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>pixman_format_code_t</type>
+        <definition>pixman_format_code_t Bitmap::find_format</definition>
+        <argsstring>(const DynamicFormat &amp;format)</argsstring>
+        <name>find_format</name>
+        <qualifiedname>Bitmap::find_format</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref> &amp;</type>
+          <declname>format</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="649" column="29" bodyfile="bitmap.cpp" bodystart="448" bodyend="464"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Base <ref refid="class_bitmap" kindref="compound">Bitmap</ref> class. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>Bitmap</label>
+        <link refid="class_bitmap"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>format</edgelabel>
+          <edgelabel>image_format</edgelabel>
+          <edgelabel>opaque_image_format</edgelabel>
+          <edgelabel>opaque_pixel_format</edgelabel>
+          <edgelabel>pixel_format</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>tile_opacity</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>bg_color</edgelabel>
+          <edgelabel>sh_color</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>bitmap</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Color</label>
+        <link refid="class_color"/>
+      </node>
+      <node id="3">
+        <label>Component</label>
+        <link refid="struct_component"/>
+      </node>
+      <node id="2">
+        <label>DynamicFormat</label>
+        <link refid="class_dynamic_format"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>a</edgelabel>
+          <edgelabel>b</edgelabel>
+          <edgelabel>g</edgelabel>
+          <edgelabel>r</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>PixmanImagePtr</label>
+        <link refid="class_pixman_image_ptr"/>
+      </node>
+      <node id="4">
+        <label>TileOpacity</label>
+        <link refid="class_tile_opacity"/>
+      </node>
+    </collaborationgraph>
+    <location file="bitmap.h" line="46" column="1" bodyfile="bitmap.h" bodystart="46" bodyend="661"/>
+    <listofallmembers>
+      <member refid="class_bitmap_1a1961a97c8f3e21de432465874705b9d3" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>bg_color</name></member>
+      <member refid="class_bitmap_1a06c98214cfa909f26e8c80cd0dba1fa7" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Bitmap</name></member>
+      <member refid="class_bitmap_1aec1a33e51d4afaaced2af939fc6ac98a" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Bitmap</name></member>
+      <member refid="class_bitmap_1abf6fc6b2fea068b9ac2624f75e55eae8" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Bitmap</name></member>
+      <member refid="class_bitmap_1ad795d2936e9fe050c93fd8a7d71c8276" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Bitmap</name></member>
+      <member refid="class_bitmap_1af45c06ccd9f081c6bf4d63704b3768e9" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Bitmap</name></member>
+      <member refid="class_bitmap_1ac61645861a973310c7444140da87e3fe" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>bitmap</name></member>
+      <member refid="class_bitmap_1ae47580b679e887a4279d7e4eedbfee43" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>BlendBlit</name></member>
+      <member refid="class_bitmap_1a73b2d618e08d8d7b26402e068aa6f20e" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>BlendMode</name></member>
+      <member refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Blit</name></member>
+      <member refid="class_bitmap_1a569a85272e617d808a80055561d41ba3" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Blit2x</name></member>
+      <member refid="class_bitmap_1ab877983ea65bfb2a21118cadbc6da330" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>BlitFast</name></member>
+      <member refid="class_bitmap_1aaa3f1c3020e2113f6efb0f22246b2f76" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>bpp</name></member>
+      <member refid="class_bitmap_1a7eca40be625fef73320c9860197e48aa" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>CheckPixels</name></member>
+      <member refid="class_bitmap_1a276fb551f6ee3f89742cc8144fa9c0d1" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>ChooseFormat</name></member>
+      <member refid="class_bitmap_1aece2773d4c9cdab4e43aed0535bd7aed" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Clear</name></member>
+      <member refid="class_bitmap_1a8f0377fe8450c75fd462ab8760859bb6" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>ClearRect</name></member>
+      <member refid="class_bitmap_1a1750d53782926ab96669d59dbfb9cac8" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>ComputeImageOpacity</name></member>
+      <member refid="class_bitmap_1a6f362eb289f926a18aeb14ac394af1bb" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>ComputeImageOpacity</name></member>
+      <member refid="class_bitmap_1ae933f8d68c579586ee6ca64d422bafb5" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>ConvertImage</name></member>
+      <member refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Create</name></member>
+      <member refid="class_bitmap_1abc2bf7c5487d3667abbd386abf33abeb" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Create</name></member>
+      <member refid="class_bitmap_1ae924bd341004733dd6f7c5253cddab9b" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Create</name></member>
+      <member refid="class_bitmap_1a9b319ab300a947213752ca1e6f14d060" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Create</name></member>
+      <member refid="class_bitmap_1a5c9fe97594f15cebb517b43a7c318d99" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Create</name></member>
+      <member refid="class_bitmap_1a69d1cac9856befcfd3d2513f64f0ccee" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Create</name></member>
+      <member refid="class_bitmap_1aed50ab1ef336b46094886841b42d530e" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>DivideAlpha</name></member>
+      <member refid="class_bitmap_1ad063eadc7a1759d49492c6765010d73d" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>EdgeMirrorBlit</name></member>
+      <member refid="class_bitmap_1ae6131806604a14c104b1b8063c1ce46b" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>EffectsBlit</name></member>
+      <member refid="class_bitmap_1a83d16562c7dee6508a9eea49376c1739" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Fill</name></member>
+      <member refid="class_bitmap_1a588bff93972d74eb9e0d6a4443492d5b" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>FillRect</name></member>
+      <member refid="class_bitmap_1a956e10607ac3b32aa56ff37ccb351e46" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>find_format</name></member>
+      <member refid="class_bitmap_1a40bd5adcb54c3dfb84455e1fb39092c9aa4518acf6635bbb8105e2f0699837a99" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Flag_Chipset</name></member>
+      <member refid="class_bitmap_1a40bd5adcb54c3dfb84455e1fb39092c9abc67ea80e31daa5e2aec1ab7de61c817" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Flag_ReadOnly</name></member>
+      <member refid="class_bitmap_1a40bd5adcb54c3dfb84455e1fb39092c9a053986b1110fe3cf46f02feca588c939" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Flag_System</name></member>
+      <member refid="class_bitmap_1a40bd5adcb54c3dfb84455e1fb39092c9" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Flags</name></member>
+      <member refid="class_bitmap_1a96a5d52e2fa3031acefba42793364d03" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>Flip</name></member>
+      <member refid="class_bitmap_1a210a1071d4e02e116965e464a8b6a8d0" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>FlipBlit</name></member>
+      <member refid="class_bitmap_1a197f44bdf971a8d4229b257a54ea40e1" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>font</name></member>
+      <member refid="class_bitmap_1ad28d8101c843a67af8a51dfd44c0880d" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>format</name></member>
+      <member refid="class_bitmap_1a0f64185fb067b955098e42e5c4730b3b" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>GetBackgroundColor</name></member>
+      <member refid="class_bitmap_1a8afd1b4b9f4ffcdd711bd9187d6fb049" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>GetColorAt</name></member>
+      <member refid="class_bitmap_1ad38ebfeb25e54d948a88c8f5ebc0a342" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>GetFont</name></member>
+      <member refid="class_bitmap_1a7007912b0cf48167e69900f5bc0e889c" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>GetHeight</name></member>
+      <member refid="class_bitmap_1a6fd6f18c0e23fb06131ebb9415b62807" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>GetId</name></member>
+      <member refid="class_bitmap_1a335d9d58662593158c051232bf4e34a7" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>GetImageOpacity</name></member>
+      <member refid="class_bitmap_1a9fb8ea27900a04d2376f20b5fd4c0aab" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>GetOperator</name></member>
+      <member refid="class_bitmap_1a950f803fdd63acecaf8314934ad2f745" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>GetOriginalBpp</name></member>
+      <member refid="class_bitmap_1a4cf1ab8d5ea7758211b3db046565ff43" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>GetRect</name></member>
+      <member refid="class_bitmap_1affac52e086461c8c7cd54f159fd0f49f" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>GetShadowColor</name></member>
+      <member refid="class_bitmap_1ad6d2d97f3114a4af3f221d0b26499bd9" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>GetSize</name></member>
+      <member refid="class_bitmap_1a8b7e45262b919380e75bf1c2fed94a91" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>GetSubimage</name></member>
+      <member refid="class_bitmap_1a39b2dbd791a0e99c214fc6e55b61bf9c" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>GetTileOpacity</name></member>
+      <member refid="class_bitmap_1ae960b4164f8138fca0d4a780de13986b" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>GetTransparent</name></member>
+      <member refid="class_bitmap_1a8f6990bace1ee118b4799987ff619ad1" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>GetWidth</name></member>
+      <member refid="class_bitmap_1ac07c19225e1dd2da89ba2fc3072028fa" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>height</name></member>
+      <member refid="class_bitmap_1a9348dcf9c89e854c86f1023f5a35e432" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>HueChangeBlit</name></member>
+      <member refid="class_bitmap_1a24adfc761dd0a5085f7794ae2fc4e2bf" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>id</name></member>
+      <member refid="class_bitmap_1a24490e27694140e8be0ca4bd7d96c764" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>image_format</name></member>
+      <member refid="class_bitmap_1a732512de505cb30a2b2d158e7449dbf5" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>image_opacity</name></member>
+      <member refid="class_bitmap_1ad2c564762dcf167de08407ba0feee96d" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>Init</name></member>
+      <member refid="class_bitmap_1a5ebc02600527d5687f4734e8e3cc9a7c" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>MaskedBlit</name></member>
+      <member refid="class_bitmap_1aaa48956afd8ce71c8b649ed683131329" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>MaskedBlit</name></member>
+      <member refid="class_bitmap_1a2edfb9b9099ee419ad6e76b689fdb4a7" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>MultiplyAlpha</name></member>
+      <member refid="class_bitmap_1a11896ee056ecd79ad130fc5bc19dfae3" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>opaque_image_format</name></member>
+      <member refid="class_bitmap_1a77c2c562f1b9759dfb767dd26025a521" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>opaque_pixel_format</name></member>
+      <member refid="class_bitmap_1a655bc5db8e0a62909cc55cbcb6efee45" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>original_bpp</name></member>
+      <member refid="class_bitmap_1a1a61fde28282baa56d0c0d1ac6bad1fd" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>pitch</name></member>
+      <member refid="class_bitmap_1a2eda8338c15e5e0ae35317145c8025c4" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>pixel_format</name></member>
+      <member refid="class_bitmap_1a503a42e9099efff9f54934da61a694ed" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>pixels</name></member>
+      <member refid="class_bitmap_1a990bc151bb1d07af49274b27be860bc2" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>pixels</name></member>
+      <member refid="class_bitmap_1abaa7cdf45efea8c319f774b0d02c395d" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>pixman_format</name></member>
+      <member refid="class_bitmap_1a97cc8fd1b59f54fe1611024c27950d8a" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>read_only</name></member>
+      <member refid="class_bitmap_1a7fb844f0717a2eee78af42803e623be4" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>RotateZoomOpacityBlit</name></member>
+      <member refid="class_bitmap_1a19bdeb36dc115a9f99d6b20f91dfea2e" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>SetFont</name></member>
+      <member refid="class_bitmap_1a8cead62caa7a35568ac43d45064f6a34" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>SetFormat</name></member>
+      <member refid="class_bitmap_1a062f256832e57e37138727c3803374cc" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>SetId</name></member>
+      <member refid="class_bitmap_1a057f061c3bed7443ddf7862e9bbb7874" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>sh_color</name></member>
+      <member refid="class_bitmap_1a35e526e2b966e1da0ab56de5d63e428c" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>StretchBlit</name></member>
+      <member refid="class_bitmap_1a5b8caf41feb99334c7bce464766955fb" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>StretchBlit</name></member>
+      <member refid="class_bitmap_1a5e3a66fccad9e6c3a67ad4c39426027c" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>TextDraw</name></member>
+      <member refid="class_bitmap_1a2cc3424830a0c2ef43e59b25ada15c37" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>TextDraw</name></member>
+      <member refid="class_bitmap_1aacf9803c856e61e4db885d7d4bcf3772" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>TextDraw</name></member>
+      <member refid="class_bitmap_1aec92a6e00ca42767c7c690a21d288ae0" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>TextDraw</name></member>
+      <member refid="class_bitmap_1a23465a57d68337fd1b19d7a2fdf5459b" prot="protected" virt="non-virtual"><scope>Bitmap</scope><name>tile_opacity</name></member>
+      <member refid="class_bitmap_1a48a65e430ae428112d598c5502031f91" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>TiledBlit</name></member>
+      <member refid="class_bitmap_1a65729c80be4fe3af49d6dd320762984c" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>TiledBlit</name></member>
+      <member refid="class_bitmap_1a9635e394633c59edab36aa624bd46f1f" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>ToneBlit</name></member>
+      <member refid="class_bitmap_1af822dc12d3240f047f71f77768d9994f" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>TransformRectangle</name></member>
+      <member refid="class_bitmap_1a47b4f2697b0802f1f7ad7a8bf0104309" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>WaverBlit</name></member>
+      <member refid="class_bitmap_1a024d56da8ce9d02a8f37fef652cdf557" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>width</name></member>
+      <member refid="class_bitmap_1af57243143857ff2416ae897db891db5b" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>WritePNG</name></member>
+      <member refid="class_bitmap_1ac20cbb579cc5cde40d35b788649e59a2" prot="public" virt="non-virtual"><scope>Bitmap</scope><name>ZoomOpacityBlit</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

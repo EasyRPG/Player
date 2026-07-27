@@ -1,0 +1,423 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_destiny_1_1_main_functions_1_1_interpreter" kind="class" language="C++" prot="public">
+    <compoundname>Destiny::MainFunctions::Interpreter</compoundname>
+    <includes refid="game__destiny_8h" local="no">game_destiny.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_destiny_1_1_main_functions_1_1_interpreter_1a1ef8990c9b85c3c5ff599f5407c4dd56" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Destiny::MainFunctions::Interpreter::_destinyScript</definition>
+        <argsstring></argsstring>
+        <name>_destinyScript</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::_destinyScript</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="308" column="13" bodyfile="game_destiny.h" bodystart="308" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_destiny_1_1_main_functions_1_1_interpreter_1ae5f691fbb32e53d491a71285054817c0" prot="private" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* Destiny::MainFunctions::Interpreter::_scriptPtr</definition>
+        <argsstring></argsstring>
+        <name>_scriptPtr</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::_scriptPtr</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="309" column="6" bodyfile="game_destiny.h" bodystart="309" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_destiny_1_1_main_functions_1_1_interpreter_1a8134ed9a4485a817511217c66461b2a0" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t Destiny::MainFunctions::Interpreter::_breaks</definition>
+        <argsstring></argsstring>
+        <name>_breaks</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::_breaks</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="310" column="10" bodyfile="game_destiny.h" bodystart="310" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_destiny_1_1_main_functions_1_1_interpreter_1a8bb8b081fd21a5c8ba931a687070e81a" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t Destiny::MainFunctions::Interpreter::_continues</definition>
+        <argsstring></argsstring>
+        <name>_continues</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::_continues</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="311" column="10" bodyfile="game_destiny.h" bodystart="311" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_destiny_1_1_main_functions_1_1_interpreter_1afa96d7ac357655be5687c9aa0263d789" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t Destiny::MainFunctions::Interpreter::_loopOperation</definition>
+        <argsstring></argsstring>
+        <name>_loopOperation</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::_loopOperation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="312" column="10" bodyfile="game_destiny.h" bodystart="312" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_destiny_1_1_main_functions_1_1_interpreter_1a36d6614e285dad7b60fcb3ddd4c054d3" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t Destiny::MainFunctions::Interpreter::_loopOperationLevel</definition>
+        <argsstring></argsstring>
+        <name>_loopOperationLevel</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::_loopOperationLevel</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="313" column="10" bodyfile="game_destiny.h" bodystart="313" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_destiny_1_1_main_functions_1_1_interpreter_1a9faf0dca72cd27223e5c447b580de2a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Interpreter::Interpreter</definition>
+        <argsstring>()</argsstring>
+        <name>Interpreter</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::Interpreter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="210" column="1" bodyfile="game_destiny.cpp" bodystart="210" bodyend="214"/>
+      </memberdef>
+      <memberdef kind="function" id="class_destiny_1_1_main_functions_1_1_interpreter_1adba69adb9c6f968bb06145986cea67b7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const char *</type>
+        <definition>const char * Interpreter::MakeString</definition>
+        <argsstring>(lcf::rpg::SaveEventExecFrame &amp;frame)</argsstring>
+        <name>MakeString</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::MakeString</qualifiedname>
+        <param>
+          <type>lcf::rpg::SaveEventExecFrame &amp;</type>
+          <declname>frame</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Generates a DestinyScript code.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>frame</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The event script data. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A DestinyScript code. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="221" column="12" bodyfile="game_destiny.cpp" bodystart="216" bodyend="235"/>
+      </memberdef>
+      <memberdef kind="function" id="class_destiny_1_1_main_functions_1_1_interpreter_1a0860bf62ede1743d0adb111c7e87b176" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Interpreter::FreeString</definition>
+        <argsstring>()</argsstring>
+        <name>FreeString</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::FreeString</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Releases the DestinyScript code.</para>
+<para><simplesect kind="return"><para></para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="228" column="6" bodyfile="game_destiny.cpp" bodystart="237" bodyend="241"/>
+      </memberdef>
+      <memberdef kind="function" id="class_destiny_1_1_main_functions_1_1_interpreter_1aaf3cc0f0ad33ba6412881517de1009e6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Interpreter::SkipWhiteSpace</definition>
+        <argsstring>()</argsstring>
+        <name>SkipWhiteSpace</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::SkipWhiteSpace</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Skip whitespaces from the DestinyScript code.</para>
+<para><simplesect kind="return"><para></para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="235" column="6" bodyfile="game_destiny.cpp" bodystart="243" bodyend="249"/>
+      </memberdef>
+      <memberdef kind="function" id="class_destiny_1_1_main_functions_1_1_interpreter_1a1563cff1fd03768eb5622835e323f6bf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t Interpreter::GetWordLen</definition>
+        <argsstring>()</argsstring>
+        <name>GetWordLen</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::GetWordLen</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="242" column="8" bodyfile="game_destiny.cpp" bodystart="251" bodyend="261"/>
+      </memberdef>
+      <memberdef kind="function" id="class_destiny_1_1_main_functions_1_1_interpreter_1a03466f078514571f448bf48e32d49486" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574ef" kindref="member">InterpretFlag</ref></type>
+        <definition>InterpretFlag Interpreter::Interpret</definition>
+        <argsstring>()</argsstring>
+        <name>Interpret</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::Interpret</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="249" column="15" bodyfile="game_destiny.cpp" bodystart="263" bodyend="278"/>
+      </memberdef>
+      <memberdef kind="function" id="class_destiny_1_1_main_functions_1_1_interpreter_1a8d768364fd07c09001f39dcaa340ee9e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Interpreter::LoadInterpretStack</definition>
+        <argsstring>()</argsstring>
+        <name>LoadInterpretStack</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::LoadInterpretStack</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Loads the interpreter stack.</para>
+<para><simplesect kind="return"><para></para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="256" column="6" bodyfile="game_destiny.cpp" bodystart="280" bodyend="283"/>
+      </memberdef>
+      <memberdef kind="function" id="class_destiny_1_1_main_functions_1_1_interpreter_1aab38c482512b7865e69b03c8413e232f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Destiny::MainFunctions::Interpreter::CleanUpData</definition>
+        <argsstring>()</argsstring>
+        <name>CleanUpData</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::CleanUpData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Cleans the interpreter data.</para>
+<para><simplesect kind="return"><para></para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="266" column="13" bodyfile="game_destiny.h" bodystart="266" bodyend="272"/>
+      </memberdef>
+      <memberdef kind="function" id="class_destiny_1_1_main_functions_1_1_interpreter_1ac7dd6fce51c0844bbd4a2ba1541c6dea" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Destiny::MainFunctions::Interpreter::ScriptNextChar</definition>
+        <argsstring>()</argsstring>
+        <name>ScriptNextChar</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::ScriptNextChar</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Moves the DestinyScript pointer to forward.</para>
+<para><simplesect kind="return"><para></para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="279" column="13" bodyfile="game_destiny.h" bodystart="279" bodyend="282"/>
+      </memberdef>
+      <memberdef kind="function" id="class_destiny_1_1_main_functions_1_1_interpreter_1a58d0a296fb4aa0adb952a6ed0e6c1d66" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Destiny::MainFunctions::Interpreter::IsEndOfLine</definition>
+        <argsstring>() const</argsstring>
+        <name>IsEndOfLine</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::IsEndOfLine</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checkes whether interpreter reached the end of instruction symbol.</para>
+<para><simplesect kind="return"><para></para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="290" column="13" bodyfile="game_destiny.h" bodystart="290" bodyend="293"/>
+      </memberdef>
+      <memberdef kind="function" id="class_destiny_1_1_main_functions_1_1_interpreter_1a83246da0ddfa500bfeb80e4802995063" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Destiny::MainFunctions::Interpreter::IsEndOfScript</definition>
+        <argsstring>() const</argsstring>
+        <name>IsEndOfScript</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::IsEndOfScript</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checkes whether interpreter reached the end of the DestinyScript code.</para>
+<para><simplesect kind="return"><para></para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="301" column="13" bodyfile="game_destiny.h" bodystart="301" bodyend="304"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_destiny_1_1_main_functions_1_1_interpreter_1a0e23da75bb73be70963798db4da4e867" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Interpreter::SkipSpace</definition>
+        <argsstring>()</argsstring>
+        <name>SkipSpace</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::SkipSpace</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Skip all non-script objects.</para>
+<para><simplesect kind="return"><para></para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="322" column="6" bodyfile="game_destiny.cpp" bodystart="285" bodyend="313"/>
+      </memberdef>
+      <memberdef kind="function" id="class_destiny_1_1_main_functions_1_1_interpreter_1adb20a2e05f03fcbc37aef6415226562f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Interpreter::LineComment</definition>
+        <argsstring>()</argsstring>
+        <name>LineComment</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::LineComment</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Read a line comment.</para>
+<para><simplesect kind="return"><para>Flag to finish spaces skipping. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="329" column="6" bodyfile="game_destiny.cpp" bodystart="315" bodyend="328"/>
+      </memberdef>
+      <memberdef kind="function" id="class_destiny_1_1_main_functions_1_1_interpreter_1a5e6f99d94faf219131440645cf2fbafe" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Interpreter::BlockComment</definition>
+        <argsstring>()</argsstring>
+        <name>BlockComment</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::BlockComment</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Read a line block.</para>
+<para><simplesect kind="return"><para>Flag to finish spaces skipping. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="336" column="6" bodyfile="game_destiny.cpp" bodystart="330" bodyend="343"/>
+      </memberdef>
+      <memberdef kind="function" id="class_destiny_1_1_main_functions_1_1_interpreter_1a3169eefb42597d3ffd319444fb4bafd1" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Destiny::MainFunctions::Interpreter::IsWhiteSpace</definition>
+        <argsstring>(const char ch) const</argsstring>
+        <name>IsWhiteSpace</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::IsWhiteSpace</qualifiedname>
+        <param>
+          <type>const char</type>
+          <declname>ch</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Check whether character is a whitespace.</para>
+<para><simplesect kind="return"><para>Flag of whitespace character. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="343" column="13" bodyfile="game_destiny.h" bodystart="343" bodyend="350"/>
+      </memberdef>
+      <memberdef kind="function" id="class_destiny_1_1_main_functions_1_1_interpreter_1acb387b727fe27e6af5551e578b6aaaf0" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Destiny::MainFunctions::Interpreter::IsWordChar</definition>
+        <argsstring>(const char ch) const</argsstring>
+        <name>IsWordChar</name>
+        <qualifiedname>Destiny::MainFunctions::Interpreter::IsWordChar</qualifiedname>
+        <param>
+          <type>const char</type>
+          <declname>ch</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Check whether character is a part of a word.</para>
+<para><simplesect kind="return"><para>Flag of word character. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="357" column="13" bodyfile="game_destiny.h" bodystart="357" bodyend="363"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_destiny.h" line="207" column="1" bodyfile="game_destiny.h" bodystart="208" bodyend="364"/>
+    <listofallmembers>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1a8134ed9a4485a817511217c66461b2a0" prot="private" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>_breaks</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1a8bb8b081fd21a5c8ba931a687070e81a" prot="private" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>_continues</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1a1ef8990c9b85c3c5ff599f5407c4dd56" prot="private" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>_destinyScript</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1afa96d7ac357655be5687c9aa0263d789" prot="private" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>_loopOperation</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1a36d6614e285dad7b60fcb3ddd4c054d3" prot="private" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>_loopOperationLevel</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1ae5f691fbb32e53d491a71285054817c0" prot="private" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>_scriptPtr</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1a5e6f99d94faf219131440645cf2fbafe" prot="private" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>BlockComment</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1aab38c482512b7865e69b03c8413e232f" prot="public" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>CleanUpData</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1a0860bf62ede1743d0adb111c7e87b176" prot="public" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>FreeString</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1a1563cff1fd03768eb5622835e323f6bf" prot="public" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>GetWordLen</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1a03466f078514571f448bf48e32d49486" prot="public" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>Interpret</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1a9faf0dca72cd27223e5c447b580de2a5" prot="public" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>Interpreter</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1a58d0a296fb4aa0adb952a6ed0e6c1d66" prot="public" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>IsEndOfLine</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1a83246da0ddfa500bfeb80e4802995063" prot="public" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>IsEndOfScript</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1a3169eefb42597d3ffd319444fb4bafd1" prot="private" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>IsWhiteSpace</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1acb387b727fe27e6af5551e578b6aaaf0" prot="private" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>IsWordChar</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1adb20a2e05f03fcbc37aef6415226562f" prot="private" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>LineComment</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1a8d768364fd07c09001f39dcaa340ee9e" prot="public" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>LoadInterpretStack</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1adba69adb9c6f968bb06145986cea67b7" prot="public" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>MakeString</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1ac7dd6fce51c0844bbd4a2ba1541c6dea" prot="public" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>ScriptNextChar</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1a0e23da75bb73be70963798db4da4e867" prot="private" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>SkipSpace</name></member>
+      <member refid="class_destiny_1_1_main_functions_1_1_interpreter_1aaf3cc0f0ad33ba6412881517de1009e6" prot="public" virt="non-virtual"><scope>Destiny::MainFunctions::Interpreter</scope><name>SkipWhiteSpace</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

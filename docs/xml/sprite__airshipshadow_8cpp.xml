@@ -1,0 +1,1094 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="sprite__airshipshadow_8cpp" kind="file" language="C++">
+    <compoundname>sprite_airshipshadow.cpp</compoundname>
+    <includes refid="cache_8h" local="yes">cache.h</includes>
+    <includes refid="bitmap_8h" local="yes">bitmap.h</includes>
+    <includes refid="game__map_8h" local="yes">game_map.h</includes>
+    <includes refid="game__player_8h" local="yes">game_player.h</includes>
+    <includes refid="game__system_8h" local="yes">game_system.h</includes>
+    <includes refid="main__data_8h" local="yes">main_data.h</includes>
+    <includes refid="sprite__airshipshadow_8h" local="yes">sprite_airshipshadow.h</includes>
+    <includes local="no">string</includes>
+    <incdepgraph>
+      <node id="59">
+        <label>async_handler.h</label>
+        <link refid="async__handler_8h"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>async_op.h</label>
+        <link refid="async__op_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>bitmap.h</label>
+        <link refid="bitmap_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>cache.h</label>
+        <link refid="cache_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="77">
+        <label>compiler.h</label>
+        <link refid="compiler_8h"/>
+      </node>
+      <node id="42">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="55">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="104">
+        <label>drawable_list.h</label>
+        <link refid="drawable__list_8h"/>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>flash.h</label>
+        <link refid="flash_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="60">
+        <label>game_actor.h</label>
+        <link refid="game__actor_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+      </node>
+      <node id="65">
+        <label>game_battler.h</label>
+        <link refid="game__battler_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>game_character.h</label>
+        <link refid="game__character_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="48">
+        <label>game_commonevent.h</label>
+        <link refid="game__commonevent_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="82">
+        <label>game_event.h</label>
+        <link refid="game__event_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="58">
+        <label>game_interpreter.h</label>
+        <link refid="game__interpreter_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>game_interpreter_map.h</label>
+        <link refid="game__interpreter__map_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+      </node>
+      <node id="74">
+        <label>game_interpreter_shared.h</label>
+        <link refid="game__interpreter__shared_8h"/>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>game_map.h</label>
+        <link refid="game__map_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+      </node>
+      <node id="88">
+        <label>game_player.h</label>
+        <link refid="game__player_8h"/>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+      </node>
+      <node id="97">
+        <label>game_system.h</label>
+        <link refid="game__system_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="85">
+        <label>game_vehicle.h</label>
+        <link refid="game__vehicle_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+      </node>
+      <node id="106">
+        <label>lcf/data.h</label>
+        <link refid="data_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="107" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+        <childnode refid="110" relation="include">
+        </childnode>
+        <childnode refid="111" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="112" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="113" relation="include">
+        </childnode>
+        <childnode refid="114" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="115" relation="include">
+        </childnode>
+        <childnode refid="116" relation="include">
+        </childnode>
+        <childnode refid="117" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="118" relation="include">
+        </childnode>
+        <childnode refid="119" relation="include">
+        </childnode>
+      </node>
+      <node id="105">
+        <label>main_data.h</label>
+        <link refid="main__data_8h"/>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>opacity.h</label>
+        <link refid="opacity_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="23">
+        <label>pixel_format.h</label>
+        <link refid="pixel__format_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>pixman_image_ptr.h</label>
+        <link refid="pixman__image__ptr_8h"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>point.h</label>
+        <link refid="point_8h"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>rect.h</label>
+        <link refid="rect_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="103">
+        <label>scene.h</label>
+        <link refid="scene_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="71">
+        <label>sprite.h</label>
+        <link refid="sprite_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="73">
+        <label>sprite_actor.h</label>
+        <link refid="sprite__actor_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>sprite_airshipshadow.cpp</label>
+        <link refid="sprite__airshipshadow_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="120" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="120">
+        <label>sprite_airshipshadow.h</label>
+        <link refid="sprite__airshipshadow_8h"/>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="70">
+        <label>sprite_battler.h</label>
+        <link refid="sprite__battler_8h"/>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+      </node>
+      <node id="72">
+        <label>sprite_weapon.h</label>
+        <link refid="sprite__weapon_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+      </node>
+      <node id="69">
+        <label>state.h</label>
+        <link refid="state_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="89">
+        <label>teleport_target.h</label>
+        <link refid="teleport__target_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>text.h</label>
+        <link refid="text_8h"/>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>tone.h</label>
+        <link refid="tone_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="102">
+        <label>transition.h</label>
+        <link refid="transition_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>algorithm</label>
+      </node>
+      <node id="17">
+        <label>cassert</label>
+      </node>
+      <node id="37">
+        <label>climits</label>
+      </node>
+      <node id="3">
+        <label>cstdint</label>
+      </node>
+      <node id="24">
+        <label>cstdlib</label>
+      </node>
+      <node id="25">
+        <label>cstring</label>
+      </node>
+      <node id="28">
+        <label>ctime</label>
+      </node>
+      <node id="13">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="14">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="29">
+        <label>functional</label>
+      </node>
+      <node id="44">
+        <label>initializer_list</label>
+      </node>
+      <node id="39">
+        <label>istream</label>
+      </node>
+      <node id="79">
+        <label>lcf/dbarray.h</label>
+      </node>
+      <node id="68">
+        <label>lcf/dbbitarray.h</label>
+      </node>
+      <node id="12">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="80">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="63">
+        <label>lcf/rpg/actor.h</label>
+      </node>
+      <node id="98">
+        <label>lcf/rpg/animation.h</label>
+      </node>
+      <node id="111">
+        <label>lcf/rpg/attribute.h</label>
+      </node>
+      <node id="116">
+        <label>lcf/rpg/battlecommand.h</label>
+      </node>
+      <node id="117">
+        <label>lcf/rpg/battleranimation.h</label>
+      </node>
+      <node id="113">
+        <label>lcf/rpg/chipset.h</label>
+      </node>
+      <node id="115">
+        <label>lcf/rpg/class.h</label>
+      </node>
+      <node id="81">
+        <label>lcf/rpg/commonevent.h</label>
+      </node>
+      <node id="119">
+        <label>lcf/rpg/database.h</label>
+      </node>
+      <node id="91">
+        <label>lcf/rpg/encounter.h</label>
+      </node>
+      <node id="109">
+        <label>lcf/rpg/enemy.h</label>
+      </node>
+      <node id="83">
+        <label>lcf/rpg/event.h</label>
+      </node>
+      <node id="56">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="53">
+        <label>lcf/rpg/eventpage.h</label>
+      </node>
+      <node id="61">
+        <label>lcf/rpg/fwd.h</label>
+      </node>
+      <node id="108">
+        <label>lcf/rpg/item.h</label>
+      </node>
+      <node id="64">
+        <label>lcf/rpg/learning.h</label>
+      </node>
+      <node id="92">
+        <label>lcf/rpg/map.h</label>
+      </node>
+      <node id="93">
+        <label>lcf/rpg/mapinfo.h</label>
+      </node>
+      <node id="75">
+        <label>lcf/rpg/movecommand.h</label>
+      </node>
+      <node id="52">
+        <label>lcf/rpg/moveroute.h</label>
+      </node>
+      <node id="86">
+        <label>lcf/rpg/music.h</label>
+      </node>
+      <node id="62">
+        <label>lcf/rpg/saveactor.h</label>
+      </node>
+      <node id="96">
+        <label>lcf/rpg/savecommonevent.h</label>
+      </node>
+      <node id="76">
+        <label>lcf/rpg/saveeventexecframe.h</label>
+      </node>
+      <node id="57">
+        <label>lcf/rpg/saveeventexecstate.h</label>
+      </node>
+      <node id="84">
+        <label>lcf/rpg/savemapevent.h</label>
+      </node>
+      <node id="54">
+        <label>lcf/rpg/savemapeventbase.h</label>
+      </node>
+      <node id="94">
+        <label>lcf/rpg/savemapinfo.h</label>
+      </node>
+      <node id="95">
+        <label>lcf/rpg/savepanorama.h</label>
+      </node>
+      <node id="90">
+        <label>lcf/rpg/savepartylocation.h</label>
+      </node>
+      <node id="101">
+        <label>lcf/rpg/savesystem.h</label>
+      </node>
+      <node id="87">
+        <label>lcf/rpg/savevehiclelocation.h</label>
+      </node>
+      <node id="107">
+        <label>lcf/rpg/skill.h</label>
+      </node>
+      <node id="99">
+        <label>lcf/rpg/sound.h</label>
+      </node>
+      <node id="67">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="100">
+        <label>lcf/rpg/system.h</label>
+      </node>
+      <node id="114">
+        <label>lcf/rpg/terms.h</label>
+      </node>
+      <node id="112">
+        <label>lcf/rpg/terrain.h</label>
+      </node>
+      <node id="118">
+        <label>lcf/rpg/treemap.h</label>
+      </node>
+      <node id="110">
+        <label>lcf/rpg/troop.h</label>
+      </node>
+      <node id="31">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="11">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="66">
+        <label>limits</label>
+      </node>
+      <node id="16">
+        <label>map</label>
+      </node>
+      <node id="9">
+        <label>memory</label>
+      </node>
+      <node id="78">
+        <label>optional</label>
+      </node>
+      <node id="21">
+        <label>ostream</label>
+      </node>
+      <node id="18">
+        <label>pixman.h</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="20">
+        <label>tuple</label>
+      </node>
+      <node id="41">
+        <label>unordered_map</label>
+      </node>
+      <node id="45">
+        <label>unordered_set</label>
+      </node>
+      <node id="47">
+        <label>utility</label>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="cache_8h" kindref="compound">cache.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="bitmap_8h" kindref="compound">bitmap.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__map_8h" kindref="compound">game_map.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__player_8h" kindref="compound">game_player.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__system_8h" kindref="compound">game_system.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="main__data_8h" kindref="compound">main_data.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="sprite__airshipshadow_8h" kindref="compound">sprite_airshipshadow.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="class_sprite___airship_shadow_1a49c7cfc974dd6cb9b7c68aa8a3b9b8f9" refkind="member"><highlight class="normal"><ref refid="class_sprite___airship_shadow_1a49c7cfc974dd6cb9b7c68aa8a3b9b8f9" kindref="member">Sprite_AirshipShadow::Sprite_AirshipShadow</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x_offset,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y_offset)<sp/>:</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>x_offset(x_offset),<sp/>y_offset(y_offset)<sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a0b1f8eb93adbfffb165acb30699ddd78" kindref="member">SetBitmap</ref>(<ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(16,16));</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a8692649cce1320c23d7216207805b990" kindref="member">GetBitmap</ref>()-&gt;SetId(</highlight><highlight class="stringliteral">&quot;AirshipShadow&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite_1ae2504fad70205dd8064392da7ceb4f71" kindref="member">SetOx</ref>(<ref refid="options_8h_1a62ecd70800687eb2d625af180c4210d7" kindref="member">TILE_SIZE</ref>/2);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a0e189abc78607a4a6e011d6e394a43d7" kindref="member">SetOy</ref>(<ref refid="options_8h_1a62ecd70800687eb2d625af180c4210d7" kindref="member">TILE_SIZE</ref>);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite___airship_shadow_1aeab5a58540329bf73cb9ca987ff0ebdd" kindref="member">RecreateShadow</ref>();</highlight></codeline>
+<codeline lineno="37"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Draws<sp/>the<sp/>two<sp/>shadow<sp/>sprites<sp/>to<sp/>a<sp/>single<sp/>intermediate<sp/>bitmap<sp/>to<sp/>be<sp/>blit<sp/>to<sp/>the<sp/>map</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Needs<sp/>to<sp/>be<sp/>recalled<sp/>when<sp/>the<sp/>System<sp/>graphic<sp/>changes</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="class_sprite___airship_shadow_1aeab5a58540329bf73cb9ca987ff0ebdd" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_sprite___airship_shadow_1aeab5a58540329bf73cb9ca987ff0ebdd" kindref="member">Sprite_AirshipShadow::RecreateShadow</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a8692649cce1320c23d7216207805b990" kindref="member">GetBitmap</ref>()-&gt;Clear();</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>RPG_RT<sp/>never<sp/>displays<sp/>shadows<sp/>if<sp/>there<sp/>is<sp/>no<sp/>system<sp/>graphic.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/>system<sp/>=<sp/><ref refid="namespace_cache_1a6329140ce8d9a89d3aec236fa5c5b42a" kindref="member">Cache::System</ref>();</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!system)<sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Offset<sp/>of<sp/>the<sp/>shadow<sp/>in<sp/>the<sp/>System<sp/>graphic<sp/>as<sp/>per</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>https://wiki.easyrpg.org/development/technical-details/system-graphics</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>TODO<sp/>26%<sp/>opacity<sp/>looks<sp/>okay,<sp/>but<sp/>isn&apos;t<sp/>accurate<sp/>to<sp/>RPG_RT</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_opacity" kindref="compound">Opacity</ref><sp/>opacity<sp/>=<sp/><ref refid="struct_opacity" kindref="compound">Opacity</ref>(0.26<sp/>*<sp/>255);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a8692649cce1320c23d7216207805b990" kindref="member">GetBitmap</ref>()-&gt;Blit(0,<sp/>0,<sp/>*system,<sp/><ref refid="class_rect" kindref="compound">Rect</ref>(128,32,16,16),<sp/>opacity);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a8692649cce1320c23d7216207805b990" kindref="member">GetBitmap</ref>()-&gt;Blit(0,<sp/>0,<sp/>*system,<sp/><ref refid="class_rect" kindref="compound">Rect</ref>(128+16,32,16,16),<sp/>opacity);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="class_sprite___airship_shadow_1a23db0371cd3365e6d4c2271535f17cbe" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_sprite___airship_shadow_1a23db0371cd3365e6d4c2271535f17cbe" kindref="member">Sprite_AirshipShadow::Draw</ref>(<ref refid="class_bitmap" kindref="compound">Bitmap</ref><sp/>&amp;dst)<sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___vehicle" kindref="compound">Game_Vehicle</ref>*<sp/>airship<sp/>=<sp/><ref refid="namespace_game___map_1ad067ff782cc56c2e2d2a02c28503b16d" kindref="member">Game_Map::GetVehicle</ref>(<ref refid="class_game___vehicle_1a9c3a795cbe2144dd4ebf289c95e815a5aae72b4b2d7b002a08e34325be1fd2083" kindref="member">Game_Vehicle::Airship</ref>);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>altitude<sp/>=<sp/>airship-&gt;<ref refid="class_game___vehicle_1ab91ddf991fb5bba0d26978aedbf14972" kindref="member">GetAltitude</ref>();</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>max_altitude<sp/>=<sp/><ref refid="options_8h_1a62ecd70800687eb2d625af180c4210d7" kindref="member">TILE_SIZE</ref>;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>opacity<sp/>=<sp/>(double)altitude<sp/>/<sp/>max_altitude;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a00ec8dcc661ae5acea3c013dc12c07f0" kindref="member">SetOpacity</ref>(opacity<sp/>*<sp/>255);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a57277e7b2c107f36f587c46e99f7a48f" kindref="member">SetX</ref>(<ref refid="namespace_main___data_1aec95cb7effa69078c1aa6af2bde13632" kindref="member">Main_Data::game_player</ref>-&gt;GetScreenX()<sp/>+<sp/>x_offset);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a0012676d8951dbf2342de94acc18eecd" kindref="member">SetY</ref>(<ref refid="namespace_main___data_1aec95cb7effa69078c1aa6af2bde13632" kindref="member">Main_Data::game_player</ref>-&gt;GetScreenY()<sp/>+<sp/>y_offset<sp/>+<sp/><ref refid="namespace_main___data_1aec95cb7effa69078c1aa6af2bde13632" kindref="member">Main_Data::game_player</ref>-&gt;GetJumpHeight());</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a0a4a3bd44c2556cbbe47b4480fae2a5b" kindref="member">Sprite::Draw</ref>(dst);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71" refid="class_sprite___airship_shadow_1af9bf4dfa935951e4e9025ef74df0be99" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_sprite___airship_shadow_1af9bf4dfa935951e4e9025ef74df0be99" kindref="member">Sprite_AirshipShadow::Update</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="namespace_main___data_1aec95cb7effa69078c1aa6af2bde13632" kindref="member">Main_Data::game_player</ref>-&gt;InAirship())<sp/>{</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" kindref="member">SetVisible</ref>(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" kindref="member">SetVisible</ref>(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___vehicle" kindref="compound">Game_Vehicle</ref>*<sp/>airship<sp/>=<sp/><ref refid="namespace_game___map_1ad067ff782cc56c2e2d2a02c28503b16d" kindref="member">Game_Map::GetVehicle</ref>(<ref refid="class_game___vehicle_1a9c3a795cbe2144dd4ebf289c95e815a5aae72b4b2d7b002a08e34325be1fd2083" kindref="member">Game_Vehicle::Airship</ref>);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Synchronized<sp/>with<sp/>airship<sp/>priority</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" kindref="member">SetZ</ref>(airship-&gt;<ref refid="class_game___character_1a80702c04b1dad2437db17899109ff701" kindref="member">GetScreenZ</ref>(x_offset,<sp/>y_offset)<sp/>-<sp/>1);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="sprite_airshipshadow.cpp"/>
+  </compounddef>
+</doxygen>

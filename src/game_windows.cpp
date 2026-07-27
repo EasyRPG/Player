@@ -543,3 +543,4 @@ void Game_Windows::Erase(int id) {
 		window->Erase();
 	}
 }
+

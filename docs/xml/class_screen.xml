@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_screen" kind="class" language="C++" prot="public">
+    <compoundname>Screen</compoundname>
+    <basecompoundref refid="class_drawable" prot="public" virt="non-virtual">Drawable</basecompoundref>
+    <includes refid="screen_8h" local="no">screen.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_screen_1adce62d86582398578de2ddd539b00806" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Screen::flash</definition>
+        <argsstring></argsstring>
+        <name>flash</name>
+        <qualifiedname>Screen::flash</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="screen.h" line="46" column="11" bodyfile="screen.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_screen_1aa196fb3f6839875aeb4e86ec37eb43a9" prot="private" static="no" mutable="no">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect Screen::viewport</definition>
+        <argsstring></argsstring>
+        <name>viewport</name>
+        <qualifiedname>Screen::viewport</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="screen.h" line="48" column="6" bodyfile="screen.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_screen_1ae7576476fc6e6a6eaa66389fdc41fe72" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Screen::Screen</definition>
+        <argsstring>()</argsstring>
+        <name>Screen</name>
+        <qualifiedname>Screen::Screen</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="screen.h" line="38" column="1" bodyfile="screen.cpp" bodystart="27" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="class_screen_1a51448ed08c01970856e9ed17543aeb43" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Screen::Draw</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Screen::Draw</qualifiedname>
+        <reimplements refid="class_drawable_1aa8a9b151f40368331f6fd8bbdd20133f">Draw</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="screen.h" line="40" column="6" bodyfile="screen.cpp" bodystart="32" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="class_screen_1a0a615acae7832dc007b21836e89d6469" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect Screen::GetViewport</definition>
+        <argsstring>() const</argsstring>
+        <name>GetViewport</name>
+        <qualifiedname>Screen::GetViewport</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="screen.h" line="42" column="6" bodyfile="screen.h" bodystart="51" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="class_screen_1a82cfead2919273850a3fa6880c6846c4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Screen::SetViewport</definition>
+        <argsstring>(const Rect &amp;rect)</argsstring>
+        <name>SetViewport</name>
+        <qualifiedname>Screen::SetViewport</qualifiedname>
+        <param>
+          <type>const <ref refid="class_rect" kindref="compound">Rect</ref> &amp;</type>
+          <declname>rect</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="screen.h" line="43" column="6" bodyfile="screen.h" bodystart="55" bodyend="57"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>A special drawable for handling screen effects. This basically works by taking the screen surface and drawing on itself. Sounds a bit dirty, but works.</para>
+<para>The z index is chosen in a way that battle animations and message boxes are not colorized. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>Screen</label>
+        <link refid="class_screen"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>Screen</label>
+        <link refid="class_screen"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="screen.h" line="36" column="1" bodyfile="screen.h" bodystart="36" bodyend="49"/>
+    <listofallmembers>
+      <member refid="class_screen_1a51448ed08c01970856e9ed17543aeb43" prot="public" virt="virtual"><scope>Screen</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>Screen</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>Screen</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>Screen</scope><name>Flags</name></member>
+      <member refid="class_screen_1adce62d86582398578de2ddd539b00806" prot="private" virt="non-virtual"><scope>Screen</scope><name>flash</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>Screen</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>Screen</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>Screen</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>Screen</scope><name>GetRenderOy</name></member>
+      <member refid="class_screen_1a0a615acae7832dc007b21836e89d6469" prot="public" virt="non-virtual"><scope>Screen</scope><name>GetViewport</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>Screen</scope><name>GetZ</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>Screen</scope><name>IsGlobal</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>Screen</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>Screen</scope><name>IsVisible</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>Screen</scope><name>operator=</name></member>
+      <member refid="class_screen_1ae7576476fc6e6a6eaa66389fdc41fe72" prot="public" virt="non-virtual"><scope>Screen</scope><name>Screen</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>Screen</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>Screen</scope><name>SetRenderOy</name></member>
+      <member refid="class_screen_1a82cfead2919273850a3fa6880c6846c4" prot="public" virt="non-virtual"><scope>Screen</scope><name>SetViewport</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>Screen</scope><name>SetVisible</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>Screen</scope><name>SetZ</name></member>
+      <member refid="class_screen_1aa196fb3f6839875aeb4e86ec37eb43a9" prot="private" virt="non-virtual"><scope>Screen</scope><name>viewport</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>Screen</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>Screen</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

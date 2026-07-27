@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structrgba__traits_3_01_t_p_f_00_01_p_f_1_1_is_aligned_00_01_p_f_1_1_static_alpha_00_01_p_f_1_1_no_alpha_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>rgba_traits&lt; TPF, PF::IsAligned, PF::StaticAlpha, PF::NoAlpha &gt;</compoundname>
+    <includes refid="pixel__format_8h" local="no">pixel_format.h</includes>
+    <templateparamlist>
+      <param>
+        <type>class TPF</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="structrgba__traits_3_01_t_p_f_00_01_p_f_1_1_is_aligned_00_01_p_f_1_1_static_alpha_00_01_p_f_1_1_no_alpha_01_4_1a14a12b19aa817d8200e1fb4142f6675d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void rgba_traits&lt; TPF, PF::IsAligned, PF::StaticAlpha, PF::NoAlpha &gt;::get_rgba</definition>
+        <argsstring>(const TPF *pf, const uint8_t *p, uint8_t &amp;r, uint8_t &amp;g, uint8_t &amp;b, uint8_t &amp;a)</argsstring>
+        <name>get_rgba</name>
+        <qualifiedname>rgba_traits&lt; TPF, PF::IsAligned, PF::StaticAlpha, PF::NoAlpha &gt;::get_rgba</qualifiedname>
+        <param>
+          <type>const TPF *</type>
+          <declname>pf</declname>
+        </param>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="394" column="20" bodyfile="pixel_format.h" bodystart="394" bodyend="399"/>
+      </memberdef>
+      <memberdef kind="function" id="structrgba__traits_3_01_t_p_f_00_01_p_f_1_1_is_aligned_00_01_p_f_1_1_static_alpha_00_01_p_f_1_1_no_alpha_01_4_1a6177fe00de5dc97904bcb051bee7203f" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void rgba_traits&lt; TPF, PF::IsAligned, PF::StaticAlpha, PF::NoAlpha &gt;::set_rgba</definition>
+        <argsstring>(const TPF *pf, uint8_t *p, const uint8_t &amp;r, const uint8_t &amp;g, const uint8_t &amp;b, const uint8_t &amp;)</argsstring>
+        <name>set_rgba</name>
+        <qualifiedname>rgba_traits&lt; TPF, PF::IsAligned, PF::StaticAlpha, PF::NoAlpha &gt;::set_rgba</qualifiedname>
+        <param>
+          <type>const TPF *</type>
+          <declname>pf</declname>
+        </param>
+        <param>
+          <type>uint8_t *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="401" column="20" bodyfile="pixel_format.h" bodystart="401" bodyend="405"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pixel_format.h" line="393" column="1" bodyfile="pixel_format.h" bodystart="393" bodyend="406"/>
+    <listofallmembers>
+      <member refid="structrgba__traits_3_01_t_p_f_00_01_p_f_1_1_is_aligned_00_01_p_f_1_1_static_alpha_00_01_p_f_1_1_no_alpha_01_4_1a14a12b19aa817d8200e1fb4142f6675d" prot="public" virt="non-virtual"><scope>rgba_traits&lt; TPF, PF::IsAligned, PF::StaticAlpha, PF::NoAlpha &gt;</scope><name>get_rgba</name></member>
+      <member refid="structrgba__traits_3_01_t_p_f_00_01_p_f_1_1_is_aligned_00_01_p_f_1_1_static_alpha_00_01_p_f_1_1_no_alpha_01_4_1a6177fe00de5dc97904bcb051bee7203f" prot="public" virt="non-virtual"><scope>rgba_traits&lt; TPF, PF::IsAligned, PF::StaticAlpha, PF::NoAlpha &gt;</scope><name>set_rgba</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

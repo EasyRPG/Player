@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="union_vardesc" kind="union" language="C++" prot="public">
+    <compoundname>Vardesc</compoundname>
+    <includes refid="lparser_8h" local="no">lparser.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="union_vardesc_1aec05721e79f1bb78e05389553ef3c971" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>Vardesc::TValuefields</definition>
+        <argsstring></argsstring>
+        <name>TValuefields</name>
+        <qualifiedname>Vardesc::TValuefields</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="120" column="5" bodyfile="leasy/lua/lparser.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="union_vardesc_1a2fd435b2b04c1eaa315462f92751dac5" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte Vardesc::kind</definition>
+        <argsstring></argsstring>
+        <name>kind</name>
+        <qualifiedname>Vardesc::kind</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="121" column="13" bodyfile="leasy/lua/lparser.h" bodystart="121" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="union_vardesc_1a02666a7f4d0da02bf0f834e66b02a18e" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte Vardesc::ridx</definition>
+        <argsstring></argsstring>
+        <name>ridx</name>
+        <qualifiedname>Vardesc::ridx</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="122" column="13" bodyfile="leasy/lua/lparser.h" bodystart="122" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="union_vardesc_1a6323f2ec4ddf1d7b53d057d5b3f160b2" prot="public" static="no" mutable="no">
+        <type>short</type>
+        <definition>short Vardesc::pidx</definition>
+        <argsstring></argsstring>
+        <name>pidx</name>
+        <qualifiedname>Vardesc::pidx</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="123" column="11" bodyfile="leasy/lua/lparser.h" bodystart="123" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="union_vardesc_1ae42e8803588ca9ffd1225c67ab3ba79d" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>TString* Vardesc::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>Vardesc::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="124" column="13" bodyfile="leasy/lua/lparser.h" bodystart="124" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="union_vardesc_1a4ce04b337146569b848dbf96ceb89808" prot="public" static="no" mutable="no">
+        <type>struct Vardesc::@036256364142111052036224026022332317026073053034</type>
+        <definition>struct Vardesc::@036256364142111052036224026022332317026073053034 Vardesc::vd</definition>
+        <argsstring></argsstring>
+        <name>vd</name>
+        <qualifiedname>Vardesc::vd</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="125" column="6"/>
+      </memberdef>
+      <memberdef kind="variable" id="union_vardesc_1a80d37db0e7356a3f6e0fd623f41275b0" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_value" kindref="compound">TValue</ref></type>
+        <definition>TValue Vardesc::k</definition>
+        <argsstring></argsstring>
+        <name>k</name>
+        <qualifiedname>Vardesc::k</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="126" column="10" bodyfile="leasy/lua/lparser.h" bodystart="126" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>TValue</label>
+        <link refid="struct_t_value"/>
+      </node>
+      <node id="1">
+        <label>Vardesc</label>
+        <link refid="union_vardesc"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>name</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>k</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lparser.h" line="118" column="1" bodyfile="leasy/lua/lparser.h" bodystart="118" bodyend="127"/>
+    <listofallmembers>
+      <member refid="union_vardesc_1a80d37db0e7356a3f6e0fd623f41275b0" prot="public" virt="non-virtual"><scope>Vardesc</scope><name>k</name></member>
+      <member refid="union_vardesc_1a2fd435b2b04c1eaa315462f92751dac5" prot="public" virt="non-virtual"><scope>Vardesc</scope><name>kind</name></member>
+      <member refid="union_vardesc_1ae42e8803588ca9ffd1225c67ab3ba79d" prot="public" virt="non-virtual"><scope>Vardesc</scope><name>name</name></member>
+      <member refid="union_vardesc_1a6323f2ec4ddf1d7b53d057d5b3f160b2" prot="public" virt="non-virtual"><scope>Vardesc</scope><name>pidx</name></member>
+      <member refid="union_vardesc_1a02666a7f4d0da02bf0f834e66b02a18e" prot="public" virt="non-virtual"><scope>Vardesc</scope><name>ridx</name></member>
+      <member refid="union_vardesc_1aec05721e79f1bb78e05389553ef3c971" prot="public" virt="non-virtual"><scope>Vardesc</scope><name>TValuefields</name></member>
+      <member refid="union_vardesc_1a4ce04b337146569b848dbf96ceb89808" prot="public" virt="non-virtual"><scope>Vardesc</scope><name>vd</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,1959 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="llimits_8h" kind="file" language="C++">
+    <compoundname>llimits.h</compoundname>
+    <includes local="no">limits.h</includes>
+    <includes local="no">stddef.h</includes>
+    <includes refid="lua_8h" local="yes">lua.h</includes>
+    <includedby refid="lapi_8h" local="yes">leasy/lua/lapi.h</includedby>
+    <includedby refid="lauxlib_8c" local="yes">leasy/lua/lauxlib.c</includedby>
+    <includedby refid="lbaselib_8c" local="yes">leasy/lua/lbaselib.c</includedby>
+    <includedby refid="lcorolib_8c" local="yes">leasy/lua/lcorolib.c</includedby>
+    <includedby refid="lctype_8h" local="yes">leasy/lua/lctype.h</includedby>
+    <includedby refid="ldblib_8c" local="yes">leasy/lua/ldblib.c</includedby>
+    <includedby refid="ldo_8h" local="yes">leasy/lua/ldo.h</includedby>
+    <includedby refid="linit_8c" local="yes">leasy/lua/linit.c</includedby>
+    <includedby refid="liolib_8c" local="yes">leasy/lua/liolib.c</includedby>
+    <includedby refid="lmathlib_8c" local="yes">leasy/lua/lmathlib.c</includedby>
+    <includedby refid="lmem_8h" local="yes">leasy/lua/lmem.h</includedby>
+    <includedby refid="loadlib_8c" local="yes">leasy/lua/loadlib.c</includedby>
+    <includedby refid="lobject_8h" local="yes">leasy/lua/lobject.h</includedby>
+    <includedby refid="lopcodes_8h" local="yes">leasy/lua/lopcodes.h</includedby>
+    <includedby refid="loslib_8c" local="yes">leasy/lua/loslib.c</includedby>
+    <includedby refid="lparser_8h" local="yes">leasy/lua/lparser.h</includedby>
+    <includedby refid="lstrlib_8c" local="yes">leasy/lua/lstrlib.c</includedby>
+    <includedby refid="ltablib_8c" local="yes">leasy/lua/ltablib.c</includedby>
+    <includedby refid="lundump_8h" local="yes">leasy/lua/lundump.h</includedby>
+    <includedby refid="lutf8lib_8c" local="yes">leasy/lua/lutf8lib.c</includedby>
+    <includedby refid="lzio_8c" local="yes">leasy/lua/lzio.c</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/lua/llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>limits.h</label>
+      </node>
+      <node id="5">
+        <label>stdarg.h</label>
+      </node>
+      <node id="3">
+        <label>stddef.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="3">
+        <label>leasy/lua/lapi.c</label>
+        <link refid="lapi_8c"/>
+      </node>
+      <node id="2">
+        <label>leasy/lua/lapi.h</label>
+        <link refid="lapi_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>leasy/lua/lauxlib.c</label>
+        <link refid="lauxlib_8c"/>
+      </node>
+      <node id="11">
+        <label>leasy/lua/lbaselib.c</label>
+        <link refid="lbaselib_8c"/>
+      </node>
+      <node id="19">
+        <label>leasy/lua/lcode.c</label>
+        <link refid="lcode_8c"/>
+      </node>
+      <node id="35">
+        <label>leasy/lua/lcode.h</label>
+        <link refid="lcode_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>leasy/lua/lcorolib.c</label>
+        <link refid="lcorolib_8c"/>
+      </node>
+      <node id="14">
+        <label>leasy/lua/lctype.c</label>
+        <link refid="lctype_8c"/>
+      </node>
+      <node id="13">
+        <label>leasy/lua/lctype.h</label>
+        <link refid="lctype_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>leasy/lua/ldblib.c</label>
+        <link refid="ldblib_8c"/>
+      </node>
+      <node id="4">
+        <label>leasy/lua/ldebug.c</label>
+        <link refid="ldebug_8c"/>
+      </node>
+      <node id="38">
+        <label>leasy/lua/ldebug.h</label>
+        <link refid="ldebug_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>leasy/lua/ldo.c</label>
+        <link refid="ldo_8c"/>
+      </node>
+      <node id="18">
+        <label>leasy/lua/ldo.h</label>
+        <link refid="ldo_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>leasy/lua/ldump.c</label>
+        <link refid="ldump_8c"/>
+      </node>
+      <node id="20">
+        <label>leasy/lua/lfunc.c</label>
+        <link refid="lfunc_8c"/>
+      </node>
+      <node id="44">
+        <label>leasy/lua/lfunc.h</label>
+        <link refid="lfunc_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>leasy/lua/lgc.c</label>
+        <link refid="lgc_8c"/>
+      </node>
+      <node id="39">
+        <label>leasy/lua/lgc.h</label>
+        <link refid="lgc_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>leasy/lua/linit.c</label>
+        <link refid="linit_8c"/>
+      </node>
+      <node id="30">
+        <label>leasy/lua/liolib.c</label>
+        <link refid="liolib_8c"/>
+      </node>
+      <node id="15">
+        <label>leasy/lua/llex.c</label>
+        <link refid="llex_8c"/>
+      </node>
+      <node id="34">
+        <label>leasy/lua/llex.h</label>
+        <link refid="llex_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>leasy/lua/lmathlib.c</label>
+        <link refid="lmathlib_8c"/>
+      </node>
+      <node id="22">
+        <label>leasy/lua/lmem.c</label>
+        <link refid="lmem_8c"/>
+      </node>
+      <node id="32">
+        <label>leasy/lua/lmem.h</label>
+        <link refid="lmem_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>leasy/lua/loadlib.c</label>
+        <link refid="loadlib_8c"/>
+      </node>
+      <node id="16">
+        <label>leasy/lua/lobject.c</label>
+        <link refid="lobject_8c"/>
+      </node>
+      <node id="43">
+        <label>leasy/lua/lobject.h</label>
+        <link refid="lobject_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>leasy/lua/lopcodes.c</label>
+        <link refid="lopcodes_8c"/>
+      </node>
+      <node id="45">
+        <label>leasy/lua/lopcodes.h</label>
+        <link refid="lopcodes_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>leasy/lua/loslib.c</label>
+        <link refid="loslib_8c"/>
+      </node>
+      <node id="23">
+        <label>leasy/lua/lparser.c</label>
+        <link refid="lparser_8c"/>
+      </node>
+      <node id="36">
+        <label>leasy/lua/lparser.h</label>
+        <link refid="lparser_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>leasy/lua/lstate.c</label>
+        <link refid="lstate_8c"/>
+      </node>
+      <node id="37">
+        <label>leasy/lua/lstate.h</label>
+        <link refid="lstate_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>leasy/lua/lstring.c</label>
+        <link refid="lstring_8c"/>
+      </node>
+      <node id="40">
+        <label>leasy/lua/lstring.h</label>
+        <link refid="lstring_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>leasy/lua/lstrlib.c</label>
+        <link refid="lstrlib_8c"/>
+      </node>
+      <node id="25">
+        <label>leasy/lua/ltable.c</label>
+        <link refid="ltable_8c"/>
+      </node>
+      <node id="47">
+        <label>leasy/lua/ltable.h</label>
+        <link refid="ltable_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>leasy/lua/ltablib.c</label>
+        <link refid="ltablib_8c"/>
+      </node>
+      <node id="26">
+        <label>leasy/lua/ltm.c</label>
+        <link refid="ltm_8c"/>
+      </node>
+      <node id="48">
+        <label>leasy/lua/ltm.h</label>
+        <link refid="ltm_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>leasy/lua/lundump.c</label>
+        <link refid="lundump_8c"/>
+      </node>
+      <node id="41">
+        <label>leasy/lua/lundump.h</label>
+        <link refid="lundump_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>leasy/lua/lutf8lib.c</label>
+        <link refid="lutf8lib_8c"/>
+      </node>
+      <node id="8">
+        <label>leasy/lua/lvm.c</label>
+        <link refid="lvm_8c"/>
+      </node>
+      <node id="28">
+        <label>leasy/lua/lvm.h</label>
+        <link refid="lvm_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>leasy/lua/lzio.c</label>
+        <link refid="lzio_8c"/>
+      </node>
+      <node id="33">
+        <label>leasy/lua/lzio.h</label>
+        <link refid="lzio_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="llimits_8h_1ad40053171fbf571af0be66edc7a93457" prot="public" static="no">
+        <name>l_numbits</name>
+        <param><defname>t</defname></param>
+        <initializer><ref refid="llimits_8h_1a37a9e2c4b53433d34bad0f12a1500c08" kindref="member">cast_int</ref>(sizeof(t) * CHAR_BIT)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="18" column="9" bodyfile="leasy/lua/llimits.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a99e52005f8b99ce8e36df841b281078e" prot="public" static="no">
+        <name>MAX_LMEM</name>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(<ref refid="llimits_8h_1a24fc195087e262c99a4cf0f9b346a684" kindref="member">l_mem</ref>, (<ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(<ref refid="llimits_8h_1aac8c50ca0aa51c80523376da77c2c4d8" kindref="member">lu_mem</ref>, 1) &lt;&lt; (<ref refid="llimits_8h_1ad40053171fbf571af0be66edc7a93457" kindref="member">l_numbits</ref>(<ref refid="llimits_8h_1a24fc195087e262c99a4cf0f9b346a684" kindref="member">l_mem</ref>) - 1)) - 1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="37" column="9" bodyfile="leasy/lua/llimits.h" bodystart="37" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a49c73f79c5646b12989da5efe4f2ad38" prot="public" static="no">
+        <name>APIstatus</name>
+        <param><defname>st</defname></param>
+        <initializer><ref refid="llimits_8h_1a37a9e2c4b53433d34bad0f12a1500c08" kindref="member">cast_int</ref>(st)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="50" column="9" bodyfile="leasy/lua/llimits.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1aa927c7bf177c162feda3483e1e972b3a" prot="public" static="no">
+        <name>MAX_SIZET</name>
+        <initializer>((size_t)(~(size_t)0))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="53" column="9" bodyfile="leasy/lua/llimits.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a0592dba56693fad79136250c11e5a7fe" prot="public" static="no">
+        <name>MAX_SIZE</name>
+        <initializer>(sizeof(size_t) &lt; sizeof(<ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref>) ? <ref refid="llimits_8h_1aa927c7bf177c162feda3483e1e972b3a" kindref="member">MAX_SIZET</ref> \
+: <ref refid="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" kindref="member">cast_sizet</ref>(LUA_MAXINTEGER))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="59" column="9" bodyfile="leasy/lua/llimits.h" bodystart="59" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1ada65e002d4b7df9ebfa7dde2d12357db" prot="public" static="no">
+        <name>ispow2</name>
+        <param><defname>x</defname></param>
+        <initializer>(((x) &amp; ((x) - 1)) == 0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="65" column="9" bodyfile="leasy/lua/llimits.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a6185afb135442b229d91201b1a3c6eb2" prot="public" static="no">
+        <name>LL</name>
+        <param><defname>x</defname></param>
+        <initializer>(sizeof(x)/sizeof(char) - 1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="69" column="9" bodyfile="leasy/lua/llimits.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a39eebd62295cdb734e7bcc8e5896fc81" prot="public" static="no">
+        <name>L_P2I</name>
+        <initializer>size_t</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="87" column="9" bodyfile="leasy/lua/llimits.h" bodystart="87" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1ad861f24ac9e8c32f78455aab3d2e7b51" prot="public" static="no">
+        <name>point2uint</name>
+        <param><defname>p</defname></param>
+        <initializer><ref refid="llimits_8h_1a6ce2ddc5b419ed6f302573db3cc03e56" kindref="member">cast_uint</ref>((<ref refid="llimits_8h_1a39eebd62295cdb734e7bcc8e5896fc81" kindref="member">L_P2I</ref>)(p) &amp; UINT_MAX)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="90" column="9" bodyfile="leasy/lua/llimits.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" prot="public" static="no">
+        <name>lua_assert</name>
+        <param><defname>c</defname></param>
+        <initializer>((void)0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="111" column="10" bodyfile="leasy/lua/llimits.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a135fb5fd8a78712f702d4c8848995230" prot="public" static="no">
+        <name>assert_code</name>
+        <param><defname>c</defname></param>
+        <initializer>((void)0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="112" column="9" bodyfile="leasy/lua/llimits.h" bodystart="112" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1afac1404af62451f8653440ecb6e773fc" prot="public" static="no">
+        <name>check_exp</name>
+        <param><defname>c</defname></param>
+        <param><defname>e</defname></param>
+        <initializer>(<ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(c), (e))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="115" column="9" bodyfile="leasy/lua/llimits.h" bodystart="115" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a825f22ba1e16fd60e3aae8fe8efc1c4d" prot="public" static="no">
+        <name>lua_longassert</name>
+        <param><defname>c</defname></param>
+        <initializer><ref refid="llimits_8h_1a135fb5fd8a78712f702d4c8848995230" kindref="member">assert_code</ref>((c) ? (void)0 : <ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(0))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="117" column="9" bodyfile="leasy/lua/llimits.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a86d500a34c624c2cae56bc25a31b12f3" prot="public" static="no">
+        <name>UNUSED</name>
+        <param><defname>x</defname></param>
+        <initializer>((void)(x))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="122" column="9" bodyfile="leasy/lua/llimits.h" bodystart="122" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" prot="public" static="no">
+        <name>cast</name>
+        <param><defname>t</defname></param>
+        <param><defname>exp</defname></param>
+        <initializer>((t)(exp))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="127" column="9" bodyfile="leasy/lua/llimits.h" bodystart="127" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a52a5166d7dc0590b63a9331cfc0f4564" prot="public" static="no">
+        <name>cast_void</name>
+        <param><defname>i</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(void, (i))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="129" column="9" bodyfile="leasy/lua/llimits.h" bodystart="129" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a672c0fddf71f33d86ed8aa62ad914d52" prot="public" static="no">
+        <name>cast_voidp</name>
+        <param><defname>i</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(void *, (i))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="130" column="9" bodyfile="leasy/lua/llimits.h" bodystart="130" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1ac92cecb12c5aba1164877e81e76e2cb6" prot="public" static="no">
+        <name>cast_num</name>
+        <param><defname>i</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(<ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref>, (i))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="131" column="9" bodyfile="leasy/lua/llimits.h" bodystart="131" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a37a9e2c4b53433d34bad0f12a1500c08" prot="public" static="no">
+        <name>cast_int</name>
+        <param><defname>i</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(int, (i))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="132" column="9" bodyfile="leasy/lua/llimits.h" bodystart="132" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a3d554f3ac1b8468a33284d7d00cac5b6" prot="public" static="no">
+        <name>cast_short</name>
+        <param><defname>i</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(short, (i))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="133" column="9" bodyfile="leasy/lua/llimits.h" bodystart="133" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a6ce2ddc5b419ed6f302573db3cc03e56" prot="public" static="no">
+        <name>cast_uint</name>
+        <param><defname>i</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(unsigned int, (i))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="134" column="9" bodyfile="leasy/lua/llimits.h" bodystart="134" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a596f5b6e992f53a5a4e5732083448dd4" prot="public" static="no">
+        <name>cast_byte</name>
+        <param><defname>i</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(<ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref>, (i))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="135" column="9" bodyfile="leasy/lua/llimits.h" bodystart="135" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1aa0c49a2b32329cc39df5ccafd1f720e0" prot="public" static="no">
+        <name>cast_uchar</name>
+        <param><defname>i</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(unsigned char, (i))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="136" column="9" bodyfile="leasy/lua/llimits.h" bodystart="136" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a045e548576226e8c7e9ab5de8a59f4bc" prot="public" static="no">
+        <name>cast_char</name>
+        <param><defname>i</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(char, (i))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="137" column="9" bodyfile="leasy/lua/llimits.h" bodystart="137" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a1d905979f8c901b7143b43ee98341206" prot="public" static="no">
+        <name>cast_charp</name>
+        <param><defname>i</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(char *, (i))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="138" column="9" bodyfile="leasy/lua/llimits.h" bodystart="138" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" prot="public" static="no">
+        <name>cast_sizet</name>
+        <param><defname>i</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(size_t, (i))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="139" column="9" bodyfile="leasy/lua/llimits.h" bodystart="139" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a0af45e91222292a2241c30eed1a4bf15" prot="public" static="no">
+        <name>cast_Integer</name>
+        <param><defname>i</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(<ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref>, (i))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="140" column="9" bodyfile="leasy/lua/llimits.h" bodystart="140" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a95080c27926cc0e377cd52941486acd5" prot="public" static="no">
+        <name>cast_Inst</name>
+        <param><defname>i</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(<ref refid="lobject_8h_1aa81d2e7f7263ef29946852d4966a192e" kindref="member">Instruction</ref>, (i))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="141" column="9" bodyfile="leasy/lua/llimits.h" bodystart="141" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a5871309e671ba9f938fcb1e0d3bcbeca" prot="public" static="no">
+        <name>l_castS2U</name>
+        <param><defname>i</defname></param>
+        <initializer>((<ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref>)(i))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="146" column="9" bodyfile="leasy/lua/llimits.h" bodystart="146" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a873fa1b216f8caed046edbcebd4c1bc8" prot="public" static="no">
+        <name>l_castU2S</name>
+        <param><defname>i</defname></param>
+        <initializer>((<ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref>)(i))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="155" column="9" bodyfile="leasy/lua/llimits.h" bodystart="155" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1ad4a840f5a18a972fd5c003a74032b4cf" prot="public" static="no">
+        <name>cast_st2S</name>
+        <param><defname>sz</defname></param>
+        <initializer>((<ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref>)(sz))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="162" column="9" bodyfile="leasy/lua/llimits.h" bodystart="162" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1aed887ccea8c4b2bff34e15ce93ae3915" prot="public" static="no">
+        <name>ct_diff2sz</name>
+        <param><defname>df</defname></param>
+        <initializer>((size_t)(df))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="167" column="9" bodyfile="leasy/lua/llimits.h" bodystart="167" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1ab53e4f11d857c0396b569050335bc1bd" prot="public" static="no">
+        <name>ct_diff2S</name>
+        <param><defname>df</defname></param>
+        <initializer><ref refid="llimits_8h_1ad4a840f5a18a972fd5c003a74032b4cf" kindref="member">cast_st2S</ref>(<ref refid="llimits_8h_1aed887ccea8c4b2bff34e15ce93ae3915" kindref="member">ct_diff2sz</ref>(df))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="170" column="9" bodyfile="leasy/lua/llimits.h" bodystart="170" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1acc9d4f3030e913a0df31d4b06a9251da" prot="public" static="no">
+        <name>cast_func</name>
+        <param><defname>p</defname></param>
+        <initializer>((<ref refid="llimits_8h_1a68da1d6d858100a545e5fd84f65abe41" kindref="member">voidf</ref>)(p))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="186" column="10" bodyfile="leasy/lua/llimits.h" bodystart="186" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" prot="public" static="no">
+        <name>l_noret</name>
+        <initializer>void</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="201" column="10" bodyfile="leasy/lua/llimits.h" bodystart="201" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1ab9db15f364731ab60065e372cc023e36" prot="public" static="no">
+        <name>l_inline</name>
+        <initializer>inline</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="211" column="9" bodyfile="leasy/lua/llimits.h" bodystart="211" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a30d6348cf339bed10220ef7dd501fbe6" prot="public" static="no">
+        <name>l_sinline</name>
+        <initializer>static <ref refid="llimits_8h_1ab9db15f364731ab60065e372cc023e36" kindref="member">l_inline</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="218" column="9" bodyfile="leasy/lua/llimits.h" bodystart="218" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a9ca37a98a6032ab21dcfd63d42e66f89" prot="public" static="no">
+        <name>luai_numidiv</name>
+        <param><defname>L</defname></param>
+        <param><defname>a</defname></param>
+        <param><defname>b</defname></param>
+        <initializer>((void)L, <ref refid="luaconf_8h_1a89e74d547b8879cf8d10c3e956c283b9" kindref="member">l_floor</ref>(<ref refid="llimits_8h_1a2a095b8d523b51332eb223df531367d2" kindref="member">luai_numdiv</ref>(L,a,b)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="237" column="9" bodyfile="leasy/lua/llimits.h" bodystart="237" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a2a095b8d523b51332eb223df531367d2" prot="public" static="no">
+        <name>luai_numdiv</name>
+        <param><defname>L</defname></param>
+        <param><defname>a</defname></param>
+        <param><defname>b</defname></param>
+        <initializer>((a)/(b))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="242" column="9" bodyfile="leasy/lua/llimits.h" bodystart="242" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1ac6e6bfca420c761a89eee023103c34f4" prot="public" static="no">
+        <name>luai_nummod</name>
+        <param><defname>L</defname></param>
+        <param><defname>a</defname></param>
+        <param><defname>b</defname></param>
+        <param><defname>m</defname></param>
+        <initializer>{ (void)L; (m) = <ref refid="luaconf_8h_1a919f548d82dc9a0681dd0ba8996d986d" kindref="member">l_mathop</ref>(fmod)(a,b); \
+  if (((m) &gt; 0) ? (b) &lt; 0 : ((m) &lt; 0 &amp;&amp; (b) &gt; 0)) (m) += (b); }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="257" column="9" bodyfile="leasy/lua/llimits.h" bodystart="257" bodyend="259"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a4a3b06f2c7239f8dcbd101ca20cc507a" prot="public" static="no">
+        <name>luai_numpow</name>
+        <param><defname>L</defname></param>
+        <param><defname>a</defname></param>
+        <param><defname>b</defname></param>
+        <initializer>((void)L, (b == 2) ? (a)*(a) : <ref refid="luaconf_8h_1a919f548d82dc9a0681dd0ba8996d986d" kindref="member">l_mathop</ref>(pow)(a,b))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="264" column="9" bodyfile="leasy/lua/llimits.h" bodystart="264" bodyend="265"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1af3eb5d1884e4512d2701bbc97bb82e81" prot="public" static="no">
+        <name>luai_numadd</name>
+        <param><defname>L</defname></param>
+        <param><defname>a</defname></param>
+        <param><defname>b</defname></param>
+        <initializer>((a)+(b))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="270" column="9" bodyfile="leasy/lua/llimits.h" bodystart="270" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a93e733c7e860d7fb838b6af414405662" prot="public" static="no">
+        <name>luai_numsub</name>
+        <param><defname>L</defname></param>
+        <param><defname>a</defname></param>
+        <param><defname>b</defname></param>
+        <initializer>((a)-(b))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="271" column="9" bodyfile="leasy/lua/llimits.h" bodystart="271" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a1cbcef9e269f0ac1a5f34898a7c4ae36" prot="public" static="no">
+        <name>luai_nummul</name>
+        <param><defname>L</defname></param>
+        <param><defname>a</defname></param>
+        <param><defname>b</defname></param>
+        <initializer>((a)*(b))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="272" column="9" bodyfile="leasy/lua/llimits.h" bodystart="272" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a84c57a852cdc4b46c678cb3fab715846" prot="public" static="no">
+        <name>luai_numunm</name>
+        <param><defname>L</defname></param>
+        <param><defname>a</defname></param>
+        <initializer>(-(a))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="273" column="9" bodyfile="leasy/lua/llimits.h" bodystart="273" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1ae06bbbe345c8bb028e233120466d387d" prot="public" static="no">
+        <name>luai_numeq</name>
+        <param><defname>a</defname></param>
+        <param><defname>b</defname></param>
+        <initializer>((a)==(b))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="274" column="9" bodyfile="leasy/lua/llimits.h" bodystart="274" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1ae035faaeb068720ee8540210870ee5c9" prot="public" static="no">
+        <name>luai_numlt</name>
+        <param><defname>a</defname></param>
+        <param><defname>b</defname></param>
+        <initializer>((a)&lt;(b))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="275" column="9" bodyfile="leasy/lua/llimits.h" bodystart="275" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1af803655e8c9be7ba1f3f3fb0c4f730d7" prot="public" static="no">
+        <name>luai_numle</name>
+        <param><defname>a</defname></param>
+        <param><defname>b</defname></param>
+        <initializer>((a)&lt;=(b))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="276" column="9" bodyfile="leasy/lua/llimits.h" bodystart="276" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a252c8bc400dc44bd996b19e7cf487871" prot="public" static="no">
+        <name>luai_numgt</name>
+        <param><defname>a</defname></param>
+        <param><defname>b</defname></param>
+        <initializer>((a)&gt;(b))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="277" column="9" bodyfile="leasy/lua/llimits.h" bodystart="277" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a727a96f18bda273bd57dee105a274abe" prot="public" static="no">
+        <name>luai_numge</name>
+        <param><defname>a</defname></param>
+        <param><defname>b</defname></param>
+        <initializer>((a)&gt;=(b))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="278" column="9" bodyfile="leasy/lua/llimits.h" bodystart="278" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a5ec99a344dba64c30c3ddc6eed8e2e51" prot="public" static="no">
+        <name>luai_numisnan</name>
+        <param><defname>a</defname></param>
+        <initializer>(!<ref refid="llimits_8h_1ae06bbbe345c8bb028e233120466d387d" kindref="member">luai_numeq</ref>((a), (a)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="279" column="9" bodyfile="leasy/lua/llimits.h" bodystart="279" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a4b0d24a7a90003778668e2d01831bb88" prot="public" static="no">
+        <name>lua_numbertointeger</name>
+        <param><defname>n</defname></param>
+        <param><defname>p</defname></param>
+        <initializer>((n) &gt;= (<ref refid="luaconf_8h_1a459532244178d9e61e65aaf40fb42de1" kindref="member">LUA_NUMBER</ref>)(LUA_MININTEGER) &amp;&amp; \
+ (n) &lt; -(<ref refid="luaconf_8h_1a459532244178d9e61e65aaf40fb42de1" kindref="member">LUA_NUMBER</ref>)(LUA_MININTEGER) &amp;&amp; \
+    (*(p) = (LUA_INTEGER)(n), 1))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="293" column="9" bodyfile="leasy/lua/llimits.h" bodystart="293" bodyend="296"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" prot="public" static="no">
+        <name>LUAI_FUNC</name>
+        <initializer>extern</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="319" column="10" bodyfile="leasy/lua/llimits.h" bodystart="319" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a3f2cdf96bb04b9d2a9a318a126f99182" prot="public" static="no">
+        <name>LUAI_DDEC</name>
+        <param><defname>dec</defname></param>
+        <initializer><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> dec</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="322" column="9" bodyfile="leasy/lua/llimits.h" bodystart="322" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1affa3a74c87c69373c262fdbdc7f97837" prot="public" static="no">
+        <name>LUAI_DDEF</name>
+        <initializer>/* empty */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="323" column="9" bodyfile="leasy/lua/llimits.h" bodystart="323" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a5df9232284dcc98967aa354c6abab9b2" prot="public" static="no">
+        <name>l_likely</name>
+        <param><defname>x</defname></param>
+        <initializer><ref refid="luaconf_8h_1a80cfa8350edf303de263ca15e45acde3" kindref="member">luai_likely</ref>(x)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="329" column="9" bodyfile="leasy/lua/llimits.h" bodystart="329" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1ae9c389231436634605d75b0c31f8c3be" prot="public" static="no">
+        <name>l_unlikely</name>
+        <param><defname>x</defname></param>
+        <initializer><ref refid="luaconf_8h_1a017f27a6da7785c98784124b9a2b8c3e" kindref="member">luai_unlikely</ref>(x)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="330" column="9" bodyfile="leasy/lua/llimits.h" bodystart="330" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a575f50815c13a7a99b8ed1ac03fe714a" prot="public" static="no">
+        <name>lua_writestring</name>
+        <param><defname>s</defname></param>
+        <param><defname>l</defname></param>
+        <initializer>fwrite((s), sizeof(char), (l), stdout)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="340" column="9" bodyfile="leasy/lua/llimits.h" bodystart="340" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1aa4791d9826315ea2d1c716f852026246" prot="public" static="no">
+        <name>lua_writeline</name>
+        <param></param>
+        <initializer>(<ref refid="llimits_8h_1a575f50815c13a7a99b8ed1ac03fe714a" kindref="member">lua_writestring</ref>(&quot;\n&quot;, 1), fflush(stdout))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="345" column="9" bodyfile="leasy/lua/llimits.h" bodystart="345" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llimits_8h_1a0706f68a79575584d365d033d613707b" prot="public" static="no">
+        <name>lua_writestringerror</name>
+        <param><defname>s</defname></param>
+        <param><defname>p</defname></param>
+        <initializer>(fprintf(stderr, (s), (p)), fflush(stderr))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="350" column="9" bodyfile="leasy/lua/llimits.h" bodystart="350" bodyend="351"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="llimits_8h_1a24fc195087e262c99a4cf0f9b346a684" prot="public" static="no">
+        <type>long</type>
+        <definition>typedef long l_mem</definition>
+        <argsstring></argsstring>
+        <name>l_mem</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="33" column="14" bodyfile="leasy/lua/llimits.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="llimits_8h_1aac8c50ca0aa51c80523376da77c2c4d8" prot="public" static="no">
+        <type>unsigned long</type>
+        <definition>typedef unsigned long lu_mem</definition>
+        <argsstring></argsstring>
+        <name>lu_mem</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="34" column="23" bodyfile="leasy/lua/llimits.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" prot="public" static="no">
+        <type>unsigned char</type>
+        <definition>typedef unsigned char lu_byte</definition>
+        <argsstring></argsstring>
+        <name>lu_byte</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="42" column="23" bodyfile="leasy/lua/llimits.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="llimits_8h_1aab58a246c9e0a85c4c2ed0fd8d6724bb" prot="public" static="no">
+        <type>signed char</type>
+        <definition>typedef signed char ls_byte</definition>
+        <argsstring></argsstring>
+        <name>ls_byte</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="43" column="21" bodyfile="leasy/lua/llimits.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" prot="public" static="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>typedef lu_byte TStatus</definition>
+        <argsstring></argsstring>
+        <name>TStatus</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="47" column="17" bodyfile="leasy/lua/llimits.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="llimits_8h_1a792eefbf119f914b73400c314411c3e2" prot="public" static="no">
+        <type><ref refid="luaconf_8h_1ae3594e990592ab0bf7243dad64c76d2a" kindref="member">LUAI_UACNUMBER</ref></type>
+        <definition>typedef LUAI_UACNUMBER l_uacNumber</definition>
+        <argsstring></argsstring>
+        <name>l_uacNumber</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="95" column="24" bodyfile="leasy/lua/llimits.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="llimits_8h_1ac8d5f795aedd7e084ef2dab7b5d81bde" prot="public" static="no">
+        <type><ref refid="luaconf_8h_1a7a9d650ef5ea12d81160db595fe9f177" kindref="member">LUAI_UACINT</ref></type>
+        <definition>typedef LUAI_UACINT l_uacInt</definition>
+        <argsstring></argsstring>
+        <name>l_uacInt</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="96" column="21" bodyfile="leasy/lua/llimits.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="llimits_8h_1a68da1d6d858100a545e5fd84f65abe41" prot="public" static="no">
+        <type>void(*</type>
+        <definition>typedef void(* voidf) (void)</definition>
+        <argsstring>)(void)</argsstring>
+        <name>voidf</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="176" column="9" bodyfile="leasy/lua/llimits.h" bodystart="176" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" prot="public" static="no">
+        <type>unsigned long</type>
+        <definition>typedef unsigned long l_uint32</definition>
+        <argsstring></argsstring>
+        <name>l_uint32</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llimits.h" line="227" column="23" bodyfile="leasy/lua/llimits.h" bodystart="227" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>llimits.h<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Limits,<sp/>basic<sp/>types,<sp/>and<sp/>some<sp/>other<sp/>&apos;installation-dependent&apos;<sp/>definitions</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>llimits_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>llimits_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;limits.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stddef.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lua_8h" kindref="compound">lua.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18" refid="llimits_8h_1ad40053171fbf571af0be66edc7a93457" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>l_numbits(t)<sp/><sp/><sp/><sp/>cast_int(sizeof(t)<sp/>*<sp/>CHAR_BIT)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment">**<sp/>&apos;l_mem&apos;<sp/>is<sp/>a<sp/>signed<sp/>integer<sp/>big<sp/>enough<sp/>to<sp/>count<sp/>the<sp/>total<sp/>memory</highlight></codeline>
+<codeline lineno="22"><highlight class="comment">**<sp/>used<sp/>by<sp/>Lua.<sp/><sp/>(It<sp/>is<sp/>signed<sp/>due<sp/>to<sp/>the<sp/>use<sp/>of<sp/>debt<sp/>in<sp/>several</highlight></codeline>
+<codeline lineno="23"><highlight class="comment">**<sp/>computations.)<sp/>&apos;lu_mem&apos;<sp/>is<sp/>a<sp/>corresponding<sp/>unsigned<sp/>type.<sp/><sp/>Usually,</highlight></codeline>
+<codeline lineno="24"><highlight class="comment">**<sp/>&apos;ptrdiff_t&apos;<sp/>should<sp/>work,<sp/>but<sp/>we<sp/>use<sp/>&apos;long&apos;<sp/>for<sp/>16-bit<sp/>machines.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(LUAI_MEM)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>{<sp/>external<sp/>definitions?<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>LUAI_MEM<sp/><ref refid="llimits_8h_1a24fc195087e262c99a4cf0f9b346a684" kindref="member">l_mem</ref>;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>LUAI_UMEM<sp/><ref refid="llimits_8h_1aac8c50ca0aa51c80523376da77c2c4d8" kindref="member">lu_mem</ref>;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>LUAI_IS32INT<sp/><sp/></highlight><highlight class="comment">/*<sp/>}{<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>ptrdiff_t<sp/><ref refid="llimits_8h_1a24fc195087e262c99a4cf0f9b346a684" kindref="member">l_mem</ref>;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1aac8c50ca0aa51c80523376da77c2c4d8" kindref="member">lu_mem</ref>;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#else<sp/><sp/></highlight><highlight class="comment">/*<sp/>16-bit<sp/>ints<sp/>*/</highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>}{<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="llimits_8h_1a24fc195087e262c99a4cf0f9b346a684" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1a24fc195087e262c99a4cf0f9b346a684" kindref="member">l_mem</ref>;</highlight></codeline>
+<codeline lineno="34" refid="llimits_8h_1aac8c50ca0aa51c80523376da77c2c4d8" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1aac8c50ca0aa51c80523376da77c2c4d8" kindref="member">lu_mem</ref>;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>}<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="llimits_8h_1a99e52005f8b99ce8e36df841b281078e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MAX_LMEM<sp/><sp/>\</highlight></codeline>
+<codeline lineno="38"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>cast(l_mem,<sp/>(cast(lu_mem,<sp/>1)<sp/>&lt;&lt;<sp/>(l_numbits(l_mem)<sp/>-<sp/>1))<sp/>-<sp/>1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>chars<sp/>used<sp/>as<sp/>small<sp/>naturals<sp/>(so<sp/>that<sp/>&apos;char&apos;<sp/>is<sp/>reserved<sp/>for<sp/>characters)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref>;</highlight></codeline>
+<codeline lineno="43" refid="llimits_8h_1aab58a246c9e0a85c4c2ed0fd8d6724bb" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">signed</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1aab58a246c9e0a85c4c2ed0fd8d6724bb" kindref="member">ls_byte</ref>;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Type<sp/>for<sp/>thread<sp/>status/error<sp/>codes<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47" refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref>;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>The<sp/>C<sp/>API<sp/>still<sp/>uses<sp/>&apos;int&apos;<sp/>for<sp/>status/error<sp/>codes<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50" refid="llimits_8h_1a49c73f79c5646b12989da5efe4f2ad38" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>APIstatus(st)<sp/><sp/><sp/>cast_int(st)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>maximum<sp/>value<sp/>for<sp/>size_t<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="llimits_8h_1aa927c7bf177c162feda3483e1e972b3a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MAX_SIZET<sp/><sp/><sp/>((size_t)(~(size_t)0))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="56"><highlight class="comment">**<sp/>Maximum<sp/>size<sp/>for<sp/>strings<sp/>and<sp/>userdata<sp/>visible<sp/>for<sp/>Lua;<sp/>should<sp/>be</highlight></codeline>
+<codeline lineno="57"><highlight class="comment">**<sp/>representable<sp/>as<sp/>a<sp/>lua_Integer<sp/>and<sp/>as<sp/>a<sp/>size_t.</highlight></codeline>
+<codeline lineno="58"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="llimits_8h_1a0592dba56693fad79136250c11e5a7fe" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MAX_SIZE<sp/><sp/><sp/><sp/>(sizeof(size_t)<sp/>&lt;<sp/>sizeof(lua_Integer)<sp/>?<sp/>MAX_SIZET<sp/>\</highlight></codeline>
+<codeline lineno="60"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>cast_sizet(LUA_MAXINTEGER))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="63"><highlight class="comment">**<sp/>test<sp/>whether<sp/>an<sp/>unsigned<sp/>value<sp/>is<sp/>a<sp/>power<sp/>of<sp/>2<sp/>(or<sp/>zero)</highlight></codeline>
+<codeline lineno="64"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="llimits_8h_1ada65e002d4b7df9ebfa7dde2d12357db" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ispow2(x)<sp/><sp/><sp/>(((x)<sp/>&amp;<sp/>((x)<sp/>-<sp/>1))<sp/>==<sp/>0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>number<sp/>of<sp/>chars<sp/>of<sp/>a<sp/>literal<sp/>string<sp/>without<sp/>the<sp/>ending<sp/>\0<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="llimits_8h_1a6185afb135442b229d91201b1a3c6eb2" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LL(x)<sp/><sp/><sp/>(sizeof(x)/sizeof(char)<sp/>-<sp/>1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="73"><highlight class="comment">**<sp/>conversion<sp/>of<sp/>pointer<sp/>to<sp/>unsigned<sp/>integer:<sp/>this<sp/>is<sp/>for<sp/>hashing<sp/>only;</highlight></codeline>
+<codeline lineno="74"><highlight class="comment">**<sp/>there<sp/>is<sp/>no<sp/>problem<sp/>if<sp/>the<sp/>integer<sp/>cannot<sp/>hold<sp/>the<sp/>whole<sp/>pointer</highlight></codeline>
+<codeline lineno="75"><highlight class="comment">**<sp/>value.<sp/>(In<sp/>strict<sp/>ISO<sp/>C<sp/>this<sp/>may<sp/>cause<sp/>undefined<sp/>behavior,<sp/>but<sp/>no</highlight></codeline>
+<codeline lineno="76"><highlight class="comment">**<sp/>actual<sp/>machine<sp/>seems<sp/>to<sp/>bother.)</highlight></codeline>
+<codeline lineno="77"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(LUA_USE_C89)<sp/>&amp;&amp;<sp/>defined(__STDC_VERSION__)<sp/>&amp;&amp;<sp/>\</highlight></codeline>
+<codeline lineno="79"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>__STDC_VERSION__<sp/>&gt;=<sp/>199901L</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(UINTPTR_MAX)<sp/><sp/></highlight><highlight class="comment">/*<sp/>even<sp/>in<sp/>C99<sp/>this<sp/>type<sp/>is<sp/>optional<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>L_P2I<sp/><sp/><sp/>uintptr_t</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight><highlight class="preprocessor">#else<sp/><sp/></highlight><highlight class="comment">/*<sp/>no<sp/>&apos;intptr&apos;?<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>L_P2I<sp/><sp/><sp/>uintmax_t<sp/><sp/></highlight><highlight class="comment">/*<sp/>use<sp/>the<sp/>largest<sp/>available<sp/>integer<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight><highlight class="preprocessor">#else<sp/><sp/></highlight><highlight class="comment">/*<sp/>C89<sp/>option<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87" refid="llimits_8h_1a39eebd62295cdb734e7bcc8e5896fc81" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>L_P2I<sp/><sp/><sp/>size_t</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90" refid="llimits_8h_1ad861f24ac9e8c32f78455aab3d2e7b51" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>point2uint(p)<sp/><sp/><sp/>cast_uint((L_P2I)(p)<sp/>&amp;<sp/>UINT_MAX)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>types<sp/>of<sp/>&apos;usual<sp/>argument<sp/>conversions&apos;<sp/>for<sp/>lua_Number<sp/>and<sp/>lua_Integer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="llimits_8h_1a792eefbf119f914b73400c314411c3e2" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/><ref refid="luaconf_8h_1ae3594e990592ab0bf7243dad64c76d2a" kindref="member">LUAI_UACNUMBER</ref><sp/><ref refid="llimits_8h_1a792eefbf119f914b73400c314411c3e2" kindref="member">l_uacNumber</ref>;</highlight></codeline>
+<codeline lineno="96" refid="llimits_8h_1ac8d5f795aedd7e084ef2dab7b5d81bde" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/><ref refid="luaconf_8h_1a7a9d650ef5ea12d81160db595fe9f177" kindref="member">LUAI_UACINT</ref><sp/><ref refid="llimits_8h_1ac8d5f795aedd7e084ef2dab7b5d81bde" kindref="member">l_uacInt</ref>;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="100"><highlight class="comment">**<sp/>Internal<sp/>assertions<sp/>for<sp/>in-house<sp/>debugging</highlight></codeline>
+<codeline lineno="101"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined<sp/>LUAI_ASSERT</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight><highlight class="preprocessor">#undef<sp/>NDEBUG</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;assert.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lua_assert(c)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(c)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>assert_code(c)<sp/><sp/><sp/><sp/><sp/><sp/>c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(lua_assert)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111" refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lua_assert(c)<sp/><sp/><sp/><sp/><sp/><sp/><sp/>((void)0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112" refid="llimits_8h_1a135fb5fd8a78712f702d4c8848995230" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>assert_code(c)<sp/><sp/><sp/><sp/><sp/><sp/>((void)0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115" refid="llimits_8h_1afac1404af62451f8653440ecb6e773fc" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>check_exp(c,e)<sp/><sp/><sp/><sp/><sp/><sp/>(lua_assert(c),<sp/>(e))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>to<sp/>avoid<sp/>problems<sp/>with<sp/>conditions<sp/>too<sp/>long<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117" refid="llimits_8h_1a825f22ba1e16fd60e3aae8fe8efc1c4d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lua_longassert(c)<sp/><sp/><sp/>assert_code((c)<sp/>?<sp/>(void)0<sp/>:<sp/>lua_assert(0))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>macro<sp/>to<sp/>avoid<sp/>warnings<sp/>about<sp/>unused<sp/>variables<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(UNUSED)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122" refid="llimits_8h_1a86d500a34c624c2cae56bc25a31b12f3" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>UNUSED(x)<sp/><sp/><sp/>((void)(x))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>type<sp/>casts<sp/>(a<sp/>macro<sp/>highlights<sp/>casts<sp/>in<sp/>the<sp/>code)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="127" refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cast(t,<sp/>exp)<sp/><sp/><sp/><sp/>((t)(exp))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129" refid="llimits_8h_1a52a5166d7dc0590b63a9331cfc0f4564" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cast_void(i)<sp/><sp/><sp/><sp/>cast(void,<sp/>(i))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="130" refid="llimits_8h_1a672c0fddf71f33d86ed8aa62ad914d52" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cast_voidp(i)<sp/><sp/><sp/>cast(void<sp/>*,<sp/>(i))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131" refid="llimits_8h_1ac92cecb12c5aba1164877e81e76e2cb6" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cast_num(i)<sp/>cast(lua_Number,<sp/>(i))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132" refid="llimits_8h_1a37a9e2c4b53433d34bad0f12a1500c08" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cast_int(i)<sp/>cast(int,<sp/>(i))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133" refid="llimits_8h_1a3d554f3ac1b8468a33284d7d00cac5b6" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cast_short(i)<sp/><sp/><sp/>cast(short,<sp/>(i))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134" refid="llimits_8h_1a6ce2ddc5b419ed6f302573db3cc03e56" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cast_uint(i)<sp/><sp/><sp/><sp/>cast(unsigned<sp/>int,<sp/>(i))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135" refid="llimits_8h_1a596f5b6e992f53a5a4e5732083448dd4" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cast_byte(i)<sp/><sp/><sp/><sp/>cast(lu_byte,<sp/>(i))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="136" refid="llimits_8h_1aa0c49a2b32329cc39df5ccafd1f720e0" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cast_uchar(i)<sp/><sp/><sp/>cast(unsigned<sp/>char,<sp/>(i))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137" refid="llimits_8h_1a045e548576226e8c7e9ab5de8a59f4bc" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cast_char(i)<sp/><sp/><sp/><sp/>cast(char,<sp/>(i))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138" refid="llimits_8h_1a1d905979f8c901b7143b43ee98341206" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cast_charp(i)<sp/><sp/><sp/>cast(char<sp/>*,<sp/>(i))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139" refid="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cast_sizet(i)<sp/><sp/><sp/>cast(size_t,<sp/>(i))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="140" refid="llimits_8h_1a0af45e91222292a2241c30eed1a4bf15" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cast_Integer(i)<sp/>cast(lua_Integer,<sp/>(i))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141" refid="llimits_8h_1a95080c27926cc0e377cd52941486acd5" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cast_Inst(i)<sp/><sp/><sp/><sp/>cast(Instruction,<sp/>(i))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>cast<sp/>a<sp/>signed<sp/>lua_Integer<sp/>to<sp/>lua_Unsigned<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(l_castS2U)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146" refid="llimits_8h_1a5871309e671ba9f938fcb1e0d3bcbeca" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>l_castS2U(i)<sp/><sp/><sp/><sp/>((lua_Unsigned)(i))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="150"><highlight class="comment">**<sp/>cast<sp/>a<sp/>lua_Unsigned<sp/>to<sp/>a<sp/>signed<sp/>lua_Integer;<sp/>this<sp/>cast<sp/>is</highlight></codeline>
+<codeline lineno="151"><highlight class="comment">**<sp/>not<sp/>strict<sp/>ISO<sp/>C,<sp/>but<sp/>two-complement<sp/>architectures<sp/>should</highlight></codeline>
+<codeline lineno="152"><highlight class="comment">**<sp/>work<sp/>fine.</highlight></codeline>
+<codeline lineno="153"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(l_castU2S)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155" refid="llimits_8h_1a873fa1b216f8caed046edbcebd4c1bc8" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>l_castU2S(i)<sp/><sp/><sp/><sp/>((lua_Integer)(i))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="159"><highlight class="comment">**<sp/>cast<sp/>a<sp/>size_t<sp/>to<sp/>lua_Integer:<sp/>These<sp/>casts<sp/>are<sp/>always<sp/>valid<sp/>for</highlight></codeline>
+<codeline lineno="160"><highlight class="comment">**<sp/>sizes<sp/>of<sp/>Lua<sp/>objects<sp/>(see<sp/>MAX_SIZE)</highlight></codeline>
+<codeline lineno="161"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162" refid="llimits_8h_1ad4a840f5a18a972fd5c003a74032b4cf" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cast_st2S(sz)<sp/><sp/><sp/>((lua_Integer)(sz))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Cast<sp/>a<sp/>ptrdiff_t<sp/>to<sp/>size_t,<sp/>when<sp/>it<sp/>is<sp/>known<sp/>that<sp/>the<sp/>minuend</highlight></codeline>
+<codeline lineno="165"><highlight class="comment">**<sp/>comes<sp/>from<sp/>the<sp/>subtrahend<sp/>(the<sp/>base)</highlight></codeline>
+<codeline lineno="166"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="167" refid="llimits_8h_1aed887ccea8c4b2bff34e15ce93ae3915" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ct_diff2sz(df)<sp/><sp/>((size_t)(df))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>ptrdiff_t<sp/>to<sp/>lua_Integer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170" refid="llimits_8h_1ab53e4f11d857c0396b569050335bc1bd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ct_diff2S(df)<sp/><sp/><sp/>cast_st2S(ct_diff2sz(df))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="173"><highlight class="comment">**<sp/>Special<sp/>type<sp/>equivalent<sp/>to<sp/>&apos;(void*)&apos;<sp/>for<sp/>functions<sp/>(to<sp/>suppress<sp/>some</highlight></codeline>
+<codeline lineno="174"><highlight class="comment">**<sp/>warnings<sp/>when<sp/>converting<sp/>function<sp/>pointers)</highlight></codeline>
+<codeline lineno="175"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176" refid="llimits_8h_1a68da1d6d858100a545e5fd84f65abe41" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>void<sp/>(*<ref refid="llimits_8h_1a68da1d6d858100a545e5fd84f65abe41" kindref="member">voidf</ref>)(void);</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="179"><highlight class="comment">**<sp/>Macro<sp/>to<sp/>convert<sp/>pointer-to-void*<sp/>to<sp/>pointer-to-function.<sp/>This<sp/>cast</highlight></codeline>
+<codeline lineno="180"><highlight class="comment">**<sp/>is<sp/>undefined<sp/>according<sp/>to<sp/>ISO<sp/>C,<sp/>but<sp/>POSIX<sp/>assumes<sp/>that<sp/>it<sp/>works.</highlight></codeline>
+<codeline lineno="181"><highlight class="comment">**<sp/>(The<sp/>&apos;__extension__&apos;<sp/>in<sp/>gnu<sp/>compilers<sp/>is<sp/>only<sp/>to<sp/>avoid<sp/>warnings.)</highlight></codeline>
+<codeline lineno="182"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(__GNUC__)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cast_func(p)<sp/>(__extension__<sp/>(voidf)(p))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="186" refid="llimits_8h_1acc9d4f3030e913a0df31d4b06a9251da" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cast_func(p)<sp/>((voidf)(p))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="192"><highlight class="comment">**<sp/>non-return<sp/>type</highlight></codeline>
+<codeline lineno="193"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(l_noret)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(__GNUC__)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>l_noret<sp/><sp/><sp/><sp/><sp/>void<sp/>__attribute__((noreturn))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_MSC_VER)<sp/>&amp;&amp;<sp/>_MSC_VER<sp/>&gt;=<sp/>1200</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>l_noret<sp/><sp/><sp/><sp/><sp/>void<sp/>__declspec(noreturn)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="201" refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>l_noret<sp/><sp/><sp/><sp/><sp/>void</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="208"><highlight class="comment">**<sp/>Inline<sp/>functions</highlight></codeline>
+<codeline lineno="209"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="210"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(LUA_USE_C89)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="211" refid="llimits_8h_1ab9db15f364731ab60065e372cc023e36" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>l_inline<sp/><sp/><sp/><sp/>inline</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="212"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(__GNUC__)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>l_inline<sp/><sp/><sp/><sp/>__inline__</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>l_inline<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>empty<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight></codeline>
+<codeline lineno="218" refid="llimits_8h_1a30d6348cf339bed10220ef7dd501fbe6" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>l_sinline<sp/><sp/><sp/>static<sp/>l_inline</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="222"><highlight class="comment">**<sp/>An<sp/>unsigned<sp/>with<sp/>(at<sp/>least)<sp/>4<sp/>bytes</highlight></codeline>
+<codeline lineno="223"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="224"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>LUAI_IS32INT</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="225"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" kindref="member">l_uint32</ref>;</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="227" refid="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" kindref="member">l_uint32</ref>;</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight></codeline>
+<codeline lineno="230"><highlight class="normal"></highlight></codeline>
+<codeline lineno="231"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="232"><highlight class="comment">**<sp/>The<sp/>luai_num*<sp/>macros<sp/>define<sp/>the<sp/>primitive<sp/>operations<sp/>over<sp/>numbers.</highlight></codeline>
+<codeline lineno="233"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight></codeline>
+<codeline lineno="235"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>floor<sp/>division<sp/>(defined<sp/>as<sp/>&apos;floor(a/b)&apos;)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(luai_numidiv)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="237" refid="llimits_8h_1a9ca37a98a6032ab21dcfd63d42e66f89" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luai_numidiv(L,a,b)<sp/><sp/><sp/><sp/><sp/>((void)L,<sp/>l_floor(luai_numdiv(L,a,b)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="238"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="239"><highlight class="normal"></highlight></codeline>
+<codeline lineno="240"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>float<sp/>division<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="241"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(luai_numdiv)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="242" refid="llimits_8h_1a2a095b8d523b51332eb223df531367d2" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luai_numdiv(L,a,b)<sp/><sp/><sp/><sp/><sp/><sp/>((a)/(b))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="243"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight></codeline>
+<codeline lineno="245"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="246"><highlight class="comment">**<sp/>modulo:<sp/>defined<sp/>as<sp/>&apos;a<sp/>-<sp/>floor(a/b)*b&apos;;<sp/>the<sp/>direct<sp/>computation</highlight></codeline>
+<codeline lineno="247"><highlight class="comment">**<sp/>using<sp/>this<sp/>definition<sp/>has<sp/>several<sp/>problems<sp/>with<sp/>rounding<sp/>errors,</highlight></codeline>
+<codeline lineno="248"><highlight class="comment">**<sp/>so<sp/>it<sp/>is<sp/>better<sp/>to<sp/>use<sp/>&apos;fmod&apos;.<sp/>&apos;fmod&apos;<sp/>gives<sp/>the<sp/>result<sp/>of</highlight></codeline>
+<codeline lineno="249"><highlight class="comment">**<sp/>&apos;a<sp/>-<sp/>trunc(a/b)*b&apos;,<sp/>and<sp/>therefore<sp/>must<sp/>be<sp/>corrected<sp/>when</highlight></codeline>
+<codeline lineno="250"><highlight class="comment">**<sp/>&apos;trunc(a/b)<sp/>~=<sp/>floor(a/b)&apos;.<sp/>That<sp/>happens<sp/>when<sp/>the<sp/>division<sp/>has<sp/>a</highlight></codeline>
+<codeline lineno="251"><highlight class="comment">**<sp/>non-integer<sp/>negative<sp/>result:<sp/>non-integer<sp/>result<sp/>is<sp/>equivalent<sp/>to</highlight></codeline>
+<codeline lineno="252"><highlight class="comment">**<sp/>a<sp/>non-zero<sp/>remainder<sp/>&apos;m&apos;;<sp/>negative<sp/>result<sp/>is<sp/>equivalent<sp/>to<sp/>&apos;a&apos;<sp/>and</highlight></codeline>
+<codeline lineno="253"><highlight class="comment">**<sp/>&apos;b&apos;<sp/>with<sp/>different<sp/>signs,<sp/>or<sp/>&apos;m&apos;<sp/>and<sp/>&apos;b&apos;<sp/>with<sp/>different<sp/>signs</highlight></codeline>
+<codeline lineno="254"><highlight class="comment">**<sp/>(as<sp/>the<sp/>result<sp/>&apos;m&apos;<sp/>of<sp/>&apos;fmod&apos;<sp/>has<sp/>the<sp/>same<sp/>sign<sp/>of<sp/>&apos;a&apos;).</highlight></codeline>
+<codeline lineno="255"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="256"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(luai_nummod)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="257" refid="llimits_8h_1ac6e6bfca420c761a89eee023103c34f4" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luai_nummod(L,a,b,m)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="258"><highlight class="preprocessor"><sp/><sp/>{<sp/>(void)L;<sp/>(m)<sp/>=<sp/>l_mathop(fmod)(a,b);<sp/>\</highlight></codeline>
+<codeline lineno="259"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>if<sp/>(((m)<sp/>&gt;<sp/>0)<sp/>?<sp/>(b)<sp/>&lt;<sp/>0<sp/>:<sp/>((m)<sp/>&lt;<sp/>0<sp/>&amp;&amp;<sp/>(b)<sp/>&gt;<sp/>0))<sp/>(m)<sp/>+=<sp/>(b);<sp/>}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="260"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal"></highlight></codeline>
+<codeline lineno="262"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>exponentiation<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(luai_numpow)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="264" refid="llimits_8h_1a4a3b06f2c7239f8dcbd101ca20cc507a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luai_numpow(L,a,b)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="265"><highlight class="preprocessor"><sp/><sp/>((void)L,<sp/>(b<sp/>==<sp/>2)<sp/>?<sp/>(a)*(a)<sp/>:<sp/>l_mathop(pow)(a,b))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="266"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="267"><highlight class="normal"></highlight></codeline>
+<codeline lineno="268"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>the<sp/>others<sp/>are<sp/>quite<sp/>standard<sp/>operations<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="269"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(luai_numadd)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="270" refid="llimits_8h_1af3eb5d1884e4512d2701bbc97bb82e81" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luai_numadd(L,a,b)<sp/><sp/><sp/><sp/><sp/><sp/>((a)+(b))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="271" refid="llimits_8h_1a93e733c7e860d7fb838b6af414405662" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luai_numsub(L,a,b)<sp/><sp/><sp/><sp/><sp/><sp/>((a)-(b))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="272" refid="llimits_8h_1a1cbcef9e269f0ac1a5f34898a7c4ae36" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luai_nummul(L,a,b)<sp/><sp/><sp/><sp/><sp/><sp/>((a)*(b))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="273" refid="llimits_8h_1a84c57a852cdc4b46c678cb3fab715846" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luai_numunm(L,a)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(-(a))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="274" refid="llimits_8h_1ae06bbbe345c8bb028e233120466d387d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luai_numeq(a,b)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>((a)==(b))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="275" refid="llimits_8h_1ae035faaeb068720ee8540210870ee5c9" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luai_numlt(a,b)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>((a)&lt;(b))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="276" refid="llimits_8h_1af803655e8c9be7ba1f3f3fb0c4f730d7" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luai_numle(a,b)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>((a)&lt;=(b))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="277" refid="llimits_8h_1a252c8bc400dc44bd996b19e7cf487871" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luai_numgt(a,b)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>((a)&gt;(b))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="278" refid="llimits_8h_1a727a96f18bda273bd57dee105a274abe" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luai_numge(a,b)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>((a)&gt;=(b))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="279" refid="llimits_8h_1a5ec99a344dba64c30c3ddc6eed8e2e51" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luai_numisnan(a)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(!luai_numeq((a),<sp/>(a)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="280"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="281"><highlight class="normal"></highlight></codeline>
+<codeline lineno="282"><highlight class="normal"></highlight></codeline>
+<codeline lineno="283"><highlight class="normal"></highlight></codeline>
+<codeline lineno="284"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="285"><highlight class="comment">**<sp/>lua_numbertointeger<sp/>converts<sp/>a<sp/>float<sp/>number<sp/>with<sp/>an<sp/>integral<sp/>value</highlight></codeline>
+<codeline lineno="286"><highlight class="comment">**<sp/>to<sp/>an<sp/>integer,<sp/>or<sp/>returns<sp/>0<sp/>if<sp/>the<sp/>float<sp/>is<sp/>not<sp/>within<sp/>the<sp/>range<sp/>of</highlight></codeline>
+<codeline lineno="287"><highlight class="comment">**<sp/>a<sp/>lua_Integer.<sp/><sp/>(The<sp/>range<sp/>comparisons<sp/>are<sp/>tricky<sp/>because<sp/>of</highlight></codeline>
+<codeline lineno="288"><highlight class="comment">**<sp/>rounding.<sp/>The<sp/>tests<sp/>here<sp/>assume<sp/>a<sp/>two-complement<sp/>representation,</highlight></codeline>
+<codeline lineno="289"><highlight class="comment">**<sp/>where<sp/>MININTEGER<sp/>always<sp/>has<sp/>an<sp/>exact<sp/>representation<sp/>as<sp/>a<sp/>float;</highlight></codeline>
+<codeline lineno="290"><highlight class="comment">**<sp/>MAXINTEGER<sp/>may<sp/>not<sp/>have<sp/>one,<sp/>and<sp/>therefore<sp/>its<sp/>conversion<sp/>to<sp/>float</highlight></codeline>
+<codeline lineno="291"><highlight class="comment">**<sp/>may<sp/>have<sp/>an<sp/>ill-defined<sp/>value.)</highlight></codeline>
+<codeline lineno="292"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="293" refid="llimits_8h_1a4b0d24a7a90003778668e2d01831bb88" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lua_numbertointeger(n,p)<sp/>\</highlight></codeline>
+<codeline lineno="294"><highlight class="preprocessor"><sp/><sp/>((n)<sp/>&gt;=<sp/>(LUA_NUMBER)(LUA_MININTEGER)<sp/>&amp;&amp;<sp/>\</highlight></codeline>
+<codeline lineno="295"><highlight class="preprocessor"><sp/><sp/><sp/>(n)<sp/>&lt;<sp/>-(LUA_NUMBER)(LUA_MININTEGER)<sp/>&amp;&amp;<sp/>\</highlight></codeline>
+<codeline lineno="296"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/>(*(p)<sp/>=<sp/>(LUA_INTEGER)(n),<sp/>1))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="297"><highlight class="normal"></highlight></codeline>
+<codeline lineno="298"><highlight class="normal"></highlight></codeline>
+<codeline lineno="299"><highlight class="normal"></highlight></codeline>
+<codeline lineno="300"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="301"><highlight class="comment">**<sp/>LUAI_FUNC<sp/>is<sp/>a<sp/>mark<sp/>for<sp/>all<sp/>extern<sp/>functions<sp/>that<sp/>are<sp/>not<sp/>to<sp/>be</highlight></codeline>
+<codeline lineno="302"><highlight class="comment">**<sp/>exported<sp/>to<sp/>outside<sp/>modules.</highlight></codeline>
+<codeline lineno="303"><highlight class="comment">**<sp/>LUAI_DDEF<sp/>and<sp/>LUAI_DDEC<sp/>are<sp/>marks<sp/>for<sp/>all<sp/>extern<sp/>(const)<sp/>variables,</highlight></codeline>
+<codeline lineno="304"><highlight class="comment">**<sp/>none<sp/>of<sp/>which<sp/>to<sp/>be<sp/>exported<sp/>to<sp/>outside<sp/>modules<sp/>(LUAI_DDEF<sp/>for</highlight></codeline>
+<codeline lineno="305"><highlight class="comment">**<sp/>definitions<sp/>and<sp/>LUAI_DDEC<sp/>for<sp/>declarations).</highlight></codeline>
+<codeline lineno="306"><highlight class="comment">**<sp/>Elf<sp/>and<sp/>MACH/gcc<sp/>(versions<sp/>3.2<sp/>and<sp/>later)<sp/>mark<sp/>them<sp/>as<sp/>&quot;hidden&quot;<sp/>to</highlight></codeline>
+<codeline lineno="307"><highlight class="comment">**<sp/>optimize<sp/>access<sp/>when<sp/>Lua<sp/>is<sp/>compiled<sp/>as<sp/>a<sp/>shared<sp/>library.<sp/>Not<sp/>all<sp/>elf</highlight></codeline>
+<codeline lineno="308"><highlight class="comment">**<sp/>targets<sp/>support<sp/>this<sp/>attribute.<sp/>Unfortunately,<sp/>gcc<sp/>does<sp/>not<sp/>offer</highlight></codeline>
+<codeline lineno="309"><highlight class="comment">**<sp/>a<sp/>way<sp/>to<sp/>check<sp/>whether<sp/>the<sp/>target<sp/>offers<sp/>that<sp/>support,<sp/>and<sp/>those</highlight></codeline>
+<codeline lineno="310"><highlight class="comment">**<sp/>without<sp/>support<sp/>give<sp/>a<sp/>warning<sp/>about<sp/>it.<sp/>To<sp/>avoid<sp/>these<sp/>warnings,</highlight></codeline>
+<codeline lineno="311"><highlight class="comment">**<sp/>change<sp/>to<sp/>the<sp/>default<sp/>definition.</highlight></codeline>
+<codeline lineno="312"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="313"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(LUAI_FUNC)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="314"><highlight class="normal"></highlight></codeline>
+<codeline lineno="315"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(__GNUC__)<sp/>&amp;&amp;<sp/>((__GNUC__*100<sp/>+<sp/>__GNUC_MINOR__)<sp/>&gt;=<sp/>302)<sp/>&amp;&amp;<sp/>\</highlight></codeline>
+<codeline lineno="316"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>(defined(__ELF__)<sp/>||<sp/>defined(__MACH__))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="317"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUAI_FUNC<sp/><sp/><sp/>__attribute__((visibility(&quot;internal&quot;)))<sp/>extern</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="318"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="319" refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUAI_FUNC<sp/><sp/><sp/>extern</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="320"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="321"><highlight class="normal"></highlight></codeline>
+<codeline lineno="322" refid="llimits_8h_1a3f2cdf96bb04b9d2a9a318a126f99182" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUAI_DDEC(dec)<sp/><sp/>LUAI_FUNC<sp/>dec</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="323" refid="llimits_8h_1affa3a74c87c69373c262fdbdc7f97837" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUAI_DDEF<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>empty<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="324"><highlight class="normal"></highlight></codeline>
+<codeline lineno="325"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="326"><highlight class="normal"></highlight></codeline>
+<codeline lineno="327"><highlight class="normal"></highlight></codeline>
+<codeline lineno="328"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Give<sp/>these<sp/>macros<sp/>simpler<sp/>names<sp/>for<sp/>internal<sp/>use<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="329" refid="llimits_8h_1a5df9232284dcc98967aa354c6abab9b2" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>l_likely(x)<sp/>luai_likely(x)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="330" refid="llimits_8h_1ae9c389231436634605d75b0c31f8c3be" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>l_unlikely(x)<sp/><sp/><sp/>luai_unlikely(x)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="331"><highlight class="normal"></highlight></codeline>
+<codeline lineno="332"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="333"><highlight class="comment">**<sp/>{==================================================================</highlight></codeline>
+<codeline lineno="334"><highlight class="comment">**<sp/>&quot;Abstraction<sp/>Layer&quot;<sp/>for<sp/>basic<sp/>report<sp/>of<sp/>messages<sp/>and<sp/>errors</highlight></codeline>
+<codeline lineno="335"><highlight class="comment">**<sp/>===================================================================</highlight></codeline>
+<codeline lineno="336"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="337"><highlight class="normal"></highlight></codeline>
+<codeline lineno="338"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>print<sp/>a<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="339"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(lua_writestring)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="340" refid="llimits_8h_1a575f50815c13a7a99b8ed1ac03fe714a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lua_writestring(s,l)<sp/><sp/><sp/>fwrite((s),<sp/>sizeof(char),<sp/>(l),<sp/>stdout)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="341"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="342"><highlight class="normal"></highlight></codeline>
+<codeline lineno="343"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>print<sp/>a<sp/>newline<sp/>and<sp/>flush<sp/>the<sp/>output<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="344"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(lua_writeline)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="345" refid="llimits_8h_1aa4791d9826315ea2d1c716f852026246" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lua_writeline()<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(lua_writestring(&quot;\n&quot;,<sp/>1),<sp/>fflush(stdout))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="346"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="347"><highlight class="normal"></highlight></codeline>
+<codeline lineno="348"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>print<sp/>an<sp/>error<sp/>message<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="349"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(lua_writestringerror)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="350" refid="llimits_8h_1a0706f68a79575584d365d033d613707b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lua_writestringerror(s,p)<sp/>\</highlight></codeline>
+<codeline lineno="351"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(fprintf(stderr,<sp/>(s),<sp/>(p)),<sp/>fflush(stderr))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="352"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="353"><highlight class="normal"></highlight></codeline>
+<codeline lineno="354"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>}==================================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="355"><highlight class="normal"></highlight></codeline>
+<codeline lineno="356"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="357"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/llimits.h"/>
+  </compounddef>
+</doxygen>

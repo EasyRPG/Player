@@ -1,0 +1,687 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lmem_8c" kind="file" language="C++">
+    <compoundname>lmem.c</compoundname>
+    <includes refid="lprefix_8h" local="yes">lprefix.h</includes>
+    <includes local="no">stddef.h</includes>
+    <includes refid="lua_8h" local="yes">lua.h</includes>
+    <includes refid="ldebug_8h" local="yes">ldebug.h</includes>
+    <includes refid="ldo_8h" local="yes">ldo.h</includes>
+    <includes refid="lgc_8h" local="yes">lgc.h</includes>
+    <includes refid="lmem_8h" local="yes">lmem.h</includes>
+    <includes refid="lobject_8h" local="yes">lobject.h</includes>
+    <includes refid="lstate_8h" local="yes">lstate.h</includes>
+    <incdepgraph>
+      <node id="8">
+        <label>ldebug.h</label>
+        <link refid="ldebug_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>ldo.h</label>
+        <link refid="ldo_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>lgc.h</label>
+        <link refid="lgc_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lmem.c</label>
+        <link refid="lmem_8c"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>lmem.h</label>
+        <link refid="lmem_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>lobject.h</label>
+        <link refid="lobject_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>lprefix.h</label>
+        <link refid="lprefix_8h"/>
+      </node>
+      <node id="9">
+        <label>lstate.h</label>
+        <link refid="lstate_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>ltm.h</label>
+        <link refid="ltm_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>lzio.h</label>
+        <link refid="lzio_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>limits.h</label>
+      </node>
+      <node id="15">
+        <label>signal.h</label>
+      </node>
+      <node id="5">
+        <label>stdarg.h</label>
+      </node>
+      <node id="3">
+        <label>stddef.h</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lmem_8c_1adb2b6ef72119096fe9a546091881ab11" prot="public" static="no">
+        <name>lmem_c</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.c" line="7" column="9" bodyfile="leasy/lua/lmem.c" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8c_1abf0b3947b59218777a8e928a10be205b" prot="public" static="no">
+        <name>LUA_CORE</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.c" line="8" column="9" bodyfile="leasy/lua/lmem.c" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8c_1a55b1468d2e5f515239d03975ec468ede" prot="public" static="no">
+        <name>callfrealloc</name>
+        <param><defname>g</defname></param>
+        <param><defname>block</defname></param>
+        <param><defname>os</defname></param>
+        <param><defname>ns</defname></param>
+        <initializer>((*g-&gt;frealloc)(g-&gt;ud, block, os, ns))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.c" line="47" column="9" bodyfile="leasy/lua/lmem.c" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8c_1a55f218eb5e4a52ada7526051c736d69d" prot="public" static="no">
+        <name>cantryagain</name>
+        <param><defname>g</defname></param>
+        <initializer>(<ref refid="lstate_8h_1a73de055f096a56fda5c309ae707566ff" kindref="member">completestate</ref>(g) &amp;&amp; !g-&gt;gcstopem)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.c" line="58" column="9" bodyfile="leasy/lua/lmem.c" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8c_1ab28b0855c7a625f9f245613df749b115" prot="public" static="no">
+        <name>firsttry</name>
+        <param><defname>g</defname></param>
+        <param><defname>block</defname></param>
+        <param><defname>os</defname></param>
+        <param><defname>ns</defname></param>
+        <initializer><ref refid="lmem_8c_1a55b1468d2e5f515239d03975ec468ede" kindref="member">callfrealloc</ref>(g, block, os, ns)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.c" line="76" column="10" bodyfile="leasy/lua/lmem.c" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8c_1ad0c497dab6f56823e95b1e5e0c4b35a8" prot="public" static="no">
+        <name>MINSIZEARRAY</name>
+        <initializer>4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.c" line="94" column="9" bodyfile="leasy/lua/lmem.c" bodystart="94" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="lmem_8c_1a72bce3855c26220efa79e0047cc36cf5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void *</type>
+        <definition>void * luaM_growaux_</definition>
+        <argsstring>(lua_State *L, void *block, int nelems, int *psize, unsigned size_elems, int limit, const char *what)</argsstring>
+        <name>luaM_growaux_</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>block</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nelems</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>psize</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>size_elems</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>limit</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>what</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.c" line="97" column="6" bodyfile="leasy/lua/lmem.c" bodystart="97" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="lmem_8c_1a9edf70f3b22fbd2c904175bd26607a1f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void *</type>
+        <definition>void * luaM_shrinkvector_</definition>
+        <argsstring>(lua_State *L, void *block, int *size, int final_n, unsigned size_elem)</argsstring>
+        <name>luaM_shrinkvector_</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>block</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>size</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>final_n</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>size_elem</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.c" line="128" column="6" bodyfile="leasy/lua/lmem.c" bodystart="128" bodyend="137"/>
+      </memberdef>
+      <memberdef kind="function" id="lmem_8c_1a8fc7df43dd830ccbe7581fd53f65bdbe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref></type>
+        <definition>l_noret luaM_toobig</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaM_toobig</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.c" line="142" column="9" bodyfile="leasy/lua/lmem.c" bodystart="142" bodyend="144"/>
+      </memberdef>
+      <memberdef kind="function" id="lmem_8c_1a36b12d49a937e5de982e2a2a135e6824" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void luaM_free_</definition>
+        <argsstring>(lua_State *L, void *block, size_t osize)</argsstring>
+        <name>luaM_free_</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>block</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>osize</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.c" line="150" column="6" bodyfile="leasy/lua/lmem.c" bodystart="150" bodyend="155"/>
+      </memberdef>
+      <memberdef kind="function" id="lmem_8c_1abe813b00dc25458292fae7dbfc04ef3b" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void *</type>
+        <definition>static void * tryagain</definition>
+        <argsstring>(lua_State *L, void *block, size_t osize, size_t nsize)</argsstring>
+        <name>tryagain</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>block</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>osize</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>nsize</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.c" line="162" column="13" bodyfile="leasy/lua/lmem.c" bodystart="162" bodyend="170"/>
+      </memberdef>
+      <memberdef kind="function" id="lmem_8c_1a7dd4e9ddf6987797216fa9cf4bc23954" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void *</type>
+        <definition>void * luaM_realloc_</definition>
+        <argsstring>(lua_State *L, void *block, size_t osize, size_t nsize)</argsstring>
+        <name>luaM_realloc_</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>block</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>osize</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>nsize</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.c" line="176" column="6" bodyfile="leasy/lua/lmem.c" bodystart="176" bodyend="189"/>
+      </memberdef>
+      <memberdef kind="function" id="lmem_8c_1a8cb94bca57e8ae6aff344d3e6e4593af" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void *</type>
+        <definition>void * luaM_saferealloc_</definition>
+        <argsstring>(lua_State *L, void *block, size_t osize, size_t nsize)</argsstring>
+        <name>luaM_saferealloc_</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>block</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>osize</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>nsize</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.c" line="192" column="6" bodyfile="leasy/lua/lmem.c" bodystart="192" bodyend="198"/>
+      </memberdef>
+      <memberdef kind="function" id="lmem_8c_1af0c92d038f767832eb8dd29eb0678096" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void *</type>
+        <definition>void * luaM_malloc_</definition>
+        <argsstring>(lua_State *L, size_t size, int tag)</argsstring>
+        <name>luaM_malloc_</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>tag</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.c" line="201" column="6" bodyfile="leasy/lua/lmem.c" bodystart="201" bodyend="215"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lmem.c<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Interface<sp/>to<sp/>Memory<sp/>Manager</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="lmem_8c_1adb2b6ef72119096fe9a546091881ab11" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lmem_c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="lmem_8c_1abf0b3947b59218777a8e928a10be205b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_CORE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lprefix_8h" kindref="compound">lprefix.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stddef.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lua_8h" kindref="compound">lua.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ldebug_8h" kindref="compound">ldebug.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ldo_8h" kindref="compound">ldo.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lgc_8h" kindref="compound">lgc.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lmem_8h" kindref="compound">lmem.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lobject_8h" kindref="compound">lobject.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lstate_8h" kindref="compound">lstate.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="27"><highlight class="comment">**<sp/>About<sp/>the<sp/>realloc<sp/>function:</highlight></codeline>
+<codeline lineno="28"><highlight class="comment">**<sp/>void<sp/>*frealloc<sp/>(void<sp/>*ud,<sp/>void<sp/>*ptr,<sp/>size_t<sp/>osize,<sp/>size_t<sp/>nsize);</highlight></codeline>
+<codeline lineno="29"><highlight class="comment">**<sp/>(&apos;osize&apos;<sp/>is<sp/>the<sp/>old<sp/>size,<sp/>&apos;nsize&apos;<sp/>is<sp/>the<sp/>new<sp/>size)</highlight></codeline>
+<codeline lineno="30"><highlight class="comment">**</highlight></codeline>
+<codeline lineno="31"><highlight class="comment">**<sp/>-<sp/>frealloc(ud,<sp/>p,<sp/>x,<sp/>0)<sp/>frees<sp/>the<sp/>block<sp/>&apos;p&apos;<sp/>and<sp/>returns<sp/>NULL.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment">**<sp/>Particularly,<sp/>frealloc(ud,<sp/>NULL,<sp/>0,<sp/>0)<sp/>does<sp/>nothing,</highlight></codeline>
+<codeline lineno="33"><highlight class="comment">**<sp/>which<sp/>is<sp/>equivalent<sp/>to<sp/>free(NULL)<sp/>in<sp/>ISO<sp/>C.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment">**</highlight></codeline>
+<codeline lineno="35"><highlight class="comment">**<sp/>-<sp/>frealloc(ud,<sp/>NULL,<sp/>x,<sp/>s)<sp/>creates<sp/>a<sp/>new<sp/>block<sp/>of<sp/>size<sp/>&apos;s&apos;</highlight></codeline>
+<codeline lineno="36"><highlight class="comment">**<sp/>(no<sp/>matter<sp/>&apos;x&apos;).<sp/>Returns<sp/>NULL<sp/>if<sp/>it<sp/>cannot<sp/>create<sp/>the<sp/>new<sp/>block.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment">**</highlight></codeline>
+<codeline lineno="38"><highlight class="comment">**<sp/>-<sp/>otherwise,<sp/>frealloc(ud,<sp/>b,<sp/>x,<sp/>y)<sp/>reallocates<sp/>the<sp/>block<sp/>&apos;b&apos;<sp/>from</highlight></codeline>
+<codeline lineno="39"><highlight class="comment">**<sp/>size<sp/>&apos;x&apos;<sp/>to<sp/>size<sp/>&apos;y&apos;.<sp/>Returns<sp/>NULL<sp/>if<sp/>it<sp/>cannot<sp/>reallocate<sp/>the</highlight></codeline>
+<codeline lineno="40"><highlight class="comment">**<sp/>block<sp/>to<sp/>the<sp/>new<sp/>size.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="45"><highlight class="comment">**<sp/>Macro<sp/>to<sp/>call<sp/>the<sp/>allocation<sp/>function.</highlight></codeline>
+<codeline lineno="46"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47" refid="lmem_8c_1a55b1468d2e5f515239d03975ec468ede" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>callfrealloc(g,block,os,ns)<sp/><sp/><sp/><sp/>((*g-&gt;frealloc)(g-&gt;ud,<sp/>block,<sp/>os,<sp/>ns))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="51"><highlight class="comment">**<sp/>When<sp/>an<sp/>allocation<sp/>fails,<sp/>it<sp/>will<sp/>try<sp/>again<sp/>after<sp/>an<sp/>emergency</highlight></codeline>
+<codeline lineno="52"><highlight class="comment">**<sp/>collection,<sp/>except<sp/>when<sp/>it<sp/>cannot<sp/>run<sp/>a<sp/>collection.<sp/><sp/>The<sp/>GC<sp/>should</highlight></codeline>
+<codeline lineno="53"><highlight class="comment">**<sp/>not<sp/>be<sp/>called<sp/>while<sp/>the<sp/>state<sp/>is<sp/>not<sp/>fully<sp/>built,<sp/>as<sp/>the<sp/>collector</highlight></codeline>
+<codeline lineno="54"><highlight class="comment">**<sp/>is<sp/>not<sp/>yet<sp/>fully<sp/>initialized.<sp/>Also,<sp/>it<sp/>should<sp/>not<sp/>be<sp/>called<sp/>when</highlight></codeline>
+<codeline lineno="55"><highlight class="comment">**<sp/>&apos;gcstopem&apos;<sp/>is<sp/>true,<sp/>because<sp/>then<sp/>the<sp/>interpreter<sp/>is<sp/>in<sp/>the<sp/>middle<sp/>of</highlight></codeline>
+<codeline lineno="56"><highlight class="comment">**<sp/>a<sp/>collection<sp/>step.</highlight></codeline>
+<codeline lineno="57"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="lmem_8c_1a55f218eb5e4a52ada7526051c736d69d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>cantryagain(g)<sp/><sp/>(completestate(g)<sp/>&amp;&amp;<sp/>!g-&gt;gcstopem)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(EMERGENCYGCTESTS)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="65"><highlight class="comment">**<sp/>First<sp/>allocation<sp/>will<sp/>fail<sp/>except<sp/>when<sp/>freeing<sp/>a<sp/>block<sp/>(frees<sp/>never</highlight></codeline>
+<codeline lineno="66"><highlight class="comment">**<sp/>fail)<sp/>and<sp/>when<sp/>it<sp/>cannot<sp/>try<sp/>again;<sp/>this<sp/>fail<sp/>will<sp/>trigger<sp/>&apos;tryagain&apos;</highlight></codeline>
+<codeline lineno="67"><highlight class="comment">**<sp/>and<sp/>a<sp/>full<sp/>GC<sp/>cycle<sp/>at<sp/>every<sp/>allocation.</highlight></codeline>
+<codeline lineno="68"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="lmem_8c_1ab28b0855c7a625f9f245613df749b115" kindref="member">firsttry</ref><sp/>(<ref refid="structglobal___state" kindref="compound">global_State</ref><sp/>*g,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*block,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>os,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>ns)<sp/>{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ns<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/><ref refid="lmem_8c_1a55f218eb5e4a52ada7526051c736d69d" kindref="member">cantryagain</ref>(g))</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;<sp/><sp/></highlight><highlight class="comment">/*<sp/>fail<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>normal<sp/>allocation<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lmem_8c_1a55b1468d2e5f515239d03975ec468ede" kindref="member">callfrealloc</ref>(g,<sp/>block,<sp/>os,<sp/>ns);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76" refid="lmem_8c_1ab28b0855c7a625f9f245613df749b115" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>firsttry(g,block,os,ns)<sp/><sp/><sp/><sp/>callfrealloc(g,<sp/>block,<sp/>os,<sp/>ns)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="84"><highlight class="comment">**<sp/>{==================================================================</highlight></codeline>
+<codeline lineno="85"><highlight class="comment">**<sp/>Functions<sp/>to<sp/>allocate/deallocate<sp/>arrays<sp/>for<sp/>the<sp/>Parser</highlight></codeline>
+<codeline lineno="86"><highlight class="comment">**<sp/>===================================================================</highlight></codeline>
+<codeline lineno="87"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="90"><highlight class="comment">**<sp/>Minimum<sp/>size<sp/>for<sp/>arrays<sp/>during<sp/>parsing,<sp/>to<sp/>avoid<sp/>overhead<sp/>of</highlight></codeline>
+<codeline lineno="91"><highlight class="comment">**<sp/>reallocating<sp/>to<sp/>size<sp/>1,<sp/>then<sp/>2,<sp/>and<sp/>then<sp/>4.<sp/>All<sp/>these<sp/>arrays</highlight></codeline>
+<codeline lineno="92"><highlight class="comment">**<sp/>will<sp/>be<sp/>reallocated<sp/>to<sp/>exact<sp/>sizes<sp/>or<sp/>erased<sp/>when<sp/>parsing<sp/>ends.</highlight></codeline>
+<codeline lineno="93"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94" refid="lmem_8c_1ad0c497dab6f56823e95b1e5e0c4b35a8" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MINSIZEARRAY<sp/><sp/><sp/><sp/>4</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97" refid="lmem_8c_1a72bce3855c26220efa79e0047cc36cf5" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="lmem_8c_1a72bce3855c26220efa79e0047cc36cf5" kindref="member">luaM_growaux_</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*block,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nelems,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*psize,</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>size_elems,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>limit,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*what)<sp/>{</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*newblock;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>size<sp/>=<sp/>*psize;</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(nelems<sp/>+<sp/>1<sp/>&lt;=<sp/>size)<sp/><sp/></highlight><highlight class="comment">/*<sp/>does<sp/>one<sp/>extra<sp/>element<sp/>still<sp/>fit?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>block;<sp/><sp/></highlight><highlight class="comment">/*<sp/>nothing<sp/>to<sp/>be<sp/>done<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(size<sp/>&gt;=<sp/>limit<sp/>/<sp/>2)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>cannot<sp/>double<sp/>it?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="llimits_8h_1ae9c389231436634605d75b0c31f8c3be" kindref="member">l_unlikely</ref>(size<sp/>&gt;=<sp/>limit))<sp/><sp/></highlight><highlight class="comment">/*<sp/>cannot<sp/>grow<sp/>even<sp/>a<sp/>little?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ldebug_8c_1a88d38ca5da2e7a1492fc9d5ad70c32c5" kindref="member">luaG_runerror</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;too<sp/>many<sp/>%s<sp/>(limit<sp/>is<sp/>%d)&quot;</highlight><highlight class="normal">,<sp/>what,<sp/>limit);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>size<sp/>=<sp/>limit;<sp/><sp/></highlight><highlight class="comment">/*<sp/>still<sp/>have<sp/>at<sp/>least<sp/>one<sp/>free<sp/>place<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>size<sp/>*=<sp/>2;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(size<sp/>&lt;<sp/><ref refid="lmem_8c_1ad0c497dab6f56823e95b1e5e0c4b35a8" kindref="member">MINSIZEARRAY</ref>)</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>size<sp/>=<sp/><ref refid="lmem_8c_1ad0c497dab6f56823e95b1e5e0c4b35a8" kindref="member">MINSIZEARRAY</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>minimum<sp/>size<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(nelems<sp/>+<sp/>1<sp/>&lt;=<sp/>size<sp/>&amp;&amp;<sp/>size<sp/>&lt;=<sp/>limit);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;limit&apos;<sp/>ensures<sp/>that<sp/>multiplication<sp/>will<sp/>not<sp/>overflow<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/>newblock<sp/>=<sp/><ref refid="lmem_8c_1a8cb94bca57e8ae6aff344d3e6e4593af" kindref="member">luaM_saferealloc_</ref>(L,<sp/>block,<sp/><ref refid="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" kindref="member">cast_sizet</ref>(*psize)<sp/>*<sp/>size_elems,</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" kindref="member">cast_sizet</ref>(size)<sp/>*<sp/>size_elems);</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/>*psize<sp/>=<sp/>size;<sp/><sp/></highlight><highlight class="comment">/*<sp/>update<sp/>only<sp/>when<sp/>everything<sp/>else<sp/>is<sp/>OK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>newblock;</highlight></codeline>
+<codeline lineno="119"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="123"><highlight class="comment">**<sp/>In<sp/>prototypes,<sp/>the<sp/>size<sp/>of<sp/>the<sp/>array<sp/>is<sp/>also<sp/>its<sp/>number<sp/>of</highlight></codeline>
+<codeline lineno="124"><highlight class="comment">**<sp/>elements<sp/>(to<sp/>save<sp/>memory).<sp/>So,<sp/>if<sp/>it<sp/>cannot<sp/>shrink<sp/>an<sp/>array</highlight></codeline>
+<codeline lineno="125"><highlight class="comment">**<sp/>to<sp/>its<sp/>number<sp/>of<sp/>elements,<sp/>the<sp/>only<sp/>option<sp/>is<sp/>to<sp/>raise<sp/>an</highlight></codeline>
+<codeline lineno="126"><highlight class="comment">**<sp/>error.</highlight></codeline>
+<codeline lineno="127"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128" refid="lmem_8c_1a9edf70f3b22fbd2c904175bd26607a1f" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="lmem_8c_1a9edf70f3b22fbd2c904175bd26607a1f" kindref="member">luaM_shrinkvector_</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*block,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*size,</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>final_n,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>size_elem)<sp/>{</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*newblock;</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>oldsize<sp/>=<sp/><ref refid="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" kindref="member">cast_sizet</ref>(*size)<sp/>*<sp/>size_elem;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>newsize<sp/>=<sp/><ref refid="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" kindref="member">cast_sizet</ref>(final_n)<sp/>*<sp/>size_elem;</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(newsize<sp/>&lt;=<sp/>oldsize);</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/>newblock<sp/>=<sp/><ref refid="lmem_8c_1a8cb94bca57e8ae6aff344d3e6e4593af" kindref="member">luaM_saferealloc_</ref>(L,<sp/>block,<sp/>oldsize,<sp/>newsize);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/>*size<sp/>=<sp/>final_n;</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>newblock;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>}==================================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142" refid="lmem_8c_1a8fc7df43dd830ccbe7581fd53f65bdbe" refkind="member"><highlight class="normal"><ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref><sp/><ref refid="lmem_8c_1a8fc7df43dd830ccbe7581fd53f65bdbe" kindref="member">luaM_toobig</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><ref refid="ldebug_8c_1a88d38ca5da2e7a1492fc9d5ad70c32c5" kindref="member">luaG_runerror</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;memory<sp/>allocation<sp/>error:<sp/>block<sp/>too<sp/>big&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="144"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="148"><highlight class="comment">**<sp/>Free<sp/>memory</highlight></codeline>
+<codeline lineno="149"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="150" refid="lmem_8c_1a36b12d49a937e5de982e2a2a135e6824" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lmem_8c_1a36b12d49a937e5de982e2a2a135e6824" kindref="member">luaM_free_</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*block,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>osize)<sp/>{</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><ref refid="structglobal___state" kindref="compound">global_State</ref><sp/>*g<sp/>=<sp/><ref refid="lstate_8h_1a103db2de6edf3420c6c6c9a282562406" kindref="member">G</ref>(L);</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>((osize<sp/>==<sp/>0)<sp/>==<sp/>(block<sp/>==<sp/>NULL));</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><ref refid="lmem_8c_1a55b1468d2e5f515239d03975ec468ede" kindref="member">callfrealloc</ref>(g,<sp/>block,<sp/>osize,<sp/>0);</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/>g-&gt;<ref refid="structglobal___state_1a238d1f76279f013961d01abb93a74a47" kindref="member">GCdebt</ref><sp/>+=<sp/><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(<ref refid="llimits_8h_1a24fc195087e262c99a4cf0f9b346a684" kindref="member">l_mem</ref>,<sp/>osize);</highlight></codeline>
+<codeline lineno="155"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="159"><highlight class="comment">**<sp/>In<sp/>case<sp/>of<sp/>allocation<sp/>fail,<sp/>this<sp/>function<sp/>will<sp/>do<sp/>an<sp/>emergency</highlight></codeline>
+<codeline lineno="160"><highlight class="comment">**<sp/>collection<sp/>to<sp/>free<sp/>some<sp/>memory<sp/>and<sp/>then<sp/>try<sp/>the<sp/>allocation<sp/>again.</highlight></codeline>
+<codeline lineno="161"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*tryagain<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*block,</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>osize,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nsize)<sp/>{</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><ref refid="structglobal___state" kindref="compound">global_State</ref><sp/>*g<sp/>=<sp/><ref refid="lstate_8h_1a103db2de6edf3420c6c6c9a282562406" kindref="member">G</ref>(L);</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lmem_8c_1a55f218eb5e4a52ada7526051c736d69d" kindref="member">cantryagain</ref>(g))<sp/>{</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lgc_8c_1ac48130e5263ad8be09a9c51dae6125b9" kindref="member">luaC_fullgc</ref>(L,<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>try<sp/>to<sp/>free<sp/>some<sp/>memory...<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lmem_8c_1a55b1468d2e5f515239d03975ec468ede" kindref="member">callfrealloc</ref>(g,<sp/>block,<sp/>osize,<sp/>nsize);<sp/><sp/></highlight><highlight class="comment">/*<sp/>try<sp/>again<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;<sp/><sp/></highlight><highlight class="comment">/*<sp/>cannot<sp/>run<sp/>an<sp/>emergency<sp/>collection<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="174"><highlight class="comment">**<sp/>Generic<sp/>allocation<sp/>routine.</highlight></codeline>
+<codeline lineno="175"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176" refid="lmem_8c_1a7dd4e9ddf6987797216fa9cf4bc23954" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="lmem_8c_1a7dd4e9ddf6987797216fa9cf4bc23954" kindref="member">luaM_realloc_</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*block,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>osize,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nsize)<sp/>{</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*newblock;</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><ref refid="structglobal___state" kindref="compound">global_State</ref><sp/>*g<sp/>=<sp/><ref refid="lstate_8h_1a103db2de6edf3420c6c6c9a282562406" kindref="member">G</ref>(L);</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>((osize<sp/>==<sp/>0)<sp/>==<sp/>(block<sp/>==<sp/>NULL));</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/>newblock<sp/>=<sp/><ref refid="lmem_8c_1ab28b0855c7a625f9f245613df749b115" kindref="member">firsttry</ref>(g,<sp/>block,<sp/>osize,<sp/>nsize);</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="llimits_8h_1ae9c389231436634605d75b0c31f8c3be" kindref="member">l_unlikely</ref>(newblock<sp/>==<sp/>NULL<sp/>&amp;&amp;<sp/>nsize<sp/>&gt;<sp/>0))<sp/>{</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/>newblock<sp/>=<sp/>tryagain(L,<sp/>block,<sp/>osize,<sp/>nsize);</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(newblock<sp/>==<sp/>NULL)<sp/><sp/></highlight><highlight class="comment">/*<sp/>still<sp/>no<sp/>memory?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;<sp/><sp/></highlight><highlight class="comment">/*<sp/>do<sp/>not<sp/>update<sp/>&apos;GCdebt&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>((nsize<sp/>==<sp/>0)<sp/>==<sp/>(newblock<sp/>==<sp/>NULL));</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/>g-&gt;<ref refid="structglobal___state_1a238d1f76279f013961d01abb93a74a47" kindref="member">GCdebt</ref><sp/>-=<sp/><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(<ref refid="llimits_8h_1a24fc195087e262c99a4cf0f9b346a684" kindref="member">l_mem</ref>,<sp/>nsize)<sp/>-<sp/><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(<ref refid="llimits_8h_1a24fc195087e262c99a4cf0f9b346a684" kindref="member">l_mem</ref>,<sp/>osize);</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>newblock;</highlight></codeline>
+<codeline lineno="189"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+<codeline lineno="192" refid="lmem_8c_1a8cb94bca57e8ae6aff344d3e6e4593af" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="lmem_8c_1a8cb94bca57e8ae6aff344d3e6e4593af" kindref="member">luaM_saferealloc_</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*block,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>osize,</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nsize)<sp/>{</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*newblock<sp/>=<sp/><ref refid="lmem_8c_1a7dd4e9ddf6987797216fa9cf4bc23954" kindref="member">luaM_realloc_</ref>(L,<sp/>block,<sp/>osize,<sp/>nsize);</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="llimits_8h_1ae9c389231436634605d75b0c31f8c3be" kindref="member">l_unlikely</ref>(newblock<sp/>==<sp/>NULL<sp/>&amp;&amp;<sp/>nsize<sp/>&gt;<sp/>0))<sp/><sp/></highlight><highlight class="comment">/*<sp/>allocation<sp/>failed?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lmem_8h_1ae11aaaf07d13b2f0c3a671b01d7e3822" kindref="member">luaM_error</ref>(L);</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>newblock;</highlight></codeline>
+<codeline lineno="198"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201" refid="lmem_8c_1af0c92d038f767832eb8dd29eb0678096" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="lmem_8c_1af0c92d038f767832eb8dd29eb0678096" kindref="member">luaM_malloc_</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>size,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>tag)<sp/>{</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(size<sp/>==<sp/>0)</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;<sp/><sp/></highlight><highlight class="comment">/*<sp/>that&apos;s<sp/>all<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structglobal___state" kindref="compound">global_State</ref><sp/>*g<sp/>=<sp/><ref refid="lstate_8h_1a103db2de6edf3420c6c6c9a282562406" kindref="member">G</ref>(L);</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*newblock<sp/>=<sp/><ref refid="lmem_8c_1ab28b0855c7a625f9f245613df749b115" kindref="member">firsttry</ref>(g,<sp/>NULL,<sp/><ref refid="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" kindref="member">cast_sizet</ref>(tag),<sp/>size);</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="llimits_8h_1ae9c389231436634605d75b0c31f8c3be" kindref="member">l_unlikely</ref>(newblock<sp/>==<sp/>NULL))<sp/>{</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>newblock<sp/>=<sp/>tryagain(L,<sp/>NULL,<sp/><ref refid="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" kindref="member">cast_sizet</ref>(tag),<sp/>size);</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(newblock<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lmem_8h_1ae11aaaf07d13b2f0c3a671b01d7e3822" kindref="member">luaM_error</ref>(L);</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/>g-&gt;<ref refid="structglobal___state_1a238d1f76279f013961d01abb93a74a47" kindref="member">GCdebt</ref><sp/>-=<sp/><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(<ref refid="llimits_8h_1a24fc195087e262c99a4cf0f9b346a684" kindref="member">l_mem</ref>,<sp/>size);</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>newblock;</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="215"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lmem.c"/>
+  </compounddef>
+</doxygen>

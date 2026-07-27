@@ -213,3 +213,4 @@ inline bool Scene_Battle::IsEscapeAllowed() const {
 }
 
 #endif
+

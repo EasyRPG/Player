@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ul2_1_1lua__stack_3_01const_01char_01_5_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ul2::lua_stack&lt; const char * &gt;</compoundname>
+    <includes refid="lua__stack_8hpp" local="no">lua_stack.hpp</includes>
+    <templateparamlist>
+    </templateparamlist>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="structleasy_1_1ul2_1_1lua__stack_3_01const_01char_01_5_01_4_1af28413c5072595b91319ec43a1ea6b35" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>const char *</type>
+        <definition>static const char * leasy::ul2::lua_stack&lt; const char * &gt;::get</definition>
+        <argsstring>(lua_State *L, int index)</argsstring>
+        <name>get</name>
+        <qualifiedname>leasy::ul2::lua_stack&lt; const char * &gt;::get</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/lua_stack.hpp" line="162" column="21" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="162" bodyend="165"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1ul2_1_1lua__stack_3_01const_01char_01_5_01_4_1a1c6905aba344b782a23527dea903b9c8" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void leasy::ul2::lua_stack&lt; const char * &gt;::push</definition>
+        <argsstring>(lua_State *L, const char *value)</argsstring>
+        <name>push</name>
+        <qualifiedname>leasy::ul2::lua_stack&lt; const char * &gt;::push</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/lua_stack.hpp" line="168" column="15" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="168" bodyend="171"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ul2/lua_stack.hpp" line="160" column="1" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="161" bodyend="172"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ul2_1_1lua__stack_3_01const_01char_01_5_01_4_1af28413c5072595b91319ec43a1ea6b35" prot="public" virt="non-virtual"><scope>leasy::ul2::lua_stack&lt; const char * &gt;</scope><name>get</name></member>
+      <member refid="structleasy_1_1ul2_1_1lua__stack_3_01const_01char_01_5_01_4_1a1c6905aba344b782a23527dea903b9c8" prot="public" virt="non-virtual"><scope>leasy::ul2::lua_stack&lt; const char * &gt;</scope><name>push</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

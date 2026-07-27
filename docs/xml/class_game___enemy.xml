@@ -1,0 +1,1554 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___enemy" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>Game_Enemy</compoundname>
+    <basecompoundref refid="class_game___battler" prot="public" virt="non-virtual">Game_Battler</basecompoundref>
+    <includes refid="game__enemy_8h" local="no">game_enemy.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" prot="protected" static="no" mutable="no">
+        <type>const lcf::rpg::Enemy *</type>
+        <definition>const lcf::rpg::Enemy* Game_Enemy::enemy</definition>
+        <argsstring></argsstring>
+        <name>enemy</name>
+        <qualifiedname>Game_Enemy::enemy</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="280" column="23" bodyfile="game_enemy.h" bodystart="280" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___enemy_1a62e300f4ba7f812b6829baa34c39abde" prot="protected" static="no" mutable="no">
+        <type>const lcf::rpg::TroopMember *</type>
+        <definition>const lcf::rpg::TroopMember* Game_Enemy::troop_member</definition>
+        <argsstring></argsstring>
+        <name>troop_member</name>
+        <qualifiedname>Game_Enemy::troop_member</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="281" column="29" bodyfile="game_enemy.h" bodystart="281" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___enemy_1a17859c8bbb9717f4575dfb5e9526146e" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; int16_t &gt;</type>
+        <definition>std::vector&lt;int16_t&gt; Game_Enemy::states</definition>
+        <argsstring></argsstring>
+        <name>states</name>
+        <qualifiedname>Game_Enemy::states</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="282" column="13" bodyfile="game_enemy.h" bodystart="282" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___enemy_1ad502e05c6ea7f71575c864d60d7a3e3e" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Enemy::hp</definition>
+        <argsstring></argsstring>
+        <name>hp</name>
+        <qualifiedname>Game_Enemy::hp</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="283" column="5" bodyfile="game_enemy.h" bodystart="283" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___enemy_1a8d2d676647ab2a90e977065c01287628" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Enemy::sp</definition>
+        <argsstring></argsstring>
+        <name>sp</name>
+        <qualifiedname>Game_Enemy::sp</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="284" column="5" bodyfile="game_enemy.h" bodystart="284" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___enemy_1a70b9abccdc3ab28e1e8022a386d916ef" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Enemy::blink_timer</definition>
+        <argsstring></argsstring>
+        <name>blink_timer</name>
+        <qualifiedname>Game_Enemy::blink_timer</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="285" column="5" bodyfile="game_enemy.h" bodystart="285" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___enemy_1a7fd0bab8e74200996b984ff35a7d8873" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Enemy::death_timer</definition>
+        <argsstring></argsstring>
+        <name>death_timer</name>
+        <qualifiedname>Game_Enemy::death_timer</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="286" column="5" bodyfile="game_enemy.h" bodystart="286" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___enemy_1a0e79d4b799ba51c60c44f1a41fa36b35" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Enemy::explode_timer</definition>
+        <argsstring></argsstring>
+        <name>explode_timer</name>
+        <qualifiedname>Game_Enemy::explode_timer</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="287" column="5" bodyfile="game_enemy.h" bodystart="287" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___enemy_1abbb4e11d7fa9aeeb9c72fad117c76d70" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Enemy::Game_Enemy</definition>
+        <argsstring>(const lcf::rpg::TroopMember *tm)</argsstring>
+        <name>Game_Enemy</name>
+        <qualifiedname>Game_Enemy::Game_Enemy</qualifiedname>
+        <param>
+          <type>const lcf::rpg::TroopMember *</type>
+          <declname>tm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="36" column="10" bodyfile="game_enemy.cpp" bodystart="34" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1af9fcb8f2d10a1cdaaa9c9b4a6c747b39" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>const std::vector&lt; int16_t &gt; &amp;</type>
+        <definition>const std::vector&lt; int16_t &gt; &amp; Game_Enemy::GetStates</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetStates</name>
+        <qualifiedname>Game_Enemy::GetStates</qualifiedname>
+        <reimplements refid="class_game___battler_1a5e1dbff5663db9799863320eb0bc83a4">GetStates</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets battler states. This returns the raw state list with not inflected states set to 0 and inflected states set to at least 1 (this maps to the turn count).</para>
+<para><simplesect kind="return"><para>vector containing state list </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="38" column="19" bodyfile="game_enemy.h" bodystart="362" bodyend="364"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a516d27143ea230094866d2ed49d93042" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>std::vector&lt; int16_t &gt; &amp;</type>
+        <definition>std::vector&lt; int16_t &gt; &amp; Game_Enemy::GetStates</definition>
+        <argsstring>() override</argsstring>
+        <name>GetStates</name>
+        <qualifiedname>Game_Enemy::GetStates</qualifiedname>
+        <reimplements refid="class_game___battler_1a9ee1940b1218ce4d2187098d8fd900dc">GetStates</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="39" column="13" bodyfile="game_enemy.h" bodystart="366" bodyend="368"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1aae6f3e4a3bad6c10a8775b03808b4252" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::MaxHpValue</definition>
+        <argsstring>() const override</argsstring>
+        <name>MaxHpValue</name>
+        <qualifiedname>Game_Enemy::MaxHpValue</qualifiedname>
+        <reimplements refid="class_game___battler_1a4563723e90101641f021a28e20224e48">MaxHpValue</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="41" column="5" bodyfile="game_enemy.cpp" bodystart="50" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a0e88413ee05aac815a8acc171113fee9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::MaxSpValue</definition>
+        <argsstring>() const override</argsstring>
+        <name>MaxSpValue</name>
+        <qualifiedname>Game_Enemy::MaxSpValue</qualifiedname>
+        <reimplements refid="class_game___battler_1a93f23ea66e2d22e82604899c1e749334">MaxSpValue</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="43" column="5" bodyfile="game_enemy.cpp" bodystart="58" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a4bb1960df5e5c4dddf19206db9bc432d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::MaxStatBattleValue</definition>
+        <argsstring>() const override</argsstring>
+        <name>MaxStatBattleValue</name>
+        <qualifiedname>Game_Enemy::MaxStatBattleValue</qualifiedname>
+        <reimplements refid="class_game___battler_1af45422bca82c0cae097bcd6ddbc510f2">MaxStatBattleValue</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="45" column="5" bodyfile="game_enemy.cpp" bodystart="66" bodyend="72"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1af4ba8c8afb2b6d37db1dee5b9f00a285" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::MaxStatBaseValue</definition>
+        <argsstring>() const override</argsstring>
+        <name>MaxStatBaseValue</name>
+        <qualifiedname>Game_Enemy::MaxStatBaseValue</qualifiedname>
+        <reimplements refid="class_game___battler_1aaf2eed1df5b6d8f816c03fd44dd646d4">MaxStatBaseValue</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="47" column="5" bodyfile="game_enemy.cpp" bodystart="74" bodyend="80"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1ab7fd50bb9f58576a8cb80f5f4be9d022" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Game_Enemy::GetOriginalPosition</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetOriginalPosition</name>
+        <qualifiedname>Game_Enemy::GetOriginalPosition</qualifiedname>
+        <reimplements refid="class_game___battler_1af5e5910b4326434ef40a77cc5db66453">GetOriginalPosition</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>original (x,y) position from the database </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="49" column="7" bodyfile="game_enemy.cpp" bodystart="116" bodyend="118"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a964392997f2ff5b439bc2792382b0161" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Game_Enemy::ResetBattle</definition>
+        <argsstring>() override</argsstring>
+        <name>ResetBattle</name>
+        <qualifiedname>Game_Enemy::ResetBattle</qualifiedname>
+        <reimplements refid="class_game___battler_1aabd08db77c5f4349b089645c7a8b5733">ResetBattle</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes battle related data to there default values. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="51" column="6" bodyfile="game_enemy.cpp" bodystart="192" bodyend="198"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a2624e6650dbb49652ae13d12a5f96559" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetStateProbability</definition>
+        <argsstring>(int state_id) const override</argsstring>
+        <name>GetStateProbability</name>
+        <qualifiedname>Game_Enemy::GetStateProbability</qualifiedname>
+        <reimplements refid="class_game___battler_1a38cd87a26ac9f09c053a8c90149b99ca">GetStateProbability</reimplements>
+        <param>
+          <type>int</type>
+          <declname>state_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets probability that a state can be inflicted on this actor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>state_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="namespace_state" kindref="compound">State</ref> to test </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Probability of state infliction </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="59" column="5" bodyfile="game_enemy.cpp" bodystart="82" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a29abeb1975d3d167474c8df5c18e65d3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetBaseAttributeRate</definition>
+        <argsstring>(int attribute_id) const override</argsstring>
+        <name>GetBaseAttributeRate</name>
+        <qualifiedname>Game_Enemy::GetBaseAttributeRate</qualifiedname>
+        <reimplements refid="class_game___battler_1af720d587cf2d91b7d648f960d7c75c5e">GetBaseAttributeRate</reimplements>
+        <param>
+          <type>int</type>
+          <declname>attribute_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the base attribute rate when actor is damaged.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>attribute_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="namespace_attribute" kindref="compound">Attribute</ref> to query </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="namespace_attribute" kindref="compound">Attribute</ref> rate </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="67" column="5" bodyfile="game_enemy.cpp" bodystart="92" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1adfab24e37c963daa3ce15c97468ded25" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Game_Enemy::IsImmuneToAttributeDownshifts</definition>
+        <argsstring>() const override</argsstring>
+        <name>IsImmuneToAttributeDownshifts</name>
+        <qualifiedname>Game_Enemy::IsImmuneToAttributeDownshifts</qualifiedname>
+        <reimplements refid="class_game___battler_1a0d942b3f67ebf27195d746ee6724cfb9">IsImmuneToAttributeDownshifts</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if the enemy is immune to attribute downshifts.</para>
+<para><simplesect kind="return"><para>if the enemy is immune to attribute downshifts. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="74" column="6" bodyfile="game_enemy.cpp" bodystart="102" bodyend="104"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1aa64235b2fea12808d7573de5873ae9ae" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetId</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetId</name>
+        <qualifiedname>Game_Enemy::GetId</qualifiedname>
+        <reimplements refid="class_game___battler_1a382e2c8039107cdb73cb465a53f31cb7">GetId</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the enemy ID.</para>
+<para><simplesect kind="return"><para>Enemy ID </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="81" column="5" bodyfile="game_enemy.h" bodystart="322" bodyend="324"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a171815b933c3eb3ba3e535709ae04843" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_Enemy::GetName</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetName</name>
+        <qualifiedname>Game_Enemy::GetName</qualifiedname>
+        <reimplements refid="class_game___battler_1a5c08b2338e2557bdf791275ddc0c3265">GetName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the characters name</para>
+<para><simplesect kind="return"><para>Character name </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="88" column="18" bodyfile="game_enemy.h" bodystart="370" bodyend="372"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a4191a5200a0c2f560412b941a330c151" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetTroopMemberId</definition>
+        <argsstring>() const</argsstring>
+        <name>GetTroopMemberId</name>
+        <qualifiedname>Game_Enemy::GetTroopMemberId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The troop member id in the battle lineup </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="91" column="5" bodyfile="game_enemy.h" bodystart="326" bodyend="328"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a60c29efb8278bd372a00e4c0c5c71bba" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_Enemy::GetSpriteName</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetSpriteName</name>
+        <qualifiedname>Game_Enemy::GetSpriteName</qualifiedname>
+        <reimplements refid="class_game___battler_1ae253b4901db180450ce35d02854bb568">GetSpriteName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the filename of the enemy sprite</para>
+<para><simplesect kind="return"><para>Filename of enemy sprite </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="98" column="18" bodyfile="game_enemy.h" bodystart="374" bodyend="376"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a20cf35f8f8fd32416fc9ec80d04013e4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetBaseMaxHp</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetBaseMaxHp</name>
+        <qualifiedname>Game_Enemy::GetBaseMaxHp</qualifiedname>
+        <reimplements refid="class_game___battler_1a2cf6a85da13fcbe58204fec63903b230">GetBaseMaxHp</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the maximum HP for the current level.</para>
+<para><simplesect kind="return"><para>maximum HP. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="105" column="5" bodyfile="game_enemy.h" bodystart="330" bodyend="332"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a3cefc0bae608507016f15d8b981b5682" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetBaseMaxSp</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetBaseMaxSp</name>
+        <qualifiedname>Game_Enemy::GetBaseMaxSp</qualifiedname>
+        <reimplements refid="class_game___battler_1a8a61fc41114470583ec5fde253b38e9a">GetBaseMaxSp</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the maximum SP for the current level.</para>
+<para><simplesect kind="return"><para>maximum SP. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="112" column="5" bodyfile="game_enemy.h" bodystart="334" bodyend="336"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1aa909372f4271015b18329bee03831c6e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetBaseAtk</definition>
+        <argsstring>(Weapon=WeaponAll) const override</argsstring>
+        <name>GetBaseAtk</name>
+        <qualifiedname>Game_Enemy::GetBaseAtk</qualifiedname>
+        <reimplements refid="class_game___battler_1a356c968f2d6a60a891d93146e58f602c">GetBaseAtk</reimplements>
+        <param>
+          <type><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref></type>
+          <defval><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abc835b531d75b336403efe228b31f7bb" kindref="member">WeaponAll</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the attack for the current level.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>weapon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which weapons to include in calculating result. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>attack. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="120" column="5" bodyfile="game_enemy.h" bodystart="338" bodyend="340"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a330ada6beaadc02b7a354e6c61693d71" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetBaseDef</definition>
+        <argsstring>(Weapon=WeaponAll) const override</argsstring>
+        <name>GetBaseDef</name>
+        <qualifiedname>Game_Enemy::GetBaseDef</qualifiedname>
+        <reimplements refid="class_game___battler_1aca339f0a2c7765fbd0479e2997950a7b">GetBaseDef</reimplements>
+        <param>
+          <type><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref></type>
+          <defval><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abc835b531d75b336403efe228b31f7bb" kindref="member">WeaponAll</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the defense for the current level.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>weapon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which weapons to include in calculating result. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>defense. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="128" column="5" bodyfile="game_enemy.h" bodystart="342" bodyend="344"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a8cb74e6a22046a3734ee7d665251fd55" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetBaseSpi</definition>
+        <argsstring>(Weapon=WeaponAll) const override</argsstring>
+        <name>GetBaseSpi</name>
+        <qualifiedname>Game_Enemy::GetBaseSpi</qualifiedname>
+        <reimplements refid="class_game___battler_1afe17db60b9dc30b7e9fed25f49f3b23c">GetBaseSpi</reimplements>
+        <param>
+          <type><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref></type>
+          <defval><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abc835b531d75b336403efe228b31f7bb" kindref="member">WeaponAll</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the spirit for the current level.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>weapon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which weapons to include in calculating result. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>spirit. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="136" column="5" bodyfile="game_enemy.h" bodystart="346" bodyend="348"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a0d388dd6325bfb7acfac2bb627fb5b70" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetBaseAgi</definition>
+        <argsstring>(Weapon=WeaponAll) const override</argsstring>
+        <name>GetBaseAgi</name>
+        <qualifiedname>Game_Enemy::GetBaseAgi</qualifiedname>
+        <reimplements refid="class_game___battler_1a0b798994705ad5afc4042575dd7a9d89">GetBaseAgi</reimplements>
+        <param>
+          <type><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref></type>
+          <defval><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abc835b531d75b336403efe228b31f7bb" kindref="member">WeaponAll</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the agility for the current level.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>weapon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which weapons to include in calculating result. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>agility. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="144" column="5" bodyfile="game_enemy.h" bodystart="350" bodyend="352"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a82f671e5cffd6dc7c345d127337d3c3d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetHue</definition>
+        <argsstring>() const</argsstring>
+        <name>GetHue</name>
+        <qualifiedname>Game_Enemy::GetHue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="146" column="5" bodyfile="game_enemy.h" bodystart="318" bodyend="320"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a3cf8d265915c233c58382273406736ed" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetHp</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetHp</name>
+        <qualifiedname>Game_Enemy::GetHp</qualifiedname>
+        <reimplements refid="class_game___battler_1a5386a8c0d85c542653ef8d1c07819b0a">GetHp</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets battler HP.</para>
+<para><simplesect kind="return"><para>current HP. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="148" column="5" bodyfile="game_enemy.h" bodystart="354" bodyend="356"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a89ea1f65ffb1053a75ce0bd3d0640247" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::SetHp</definition>
+        <argsstring>(int _hp) override</argsstring>
+        <name>SetHp</name>
+        <qualifiedname>Game_Enemy::SetHp</qualifiedname>
+        <reimplements refid="class_game___battler_1a5c9fbc550528f98564c87ae9897766c4">SetHp</reimplements>
+        <param>
+          <type>int</type>
+          <declname>hp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the current battler HP.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>hp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the new hp value to try to set </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the actual hp set </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="149" column="5" bodyfile="game_enemy.cpp" bodystart="106" bodyend="109"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1ad3866e66af30aefdfcfe0286bafb31f6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetSp</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetSp</name>
+        <qualifiedname>Game_Enemy::GetSp</qualifiedname>
+        <reimplements refid="class_game___battler_1aacc73f3187003d8fb43e42e2c923a5c6">GetSp</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets battler SP.</para>
+<para><simplesect kind="return"><para>current SP. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="151" column="5" bodyfile="game_enemy.h" bodystart="358" bodyend="360"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a8660c0055d57c437dcae4ea8daab7d2e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::SetSp</definition>
+        <argsstring>(int _sp) override</argsstring>
+        <name>SetSp</name>
+        <qualifiedname>Game_Enemy::SetSp</qualifiedname>
+        <reimplements refid="class_game___battler_1ad8a9cfc9f45a3e00f360dc9a097a7930">SetSp</reimplements>
+        <param>
+          <type>int</type>
+          <declname>sp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the current battler SP. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the new sp value to try to set </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the actual sp set </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="152" column="5" bodyfile="game_enemy.cpp" bodystart="111" bodyend="114"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a50e743b7a36372952f44ff19c2fc6868" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Enemy::Transform</definition>
+        <argsstring>(int new_enemy_id)</argsstring>
+        <name>Transform</name>
+        <qualifiedname>Game_Enemy::Transform</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>new_enemy_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="154" column="6" bodyfile="game_enemy.cpp" bodystart="126" bodyend="143"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1ac0cd578b6574b4a5dff8c10e2fc5c640" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetHitChance</definition>
+        <argsstring>(Weapon=WeaponAll) const override</argsstring>
+        <name>GetHitChance</name>
+        <qualifiedname>Game_Enemy::GetHitChance</qualifiedname>
+        <reimplements refid="class_game___battler_1a379a444ad32153bbc48877999bde126d">GetHitChance</reimplements>
+        <param>
+          <type><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref></type>
+          <defval><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abc835b531d75b336403efe228b31f7bb" kindref="member">WeaponAll</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the chance to hit for a normal attack.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>weapon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Which weapons to include in calculating result. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>hit rate. [0-100] </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="162" column="5" bodyfile="game_enemy.cpp" bodystart="145" bodyend="151"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a9668573e7c342e17ff713ea236da05d7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>float</type>
+        <definition>float Game_Enemy::GetCriticalHitChance</definition>
+        <argsstring>(Weapon=WeaponAll) const override</argsstring>
+        <name>GetCriticalHitChance</name>
+        <qualifiedname>Game_Enemy::GetCriticalHitChance</qualifiedname>
+        <reimplements refid="class_game___battler_1a02c1b302375b128509ac6a2f43a70b1b">GetCriticalHitChance</reimplements>
+        <param>
+          <type><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref></type>
+          <defval><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abc835b531d75b336403efe228b31f7bb" kindref="member">WeaponAll</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the chance to hit for a normal attack.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>weapon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Which weapons to include in calculating result. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>hit rate. [0-100] </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="170" column="7" bodyfile="game_enemy.cpp" bodystart="153" bodyend="155"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a96e90fb69d6477898947371d596b0eab" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Game_Enemy::HasAttackAll</definition>
+        <argsstring>(Weapon weapon=WeaponAll) const override</argsstring>
+        <name>HasAttackAll</name>
+        <qualifiedname>Game_Enemy::HasAttackAll</qualifiedname>
+        <reimplements refid="class_game___battler_1acc2a3af985c0d96ee37a08749c5c52cd">HasAttackAll</reimplements>
+        <param>
+          <type><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref></type>
+          <declname>weapon</declname>
+          <defval><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abc835b531d75b336403efe228b31f7bb" kindref="member">WeaponAll</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Tests if the enemy has a weapon that grants attack all</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>weapon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Which weapons to include in calculating result. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if a weapon is having attack all attribute </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="178" column="6" bodyfile="game_enemy.cpp" bodystart="157" bodyend="159"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a023919fef936c368b6a1d07d920ac62b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Game_Enemy::AttackIgnoresEvasion</definition>
+        <argsstring>(Weapon weapon=WeaponAll) const override</argsstring>
+        <name>AttackIgnoresEvasion</name>
+        <qualifiedname>Game_Enemy::AttackIgnoresEvasion</qualifiedname>
+        <reimplements refid="class_game___battler_1a5abfa40cd9c21b8cdc41ef155feab28b">AttackIgnoresEvasion</reimplements>
+        <param>
+          <type><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref></type>
+          <declname>weapon</declname>
+          <defval><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abc835b531d75b336403efe228b31f7bb" kindref="member">WeaponAll</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Tests if the enemy has a weapon which ignores evasion.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>weapon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Which weapons to include in calculating result. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>If the actor has weapon that ignores evasion </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="186" column="6" bodyfile="game_enemy.cpp" bodystart="161" bodyend="163"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a27add0d0ba337a88d76f484b12b9f878" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Game_Enemy::PreventsCritical</definition>
+        <argsstring>() const override</argsstring>
+        <name>PreventsCritical</name>
+        <qualifiedname>Game_Enemy::PreventsCritical</qualifiedname>
+        <reimplements refid="class_game___battler_1aaa068a532f0651e42644cd0d1d447a51">PreventsCritical</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>If the enemy is protected against critical hits. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="191" column="6" bodyfile="game_enemy.cpp" bodystart="165" bodyend="167"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a83ea75dbd4e219ae08dc4bb8f6d352cb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Game_Enemy::HasPhysicalEvasionUp</definition>
+        <argsstring>() const override</argsstring>
+        <name>HasPhysicalEvasionUp</name>
+        <qualifiedname>Game_Enemy::HasPhysicalEvasionUp</qualifiedname>
+        <reimplements refid="class_game___battler_1aa2a25b3ac16f1c174e9e6023f0f846cf">HasPhysicalEvasionUp</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>If the enemy has an increased physical evasion rate. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="196" column="6" bodyfile="game_enemy.cpp" bodystart="169" bodyend="171"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a259e956e81ecab872110bff265696424" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetBattleAnimationId</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetBattleAnimationId</name>
+        <qualifiedname>Game_Enemy::GetBattleAnimationId</qualifiedname>
+        <reimplements refid="class_game___battler_1a20b5607565bd9d791b22d3bcd495a738">GetBattleAnimationId</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="198" column="5" bodyfile="game_enemy.h" bodystart="314" bodyend="316"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1ab40128877235943ce9c553798b74f0ae" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetExp</definition>
+        <argsstring>() const</argsstring>
+        <name>GetExp</name>
+        <qualifiedname>Game_Enemy::GetExp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="200" column="5" bodyfile="game_enemy.h" bodystart="294" bodyend="296"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1aee5599992afc791774cb16fc3ddf6cee" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetMoney</definition>
+        <argsstring>() const</argsstring>
+        <name>GetMoney</name>
+        <qualifiedname>Game_Enemy::GetMoney</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="202" column="5" bodyfile="game_enemy.h" bodystart="298" bodyend="300"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a9e940b33080a5bfe2c1cc5eebc0aaac7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetFlyingOffset</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetFlyingOffset</name>
+        <qualifiedname>Game_Enemy::GetFlyingOffset</qualifiedname>
+        <reimplements refid="class_game___battler_1a915958b1849bff00e3a383771692b2b3">GetFlyingOffset</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Offset of flying enemies </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="204" column="5" bodyfile="game_enemy.cpp" bodystart="173" bodyend="182"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a73d93673d23a8e2afab3368dbb22508d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Game_Enemy::UpdateBattle</definition>
+        <argsstring>() override</argsstring>
+        <name>UpdateBattle</name>
+        <qualifiedname>Game_Enemy::UpdateBattle</qualifiedname>
+        <reimplements refid="class_game___battler_1a7ded1a924d29992aa8e0a505b88f2cb0">UpdateBattle</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the Battler </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="206" column="6" bodyfile="game_enemy.cpp" bodystart="184" bodyend="190"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a1fc6765f2489f91067237e8f6f9dc364" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Enemy::IsTransparent</definition>
+        <argsstring>() const</argsstring>
+        <name>IsTransparent</name>
+        <qualifiedname>Game_Enemy::IsTransparent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="208" column="6" bodyfile="game_enemy.h" bodystart="310" bodyend="312"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a47e1261dbe1271ad01a041c2c16f8a73" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetDropId</definition>
+        <argsstring>() const</argsstring>
+        <name>GetDropId</name>
+        <qualifiedname>Game_Enemy::GetDropId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get&apos;s the ID of the item the enemy drops when defeated.</para>
+<para><simplesect kind="return"><para>Dropped item ID, or 0 if no drop </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="215" column="5" bodyfile="game_enemy.h" bodystart="302" bodyend="304"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1afc387c54a0120c3b809a08b936f0a548" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetDropProbability</definition>
+        <argsstring>() const</argsstring>
+        <name>GetDropProbability</name>
+        <qualifiedname>Game_Enemy::GetDropProbability</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get&apos;s the probability that the enemy&apos;s item will be dropped.</para>
+<para><simplesect kind="return"><para>Probability of drop as a percent (0-100) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="223" column="5" bodyfile="game_enemy.h" bodystart="306" bodyend="308"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a5190ba7d6e0baa581914c5607002ed33" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="class_game___battler_1aaf3150c823c4ad686c5e3e1097ae3d47" kindref="member">BattlerType</ref></type>
+        <definition>Game_Battler::BattlerType Game_Enemy::GetType</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetType</name>
+        <qualifiedname>Game_Enemy::GetType</qualifiedname>
+        <reimplements refid="class_game___battler_1ad2117ef6fbf6d0f1095195b2fcde1298">GetType</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="225" column="13" bodyfile="game_enemy.h" bodystart="290" bodyend="292"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a4fade0ae5145b69667b61af12f9fb0fb" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>bool Game_Enemy::IsInParty</definition>
+        <argsstring>() const override</argsstring>
+        <name>IsInParty</name>
+        <qualifiedname>Game_Enemy::IsInParty</qualifiedname>
+        <reimplements refid="class_game___battler_1af1ba21cd4f39f9ec7ddd958c4ab0fc88">IsInParty</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if this battler is in it&apos;s party </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="227" column="6" bodyfile="game_enemy.h" bodystart="378" bodyend="381"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a33e2102b0111b2751997f1ff8450fd5e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const lcf::rpg::Enemy &amp;</type>
+        <definition>const lcf::rpg::Enemy &amp; Game_Enemy::GetDbEnemy</definition>
+        <argsstring>() const</argsstring>
+        <name>GetDbEnemy</name>
+        <qualifiedname>Game_Enemy::GetDbEnemy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>database enemy struct </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="230" column="23" bodyfile="game_enemy.h" bodystart="383" bodyend="385"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a7480b52328f2c9666587893182e8642c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetBlinkTimer</definition>
+        <argsstring>() const</argsstring>
+        <name>GetBlinkTimer</name>
+        <qualifiedname>Game_Enemy::GetBlinkTimer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the blink animation timer </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="233" column="5" bodyfile="game_enemy.h" bodystart="387" bodyend="389"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a68d5606d968b7e103724b4a81c9b90db" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Enemy::SetBlinkTimer</definition>
+        <argsstring>(int t=20)</argsstring>
+        <name>SetBlinkTimer</name>
+        <qualifiedname>Game_Enemy::SetBlinkTimer</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>t</declname>
+          <defval>20</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the blink animation timer</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the value to set. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="240" column="6" bodyfile="game_enemy.h" bodystart="391" bodyend="393"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a7f606c87a42ebc701c226f2774012cfd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetExplodeTimer</definition>
+        <argsstring>() const</argsstring>
+        <name>GetExplodeTimer</name>
+        <qualifiedname>Game_Enemy::GetExplodeTimer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the explode animation timer </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="243" column="5" bodyfile="game_enemy.h" bodystart="395" bodyend="397"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a5291771f98b72b4e9899aea370e4a173" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Enemy::SetExplodeTimer</definition>
+        <argsstring>(int t=20)</argsstring>
+        <name>SetExplodeTimer</name>
+        <qualifiedname>Game_Enemy::SetExplodeTimer</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>t</declname>
+          <defval>20</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the explode animation timer</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the value to set. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="250" column="6" bodyfile="game_enemy.h" bodystart="399" bodyend="401"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a9086b6ac67291b30cdf428a6bae40892" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetDeathTimer</definition>
+        <argsstring>() const</argsstring>
+        <name>GetDeathTimer</name>
+        <qualifiedname>Game_Enemy::GetDeathTimer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the death animation timer </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="253" column="5" bodyfile="game_enemy.h" bodystart="403" bodyend="405"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a05bfb0b746ca1e72a33f6e6f7199c7b9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Enemy::SetDeathTimer</definition>
+        <argsstring>(int t=36)</argsstring>
+        <name>SetDeathTimer</name>
+        <qualifiedname>Game_Enemy::SetDeathTimer</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>t</declname>
+          <defval>36</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the death animation timer</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the value to set. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="260" column="6" bodyfile="game_enemy.h" bodystart="407" bodyend="409"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1afa8029475cf680f0cea47d313e3f9a7c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Enemy::IsFlying</definition>
+        <argsstring>() const</argsstring>
+        <name>IsFlying</name>
+        <qualifiedname>Game_Enemy::IsFlying</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if enemy is flying </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="263" column="6" bodyfile="game_enemy.h" bodystart="411" bodyend="413"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a09a469809af90ac52f7205cc1da76c75" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetUnarmedBattleAnimationId</definition>
+        <argsstring>() const</argsstring>
+        <name>GetUnarmedBattleAnimationId</name>
+        <qualifiedname>Game_Enemy::GetUnarmedBattleAnimationId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the id of the enemy&apos;s unarmed battle animation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="266" column="5" bodyfile="game_enemy.h" bodystart="415" bodyend="417"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a65296b425d2a8311da4fb010360a6b69" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_sprite___enemy" kindref="compound">Sprite_Enemy</ref> *</type>
+        <definition>Sprite_Enemy * Game_Enemy::GetEnemyBattleSprite</definition>
+        <argsstring>() const</argsstring>
+        <name>GetEnemyBattleSprite</name>
+        <qualifiedname>Game_Enemy::GetEnemyBattleSprite</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="268" column="14" bodyfile="game_enemy.h" bodystart="419" bodyend="421"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a7c479066aee3d75ad85299034fb63c74" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Enemy::GetEnemyAi</definition>
+        <argsstring>() const</argsstring>
+        <name>GetEnemyAi</name>
+        <qualifiedname>Game_Enemy::GetEnemyAi</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="270" column="5" bodyfile="game_enemy.h" bodystart="423" bodyend="425"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_1a65303a9dee35fb7c2a9e0722ae446e22" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>bool Game_Enemy::HasStrongDefense</definition>
+        <argsstring>() const override</argsstring>
+        <name>HasStrongDefense</name>
+        <qualifiedname>Game_Enemy::HasStrongDefense</qualifiedname>
+        <reimplements refid="class_game___battler_1a31a0129ca3911a1e68ce8f543ec41e09">HasStrongDefense</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if the enemies defense skill is stronger the usual.</para>
+<para><simplesect kind="return"><para>true if strong defense </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="277" column="6" bodyfile="game_enemy.h" bodystart="427" bodyend="429"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Represents a single enemy in the battle scene </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Game_Battler</label>
+        <link refid="class_game___battler"/>
+      </node>
+      <node id="1">
+        <label>Game_Enemy</label>
+        <link refid="class_game___enemy"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Game_Battler</label>
+        <link refid="class_game___battler"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>shake</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>flash</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Game_Battler::FlashData</label>
+        <link refid="struct_game___battler_1_1_flash_data"/>
+      </node>
+      <node id="4">
+        <label>Game_Battler::ShakeData</label>
+        <link refid="struct_game___battler_1_1_shake_data"/>
+      </node>
+      <node id="1">
+        <label>Game_Enemy</label>
+        <link refid="class_game___enemy"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+    </collaborationgraph>
+    <location file="game_enemy.h" line="33" column="1" bodyfile="game_enemy.h" bodystart="34" bodyend="288"/>
+    <listofallmembers>
+      <member refid="class_game___battler_1ad7480b43d2bf6b0bd98443953e1fed4b" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>AddState</name></member>
+      <member refid="class_game___battler_1ada7ab7993aef1aa58d148cbad31b6d42" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>agi_modifier</name></member>
+      <member refid="class_game___battler_1a110edf43191187b24e0d89030e5cdd34" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>ApplyConditions</name></member>
+      <member refid="class_game___battler_1a458f0f71adc7edc6d63ce6e3761dcd25" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>atk_modifier</name></member>
+      <member refid="class_game___enemy_1a023919fef936c368b6a1d07d920ac62b" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>AttackIgnoresEvasion</name></member>
+      <member refid="class_game___battler_1a58a62cedebd1fdc5cbe3dbc51bf52c90" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>attribute_shift</name></member>
+      <member refid="class_game___battler_1af2707f30b99fc20a54d765e078d65a8b" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>battle_algorithm</name></member>
+      <member refid="class_game___battler_1a705ff61167064e2deac895b745c68242" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>battle_combo_command_id</name></member>
+      <member refid="class_game___battler_1ab808f09439093b3de6c389352b039cd5" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>battle_combo_times</name></member>
+      <member refid="class_game___battler_1a1d6fa0cc82bfa5a795550f0f74f49c52" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>battle_order</name></member>
+      <member refid="class_game___battler_1abb19b03a6c34c62402dfcdd3752b737d" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>battle_sprite</name></member>
+      <member refid="class_game___battler_1ac5904fe4f382b7fa9372d9731536fc8f" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>battle_turn</name></member>
+      <member refid="class_game___battler_1aaf3150c823c4ad686c5e3e1097ae3d47" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>BattlerType</name></member>
+      <member refid="class_game___battler_1afbb0e5d23e9452d207314f4278974528" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>BattleStateHeal</name></member>
+      <member refid="class_game___enemy_1a70b9abccdc3ab28e1e8022a386d916ef" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>blink_timer</name></member>
+      <member refid="class_game___battler_1ac5663f0a04df18614e84b6238c6f835f" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>CalculateSkillCost</name></member>
+      <member refid="class_game___battler_1abb5c7a29570b6465ed11438fccd6557f" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>CalculateSkillHpCost</name></member>
+      <member refid="class_game___battler_1a1dde48423d46cdf041a654373bd69b2c" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>CalculateWeaponSpCost</name></member>
+      <member refid="class_game___battler_1a377f9502e0de81eb346af7b1b47a718d" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>CalcValueAfterAgiStates</name></member>
+      <member refid="class_game___battler_1adab1dd75ed2dcd02303e6269a4683a61" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>CalcValueAfterAtkStates</name></member>
+      <member refid="class_game___battler_1a0e4fa5a92329e1050ade6d405e2ed832" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>CalcValueAfterDefStates</name></member>
+      <member refid="class_game___battler_1a15b886d84c9a5832b8fc85d775e4c85f" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>CalcValueAfterSpiStates</name></member>
+      <member refid="class_game___battler_1a6a44f7618b8dd80e24070c81a4e64953" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>CanAct</name></member>
+      <member refid="class_game___battler_1a256457934d4ea035f6e4c1e177cc2496" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>CanActOrRecoverable</name></member>
+      <member refid="class_game___battler_1ab87e785b0bf2706caca3d904b73f85e3" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>CanChangeAgiModifier</name></member>
+      <member refid="class_game___battler_1a8148eca114032672a54b63f0534508d8" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>CanChangeAtkModifier</name></member>
+      <member refid="class_game___battler_1af92e30f4d5c2878695c2bcbb231266f5" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>CanChangeDefModifier</name></member>
+      <member refid="class_game___battler_1aec815c2d2c81d5b8955df93aa66767bd" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>CanChangeSpiModifier</name></member>
+      <member refid="class_game___battler_1a2740fc17629ec5dacf0251177fdb112d" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>CanShiftAttributeRate</name></member>
+      <member refid="class_game___battler_1ab39c5bd392e638dd056b2caed8af6588" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>ChangeAgiModifier</name></member>
+      <member refid="class_game___battler_1a164eaa4bdbb5131e657a5fc2b7e5bad0" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>ChangeAtkModifier</name></member>
+      <member refid="class_game___battler_1ad5faff37a99e87a6b3ad26bf005c3277" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>ChangeDefModifier</name></member>
+      <member refid="class_game___battler_1a6982b68ac5ded2fb4802810b5ae4e320" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>ChangeHp</name></member>
+      <member refid="class_game___battler_1aa9bbcd5cb3fd4249b195c05cc4b89908" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>ChangeSp</name></member>
+      <member refid="class_game___battler_1a9606505394a839ae3974cecaccb22383" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>ChangeSpiModifier</name></member>
+      <member refid="class_game___battler_1ac8554cd66f380e1a18b2278812fc34a5" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>charged</name></member>
+      <member refid="class_game___enemy_1a7fd0bab8e74200996b984ff35a7d8873" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>death_timer</name></member>
+      <member refid="class_game___battler_1ab2da838cabd3531aba41cec9e01fe45b" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>def_modifier</name></member>
+      <member refid="class_game___battler_1a410956067582a391bd6ec3c56231b98d" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>defending</name></member>
+      <member refid="class_game___battler_1a47b9901a5c38d9ebd269a87457c6986f" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>direction_flipped</name></member>
+      <member refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>enemy</name></member>
+      <member refid="class_game___battler_1abea0ad6603fa852271df99ab327fa736" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>EvadesAllPhysicalAttacks</name></member>
+      <member refid="class_game___battler_1a7c9e1ecf834cca96a32b5c0f1f703572" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>Exists</name></member>
+      <member refid="class_game___enemy_1a0e79d4b799ba51c60c44f1a41fa36b35" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>explode_timer</name></member>
+      <member refid="class_game___battler_1af6c3ef88bd05d763f8ec695710984afd" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>Flash</name></member>
+      <member refid="class_game___battler_1abba5b82a2951573ad0f8a1af422edcdc" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>flash</name></member>
+      <member refid="class_game___battler_1add9f2997f41b01bcc84082f336f1d66e" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>frame_counter</name></member>
+      <member refid="class_game___battler_1af03115bccdcc6a7d8b375566b57708ff" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>Game_Battler</name></member>
+      <member refid="class_game___battler_1a3b504388b232f18e55c4f061764c4192" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>Game_Battler</name></member>
+      <member refid="class_game___battler_1a30b53066b4c89ff67856d3099c38dfa2" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>Game_Battler</name></member>
+      <member refid="class_game___enemy_1abbb4e11d7fa9aeeb9c72fad117c76d70" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>Game_Enemy</name></member>
+      <member refid="class_game___battler_1a84d5b9f18b429ea4f170d31c31e52855" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>gauge</name></member>
+      <member refid="class_game___battler_1a023bd0a334d7742a30098bfa5d82535e" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetAgi</name></member>
+      <member refid="class_game___battler_1a7845464cda598e3282917296a295c125" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetAgiModifier</name></member>
+      <member refid="class_game___battler_1ae17e1047fad24146e09431689db39ac1" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetAtbGauge</name></member>
+      <member refid="class_game___battler_1ac63811b82b767fa17d46768a5ee50238" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetAtk</name></member>
+      <member refid="class_game___battler_1a7dbd0f1d66216d8ee7c608bd8b0c3c1c" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetAtkModifier</name></member>
+      <member refid="class_game___battler_1afe7e54b0df039de8debc6abc949ed7fe" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetAttributeRate</name></member>
+      <member refid="class_game___battler_1ab49f50bf8651a0badc89d4bec9c7abf1" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetAttributeRateShift</name></member>
+      <member refid="class_game___enemy_1a0d388dd6325bfb7acfac2bb627fb5b70" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetBaseAgi</name></member>
+      <member refid="class_game___enemy_1aa909372f4271015b18329bee03831c6e" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetBaseAtk</name></member>
+      <member refid="class_game___enemy_1a29abeb1975d3d167474c8df5c18e65d3" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetBaseAttributeRate</name></member>
+      <member refid="class_game___enemy_1a330ada6beaadc02b7a354e6c61693d71" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetBaseDef</name></member>
+      <member refid="class_game___enemy_1a20cf35f8f8fd32416fc9ec80d04013e4" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetBaseMaxHp</name></member>
+      <member refid="class_game___enemy_1a3cefc0bae608507016f15d8b981b5682" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetBaseMaxSp</name></member>
+      <member refid="class_game___enemy_1a8cb74e6a22046a3734ee7d665251fd55" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetBaseSpi</name></member>
+      <member refid="class_game___battler_1ae91e6d8263a774eda4a6a499ea7a9790" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetBattleAlgorithm</name></member>
+      <member refid="class_game___enemy_1a259e956e81ecab872110bff265696424" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetBattleAnimationId</name></member>
+      <member refid="class_game___battler_1aa23be16ef73f1522bb2bc0457e769756" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetBattleComboCommand</name></member>
+      <member refid="class_game___battler_1a3e6624b19646dc0d3d94b7f59ce2b249" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetBattleComboTimes</name></member>
+      <member refid="class_game___battler_1a139d63b97bd4af97936d6fe044a8fdb6" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetBattleFrameCounter</name></member>
+      <member refid="class_game___battler_1ac7c5d77764a9bf6cf7e1a04bc94cb780" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetBattleOrderAgi</name></member>
+      <member refid="class_game___battler_1aa1e7751743e00da058e6d3307f420cba" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetBattlePosition</name></member>
+      <member refid="class_game___battler_1ab2f27f31a34235aa7ace416808ff18b3" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetBattleSprite</name></member>
+      <member refid="class_game___battler_1a0fc796854c73b897dd4c95db1ec86368" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetBattleTurn</name></member>
+      <member refid="class_game___enemy_1a7480b52328f2c9666587893182e8642c" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetBlinkTimer</name></member>
+      <member refid="class_game___enemy_1a9668573e7c342e17ff713ea236da05d7" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetCriticalHitChance</name></member>
+      <member refid="class_game___enemy_1a33e2102b0111b2751997f1ff8450fd5e" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetDbEnemy</name></member>
+      <member refid="class_game___enemy_1a9086b6ac67291b30cdf428a6bae40892" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetDeathTimer</name></member>
+      <member refid="class_game___battler_1a8445036815fd22e3313396ac04e9ac34" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetDef</name></member>
+      <member refid="class_game___battler_1afe812b1cd84e156cfd2a30852566bbb0" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetDefModifier</name></member>
+      <member refid="class_game___battler_1a3cea12771c71aea84d75895a6b74ef98" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetDisplayX</name></member>
+      <member refid="class_game___battler_1ad6b718b71c31b8683679865650bc3d72" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetDisplayY</name></member>
+      <member refid="class_game___enemy_1a47e1261dbe1271ad01a041c2c16f8a73" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetDropId</name></member>
+      <member refid="class_game___enemy_1afc387c54a0120c3b809a08b936f0a548" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetDropProbability</name></member>
+      <member refid="class_game___enemy_1a7c479066aee3d75ad85299034fb63c74" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetEnemyAi</name></member>
+      <member refid="class_game___enemy_1a65296b425d2a8311da4fb010360a6b69" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetEnemyBattleSprite</name></member>
+      <member refid="class_game___enemy_1ab40128877235943ce9c553798b74f0ae" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetExp</name></member>
+      <member refid="class_game___enemy_1a7f606c87a42ebc701c226f2774012cfd" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetExplodeTimer</name></member>
+      <member refid="class_game___battler_1a858fa06e934f6f9373ece7bcdf3fe54a" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetFlashColor</name></member>
+      <member refid="class_game___enemy_1a9e940b33080a5bfe2c1cc5eebc0aaac7" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetFlyingOffset</name></member>
+      <member refid="class_game___enemy_1ac0cd578b6574b4a5dff8c10e2fc5c640" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetHitChance</name></member>
+      <member refid="class_game___battler_1a5bf9067cb5e1d060e79592c94117aab3" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetHitChanceModifierFromStates</name></member>
+      <member refid="class_game___enemy_1a3cf8d265915c233c58382273406736ed" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetHp</name></member>
+      <member refid="class_game___enemy_1a82f671e5cffd6dc7c345d127337d3c3d" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetHue</name></member>
+      <member refid="class_game___enemy_1aa64235b2fea12808d7573de5873ae9ae" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetId</name></member>
+      <member refid="class_game___battler_1a02e5bb069f93313e62bdf4ae2df9b03f" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetInflictedStates</name></member>
+      <member refid="class_game___battler_1a07b0d041650b647a23182a6697bcae63" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetInflictedStatesOrderedByPriority</name></member>
+      <member refid="class_game___battler_1a73d8d4799043132fe1d22a4cfbec30ae" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetLastBattleAction</name></member>
+      <member refid="class_game___battler_1aa419a803469d27de4f68c227fb5aef06" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetMaxAtbGauge</name></member>
+      <member refid="class_game___battler_1a940d9932886b5f631d6a10c15a90b94f" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetMaxHp</name></member>
+      <member refid="class_game___battler_1ae6913c74cb1bda568049926071449d9f" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetMaxSp</name></member>
+      <member refid="class_game___enemy_1aee5599992afc791774cb16fc3ddf6cee" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetMoney</name></member>
+      <member refid="class_game___enemy_1a171815b933c3eb3ba3e535709ae04843" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetName</name></member>
+      <member refid="class_game___battler_1a6715e31281aae1d16e27a97c22fbce68" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetNumberOfAttacks</name></member>
+      <member refid="class_game___enemy_1ab7fd50bb9f58576a8cb80f5f4be9d022" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetOriginalPosition</name></member>
+      <member refid="class_game___battler_1a57474f09b6c1034d01edea8a6faf0a20" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetParty</name></member>
+      <member refid="class_game___battler_1a262218a69761a317a2e9174f07d03788" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetPartyIndex</name></member>
+      <member refid="class_game___battler_1a61ed134243db7baedf71a2e692534df4" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetPermanentStates</name></member>
+      <member refid="class_game___battler_1a652aeb7a34a1dd19bf684410fe43787c" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetSignificantRestriction</name></member>
+      <member refid="class_game___battler_1aabfdbb9cbde7119adc3c767963c120a0" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetSignificantState</name></member>
+      <member refid="class_game___enemy_1ad3866e66af30aefdfcfe0286bafb31f6" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetSp</name></member>
+      <member refid="class_game___battler_1abc26527b7cc85f2b4835de739f580fdc" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetSpi</name></member>
+      <member refid="class_game___battler_1ada862719da47d642ea182581f67fdd5a" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetSpiModifier</name></member>
+      <member refid="class_game___enemy_1a60c29efb8278bd372a00e4c0c5c71bba" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetSpriteName</name></member>
+      <member refid="class_game___enemy_1a2624e6650dbb49652ae13d12a5f96559" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetStateProbability</name></member>
+      <member refid="class_game___battler_1adba07b7009b8ca978dfc0950b1b244cf" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetStateRate</name></member>
+      <member refid="class_game___enemy_1af9fcb8f2d10a1cdaaa9c9b4a6c747b39" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetStates</name></member>
+      <member refid="class_game___enemy_1a516d27143ea230094866d2ed49d93042" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetStates</name></member>
+      <member refid="class_game___enemy_1a4191a5200a0c2f560412b941a330c151" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetTroopMemberId</name></member>
+      <member refid="class_game___enemy_1a5190ba7d6e0baa581914c5607002ed33" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>GetType</name></member>
+      <member refid="class_game___enemy_1a09a469809af90ac52f7205cc1da76c75" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetUnarmedBattleAnimationId</name></member>
+      <member refid="class_game___battler_1a53a3c50fa6b8e9530527ab26f2105a75" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>GetWeaponSprite</name></member>
+      <member refid="class_game___enemy_1a96e90fb69d6477898947371d596b0eab" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>HasAttackAll</name></member>
+      <member refid="class_game___battler_1a32d07ff9cfd58602f530b0d599c1b84c" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>HasFullHp</name></member>
+      <member refid="class_game___battler_1a256f4697b9c98b41d1b594c5b441be52" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>HasFullSp</name></member>
+      <member refid="class_game___enemy_1a83ea75dbd4e219ae08dc4bb8f6d352cb" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>HasPhysicalEvasionUp</name></member>
+      <member refid="class_game___battler_1aff5d99c7c5357f2964db29d7c01d9bbb" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>HasPreemptiveAttack</name></member>
+      <member refid="class_game___battler_1a022de580782a467adc5dff63fb6462f8" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>HasReflectState</name></member>
+      <member refid="class_game___battler_1ad38a1eb1aa423ac5890bfa52e1dfb75b" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>HasState</name></member>
+      <member refid="class_game___enemy_1a65303a9dee35fb7c2a9e0722ae446e22" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>HasStrongDefense</name></member>
+      <member refid="class_game___battler_1ae7cf5cf4cf02684b55b034f79442f407" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>hidden</name></member>
+      <member refid="class_game___enemy_1ad502e05c6ea7f71575c864d60d7a3e3e" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>hp</name></member>
+      <member refid="class_game___battler_1afd19cfab768dffd1e81a7ed80b3426d3" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>IncrementAtbGauge</name></member>
+      <member refid="class_game___battler_1acde04db23d021dd2fb688f029cef8f06" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>IsAtbGaugeFull</name></member>
+      <member refid="class_game___battler_1af5e91b4d757db3609ca95237b76292da" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>IsCharged</name></member>
+      <member refid="class_game___battler_1a4b9322549be267cc0a48ab95c43713f6" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>IsDead</name></member>
+      <member refid="class_game___battler_1a02af384b9dd3811c0ebe39e9a5980d67" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>IsDefending</name></member>
+      <member refid="class_game___battler_1a197d00741e7435033a81dc6b311770af" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>IsDirectionFlipped</name></member>
+      <member refid="class_game___enemy_1afa8029475cf680f0cea47d313e3f9a7c" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>IsFlying</name></member>
+      <member refid="class_game___battler_1abad2f44588fad7ae2810e0d275b6afb3" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>IsHidden</name></member>
+      <member refid="class_game___battler_1a36eabf4d627cffb8ca2ef9257017d34f" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>IsImmortal</name></member>
+      <member refid="class_game___enemy_1adfab24e37c963daa3ce15c97468ded25" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>IsImmuneToAttributeDownshifts</name></member>
+      <member refid="class_game___enemy_1a4fade0ae5145b69667b61af12f9fb0fb" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>IsInParty</name></member>
+      <member refid="class_game___battler_1a08ed91ed1508c97ccd49c5a9ba9a70e2" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>IsSkillUsable</name></member>
+      <member refid="class_game___battler_1abf1790da0bc1a13d3fa26598b740a8a9" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>IsSpriteDirectionFlipped</name></member>
+      <member refid="class_game___enemy_1a1fc6765f2489f91067237e8f6f9dc364" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>IsTransparent</name></member>
+      <member refid="class_game___battler_1a2c86853edd05f14fcecb07c9c4e0eeec" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>Kill</name></member>
+      <member refid="class_game___battler_1aa24670c37861f992db3da7ac040460bb" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>last_battle_action</name></member>
+      <member refid="class_game___enemy_1aae6f3e4a3bad6c10a8775b03808b4252" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>MaxHpValue</name></member>
+      <member refid="class_game___enemy_1a0e88413ee05aac815a8acc171113fee9" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>MaxSpValue</name></member>
+      <member refid="class_game___enemy_1af4ba8c8afb2b6d37db1dee5b9f00a285" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>MaxStatBaseValue</name></member>
+      <member refid="class_game___enemy_1a4bb1960df5e5c4dddf19206db9bc432d" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>MaxStatBattleValue</name></member>
+      <member refid="class_game___battler_1ae69ac8d588b0f7f01bfe2957730d354d" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>NextBattleTurn</name></member>
+      <member refid="class_game___battler_1a2b16570e953235266c79f450bd4c6f27" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>operator=</name></member>
+      <member refid="class_game___battler_1acb9c1245b560585ff0efe27d42a43dc2" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>operator=</name></member>
+      <member refid="class_game___battler_1a42b7ebebda30cea894afcf9d540fdf70" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>position</name></member>
+      <member refid="class_game___enemy_1a27add0d0ba337a88d76f484b12b9f878" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>PreventsCritical</name></member>
+      <member refid="class_game___battler_1a128e218bf6d82578db2e1f3bfaa1a769" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>RemoveAllStates</name></member>
+      <member refid="class_game___battler_1aae8dc29e8f1765157fd8f0f4e90c4a81" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>RemoveBattleStates</name></member>
+      <member refid="class_game___battler_1ac7f458f50af19edf0ab270a1af459654" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>RemoveState</name></member>
+      <member refid="class_game___enemy_1a964392997f2ff5b439bc2792382b0161" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>ResetBattle</name></member>
+      <member refid="class_game___battler_1ad09bc340e368fe48299945937c5d6182" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetAgiModifier</name></member>
+      <member refid="class_game___battler_1a02bf9fe5a65f327f3742a284560b094f" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetAtbGauge</name></member>
+      <member refid="class_game___battler_1a1289ad3e1db17e12d1509fdb14043f80" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetAtkModifier</name></member>
+      <member refid="class_game___battler_1aea3d6eb4abfe0b6a6d0a3b68b1d90156" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetBattleAlgorithm</name></member>
+      <member refid="class_game___battler_1aea4934dccee70e30c03de67313e22190" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetBattleCombo</name></member>
+      <member refid="class_game___battler_1ac410033bcc21c2d91be73e8c0bc83ddd" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetBattleOrderAgi</name></member>
+      <member refid="class_game___battler_1aeb09f760acd157b99aca0308a1e37d4a" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetBattlePosition</name></member>
+      <member refid="class_game___battler_1abb88a7d72acb6cea08f3d3070eaa829e" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetBattleSprite</name></member>
+      <member refid="class_game___enemy_1a68d5606d968b7e103724b4a81c9b90db" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetBlinkTimer</name></member>
+      <member refid="class_game___battler_1a0b2fa9beed7ff8eb7838628c5bd44920" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetCharged</name></member>
+      <member refid="class_game___enemy_1a05bfb0b746ca1e72a33f6e6f7199c7b9" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetDeathTimer</name></member>
+      <member refid="class_game___battler_1a6ab95b48a69eacf7bd9c2cc7ac92b494" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetDefModifier</name></member>
+      <member refid="class_game___battler_1a2bf3235402c23c45724c8263dd77ea52" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetDirectionFlipped</name></member>
+      <member refid="class_game___enemy_1a5291771f98b72b4e9899aea370e4a173" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetExplodeTimer</name></member>
+      <member refid="class_game___battler_1a8ae7c3be9dc6403133ef499f9a02e320" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetHidden</name></member>
+      <member refid="class_game___enemy_1a89ea1f65ffb1053a75ce0bd3d0640247" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>SetHp</name></member>
+      <member refid="class_game___battler_1a5271642e3136fb8fd8cbb5ab0bfb1467" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetIsDefending</name></member>
+      <member refid="class_game___battler_1a7052e873fe7909041791ca54b85bd3e6" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetLastBattleAction</name></member>
+      <member refid="class_game___enemy_1a8660c0055d57c437dcae4ea8daab7d2e" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>SetSp</name></member>
+      <member refid="class_game___battler_1ad173134c94f954d8fe5dff13c7865878" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetSpiModifier</name></member>
+      <member refid="class_game___battler_1a7b8177c15c3b6dd70b1fec378ad46be2" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>SetWeaponSprite</name></member>
+      <member refid="class_game___battler_1a8ff4fe1cb416a5460e88ab3c4fd2957b" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>shake</name></member>
+      <member refid="class_game___battler_1afe06352dc9ea06612a1d37f88df00055" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>ShakeOnce</name></member>
+      <member refid="class_game___battler_1a5acf30eb2bf1b4134385862b934c2944" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>ShiftAttributeRate</name></member>
+      <member refid="class_game___enemy_1a8d2d676647ab2a90e977065c01287628" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>sp</name></member>
+      <member refid="class_game___battler_1a752879f6ee28f7eb45bd081318d1fbb9" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>spi_modifier</name></member>
+      <member refid="class_game___enemy_1a17859c8bbb9717f4575dfb5e9526146e" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>states</name></member>
+      <member refid="class_game___enemy_1a50e743b7a36372952f44ff19c2fc6868" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>Transform</name></member>
+      <member refid="class_game___enemy_1a62e300f4ba7f812b6829baa34c39abde" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>troop_member</name></member>
+      <member refid="class_game___battler_1aaf3150c823c4ad686c5e3e1097ae3d47a89531407c538f7d34dbcb57342769644" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>Type_Ally</name></member>
+      <member refid="class_game___battler_1aaf3150c823c4ad686c5e3e1097ae3d47a111621977bc24e0b2f8f2848971ed063" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>Type_Enemy</name></member>
+      <member refid="class_game___enemy_1a73d93673d23a8e2afab3368dbb22508d" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>UpdateBattle</name></member>
+      <member refid="class_game___battler_1a424ad12f74f9f95735885bbecf9b4bae" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>UseItem</name></member>
+      <member refid="class_game___battler_1a45201422f4888f25db217da7f75260e1" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>UseSkill</name></member>
+      <member refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>Weapon</name></member>
+      <member refid="class_game___battler_1ab3e790b06de201422ee3617be814ea83" prot="protected" virt="non-virtual"><scope>Game_Enemy</scope><name>weapon_sprite</name></member>
+      <member refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abc835b531d75b336403efe228b31f7bb" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>WeaponAll</name></member>
+      <member refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386af77451333fab6d8fdf77cf1d246b70b4" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>WeaponNone</name></member>
+      <member refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386a2c8fe5b05f4c3dcfc54bd56ecb644020" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>WeaponPrimary</name></member>
+      <member refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abe796bf71c243a8ab0af50c18b90cc44" prot="public" virt="non-virtual"><scope>Game_Enemy</scope><name>WeaponSecondary</name></member>
+      <member refid="class_game___battler_1ac79ba02d9088c88a1f5ba9a0485cd88a" prot="public" virt="virtual"><scope>Game_Enemy</scope><name>~Game_Battler</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

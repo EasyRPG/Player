@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_tr" kind="namespace" language="C++">
+    <compoundname>Tr</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_tr_1a4b78387412f89d32a789d0bda6d4786d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+        <definition>FilesystemView Tr::GetTranslationFilesystem</definition>
+        <argsstring>()</argsstring>
+        <name>GetTranslationFilesystem</name>
+        <qualifiedname>Tr::GetTranslationFilesystem</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The directory tree of the translation directory. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="47" column="16" bodyfile="translation.cpp" bodystart="58" bodyend="60" declfile="translation.h" declline="47" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_tr_1a1f7099b676600f2f0d71c7092f226290" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Tr::HasActiveTranslation</definition>
+        <argsstring>()</argsstring>
+        <name>HasActiveTranslation</name>
+        <qualifiedname>Tr::HasActiveTranslation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Whether a translation is active. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="52" column="6" bodyfile="translation.cpp" bodystart="62" bodyend="64" declfile="translation.h" declline="52" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_tr_1a9f1c4a11ba0441a2ae65677c01ed9bd1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Tr::GetCurrentTranslationId</definition>
+        <argsstring>()</argsstring>
+        <name>GetCurrentTranslationId</name>
+        <qualifiedname>Tr::GetCurrentTranslationId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The id of the current translation (e.g., &quot;Spanish&quot;). If empty, there is no active translation. <simplesect kind="return"><para>The translation ID </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="58" column="13" bodyfile="translation.cpp" bodystart="66" bodyend="68" declfile="translation.h" declline="58" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_tr_1afcd6b4bfd49a63bee7c20607931ce674" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Tr::GetCurrentLanguageCode</definition>
+        <argsstring>()</argsstring>
+        <name>GetCurrentLanguageCode</name>
+        <qualifiedname>Tr::GetCurrentLanguageCode</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="struct_language" kindref="compound">Language</ref> code of the current active translation. If empty none was set or no active translation. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="63" column="13" bodyfile="translation.cpp" bodystart="70" bodyend="72" declfile="translation.h" declline="63" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_tr_1ace0e93b495b7a44ec59ea0882941d0f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+        <definition>FilesystemView Tr::GetCurrentTranslationFilesystem</definition>
+        <argsstring>()</argsstring>
+        <name>GetCurrentTranslationFilesystem</name>
+        <qualifiedname>Tr::GetCurrentTranslationFilesystem</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The directory tree of the active translation. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="68" column="16" bodyfile="translation.cpp" bodystart="74" bodyend="76" declfile="translation.h" declline="68" declcolumn="16"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Namespace used to retrieve translations of Terms, BattlEvents, etc. </para>
+    </detaileddescription>
+    <location file="translation.h" line="43" column="1"/>
+  </compounddef>
+</doxygen>

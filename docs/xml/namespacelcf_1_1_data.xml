@@ -1,0 +1,348 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespacelcf_1_1_data" kind="namespace" language="C++">
+    <compoundname>lcf::Data</compoundname>
+    <sectiondef kind="user-defined">
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1a56bf8a2879c7c39ab78d607a7d5ab496" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; rpg::Actor &gt; &amp;</type>
+        <definition>std::vector&lt; rpg::Actor &gt; &amp; lcf::Data::actors</definition>
+        <argsstring></argsstring>
+        <name>actors</name>
+        <qualifiedname>lcf::Data::actors</qualifiedname>
+        <initializer>= data.actors</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="18" column="13" bodyfile="lcf_data.cpp" bodystart="18" bodyend="-1" declfile="lcf/data.h" declline="46" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1a5e0ab7850eec231c1a4462d2fdf491fe" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; rpg::Skill &gt; &amp;</type>
+        <definition>std::vector&lt; rpg::Skill &gt; &amp; lcf::Data::skills</definition>
+        <argsstring></argsstring>
+        <name>skills</name>
+        <qualifiedname>lcf::Data::skills</qualifiedname>
+        <initializer>= data.skills</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="19" column="13" bodyfile="lcf_data.cpp" bodystart="19" bodyend="-1" declfile="lcf/data.h" declline="47" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1a19c954007507875e0136493ed52d470b" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; rpg::Item &gt; &amp;</type>
+        <definition>std::vector&lt; rpg::Item &gt; &amp; lcf::Data::items</definition>
+        <argsstring></argsstring>
+        <name>items</name>
+        <qualifiedname>lcf::Data::items</qualifiedname>
+        <initializer>= data.items</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="20" column="13" bodyfile="lcf_data.cpp" bodystart="20" bodyend="-1" declfile="lcf/data.h" declline="48" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1aa3bb01f06639a77acb4daefc0290aef7" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; rpg::Enemy &gt; &amp;</type>
+        <definition>std::vector&lt; rpg::Enemy &gt; &amp; lcf::Data::enemies</definition>
+        <argsstring></argsstring>
+        <name>enemies</name>
+        <qualifiedname>lcf::Data::enemies</qualifiedname>
+        <initializer>= data.enemies</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="21" column="13" bodyfile="lcf_data.cpp" bodystart="21" bodyend="-1" declfile="lcf/data.h" declline="49" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1ada7bf67fe638431b16b39f156eab45ea" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; rpg::Troop &gt; &amp;</type>
+        <definition>std::vector&lt; rpg::Troop &gt; &amp; lcf::Data::troops</definition>
+        <argsstring></argsstring>
+        <name>troops</name>
+        <qualifiedname>lcf::Data::troops</qualifiedname>
+        <initializer>= data.troops</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="22" column="13" bodyfile="lcf_data.cpp" bodystart="22" bodyend="-1" declfile="lcf/data.h" declline="50" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1a441528c0fd6cb0ca1226a82262c07ce0" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; rpg::Terrain &gt; &amp;</type>
+        <definition>std::vector&lt; rpg::Terrain &gt; &amp; lcf::Data::terrains</definition>
+        <argsstring></argsstring>
+        <name>terrains</name>
+        <qualifiedname>lcf::Data::terrains</qualifiedname>
+        <initializer>= data.terrains</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="23" column="13" bodyfile="lcf_data.cpp" bodystart="23" bodyend="-1" declfile="lcf/data.h" declline="51" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1a19bc528191542a365b022ec88842a67d" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; rpg::Attribute &gt; &amp;</type>
+        <definition>std::vector&lt; rpg::Attribute &gt; &amp; lcf::Data::attributes</definition>
+        <argsstring></argsstring>
+        <name>attributes</name>
+        <qualifiedname>lcf::Data::attributes</qualifiedname>
+        <initializer>= data.attributes</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="24" column="13" bodyfile="lcf_data.cpp" bodystart="24" bodyend="-1" declfile="lcf/data.h" declline="52" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1ac5d91a447bb1178865898054be516527" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; rpg::State &gt; &amp;</type>
+        <definition>std::vector&lt; rpg::State &gt; &amp; lcf::Data::states</definition>
+        <argsstring></argsstring>
+        <name>states</name>
+        <qualifiedname>lcf::Data::states</qualifiedname>
+        <initializer>= data.states</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="25" column="13" bodyfile="lcf_data.cpp" bodystart="25" bodyend="-1" declfile="lcf/data.h" declline="53" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1ad2c82a5c5c0c227d17137156160788a0" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; rpg::Animation &gt; &amp;</type>
+        <definition>std::vector&lt; rpg::Animation &gt; &amp; lcf::Data::animations</definition>
+        <argsstring></argsstring>
+        <name>animations</name>
+        <qualifiedname>lcf::Data::animations</qualifiedname>
+        <initializer>= data.animations</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="26" column="13" bodyfile="lcf_data.cpp" bodystart="26" bodyend="-1" declfile="lcf/data.h" declline="54" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1a920f3303eb95fcb1495671ad2866a491" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; rpg::Chipset &gt; &amp;</type>
+        <definition>std::vector&lt; rpg::Chipset &gt; &amp; lcf::Data::chipsets</definition>
+        <argsstring></argsstring>
+        <name>chipsets</name>
+        <qualifiedname>lcf::Data::chipsets</qualifiedname>
+        <initializer>= data.chipsets</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="27" column="13" bodyfile="lcf_data.cpp" bodystart="27" bodyend="-1" declfile="lcf/data.h" declline="55" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1a918685c7e53ae0320393c97837f670e5" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; rpg::CommonEvent &gt; &amp;</type>
+        <definition>std::vector&lt; rpg::CommonEvent &gt; &amp; lcf::Data::commonevents</definition>
+        <argsstring></argsstring>
+        <name>commonevents</name>
+        <qualifiedname>lcf::Data::commonevents</qualifiedname>
+        <initializer>= data.commonevents</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="28" column="13" bodyfile="lcf_data.cpp" bodystart="28" bodyend="-1" declfile="lcf/data.h" declline="56" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1a62e422dafb51d8bdc5d431bfd2205128" prot="public" static="no" mutable="no">
+        <type>rpg::BattleCommands &amp;</type>
+        <definition>rpg::BattleCommands &amp; lcf::Data::battlecommands</definition>
+        <argsstring></argsstring>
+        <name>battlecommands</name>
+        <qualifiedname>lcf::Data::battlecommands</qualifiedname>
+        <initializer>= data.battlecommands</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="29" column="21" bodyfile="lcf_data.cpp" bodystart="29" bodyend="-1" declfile="lcf/data.h" declline="57" declcolumn="28"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1a83fd4345ff537f98c9f7be1b8d67ec3f" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; rpg::Class &gt; &amp;</type>
+        <definition>std::vector&lt; rpg::Class &gt; &amp; lcf::Data::classes</definition>
+        <argsstring></argsstring>
+        <name>classes</name>
+        <qualifiedname>lcf::Data::classes</qualifiedname>
+        <initializer>= data.classes</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="30" column="13" bodyfile="lcf_data.cpp" bodystart="30" bodyend="-1" declfile="lcf/data.h" declline="58" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1ae87cf2bc2f269b5d37ac725f9550f9c9" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; rpg::BattlerAnimation &gt; &amp;</type>
+        <definition>std::vector&lt; rpg::BattlerAnimation &gt; &amp; lcf::Data::battleranimations</definition>
+        <argsstring></argsstring>
+        <name>battleranimations</name>
+        <qualifiedname>lcf::Data::battleranimations</qualifiedname>
+        <initializer>= data.battleranimations</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="31" column="13" bodyfile="lcf_data.cpp" bodystart="31" bodyend="-1" declfile="lcf/data.h" declline="59" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1a07a6be31fcebcdc64855c837e13b2ef3" prot="public" static="no" mutable="no">
+        <type>rpg::Terms &amp;</type>
+        <definition>rpg::Terms &amp; lcf::Data::terms</definition>
+        <argsstring></argsstring>
+        <name>terms</name>
+        <qualifiedname>lcf::Data::terms</qualifiedname>
+        <initializer>= data.terms</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="32" column="12" bodyfile="lcf_data.cpp" bodystart="32" bodyend="-1" declfile="lcf/data.h" declline="60" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1a2e1c4ccfd795db103b3aaf028688e821" prot="public" static="no" mutable="no">
+        <type>rpg::System &amp;</type>
+        <definition>rpg::System &amp; lcf::Data::system</definition>
+        <argsstring></argsstring>
+        <name>system</name>
+        <qualifiedname>lcf::Data::system</qualifiedname>
+        <initializer>= data.system</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="33" column="13" bodyfile="lcf_data.cpp" bodystart="33" bodyend="-1" declfile="lcf/data.h" declline="61" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1aa54e9734521dc4cf4c52c6e8448a0280" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; rpg::Switch &gt; &amp;</type>
+        <definition>std::vector&lt; rpg::Switch &gt; &amp; lcf::Data::switches</definition>
+        <argsstring></argsstring>
+        <name>switches</name>
+        <qualifiedname>lcf::Data::switches</qualifiedname>
+        <initializer>= data.switches</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="34" column="13" bodyfile="lcf_data.cpp" bodystart="34" bodyend="-1" declfile="lcf/data.h" declline="62" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1a9784541bae96e2e9b4cc84a15214ec5e" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; rpg::Variable &gt; &amp;</type>
+        <definition>std::vector&lt; rpg::Variable &gt; &amp; lcf::Data::variables</definition>
+        <argsstring></argsstring>
+        <name>variables</name>
+        <qualifiedname>lcf::Data::variables</qualifiedname>
+        <initializer>= data.variables</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="35" column="13" bodyfile="lcf_data.cpp" bodystart="35" bodyend="-1" declfile="lcf/data.h" declline="63" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1a0080b75c62ae9adf5006eae0bd5e64c7" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; rpg::StringVariable &gt; &amp;</type>
+        <definition>std::vector&lt; rpg::StringVariable &gt; &amp; lcf::Data::maniac_string_variables</definition>
+        <argsstring></argsstring>
+        <name>maniac_string_variables</name>
+        <qualifiedname>lcf::Data::maniac_string_variables</qualifiedname>
+        <initializer>= data.maniac_string_variables</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="36" column="13" bodyfile="lcf_data.cpp" bodystart="36" bodyend="-1" declfile="lcf/data.h" declline="64" declcolumn="20"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" prot="public" static="no" mutable="no">
+        <type>rpg::Database</type>
+        <definition>rpg::Database lcf::Data::data</definition>
+        <argsstring></argsstring>
+        <name>data</name>
+        <qualifiedname>lcf::Data::data</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Database <ref refid="namespacelcf_1_1_data" kindref="compound">Data</ref> (ldb) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="16" column="15" bodyfile="lcf_data.cpp" bodystart="16" bodyend="-1" declfile="lcf/data.h" declline="44" declcolumn="22"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespacelcf_1_1_data_1a79d27a689d47adbc337554a28495d25c" prot="public" static="no" mutable="no">
+        <type>rpg::TreeMap</type>
+        <definition>rpg::TreeMap lcf::Data::treemap</definition>
+        <argsstring></argsstring>
+        <name>treemap</name>
+        <qualifiedname>lcf::Data::treemap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>TreeMap (lmt) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf_data.cpp" line="38" column="14" bodyfile="lcf_data.cpp" bodystart="38" bodyend="-1" declfile="lcf/data.h" declline="68" declcolumn="21"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespacelcf_1_1_data_1afd56f65ad69b54740da97522f9905dae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lcf::Data::Clear</definition>
+        <argsstring>()</argsstring>
+        <name>Clear</name>
+        <qualifiedname>lcf::Data::Clear</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Clears database data. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="lcf/data.h" line="73" column="6" bodyfile="lcf_data.cpp" bodystart="41" bodyend="64" declfile="lcf/data.h" declline="73" declcolumn="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="namespacelcf_1_1_data" kindref="compound">Data</ref> namespace </para>
+    </detaileddescription>
+    <location file="lcf/data.h" line="42" column="1"/>
+  </compounddef>
+</doxygen>

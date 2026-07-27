@@ -1,0 +1,663 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_scene___title" kind="class" language="C++" prot="public">
+    <compoundname>Scene_Title</compoundname>
+    <basecompoundref refid="class_scene" prot="public" virt="non-virtual">Scene</basecompoundref>
+    <includes refid="scene__title_8h" local="no">scene_title.h</includes>
+    <innerclass refid="struct_scene___title_1_1_command_indices" prot="private">Scene_Title::CommandIndices</innerclass>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_scene___title_1aa9ba12623d96108ffd2fec89c19c9c0b" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___command" kindref="compound">Window_Command</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Command&gt; Scene_Title::command_window</definition>
+        <argsstring></argsstring>
+        <name>command_window</name>
+        <qualifiedname>Scene_Title::command_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Displays the options of the title scene. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="134" column="17" bodyfile="scene_title.h" bodystart="134" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___title_1a7d7186ef87993efca07b646eeded5cde" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_sprite" kindref="compound">Sprite</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Sprite&gt; Scene_Title::title</definition>
+        <argsstring></argsstring>
+        <name>title</name>
+        <qualifiedname>Scene_Title::title</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_background" kindref="compound">Background</ref> graphic. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="137" column="17" bodyfile="scene_title.h" bodystart="137" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___title_1ab4c999aa3b6ac434621fa92ae1e359de" prot="private" static="no" mutable="no">
+        <type>CommandIndices</type>
+        <definition>CommandIndices Scene_Title::indices</definition>
+        <argsstring></argsstring>
+        <name>indices</name>
+        <qualifiedname>Scene_Title::indices</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="153" column="16" bodyfile="scene_title.h" bodystart="153" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___title_1a2eecf38a813aa067fa84426269e02c3a" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Title::continue_enabled</definition>
+        <argsstring></argsstring>
+        <name>continue_enabled</name>
+        <qualifiedname>Scene_Title::continue_enabled</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Contains the state of continue button. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="156" column="6" bodyfile="scene_title.h" bodystart="156" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___title_1ae7f5bba1da8ab2cb20a6fc14a6253e49" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Title::restart_title_cache</definition>
+        <argsstring></argsstring>
+        <name>restart_title_cache</name>
+        <qualifiedname>Scene_Title::restart_title_cache</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="158" column="6" bodyfile="scene_title.h" bodystart="158" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___title_1aaf310797143a1e7e78ac200e63cc0be5" prot="private" static="no" mutable="no">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding Scene_Title::request_id</definition>
+        <argsstring></argsstring>
+        <name>request_id</name>
+        <qualifiedname>Scene_Title::request_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="160" column="20" bodyfile="scene_title.h" bodystart="160" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_scene___title_1a78a965e38ffa53d244d942c453eba430" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Scene_Title::Scene_Title</definition>
+        <argsstring>()</argsstring>
+        <name>Scene_Title</name>
+        <qualifiedname>Scene_Title::Scene_Title</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="37" column="1" bodyfile="scene_title.cpp" bodystart="48" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1a8447cd3c43b1940b4b4faf017e870838" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Title::Start</definition>
+        <argsstring>() override</argsstring>
+        <name>Start</name>
+        <qualifiedname>Scene_Title::Start</qualifiedname>
+        <reimplements refid="class_scene_1a31e0e1b9ce39bd9f5ec160835cc94d44">Start</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Start processing. This function is executed while the screen is faded out. All objects needed for the scene should be created here. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="39" column="6" bodyfile="scene_title.cpp" bodystart="52" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1ae916900d101c408a160d50604cafe633" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Title::Continue</definition>
+        <argsstring>(SceneType prev_scene) override</argsstring>
+        <name>Continue</name>
+        <qualifiedname>Scene_Title::Continue</qualifiedname>
+        <reimplements refid="class_scene_1ac612b681d0de7c100f580b4bc446887b">Continue</reimplements>
+        <param>
+          <type><ref refid="class_scene_1adf61561da781541f6b9ec5590756b09e" kindref="member">SceneType</ref></type>
+          <declname>prev_scene</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Continue processing. This function is executed when returning from a nested scene (instead of Start).</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>prev_scene</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The previous scene </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="40" column="6" bodyfile="scene_title.cpp" bodystart="84" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1a2a7966c4618295ed38a2528e611e1553" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Title::TransitionIn</definition>
+        <argsstring>(SceneType prev_scene) override</argsstring>
+        <name>TransitionIn</name>
+        <qualifiedname>Scene_Title::TransitionIn</qualifiedname>
+        <reimplements refid="class_scene_1a4a594aefe6bd86e17042acf7c76eb0e6">TransitionIn</reimplements>
+        <param>
+          <type><ref refid="class_scene_1adf61561da781541f6b9ec5590756b09e" kindref="member">SceneType</ref></type>
+          <declname>prev_scene</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Used to configure the transition upon starting or resuming the scene.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>prev_scene</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the scene we transitioned from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="41" column="6" bodyfile="scene_title.cpp" bodystart="110" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1a5199c8e55e7dc558c5af59a752593172" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Title::Suspend</definition>
+        <argsstring>(SceneType next_scene) override</argsstring>
+        <name>Suspend</name>
+        <qualifiedname>Scene_Title::Suspend</qualifiedname>
+        <reimplements refid="class_scene_1ac6413c7a3e405e57e415bec3c3096f26">Suspend</reimplements>
+        <param>
+          <type><ref refid="class_scene_1adf61561da781541f6b9ec5590756b09e" kindref="member">SceneType</ref></type>
+          <declname>next_scene</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>This function is executed after the fade out transition is finished. Use this for clean up before terminating the scene or switching to a nested scene. In case of termination this is called right before the destructor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>next_scene</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the scene we will transition to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="42" column="6" bodyfile="scene_title.cpp" bodystart="121" bodyend="128"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1a93d5977171d236881973a103fb98f2fe" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Title::vUpdate</definition>
+        <argsstring>() override</argsstring>
+        <name>vUpdate</name>
+        <qualifiedname>Scene_Title::vUpdate</qualifiedname>
+        <reimplements refid="class_scene_1a8111b81e59b90b6711e9a39a507a32eb">vUpdate</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called every frame from Update. The scene should redraw all elements. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="43" column="6" bodyfile="scene_title.cpp" bodystart="130" bodyend="168"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1a4755f6428470975660a05bb36c0ab0e0" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Title::Refresh</definition>
+        <argsstring>() override</argsstring>
+        <name>Refresh</name>
+        <qualifiedname>Scene_Title::Refresh</qualifiedname>
+        <reimplements refid="class_scene_1a5ecd59170e0a54d6216ccebd76702dd6">Refresh</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called when data was modified from the outside and must be reloaded. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="44" column="6" bodyfile="scene_title.cpp" bodystart="170" bodyend="177"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1a5c5742cb9f5860fe80d147fb17b1ff2d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Title::OnTranslationChanged</definition>
+        <argsstring>() override</argsstring>
+        <name>OnTranslationChanged</name>
+        <qualifiedname>Scene_Title::OnTranslationChanged</qualifiedname>
+        <reimplements refid="class_scene_1ac6fa936fd2dc55f41889400d36d855e6">OnTranslationChanged</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="46" column="6" bodyfile="scene_title.cpp" bodystart="179" bodyend="185"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1a0393d17199a597dfd875e0e981cc1c23" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Title::CreateTitleGraphic</definition>
+        <argsstring>()</argsstring>
+        <name>CreateTitleGraphic</name>
+        <qualifiedname>Scene_Title::CreateTitleGraphic</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates the background graphic of the scene. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="51" column="6" bodyfile="scene_title.cpp" bodystart="187" bodyend="199"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1a0b31e9e0ef1dc4d0f31c59394dc342e3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Title::CreateCommandWindow</definition>
+        <argsstring>()</argsstring>
+        <name>CreateCommandWindow</name>
+        <qualifiedname>Scene_Title::CreateCommandWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates the <ref refid="class_window" kindref="compound">Window</ref> displaying the options. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="56" column="6" bodyfile="scene_title.cpp" bodystart="211" bodyend="259"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1a9869ec65f1ec7bc3017c20cd7d8262c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Title::PlayTitleMusic</definition>
+        <argsstring>()</argsstring>
+        <name>PlayTitleMusic</name>
+        <qualifiedname>Scene_Title::PlayTitleMusic</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Plays the title music. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="61" column="6" bodyfile="scene_title.cpp" bodystart="261" bodyend="266"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1a2f4d826b8003f67bdfefc7f839004325" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Title::CheckEnableTitleGraphicAndMusic</definition>
+        <argsstring>()</argsstring>
+        <name>CheckEnableTitleGraphicAndMusic</name>
+        <qualifiedname>Scene_Title::CheckEnableTitleGraphicAndMusic</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if game or engine configuration requires usage of title graphic and music or not.</para>
+<para><simplesect kind="return"><para>true when graphic and music are shown </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="69" column="6" bodyfile="scene_title.cpp" bodystart="268" bodyend="273"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1ada8c1622677c75660fc101a89a006f68" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Title::Check2k3ShowTitle</definition>
+        <argsstring>()</argsstring>
+        <name>Check2k3ShowTitle</name>
+        <qualifiedname>Scene_Title::Check2k3ShowTitle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Whether the 2k3E chunk for showing the title is set </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="74" column="6" bodyfile="scene_title.cpp" bodystart="275" bodyend="277"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1aefa40d06e16369b4f64b000fadd70f9b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Title::CheckValidPlayerLocation</definition>
+        <argsstring>()</argsstring>
+        <name>CheckValidPlayerLocation</name>
+        <qualifiedname>Scene_Title::CheckValidPlayerLocation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if there is a player start location.</para>
+<para><simplesect kind="return"><para>true if there is one, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="81" column="6" bodyfile="scene_title.cpp" bodystart="279" bodyend="281"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1a4369cfa92d4cbd4140e89a08c3cd4b4e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Title::CommandNewGame</definition>
+        <argsstring>()</argsstring>
+        <name>CommandNewGame</name>
+        <qualifiedname>Scene_Title::CommandNewGame</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Option New Game. Starts a new game. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="87" column="6" bodyfile="scene_title.cpp" bodystart="283" bodyend="291"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1aeacc1a960d3c694c362448f5d07d491c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Title::CommandContinue</definition>
+        <argsstring>()</argsstring>
+        <name>CommandContinue</name>
+        <qualifiedname>Scene_Title::CommandContinue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Option Continue. Shows the Load-Screen (<ref refid="class_scene___load" kindref="compound">Scene_Load</ref>). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="93" column="6" bodyfile="scene_title.cpp" bodystart="293" bodyend="302"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1a1c8e7ec2cb68f8af20ecab1593e01a00" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Title::CommandImport</definition>
+        <argsstring>()</argsstring>
+        <name>CommandImport</name>
+        <qualifiedname>Scene_Title::CommandImport</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Option Import. Shows the Import screen, for use with multi-game save files. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="99" column="6" bodyfile="scene_title.cpp" bodystart="304" bodyend="308"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1a331de37d63a36bb36a1fd272c1ac32f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Title::CommandSettings</definition>
+        <argsstring>()</argsstring>
+        <name>CommandSettings</name>
+        <qualifiedname>Scene_Title::CommandSettings</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="namespace_options" kindref="compound">Options</ref> the settings to configure the <ref refid="namespace_player" kindref="compound">Player</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="104" column="6" bodyfile="scene_title.cpp" bodystart="310" bodyend="314"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1a28838867bb1016ba27e4d8d946d33392" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Title::CommandTranslation</definition>
+        <argsstring>()</argsstring>
+        <name>CommandTranslation</name>
+        <qualifiedname>Scene_Title::CommandTranslation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Option <ref refid="class_translation" kindref="compound">Translation</ref>. Shows the <ref refid="class_translation" kindref="compound">Translation</ref> menu, for picking between multiple languages or localizations </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="110" column="6" bodyfile="scene_title.cpp" bodystart="316" bodyend="320"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1a8995ec4971be90627ef94ff60395c76c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Title::CommandShutdown</definition>
+        <argsstring>()</argsstring>
+        <name>CommandShutdown</name>
+        <qualifiedname>Scene_Title::CommandShutdown</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Option Shutdown. Does a player shutdown. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="116" column="6" bodyfile="scene_title.cpp" bodystart="322" bodyend="326"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___title_1a4f6636b30e5a2a0cee320a36daf9a21a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Title::OnGameStart</definition>
+        <argsstring>()</argsstring>
+        <name>OnGameStart</name>
+        <qualifiedname>Scene_Title::OnGameStart</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Invoked when a new game is started or a save game is loaded. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="121" column="6" bodyfile="scene_title.cpp" bodystart="342" bodyend="344"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_scene___title_1a3b906a59ef13c6038e46cbde5e597f57" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Title::RepositionWindow</definition>
+        <argsstring>(Window_Command &amp;window, bool center_vertical)</argsstring>
+        <name>RepositionWindow</name>
+        <qualifiedname>Scene_Title::RepositionWindow</qualifiedname>
+        <param>
+          <type><ref refid="class_window___command" kindref="compound">Window_Command</ref> &amp;</type>
+          <declname>window</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>center_vertical</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Moves a window (typically the New/Continue/Quit menu) to the middle or bottom-center of the screen. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>window</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The window to resposition. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>center_vertical</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, the menu will be centered vertically. Otherwise, it will be at the bottom of the screen. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="128" column="13" bodyfile="scene_title.cpp" bodystart="201" bodyend="209"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_scene___title_1a58c03bda64f4f0368b0f7c8871ed88cf" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Title::OnTitleSpriteReady</definition>
+        <argsstring>(FileRequestResult *result)</argsstring>
+        <name>OnTitleSpriteReady</name>
+        <qualifiedname>Scene_Title::OnTitleSpriteReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="131" column="6" bodyfile="scene_title.cpp" bodystart="328" bodyend="340"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_scene" kindref="compound">Scene</ref> Title class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="1">
+        <label>Scene_Title</label>
+        <link refid="class_scene___title"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="1">
+        <label>Scene_Title</label>
+        <link refid="class_scene___title"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="scene_title.h" line="32" column="1" bodyfile="scene_title.h" bodystart="32" bodyend="161"/>
+    <listofallmembers>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea525fafbc764da0de39c27dea3ffeb3d0" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>ActorTarget</name></member>
+      <member refid="class_scene_1a6091a98761b264c35a150bc28ee4a505" prot="protected" virt="non-virtual"><scope>Scene_Title</scope><name>async_continuation</name></member>
+      <member refid="class_scene_1a30c5c46dd99e4825df2d69518748c8ac" prot="protected" virt="non-virtual"><scope>Scene_Title</scope><name>AsyncContinuation</name></member>
+      <member refid="class_scene_1a40aec0ae8ed38526531911eea247398b" prot="protected" virt="non-virtual"><scope>Scene_Title</scope><name>AsyncNext</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea705f705b65bac2369f3cb10f5e89453a" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Battle</name></member>
+      <member refid="class_scene___title_1ada8c1622677c75660fc101a89a006f68" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Check2k3ShowTitle</name></member>
+      <member refid="class_scene___title_1a2f4d826b8003f67bdfefc7f839004325" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>CheckEnableTitleGraphicAndMusic</name></member>
+      <member refid="class_scene_1a91e354ab86259cd3bc94c094036280da" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>CheckSceneExit</name></member>
+      <member refid="class_scene___title_1aefa40d06e16369b4f64b000fadd70f9b" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>CheckValidPlayerLocation</name></member>
+      <member refid="class_scene___title_1aa9ba12623d96108ffd2fec89c19c9c0b" prot="private" virt="non-virtual"><scope>Scene_Title</scope><name>command_window</name></member>
+      <member refid="class_scene___title_1aeacc1a960d3c694c362448f5d07d491c" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>CommandContinue</name></member>
+      <member refid="class_scene___title_1a1c8e7ec2cb68f8af20ecab1593e01a00" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>CommandImport</name></member>
+      <member refid="class_scene___title_1a4369cfa92d4cbd4140e89a08c3cd4b4e" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>CommandNewGame</name></member>
+      <member refid="class_scene___title_1a331de37d63a36bb36a1fd272c1ac32f7" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>CommandSettings</name></member>
+      <member refid="class_scene___title_1a8995ec4971be90627ef94ff60395c76c" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>CommandShutdown</name></member>
+      <member refid="class_scene___title_1a28838867bb1016ba27e4d8d946d33392" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>CommandTranslation</name></member>
+      <member refid="class_scene___title_1ae916900d101c408a160d50604cafe633" prot="public" virt="virtual"><scope>Scene_Title</scope><name>Continue</name></member>
+      <member refid="class_scene___title_1a2eecf38a813aa067fa84426269e02c3a" prot="private" virt="non-virtual"><scope>Scene_Title</scope><name>continue_enabled</name></member>
+      <member refid="class_scene___title_1a0b31e9e0ef1dc4d0f31c59394dc342e3" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>CreateCommandWindow</name></member>
+      <member refid="class_scene___title_1a0393d17199a597dfd875e0e981cc1c23" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>CreateTitleGraphic</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea418b00b4c130e675ac7512610ed3f473" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Debug</name></member>
+      <member refid="class_scene_1a1fcc0d5308270cc967966da917957bdf" prot="public" virt="virtual"><scope>Scene_Title</scope><name>DrawBackground</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaee9d4a8ee40ca6e8310597315e07b978" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>End</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea302637f5f0048f4433949f10fc6c8f58" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Equip</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea85a7c5a46a3ca806d41de80e68da80e1" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>File</name></member>
+      <member refid="class_scene_1aa8b96a758c0f1ea4cf28808089ff7123" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Find</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea895a9b137f215eee5613d6a546275f5b" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>GameBrowser</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ead885a8fd6d0f378a99ee56a676029bca" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Gameover</name></member>
+      <member refid="class_scene_1ad837b22dff59e9c21f31204d958a24d7" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>GetDrawableList</name></member>
+      <member refid="class_scene_1ab9edda06ab170512d308c0c9fb38056b" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>GetRequestedSceneType</name></member>
+      <member refid="class_scene_1a203eba321fedc8a26c8802f4b9a84e01" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>HasDelayFrames</name></member>
+      <member refid="class_scene_1a1acd1e4345dfecb30c7c35f6d3e8130b" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>HasRequestedScene</name></member>
+      <member refid="class_scene___title_1ab4c999aa3b6ac434621fa92ae1e359de" prot="private" virt="non-virtual"><scope>Scene_Title</scope><name>indices</name></member>
+      <member refid="class_scene_1ac348fc3b0beb12093144a1f03d81449d" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>instance</name></member>
+      <member refid="class_scene_1a5a8c37138fc3a2dda1e0e077b472ab7b" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>IsAsyncPending</name></member>
+      <member refid="class_scene_1a0e0d605d080b286e73a07587d72dfe70" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>IsInitialized</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea70390d274c6e9c167ac095faaa160c7c" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Item</name></member>
+      <member refid="class_scene_1a119de9e0876281a6eee15c7d15618d87" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>kReturnTitleDelayFrames</name></member>
+      <member refid="class_scene_1a563850d0f01381b76420c22ac335a103" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>kStartGameDelayFrames</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea16a3c57786ccf0d21f72a774d43957ab" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>LanguageMenu</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eac3db6576c8c7dc6e5d007d989f5022ea" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Load</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea4615e1aa6a92b7860d342a6aaf642611" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Logo</name></member>
+      <member refid="class_scene_1ae7f0f916c29e55b282dfe4ae522d2096" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>MainFunction</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eae39f3115e47e2cc1a161ab73db4819a6" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Map</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea2412b59539890965aeb61a22141a781b" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Menu</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea05b82d049724f3ca8838b9800e8f3f3e" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Name</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea352ebbd390cdf4d31336a52af54fca32" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Null</name></member>
+      <member refid="class_scene_1a71555af047b54446dfc4fd2b0e6f78bd" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>old_instances</name></member>
+      <member refid="class_scene_1a7388cece257333bb2c98a202135adf51" prot="public" virt="virtual"><scope>Scene_Title</scope><name>OnEventHpChanged</name></member>
+      <member refid="class_scene_1a80c10e8f0c10921300be168e67ddf3ed" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>OnFinishAsync</name></member>
+      <member refid="class_scene___title_1a4f6636b30e5a2a0cee320a36daf9a21a" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>OnGameStart</name></member>
+      <member refid="class_scene_1a05be417a18748b38a3cd18566edd6d2d" prot="public" virt="virtual"><scope>Scene_Title</scope><name>OnPartyChanged</name></member>
+      <member refid="class_scene___title_1a58c03bda64f4f0368b0f7c8871ed88cf" prot="private" virt="non-virtual"><scope>Scene_Title</scope><name>OnTitleSpriteReady</name></member>
+      <member refid="class_scene___title_1a5c5742cb9f5860fe80d147fb17b1ff2d" prot="public" virt="virtual"><scope>Scene_Title</scope><name>OnTranslationChanged</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea26ab4613edf5d94d74a5e1ad4ec37fa3" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Order</name></member>
+      <member refid="class_scene_1a29b08fddcde74b786ec01129847454ba" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Peek</name></member>
+      <member refid="class_scene___title_1a9869ec65f1ec7bc3017c20cd7d8262c9" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>PlayTitleMusic</name></member>
+      <member refid="class_scene_1a713d07a297477318624fada11415f5e3" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Pop</name></member>
+      <member refid="class_scene_1ac657b33df6c856847d87aa976ae9a9eb" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>PopUntil</name></member>
+      <member refid="class_scene_1a61c10b38185eac9925da70d7fb915890" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Push</name></member>
+      <member refid="class_scene_1afb9e8385131d0524f0d9afa946096709" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>PushTitleScene</name></member>
+      <member refid="class_scene___title_1a4755f6428470975660a05bb36c0ab0e0" prot="public" virt="virtual"><scope>Scene_Title</scope><name>Refresh</name></member>
+      <member refid="class_scene___title_1a3b906a59ef13c6038e46cbde5e597f57" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>RepositionWindow</name></member>
+      <member refid="class_scene___title_1aaf310797143a1e7e78ac200e63cc0be5" prot="private" virt="non-virtual"><scope>Scene_Title</scope><name>request_id</name></member>
+      <member refid="class_scene___title_1ae7f5bba1da8ab2cb20a6fc14a6253e49" prot="private" virt="non-virtual"><scope>Scene_Title</scope><name>restart_title_cache</name></member>
+      <member refid="class_scene_1a902f2993901187b05d8e42188b7e8156" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>ReturnToTitleScene</name></member>
+      <member refid="class_scene_1a495973012445184e00a31dd31e217b7e" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>rpgRtSceneFromSceneType</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc195dbdbaa61f7b6b3ecb3236592d17" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Save</name></member>
+      <member refid="class_scene_1ad10176d75a9cc0da56626f682d083507" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Scene</name></member>
+      <member refid="class_scene_1a300d6b1274f226a1e69a552858414ba3" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>scene_names</name></member>
+      <member refid="class_scene___title_1a78a965e38ffa53d244d942c453eba430" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Scene_Title</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea7484d8e1128440652139839089e85604" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>SceneMax</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09e" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>SceneType</name></member>
+      <member refid="class_scene_1a40c9e3ffb2917b1e3880e2ff5733b1b6" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>SetDelayFrames</name></member>
+      <member refid="class_scene_1a9f641fa0061cebf4294009cb1d860cbe" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>SetRequestedScene</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc93e55e9b1ff9b798d1fb0ee22abab0" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Settings</name></member>
+      <member refid="class_scene_1a287b3a8a6fdaa0eb6e9b43ae7c774c8b" prot="protected" virt="non-virtual"><scope>Scene_Title</scope><name>SetUseSharedDrawables</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea40484f6fb0aae90d36b27e9f7abfee9c" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Shop</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafd156984a4436ea28706dc0c7873c8fc" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Skill</name></member>
+      <member refid="class_scene___title_1a8447cd3c43b1940b4b4faf017e870838" prot="public" virt="virtual"><scope>Scene_Title</scope><name>Start</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eabe141c1b0922ac825b014da56774c2dc" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Status</name></member>
+      <member refid="class_scene___title_1a5199c8e55e7dc558c5af59a752593172" prot="public" virt="virtual"><scope>Scene_Title</scope><name>Suspend</name></member>
+      <member refid="class_scene_1a2ac1629e5d081accb6b3d2682c8aac18" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>TakeRequestedScene</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eadce8e1c84d0a06f5a005b24a6e602424" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Teleport</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaf3446103059a7e7c2333b8e0f81377d0" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Title</name></member>
+      <member refid="class_scene___title_1a7d7186ef87993efca07b646eeded5cde" prot="private" virt="non-virtual"><scope>Scene_Title</scope><name>title</name></member>
+      <member refid="class_scene_1a1e97664b3509e2eb64b1aa621634703c" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>TransferDrawablesFrom</name></member>
+      <member refid="class_scene___title_1a2a7966c4618295ed38a2528e611e1553" prot="public" virt="virtual"><scope>Scene_Title</scope><name>TransitionIn</name></member>
+      <member refid="class_scene_1a64d36508ee1971f89c7d5e8513d777b1" prot="public" virt="virtual"><scope>Scene_Title</scope><name>TransitionOut</name></member>
+      <member refid="class_scene_1a8320189e28f3918a4f0200aedb97ccb5" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>type</name></member>
+      <member refid="class_scene_1a71a71b4f7752b853ff8032b0941a9d8d" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>Update</name></member>
+      <member refid="class_scene_1a85503cbb64a2f88b227d926768ed0100" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>UpdateDelayFrames</name></member>
+      <member refid="class_scene_1affa07b015ecebcf18cc0d652ab9a2fd4" prot="public" virt="virtual"><scope>Scene_Title</scope><name>UpdateGraphics</name></member>
+      <member refid="class_scene_1ac41adc09c7fed6609df594bf5bcdc1c5" prot="public" virt="non-virtual"><scope>Scene_Title</scope><name>UsesSharedDrawables</name></member>
+      <member refid="class_scene___title_1a93d5977171d236881973a103fb98f2fe" prot="public" virt="virtual"><scope>Scene_Title</scope><name>vUpdate</name></member>
+      <member refid="class_scene_1aa0a5be58e2ee2d1fdafc5fb46b5e661e" prot="public" virt="virtual"><scope>Scene_Title</scope><name>~Scene</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

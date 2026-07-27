@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="ulexception2_8cpp" kind="file" language="C++">
+    <compoundname>ulexception2.cpp</compoundname>
+    <includes local="no">string</includes>
+    <includes local="no">stdexcept</includes>
+    <includes refid="ulexception2_8hpp" local="yes">ulexception2.hpp</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/ul2/ulexception2.cpp</label>
+        <link refid="ulexception2_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>ulexception2.hpp</label>
+        <link refid="ulexception2_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>stdexcept</label>
+      </node>
+      <node id="2">
+        <label>string</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceleasy">leasy</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ul2">leasy::ul2</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdexcept&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ulexception2_8hpp" kindref="compound">ulexception2.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1ul2" kindref="compound">leasy::ul2</ref><sp/>{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="classleasy_1_1ul2_1_1ulexception2_1ad52600aeef089b859f1687fe294c95d3" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classleasy_1_1ul2_1_1ulexception2_1ad52600aeef089b859f1687fe294c95d3" kindref="member">ulexception2::ulexception2</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;F,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;W)<sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>this-&gt;_from<sp/>=<sp/>std::string(F);</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>this-&gt;_what<sp/>=<sp/>std::string(W);<sp/></highlight><highlight class="comment">//<sp/>I<sp/>don&apos;t<sp/>fucking<sp/>know<sp/>why<sp/>the<sp/>compiler<sp/>said<sp/>me<sp/>i<sp/>cant<sp/>use<sp/>js<sp/>&quot;=&quot;<sp/>lol</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>this-&gt;_whut<sp/>=<sp/>F<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;:\t&quot;</highlight><highlight class="normal"><sp/>+<sp/>W;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="classleasy_1_1ul2_1_1ulexception2_1a5e10ebb6d1402ddb6e3fdc0d9d4839b6" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*<ref refid="classleasy_1_1ul2_1_1ulexception2_1a5e10ebb6d1402ddb6e3fdc0d9d4839b6" kindref="member">ulexception2::what</ref>()<sp/>const<sp/>noexcept<sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_whut.c_str();</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="classleasy_1_1ul2_1_1ulexception2_1ad0bac1bf32d2a1fea75a87aa81c0e5f8" refkind="member"><highlight class="normal"><sp/><sp/>std::string<sp/><ref refid="classleasy_1_1ul2_1_1ulexception2_1ad0bac1bf32d2a1fea75a87aa81c0e5f8" kindref="member">ulexception2::whut</ref>()<sp/>const<sp/>noexcept<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_whut;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="leasy/ul2/ulexception2.cpp"/>
+  </compounddef>
+</doxygen>

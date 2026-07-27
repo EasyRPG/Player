@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structalpha__traits_3_01_t_p_f_00_01aligned_00_01_p_f_1_1_static_alpha_00_01_p_f_1_1_no_alpha_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>alpha_traits&lt; TPF, aligned, PF::StaticAlpha, PF::NoAlpha &gt;</compoundname>
+    <includes refid="pixel__format_8h" local="no">pixel_format.h</includes>
+    <templateparamlist>
+      <param>
+        <type>class TPF</type>
+      </param>
+      <param>
+        <type>bool</type>
+        <declname>aligned</declname>
+        <defname>aligned</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="structalpha__traits_3_01_t_p_f_00_01aligned_00_01_p_f_1_1_static_alpha_00_01_p_f_1_1_no_alpha_01_4_1a553d4c5e39d7fd872c1871e3b4c730f4" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>static uint8_t alpha_traits&lt; TPF, aligned, PF::StaticAlpha, PF::NoAlpha &gt;::get_alpha</definition>
+        <argsstring>(const TPF *, const uint8_t *)</argsstring>
+        <name>get_alpha</name>
+        <qualifiedname>alpha_traits&lt; TPF, aligned, PF::StaticAlpha, PF::NoAlpha &gt;::get_alpha</qualifiedname>
+        <param>
+          <type>const TPF *</type>
+        </param>
+        <param>
+          <type>const uint8_t *</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="347" column="23" bodyfile="pixel_format.h" bodystart="347" bodyend="349"/>
+      </memberdef>
+      <memberdef kind="function" id="structalpha__traits_3_01_t_p_f_00_01aligned_00_01_p_f_1_1_static_alpha_00_01_p_f_1_1_no_alpha_01_4_1aa869d5110062fcbc8c02c4aee6b2ab70" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void alpha_traits&lt; TPF, aligned, PF::StaticAlpha, PF::NoAlpha &gt;::set_alpha</definition>
+        <argsstring>(const TPF *, uint8_t *, uint8_t)</argsstring>
+        <name>set_alpha</name>
+        <qualifiedname>alpha_traits&lt; TPF, aligned, PF::StaticAlpha, PF::NoAlpha &gt;::set_alpha</qualifiedname>
+        <param>
+          <type>const TPF *</type>
+        </param>
+        <param>
+          <type>uint8_t *</type>
+        </param>
+        <param>
+          <type>uint8_t</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="350" column="20" bodyfile="pixel_format.h" bodystart="350" bodyend="351"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pixel_format.h" line="346" column="1" bodyfile="pixel_format.h" bodystart="346" bodyend="352"/>
+    <listofallmembers>
+      <member refid="structalpha__traits_3_01_t_p_f_00_01aligned_00_01_p_f_1_1_static_alpha_00_01_p_f_1_1_no_alpha_01_4_1a553d4c5e39d7fd872c1871e3b4c730f4" prot="public" virt="non-virtual"><scope>alpha_traits&lt; TPF, aligned, PF::StaticAlpha, PF::NoAlpha &gt;</scope><name>get_alpha</name></member>
+      <member refid="structalpha__traits_3_01_t_p_f_00_01aligned_00_01_p_f_1_1_static_alpha_00_01_p_f_1_1_no_alpha_01_4_1aa869d5110062fcbc8c02c4aee6b2ab70" prot="public" virt="non-virtual"><scope>alpha_traits&lt; TPF, aligned, PF::StaticAlpha, PF::NoAlpha &gt;</scope><name>set_alpha</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___ineluki_1_1_mapping" kind="struct" language="C++" prot="private">
+    <compoundname>Game_Ineluki::Mapping</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___ineluki_1_1_mapping_1a769ff2a0469f2cc08f7ac16800849d26" prot="public" static="no" mutable="no">
+        <type><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8" kindref="member">Input::Keys::InputKey</ref></type>
+        <definition>Input::Keys::InputKey Game_Ineluki::Mapping::key</definition>
+        <argsstring></argsstring>
+        <name>key</name>
+        <qualifiedname>Game_Ineluki::Mapping::key</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="155" column="23" bodyfile="game_ineluki.h" bodystart="155" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___ineluki_1_1_mapping_1ad8ba6f5353ef5215428463d3684fba6e" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* Game_Ineluki::Mapping::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>Game_Ineluki::Mapping::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="156" column="12" bodyfile="game_ineluki.h" bodystart="156" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_ineluki.h" line="154" column="1" bodyfile="game_ineluki.h" bodystart="154" bodyend="157"/>
+    <listofallmembers>
+      <member refid="struct_game___ineluki_1_1_mapping_1a769ff2a0469f2cc08f7ac16800849d26" prot="public" virt="non-virtual"><scope>Game_Ineluki::Mapping</scope><name>key</name></member>
+      <member refid="struct_game___ineluki_1_1_mapping_1ad8ba6f5353ef5215428463d3684fba6e" prot="public" virt="non-virtual"><scope>Game_Ineluki::Mapping</scope><name>name</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

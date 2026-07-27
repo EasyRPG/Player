@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_tilemap_sub_layer" kind="class" language="C++" prot="public">
+    <compoundname>TilemapSubLayer</compoundname>
+    <basecompoundref refid="class_drawable" prot="public" virt="non-virtual">Drawable</basecompoundref>
+    <includes refid="tilemap__layer_8h" local="no">tilemap_layer.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_tilemap_sub_layer_1a5f2710bba2577c8b095289e9991695e4" prot="private" static="no" mutable="no">
+        <type><ref refid="class_tilemap_layer" kindref="compound">TilemapLayer</ref> *</type>
+        <definition>TilemapLayer* TilemapSubLayer::tilemap</definition>
+        <argsstring></argsstring>
+        <name>tilemap</name>
+        <qualifiedname>TilemapSubLayer::tilemap</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="46" column="14" bodyfile="tilemap_layer.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_sub_layer_1a6e648bddc6c10e961f21366343ca5d04" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t TilemapSubLayer::internal_z</definition>
+        <argsstring></argsstring>
+        <name>internal_z</name>
+        <qualifiedname>TilemapSubLayer::internal_z</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="49" column="9" bodyfile="tilemap_layer.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_tilemap_sub_layer_1aa6b1b1abd60ef07ba39b83719ebab460" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>TilemapSubLayer::TilemapSubLayer</definition>
+        <argsstring>(TilemapLayer *tilemap, Drawable::Z_t z)</argsstring>
+        <name>TilemapSubLayer</name>
+        <qualifiedname>TilemapSubLayer::TilemapSubLayer</qualifiedname>
+        <param>
+          <type><ref refid="class_tilemap_layer" kindref="compound">TilemapLayer</ref> *</type>
+          <declname>tilemap</declname>
+        </param>
+        <param>
+          <type><ref refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" kindref="member">Drawable::Z_t</ref></type>
+          <declname>z</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="41" column="1" bodyfile="tilemap_layer.cpp" bodystart="874" bodyend="880"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_sub_layer_1a66bd602d4bce4ac3241413dde3932142" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void TilemapSubLayer::Draw</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>Draw</name>
+        <qualifiedname>TilemapSubLayer::Draw</qualifiedname>
+        <reimplements refid="class_drawable_1aa8a9b151f40368331f6fd8bbdd20133f">Draw</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="43" column="6" bodyfile="tilemap_layer.cpp" bodystart="882" bodyend="888"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_tilemap_sub_layer" kindref="compound">TilemapSubLayer</ref> class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>TilemapSubLayer</label>
+        <link refid="class_tilemap_sub_layer"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>TilemapSubLayer</label>
+        <link refid="class_tilemap_sub_layer"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="tilemap_layer.h" line="39" column="1" bodyfile="tilemap_layer.h" bodystart="39" bodyend="50"/>
+    <listofallmembers>
+      <member refid="class_tilemap_sub_layer_1a66bd602d4bce4ac3241413dde3932142" prot="public" virt="virtual"><scope>TilemapSubLayer</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>Flags</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>GetRenderOy</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>GetZ</name></member>
+      <member refid="class_tilemap_sub_layer_1a6e648bddc6c10e961f21366343ca5d04" prot="private" virt="non-virtual"><scope>TilemapSubLayer</scope><name>internal_z</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>IsGlobal</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>IsVisible</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>operator=</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>SetRenderOy</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>SetVisible</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>SetZ</name></member>
+      <member refid="class_tilemap_sub_layer_1a5f2710bba2577c8b095289e9991695e4" prot="private" virt="non-virtual"><scope>TilemapSubLayer</scope><name>tilemap</name></member>
+      <member refid="class_tilemap_sub_layer_1aa6b1b1abd60ef07ba39b83719ebab460" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>TilemapSubLayer</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>TilemapSubLayer</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>TilemapSubLayer</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

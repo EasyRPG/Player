@@ -1,0 +1,881 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_midi_decoder" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>MidiDecoder</compoundname>
+    <derivedcompoundref refid="class_alsa_midi_out_device" prot="public" virt="non-virtual">AlsaMidiOutDevice</derivedcompoundref>
+    <derivedcompoundref refid="class_core_audio_midi_out_device" prot="public" virt="non-virtual">CoreAudioMidiOutDevice</derivedcompoundref>
+    <derivedcompoundref refid="class_fluid_synth_decoder" prot="public" virt="non-virtual">FluidSynthDecoder</derivedcompoundref>
+    <derivedcompoundref refid="class_fm_midi_decoder" prot="public" virt="non-virtual">FmMidiDecoder</derivedcompoundref>
+    <derivedcompoundref refid="class_libretro_midi_out_device" prot="public" virt="non-virtual">LibretroMidiOutDevice</derivedcompoundref>
+    <derivedcompoundref refid="class_wild_midi_decoder" prot="public" virt="non-virtual">WildMidiDecoder</derivedcompoundref>
+    <includes refid="audio__midi_8h" local="no">audio_midi.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_midi_decoder_1aca140555320c9af77b4751b5504efe92" prot="public" static="no" strong="no">
+        <type></type>
+        <name>MidiEvent</name>
+        <qualifiedname>MidiDecoder::MidiEvent</qualifiedname>
+        <enumvalue id="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a27cba7e4508b870ae8ea80ca162c4433" prot="public">
+          <name>MidiEvent_NoteOff</name>
+          <initializer>= 0x80</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a53a94fde6f981169615b7d5427cccb78" prot="public">
+          <name>MidiEvent_NoteOn</name>
+          <initializer>= 0x90</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_midi_decoder_1aca140555320c9af77b4751b5504efe92ab3c25e6206ee22d077812a5a3b94a211" prot="public">
+          <name>MidiEvent_KeyPressure</name>
+          <initializer>= 0xA0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_midi_decoder_1aca140555320c9af77b4751b5504efe92adea32a25b2d36ebbfe69c3efac1e1501" prot="public">
+          <name>MidiEvent_Controller</name>
+          <initializer>= 0xB0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a3509a9d33ea0da16a480395a0ee4af5e" prot="public">
+          <name>MidiEvent_ProgramChange</name>
+          <initializer>= 0xC0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_midi_decoder_1aca140555320c9af77b4751b5504efe92aefb0f519c3e8dacf7f5e687d0d27c4a6" prot="public">
+          <name>MidiEvent_ChannelPressure</name>
+          <initializer>= 0xD0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_midi_decoder_1aca140555320c9af77b4751b5504efe92aa1ff6af7ff6c70ca07022bf620b3ccd3" prot="public">
+          <name>MidiEvent_PitchBend</name>
+          <initializer>= 0xE0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="40" column="1" bodyfile="audio_midi.h" bodystart="40" bodyend="48"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_midi_decoder_1a4cc4e1c89b089d4ebeaab82d89a8332c" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int MidiDecoder::frequency</definition>
+        <argsstring></argsstring>
+        <name>frequency</name>
+        <qualifiedname>MidiDecoder::frequency</qualifiedname>
+        <initializer>= <ref refid="audio__midi_8h_1aa1740baf814b8b9c73fbff097a8eb521" kindref="member">EP_MIDI_FREQ</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="237" column="5" bodyfile="audio_midi.h" bodystart="237" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_midi_decoder_1a9111f9360e9afe04c4a36e1fb45181e2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MidiDecoder::MidiDecoder</definition>
+        <argsstring>()=default</argsstring>
+        <name>MidiDecoder</name>
+        <qualifiedname>MidiDecoder::MidiDecoder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="50" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1a282d792c6c08f01e8980bae08bc9be90" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MidiDecoder::MidiDecoder</definition>
+        <argsstring>(MidiDecoder &amp;&amp;)=delete</argsstring>
+        <name>MidiDecoder</name>
+        <qualifiedname>MidiDecoder::MidiDecoder</qualifiedname>
+        <param>
+          <type><ref refid="class_midi_decoder" kindref="compound">MidiDecoder</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="51" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1a83eb8eec90b545be05f4d5506d22a3cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MidiDecoder::MidiDecoder</definition>
+        <argsstring>(const MidiDecoder &amp;)=delete</argsstring>
+        <name>MidiDecoder</name>
+        <qualifiedname>MidiDecoder::MidiDecoder</qualifiedname>
+        <param>
+          <type>const <ref refid="class_midi_decoder" kindref="compound">MidiDecoder</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="52" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1a463917459cc34a694f53c50b9e00f267" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_midi_decoder" kindref="compound">MidiDecoder</ref> &amp;</type>
+        <definition>MidiDecoder &amp; MidiDecoder::operator=</definition>
+        <argsstring>(const MidiDecoder &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>MidiDecoder::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_midi_decoder" kindref="compound">MidiDecoder</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="53" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1a4b5c64f6f1256d07812614519240a6bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_midi_decoder" kindref="compound">MidiDecoder</ref> &amp;</type>
+        <definition>MidiDecoder &amp; MidiDecoder::operator=</definition>
+        <argsstring>(MidiDecoder &amp;&amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>MidiDecoder::operator=</qualifiedname>
+        <param>
+          <type><ref refid="class_midi_decoder" kindref="compound">MidiDecoder</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="54" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1a62bb942c2ce3a52b4f8903b80bb94065" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual MidiDecoder::~MidiDecoder</definition>
+        <argsstring>()=default</argsstring>
+        <name>~MidiDecoder</name>
+        <qualifiedname>MidiDecoder::~MidiDecoder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="55" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1a622decc74141fffbb272c8be23af0215" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool MidiDecoder::Open</definition>
+        <argsstring>(std::vector&lt; uint8_t &gt; &amp;data)</argsstring>
+        <name>Open</name>
+        <qualifiedname>MidiDecoder::Open</qualifiedname>
+        <reimplementedby refid="class_wild_midi_decoder_1ad19893090ed5a824c87140e511a5ac4f">Open</reimplementedby>
+        <param>
+          <type>std::vector&lt; uint8_t &gt; &amp;</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Passes a buffer containing a Midi file to the Midi Decoder <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Midi Data </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true when the decoder supports this data </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="79" column="14" bodyfile="audio_midi.h" bodystart="79" bodyend="82"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1abad45713922fef863804905572041ef0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool MidiDecoder::Seek</definition>
+        <argsstring>(std::streamoff offset, std::ios_base::seekdir origin)</argsstring>
+        <name>Seek</name>
+        <qualifiedname>MidiDecoder::Seek</qualifiedname>
+        <reimplementedby refid="class_wild_midi_decoder_1a4726b062f68cafe06db4b52732e3c255">Seek</reimplementedby>
+        <param>
+          <type>std::streamoff</type>
+          <declname>offset</declname>
+        </param>
+        <param>
+          <type>std::ios_base::seekdir</type>
+          <declname>origin</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Seeks in the midi stream. The value of offset is implementation defined.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>offset</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Offset to seek to </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>origin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Position to seek from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether seek was successful </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="92" column="14" bodyfile="audio_midi.h" bodystart="92" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1ab492d527453d3b8513c2e7c2cb34b237" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool MidiDecoder::SetPitch</definition>
+        <argsstring>(int pitch)</argsstring>
+        <name>SetPitch</name>
+        <qualifiedname>MidiDecoder::SetPitch</qualifiedname>
+        <reimplementedby refid="class_wild_midi_decoder_1aa8cab8ffbde3a84b2b8e69d0b8e15b32">SetPitch</reimplementedby>
+        <param>
+          <type>int</type>
+          <declname>pitch</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the pitch multiplier. 100 = normal speed 200 = double speed and so on Not all audio decoders support this. Using the audio hardware is recommended.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pitch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pitch multiplier to use </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if pitch was set, false otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="108" column="14" bodyfile="audio_midi.h" bodystart="108" bodyend="111"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1a6417064ebe5f3b42299facc0b54f341b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void MidiDecoder::GetFormat</definition>
+        <argsstring>(int &amp;freq, AudioDecoderBase::Format &amp;format, int &amp;channels) const</argsstring>
+        <name>GetFormat</name>
+        <qualifiedname>MidiDecoder::GetFormat</qualifiedname>
+        <param>
+          <type>int &amp;</type>
+          <declname>freq</declname>
+        </param>
+        <param>
+          <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">AudioDecoderBase::Format</ref> &amp;</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>channels</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieves the format of the Midi decoder. It is guaranteed that these settings will stay constant the whole time.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>frequency</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the audio frequency </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the audio format </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>channels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the amount of channels </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="121" column="14" bodyfile="audio_midi.cpp" bodystart="31" bodyend="35"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1aecab4ef828716841e2c6f5468a734961" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool MidiDecoder::SetFormat</definition>
+        <argsstring>(int frequency, AudioDecoderBase::Format format, int channels)</argsstring>
+        <name>SetFormat</name>
+        <qualifiedname>MidiDecoder::SetFormat</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>frequency</declname>
+        </param>
+        <param>
+          <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">AudioDecoderBase::Format</ref></type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>channels</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Requests a preferred format from the audio decoder. Not all decoders support everything and it&apos;s recommended to use the audio hardware for audio processing. When false is returned use GetFormat to get the real format of the output data.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>frequency</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Audio frequency </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Audio format </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>channels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of channels </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true when all settings were set, otherwise false (use GetFormat) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="135" column="14" bodyfile="audio_midi.cpp" bodystart="37" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1a224acd738e2f9c66e4caabdfb4653d61" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void MidiDecoder::SendMidiMessage</definition>
+        <argsstring>(uint32_t message)</argsstring>
+        <name>SendMidiMessage</name>
+        <qualifiedname>MidiDecoder::SendMidiMessage</qualifiedname>
+        <reimplementedby refid="class_alsa_midi_out_device_1a4f702d9ce5d2fa244bcf37d13793a193">SendMidiMessage</reimplementedby>
+        <reimplementedby refid="class_core_audio_midi_out_device_1abfb4862c9bad9699b5275acc665b2554">SendMidiMessage</reimplementedby>
+        <reimplementedby refid="class_fluid_synth_decoder_1ac99c8e2975c8ca11313e5cc37a5207a9">SendMidiMessage</reimplementedby>
+        <reimplementedby refid="class_fm_midi_decoder_1a4289697ebae5b64a6408ec3a72508955">SendMidiMessage</reimplementedby>
+        <reimplementedby refid="class_libretro_midi_out_device_1a9ad28292030c7d0b6207a31c1bc8c790">SendMidiMessage</reimplementedby>
+        <param>
+          <type>uint32_t</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Forwards a Midi message to the Midi decoder</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Midi message </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="142" column="14" bodyfile="audio_midi.h" bodystart="142" bodyend="144"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1a15e5774605a1d77b05e5d332ebef74c9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void MidiDecoder::SendSysExMessage</definition>
+        <argsstring>(const uint8_t *data, size_t size)</argsstring>
+        <name>SendSysExMessage</name>
+        <qualifiedname>MidiDecoder::SendSysExMessage</qualifiedname>
+        <reimplementedby refid="class_alsa_midi_out_device_1a5e455ba21aa4d5edf51064ecaf54188c">SendSysExMessage</reimplementedby>
+        <reimplementedby refid="class_core_audio_midi_out_device_1a865f7f485433cb31a040af8db66dbba9">SendSysExMessage</reimplementedby>
+        <reimplementedby refid="class_fluid_synth_decoder_1a4813ce502673a68e6da2e7763036ba6d">SendSysExMessage</reimplementedby>
+        <reimplementedby refid="class_fm_midi_decoder_1a1d8615e6a481a96dcb5bf6a2b1f4ae83">SendSysExMessage</reimplementedby>
+        <reimplementedby refid="class_libretro_midi_out_device_1a602a7b184fe8ebdb19ed3c70a0eda9ab">SendSysExMessage</reimplementedby>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Forwards a SysEx Message to the Midi Decoder</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>sysex content </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>length of sysex content (data) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="152" column="14" bodyfile="audio_midi.h" bodystart="152" bodyend="155"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1a9b662741035e2a82a9b7e2aa9a406bd8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>virtual int MidiDecoder::FillBuffer</definition>
+        <argsstring>(uint8_t *buffer, int length)</argsstring>
+        <name>FillBuffer</name>
+        <qualifiedname>MidiDecoder::FillBuffer</qualifiedname>
+        <reimplementedby refid="class_fluid_synth_decoder_1ac24c5034648c139b92fb8d9154c91a05">FillBuffer</reimplementedby>
+        <reimplementedby refid="class_fm_midi_decoder_1a65a6b167b6c311ce75f67b5c47104b0b">FillBuffer</reimplementedby>
+        <reimplementedby refid="class_wild_midi_decoder_1ace9cc07d6529bdf2f8c08d6448cc224e">FillBuffer</reimplementedby>
+        <param>
+          <type>uint8_t *</type>
+          <declname>buffer</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>length</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called when the synthesizer shall write data in a buffer.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>buffer</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Buffer to fill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Buffer size </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>number of bytes read or -1 on error </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="164" column="13" bodyfile="audio_midi.h" bodystart="164" bodyend="168"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1af4d40d12d6758967cb2dcb73f3a06900" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::string</type>
+        <definition>virtual std::string MidiDecoder::GetName</definition>
+        <argsstring>()=0</argsstring>
+        <name>GetName</name>
+        <qualifiedname>MidiDecoder::GetName</qualifiedname>
+        <reimplementedby refid="class_alsa_midi_out_device_1a39605f66003d5f49557950a3946c8177">GetName</reimplementedby>
+        <reimplementedby refid="class_core_audio_midi_out_device_1aab885a27841f4e6f364a1e56a26cd529">GetName</reimplementedby>
+        <reimplementedby refid="class_fluid_synth_decoder_1a41dc64bf0f3f28bd57774880d195b7a2">GetName</reimplementedby>
+        <reimplementedby refid="class_fm_midi_decoder_1ae53d8a815a019ea1058a6bfab78edfc4">GetName</reimplementedby>
+        <reimplementedby refid="class_libretro_midi_out_device_1aadd1c2781c363c45616002a5d2113322">GetName</reimplementedby>
+        <reimplementedby refid="class_wild_midi_decoder_1ae2f591d1b59bee900c17b5eda536cee6">GetName</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the unique name of the Midi decoder.</para>
+<para><simplesect kind="return"><para>decoder name </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="175" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1a07adfc534e13ab8dabac2ca2abf68676" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool MidiDecoder::SupportsMidiMessages</definition>
+        <argsstring>()</argsstring>
+        <name>SupportsMidiMessages</name>
+        <qualifiedname>MidiDecoder::SupportsMidiMessages</qualifiedname>
+        <reimplementedby refid="class_wild_midi_decoder_1a651e80aa432eb0eac27fbed505794498">SupportsMidiMessages</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>False if the Library is sequencer based </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="180" column="14" bodyfile="audio_midi.h" bodystart="180" bodyend="182"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1a6806f9b6c94b9275b4495d8466692b4a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void MidiDecoder::OnNewMidi</definition>
+        <argsstring>()</argsstring>
+        <name>OnNewMidi</name>
+        <qualifiedname>MidiDecoder::OnNewMidi</qualifiedname>
+        <reimplementedby refid="class_fluid_synth_decoder_1ad9c29a594c4dfbc6e04e0abd456f00f0">OnNewMidi</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Notifies the sequencer that a new MIDI is about to start. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="187" column="14" bodyfile="audio_midi.h" bodystart="187" bodyend="187"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1afd17f90102463d31d3b739936f3e70dd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool MidiDecoder::NeedsSoftReset</definition>
+        <argsstring>()</argsstring>
+        <name>NeedsSoftReset</name>
+        <qualifiedname>MidiDecoder::NeedsSoftReset</qualifiedname>
+        <reimplementedby refid="class_core_audio_midi_out_device_1a2ece989795acb2be194047fd5514ff9a">NeedsSoftReset</reimplementedby>
+        <reimplementedby refid="class_fluid_synth_decoder_1a690a736c7f30e9f7686ebc2cb3cda810">NeedsSoftReset</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="195" column="14" bodyfile="audio_midi.h" bodystart="195" bodyend="197"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_midi_decoder_1aea38a9c8766ad49ee47cd509b71889f3" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unique_ptr&lt; <ref refid="class_audio_decoder_base" kindref="compound">AudioDecoderBase</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; AudioDecoderBase &gt; MidiDecoder::Create</definition>
+        <argsstring>(bool resample)</argsstring>
+        <name>Create</name>
+        <qualifiedname>MidiDecoder::Create</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>resample</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Attempts to initialize a Midi library for processing the Midi data.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>resample</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether the decoder shall be wrapped into a resampler (if supported) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Midi decoder instance when the Midi data is supported, otherwise null </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="205" column="24" bodyfile="audio_midi.cpp" bodystart="51" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1ab90e4f43be463ff0f045f320569d6d3f" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unique_ptr&lt; <ref refid="class_audio_decoder_base" kindref="compound">AudioDecoderBase</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; AudioDecoderBase &gt; MidiDecoder::CreateFluidsynth</definition>
+        <argsstring>(bool resample)</argsstring>
+        <name>CreateFluidsynth</name>
+        <qualifiedname>MidiDecoder::CreateFluidsynth</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>resample</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="207" column="24" bodyfile="audio_midi.cpp" bodystart="69" bodyend="92"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1ac027fd25d15a3eab594f85448c3e9aac" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unique_ptr&lt; <ref refid="class_audio_decoder_base" kindref="compound">AudioDecoderBase</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; AudioDecoderBase &gt; MidiDecoder::CreateWildMidi</definition>
+        <argsstring>(bool resample)</argsstring>
+        <name>CreateWildMidi</name>
+        <qualifiedname>MidiDecoder::CreateWildMidi</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>resample</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="209" column="24" bodyfile="audio_midi.cpp" bodystart="94" bodyend="117"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1a1bfc000db967fff83a03b9737ae22571" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unique_ptr&lt; <ref refid="class_audio_decoder_base" kindref="compound">AudioDecoderBase</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; AudioDecoderBase &gt; MidiDecoder::CreateFmMidi</definition>
+        <argsstring>(bool resample)</argsstring>
+        <name>CreateFmMidi</name>
+        <qualifiedname>MidiDecoder::CreateFmMidi</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>resample</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="211" column="24" bodyfile="audio_midi.cpp" bodystart="119" bodyend="138"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1a3df91771d3a83c4d52c5706af9619fa7" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool MidiDecoder::CheckFluidsynth</definition>
+        <argsstring>(std::string &amp;status_message)</argsstring>
+        <name>CheckFluidsynth</name>
+        <qualifiedname>MidiDecoder::CheckFluidsynth</qualifiedname>
+        <param>
+          <type>std::string &amp;</type>
+          <declname>status_message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if Fluidsynth works.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>status_message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current Fluidsynth status </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true: Works, false: Not working </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="219" column="13" bodyfile="audio_midi.cpp" bodystart="140" bodyend="147"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1a03c883f6c10808ce7f95559018eb9f07" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MidiDecoder::ChangeFluidsynthSoundfont</definition>
+        <argsstring>(std::string_view sf_path)</argsstring>
+        <name>ChangeFluidsynthSoundfont</name>
+        <qualifiedname>MidiDecoder::ChangeFluidsynthSoundfont</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>sf_path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="221" column="13" bodyfile="audio_midi.cpp" bodystart="149" bodyend="164"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1a9beb09513b83be3c65ace1c700cb7b13" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool MidiDecoder::CheckWildMidi</definition>
+        <argsstring>(std::string &amp;status_message)</argsstring>
+        <name>CheckWildMidi</name>
+        <qualifiedname>MidiDecoder::CheckWildMidi</qualifiedname>
+        <param>
+          <type>std::string &amp;</type>
+          <declname>status_message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if WildMidi works.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>status_message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current WildMidi status </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true: Works, false: Not working </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="229" column="13" bodyfile="audio_midi.cpp" bodystart="166" bodyend="173"/>
+      </memberdef>
+      <memberdef kind="function" id="class_midi_decoder_1aa4c0f006466de50a3f7c84460cf0f1ea" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MidiDecoder::Reset</definition>
+        <argsstring>()</argsstring>
+        <name>Reset</name>
+        <qualifiedname>MidiDecoder::Reset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Resets the global state of the midi libraries. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_midi.h" line="234" column="13" bodyfile="audio_midi.cpp" bodystart="175" bodyend="186"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>The <ref refid="class_midi_decoder" kindref="compound">MidiDecoder</ref> is an abstraction over Midi libraries.</para>
+<para>Create will instantiate a proper Midi decoder and calling Decode will fill a buffer with audio data which must be passed to the audio hardware. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>AlsaMidiOutDevice</label>
+        <link refid="class_alsa_midi_out_device"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>CoreAudioMidiOutDevice</label>
+        <link refid="class_core_audio_midi_out_device"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>FluidSynthDecoder</label>
+        <link refid="class_fluid_synth_decoder"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>FmMidiDecoder</label>
+        <link refid="class_fm_midi_decoder"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>LibretroMidiOutDevice</label>
+        <link refid="class_libretro_midi_out_device"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>MidiDecoder</label>
+        <link refid="class_midi_decoder"/>
+      </node>
+      <node id="7">
+        <label>WildMidiDecoder</label>
+        <link refid="class_wild_midi_decoder"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="audio_midi.h" line="38" column="1" bodyfile="audio_midi.h" bodystart="38" bodyend="238"/>
+    <listofallmembers>
+      <member refid="class_midi_decoder_1a03c883f6c10808ce7f95559018eb9f07" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>ChangeFluidsynthSoundfont</name></member>
+      <member refid="class_midi_decoder_1a3df91771d3a83c4d52c5706af9619fa7" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>CheckFluidsynth</name></member>
+      <member refid="class_midi_decoder_1a9beb09513b83be3c65ace1c700cb7b13" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>CheckWildMidi</name></member>
+      <member refid="class_midi_decoder_1aea38a9c8766ad49ee47cd509b71889f3" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>Create</name></member>
+      <member refid="class_midi_decoder_1ab90e4f43be463ff0f045f320569d6d3f" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>CreateFluidsynth</name></member>
+      <member refid="class_midi_decoder_1a1bfc000db967fff83a03b9737ae22571" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>CreateFmMidi</name></member>
+      <member refid="class_midi_decoder_1ac027fd25d15a3eab594f85448c3e9aac" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>CreateWildMidi</name></member>
+      <member refid="class_midi_decoder_1a9b662741035e2a82a9b7e2aa9a406bd8" prot="public" virt="virtual"><scope>MidiDecoder</scope><name>FillBuffer</name></member>
+      <member refid="class_midi_decoder_1a4cc4e1c89b089d4ebeaab82d89a8332c" prot="protected" virt="non-virtual"><scope>MidiDecoder</scope><name>frequency</name></member>
+      <member refid="class_midi_decoder_1a6417064ebe5f3b42299facc0b54f341b" prot="public" virt="virtual"><scope>MidiDecoder</scope><name>GetFormat</name></member>
+      <member refid="class_midi_decoder_1af4d40d12d6758967cb2dcb73f3a06900" prot="public" virt="pure-virtual"><scope>MidiDecoder</scope><name>GetName</name></member>
+      <member refid="class_midi_decoder_1a9111f9360e9afe04c4a36e1fb45181e2" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>MidiDecoder</name></member>
+      <member refid="class_midi_decoder_1a282d792c6c08f01e8980bae08bc9be90" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>MidiDecoder</name></member>
+      <member refid="class_midi_decoder_1a83eb8eec90b545be05f4d5506d22a3cd" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>MidiDecoder</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>MidiEvent</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92aefb0f519c3e8dacf7f5e687d0d27c4a6" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>MidiEvent_ChannelPressure</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92adea32a25b2d36ebbfe69c3efac1e1501" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>MidiEvent_Controller</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92ab3c25e6206ee22d077812a5a3b94a211" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>MidiEvent_KeyPressure</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a27cba7e4508b870ae8ea80ca162c4433" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>MidiEvent_NoteOff</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a53a94fde6f981169615b7d5427cccb78" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>MidiEvent_NoteOn</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92aa1ff6af7ff6c70ca07022bf620b3ccd3" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>MidiEvent_PitchBend</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a3509a9d33ea0da16a480395a0ee4af5e" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>MidiEvent_ProgramChange</name></member>
+      <member refid="class_midi_decoder_1afd17f90102463d31d3b739936f3e70dd" prot="public" virt="virtual"><scope>MidiDecoder</scope><name>NeedsSoftReset</name></member>
+      <member refid="class_midi_decoder_1a6806f9b6c94b9275b4495d8466692b4a" prot="public" virt="virtual"><scope>MidiDecoder</scope><name>OnNewMidi</name></member>
+      <member refid="class_midi_decoder_1a622decc74141fffbb272c8be23af0215" prot="public" virt="virtual"><scope>MidiDecoder</scope><name>Open</name></member>
+      <member refid="class_midi_decoder_1a463917459cc34a694f53c50b9e00f267" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>operator=</name></member>
+      <member refid="class_midi_decoder_1a4b5c64f6f1256d07812614519240a6bb" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>operator=</name></member>
+      <member refid="class_midi_decoder_1aa4c0f006466de50a3f7c84460cf0f1ea" prot="public" virt="non-virtual"><scope>MidiDecoder</scope><name>Reset</name></member>
+      <member refid="class_midi_decoder_1abad45713922fef863804905572041ef0" prot="public" virt="virtual"><scope>MidiDecoder</scope><name>Seek</name></member>
+      <member refid="class_midi_decoder_1a224acd738e2f9c66e4caabdfb4653d61" prot="public" virt="virtual"><scope>MidiDecoder</scope><name>SendMidiMessage</name></member>
+      <member refid="class_midi_decoder_1a15e5774605a1d77b05e5d332ebef74c9" prot="public" virt="virtual"><scope>MidiDecoder</scope><name>SendSysExMessage</name></member>
+      <member refid="class_midi_decoder_1aecab4ef828716841e2c6f5468a734961" prot="public" virt="virtual"><scope>MidiDecoder</scope><name>SetFormat</name></member>
+      <member refid="class_midi_decoder_1ab492d527453d3b8513c2e7c2cb34b237" prot="public" virt="virtual"><scope>MidiDecoder</scope><name>SetPitch</name></member>
+      <member refid="class_midi_decoder_1a07adfc534e13ab8dabac2ca2abf68676" prot="public" virt="virtual"><scope>MidiDecoder</scope><name>SupportsMidiMessages</name></member>
+      <member refid="class_midi_decoder_1a62bb942c2ce3a52b4f8903b80bb94065" prot="public" virt="virtual"><scope>MidiDecoder</scope><name>~MidiDecoder</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

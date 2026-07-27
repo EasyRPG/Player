@@ -892,3 +892,4 @@ bool Window_Message::IsFaceEnabled() const {
 	return pending_message.IsFaceEnabled() && !Main_Data::game_system->GetMessageFaceName().empty();
 }
 
+

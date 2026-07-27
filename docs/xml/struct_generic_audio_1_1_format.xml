@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_generic_audio_1_1_format" kind="struct" language="C++" prot="private">
+    <compoundname>GenericAudio::Format</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_generic_audio_1_1_format_1a7072a507f1050e929b364bfa23c5ea9c" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int GenericAudio::Format::frequency</definition>
+        <argsstring></argsstring>
+        <name>frequency</name>
+        <qualifiedname>GenericAudio::Format::frequency</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="98" column="5" bodyfile="audio_generic.h" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_generic_audio_1_1_format_1ad2439703938475c883a0344b1eda9450" prot="public" static="no" mutable="no">
+        <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">AudioDecoder::Format</ref></type>
+        <definition>AudioDecoder::Format GenericAudio::Format::format</definition>
+        <argsstring></argsstring>
+        <name>format</name>
+        <qualifiedname>GenericAudio::Format::format</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="99" column="22" bodyfile="audio_generic.h" bodystart="99" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_generic_audio_1_1_format_1a15edee2aade66735b99c6549dc21d524" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int GenericAudio::Format::channels</definition>
+        <argsstring></argsstring>
+        <name>channels</name>
+        <qualifiedname>GenericAudio::Format::channels</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="100" column="5" bodyfile="audio_generic.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="audio_generic.h" line="97" column="1" bodyfile="audio_generic.h" bodystart="97" bodyend="101"/>
+    <listofallmembers>
+      <member refid="struct_generic_audio_1_1_format_1a15edee2aade66735b99c6549dc21d524" prot="public" virt="non-virtual"><scope>GenericAudio::Format</scope><name>channels</name></member>
+      <member refid="struct_generic_audio_1_1_format_1ad2439703938475c883a0344b1eda9450" prot="public" virt="non-virtual"><scope>GenericAudio::Format</scope><name>format</name></member>
+      <member refid="struct_generic_audio_1_1_format_1a7072a507f1050e929b364bfa23c5ea9c" prot="public" virt="non-virtual"><scope>GenericAudio::Format</scope><name>frequency</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

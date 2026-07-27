@@ -1,0 +1,571 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___config" kind="struct" language="C++" prot="public">
+    <compoundname>Game_Config</compoundname>
+    <includes refid="game__config_8h" local="no">game_config.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___config_1ab3963857f5088d55b658ca4cb25b6aaf" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_game___config_player" kindref="compound">Game_ConfigPlayer</ref></type>
+        <definition>Game_ConfigPlayer Game_Config::player</definition>
+        <argsstring></argsstring>
+        <name>player</name>
+        <qualifiedname>Game_Config::player</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gameplay subsystem options </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="173" column="19" bodyfile="game_config.h" bodystart="173" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_1aeda7a37a18bd0b2f658d3f6e69529de9" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_game___config_video" kindref="compound">Game_ConfigVideo</ref></type>
+        <definition>Game_ConfigVideo Game_Config::video</definition>
+        <argsstring></argsstring>
+        <name>video</name>
+        <qualifiedname>Game_Config::video</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Video subsystem options </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="176" column="18" bodyfile="game_config.h" bodystart="176" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_1ac9bf83f157b15bd82307e4a7b5725de9" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_game___config_audio" kindref="compound">Game_ConfigAudio</ref></type>
+        <definition>Game_ConfigAudio Game_Config::audio</definition>
+        <argsstring></argsstring>
+        <name>audio</name>
+        <qualifiedname>Game_Config::audio</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Audio subsystem options </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="179" column="18" bodyfile="game_config.h" bodystart="179" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_1a80d42fd9d90a52f619fcc81419ddc1b7" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_game___config_input" kindref="compound">Game_ConfigInput</ref></type>
+        <definition>Game_ConfigInput Game_Config::input</definition>
+        <argsstring></argsstring>
+        <name>input</name>
+        <qualifiedname>Game_Config::input</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="namespace_input" kindref="compound">Input</ref> subsystem options </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="182" column="18" bodyfile="game_config.h" bodystart="182" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="struct_game___config_1a5c9f1de2bee569421786e498891475d4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_game___config" kindref="compound">Game_Config</ref></type>
+        <definition>Game_Config Game_Config::Create</definition>
+        <argsstring>(CmdlineParser &amp;cp)</argsstring>
+        <name>Create</name>
+        <qualifiedname>Game_Config::Create</qualifiedname>
+        <param>
+          <type><ref refid="class_cmdline_parser" kindref="compound">CmdlineParser</ref> &amp;</type>
+          <declname>cp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Create an application config. This first determines the config file path if any, loads the config file, then loads command line arguments. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="188" column="20" bodyfile="game_config.cpp" bodystart="102" bodyend="150"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_game___config_1a9d6ad182ae9e2e3e6dff05340b33e0db" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Game_Config::GetConfigPath</definition>
+        <argsstring>(CmdlineParser &amp;cp)</argsstring>
+        <name>GetConfigPath</name>
+        <qualifiedname>Game_Config::GetConfigPath</qualifiedname>
+        <param>
+          <type><ref refid="class_cmdline_parser" kindref="compound">CmdlineParser</ref> &amp;</type>
+          <declname>cp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>config file path from command line args if found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="191" column="20" bodyfile="game_config.cpp" bodystart="404" bodyend="428"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_game___config_1a59c18f70caeb793912159cd132922072" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+        <definition>FilesystemView Game_Config::GetGlobalConfigFilesystem</definition>
+        <argsstring>()</argsstring>
+        <name>GetGlobalConfigFilesystem</name>
+        <qualifiedname>Game_Config::GetGlobalConfigFilesystem</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the a filesystem view to the global config directory </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="196" column="23" bodyfile="game_config.cpp" bodystart="152" bodyend="232"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_game___config_1ad47ae32cb02997818ca9d910989f9c24" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+        <definition>FilesystemView Game_Config::GetSoundfontFilesystem</definition>
+        <argsstring>()</argsstring>
+        <name>GetSoundfontFilesystem</name>
+        <qualifiedname>Game_Config::GetSoundfontFilesystem</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the filesystem view to the soundfont directory By default this is config/Soundfont </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="202" column="23" bodyfile="game_config.cpp" bodystart="244" bodyend="256"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_game___config_1a6ca2e3d04b9cb327eaaf1157b35182bd" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+        <definition>FilesystemView Game_Config::GetFontFilesystem</definition>
+        <argsstring>()</argsstring>
+        <name>GetFontFilesystem</name>
+        <qualifiedname>Game_Config::GetFontFilesystem</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the filesystem view to the font directory By default this is config/Font </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="208" column="23" bodyfile="game_config.cpp" bodystart="259" bodyend="271"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_game___config_1a73b765b9a0a01ef2d99b8d2222429e2e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream Game_Config::GetGlobalConfigFileInput</definition>
+        <argsstring>()</argsstring>
+        <name>GetGlobalConfigFileInput</name>
+        <qualifiedname>Game_Config::GetGlobalConfigFileInput</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns a handle to the global config file for reading. The file is created if it does not exist.</para>
+<para><simplesect kind="return"><para>handle to the global file </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="216" column="39" bodyfile="game_config.cpp" bodystart="234" bodyend="242"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_game___config_1aa9213452ef943bb0e647a76d65b9ac65" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_output_stream" kindref="compound">Filesystem_Stream::OutputStream</ref></type>
+        <definition>Filesystem_Stream::OutputStream Game_Config::GetGlobalConfigFileOutput</definition>
+        <argsstring>()</argsstring>
+        <name>GetGlobalConfigFileOutput</name>
+        <qualifiedname>Game_Config::GetGlobalConfigFileOutput</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns a handle to the global config file for writing. The file is created if it does not exist.</para>
+<para><simplesect kind="return"><para>handle to the global file </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="224" column="40" bodyfile="game_config.cpp" bodystart="273" bodyend="281"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_game___config_1a0a0a11ad65afc59898c5279108f4acf1" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_output_stream" kindref="compound">Filesystem_Stream::OutputStream</ref> &amp;</type>
+        <definition>Filesystem_Stream::OutputStream &amp; Game_Config::GetLogFileOutput</definition>
+        <argsstring>()</argsstring>
+        <name>GetLogFileOutput</name>
+        <qualifiedname>Game_Config::GetLogFileOutput</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="226" column="40" bodyfile="game_config.cpp" bodystart="283" bodyend="365"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_game___config_1a18b1aef98e1b4c7febe5ef8256e11a8c" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Config::CloseLogFile</definition>
+        <argsstring>()</argsstring>
+        <name>CloseLogFile</name>
+        <qualifiedname>Game_Config::CloseLogFile</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="228" column="13" bodyfile="game_config.cpp" bodystart="367" bodyend="402"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_game___config_1a4ff42f83627656298f65e925d2d4aa97" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Config::LoadFromStream</definition>
+        <argsstring>(Filesystem_Stream::InputStream &amp;is)</argsstring>
+        <name>LoadFromStream</name>
+        <qualifiedname>Game_Config::LoadFromStream</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref> &amp;</type>
+          <declname>is</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Load configuration values from a stream;</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>is</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>stream to read from. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="post"><para>values of this are updated with values found in the stream. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>VIDEO SECTION</para>
+<para>AUDIO SECTION</para>
+<para>INPUT SECTION</para>
+<para>PLAYER SECTION</para>
+        </inbodydescription>
+        <location file="game_config.h" line="236" column="6" bodyfile="game_config.cpp" bodystart="582" bodyend="682"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_game___config_1aa192e3addec6f4c522d4a4cf3bae5f95" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Config::LoadFromArgs</definition>
+        <argsstring>(CmdlineParser &amp;cp)</argsstring>
+        <name>LoadFromArgs</name>
+        <qualifiedname>Game_Config::LoadFromArgs</qualifiedname>
+        <param>
+          <type><ref refid="class_cmdline_parser" kindref="compound">CmdlineParser</ref> &amp;</type>
+          <declname>cp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Load configuration values from a command line arguments.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>cp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the command line parser to use. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="post"><para>values of this are updated with values found in command line args. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="244" column="6" bodyfile="game_config.cpp" bodystart="430" bodyend="580"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_game___config_1ac18a69ff4afcdaac486bc513223a5d0c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Config::WriteToStream</definition>
+        <argsstring>(Filesystem_Stream::OutputStream &amp;os) const</argsstring>
+        <name>WriteToStream</name>
+        <qualifiedname>Game_Config::WriteToStream</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_output_stream" kindref="compound">Filesystem_Stream::OutputStream</ref> &amp;</type>
+          <declname>os</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Writes our configuration to the given stream.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>os</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>stream to write to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>VIDEO SECTION</para>
+<para>AUDIO SECTION</para>
+<para>INPUT SECTION</para>
+<para>PLAYER SECTION</para>
+        </inbodydescription>
+        <location file="game_config.h" line="251" column="6" bodyfile="game_config.cpp" bodystart="684" bodyend="776"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="5">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>ConfigParam&lt; int &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="12" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>ConfigParam&lt; std::string &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>ConfigParamBase&lt; ConfigEnum::GameResolution &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="21">
+        <label>ConfigParamBase&lt; ConfigEnum::ScalingMode &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="18">
+        <label>ConfigParamBase&lt; ConfigEnum::ShowFps &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="14">
+        <label>ConfigParamBase&lt; ConfigEnum::StartupLangSelect &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="8">
+        <label>ConfigParamBase&lt; ConfigEnum::StartupLogos &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="6">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="12">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="4">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="22">
+        <label>EnumConfigParam&lt; ConfigEnum::GameResolution, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="23" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>EnumConfigParam&lt; ConfigEnum::ScalingMode, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="21" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>EnumConfigParam&lt; ConfigEnum::ShowFps, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>EnumConfigParam&lt; ConfigEnum::StartupLangSelect, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="14" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>EnumConfigParam&lt; ConfigEnum::StartupLogos, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>FlatUniqueMultiMap&lt; InputButton, Keys::InputKey &gt;</label>
+        <link refid="class_flat_unique_multi_map"/>
+      </node>
+      <node id="1">
+        <label>Game_Config</label>
+        <link refid="struct_game___config"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>player</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>video</edgelabel>
+        </childnode>
+        <childnode refid="24" relation="usage">
+          <edgelabel>audio</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="usage">
+          <edgelabel>input</edgelabel>
+        </childnode>
+      </node>
+      <node id="24">
+        <label>Game_ConfigAudio</label>
+        <link refid="struct_game___config_audio"/>
+        <childnode refid="11" relation="usage">
+          <edgelabel>music_volume</edgelabel>
+          <edgelabel>sound_volume</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>fluidsynth_midi</edgelabel>
+          <edgelabel>native_midi</edgelabel>
+          <edgelabel>wildmidi_midi</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>fmmidi_midi</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>soundfont</edgelabel>
+        </childnode>
+      </node>
+      <node id="25">
+        <label>Game_ConfigInput</label>
+        <link refid="struct_game___config_input"/>
+        <childnode refid="11" relation="usage">
+          <edgelabel>speed_modifier_a</edgelabel>
+          <edgelabel>speed_modifier_b</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>gamepad_swap_ab_and_xy</edgelabel>
+          <edgelabel>gamepad_swap_analog</edgelabel>
+          <edgelabel>gamepad_swap_dpad_with_buttons</edgelabel>
+        </childnode>
+        <childnode refid="26" relation="usage">
+          <edgelabel>buttons</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Game_ConfigPlayer</label>
+        <link refid="struct_game___config_player"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>autobattle_algo</edgelabel>
+          <edgelabel>enemyai_algo</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>automatic_screenshots</edgelabel>
+          <edgelabel>lang_select_in_title</edgelabel>
+          <edgelabel>log_enabled</edgelabel>
+          <edgelabel>screenshot_timestamp</edgelabel>
+          <edgelabel>settings_autosave</edgelabel>
+          <edgelabel>settings_in_menu</edgelabel>
+          <edgelabel>settings_in_title</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>show_startup_logos</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>font1</edgelabel>
+          <edgelabel>font2</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>automatic_screenshots_interval</edgelabel>
+          <edgelabel>font1_size</edgelabel>
+          <edgelabel>font2_size</edgelabel>
+          <edgelabel>screenshot_scale</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>lang_select_on_start</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>Game_ConfigVideo</label>
+        <link refid="struct_game___config_video"/>
+        <childnode refid="16" relation="usage">
+          <edgelabel>renderer</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>fullscreen</edgelabel>
+          <edgelabel>pause_when_focus_lost</edgelabel>
+          <edgelabel>stretch</edgelabel>
+          <edgelabel>touch_ui</edgelabel>
+          <edgelabel>vsync</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>fps</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>fps_limit</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>window_height</edgelabel>
+          <edgelabel>window_width</edgelabel>
+          <edgelabel>window_x</edgelabel>
+          <edgelabel>window_y</edgelabel>
+          <edgelabel>window_zoom</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>scaling_mode</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>game_resolution</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>LockedConfigParam&lt; std::string &gt;</label>
+        <link refid="class_locked_config_param"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>PathConfigParam</label>
+        <link refid="class_path_config_param"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="12" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>StringConfigParam</label>
+        <link refid="class_config_param"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="game_config.h" line="171" column="1" bodyfile="game_config.h" bodystart="171" bodyend="252"/>
+    <listofallmembers>
+      <member refid="struct_game___config_1ac9bf83f157b15bd82307e4a7b5725de9" prot="public" virt="non-virtual"><scope>Game_Config</scope><name>audio</name></member>
+      <member refid="struct_game___config_1a18b1aef98e1b4c7febe5ef8256e11a8c" prot="public" virt="non-virtual"><scope>Game_Config</scope><name>CloseLogFile</name></member>
+      <member refid="struct_game___config_1a5c9f1de2bee569421786e498891475d4" prot="public" virt="non-virtual"><scope>Game_Config</scope><name>Create</name></member>
+      <member refid="struct_game___config_1a9d6ad182ae9e2e3e6dff05340b33e0db" prot="public" virt="non-virtual"><scope>Game_Config</scope><name>GetConfigPath</name></member>
+      <member refid="struct_game___config_1a6ca2e3d04b9cb327eaaf1157b35182bd" prot="public" virt="non-virtual"><scope>Game_Config</scope><name>GetFontFilesystem</name></member>
+      <member refid="struct_game___config_1a73b765b9a0a01ef2d99b8d2222429e2e" prot="public" virt="non-virtual"><scope>Game_Config</scope><name>GetGlobalConfigFileInput</name></member>
+      <member refid="struct_game___config_1aa9213452ef943bb0e647a76d65b9ac65" prot="public" virt="non-virtual"><scope>Game_Config</scope><name>GetGlobalConfigFileOutput</name></member>
+      <member refid="struct_game___config_1a59c18f70caeb793912159cd132922072" prot="public" virt="non-virtual"><scope>Game_Config</scope><name>GetGlobalConfigFilesystem</name></member>
+      <member refid="struct_game___config_1a0a0a11ad65afc59898c5279108f4acf1" prot="public" virt="non-virtual"><scope>Game_Config</scope><name>GetLogFileOutput</name></member>
+      <member refid="struct_game___config_1ad47ae32cb02997818ca9d910989f9c24" prot="public" virt="non-virtual"><scope>Game_Config</scope><name>GetSoundfontFilesystem</name></member>
+      <member refid="struct_game___config_1a80d42fd9d90a52f619fcc81419ddc1b7" prot="public" virt="non-virtual"><scope>Game_Config</scope><name>input</name></member>
+      <member refid="struct_game___config_1aa192e3addec6f4c522d4a4cf3bae5f95" prot="public" virt="non-virtual"><scope>Game_Config</scope><name>LoadFromArgs</name></member>
+      <member refid="struct_game___config_1a4ff42f83627656298f65e925d2d4aa97" prot="public" virt="non-virtual"><scope>Game_Config</scope><name>LoadFromStream</name></member>
+      <member refid="struct_game___config_1ab3963857f5088d55b658ca4cb25b6aaf" prot="public" virt="non-virtual"><scope>Game_Config</scope><name>player</name></member>
+      <member refid="struct_game___config_1aeda7a37a18bd0b2f658d3f6e69529de9" prot="public" virt="non-virtual"><scope>Game_Config</scope><name>video</name></member>
+      <member refid="struct_game___config_1ac18a69ff4afcdaac486bc513223a5d0c" prot="public" virt="non-virtual"><scope>Game_Config</scope><name>WriteToStream</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

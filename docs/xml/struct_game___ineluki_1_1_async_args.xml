@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___ineluki_1_1_async_args" kind="struct" language="C++" prot="private">
+    <compoundname>Game_Ineluki::AsyncArgs</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___ineluki_1_1_async_args_1ac3189c5afbab01f185ec3a8f3871365b" prot="public" static="no" mutable="no">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding Game_Ineluki::AsyncArgs::binding</definition>
+        <argsstring></argsstring>
+        <name>binding</name>
+        <qualifiedname>Game_Ineluki::AsyncArgs::binding</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="242" column="20" bodyfile="game_ineluki.h" bodystart="242" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___ineluki_1_1_async_args_1a3118b12e21d726b938edcf738657a084" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Game_Ineluki::AsyncArgs::script_name</definition>
+        <argsstring></argsstring>
+        <name>script_name</name>
+        <qualifiedname>Game_Ineluki::AsyncArgs::script_name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="243" column="13" bodyfile="game_ineluki.h" bodystart="243" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___ineluki_1_1_async_args_1a8d25adae78e30b19d3475a8b294e0bf3" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Ineluki::AsyncArgs::invoked</definition>
+        <argsstring></argsstring>
+        <name>invoked</name>
+        <qualifiedname>Game_Ineluki::AsyncArgs::invoked</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="244" column="6" bodyfile="game_ineluki.h" bodystart="244" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_game___ineluki_1_1_async_args_1ab9be5d9e27aaac8ae6386cb4f2019947" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Game_Ineluki::AsyncArgs::AsyncArgs</definition>
+        <argsstring>(FileRequestBinding binding, std::string script_name)</argsstring>
+        <name>AsyncArgs</name>
+        <qualifiedname>Game_Ineluki::AsyncArgs::AsyncArgs</qualifiedname>
+        <param>
+          <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+          <declname>binding</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>script_name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="246" column="1" bodyfile="game_ineluki.h" bodystart="246" bodyend="247"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_ineluki.h" line="241" column="1" bodyfile="game_ineluki.h" bodystart="241" bodyend="248"/>
+    <listofallmembers>
+      <member refid="struct_game___ineluki_1_1_async_args_1ab9be5d9e27aaac8ae6386cb4f2019947" prot="public" virt="non-virtual"><scope>Game_Ineluki::AsyncArgs</scope><name>AsyncArgs</name></member>
+      <member refid="struct_game___ineluki_1_1_async_args_1ac3189c5afbab01f185ec3a8f3871365b" prot="public" virt="non-virtual"><scope>Game_Ineluki::AsyncArgs</scope><name>binding</name></member>
+      <member refid="struct_game___ineluki_1_1_async_args_1a8d25adae78e30b19d3475a8b294e0bf3" prot="public" virt="non-virtual"><scope>Game_Ineluki::AsyncArgs</scope><name>invoked</name></member>
+      <member refid="struct_game___ineluki_1_1_async_args_1a3118b12e21d726b938edcf738657a084" prot="public" virt="non-virtual"><scope>Game_Ineluki::AsyncArgs</scope><name>script_name</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

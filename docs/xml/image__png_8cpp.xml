@@ -1,0 +1,1005 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="image__png_8cpp" kind="file" language="C++">
+    <compoundname>image_png.cpp</compoundname>
+    <includes local="no">png.h</includes>
+    <includes local="no">cstdlib</includes>
+    <includes local="no">cstring</includes>
+    <includes local="no">csetjmp</includes>
+    <includes local="no">vector</includes>
+    <includes local="no">fstream</includes>
+    <includes refid="output_8h" local="yes">output.h</includes>
+    <includes refid="image__png_8h" local="yes">image_png.h</includes>
+    <incdepgraph>
+      <node id="34">
+        <label>bitmap.h</label>
+        <link refid="bitmap_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>image_png.cpp</label>
+        <link refid="image__png_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>image_png.h</label>
+        <link refid="image__png_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>opacity.h</label>
+        <link refid="opacity_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="8">
+        <label>output.h</label>
+        <link refid="output_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>pixel_format.h</label>
+        <link refid="pixel__format_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>pixman_image_ptr.h</label>
+        <link refid="pixman__image__ptr_8h"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>point.h</label>
+        <link refid="point_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>rect.h</label>
+        <link refid="rect_8h"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>text.h</label>
+        <link refid="text_8h"/>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>tone.h</label>
+        <link refid="tone_8h"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>algorithm</label>
+      </node>
+      <node id="13">
+        <label>cassert</label>
+      </node>
+      <node id="47">
+        <label>climits</label>
+      </node>
+      <node id="5">
+        <label>csetjmp</label>
+      </node>
+      <node id="17">
+        <label>cstdint</label>
+      </node>
+      <node id="3">
+        <label>cstdlib</label>
+      </node>
+      <node id="4">
+        <label>cstring</label>
+      </node>
+      <node id="28">
+        <label>ctime</label>
+      </node>
+      <node id="11">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="26">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="7">
+        <label>fstream</label>
+      </node>
+      <node id="29">
+        <label>functional</label>
+      </node>
+      <node id="10">
+        <label>iosfwd</label>
+      </node>
+      <node id="14">
+        <label>istream</label>
+      </node>
+      <node id="25">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="22">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="24">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="35">
+        <label>map</label>
+      </node>
+      <node id="18">
+        <label>memory</label>
+      </node>
+      <node id="15">
+        <label>ostream</label>
+      </node>
+      <node id="36">
+        <label>pixman.h</label>
+      </node>
+      <node id="2">
+        <label>png.h</label>
+      </node>
+      <node id="9">
+        <label>string</label>
+      </node>
+      <node id="38">
+        <label>tuple</label>
+      </node>
+      <node id="19">
+        <label>unordered_map</label>
+      </node>
+      <node id="6">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="image__png_8cpp_1a7a62ed415ccf5b9dcf8c7970da7be213" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void read_data</definition>
+        <argsstring>(png_structp png_ptr, png_bytep data, png_size_t length)</argsstring>
+        <name>read_data</name>
+        <param>
+          <type>png_structp</type>
+          <declname>png_ptr</declname>
+        </param>
+        <param>
+          <type>png_bytep</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>png_size_t</type>
+          <declname>length</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_png.cpp" line="29" column="13" bodyfile="image_png.cpp" bodystart="29" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="image__png_8cpp_1a4c43e4e6bdd44687a520e13613eb9a07" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void read_data_istream</definition>
+        <argsstring>(png_structp png_ptr, png_bytep data, png_size_t length)</argsstring>
+        <name>read_data_istream</name>
+        <param>
+          <type>png_structp</type>
+          <declname>png_ptr</declname>
+        </param>
+        <param>
+          <type>png_bytep</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>png_size_t</type>
+          <declname>length</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_png.cpp" line="35" column="13" bodyfile="image_png.cpp" bodystart="35" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="image__png_8cpp_1a7df17a8485cadc33a41e1ed7e12165fa" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void on_png_warning</definition>
+        <argsstring>(png_structp, png_const_charp warn_msg)</argsstring>
+        <name>on_png_warning</name>
+        <param>
+          <type>png_structp</type>
+        </param>
+        <param>
+          <type>png_const_charp</type>
+          <declname>warn_msg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_png.cpp" line="42" column="13" bodyfile="image_png.cpp" bodystart="42" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="image__png_8cpp_1aaf18a264506fee7a52756888e2d86df9" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void on_png_error</definition>
+        <argsstring>(png_structp, png_const_charp error_msg)</argsstring>
+        <name>on_png_error</name>
+        <param>
+          <type>png_structp</type>
+        </param>
+        <param>
+          <type>png_const_charp</type>
+          <declname>error_msg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_png.cpp" line="46" column="13" bodyfile="image_png.cpp" bodystart="46" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="image__png_8cpp_1ae1f34016a7e9cdd513b380006726277d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool ReadPNGWithReadFunction</definition>
+        <argsstring>(png_voidp, png_rw_ptr, bool, ImageOut &amp;)</argsstring>
+        <name>ReadPNGWithReadFunction</name>
+        <param>
+          <type>png_voidp</type>
+          <defname>user_data</defname>
+        </param>
+        <param>
+          <type>png_rw_ptr</type>
+          <defname>fn</defname>
+        </param>
+        <param>
+          <type>bool</type>
+          <defname>transparent</defname>
+        </param>
+        <param>
+          <type><ref refid="struct_image_out" kindref="compound">ImageOut</ref> &amp;</type>
+          <defname>output</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_png.cpp" line="65" column="13" bodyfile="image_png.cpp" bodystart="65" bodyend="129" declfile="image_png.cpp" declline="50" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="image__png_8cpp_1aa48d31d22bd4e5afcf60ebaac6871655" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void ReadPalettedData</definition>
+        <argsstring>(png_struct *, png_info *, png_uint_32, png_uint_32, bool, uint32_t *)</argsstring>
+        <name>ReadPalettedData</name>
+        <param>
+          <type>png_struct *</type>
+          <defname>png_ptr</defname>
+        </param>
+        <param>
+          <type>png_info *</type>
+          <defname>info_ptr</defname>
+        </param>
+        <param>
+          <type>png_uint_32</type>
+          <defname>w</defname>
+        </param>
+        <param>
+          <type>png_uint_32</type>
+          <defname>h</defname>
+        </param>
+        <param>
+          <type>bool</type>
+          <defname>transparent</defname>
+        </param>
+        <param>
+          <type>uint32_t *</type>
+          <defname>pixels</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_png.cpp" line="131" column="13" bodyfile="image_png.cpp" bodystart="131" bodyend="173" declfile="image_png.cpp" declline="51" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="image__png_8cpp_1a4edd79e1c6f3f2a868b9ed932d01a99f" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void ReadGrayData</definition>
+        <argsstring>(png_struct *, png_info *, png_uint_32, png_uint_32, bool, uint32_t *)</argsstring>
+        <name>ReadGrayData</name>
+        <param>
+          <type>png_struct *</type>
+          <defname>png_ptr</defname>
+        </param>
+        <param>
+          <type>png_info *</type>
+          <defname>info_ptr</defname>
+        </param>
+        <param>
+          <type>png_uint_32</type>
+          <defname>w</defname>
+        </param>
+        <param>
+          <type>png_uint_32</type>
+          <defname>h</defname>
+        </param>
+        <param>
+          <type>bool</type>
+          <defname>transparent</defname>
+        </param>
+        <param>
+          <type>uint32_t *</type>
+          <defname>pixels</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_png.cpp" line="175" column="13" bodyfile="image_png.cpp" bodystart="175" bodyend="203" declfile="image_png.cpp" declline="52" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="image__png_8cpp_1a0fc88d9ae826303e7b9ae35e91b84bc4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void ReadGrayAlphaData</definition>
+        <argsstring>(png_struct *, png_info *, png_uint_32, png_uint_32, uint32_t *)</argsstring>
+        <name>ReadGrayAlphaData</name>
+        <param>
+          <type>png_struct *</type>
+          <defname>png_ptr</defname>
+        </param>
+        <param>
+          <type>png_info *</type>
+          <defname>info_ptr</defname>
+        </param>
+        <param>
+          <type>png_uint_32</type>
+          <defname>w</defname>
+        </param>
+        <param>
+          <type>png_uint_32</type>
+          <defname>h</defname>
+        </param>
+        <param>
+          <type>uint32_t *</type>
+          <defname>pixels</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_png.cpp" line="205" column="13" bodyfile="image_png.cpp" bodystart="205" bodyend="218" declfile="image_png.cpp" declline="53" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="image__png_8cpp_1ad29a3319ff00f401da8e3fcd7914015d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void ReadRGBData</definition>
+        <argsstring>(png_struct *, png_info *, png_uint_32, png_uint_32, uint32_t *)</argsstring>
+        <name>ReadRGBData</name>
+        <param>
+          <type>png_struct *</type>
+          <defname>png_ptr</defname>
+        </param>
+        <param>
+          <type>png_info *</type>
+          <defname>info_ptr</defname>
+        </param>
+        <param>
+          <type>png_uint_32</type>
+          <defname>w</defname>
+        </param>
+        <param>
+          <type>png_uint_32</type>
+          <defname>h</defname>
+        </param>
+        <param>
+          <type>uint32_t *</type>
+          <defname>pixels</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_png.cpp" line="220" column="13" bodyfile="image_png.cpp" bodystart="220" bodyend="233" declfile="image_png.cpp" declline="54" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="image__png_8cpp_1ab7b86be34b18b830451685c8eeceb8e0" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void ReadRGBAData</definition>
+        <argsstring>(png_struct *, png_info *, png_uint_32, png_uint_32, uint32_t *)</argsstring>
+        <name>ReadRGBAData</name>
+        <param>
+          <type>png_struct *</type>
+          <defname>png_ptr</defname>
+        </param>
+        <param>
+          <type>png_info *</type>
+          <defname>info_ptr</defname>
+        </param>
+        <param>
+          <type>png_uint_32</type>
+          <defname>w</defname>
+        </param>
+        <param>
+          <type>png_uint_32</type>
+          <defname>h</defname>
+        </param>
+        <param>
+          <type>uint32_t *</type>
+          <defname>pixels</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_png.cpp" line="235" column="13" bodyfile="image_png.cpp" bodystart="235" bodyend="247" declfile="image_png.cpp" declline="55" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="image__png_8cpp_1a83322a74cb69c7fab0a1db8e5f36a7aa" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void write_data</definition>
+        <argsstring>(png_structp out_ptr, png_bytep data, png_size_t len)</argsstring>
+        <name>write_data</name>
+        <param>
+          <type>png_structp</type>
+          <declname>out_ptr</declname>
+        </param>
+        <param>
+          <type>png_bytep</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>png_size_t</type>
+          <declname>len</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_png.cpp" line="249" column="13" bodyfile="image_png.cpp" bodystart="249" bodyend="251"/>
+      </memberdef>
+      <memberdef kind="function" id="image__png_8cpp_1a1f3aec9f485109a18742770c73c7e1a6" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void flush_stream</definition>
+        <argsstring>(png_structp out_ptr)</argsstring>
+        <name>flush_stream</name>
+        <param>
+          <type>png_structp</type>
+          <declname>out_ptr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_png.cpp" line="252" column="13" bodyfile="image_png.cpp" bodystart="252" bodyend="254"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;png.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstdlib&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstring&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;csetjmp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;fstream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="output_8h" kindref="compound">output.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="image__png_8h" kindref="compound">image_png.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>read_data(png_structp<sp/>png_ptr,<sp/>png_bytep<sp/>data,<sp/>png_size_t<sp/>length)<sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>png_bytep*<sp/>bufp<sp/>=<sp/>(png_bytep*)<sp/>png_get_io_ptr(png_ptr);</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>memcpy(data,<sp/>*bufp,<sp/>length);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>*bufp<sp/>+=<sp/>length;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>read_data_istream(png_structp<sp/>png_ptr,<sp/>png_bytep<sp/>data,<sp/>png_size_t<sp/>length)<sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>bufp<sp/>=<sp/></highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="normal"><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(png_get_io_ptr(png_ptr));</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(bufp<sp/>!=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal"><sp/>&amp;&amp;<sp/>*bufp)<sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bufp-&gt;read(</highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(data),<sp/>length);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>on_png_warning(png_structp,<sp/>png_const_charp<sp/>warn_msg)<sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_output_1aec7bcd2124d7576a8b20873585de07cd" kindref="member">Output::Debug</ref>(</highlight><highlight class="stringliteral">&quot;libpng:<sp/>{}&quot;</highlight><highlight class="normal">,<sp/>warn_msg);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>on_png_error(png_structp,<sp/>png_const_charp<sp/>error_msg)<sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_output_1a0bc5fd9a98e30fdec1570fcc6d1368e2" kindref="member">Output::Warning</ref>(</highlight><highlight class="stringliteral">&quot;libpng:<sp/>{}&quot;</highlight><highlight class="normal">,<sp/>error_msg);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ReadPNGWithReadFunction(png_voidp,png_rw_ptr,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">,<sp/><ref refid="struct_image_out" kindref="compound">ImageOut</ref>&amp;);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ReadPalettedData(png_struct*,<sp/>png_info*,<sp/>png_uint_32,<sp/>png_uint_32,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">,<sp/>uint32_t*);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ReadGrayData(png_struct*,<sp/>png_info*,<sp/>png_uint_32,<sp/>png_uint_32,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">,<sp/>uint32_t*);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ReadGrayAlphaData(png_struct*,<sp/>png_info*,<sp/>png_uint_32,<sp/>png_uint_32,<sp/>uint32_t*);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ReadRGBData(png_struct*,<sp/>png_info*,<sp/>png_uint_32,<sp/>png_uint_32,<sp/>uint32_t*);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ReadRGBAData(png_struct*,<sp/>png_info*,<sp/>png_uint_32,<sp/>png_uint_32,<sp/>uint32_t*);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57" refid="namespace_image_p_n_g_1abae750a8b08f89ef9913f64fff818b52" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_image_p_n_g_1abae750a8b08f89ef9913f64fff818b52" kindref="member">ImagePNG::Read</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>buffer,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>transparent,<sp/><ref refid="struct_image_out" kindref="compound">ImageOut</ref>&amp;<sp/>output)<sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ReadPNGWithReadFunction((png_voidp)&amp;buffer,<sp/>read_data,<sp/>transparent,<sp/>output);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61" refid="namespace_image_p_n_g_1a6907901616cccd05d18e1bb75bf3be27" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_image_p_n_g_1abae750a8b08f89ef9913f64fff818b52" kindref="member">ImagePNG::Read</ref>(<ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref>&amp;<sp/>stream,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>transparent,<sp/><ref refid="struct_image_out" kindref="compound">ImageOut</ref>&amp;<sp/>output)<sp/>{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ReadPNGWithReadFunction(&amp;stream,<sp/>read_data_istream,<sp/>transparent,<sp/>output);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ReadPNGWithReadFunction(png_voidp<sp/>user_data,<sp/>png_rw_ptr<sp/>fn,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>transparent,<sp/><ref refid="struct_image_out" kindref="compound">ImageOut</ref>&amp;<sp/>output)<sp/>{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>output.<ref refid="struct_image_out_1ae620d4ba2be53f61cabe15b7eeb392e0" kindref="member">pixels</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>png_struct<sp/>*png_ptr<sp/>=<sp/>png_create_read_struct(PNG_LIBPNG_VER_STRING,<sp/>NULL,<sp/>on_png_error,<sp/>on_png_warning);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(png_ptr<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1a0bc5fd9a98e30fdec1570fcc6d1368e2" kindref="member">Output::Warning</ref>(</highlight><highlight class="stringliteral">&quot;Couldn&apos;t<sp/>allocate<sp/>PNG<sp/>structure&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>png_info<sp/>*info_ptr<sp/>=<sp/>png_create_info_struct(png_ptr);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(info_ptr<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1a0bc5fd9a98e30fdec1570fcc6d1368e2" kindref="member">Output::Warning</ref>(</highlight><highlight class="stringliteral">&quot;Couldn&apos;t<sp/>allocate<sp/>PNG<sp/>info<sp/>structure&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(setjmp(png_jmpbuf(png_ptr)))<sp/>{</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>png_destroy_read_struct(&amp;png_ptr,<sp/>&amp;info_ptr,<sp/>NULL);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>png_set_read_fn(png_ptr,<sp/>user_data,<sp/>fn);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>png_read_info(png_ptr,<sp/>info_ptr);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>png_uint_32<sp/>w,<sp/>h;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bit_depth,<sp/>color_type;</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>png_get_IHDR(png_ptr,<sp/>info_ptr,<sp/>&amp;w,<sp/>&amp;h,</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&amp;bit_depth,<sp/>&amp;color_type,<sp/>NULL,<sp/>NULL,<sp/>NULL);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>output.<ref refid="struct_image_out_1ae620d4ba2be53f61cabe15b7eeb392e0" kindref="member">pixels</ref><sp/>=<sp/>malloc(w<sp/>*<sp/>h<sp/>*<sp/>4);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!output.<ref refid="struct_image_out_1ae620d4ba2be53f61cabe15b7eeb392e0" kindref="member">pixels</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1a0bc5fd9a98e30fdec1570fcc6d1368e2" kindref="member">Output::Warning</ref>(</highlight><highlight class="stringliteral">&quot;Error<sp/>allocating<sp/>PNG<sp/>pixel<sp/>buffer.&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(color_type)<sp/>{</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>PNG_COLOR_TYPE_PALETTE:</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ReadPalettedData(png_ptr,<sp/>info_ptr,<sp/>w,<sp/>h,<sp/>transparent,<sp/>(uint32_t*)output.<ref refid="struct_image_out_1ae620d4ba2be53f61cabe15b7eeb392e0" kindref="member">pixels</ref>);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>output.<ref refid="struct_image_out_1ae8e8b33ef9224452a7403d0986c573bf" kindref="member">bpp</ref><sp/>=<sp/>8;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>PNG_COLOR_TYPE_GRAY:</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ReadGrayData(png_ptr,<sp/>info_ptr,<sp/>w,<sp/>h,<sp/>transparent,<sp/>(uint32_t*)output.<ref refid="struct_image_out_1ae620d4ba2be53f61cabe15b7eeb392e0" kindref="member">pixels</ref>);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>output.<ref refid="struct_image_out_1ae8e8b33ef9224452a7403d0986c573bf" kindref="member">bpp</ref><sp/>=<sp/>8;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>PNG_COLOR_TYPE_GRAY_ALPHA:</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ReadGrayAlphaData(png_ptr,<sp/>info_ptr,<sp/>w,<sp/>h,<sp/>(uint32_t*)output.<ref refid="struct_image_out_1ae620d4ba2be53f61cabe15b7eeb392e0" kindref="member">pixels</ref>);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>output.<ref refid="struct_image_out_1ae8e8b33ef9224452a7403d0986c573bf" kindref="member">bpp</ref><sp/>=<sp/>8;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>PNG_COLOR_TYPE_RGB:</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ReadRGBData(png_ptr,<sp/>info_ptr,<sp/>w,<sp/>h,<sp/>(uint32_t*)output.<ref refid="struct_image_out_1ae620d4ba2be53f61cabe15b7eeb392e0" kindref="member">pixels</ref>);</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>output.<ref refid="struct_image_out_1ae8e8b33ef9224452a7403d0986c573bf" kindref="member">bpp</ref><sp/>=<sp/>24;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>PNG_COLOR_TYPE_RGB_ALPHA:</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ReadRGBAData(png_ptr,<sp/>info_ptr,<sp/>w,<sp/>h,<sp/>(uint32_t*)output.<ref refid="struct_image_out_1ae620d4ba2be53f61cabe15b7eeb392e0" kindref="member">pixels</ref>);</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>output.<ref refid="struct_image_out_1ae8e8b33ef9224452a7403d0986c573bf" kindref="member">bpp</ref><sp/>=<sp/>32;</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>png_read_end(png_ptr,<sp/>NULL);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>png_destroy_read_struct(&amp;png_ptr,<sp/>&amp;info_ptr,<sp/>NULL);</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>output.<ref refid="struct_image_out_1a484ffd4f25e9f83c61359c10fb598205" kindref="member">width</ref><sp/>=<sp/>w;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>output.<ref refid="struct_image_out_1a411812ece4ee3ae037231e0f98ce4679" kindref="member">height</ref><sp/>=<sp/>h;</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="129"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ReadPalettedData(</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>png_struct*<sp/>png_ptr,<sp/>png_info*<sp/>info_ptr,</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>png_uint_32<sp/>w,<sp/>png_uint_32<sp/>h,</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>transparent,</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t*<sp/>pixels</highlight></codeline>
+<codeline lineno="136"><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>For<sp/>transparent<sp/>images,<sp/>all<sp/>the<sp/>colors<sp/>are<sp/>opaque,<sp/>except<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>color<sp/>with<sp/>index<sp/>0.<sp/>So<sp/>we&apos;ll<sp/>need<sp/>to<sp/>do<sp/>index-&gt;RGB<sp/>conversion</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>on<sp/>our<sp/>own.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>png_set_packing(png_ptr);</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>png_read_update_info(png_ptr,<sp/>info_ptr);</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!png_get_valid(png_ptr,<sp/>info_ptr,<sp/>PNG_INFO_PLTE))<sp/>{</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1a0bc5fd9a98e30fdec1570fcc6d1368e2" kindref="member">Output::Warning</ref>(</highlight><highlight class="stringliteral">&quot;Palette<sp/>PNG<sp/>without<sp/>PLTE<sp/>block&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>png_colorp<sp/>palette;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>num_palette;</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>png_get_PLTE(png_ptr,<sp/>info_ptr,<sp/>&amp;palette,<sp/>&amp;num_palette);</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(png_uint_32<sp/>y<sp/>=<sp/>0;<sp/>y<sp/>&lt;<sp/>h;<sp/>y++)<sp/>{</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>We<sp/>read<sp/>the<sp/>indices<sp/>(w<sp/>bytes)<sp/>into<sp/>the<sp/>end<sp/>of<sp/>the<sp/>pixel</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>data<sp/>for<sp/>this<sp/>row<sp/>(4w<sp/>bytes),<sp/>then<sp/>scan<sp/>over<sp/>them</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>converting<sp/>them<sp/>into<sp/>RGBA<sp/>values.<sp/>Putting<sp/>them<sp/>at<sp/>the<sp/>end</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>gives<sp/>us<sp/>enough<sp/>room<sp/>that<sp/>we<sp/>don&apos;t<sp/>overwrite<sp/>an<sp/>index</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>we&apos;ll<sp/>need<sp/>later<sp/>with<sp/>an<sp/>RGBA<sp/>value.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint32_t*<sp/>beginning_of_row<sp/>=<sp/>pixels<sp/>+<sp/>y<sp/>*<sp/>w;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t*<sp/>indices<sp/>=<sp/>(uint8_t*)beginning_of_row<sp/>+<sp/>w<sp/>*<sp/>3;</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>png_read_row(png_ptr,<sp/>(png_bytep)indices,<sp/>NULL);</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint32_t*<sp/>dst<sp/>=<sp/>beginning_of_row;</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(png_uint_32<sp/>x<sp/>=<sp/>0;<sp/>x<sp/>&lt;<sp/>w;<sp/>x++,<sp/>dst++)<sp/>{</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>idx<sp/>=<sp/>indices[x];</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>png_color&amp;<sp/>color<sp/>=<sp/>palette[idx];</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>alpha<sp/>=<sp/>(idx<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>transparent)<sp/>?<sp/>0<sp/>:<sp/>255;</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>rgba[4]<sp/>=<sp/>{<sp/>color.red,<sp/>color.green,<sp/>color.blue,<sp/>alpha<sp/>};</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*dst<sp/>=<sp/>*(uint32_t*)rgba;</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="173"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ReadGrayData(</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/>png_struct*<sp/>png_ptr,<sp/>png_info*<sp/>info_ptr,</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/>png_uint_32<sp/>w,<sp/>png_uint_32<sp/>h,</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>transparent,</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t*<sp/>pixels</highlight></codeline>
+<codeline lineno="180"><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/>png_set_strip_16(png_ptr);</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/>png_set_expand(png_ptr);</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/>png_set_gray_to_rgb(png_ptr);</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/>png_set_filler(png_ptr,<sp/>0xFF,<sp/>PNG_FILLER_AFTER);</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/>png_read_update_info(png_ptr,<sp/>info_ptr);</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(png_uint_32<sp/>y<sp/>=<sp/>0;<sp/>y<sp/>&lt;<sp/>h;<sp/>y++)<sp/>{</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>png_bytep<sp/>dst<sp/>=<sp/>(png_bytep)<sp/>pixels<sp/>+<sp/>y<sp/>*<sp/>w<sp/>*<sp/>4;</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>png_read_row(png_ptr,<sp/>dst,<sp/>NULL);</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Black<sp/>pixels<sp/>are<sp/>transparent</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(transparent)<sp/>{</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>ck1[4]<sp/>=<sp/>{0,<sp/>0,<sp/>0,<sp/>255};</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>ck2[4]<sp/>=<sp/>{0,<sp/>0,<sp/>0,<sp/><sp/><sp/>0};</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint32_t<sp/>srckey<sp/>=<sp/>*(uint32_t*)ck1;</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint32_t<sp/>dstkey<sp/>=<sp/>*(uint32_t*)ck2;</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint32_t*<sp/>p<sp/>=<sp/>(uint32_t*)<sp/>pixels;</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>w<sp/>*<sp/>h;<sp/>i++,<sp/>p++)</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(*p<sp/>==<sp/>srckey)</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*p<sp/>=<sp/>dstkey;</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="203"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ReadGrayAlphaData(</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/>png_struct*<sp/>png_ptr,<sp/>png_info*<sp/>info_ptr,</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/>png_uint_32<sp/>w,<sp/>png_uint_32<sp/>h,</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t*<sp/>pixels</highlight></codeline>
+<codeline lineno="209"><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/>png_set_strip_16(png_ptr);</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/>png_set_gray_to_rgb(png_ptr);</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/>png_read_update_info(png_ptr,<sp/>info_ptr);</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(png_uint_32<sp/>y<sp/>=<sp/>0;<sp/>y<sp/>&lt;<sp/>h;<sp/>y++)<sp/>{</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>png_bytep<sp/>dst<sp/>=<sp/>(png_bytep)<sp/>pixels<sp/>+<sp/>y<sp/>*<sp/>w<sp/>*<sp/>4;</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>png_read_row(png_ptr,<sp/>dst,<sp/>NULL);</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="218"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ReadRGBData(</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/>png_struct*<sp/>png_ptr,<sp/>png_info*<sp/>info_ptr,</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/>png_uint_32<sp/>w,<sp/>png_uint_32<sp/>h,</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t*<sp/>pixels</highlight></codeline>
+<codeline lineno="224"><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/>png_set_strip_16(png_ptr);</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/>png_set_filler(png_ptr,<sp/>0xFF,<sp/>PNG_FILLER_AFTER);</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/>png_read_update_info(png_ptr,<sp/>info_ptr);</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"></highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(png_uint_32<sp/>y<sp/>=<sp/>0;<sp/>y<sp/>&lt;<sp/>h;<sp/>y++)<sp/>{</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>png_bytep<sp/>dst<sp/>=<sp/>(png_bytep)<sp/>pixels<sp/>+<sp/>y<sp/>*<sp/>w<sp/>*<sp/>4;</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>png_read_row(png_ptr,<sp/>dst,<sp/>NULL);</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="233"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight></codeline>
+<codeline lineno="235"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>ReadRGBAData(</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/>png_struct*<sp/>png_ptr,<sp/>png_info*<sp/>info_ptr,</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/>png_uint_32<sp/>w,<sp/>png_uint_32<sp/>h,</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t*<sp/>pixels</highlight></codeline>
+<codeline lineno="239"><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/>png_set_strip_16(png_ptr);</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/>png_read_update_info(png_ptr,<sp/>info_ptr);</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"></highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(png_uint_32<sp/>y<sp/>=<sp/>0;<sp/>y<sp/>&lt;<sp/>h;<sp/>y++)<sp/>{</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>png_bytep<sp/>dst<sp/>=<sp/>(png_bytep)<sp/>pixels<sp/>+<sp/>y<sp/>*<sp/>w<sp/>*<sp/>4;</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>png_read_row(png_ptr,<sp/>dst,<sp/>NULL);</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="247"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"></highlight></codeline>
+<codeline lineno="249"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>write_data(png_structp<sp/>out_ptr,<sp/>png_bytep<sp/>data,<sp/>png_size_t<sp/>len)<sp/>{</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="normal"><ref refid="class_filesystem___stream_1_1_output_stream" kindref="compound">Filesystem_Stream::OutputStream</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(png_get_io_ptr(out_ptr))-&gt;<ref refid="namespaceleasy_1_1metadata_1_1json_1abfe003fee6f02ea79930bab1c443c7d2" kindref="member">write</ref>(</highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>const*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(data),<sp/>len);</highlight></codeline>
+<codeline lineno="251"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>flush_stream(png_structp<sp/>out_ptr)<sp/>{</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="normal"><ref refid="class_filesystem___stream_1_1_output_stream" kindref="compound">Filesystem_Stream::OutputStream</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(png_get_io_ptr(out_ptr))-&gt;flush();</highlight></codeline>
+<codeline lineno="254"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight></codeline>
+<codeline lineno="256" refid="namespace_image_p_n_g_1aae11744963f7c5d2575faa17e84b0ea2" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_image_p_n_g_1aae11744963f7c5d2575faa17e84b0ea2" kindref="member">ImagePNG::Write</ref>(std::ostream&amp;<sp/>os,<sp/>uint32_t<sp/>width,<sp/>uint32_t<sp/>height,<sp/>uint32_t*<sp/>data)<sp/>{</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/>png_structp<sp/>write<sp/>=<sp/>png_create_write_struct(PNG_LIBPNG_VER_STRING,<sp/>NULL,<sp/>NULL,<sp/>NULL);</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!write)<sp/>{</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1a0bc5fd9a98e30fdec1570fcc6d1368e2" kindref="member">Output::Warning</ref>(</highlight><highlight class="stringliteral">&quot;Bitmap::WritePNG:<sp/>error<sp/>in<sp/>png_create_write&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/>png_infop<sp/>info<sp/>=<sp/>png_create_info_struct(write);</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!info)<sp/>{</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>png_destroy_write_struct(&amp;write,<sp/>&amp;info);</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1a0bc5fd9a98e30fdec1570fcc6d1368e2" kindref="member">Output::Warning</ref>(</highlight><highlight class="stringliteral">&quot;ImagePNG::WritePNG:<sp/>error<sp/>in<sp/>png_create_info_struct&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"></highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/>png_bytep*<sp/>ptrs<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>png_bytep[height];</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>height;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ptrs[i]<sp/>=<sp/></highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="normal">png_bytep</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(&amp;data[width*i]);</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"></highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(setjmp(png_jmpbuf(write)))<sp/>{</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>png_destroy_write_struct(&amp;write,<sp/>&amp;info);</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>[]<sp/>ptrs;</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1a0bc5fd9a98e30fdec1570fcc6d1368e2" kindref="member">Output::Warning</ref>(</highlight><highlight class="stringliteral">&quot;ImagePNG::WritePNG:<sp/>error<sp/>writing<sp/>PNG<sp/>file&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"></highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/>png_set_write_fn(write,<sp/>&amp;os,<sp/>&amp;write_data,<sp/>&amp;flush_stream);</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"></highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/>png_set_IHDR(write,<sp/>info,<sp/>width,<sp/>height,<sp/>8,</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PNG_COLOR_TYPE_RGB,<sp/>PNG_INTERLACE_NONE,</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PNG_COMPRESSION_TYPE_BASE,<sp/>PNG_FILTER_TYPE_BASE);</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/>png_write_info(write,<sp/>info);</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/>png_write_image(write,<sp/>ptrs);</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/>png_write_end(write,<sp/>NULL);</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"></highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/>png_destroy_write_struct(&amp;write,<sp/>&amp;info);</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>[]<sp/>ptrs;</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"></highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="295"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="image_png.cpp"/>
+  </compounddef>
+</doxygen>

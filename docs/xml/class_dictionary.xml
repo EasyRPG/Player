@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_dictionary" kind="class" language="C++" prot="public">
+    <compoundname>Dictionary</compoundname>
+    <includes refid="translation_8h" local="no">translation.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_dictionary_1aa4df075c7f0e8919c13d6af7545f258e" prot="private" static="no" mutable="no">
+        <type>std::unordered_map&lt; std::string, std::unordered_map&lt; std::string, std::string &gt; &gt;</type>
+        <definition>std::unordered_map&lt;std::string, std::unordered_map&lt;std::string, std::string&gt; &gt; Dictionary::entries</definition>
+        <argsstring></argsstring>
+        <name>entries</name>
+        <qualifiedname>Dictionary::entries</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="124" column="20" bodyfile="translation.h" bodystart="124" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_dictionary_1a6afa74dfdf32d3baaf1db40c662e62a5" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Dictionary::FromPo</definition>
+        <argsstring>(Dictionary &amp;res, Filesystem_Stream::InputStream &amp;in)</argsstring>
+        <name>FromPo</name>
+        <qualifiedname>Dictionary::FromPo</qualifiedname>
+        <param>
+          <type><ref refid="class_dictionary" kindref="compound">Dictionary</ref> &amp;</type>
+          <declname>res</declname>
+        </param>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref> &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Super simple parser. Only parses msgstr, msgid and msgctx Program aborts on error</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>res</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The dictionary to store the translated entries in. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The stream to load the translated entries from. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="101" column="13" bodyfile="translation.cpp" bodystart="838" bodyend="962"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_dictionary_1a8d11840c9f0883a7d82628aa7000502d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class StringType</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Dictionary::TranslateString</definition>
+        <argsstring>(std::string_view context, StringType &amp;original) const</argsstring>
+        <name>TranslateString</name>
+        <qualifiedname>Dictionary::TranslateString</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>context</declname>
+        </param>
+        <param>
+          <type>StringType &amp;</type>
+          <declname>original</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Replace an original string with the translated string. Template can be &quot;std::string&quot; or &quot;lcf::DBString&quot;</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>context</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The &apos;context&apos; of this string; used to differentiate strings that have the same original language value but different target language values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>original</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to lookup. Will be replaced if a lookup is found. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the original string was replaced; false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="113" column="6" bodyfile="translation.h" bodystart="130" bodyend="143"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_dictionary_1a60095eaff8f29e58a77c6c088280b986" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Dictionary::addEntry</definition>
+        <argsstring>(const Entry &amp;entry)</argsstring>
+        <name>addEntry</name>
+        <qualifiedname>Dictionary::addEntry</qualifiedname>
+        <param>
+          <type>const <ref refid="class_entry" kindref="compound">Entry</ref> &amp;</type>
+          <declname>entry</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Add an entry to the dictionary.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>entry</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The entry to add. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="121" column="6" bodyfile="translation.cpp" bodystart="829" bodyend="835"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>A .po file loaded into memory. Contains a dictionary of entries. </para>
+    </detaileddescription>
+    <location file="translation.h" line="91" column="1" bodyfile="translation.h" bodystart="91" bodyend="125"/>
+    <listofallmembers>
+      <member refid="class_dictionary_1a60095eaff8f29e58a77c6c088280b986" prot="private" virt="non-virtual"><scope>Dictionary</scope><name>addEntry</name></member>
+      <member refid="class_dictionary_1aa4df075c7f0e8919c13d6af7545f258e" prot="private" virt="non-virtual"><scope>Dictionary</scope><name>entries</name></member>
+      <member refid="class_dictionary_1a6afa74dfdf32d3baaf1db40c662e62a5" prot="public" virt="non-virtual"><scope>Dictionary</scope><name>FromPo</name></member>
+      <member refid="class_dictionary_1a8d11840c9f0883a7d82628aa7000502d" prot="public" virt="non-virtual"><scope>Dictionary</scope><name>TranslateString</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

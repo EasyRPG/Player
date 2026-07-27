@@ -1,0 +1,841 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="audio_8h" kind="file" language="C++">
+    <compoundname>audio.h</compoundname>
+    <includes local="no">string</includes>
+    <includes refid="audio__generic__midiout_8h" local="yes">audio_generic_midiout.h</includes>
+    <includes refid="filesystem__stream_8h" local="yes">filesystem_stream.h</includes>
+    <includes refid="audio__secache_8h" local="yes">audio_secache.h</includes>
+    <includes refid="game__config_8h" local="yes">game_config.h</includes>
+    <includedby refid="audio_8cpp" local="yes">audio.cpp</includedby>
+    <includedby refid="audio__decoder__midi_8cpp" local="yes">audio_decoder_midi.cpp</includedby>
+    <includedby refid="audio__generic_8h" local="yes">audio_generic.h</includedby>
+    <includedby refid="audio__midi_8cpp" local="yes">audio_midi.cpp</includedby>
+    <includedby refid="decoder__fluidsynth_8cpp" local="yes">decoder_fluidsynth.cpp</includedby>
+    <includedby refid="game__character_8cpp" local="yes">game_character.cpp</includedby>
+    <includedby refid="game__ineluki_8cpp" local="yes">game_ineluki.cpp</includedby>
+    <includedby refid="game__interpreter_8cpp" local="yes">game_interpreter.cpp</includedby>
+    <includedby refid="game__interpreter__control__variables_8cpp" local="yes">game_interpreter_control_variables.cpp</includedby>
+    <includedby refid="game__interpreter__map_8cpp" local="yes">game_interpreter_map.cpp</includedby>
+    <includedby refid="game__interpreter__shared_8cpp" local="yes">game_interpreter_shared.cpp</includedby>
+    <includedby refid="game__system_8cpp" local="yes">game_system.cpp</includedby>
+    <includedby refid="player_8cpp" local="yes">player.cpp</includedby>
+    <includedby refid="scene_8cpp" local="yes">scene.cpp</includedby>
+    <includedby refid="scene__end_8cpp" local="yes">scene_end.cpp</includedby>
+    <includedby refid="scene__gamebrowser_8cpp" local="yes">scene_gamebrowser.cpp</includedby>
+    <includedby refid="scene__language_8cpp" local="yes">scene_language.cpp</includedby>
+    <includedby refid="scene__map_8cpp" local="yes">scene_map.cpp</includedby>
+    <includedby refid="scene__menu_8cpp" local="yes">scene_menu.cpp</includedby>
+    <includedby refid="scene__settings_8cpp" local="yes">scene_settings.cpp</includedby>
+    <includedby refid="scene__title_8cpp" local="yes">scene_title.cpp</includedby>
+    <includedby refid="window__settings_8cpp" local="yes">window_settings.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>audio.h</label>
+        <link refid="audio_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>audio_decoder.h</label>
+        <link refid="audio__decoder_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>audio_decoder_base.h</label>
+        <link refid="audio__decoder__base_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>audio_decoder_midi.h</label>
+        <link refid="audio__decoder__midi_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>audio_generic_midiout.h</label>
+        <link refid="audio__generic__midiout_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>audio_midi.h</label>
+        <link refid="audio__midi_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>audio_secache.h</label>
+        <link refid="audio__secache_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>config_param.h</label>
+        <link refid="config__param_8h"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>flat_map.h</label>
+        <link refid="flat__map_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>game_clock.h</label>
+        <link refid="game__clock_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>game_config.h</label>
+        <link refid="game__config_8h"/>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>input_buttons.h</label>
+        <link refid="input__buttons_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>keys.h</label>
+        <link refid="keys_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>midisequencer.h</label>
+        <link refid="midisequencer_8h"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="38">
+        <label>platform/clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>std_clock.h</label>
+        <link refid="std__clock_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>algorithm</label>
+      </node>
+      <node id="48">
+        <label>array</label>
+      </node>
+      <node id="15">
+        <label>cassert</label>
+      </node>
+      <node id="13">
+        <label>chrono</label>
+      </node>
+      <node id="11">
+        <label>cstdint</label>
+      </node>
+      <node id="10">
+        <label>cstdio</label>
+      </node>
+      <node id="29">
+        <label>ctime</label>
+      </node>
+      <node id="26">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="27">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="30">
+        <label>functional</label>
+      </node>
+      <node id="53">
+        <label>initializer_list</label>
+      </node>
+      <node id="47">
+        <label>ios</label>
+      </node>
+      <node id="16">
+        <label>istream</label>
+      </node>
+      <node id="25">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="46">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="51">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="49">
+        <label>lcf/inireader.h</label>
+      </node>
+      <node id="22">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="24">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="50">
+        <label>limits</label>
+      </node>
+      <node id="35">
+        <label>map</label>
+      </node>
+      <node id="4">
+        <label>memory</label>
+      </node>
+      <node id="17">
+        <label>ostream</label>
+      </node>
+      <node id="32">
+        <label>stdint.h</label>
+      </node>
+      <node id="2">
+        <label>string</label>
+      </node>
+      <node id="40">
+        <label>thread</label>
+      </node>
+      <node id="39">
+        <label>type_traits</label>
+      </node>
+      <node id="19">
+        <label>unordered_map</label>
+      </node>
+      <node id="55">
+        <label>utility</label>
+      </node>
+      <node id="12">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>audio.cpp</label>
+        <link refid="audio_8cpp"/>
+      </node>
+      <node id="1">
+        <label>audio.h</label>
+        <link refid="audio_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>audio_decoder_midi.cpp</label>
+        <link refid="audio__decoder__midi_8cpp"/>
+      </node>
+      <node id="5">
+        <label>audio_generic.cpp</label>
+        <link refid="audio__generic_8cpp"/>
+      </node>
+      <node id="4">
+        <label>audio_generic.h</label>
+        <link refid="audio__generic_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>audio_midi.cpp</label>
+        <link refid="audio__midi_8cpp"/>
+      </node>
+      <node id="17">
+        <label>decoder_fluidsynth.cpp</label>
+        <link refid="decoder__fluidsynth_8cpp"/>
+      </node>
+      <node id="18">
+        <label>game_character.cpp</label>
+        <link refid="game__character_8cpp"/>
+      </node>
+      <node id="19">
+        <label>game_ineluki.cpp</label>
+        <link refid="game__ineluki_8cpp"/>
+      </node>
+      <node id="20">
+        <label>game_interpreter.cpp</label>
+        <link refid="game__interpreter_8cpp"/>
+      </node>
+      <node id="21">
+        <label>game_interpreter_control_variables.cpp</label>
+        <link refid="game__interpreter__control__variables_8cpp"/>
+      </node>
+      <node id="22">
+        <label>game_interpreter_map.cpp</label>
+        <link refid="game__interpreter__map_8cpp"/>
+      </node>
+      <node id="23">
+        <label>game_interpreter_shared.cpp</label>
+        <link refid="game__interpreter__shared_8cpp"/>
+      </node>
+      <node id="24">
+        <label>game_system.cpp</label>
+        <link refid="game__system_8cpp"/>
+      </node>
+      <node id="6">
+        <label>platform/libretro/audio.h</label>
+        <link refid="platform_2libretro_2audio_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>platform/libretro/midiout_device.cpp</label>
+        <link refid="midiout__device_8cpp"/>
+      </node>
+      <node id="9">
+        <label>platform/libretro/ui.cpp</label>
+        <link refid="libretro_2ui_8cpp"/>
+      </node>
+      <node id="7">
+        <label>platform/libretro/ui.h</label>
+        <link refid="libretro_2ui_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>platform/psvita/audio.h</label>
+        <link refid="platform_2psvita_2audio_8h"/>
+      </node>
+      <node id="11">
+        <label>platform/sdl/sdl2_audio.h</label>
+        <link refid="sdl2__audio_8h"/>
+      </node>
+      <node id="12">
+        <label>platform/sdl/sdl3_audio.h</label>
+        <link refid="sdl3__audio_8h"/>
+      </node>
+      <node id="13">
+        <label>platform/sdl/sdl_audio.h</label>
+        <link refid="sdl__audio_8h"/>
+      </node>
+      <node id="14">
+        <label>platform/switch/audio.h</label>
+        <link refid="platform_2switch_2audio_8h"/>
+      </node>
+      <node id="15">
+        <label>platform/wii/audio.h</label>
+        <link refid="platform_2wii_2audio_8h"/>
+      </node>
+      <node id="25">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="26">
+        <label>scene.cpp</label>
+        <link refid="scene_8cpp"/>
+      </node>
+      <node id="27">
+        <label>scene_end.cpp</label>
+        <link refid="scene__end_8cpp"/>
+      </node>
+      <node id="28">
+        <label>scene_gamebrowser.cpp</label>
+        <link refid="scene__gamebrowser_8cpp"/>
+      </node>
+      <node id="29">
+        <label>scene_language.cpp</label>
+        <link refid="scene__language_8cpp"/>
+      </node>
+      <node id="30">
+        <label>scene_map.cpp</label>
+        <link refid="scene__map_8cpp"/>
+      </node>
+      <node id="31">
+        <label>scene_menu.cpp</label>
+        <link refid="scene__menu_8cpp"/>
+      </node>
+      <node id="32">
+        <label>scene_settings.cpp</label>
+        <link refid="scene__settings_8cpp"/>
+      </node>
+      <node id="33">
+        <label>scene_title.cpp</label>
+        <link refid="scene__title_8cpp"/>
+      </node>
+      <node id="34">
+        <label>window_settings.cpp</label>
+        <link refid="window__settings_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="struct_audio_interface" prot="public">AudioInterface</innerclass>
+    <innerclass refid="struct_empty_audio" prot="public">EmptyAudio</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="audio_8h_1aa61a1d405e72eeaa7d8659b0ae98ff2e" prot="public" static="no">
+        <name>EP_AUDIO_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="20" column="9" bodyfile="audio.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="audio_8h_1ab9892584e494554d81a6d630c9b97573" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_audio_interface" kindref="compound">AudioInterface</ref> &amp;</type>
+        <definition>AudioInterface &amp; Audio</definition>
+        <argsstring>()</argsstring>
+        <name>Audio</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio.h" line="188" column="16" bodyfile="audio.cpp" bodystart="26" bodyend="34" declfile="audio.h" declline="188" declcolumn="16"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_AUDIO_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="audio_8h_1aa61a1d405e72eeaa7d8659b0ae98ff2e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_AUDIO_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="audio__generic__midiout_8h" kindref="compound">audio_generic_midiout.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="filesystem__stream_8h" kindref="compound">filesystem_stream.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="audio__secache_8h" kindref="compound">audio_secache.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__config_8h" kindref="compound">game_config.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="struct_audio_interface" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_audio_interface_1a9c45557ddc2a1429df7be8d75a473011" kindref="member">AudioInterface</ref><sp/>{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1a9c45557ddc2a1429df7be8d75a473011" kindref="member">AudioInterface</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_game___config_audio" kindref="compound">Game_ConfigAudio</ref>&amp;<sp/><ref refid="struct_audio_interface_1ad751ed86af60ced4f37d7091b91f823b" kindref="member">cfg</ref>);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="struct_audio_interface_1ac4ff9429ec5962d3985d182ec9b3d088" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1ac4ff9429ec5962d3985d182ec9b3d088" kindref="member">~AudioInterface</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_game___config_audio" kindref="compound">Game_ConfigAudio</ref><sp/><ref refid="struct_audio_interface_1adee5375400b4ca5766688d41f0556128" kindref="member">GetConfig</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="struct_audio_interface_1af623f1d38f8e6da5aa94ea14d09f018c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1af623f1d38f8e6da5aa94ea14d09f018c" kindref="member">vGetConfig</ref>(<ref refid="struct_game___config_audio" kindref="compound">Game_ConfigAudio</ref>&amp;<sp/><ref refid="struct_audio_interface_1ad751ed86af60ced4f37d7091b91f823b" kindref="member">cfg</ref>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="struct_audio_interface_1ab0b6a6be94283bf823cbaaa99fc318e3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_generic_audio_midi_out" kindref="compound">GenericAudioMidiOut</ref>*<sp/><ref refid="struct_audio_interface_1ab0b6a6be94283bf823cbaaa99fc318e3" kindref="member">CreateAndGetMidiOut</ref>()<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="struct_audio_interface_1ac979ffbf31cb53540c7022168a51970d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1ac979ffbf31cb53540c7022168a51970d" kindref="member">Update</ref>()<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="struct_audio_interface_1aa5e813f12b0f700ff5cc1b89f1e42345" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1aa5e813f12b0f700ff5cc1b89f1e42345" kindref="member">BGM_Play</ref>(<ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref><sp/>stream,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>volume,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pitch,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>fadein)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71" refid="struct_audio_interface_1a5c999d36bc47c7dc20d5eec061bbeabb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1a5c999d36bc47c7dc20d5eec061bbeabb" kindref="member">BGM_Stop</ref>()<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76" refid="struct_audio_interface_1ad32c5db309cfbda7a0b19655e0c57022" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1ad32c5db309cfbda7a0b19655e0c57022" kindref="member">BGM_PlayedOnce</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83" refid="struct_audio_interface_1afca63e45db9af8863c9cb386185a68b6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1afca63e45db9af8863c9cb386185a68b6" kindref="member">BGM_IsPlaying</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89" refid="struct_audio_interface_1aa1029fed4b4865edc1ef6e4b8b69e0ae" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1aa1029fed4b4865edc1ef6e4b8b69e0ae" kindref="member">BGM_GetTicks</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96" refid="struct_audio_interface_1a10656df1a8e4b3e016413014faa8afcb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1a10656df1a8e4b3e016413014faa8afcb" kindref="member">BGM_Fade</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>fade)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101" refid="struct_audio_interface_1a63c3c366f6a6e67a77e84ff7bbf53059" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1a63c3c366f6a6e67a77e84ff7bbf53059" kindref="member">BGM_Pause</ref>()<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106" refid="struct_audio_interface_1a6c0e1fc24c5bedc036203f031a6e8823" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1a6c0e1fc24c5bedc036203f031a6e8823" kindref="member">BGM_Resume</ref>()<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113" refid="struct_audio_interface_1a1264d313ca8c1927492d66b4401e7492" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1a1264d313ca8c1927492d66b4401e7492" kindref="member">BGM_Volume</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>volume)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120" refid="struct_audio_interface_1a2f05c8b5f06ce846c8e88e725197194e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1a2f05c8b5f06ce846c8e88e725197194e" kindref="member">BGM_Pitch</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pitch)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125" refid="struct_audio_interface_1a684f27f256c63e7c2f164c7fbf7b30d7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>std::string<sp/><ref refid="struct_audio_interface_1a684f27f256c63e7c2f164c7fbf7b30d7" kindref="member">BGM_GetType</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134" refid="struct_audio_interface_1a9cb2340e795fdd828de4cd652d43d614" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1a9cb2340e795fdd828de4cd652d43d614" kindref="member">SE_Play</ref>(std::unique_ptr&lt;AudioSeCache&gt;<sp/>se,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>volume,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pitch)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139" refid="struct_audio_interface_1a8cb2a23c66962f995a0f836b7f7a6f7c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1a8cb2a23c66962f995a0f836b7f7a6f7c" kindref="member">SE_Stop</ref>()<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1af908cc5d16f32e883bff0ae7a75a9750" kindref="member">BGM_GetGlobalVolume</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1adb5e46889f939439998026d257052f07" kindref="member">BGM_SetGlobalVolume</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>volume);</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1af76756316f54120859688ddd465d6d63" kindref="member">SE_GetGlobalVolume</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1addcdf36521311bc0fcf761c78c8870fd" kindref="member">SE_SetGlobalVolume</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>volume);</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1acd8cb626f3ab05de21f5f2bf4f6f8705" kindref="member">GetFluidsynthEnabled</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1ad2bd03f936f089f7812450b7d204be0b" kindref="member">SetFluidsynthEnabled</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>enable);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1a276c5e6104212f238ad196e38bd8616a" kindref="member">GetWildMidiEnabled</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1a9b02af54c27102366a662fa4e4b52849" kindref="member">SetWildMidiEnabled</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>enable);</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1a9505d2347489b105f34e8e9d8a1bc0a6" kindref="member">GetNativeMidiEnabled</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1a840f26eedce549fb677874e0c767cdb7" kindref="member">SetNativeMidiEnabled</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>enable);</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="struct_audio_interface_1a2110824b87384e8d25305c5994b9388e" kindref="member">GetFluidsynthSoundfont</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1a2856838fa110c28901e72df2a8dd3466" kindref="member">SetFluidsynthSoundfont</ref>(std::string_view<sp/>sf);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="160" refid="struct_audio_interface_1ad751ed86af60ced4f37d7091b91f823b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_game___config_audio" kindref="compound">Game_ConfigAudio</ref><sp/><ref refid="struct_audio_interface_1ad751ed86af60ced4f37d7091b91f823b" kindref="member">cfg</ref>;</highlight></codeline>
+<codeline lineno="161"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight></codeline>
+<codeline lineno="163" refid="struct_empty_audio" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_empty_audio_1a60d63e7ea4369c247f86d42ae7c59bba" kindref="member">EmptyAudio</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="struct_audio_interface_1a9c45557ddc2a1429df7be8d75a473011" kindref="member">AudioInterface</ref><sp/>{</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="struct_empty_audio_1a60d63e7ea4369c247f86d42ae7c59bba" kindref="member">EmptyAudio</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_game___config_audio" kindref="compound">Game_ConfigAudio</ref>&amp;<sp/><ref refid="struct_audio_interface_1ad751ed86af60ced4f37d7091b91f823b" kindref="member">cfg</ref>);</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_empty_audio_1a751e9762d9818241e99cc8c7a1781a17" kindref="member">BGM_Play</ref>(<ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref>,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="167" refid="struct_empty_audio_1a3d6a47e4a4b6a211041a4de10427fd1b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_empty_audio_1a3d6a47e4a4b6a211041a4de10427fd1b" kindref="member">BGM_Pause</ref>()</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{}</highlight></codeline>
+<codeline lineno="168" refid="struct_empty_audio_1aa407620f3f36d022abd0dfadc31c4aed" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_empty_audio_1aa407620f3f36d022abd0dfadc31c4aed" kindref="member">BGM_Resume</ref>()</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{}</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_empty_audio_1aa13dc4813cf3e01f1246874f1b9f226b" kindref="member">BGM_Stop</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_empty_audio_1a6ee2df807d3e33bfcfb8fbc185104809" kindref="member">BGM_PlayedOnce</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="171" refid="struct_empty_audio_1a34e9d7a7372454890693a68c63528453" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_empty_audio_1a34e9d7a7372454890693a68c63528453" kindref="member">BGM_IsPlaying</ref>()</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_empty_audio_1a2ffc09834789acdd1c6212f9a6a1bce3" kindref="member">BGM_GetTicks</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="173" refid="struct_empty_audio_1ac8cd5114eab7b8ae114a47401ac50029" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_empty_audio_1ac8cd5114eab7b8ae114a47401ac50029" kindref="member">BGM_Fade</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{}</highlight></codeline>
+<codeline lineno="174" refid="struct_empty_audio_1abf618f87f236d78ee2bd5f8b842af580" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_empty_audio_1abf618f87f236d78ee2bd5f8b842af580" kindref="member">BGM_Volume</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{}</highlight></codeline>
+<codeline lineno="175" refid="struct_empty_audio_1a594a48c3a35336c09fc3c356fdc48422" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_empty_audio_1a594a48c3a35336c09fc3c356fdc48422" kindref="member">BGM_Pitch</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{};</highlight></codeline>
+<codeline lineno="176" refid="struct_empty_audio_1ab03336b48237210a0871cb099eec9d79" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="struct_empty_audio_1ab03336b48237210a0871cb099eec9d79" kindref="member">BGM_GetType</ref>()</highlight><highlight class="keyword"><sp/>const<sp/>override<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{};<sp/>};</highlight></codeline>
+<codeline lineno="177" refid="struct_empty_audio_1a1aa70e2a5f182ac2e5553e9bef370d1e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_empty_audio_1a1aa70e2a5f182ac2e5553e9bef370d1e" kindref="member">SE_Play</ref>(std::unique_ptr&lt;AudioSeCache&gt;,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{}</highlight></codeline>
+<codeline lineno="178" refid="struct_empty_audio_1af5da14a5e0a6ee418a1b457fde3b9d54" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_empty_audio_1af5da14a5e0a6ee418a1b457fde3b9d54" kindref="member">SE_Stop</ref>()</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{}</highlight></codeline>
+<codeline lineno="179" refid="struct_empty_audio_1a8e9c4ff9d86e8402fb2def47f57d76a4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_empty_audio_1a8e9c4ff9d86e8402fb2def47f57d76a4" kindref="member">Update</ref>()</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{}</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_empty_audio_1aa535bef5daff1fcf635dd765b882c40d" kindref="member">vGetConfig</ref>(<ref refid="struct_game___config_audio" kindref="compound">Game_ConfigAudio</ref>&amp;<sp/><ref refid="struct_audio_interface_1ad751ed86af60ced4f37d7091b91f823b" kindref="member">cfg</ref>)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>bgm_starttick<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>playing<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="186"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><ref refid="struct_audio_interface" kindref="compound">AudioInterface</ref>&amp;<sp/><ref refid="audio_8h_1ab9892584e494554d81a6d630c9b97573" kindref="member">Audio</ref>();</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="audio.h"/>
+  </compounddef>
+</doxygen>

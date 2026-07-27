@@ -1,0 +1,1221 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="game__enemy_8h" kind="file" language="C++">
+    <compoundname>game_enemy.h</compoundname>
+    <includes refid="game__battler_8h" local="yes">game_battler.h</includes>
+    <includes refid="sprite__enemy_8h" local="yes">sprite_enemy.h</includes>
+    <includes refid="player_8h" local="yes">player.h</includes>
+    <includes local="no">lcf/rpg/enemy.h</includes>
+    <includes local="no">lcf/rpg/enemyaction.h</includes>
+    <includes local="no">lcf/rpg/troopmember.h</includes>
+    <includedby refid="algo_8cpp" local="yes">algo.cpp</includedby>
+    <includedby refid="attribute_8cpp" local="yes">attribute.cpp</includedby>
+    <includedby refid="autobattle_8cpp" local="yes">autobattle.cpp</includedby>
+    <includedby refid="enemyai_8cpp" local="yes">enemyai.cpp</includedby>
+    <includedby refid="game__battlealgorithm_8cpp" local="yes">game_battlealgorithm.cpp</includedby>
+    <includedby refid="game__enemy_8cpp" local="yes">game_enemy.cpp</includedby>
+    <includedby refid="game__enemyparty_8h" local="yes">game_enemyparty.h</includedby>
+    <includedby refid="scene__battle_8cpp" local="yes">scene_battle.cpp</includedby>
+    <includedby refid="scene__battle_8h" local="yes">scene_battle.h</includedby>
+    <includedby refid="scene__battle__rpg2k_8cpp" local="yes">scene_battle_rpg2k.cpp</includedby>
+    <includedby refid="scene__battle__rpg2k_8h" local="yes">scene_battle_rpg2k.h</includedby>
+    <includedby refid="scene__battle__rpg2k3_8cpp" local="yes">scene_battle_rpg2k3.cpp</includedby>
+    <includedby refid="sprite__actor_8cpp" local="yes">sprite_actor.cpp</includedby>
+    <includedby refid="sprite__enemy_8cpp" local="yes">sprite_enemy.cpp</includedby>
+    <includedby refid="spriteset__battle_8cpp" local="yes">spriteset_battle.cpp</includedby>
+    <incdepgraph>
+      <node id="35">
+        <label>async_handler.h</label>
+        <link refid="async__handler_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="76">
+        <label>compiler.h</label>
+        <link refid="compiler_8h"/>
+      </node>
+      <node id="63">
+        <label>config_param.h</label>
+        <link refid="config__param_8h"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>fileext_guesser.h</label>
+        <link refid="fileext__guesser_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>flash.h</label>
+        <link refid="flash_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="68">
+        <label>flat_map.h</label>
+        <link refid="flat__map_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>game_battler.h</label>
+        <link refid="game__battler_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>game_clock.h</label>
+        <link refid="game__clock_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="62">
+        <label>game_config.h</label>
+        <link refid="game__config_8h"/>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="70">
+        <label>game_config_game.h</label>
+        <link refid="game__config__game_8h"/>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>game_enemy.h</label>
+        <link refid="game__enemy_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+      </node>
+      <node id="71">
+        <label>game_interpreter_shared.h</label>
+        <link refid="game__interpreter__shared_8h"/>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+      </node>
+      <node id="66">
+        <label>input_buttons.h</label>
+        <link refid="input__buttons_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+      </node>
+      <node id="69">
+        <label>keys.h</label>
+        <link refid="keys_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>meta.h</label>
+        <link refid="meta_8h"/>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="58">
+        <label>platform/clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>player.h</label>
+        <link refid="player_8h"/>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>point.h</label>
+        <link refid="point_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>rect.h</label>
+        <link refid="rect_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>sprite.h</label>
+        <link refid="sprite_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>sprite_battler.h</label>
+        <link refid="sprite__battler_8h"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>sprite_enemy.h</label>
+        <link refid="sprite__enemy_8h"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>sprite_weapon.h</label>
+        <link refid="sprite__weapon_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>state.h</label>
+        <link refid="state_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="61">
+        <label>std_clock.h</label>
+        <link refid="std__clock_8h"/>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>tone.h</label>
+        <link refid="tone_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>translation.h</label>
+        <link refid="translation_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>algorithm</label>
+      </node>
+      <node id="64">
+        <label>array</label>
+      </node>
+      <node id="43">
+        <label>cassert</label>
+      </node>
+      <node id="57">
+        <label>chrono</label>
+      </node>
+      <node id="3">
+        <label>cstdint</label>
+      </node>
+      <node id="52">
+        <label>cstdio</label>
+      </node>
+      <node id="19">
+        <label>ctime</label>
+      </node>
+      <node id="24">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="25">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="20">
+        <label>functional</label>
+      </node>
+      <node id="67">
+        <label>initializer_list</label>
+      </node>
+      <node id="53">
+        <label>ios</label>
+      </node>
+      <node id="44">
+        <label>istream</label>
+      </node>
+      <node id="8">
+        <label>lcf/dbbitarray.h</label>
+      </node>
+      <node id="23">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="51">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="65">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="48">
+        <label>lcf/inireader.h</label>
+      </node>
+      <node id="78">
+        <label>lcf/rpg/enemy.h</label>
+      </node>
+      <node id="79">
+        <label>lcf/rpg/enemyaction.h</label>
+      </node>
+      <node id="72">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="73">
+        <label>lcf/rpg/movecommand.h</label>
+      </node>
+      <node id="75">
+        <label>lcf/rpg/saveeventexecframe.h</label>
+      </node>
+      <node id="74">
+        <label>lcf/rpg/saveeventexecstate.h</label>
+      </node>
+      <node id="7">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="80">
+        <label>lcf/rpg/troopmember.h</label>
+      </node>
+      <node id="27">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="22">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="6">
+        <label>limits</label>
+      </node>
+      <node id="47">
+        <label>map</label>
+      </node>
+      <node id="12">
+        <label>memory</label>
+      </node>
+      <node id="77">
+        <label>optional</label>
+      </node>
+      <node id="16">
+        <label>ostream</label>
+      </node>
+      <node id="55">
+        <label>sstream</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="60">
+        <label>thread</label>
+      </node>
+      <node id="15">
+        <label>tuple</label>
+      </node>
+      <node id="59">
+        <label>type_traits</label>
+      </node>
+      <node id="40">
+        <label>unordered_map</label>
+      </node>
+      <node id="41">
+        <label>utility</label>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>algo.cpp</label>
+        <link refid="algo_8cpp"/>
+      </node>
+      <node id="3">
+        <label>attribute.cpp</label>
+        <link refid="attribute_8cpp"/>
+      </node>
+      <node id="4">
+        <label>autobattle.cpp</label>
+        <link refid="autobattle_8cpp"/>
+      </node>
+      <node id="5">
+        <label>enemyai.cpp</label>
+        <link refid="enemyai_8cpp"/>
+      </node>
+      <node id="9">
+        <label>game_battle.cpp</label>
+        <link refid="game__battle_8cpp"/>
+      </node>
+      <node id="6">
+        <label>game_battlealgorithm.cpp</label>
+        <link refid="game__battlealgorithm_8cpp"/>
+      </node>
+      <node id="10">
+        <label>game_battler.cpp</label>
+        <link refid="game__battler_8cpp"/>
+      </node>
+      <node id="7">
+        <label>game_enemy.cpp</label>
+        <link refid="game__enemy_8cpp"/>
+      </node>
+      <node id="1">
+        <label>game_enemy.h</label>
+        <link refid="game__enemy_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>game_enemyparty.cpp</label>
+        <link refid="game__enemyparty_8cpp"/>
+      </node>
+      <node id="8">
+        <label>game_enemyparty.h</label>
+        <link refid="game__enemyparty_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>game_interpreter.cpp</label>
+        <link refid="game__interpreter_8cpp"/>
+      </node>
+      <node id="13">
+        <label>game_interpreter_battle.cpp</label>
+        <link refid="game__interpreter__battle_8cpp"/>
+      </node>
+      <node id="14">
+        <label>game_interpreter_control_variables.cpp</label>
+        <link refid="game__interpreter__control__variables_8cpp"/>
+      </node>
+      <node id="24">
+        <label>game_interpreter_map.cpp</label>
+        <link refid="game__interpreter__map_8cpp"/>
+      </node>
+      <node id="15">
+        <label>game_interpreter_shared.cpp</label>
+        <link refid="game__interpreter__shared_8cpp"/>
+      </node>
+      <node id="25">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="26">
+        <label>game_party.cpp</label>
+        <link refid="game__party_8cpp"/>
+      </node>
+      <node id="27">
+        <label>game_player.cpp</label>
+        <link refid="game__player_8cpp"/>
+      </node>
+      <node id="16">
+        <label>main_data.cpp</label>
+        <link refid="main__data_8cpp"/>
+      </node>
+      <node id="17">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="18">
+        <label>scene_battle.cpp</label>
+        <link refid="scene__battle_8cpp"/>
+      </node>
+      <node id="23">
+        <label>scene_battle.h</label>
+        <link refid="scene__battle_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>scene_battle_rpg2k.cpp</label>
+        <link refid="scene__battle__rpg2k_8cpp"/>
+      </node>
+      <node id="28">
+        <label>scene_battle_rpg2k.h</label>
+        <link refid="scene__battle__rpg2k_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>scene_battle_rpg2k3.cpp</label>
+        <link refid="scene__battle__rpg2k3_8cpp"/>
+      </node>
+      <node id="29">
+        <label>scene_battle_rpg2k3.h</label>
+        <link refid="scene__battle__rpg2k3_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>scene_debug.cpp</label>
+        <link refid="scene__debug_8cpp"/>
+      </node>
+      <node id="31">
+        <label>scene_title.cpp</label>
+        <link refid="scene__title_8cpp"/>
+      </node>
+      <node id="32">
+        <label>sprite_actor.cpp</label>
+        <link refid="sprite__actor_8cpp"/>
+      </node>
+      <node id="33">
+        <label>sprite_enemy.cpp</label>
+        <link refid="sprite__enemy_8cpp"/>
+      </node>
+      <node id="21">
+        <label>spriteset_battle.cpp</label>
+        <link refid="spriteset__battle_8cpp"/>
+      </node>
+      <node id="22">
+        <label>window_battlestatus.cpp</label>
+        <link refid="window__battlestatus_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_game___enemy" prot="public">Game_Enemy</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="game__enemy_8h_1a6455a09d54538468bdea99f39e6e3258" prot="public" static="no">
+        <name>EP_GAME_ENEMY_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemy.h" line="20" column="9" bodyfile="game_enemy.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_GAME_ENEMY_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="game__enemy_8h_1a6455a09d54538468bdea99f39e6e3258" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_GAME_ENEMY_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__battler_8h" kindref="compound">game_battler.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="sprite__enemy_8h" kindref="compound">sprite_enemy.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="player_8h" kindref="compound">player.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/enemy.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/enemyaction.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/troopmember.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="class_game___enemy" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_game___enemy_1abbb4e11d7fa9aeeb9c72fad117c76d70" kindref="member">Game_Enemy</ref><sp/>final<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_game___battler_1af03115bccdcc6a7d8b375566b57708ff" kindref="member">Game_Battler</ref></highlight></codeline>
+<codeline lineno="34"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1abbb4e11d7fa9aeeb9c72fad117c76d70" kindref="member">Game_Enemy</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::TroopMember*<sp/>tm);</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;int16_t&gt;&amp;<sp/><ref refid="class_game___enemy_1af9fcb8f2d10a1cdaaa9c9b4a6c747b39" kindref="member">GetStates</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int16_t&gt;&amp;<sp/><ref refid="class_game___enemy_1af9fcb8f2d10a1cdaaa9c9b4a6c747b39" kindref="member">GetStates</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aae6f3e4a3bad6c10a8775b03808b4252" kindref="member">MaxHpValue</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a0e88413ee05aac815a8acc171113fee9" kindref="member">MaxSpValue</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a4bb1960df5e5c4dddf19206db9bc432d" kindref="member">MaxStatBattleValue</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1af4ba8c8afb2b6d37db1dee5b9f00a285" kindref="member">MaxStatBaseValue</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref><sp/><ref refid="class_game___enemy_1ab7fd50bb9f58576a8cb80f5f4be9d022" kindref="member">GetOriginalPosition</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a964392997f2ff5b439bc2792382b0161" kindref="member">ResetBattle</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a2624e6650dbb49652ae13d12a5f96559" kindref="member">GetStateProbability</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>state_id)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a29abeb1975d3d167474c8df5c18e65d3" kindref="member">GetBaseAttributeRate</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>attribute_id)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1adfab24e37c963daa3ce15c97468ded25" kindref="member">IsImmuneToAttributeDownshifts</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa64235b2fea12808d7573de5873ae9ae" kindref="member">GetId</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string_view<sp/><ref refid="class_game___enemy_1a171815b933c3eb3ba3e535709ae04843" kindref="member">GetName</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a4191a5200a0c2f560412b941a330c151" kindref="member">GetTroopMemberId</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string_view<sp/><ref refid="class_game___enemy_1a60c29efb8278bd372a00e4c0c5c71bba" kindref="member">GetSpriteName</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a20cf35f8f8fd32416fc9ec80d04013e4" kindref="member">GetBaseMaxHp</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a3cefc0bae608507016f15d8b981b5682" kindref="member">GetBaseMaxSp</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa909372f4271015b18329bee03831c6e" kindref="member">GetBaseAtk</ref>(<ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref><sp/>=<sp/><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abc835b531d75b336403efe228b31f7bb" kindref="member">WeaponAll</ref>)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a330ada6beaadc02b7a354e6c61693d71" kindref="member">GetBaseDef</ref>(<ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref><sp/>=<sp/><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abc835b531d75b336403efe228b31f7bb" kindref="member">WeaponAll</ref>)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a8cb74e6a22046a3734ee7d665251fd55" kindref="member">GetBaseSpi</ref>(<ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref><sp/>=<sp/><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abc835b531d75b336403efe228b31f7bb" kindref="member">WeaponAll</ref>)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a0d388dd6325bfb7acfac2bb627fb5b70" kindref="member">GetBaseAgi</ref>(<ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref><sp/>=<sp/><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abc835b531d75b336403efe228b31f7bb" kindref="member">WeaponAll</ref>)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a82f671e5cffd6dc7c345d127337d3c3d" kindref="member">GetHue</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a3cf8d265915c233c58382273406736ed" kindref="member">GetHp</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a89ea1f65ffb1053a75ce0bd3d0640247" kindref="member">SetHp</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>_hp)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1ad3866e66af30aefdfcfe0286bafb31f6" kindref="member">GetSp</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a8660c0055d57c437dcae4ea8daab7d2e" kindref="member">SetSp</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>_sp)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a50e743b7a36372952f44ff19c2fc6868" kindref="member">Transform</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>new_enemy_id);</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1ac0cd578b6574b4a5dff8c10e2fc5c640" kindref="member">GetHitChance</ref>(<ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref><sp/>=<sp/><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abc835b531d75b336403efe228b31f7bb" kindref="member">WeaponAll</ref>)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a9668573e7c342e17ff713ea236da05d7" kindref="member">GetCriticalHitChance</ref>(<ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref><sp/>=<sp/><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abc835b531d75b336403efe228b31f7bb" kindref="member">WeaponAll</ref>)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a96e90fb69d6477898947371d596b0eab" kindref="member">HasAttackAll</ref>(<ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref><sp/>weapon<sp/>=<sp/><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abc835b531d75b336403efe228b31f7bb" kindref="member">WeaponAll</ref>)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a023919fef936c368b6a1d07d920ac62b" kindref="member">AttackIgnoresEvasion</ref>(<ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref><sp/>weapon<sp/>=<sp/><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386abc835b531d75b336403efe228b31f7bb" kindref="member">WeaponAll</ref>)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a27add0d0ba337a88d76f484b12b9f878" kindref="member">PreventsCritical</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a83ea75dbd4e219ae08dc4bb8f6d352cb" kindref="member">HasPhysicalEvasionUp</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a259e956e81ecab872110bff265696424" kindref="member">GetBattleAnimationId</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1ab40128877235943ce9c553798b74f0ae" kindref="member">GetExp</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aee5599992afc791774cb16fc3ddf6cee" kindref="member">GetMoney</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a9e940b33080a5bfe2c1cc5eebc0aaac7" kindref="member">GetFlyingOffset</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a73d93673d23a8e2afab3368dbb22508d" kindref="member">UpdateBattle</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a1fc6765f2489f91067237e8f6f9dc364" kindref="member">IsTransparent</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a47e1261dbe1271ad01a041c2c16f8a73" kindref="member">GetDropId</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1afc387c54a0120c3b809a08b936f0a548" kindref="member">GetDropProbability</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"></highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___battler_1aaf3150c823c4ad686c5e3e1097ae3d47" kindref="member">BattlerType</ref><sp/><ref refid="class_game___enemy_1a5190ba7d6e0baa581914c5607002ed33" kindref="member">GetType</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"></highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a4fade0ae5145b69667b61af12f9fb0fb" kindref="member">IsInParty</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"></highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Enemy&amp;<sp/><ref refid="class_game___enemy_1a33e2102b0111b2751997f1ff8450fd5e" kindref="member">GetDbEnemy</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"></highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a7480b52328f2c9666587893182e8642c" kindref="member">GetBlinkTimer</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a68d5606d968b7e103724b4a81c9b90db" kindref="member">SetBlinkTimer</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>t<sp/>=<sp/>20);</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"></highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a7f606c87a42ebc701c226f2774012cfd" kindref="member">GetExplodeTimer</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a5291771f98b72b4e9899aea370e4a173" kindref="member">SetExplodeTimer</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>t<sp/>=<sp/>20);</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a9086b6ac67291b30cdf428a6bae40892" kindref="member">GetDeathTimer</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"></highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a05bfb0b746ca1e72a33f6e6f7199c7b9" kindref="member">SetDeathTimer</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>t<sp/>=<sp/>36);</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1afa8029475cf680f0cea47d313e3f9a7c" kindref="member">IsFlying</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"></highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a09a469809af90ac52f7205cc1da76c75" kindref="member">GetUnarmedBattleAnimationId</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"></highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite___enemy" kindref="compound">Sprite_Enemy</ref>*<sp/><ref refid="class_game___enemy_1a65296b425d2a8311da4fb010360a6b69" kindref="member">GetEnemyBattleSprite</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"></highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a7c479066aee3d75ad85299034fb63c74" kindref="member">GetEnemyAi</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"></highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a65303a9dee35fb7c2a9e0722ae446e22" kindref="member">HasStrongDefense</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"></highlight></codeline>
+<codeline lineno="279"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="280" refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Enemy*<sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="281" refid="class_game___enemy_1a62e300f4ba7f812b6829baa34c39abde" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::TroopMember*<sp/><ref refid="class_game___enemy_1a62e300f4ba7f812b6829baa34c39abde" kindref="member">troop_member</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="282" refid="class_game___enemy_1a17859c8bbb9717f4575dfb5e9526146e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int16_t&gt;<sp/><ref refid="class_game___enemy_1a17859c8bbb9717f4575dfb5e9526146e" kindref="member">states</ref>;</highlight></codeline>
+<codeline lineno="283" refid="class_game___enemy_1ad502e05c6ea7f71575c864d60d7a3e3e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1ad502e05c6ea7f71575c864d60d7a3e3e" kindref="member">hp</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="284" refid="class_game___enemy_1a8d2d676647ab2a90e977065c01287628" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a8d2d676647ab2a90e977065c01287628" kindref="member">sp</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="285" refid="class_game___enemy_1a70b9abccdc3ab28e1e8022a386d916ef" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a70b9abccdc3ab28e1e8022a386d916ef" kindref="member">blink_timer</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="286" refid="class_game___enemy_1a7fd0bab8e74200996b984ff35a7d8873" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a7fd0bab8e74200996b984ff35a7d8873" kindref="member">death_timer</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="287" refid="class_game___enemy_1a0e79d4b799ba51c60c44f1a41fa36b35" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a0e79d4b799ba51c60c44f1a41fa36b35" kindref="member">explode_timer</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="288"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"></highlight></codeline>
+<codeline lineno="290" refid="class_game___enemy_1a5190ba7d6e0baa581914c5607002ed33" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_game___battler_1aaf3150c823c4ad686c5e3e1097ae3d47" kindref="member">Game_Battler::BattlerType</ref><sp/><ref refid="class_game___enemy_1a5190ba7d6e0baa581914c5607002ed33" kindref="member">Game_Enemy::GetType</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___battler_1aaf3150c823c4ad686c5e3e1097ae3d47a111621977bc24e0b2f8f2848971ed063" kindref="member">Game_Battler::Type_Enemy</ref>;</highlight></codeline>
+<codeline lineno="292"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"></highlight></codeline>
+<codeline lineno="294" refid="class_game___enemy_1ab40128877235943ce9c553798b74f0ae" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1ab40128877235943ce9c553798b74f0ae" kindref="member">Game_Enemy::GetExp</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;exp;</highlight></codeline>
+<codeline lineno="296"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"></highlight></codeline>
+<codeline lineno="298" refid="class_game___enemy_1aee5599992afc791774cb16fc3ddf6cee" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aee5599992afc791774cb16fc3ddf6cee" kindref="member">Game_Enemy::GetMoney</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;gold;</highlight></codeline>
+<codeline lineno="300"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"></highlight></codeline>
+<codeline lineno="302" refid="class_game___enemy_1a47e1261dbe1271ad01a041c2c16f8a73" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a47e1261dbe1271ad01a041c2c16f8a73" kindref="member">Game_Enemy::GetDropId</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;drop_id;</highlight></codeline>
+<codeline lineno="304"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="305"><highlight class="normal"></highlight></codeline>
+<codeline lineno="306" refid="class_game___enemy_1afc387c54a0120c3b809a08b936f0a548" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1afc387c54a0120c3b809a08b936f0a548" kindref="member">Game_Enemy::GetDropProbability</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;drop_prob;</highlight></codeline>
+<codeline lineno="308"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"></highlight></codeline>
+<codeline lineno="310" refid="class_game___enemy_1a1fc6765f2489f91067237e8f6f9dc364" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a1fc6765f2489f91067237e8f6f9dc364" kindref="member">Game_Enemy::IsTransparent</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;transparent;</highlight></codeline>
+<codeline lineno="312"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"></highlight></codeline>
+<codeline lineno="314" refid="class_game___enemy_1a259e956e81ecab872110bff265696424" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a259e956e81ecab872110bff265696424" kindref="member">Game_Enemy::GetBattleAnimationId</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="316"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="317"><highlight class="normal"></highlight></codeline>
+<codeline lineno="318" refid="class_game___enemy_1a82f671e5cffd6dc7c345d127337d3c3d" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a82f671e5cffd6dc7c345d127337d3c3d" kindref="member">Game_Enemy::GetHue</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;battler_hue;</highlight></codeline>
+<codeline lineno="320"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="321"><highlight class="normal"></highlight></codeline>
+<codeline lineno="322" refid="class_game___enemy_1aa64235b2fea12808d7573de5873ae9ae" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa64235b2fea12808d7573de5873ae9ae" kindref="member">Game_Enemy::GetId</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;ID;</highlight></codeline>
+<codeline lineno="324"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="325"><highlight class="normal"></highlight></codeline>
+<codeline lineno="326" refid="class_game___enemy_1a4191a5200a0c2f560412b941a330c151" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a4191a5200a0c2f560412b941a330c151" kindref="member">Game_Enemy::GetTroopMemberId</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a62e300f4ba7f812b6829baa34c39abde" kindref="member">troop_member</ref>-&gt;ID;</highlight></codeline>
+<codeline lineno="328"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="329"><highlight class="normal"></highlight></codeline>
+<codeline lineno="330" refid="class_game___enemy_1a20cf35f8f8fd32416fc9ec80d04013e4" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a20cf35f8f8fd32416fc9ec80d04013e4" kindref="member">Game_Enemy::GetBaseMaxHp</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;max_hp;</highlight></codeline>
+<codeline lineno="332"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"></highlight></codeline>
+<codeline lineno="334" refid="class_game___enemy_1a3cefc0bae608507016f15d8b981b5682" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a3cefc0bae608507016f15d8b981b5682" kindref="member">Game_Enemy::GetBaseMaxSp</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;max_sp;</highlight></codeline>
+<codeline lineno="336"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"></highlight></codeline>
+<codeline lineno="338" refid="class_game___enemy_1aa909372f4271015b18329bee03831c6e" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa909372f4271015b18329bee03831c6e" kindref="member">Game_Enemy::GetBaseAtk</ref>(<ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;attack;</highlight></codeline>
+<codeline lineno="340"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"></highlight></codeline>
+<codeline lineno="342" refid="class_game___enemy_1a330ada6beaadc02b7a354e6c61693d71" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a330ada6beaadc02b7a354e6c61693d71" kindref="member">Game_Enemy::GetBaseDef</ref>(<ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;defense;</highlight></codeline>
+<codeline lineno="344"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"></highlight></codeline>
+<codeline lineno="346" refid="class_game___enemy_1a8cb74e6a22046a3734ee7d665251fd55" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a8cb74e6a22046a3734ee7d665251fd55" kindref="member">Game_Enemy::GetBaseSpi</ref>(<ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;spirit;</highlight></codeline>
+<codeline lineno="348"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="349"><highlight class="normal"></highlight></codeline>
+<codeline lineno="350" refid="class_game___enemy_1a0d388dd6325bfb7acfac2bb627fb5b70" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a0d388dd6325bfb7acfac2bb627fb5b70" kindref="member">Game_Enemy::GetBaseAgi</ref>(<ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Weapon</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="351"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;agility;</highlight></codeline>
+<codeline lineno="352"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="353"><highlight class="normal"></highlight></codeline>
+<codeline lineno="354" refid="class_game___enemy_1a3cf8d265915c233c58382273406736ed" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a3cf8d265915c233c58382273406736ed" kindref="member">Game_Enemy::GetHp</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="355"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1ad502e05c6ea7f71575c864d60d7a3e3e" kindref="member">hp</ref>;</highlight></codeline>
+<codeline lineno="356"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="357"><highlight class="normal"></highlight></codeline>
+<codeline lineno="358" refid="class_game___enemy_1ad3866e66af30aefdfcfe0286bafb31f6" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1ad3866e66af30aefdfcfe0286bafb31f6" kindref="member">Game_Enemy::GetSp</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="359"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a8d2d676647ab2a90e977065c01287628" kindref="member">sp</ref>;</highlight></codeline>
+<codeline lineno="360"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="361"><highlight class="normal"></highlight></codeline>
+<codeline lineno="362" refid="class_game___enemy_1af9fcb8f2d10a1cdaaa9c9b4a6c747b39" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;int16_t&gt;&amp;<sp/><ref refid="class_game___enemy_1af9fcb8f2d10a1cdaaa9c9b4a6c747b39" kindref="member">Game_Enemy::GetStates</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="363"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a17859c8bbb9717f4575dfb5e9526146e" kindref="member">states</ref>;</highlight></codeline>
+<codeline lineno="364"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="365"><highlight class="normal"></highlight></codeline>
+<codeline lineno="366" refid="class_game___enemy_1a516d27143ea230094866d2ed49d93042" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::vector&lt;int16_t&gt;&amp;<sp/><ref refid="class_game___enemy_1af9fcb8f2d10a1cdaaa9c9b4a6c747b39" kindref="member">Game_Enemy::GetStates</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a17859c8bbb9717f4575dfb5e9526146e" kindref="member">states</ref>;</highlight></codeline>
+<codeline lineno="368"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="369"><highlight class="normal"></highlight></codeline>
+<codeline lineno="370" refid="class_game___enemy_1a171815b933c3eb3ba3e535709ae04843" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::string_view<sp/><ref refid="class_game___enemy_1a171815b933c3eb3ba3e535709ae04843" kindref="member">Game_Enemy::GetName</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="371"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;name;</highlight></codeline>
+<codeline lineno="372"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="373"><highlight class="normal"></highlight></codeline>
+<codeline lineno="374" refid="class_game___enemy_1a60c29efb8278bd372a00e4c0c5c71bba" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::string_view<sp/><ref refid="class_game___enemy_1a60c29efb8278bd372a00e4c0c5c71bba" kindref="member">Game_Enemy::GetSpriteName</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="375"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;battler_name;</highlight></codeline>
+<codeline lineno="376"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="377"><highlight class="normal"></highlight></codeline>
+<codeline lineno="378" refid="class_game___enemy_1a4fade0ae5145b69667b61af12f9fb0fb" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a4fade0ae5145b69667b61af12f9fb0fb" kindref="member">Game_Enemy::IsInParty</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="379"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Enemies<sp/>can<sp/>never<sp/>be<sp/>removed<sp/>from<sp/>enemy<sp/>party</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="380"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="381"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="382"><highlight class="normal"></highlight></codeline>
+<codeline lineno="383" refid="class_game___enemy_1a33e2102b0111b2751997f1ff8450fd5e" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Enemy&amp;<sp/><ref refid="class_game___enemy_1a33e2102b0111b2751997f1ff8450fd5e" kindref="member">Game_Enemy::GetDbEnemy</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="384"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*<ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>;</highlight></codeline>
+<codeline lineno="385"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="386"><highlight class="normal"></highlight></codeline>
+<codeline lineno="387" refid="class_game___enemy_1a7480b52328f2c9666587893182e8642c" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a7480b52328f2c9666587893182e8642c" kindref="member">Game_Enemy::GetBlinkTimer</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="388"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a70b9abccdc3ab28e1e8022a386d916ef" kindref="member">blink_timer</ref>;</highlight></codeline>
+<codeline lineno="389"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="390"><highlight class="normal"></highlight></codeline>
+<codeline lineno="391" refid="class_game___enemy_1a68d5606d968b7e103724b4a81c9b90db" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a68d5606d968b7e103724b4a81c9b90db" kindref="member">Game_Enemy::SetBlinkTimer</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>t)<sp/>{</highlight></codeline>
+<codeline lineno="392"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___enemy_1a70b9abccdc3ab28e1e8022a386d916ef" kindref="member">blink_timer</ref><sp/>=<sp/>t;</highlight></codeline>
+<codeline lineno="393"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="394"><highlight class="normal"></highlight></codeline>
+<codeline lineno="395" refid="class_game___enemy_1a7f606c87a42ebc701c226f2774012cfd" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a7f606c87a42ebc701c226f2774012cfd" kindref="member">Game_Enemy::GetExplodeTimer</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="396"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a0e79d4b799ba51c60c44f1a41fa36b35" kindref="member">explode_timer</ref>;</highlight></codeline>
+<codeline lineno="397"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="398"><highlight class="normal"></highlight></codeline>
+<codeline lineno="399" refid="class_game___enemy_1a5291771f98b72b4e9899aea370e4a173" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a5291771f98b72b4e9899aea370e4a173" kindref="member">Game_Enemy::SetExplodeTimer</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>t)<sp/>{</highlight></codeline>
+<codeline lineno="400"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___enemy_1a0e79d4b799ba51c60c44f1a41fa36b35" kindref="member">explode_timer</ref><sp/>=<sp/>t;</highlight></codeline>
+<codeline lineno="401"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="402"><highlight class="normal"></highlight></codeline>
+<codeline lineno="403" refid="class_game___enemy_1a9086b6ac67291b30cdf428a6bae40892" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a9086b6ac67291b30cdf428a6bae40892" kindref="member">Game_Enemy::GetDeathTimer</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="404"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a7fd0bab8e74200996b984ff35a7d8873" kindref="member">death_timer</ref>;</highlight></codeline>
+<codeline lineno="405"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="406"><highlight class="normal"></highlight></codeline>
+<codeline lineno="407" refid="class_game___enemy_1a05bfb0b746ca1e72a33f6e6f7199c7b9" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a05bfb0b746ca1e72a33f6e6f7199c7b9" kindref="member">Game_Enemy::SetDeathTimer</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>t)<sp/>{</highlight></codeline>
+<codeline lineno="408"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___enemy_1a7fd0bab8e74200996b984ff35a7d8873" kindref="member">death_timer</ref><sp/>=<sp/>t;</highlight></codeline>
+<codeline lineno="409"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="410"><highlight class="normal"></highlight></codeline>
+<codeline lineno="411" refid="class_game___enemy_1afa8029475cf680f0cea47d313e3f9a7c" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1afa8029475cf680f0cea47d313e3f9a7c" kindref="member">Game_Enemy::IsFlying</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="412"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;levitate;</highlight></codeline>
+<codeline lineno="413"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="414"><highlight class="normal"></highlight></codeline>
+<codeline lineno="415" refid="class_game___enemy_1a09a469809af90ac52f7205cc1da76c75" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a09a469809af90ac52f7205cc1da76c75" kindref="member">Game_Enemy::GetUnarmedBattleAnimationId</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="416"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;maniac_unarmed_animation;</highlight></codeline>
+<codeline lineno="417"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="418"><highlight class="normal"></highlight></codeline>
+<codeline lineno="419" refid="class_game___enemy_1a65296b425d2a8311da4fb010360a6b69" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_sprite___enemy" kindref="compound">Sprite_Enemy</ref>*<sp/><ref refid="class_game___enemy_1a65296b425d2a8311da4fb010360a6b69" kindref="member">Game_Enemy::GetEnemyBattleSprite</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="420"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal"><ref refid="class_sprite___enemy" kindref="compound">Sprite_Enemy</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(<ref refid="class_game___battler_1ab2f27f31a34235aa7ace416808ff18b3" kindref="member">Game_Battler::GetBattleSprite</ref>());</highlight></codeline>
+<codeline lineno="421"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="422"><highlight class="normal"></highlight></codeline>
+<codeline lineno="423" refid="class_game___enemy_1a7c479066aee3d75ad85299034fb63c74" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a7c479066aee3d75ad85299034fb63c74" kindref="member">Game_Enemy::GetEnemyAi</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="424"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;easyrpg_enemyai;</highlight></codeline>
+<codeline lineno="425"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="426"><highlight class="normal"></highlight></codeline>
+<codeline lineno="427" refid="class_game___enemy_1a65303a9dee35fb7c2a9e0722ae446e22" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1a65303a9dee35fb7c2a9e0722ae446e22" kindref="member">Game_Enemy::HasStrongDefense</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="428"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___enemy_1aa8328480ac74de76a84026a9058f6b8e" kindref="member">enemy</ref>-&gt;easyrpg_super_guard;</highlight></codeline>
+<codeline lineno="429"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="430"><highlight class="normal"></highlight></codeline>
+<codeline lineno="431"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="432"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="game_enemy.h"/>
+  </compounddef>
+</doxygen>

@@ -783,3 +783,4 @@ int Game_Battler::ChangeAgiModifier(int modifier) {
 	return delta;
 }
 
+

@@ -1,0 +1,744 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lutf8lib_8c" kind="file" language="C++">
+    <compoundname>lutf8lib.c</compoundname>
+    <includes refid="lprefix_8h" local="yes">lprefix.h</includes>
+    <includes local="no">limits.h</includes>
+    <includes local="no">stdlib.h</includes>
+    <includes local="no">string.h</includes>
+    <includes refid="lua_8h" local="yes">lua.h</includes>
+    <includes refid="lauxlib_8h" local="yes">lauxlib.h</includes>
+    <includes refid="lualib_8h" local="yes">lualib.h</includes>
+    <includes refid="llimits_8h" local="yes">llimits.h</includes>
+    <incdepgraph>
+      <node id="10">
+        <label>lauxlib.h</label>
+        <link refid="lauxlib_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>lprefix.h</label>
+        <link refid="lprefix_8h"/>
+      </node>
+      <node id="6">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>lualib.h</label>
+        <link refid="lualib_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lutf8lib.c</label>
+        <link refid="lutf8lib_8c"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>limits.h</label>
+      </node>
+      <node id="7">
+        <label>stdarg.h</label>
+      </node>
+      <node id="8">
+        <label>stddef.h</label>
+      </node>
+      <node id="11">
+        <label>stdio.h</label>
+      </node>
+      <node id="4">
+        <label>stdlib.h</label>
+      </node>
+      <node id="5">
+        <label>string.h</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lutf8lib_8c_1ae4e6cc627940ab6f545638bf5cfda8b0" prot="public" static="no">
+        <name>lutf8lib_c</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="7" column="9" bodyfile="leasy/lua/lutf8lib.c" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lutf8lib_8c_1a884b19ad6094d6238c4072a8064aeb12" prot="public" static="no">
+        <name>LUA_LIB</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="8" column="9" bodyfile="leasy/lua/lutf8lib.c" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lutf8lib_8c_1afd8cf5fccc99a6307fb78c36dc004ab4" prot="public" static="no">
+        <name>MAXUNICODE</name>
+        <initializer>0x10FFFFu</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="24" column="9" bodyfile="leasy/lua/lutf8lib.c" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lutf8lib_8c_1af5f63b8995a31fcdd3f6900d79261245" prot="public" static="no">
+        <name>MAXUTF</name>
+        <initializer>0x7FFFFFFFu</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="26" column="9" bodyfile="leasy/lua/lutf8lib.c" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lutf8lib_8c_1a49134bce112ea72b47a94a459124e7e6" prot="public" static="no">
+        <name>MSGInvalid</name>
+        <initializer>&quot;invalid UTF-8 code&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="29" column="9" bodyfile="leasy/lua/lutf8lib.c" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lutf8lib_8c_1a35f1540b7f979fa56d09d136530c6505" prot="public" static="no">
+        <name>iscont</name>
+        <param><defname>c</defname></param>
+        <initializer>(((c) &amp; 0xC0) == 0x80)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="32" column="9" bodyfile="leasy/lua/lutf8lib.c" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lutf8lib_8c_1a561d520fa7baec94fb749f92fe740de0" prot="public" static="no">
+        <name>iscontp</name>
+        <param><defname>p</defname></param>
+        <initializer><ref refid="lutf8lib_8c_1a35f1540b7f979fa56d09d136530c6505" kindref="member">iscont</ref>(*(p))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="33" column="9" bodyfile="leasy/lua/lutf8lib.c" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lutf8lib_8c_1a2cf7ee81d838fa055a20870d91f8ab81" prot="public" static="no">
+        <name>UTF8PATT</name>
+        <initializer>&quot;[\0-\x7F\xC2-\xFD][\x80-\xBF]*&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="270" column="9" bodyfile="leasy/lua/lutf8lib.c" bodystart="270" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="lutf8lib_8c_1aa4be121cd05b20a87bf4f1d5c1978a1b" prot="public" static="yes" mutable="no">
+        <type>const <ref refid="structlua_l___reg" kindref="compound">luaL_Reg</ref></type>
+        <definition>const luaL_Reg funcs[]</definition>
+        <argsstring>[]</argsstring>
+        <name>funcs</name>
+        <initializer>                            = {
+  {&quot;offset&quot;, byteoffset},
+  {&quot;codepoint&quot;, codepoint},
+  {&quot;char&quot;, utfchar},
+  {&quot;len&quot;, utflen},
+  {&quot;codes&quot;, iter_codes},
+  
+  {&quot;charpattern&quot;, NULL},
+  {NULL, NULL}
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="273" column="23" bodyfile="leasy/lua/lutf8lib.c" bodystart="273" bodyend="282"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="lutf8lib_8c_1ad40cd6dc984252dfbce8facac91b25ea" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+        <definition>static lua_Integer u_posrelat</definition>
+        <argsstring>(lua_Integer pos, size_t len)</argsstring>
+        <name>u_posrelat</name>
+        <param>
+          <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+          <declname>pos</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>len</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="38" column="20" bodyfile="leasy/lua/lutf8lib.c" bodystart="38" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="lutf8lib_8c_1a6d5fc3ab379a499f7f5063f011e4bbb6" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const char *</type>
+        <definition>static const char * utf8_decode</definition>
+        <argsstring>(const char *s, l_uint32 *val, int strict)</argsstring>
+        <name>utf8_decode</name>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type><ref refid="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" kindref="member">l_uint32</ref> *</type>
+          <declname>val</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>strict</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="52" column="19" bodyfile="leasy/lua/lutf8lib.c" bodystart="52" bodyend="79"/>
+      </memberdef>
+      <memberdef kind="function" id="lutf8lib_8c_1a840e09db1ade39da79b0b4dece0e46eb" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int utflen</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>utflen</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="87" column="12" bodyfile="leasy/lua/lutf8lib.c" bodystart="87" bodyend="110"/>
+      </memberdef>
+      <memberdef kind="function" id="lutf8lib_8c_1af4280cee645f392590f2ed63a6301320" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int codepoint</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>codepoint</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="117" column="12" bodyfile="leasy/lua/lutf8lib.c" bodystart="117" bodyend="143"/>
+      </memberdef>
+      <memberdef kind="function" id="lutf8lib_8c_1a52e38c3852e8554391b6860bdc796024" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void pushutfchar</definition>
+        <argsstring>(lua_State *L, int arg)</argsstring>
+        <name>pushutfchar</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="146" column="13" bodyfile="leasy/lua/lutf8lib.c" bodystart="146" bodyend="150"/>
+      </memberdef>
+      <memberdef kind="function" id="lutf8lib_8c_1a7269a837d8746044cb3f33e6db94b00f" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int utfchar</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>utfchar</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="156" column="12" bodyfile="leasy/lua/lutf8lib.c" bodystart="156" bodyend="171"/>
+      </memberdef>
+      <memberdef kind="function" id="lutf8lib_8c_1a805a182cc5dde6d73e07922e8454eaf7" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int byteoffset</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>byteoffset</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="178" column="12" bodyfile="leasy/lua/lutf8lib.c" bodystart="178" bodyend="225"/>
+      </memberdef>
+      <memberdef kind="function" id="lutf8lib_8c_1ad5fc4a8936de51af672e82150c82a49a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int iter_aux</definition>
+        <argsstring>(lua_State *L, int strict)</argsstring>
+        <name>iter_aux</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>strict</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="228" column="12" bodyfile="leasy/lua/lutf8lib.c" bodystart="228" bodyend="246"/>
+      </memberdef>
+      <memberdef kind="function" id="lutf8lib_8c_1afe5c5d5c71be22b9feefda4fe9e48ac9" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int iter_auxstrict</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>iter_auxstrict</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="249" column="12" bodyfile="leasy/lua/lutf8lib.c" bodystart="249" bodyend="251"/>
+      </memberdef>
+      <memberdef kind="function" id="lutf8lib_8c_1a7e953afe12aba1463b511c39ce46586d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int iter_auxlax</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>iter_auxlax</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="253" column="12" bodyfile="leasy/lua/lutf8lib.c" bodystart="253" bodyend="255"/>
+      </memberdef>
+      <memberdef kind="function" id="lutf8lib_8c_1aaead346d7a9236dc0d97fe7914cae6e5" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int iter_codes</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>iter_codes</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="258" column="12" bodyfile="leasy/lua/lutf8lib.c" bodystart="258" bodyend="266"/>
+      </memberdef>
+      <memberdef kind="function" id="lutf8lib_8c_1ae1247f71bc4b3f3be7da9c9d5c7668b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref> int</type>
+        <definition>LUAMOD_API int luaopen_utf8</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaopen_utf8</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lutf8lib.c" line="285" column="16" bodyfile="leasy/lua/lutf8lib.c" bodystart="285" bodyend="290"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lutf8lib.c<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Standard<sp/>library<sp/>for<sp/>UTF-8<sp/>manipulation</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="lutf8lib_8c_1ae4e6cc627940ab6f545638bf5cfda8b0" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lutf8lib_c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="lutf8lib_8c_1a884b19ad6094d6238c4072a8064aeb12" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_LIB</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lprefix_8h" kindref="compound">lprefix.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;limits.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdlib.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lua_8h" kindref="compound">lua.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lauxlib_8h" kindref="compound">lauxlib.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lualib_8h" kindref="compound">lualib.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="llimits_8h" kindref="compound">llimits.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="lutf8lib_8c_1afd8cf5fccc99a6307fb78c36dc004ab4" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MAXUNICODE<sp/><sp/>0x10FFFFu</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="lutf8lib_8c_1af5f63b8995a31fcdd3f6900d79261245" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MAXUTF<sp/><sp/><sp/><sp/><sp/><sp/>0x7FFFFFFFu</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="lutf8lib_8c_1a49134bce112ea72b47a94a459124e7e6" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MSGInvalid<sp/><sp/>&quot;invalid<sp/>UTF-8<sp/>code&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="lutf8lib_8c_1a35f1540b7f979fa56d09d136530c6505" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>iscont(c)<sp/><sp/><sp/>(((c)<sp/>&amp;<sp/>0xC0)<sp/>==<sp/>0x80)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="lutf8lib_8c_1a561d520fa7baec94fb749f92fe740de0" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>iscontp(p)<sp/><sp/>iscont(*(p))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>from<sp/>strlib<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>translate<sp/>a<sp/>relative<sp/>string<sp/>position:<sp/>negative<sp/>means<sp/>back<sp/>from<sp/>end<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>u_posrelat<sp/>(<ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>pos,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>len)<sp/>{</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(pos<sp/>&gt;=<sp/>0)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>pos;</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(0u<sp/>-<sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">)pos<sp/>&gt;<sp/>len)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(<ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref>)len<sp/>+<sp/>pos<sp/>+<sp/>1;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="46"><highlight class="comment">**<sp/>Decode<sp/>one<sp/>UTF-8<sp/>sequence,<sp/>returning<sp/>NULL<sp/>if<sp/>byte<sp/>sequence<sp/>is</highlight></codeline>
+<codeline lineno="47"><highlight class="comment">**<sp/>invalid.<sp/><sp/>The<sp/>array<sp/>&apos;limits&apos;<sp/>stores<sp/>the<sp/>minimum<sp/>value<sp/>for<sp/>each</highlight></codeline>
+<codeline lineno="48"><highlight class="comment">**<sp/>sequence<sp/>length,<sp/>to<sp/>check<sp/>for<sp/>overlong<sp/>representations.<sp/>Its<sp/>first</highlight></codeline>
+<codeline lineno="49"><highlight class="comment">**<sp/>entry<sp/>forces<sp/>an<sp/>error<sp/>for<sp/>non-ASCII<sp/>bytes<sp/>with<sp/>no<sp/>continuation</highlight></codeline>
+<codeline lineno="50"><highlight class="comment">**<sp/>bytes<sp/>(count<sp/>==<sp/>0).</highlight></codeline>
+<codeline lineno="51"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*utf8_decode<sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s,<sp/><ref refid="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" kindref="member">l_uint32</ref><sp/>*val,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>strict)<sp/>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" kindref="member">l_uint32</ref><sp/>limits[]<sp/>=</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{~(<ref refid="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" kindref="member">l_uint32</ref>)0,<sp/>0x80,<sp/>0x800,<sp/>0x10000u,<sp/>0x200000u,<sp/>0x4000000u};</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>c<sp/>=<sp/>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>char)s[0];</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" kindref="member">l_uint32</ref><sp/>res<sp/>=<sp/>0;<sp/><sp/></highlight><highlight class="comment">/*<sp/>final<sp/>result<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(c<sp/>&lt;<sp/>0x80)<sp/><sp/></highlight><highlight class="comment">/*<sp/>ASCII?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>res<sp/>=<sp/>c;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1kits_1ac073b732e1ab38cb688134327301d6cc" kindref="member">count</ref><sp/>=<sp/>0;<sp/><sp/></highlight><highlight class="comment">/*<sp/>to<sp/>count<sp/>number<sp/>of<sp/>continuation<sp/>bytes<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>c<sp/>&amp;<sp/>0x40;<sp/>c<sp/>&lt;&lt;=<sp/>1)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>while<sp/>it<sp/>needs<sp/>continuation<sp/>bytes...<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>cc<sp/>=<sp/>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>char)s[++count];<sp/><sp/></highlight><highlight class="comment">/*<sp/>read<sp/>next<sp/>byte<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="lutf8lib_8c_1a35f1540b7f979fa56d09d136530c6505" kindref="member">iscont</ref>(cc))<sp/><sp/></highlight><highlight class="comment">/*<sp/>not<sp/>a<sp/>continuation<sp/>byte?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;<sp/><sp/></highlight><highlight class="comment">/*<sp/>invalid<sp/>byte<sp/>sequence<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>res<sp/>=<sp/>(res<sp/>&lt;&lt;<sp/>6)<sp/>|<sp/>(cc<sp/>&amp;<sp/>0x3F);<sp/><sp/></highlight><highlight class="comment">/*<sp/>add<sp/>lower<sp/>6<sp/>bits<sp/>from<sp/>cont.<sp/>byte<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>res<sp/>|=<sp/>((<ref refid="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" kindref="member">l_uint32</ref>)(c<sp/>&amp;<sp/>0x7F)<sp/>&lt;&lt;<sp/>(<ref refid="namespaceleasy_1_1kits_1ac073b732e1ab38cb688134327301d6cc" kindref="member">count</ref><sp/>*<sp/>5));<sp/><sp/></highlight><highlight class="comment">/*<sp/>add<sp/>first<sp/>byte<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(count<sp/>&gt;<sp/>5<sp/>||<sp/>res<sp/>&gt;<sp/><ref refid="lutf8lib_8c_1af5f63b8995a31fcdd3f6900d79261245" kindref="member">MAXUTF</ref><sp/>||<sp/>res<sp/>&lt;<sp/>limits[count])</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;<sp/><sp/></highlight><highlight class="comment">/*<sp/>invalid<sp/>byte<sp/>sequence<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>s<sp/>+=<sp/><ref refid="namespaceleasy_1_1kits_1ac073b732e1ab38cb688134327301d6cc" kindref="member">count</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>skip<sp/>continuation<sp/>bytes<sp/>read<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(strict)<sp/>{</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>check<sp/>for<sp/>invalid<sp/>code<sp/>points;<sp/>too<sp/>large<sp/>or<sp/>surrogates<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(res<sp/>&gt;<sp/><ref refid="lutf8lib_8c_1afd8cf5fccc99a6307fb78c36dc004ab4" kindref="member">MAXUNICODE</ref><sp/>||<sp/>(0xD800u<sp/>&lt;=<sp/>res<sp/>&amp;&amp;<sp/>res<sp/>&lt;=<sp/>0xDFFFu))</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(val)<sp/>*val<sp/>=<sp/>res;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>s<sp/>+<sp/>1;<sp/><sp/></highlight><highlight class="comment">/*<sp/>+1<sp/>to<sp/>include<sp/>first<sp/>byte<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="83"><highlight class="comment">**<sp/>utf8len(s<sp/>[,<sp/>i<sp/>[,<sp/>j<sp/>[,<sp/>lax]]])<sp/>--&gt;<sp/>number<sp/>of<sp/>characters<sp/>that</highlight></codeline>
+<codeline lineno="84"><highlight class="comment">**<sp/>start<sp/>in<sp/>the<sp/>range<sp/>[i,j],<sp/>or<sp/>nil<sp/>+<sp/>current<sp/>position<sp/>if<sp/>&apos;s&apos;<sp/>is<sp/>not</highlight></codeline>
+<codeline lineno="85"><highlight class="comment">**<sp/>well<sp/>formed<sp/>in<sp/>that<sp/>interval</highlight></codeline>
+<codeline lineno="86"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>utflen<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>n<sp/>=<sp/>0;<sp/><sp/></highlight><highlight class="comment">/*<sp/>counter<sp/>for<sp/>the<sp/>number<sp/>of<sp/>characters<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>len;<sp/><sp/></highlight><highlight class="comment">/*<sp/>string<sp/>length<sp/>in<sp/>bytes<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s<sp/>=<sp/><ref refid="lauxlib_8c_1a84f77c4f62b1f42748cabbfd875cb36f" kindref="member">luaL_checklstring</ref>(L,<sp/>1,<sp/>&amp;len);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>posi<sp/>=<sp/>u_posrelat(<ref refid="lauxlib_8c_1ab10ff110a5ba19b4385947de7834ee3c" kindref="member">luaL_optinteger</ref>(L,<sp/>2,<sp/>1),<sp/>len);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>posj<sp/>=<sp/>u_posrelat(<ref refid="lauxlib_8c_1ab10ff110a5ba19b4385947de7834ee3c" kindref="member">luaL_optinteger</ref>(L,<sp/>3,<sp/>-1),<sp/>len);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>lax<sp/>=<sp/><ref refid="lapi_8c_1a444aee9aa56b0b06175ee3c7bcf7927c" kindref="member">lua_toboolean</ref>(L,<sp/>4);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><ref refid="lauxlib_8h_1a48ce6cd86a7448e97f258097a7abc44d" kindref="member">luaL_argcheck</ref>(L,<sp/>1<sp/>&lt;=<sp/>posi<sp/>&amp;&amp;<sp/>--posi<sp/>&lt;=<sp/>(<ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref>)len,<sp/>2,</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;initial<sp/>position<sp/>out<sp/>of<sp/>bounds&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><ref refid="lauxlib_8h_1a48ce6cd86a7448e97f258097a7abc44d" kindref="member">luaL_argcheck</ref>(L,<sp/>--posj<sp/>&lt;<sp/>(<ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref>)len,<sp/>3,</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;final<sp/>position<sp/>out<sp/>of<sp/>bounds&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(posi<sp/>&lt;=<sp/>posj)<sp/>{</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s1<sp/>=<sp/>utf8_decode(s<sp/>+<sp/>posi,<sp/>NULL,<sp/>!lax);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(s1<sp/>==<sp/>NULL)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>conversion<sp/>error?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lauxlib_8h_1a8666135f7a1412f5eaa14857aec279f0" kindref="member">luaL_pushfail</ref>(L);<sp/><sp/></highlight><highlight class="comment">/*<sp/>return<sp/>fail<sp/>...<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1adcec46ff05dfee9a3c4c05828b40c213" kindref="member">lua_pushinteger</ref>(L,<sp/>posi<sp/>+<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>...<sp/>and<sp/>current<sp/>position<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>2;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>posi<sp/>=<sp/><ref refid="llimits_8h_1ab53e4f11d857c0396b569050335bc1bd" kindref="member">ct_diff2S</ref>(s1<sp/>-<sp/>s);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>n++;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><ref refid="lapi_8c_1adcec46ff05dfee9a3c4c05828b40c213" kindref="member">lua_pushinteger</ref>(L,<sp/>n);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="114"><highlight class="comment">**<sp/>codepoint(s,<sp/>[i,<sp/>[j<sp/>[,<sp/>lax]]])<sp/>-&gt;<sp/>returns<sp/>codepoints<sp/>for<sp/>all</highlight></codeline>
+<codeline lineno="115"><highlight class="comment">**<sp/>characters<sp/>that<sp/>start<sp/>in<sp/>the<sp/>range<sp/>[i,j]</highlight></codeline>
+<codeline lineno="116"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>codepoint<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>len;</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s<sp/>=<sp/><ref refid="lauxlib_8c_1a84f77c4f62b1f42748cabbfd875cb36f" kindref="member">luaL_checklstring</ref>(L,<sp/>1,<sp/>&amp;len);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>posi<sp/>=<sp/>u_posrelat(<ref refid="lauxlib_8c_1ab10ff110a5ba19b4385947de7834ee3c" kindref="member">luaL_optinteger</ref>(L,<sp/>2,<sp/>1),<sp/>len);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>pose<sp/>=<sp/>u_posrelat(<ref refid="lauxlib_8c_1ab10ff110a5ba19b4385947de7834ee3c" kindref="member">luaL_optinteger</ref>(L,<sp/>3,<sp/>posi),<sp/>len);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>lax<sp/>=<sp/><ref refid="lapi_8c_1a444aee9aa56b0b06175ee3c7bcf7927c" kindref="member">lua_toboolean</ref>(L,<sp/>4);</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*se;</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><ref refid="lauxlib_8h_1a48ce6cd86a7448e97f258097a7abc44d" kindref="member">luaL_argcheck</ref>(L,<sp/>posi<sp/>&gt;=<sp/>1,<sp/>2,<sp/></highlight><highlight class="stringliteral">&quot;out<sp/>of<sp/>bounds&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><ref refid="lauxlib_8h_1a48ce6cd86a7448e97f258097a7abc44d" kindref="member">luaL_argcheck</ref>(L,<sp/>pose<sp/>&lt;=<sp/>(<ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref>)len,<sp/>3,<sp/></highlight><highlight class="stringliteral">&quot;out<sp/>of<sp/>bounds&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(posi<sp/>&gt;<sp/>pose)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;<sp/><sp/></highlight><highlight class="comment">/*<sp/>empty<sp/>interval;<sp/>return<sp/>no<sp/>values<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(pose<sp/>-<sp/>posi<sp/>&gt;=<sp/>INT_MAX)<sp/><sp/></highlight><highlight class="comment">/*<sp/>(lua_Integer<sp/>-&gt;<sp/>int)<sp/>overflow?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lauxlib_8c_1a6c51d83d29244779392551388913e08a" kindref="member">luaL_error</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;string<sp/>slice<sp/>too<sp/>long&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/>n<sp/>=<sp/>(int)(pose<sp/>-<sp/><sp/>posi)<sp/>+<sp/>1;<sp/><sp/></highlight><highlight class="comment">/*<sp/>upper<sp/>bound<sp/>for<sp/>number<sp/>of<sp/>returns<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><ref refid="lauxlib_8c_1a7c46517055e0e8cb25e61b959709083a" kindref="member">luaL_checkstack</ref>(L,<sp/>n,<sp/></highlight><highlight class="stringliteral">&quot;string<sp/>slice<sp/>too<sp/>long&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/>n<sp/>=<sp/>0;<sp/><sp/></highlight><highlight class="comment">/*<sp/>count<sp/>the<sp/>number<sp/>of<sp/>returns<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/>se<sp/>=<sp/>s<sp/>+<sp/>pose;<sp/><sp/></highlight><highlight class="comment">/*<sp/>string<sp/>end<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(s<sp/>+=<sp/>posi<sp/>-<sp/>1;<sp/>s<sp/>&lt;<sp/>se;)<sp/>{</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" kindref="member">l_uint32</ref><sp/>code;</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>s<sp/>=<sp/>utf8_decode(s,<sp/>&amp;code,<sp/>!lax);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(s<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lauxlib_8c_1a6c51d83d29244779392551388913e08a" kindref="member">luaL_error</ref>(L,<sp/><ref refid="lutf8lib_8c_1a49134bce112ea72b47a94a459124e7e6" kindref="member">MSGInvalid</ref>);</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1adcec46ff05dfee9a3c4c05828b40c213" kindref="member">lua_pushinteger</ref>(L,<sp/><ref refid="llimits_8h_1a873fa1b216f8caed046edbcebd4c1bc8" kindref="member">l_castU2S</ref>(code));</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>n++;</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>n;</highlight></codeline>
+<codeline lineno="143"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>pushutfchar<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg)<sp/>{</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref><sp/>code<sp/>=<sp/>(<ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref>)<ref refid="lauxlib_8c_1aa15bea412c49bfdee1f3dbff096ce7d2" kindref="member">luaL_checkinteger</ref>(L,<sp/>arg);</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><ref refid="lauxlib_8h_1a48ce6cd86a7448e97f258097a7abc44d" kindref="member">luaL_argcheck</ref>(L,<sp/>code<sp/>&lt;=<sp/><ref refid="lutf8lib_8c_1af5f63b8995a31fcdd3f6900d79261245" kindref="member">MAXUTF</ref>,<sp/>arg,<sp/></highlight><highlight class="stringliteral">&quot;value<sp/>out<sp/>of<sp/>range&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><ref refid="lapi_8c_1a35a21b17f4d19eeaf59630d1dc873b1a" kindref="member">lua_pushfstring</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;%U&quot;</highlight><highlight class="normal">,<sp/>(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal">)code);</highlight></codeline>
+<codeline lineno="150"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="154"><highlight class="comment">**<sp/>utfchar(n1,<sp/>n2,<sp/>...)<sp/><sp/>-&gt;<sp/>char(n1)..char(n2)...</highlight></codeline>
+<codeline lineno="155"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>utfchar<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n<sp/>=<sp/><ref refid="lapi_8c_1afbb08ecb69421875494105d4de68e5bf" kindref="member">lua_gettop</ref>(L);<sp/><sp/></highlight><highlight class="comment">/*<sp/>number<sp/>of<sp/>arguments<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(n<sp/>==<sp/>1)<sp/><sp/></highlight><highlight class="comment">/*<sp/>optimize<sp/>common<sp/>case<sp/>of<sp/>single<sp/>char<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/>pushutfchar(L,<sp/>1);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i;</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref><sp/>b;</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lauxlib_8c_1a0830ef75e335f6d7590b0e058f82a5eb" kindref="member">luaL_buffinit</ref>(L,<sp/>&amp;b);</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>1;<sp/>i<sp/>&lt;=<sp/>n;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>pushutfchar(L,<sp/>i);</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lauxlib_8c_1a59a8ac34826fee305ad56101d97aee18" kindref="member">luaL_addvalue</ref>(&amp;b);</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lauxlib_8c_1a3a1f80033814e2057583a7d24cee23b4" kindref="member">luaL_pushresult</ref>(&amp;b);</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="171"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="175"><highlight class="comment">**<sp/>offset(s,<sp/>n,<sp/>[i])<sp/><sp/>-&gt;<sp/>indices<sp/>where<sp/>n-th<sp/>character<sp/>counting<sp/>from</highlight></codeline>
+<codeline lineno="176"><highlight class="comment">**<sp/><sp/><sp/>position<sp/>&apos;i&apos;<sp/>starts<sp/>and<sp/>ends;<sp/>0<sp/>means<sp/>character<sp/>at<sp/>&apos;i&apos;.</highlight></codeline>
+<codeline lineno="177"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>byteoffset<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>len;</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s<sp/>=<sp/><ref refid="lauxlib_8c_1a84f77c4f62b1f42748cabbfd875cb36f" kindref="member">luaL_checklstring</ref>(L,<sp/>1,<sp/>&amp;len);</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>n<sp/><sp/>=<sp/><ref refid="lauxlib_8c_1aa15bea412c49bfdee1f3dbff096ce7d2" kindref="member">luaL_checkinteger</ref>(L,<sp/>2);</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>posi<sp/>=<sp/>(n<sp/>&gt;=<sp/>0)<sp/>?<sp/>1<sp/>:<sp/><ref refid="llimits_8h_1ad4a840f5a18a972fd5c003a74032b4cf" kindref="member">cast_st2S</ref>(len)<sp/>+<sp/>1;</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/>posi<sp/>=<sp/>u_posrelat(<ref refid="lauxlib_8c_1ab10ff110a5ba19b4385947de7834ee3c" kindref="member">luaL_optinteger</ref>(L,<sp/>3,<sp/>posi),<sp/>len);</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><ref refid="lauxlib_8h_1a48ce6cd86a7448e97f258097a7abc44d" kindref="member">luaL_argcheck</ref>(L,<sp/>1<sp/>&lt;=<sp/>posi<sp/>&amp;&amp;<sp/>--posi<sp/>&lt;=<sp/>(<ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref>)len,<sp/>3,</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;position<sp/>out<sp/>of<sp/>bounds&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(n<sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>find<sp/>beginning<sp/>of<sp/>current<sp/>byte<sp/>sequence<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(posi<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/><ref refid="lutf8lib_8c_1a561d520fa7baec94fb749f92fe740de0" kindref="member">iscontp</ref>(s<sp/>+<sp/>posi))<sp/>posi--;</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lutf8lib_8c_1a561d520fa7baec94fb749f92fe740de0" kindref="member">iscontp</ref>(s<sp/>+<sp/>posi))</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lauxlib_8c_1a6c51d83d29244779392551388913e08a" kindref="member">luaL_error</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;initial<sp/>position<sp/>is<sp/>a<sp/>continuation<sp/>byte&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(n<sp/>&lt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(n<sp/>&lt;<sp/>0<sp/>&amp;&amp;<sp/>posi<sp/>&gt;<sp/>0)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>move<sp/>back<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">do</highlight><highlight class="normal"><sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>find<sp/>beginning<sp/>of<sp/>previous<sp/>character<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posi--;</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(posi<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/><ref refid="lutf8lib_8c_1a561d520fa7baec94fb749f92fe740de0" kindref="member">iscontp</ref>(s<sp/>+<sp/>posi));</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>n++;</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>n--;<sp/><sp/></highlight><highlight class="comment">/*<sp/>do<sp/>not<sp/>move<sp/>for<sp/>1st<sp/>character<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(n<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>posi<sp/>&lt;<sp/>(<ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref>)len)<sp/>{</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">do</highlight><highlight class="normal"><sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>find<sp/>beginning<sp/>of<sp/>next<sp/>character<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>posi++;</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(<ref refid="lutf8lib_8c_1a561d520fa7baec94fb749f92fe740de0" kindref="member">iscontp</ref>(s<sp/>+<sp/>posi));<sp/><sp/></highlight><highlight class="comment">/*<sp/>(cannot<sp/>pass<sp/>final<sp/>&apos;\0&apos;)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>n--;</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(n<sp/>!=<sp/>0)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>did<sp/>not<sp/>find<sp/>given<sp/>character?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lauxlib_8h_1a8666135f7a1412f5eaa14857aec279f0" kindref="member">luaL_pushfail</ref>(L);</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><ref refid="lapi_8c_1adcec46ff05dfee9a3c4c05828b40c213" kindref="member">lua_pushinteger</ref>(L,<sp/>posi<sp/>+<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>initial<sp/>position<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((s[posi]<sp/>&amp;<sp/>0x80)<sp/>!=<sp/>0)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>multi-byte<sp/>character?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lutf8lib_8c_1a35f1540b7f979fa56d09d136530c6505" kindref="member">iscont</ref>(s[posi]))</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lauxlib_8c_1a6c51d83d29244779392551388913e08a" kindref="member">luaL_error</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;initial<sp/>position<sp/>is<sp/>a<sp/>continuation<sp/>byte&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(<ref refid="lutf8lib_8c_1a561d520fa7baec94fb749f92fe740de0" kindref="member">iscontp</ref>(s<sp/>+<sp/>posi<sp/>+<sp/>1))</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>posi++;<sp/><sp/></highlight><highlight class="comment">/*<sp/>skip<sp/>to<sp/>last<sp/>continuation<sp/>byte<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>else<sp/>one-byte<sp/>character:<sp/>final<sp/>position<sp/>is<sp/>the<sp/>initial<sp/>one<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><ref refid="lapi_8c_1adcec46ff05dfee9a3c4c05828b40c213" kindref="member">lua_pushinteger</ref>(L,<sp/>posi<sp/>+<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;posi&apos;<sp/>now<sp/>is<sp/>the<sp/>final<sp/>position<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>2;</highlight></codeline>
+<codeline lineno="225"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"></highlight></codeline>
+<codeline lineno="227"><highlight class="normal"></highlight></codeline>
+<codeline lineno="228"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iter_aux<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>strict)<sp/>{</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>len;</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s<sp/>=<sp/><ref refid="lauxlib_8c_1a84f77c4f62b1f42748cabbfd875cb36f" kindref="member">luaL_checklstring</ref>(L,<sp/>1,<sp/>&amp;len);</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref><sp/>n<sp/>=<sp/>(<ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref>)<ref refid="lua_8h_1a1365e48377a3b567e9d88423b2a6345c" kindref="member">lua_tointeger</ref>(L,<sp/>2);</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(n<sp/>&lt;<sp/>len)<sp/>{</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(<ref refid="lutf8lib_8c_1a561d520fa7baec94fb749f92fe740de0" kindref="member">iscontp</ref>(s<sp/>+<sp/>n))<sp/>n++;<sp/><sp/></highlight><highlight class="comment">/*<sp/>go<sp/>to<sp/>next<sp/>character<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(n<sp/>&gt;=<sp/>len)<sp/><sp/></highlight><highlight class="comment">/*<sp/>(also<sp/>handles<sp/>original<sp/>&apos;n&apos;<sp/>being<sp/>negative)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;<sp/><sp/></highlight><highlight class="comment">/*<sp/>no<sp/>more<sp/>codepoints<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" kindref="member">l_uint32</ref><sp/>code;</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*<ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref><sp/>=<sp/>utf8_decode(s<sp/>+<sp/>n,<sp/>&amp;code,<sp/>strict);</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref><sp/>==<sp/>NULL<sp/>||<sp/><ref refid="lutf8lib_8c_1a561d520fa7baec94fb749f92fe740de0" kindref="member">iscontp</ref>(<ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>))</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lauxlib_8c_1a6c51d83d29244779392551388913e08a" kindref="member">luaL_error</ref>(L,<sp/><ref refid="lutf8lib_8c_1a49134bce112ea72b47a94a459124e7e6" kindref="member">MSGInvalid</ref>);</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1adcec46ff05dfee9a3c4c05828b40c213" kindref="member">lua_pushinteger</ref>(L,<sp/><ref refid="llimits_8h_1a873fa1b216f8caed046edbcebd4c1bc8" kindref="member">l_castU2S</ref>(n<sp/>+<sp/>1));</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1adcec46ff05dfee9a3c4c05828b40c213" kindref="member">lua_pushinteger</ref>(L,<sp/><ref refid="llimits_8h_1a873fa1b216f8caed046edbcebd4c1bc8" kindref="member">l_castU2S</ref>(code));</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>2;</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="246"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"></highlight></codeline>
+<codeline lineno="248"><highlight class="normal"></highlight></codeline>
+<codeline lineno="249"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iter_auxstrict<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>iter_aux(L,<sp/>1);</highlight></codeline>
+<codeline lineno="251"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iter_auxlax<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>iter_aux(L,<sp/>0);</highlight></codeline>
+<codeline lineno="255"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"></highlight></codeline>
+<codeline lineno="257"><highlight class="normal"></highlight></codeline>
+<codeline lineno="258"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iter_codes<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>lax<sp/>=<sp/><ref refid="lapi_8c_1a444aee9aa56b0b06175ee3c7bcf7927c" kindref="member">lua_toboolean</ref>(L,<sp/>2);</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s<sp/>=<sp/><ref refid="lauxlib_8h_1ad9917d22c79651fdd73d42c146b5056f" kindref="member">luaL_checkstring</ref>(L,<sp/>1);</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><ref refid="lauxlib_8h_1a48ce6cd86a7448e97f258097a7abc44d" kindref="member">luaL_argcheck</ref>(L,<sp/>!<ref refid="lutf8lib_8c_1a561d520fa7baec94fb749f92fe740de0" kindref="member">iscontp</ref>(s),<sp/>1,<sp/><ref refid="lutf8lib_8c_1a49134bce112ea72b47a94a459124e7e6" kindref="member">MSGInvalid</ref>);</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a2e4fbbe97182bf90004379202202f2b9" kindref="member">lua_pushcfunction</ref>(L,<sp/>lax<sp/>?<sp/>iter_auxlax<sp/>:<sp/>iter_auxstrict);</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><ref refid="lapi_8c_1a602f61a9b583d69dc1c72c8970bd65e8" kindref="member">lua_pushvalue</ref>(L,<sp/>1);</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><ref refid="lapi_8c_1adcec46ff05dfee9a3c4c05828b40c213" kindref="member">lua_pushinteger</ref>(L,<sp/>0);</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>3;</highlight></codeline>
+<codeline lineno="266"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"></highlight></codeline>
+<codeline lineno="268"><highlight class="normal"></highlight></codeline>
+<codeline lineno="269"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>pattern<sp/>to<sp/>match<sp/>a<sp/>single<sp/>UTF-8<sp/>character<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="270" refid="lutf8lib_8c_1a2cf7ee81d838fa055a20870d91f8ab81" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>UTF8PATT<sp/><sp/><sp/><sp/>&quot;[\0-\x7F\xC2-\xFD][\x80-\xBF]*&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="271"><highlight class="normal"></highlight></codeline>
+<codeline lineno="272"><highlight class="normal"></highlight></codeline>
+<codeline lineno="273"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structlua_l___reg" kindref="compound">luaL_Reg</ref><sp/>funcs[]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;offset&quot;</highlight><highlight class="normal">,<sp/>byteoffset},</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;codepoint&quot;</highlight><highlight class="normal">,<sp/>codepoint},</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;char&quot;</highlight><highlight class="normal">,<sp/>utfchar},</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;len&quot;</highlight><highlight class="normal">,<sp/>utflen},</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;codes&quot;</highlight><highlight class="normal">,<sp/>iter_codes},</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>placeholders<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;charpattern&quot;</highlight><highlight class="normal">,<sp/>NULL},</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/>{NULL,<sp/>NULL}</highlight></codeline>
+<codeline lineno="282"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"></highlight></codeline>
+<codeline lineno="284"><highlight class="normal"></highlight></codeline>
+<codeline lineno="285" refid="lualib_8h_1ae1247f71bc4b3f3be7da9c9d5c7668b1" refkind="member"><highlight class="normal"><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lutf8lib_8c_1ae1247f71bc4b3f3be7da9c9d5c7668b1" kindref="member">luaopen_utf8</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><ref refid="lauxlib_8h_1a5088ff720ec66200d83eb78467b77239" kindref="member">luaL_newlib</ref>(L,<sp/>funcs);</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><ref refid="lapi_8c_1a01ac82fa494af5e7c3e10c87a8052cf7" kindref="member">lua_pushlstring</ref>(L,<sp/><ref refid="lutf8lib_8c_1a2cf7ee81d838fa055a20870d91f8ab81" kindref="member">UTF8PATT</ref>,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="lutf8lib_8c_1a2cf7ee81d838fa055a20870d91f8ab81" kindref="member">UTF8PATT</ref>)/</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">char</highlight><highlight class="normal">)<sp/>-<sp/>1);</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><ref refid="lapi_8c_1a3f2f542ee6728d82e51b1c302f9606df" kindref="member">lua_setfield</ref>(L,<sp/>-2,<sp/></highlight><highlight class="stringliteral">&quot;charpattern&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="290"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"></highlight></codeline>
+<codeline lineno="292"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lutf8lib.c"/>
+  </compounddef>
+</doxygen>

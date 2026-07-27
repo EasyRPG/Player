@@ -193,3 +193,4 @@ inline void DrawableList::Draw(Bitmap& dst) {
 }
 
 #endif
+

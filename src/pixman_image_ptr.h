@@ -144,3 +144,4 @@ inline void PixmanImagePtr::reset(pixman_image_t* img) noexcept {
 }
 
 #endif
+

@@ -229,3 +229,4 @@ inline void Window_Message::SetMaxLinesPerPage(int lines) {
 }
 
 #endif
+

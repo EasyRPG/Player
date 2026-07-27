@@ -1,0 +1,404 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_sprite___battler" kind="class" language="C++" prot="public">
+    <compoundname>Sprite_Battler</compoundname>
+    <basecompoundref refid="class_sprite" prot="public" virt="non-virtual">Sprite</basecompoundref>
+    <derivedcompoundref refid="class_sprite___actor" prot="public" virt="non-virtual">Sprite_Actor</derivedcompoundref>
+    <derivedcompoundref refid="class_sprite___enemy" prot="public" virt="non-virtual">Sprite_Enemy</derivedcompoundref>
+    <includes refid="sprite__battler_8h" local="no">sprite_battler.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100" prot="public" static="no" strong="no">
+        <type></type>
+        <name>FixedFacing</name>
+        <qualifiedname>Sprite_Battler::FixedFacing</qualifiedname>
+        <enumvalue id="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100a4de921bd4ae612dae74340a23896153c" prot="public">
+          <name>Disabled</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100adcf24fd0d84e2081d39c1dae389bb99d" prot="public">
+          <name>AlwaysFlipped</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100a4e3ad56006f393cd0caabfd0705364c9" prot="public">
+          <name>NeverFlipped</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_battler.h" line="34" column="1" bodyfile="sprite_battler.h" bodystart="34" bodyend="38"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_sprite___battler_1aefecefca702c55e25357a862fb0f81a7" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+        <definition>Game_Battler* Sprite_Battler::battler</definition>
+        <argsstring></argsstring>
+        <name>battler</name>
+        <qualifiedname>Sprite_Battler::battler</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_battler.h" line="68" column="14" bodyfile="sprite_battler.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___battler_1a1e9fffec9533724d3b3e0db55b4b10c0" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite_Battler::battle_index</definition>
+        <argsstring></argsstring>
+        <name>battle_index</name>
+        <qualifiedname>Sprite_Battler::battle_index</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_battler.h" line="69" column="5" bodyfile="sprite_battler.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___battler_1a6f5a019ba3025ed5deeea396c7fb1b63" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100" kindref="member">FixedFacing</ref></type>
+        <definition>FixedFacing Sprite_Battler::fixed_facing</definition>
+        <argsstring></argsstring>
+        <name>fixed_facing</name>
+        <qualifiedname>Sprite_Battler::fixed_facing</qualifiedname>
+        <initializer>= <ref refid="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100a4de921bd4ae612dae74340a23896153c" kindref="member">Disabled</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_battler.h" line="70" column="13" bodyfile="sprite_battler.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_sprite___battler_1a079962b6477cbd32e8292baf3f479338" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Sprite_Battler::Sprite_Battler</definition>
+        <argsstring>(Game_Battler *battler, int battle_index)</argsstring>
+        <name>Sprite_Battler</name>
+        <qualifiedname>Sprite_Battler::Sprite_Battler</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>battler</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>battle_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>battler</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>game battler to display </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>battle_index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>battle index for Z ordering </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_battler.h" line="45" column="1" bodyfile="sprite_battler.cpp" bodystart="28" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___battler_1aab1830d72b0f149998831d8a922dd68b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Sprite_Battler::~Sprite_Battler</definition>
+        <argsstring>() override</argsstring>
+        <name>~Sprite_Battler</name>
+        <qualifiedname>Sprite_Battler::~Sprite_Battler</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_battler.h" line="47" column="1" bodyfile="sprite_battler.cpp" bodystart="32" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___battler_1aec293bc76c0124ec4c102db31b4447bc" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+        <definition>Game_Battler * Sprite_Battler::GetBattler</definition>
+        <argsstring>() const</argsstring>
+        <name>GetBattler</name>
+        <qualifiedname>Sprite_Battler::GetBattler</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_battler.h" line="49" column="14" bodyfile="sprite_battler.h" bodystart="73" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___battler_1a878c5e04cc96c771bb9430e4dac9e2a7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Battler::SetBattler</definition>
+        <argsstring>(Game_Battler *new_battler)</argsstring>
+        <name>SetBattler</name>
+        <qualifiedname>Sprite_Battler::SetBattler</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>new_battler</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_battler.h" line="51" column="6" bodyfile="sprite_battler.h" bodystart="77" bodyend="79"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___battler_1a4ef70833dc352d79533bdd1eac71ac08" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Battler::ResetFixedFacingDirection</definition>
+        <argsstring>()</argsstring>
+        <name>ResetFixedFacingDirection</name>
+        <qualifiedname>Sprite_Battler::ResetFixedFacingDirection</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_battler.h" line="53" column="6" bodyfile="sprite_battler.h" bodystart="81" bodyend="83"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___battler_1ac38cd5f01626278780bbe848d6c9b69f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100" kindref="member">FixedFacing</ref></type>
+        <definition>Sprite_Battler::FixedFacing Sprite_Battler::GetFixedFacing</definition>
+        <argsstring>() const</argsstring>
+        <name>GetFixedFacing</name>
+        <qualifiedname>Sprite_Battler::GetFixedFacing</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_battler.h" line="55" column="13" bodyfile="sprite_battler.h" bodystart="98" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___battler_1a661a77fe65c8a70060564d723101a097" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Battler::SetFixedFlipX</definition>
+        <argsstring>()</argsstring>
+        <name>SetFixedFlipX</name>
+        <qualifiedname>Sprite_Battler::SetFixedFlipX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the sprite flip when fixed facing direction is enabled. Otherwise does nothing.. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_battler.h" line="60" column="6" bodyfile="sprite_battler.h" bodystart="85" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___battler_1aa1ba47b22d364377fb41ac0a425b5bf2" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Sprite_Battler::ResetZ</definition>
+        <argsstring>()</argsstring>
+        <name>ResetZ</name>
+        <qualifiedname>Sprite_Battler::ResetZ</qualifiedname>
+        <reimplementedby refid="class_sprite___actor_1aefd28d7934c2548c84183ef24f1b3798">ResetZ</reimplementedby>
+        <reimplementedby refid="class_sprite___enemy_1adc563c36aeaebad3e4962ae1829d1189">ResetZ</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Recompute the Z value for the sprite from it&apos;s Y coordinate. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_battler.h" line="65" column="14" bodyfile="sprite_battler.cpp" bodystart="35" bodyend="55"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_sprite___battler" kindref="compound">Sprite_Battler</ref> class, used for battle sprites </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="2">
+        <label>Sprite</label>
+        <link refid="class_sprite"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Sprite_Actor</label>
+        <link refid="class_sprite___actor"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Sprite_Battler</label>
+        <link refid="class_sprite___battler"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Sprite_Enemy</label>
+        <link refid="class_sprite___enemy"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="4">
+        <label>Game_Battler</label>
+        <link refid="class_game___battler"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>shake</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>flash</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Game_Battler::FlashData</label>
+        <link refid="struct_game___battler_1_1_flash_data"/>
+      </node>
+      <node id="6">
+        <label>Game_Battler::ShakeData</label>
+        <link refid="struct_game___battler_1_1_shake_data"/>
+      </node>
+      <node id="5">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="2">
+        <label>Sprite</label>
+        <link refid="class_sprite"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Sprite_Battler</label>
+        <link refid="class_sprite___battler"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>battler</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="sprite_battler.h" line="32" column="1" bodyfile="sprite_battler.h" bodystart="32" bodyend="71"/>
+    <listofallmembers>
+      <member refid="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100adcf24fd0d84e2081d39c1dae389bb99d" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>AlwaysFlipped</name></member>
+      <member refid="class_sprite___battler_1a1e9fffec9533724d3b3e0db55b4b10c0" prot="protected" virt="non-virtual"><scope>Sprite_Battler</scope><name>battle_index</name></member>
+      <member refid="class_sprite___battler_1aefecefca702c55e25357a862fb0f81a7" prot="protected" virt="non-virtual"><scope>Sprite_Battler</scope><name>battler</name></member>
+      <member refid="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100a4de921bd4ae612dae74340a23896153c" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>Disabled</name></member>
+      <member refid="class_sprite_1a0a4a3bd44c2556cbbe47b4480fae2a5b" prot="public" virt="virtual"><scope>Sprite_Battler</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>Drawable</name></member>
+      <member refid="class_sprite___battler_1a6f5a019ba3025ed5deeea396c7fb1b63" prot="protected" virt="non-virtual"><scope>Sprite_Battler</scope><name>fixed_facing</name></member>
+      <member refid="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>FixedFacing</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>Flags</name></member>
+      <member refid="class_sprite_1ade47ec9b2fc6b79921a978ac85508eb4" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetAngle</name></member>
+      <member refid="class_sprite___battler_1aec293bc76c0124ec4c102db31b4447bc" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetBattler</name></member>
+      <member refid="class_sprite_1a8692649cce1320c23d7216207805b990" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetBitmap</name></member>
+      <member refid="class_sprite_1aa34fbb968bfb9441bca6a7be8a1e9629" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetBitmap</name></member>
+      <member refid="class_sprite_1a699b7b199c7e2ea838878d9058401911" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetBlendColor</name></member>
+      <member refid="class_sprite_1ae5eb51cb5b55c057cbcafe69d13929a6" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetBlendType</name></member>
+      <member refid="class_sprite_1a9a5a480bc86ea9712a94303a53082da3" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetBushDepth</name></member>
+      <member refid="class_sprite___battler_1ac38cd5f01626278780bbe848d6c9b69f" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetFixedFacing</name></member>
+      <member refid="class_sprite_1a120a7dccaeea0d7fd7bac4f87b4b9d00" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetFlipX</name></member>
+      <member refid="class_sprite_1a7217243249b11d9046369cd3f0141adb" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetFlipY</name></member>
+      <member refid="class_sprite_1ab10bdecf4bf20472b53a3102315180c2" prot="public" virt="virtual"><scope>Sprite_Battler</scope><name>GetHeight</name></member>
+      <member refid="class_sprite_1ae6b8f3dd521db97853b3f2719e298db5" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetOpacity</name></member>
+      <member refid="class_sprite_1aa5c54c0b59a4f4247157e8446d588645" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetOx</name></member>
+      <member refid="class_sprite_1a8acf5af95db9d7f29958277c2625b8c7" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetOy</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetRenderOy</name></member>
+      <member refid="class_sprite_1ac50818cd2774516c70f2583d54845f98" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetSrcRect</name></member>
+      <member refid="class_sprite_1af315f162b8f1d0374d2bb4788f15eb59" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetTone</name></member>
+      <member refid="class_sprite_1add7a9fa3823099c15d04bd98764c00b8" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetWaverDepth</name></member>
+      <member refid="class_sprite_1a5781eeeb12fd97b447809efd0f14afea" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetWaverPhase</name></member>
+      <member refid="class_sprite_1a190fdb389450b2a425d3b7256b10b041" prot="public" virt="virtual"><scope>Sprite_Battler</scope><name>GetWidth</name></member>
+      <member refid="class_sprite_1aa87fb1678e6d814923b390085c8b47ca" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetX</name></member>
+      <member refid="class_sprite_1af3bb2ded3b6d29905c717031e8e873e4" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetY</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetZ</name></member>
+      <member refid="class_sprite_1afdc1630a767fef01cb29f81983a25825" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetZoomX</name></member>
+      <member refid="class_sprite_1a7fc9c4d33c7fade504f93a86c34a2b66" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>GetZoomY</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>IsGlobal</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>IsVisible</name></member>
+      <member refid="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100a4e3ad56006f393cd0caabfd0705364c9" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>NeverFlipped</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>operator=</name></member>
+      <member refid="class_sprite___battler_1a4ef70833dc352d79533bdd1eac71ac08" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>ResetFixedFacingDirection</name></member>
+      <member refid="class_sprite___battler_1aa1ba47b22d364377fb41ac0a425b5bf2" prot="public" virt="virtual"><scope>Sprite_Battler</scope><name>ResetZ</name></member>
+      <member refid="class_sprite_1ab2ac97d71f9af168477ff5114e895021" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetAngle</name></member>
+      <member refid="class_sprite___battler_1a878c5e04cc96c771bb9430e4dac9e2a7" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetBattler</name></member>
+      <member refid="class_sprite_1a0b1f8eb93adbfffb165acb30699ddd78" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetBitmap</name></member>
+      <member refid="class_sprite_1a5a80440fb552919c24e3320544554a62" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetBlendColor</name></member>
+      <member refid="class_sprite_1a662cbae14d3628d670b865157b247df1" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetBlendType</name></member>
+      <member refid="class_sprite_1a48f4b1522175b8aab5e7f2d6b11a9425" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetBushDepth</name></member>
+      <member refid="class_sprite___battler_1a661a77fe65c8a70060564d723101a097" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetFixedFlipX</name></member>
+      <member refid="class_sprite_1a88b06fec2499b21fb21445269cbee15f" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetFlashEffect</name></member>
+      <member refid="class_sprite_1a85222d16191092db3e0d731f8a78d4a8" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetFlipX</name></member>
+      <member refid="class_sprite_1a909b9d49b660fa592b0b753f602dddef" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetFlipY</name></member>
+      <member refid="class_sprite_1a00ec8dcc661ae5acea3c013dc12c07f0" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetOpacity</name></member>
+      <member refid="class_sprite_1ae2504fad70205dd8064392da7ceb4f71" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetOx</name></member>
+      <member refid="class_sprite_1a0e189abc78607a4a6e011d6e394a43d7" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetOy</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetRenderOy</name></member>
+      <member refid="class_sprite_1ae0a9b0248ce543551c1486c824b2949c" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetSpriteRect</name></member>
+      <member refid="class_sprite_1a890398eafe1a9135d7baa939842a798a" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetSrcRect</name></member>
+      <member refid="class_sprite_1a89865e8080e634db19ab6409efc0ef2c" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetTone</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetVisible</name></member>
+      <member refid="class_sprite_1a505321681169327d559b7f59146fdec9" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetWaverDepth</name></member>
+      <member refid="class_sprite_1a85f701cd0eb6033b471f84bb24f192b8" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetWaverPhase</name></member>
+      <member refid="class_sprite_1a57277e7b2c107f36f587c46e99f7a48f" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetX</name></member>
+      <member refid="class_sprite_1a0012676d8951dbf2342de94acc18eecd" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetY</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetZ</name></member>
+      <member refid="class_sprite_1a3e7151dfb8645a3fbb71395625af985c" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetZoomX</name></member>
+      <member refid="class_sprite_1aad6019d133e5abac3323d671af4ed06b" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>SetZoomY</name></member>
+      <member refid="class_sprite_1aa3a20244c338653f65beaa26d6189581" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>Sprite</name></member>
+      <member refid="class_sprite___battler_1a079962b6477cbd32e8292baf3f479338" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>Sprite_Battler</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>Sprite_Battler</scope><name>~Drawable</name></member>
+      <member refid="class_sprite___battler_1aab1830d72b0f149998831d8a922dd68b" prot="public" virt="non-virtual"><scope>Sprite_Battler</scope><name>~Sprite_Battler</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

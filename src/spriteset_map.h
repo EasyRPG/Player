@@ -144,3 +144,4 @@ inline int Spriteset_Map::GetRenderOy() const {
 	return map_render_oy;
 }
 #endif
+

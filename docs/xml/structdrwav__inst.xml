@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdrwav__inst" kind="struct" language="C++" prot="public">
+    <compoundname>drwav_inst</compoundname>
+    <includes refid="dr__wav_8h" local="no">dr_wav.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdrwav__inst_1a558633746447f4612f3866b9300a6b50" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ab6e6439d0c4531e459e2a50d2d5a8077" kindref="member">drwav_int8</ref></type>
+        <definition>drwav_int8 drwav_inst::midiUnityNote</definition>
+        <argsstring></argsstring>
+        <name>midiUnityNote</name>
+        <qualifiedname>drwav_inst::midiUnityNote</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="608" column="16" bodyfile="external/dr_wav.h" bodystart="608" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__inst_1ad107ea055317cf3e3262778efc9c3888" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ab6e6439d0c4531e459e2a50d2d5a8077" kindref="member">drwav_int8</ref></type>
+        <definition>drwav_int8 drwav_inst::fineTuneCents</definition>
+        <argsstring></argsstring>
+        <name>fineTuneCents</name>
+        <qualifiedname>drwav_inst::fineTuneCents</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="609" column="16" bodyfile="external/dr_wav.h" bodystart="609" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__inst_1ac6166bf00384637a80a15bfc0dd89c2b" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ab6e6439d0c4531e459e2a50d2d5a8077" kindref="member">drwav_int8</ref></type>
+        <definition>drwav_int8 drwav_inst::gainDecibels</definition>
+        <argsstring></argsstring>
+        <name>gainDecibels</name>
+        <qualifiedname>drwav_inst::gainDecibels</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="610" column="16" bodyfile="external/dr_wav.h" bodystart="610" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__inst_1a54aaa2a24d32e63576ae40afe1d27f15" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ab6e6439d0c4531e459e2a50d2d5a8077" kindref="member">drwav_int8</ref></type>
+        <definition>drwav_int8 drwav_inst::lowNote</definition>
+        <argsstring></argsstring>
+        <name>lowNote</name>
+        <qualifiedname>drwav_inst::lowNote</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="611" column="16" bodyfile="external/dr_wav.h" bodystart="611" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__inst_1aa9d40d9809588bf90c4908b4e9b72d39" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ab6e6439d0c4531e459e2a50d2d5a8077" kindref="member">drwav_int8</ref></type>
+        <definition>drwav_int8 drwav_inst::highNote</definition>
+        <argsstring></argsstring>
+        <name>highNote</name>
+        <qualifiedname>drwav_inst::highNote</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="612" column="16" bodyfile="external/dr_wav.h" bodystart="612" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__inst_1aca8da9e44d1d6b1e63afab279654e99d" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ab6e6439d0c4531e459e2a50d2d5a8077" kindref="member">drwav_int8</ref></type>
+        <definition>drwav_int8 drwav_inst::lowVelocity</definition>
+        <argsstring></argsstring>
+        <name>lowVelocity</name>
+        <qualifiedname>drwav_inst::lowVelocity</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="613" column="16" bodyfile="external/dr_wav.h" bodystart="613" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__inst_1a1a63e7c992f9d145dd985dfa54e7827b" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ab6e6439d0c4531e459e2a50d2d5a8077" kindref="member">drwav_int8</ref></type>
+        <definition>drwav_int8 drwav_inst::highVelocity</definition>
+        <argsstring></argsstring>
+        <name>highVelocity</name>
+        <qualifiedname>drwav_inst::highVelocity</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="614" column="16" bodyfile="external/dr_wav.h" bodystart="614" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="external/dr_wav.h" line="606" column="1" bodyfile="external/dr_wav.h" bodystart="607" bodyend="615"/>
+    <listofallmembers>
+      <member refid="structdrwav__inst_1ad107ea055317cf3e3262778efc9c3888" prot="public" virt="non-virtual"><scope>drwav_inst</scope><name>fineTuneCents</name></member>
+      <member refid="structdrwav__inst_1ac6166bf00384637a80a15bfc0dd89c2b" prot="public" virt="non-virtual"><scope>drwav_inst</scope><name>gainDecibels</name></member>
+      <member refid="structdrwav__inst_1aa9d40d9809588bf90c4908b4e9b72d39" prot="public" virt="non-virtual"><scope>drwav_inst</scope><name>highNote</name></member>
+      <member refid="structdrwav__inst_1a1a63e7c992f9d145dd985dfa54e7827b" prot="public" virt="non-virtual"><scope>drwav_inst</scope><name>highVelocity</name></member>
+      <member refid="structdrwav__inst_1a54aaa2a24d32e63576ae40afe1d27f15" prot="public" virt="non-virtual"><scope>drwav_inst</scope><name>lowNote</name></member>
+      <member refid="structdrwav__inst_1aca8da9e44d1d6b1e63afab279654e99d" prot="public" virt="non-virtual"><scope>drwav_inst</scope><name>lowVelocity</name></member>
+      <member refid="structdrwav__inst_1a558633746447f4612f3866b9300a6b50" prot="public" virt="non-virtual"><scope>drwav_inst</scope><name>midiUnityNote</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

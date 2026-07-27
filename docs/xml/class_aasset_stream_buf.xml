@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_aasset_stream_buf" kind="class" language="C++" prot="public">
+    <compoundname>AassetStreamBuf</compoundname>
+    <basecompoundref refid="class_filesystem___stream_1_1_input_memory_stream_buf_view" prot="public" virt="non-virtual">Filesystem_Stream::InputMemoryStreamBufView</basecompoundref>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_aasset_stream_buf_1a0a857bad0ce575194c3936faa496e056" prot="private" static="no" mutable="no">
+        <type>AAsset *</type>
+        <definition>AAsset* AassetStreamBuf::asset</definition>
+        <argsstring></argsstring>
+        <name>asset</name>
+        <qualifiedname>AassetStreamBuf::asset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/filesystem_apk.cpp" line="82" column="8" bodyfile="platform/android/filesystem_apk.cpp" bodystart="82" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_aasset_stream_buf_1a484cda9be552117aba2ff7315d4707f9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>AassetStreamBuf::AassetStreamBuf</definition>
+        <argsstring>(AAsset *asset, Span&lt; uint8_t &gt; buffer)</argsstring>
+        <name>AassetStreamBuf</name>
+        <qualifiedname>AassetStreamBuf::AassetStreamBuf</qualifiedname>
+        <param>
+          <type>AAsset *</type>
+          <declname>asset</declname>
+        </param>
+        <param>
+          <type>Span&lt; uint8_t &gt;</type>
+          <declname>buffer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/filesystem_apk.cpp" line="71" column="1" bodyfile="platform/android/filesystem_apk.cpp" bodystart="71" bodyend="73"/>
+      </memberdef>
+      <memberdef kind="function" id="class_aasset_stream_buf_1aef8eff2cdfb7c7aae9ab8f4d7ca4cb77" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>AassetStreamBuf::~AassetStreamBuf</definition>
+        <argsstring>() override</argsstring>
+        <name>~AassetStreamBuf</name>
+        <qualifiedname>AassetStreamBuf::~AassetStreamBuf</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/filesystem_apk.cpp" line="75" column="1" bodyfile="platform/android/filesystem_apk.cpp" bodystart="75" bodyend="79"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>AassetStreamBuf</label>
+        <link refid="class_aasset_stream_buf"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Filesystem_Stream::InputMemoryStreamBufView</label>
+        <link refid="class_filesystem___stream_1_1_input_memory_stream_buf_view"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>std::streambuf</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>AassetStreamBuf</label>
+        <link refid="class_aasset_stream_buf"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Filesystem_Stream::InputMemoryStreamBufView</label>
+        <link refid="class_filesystem___stream_1_1_input_memory_stream_buf_view"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>std::streambuf</label>
+      </node>
+    </collaborationgraph>
+    <location file="platform/android/filesystem_apk.cpp" line="69" column="1" bodyfile="platform/android/filesystem_apk.cpp" bodystart="69" bodyend="83"/>
+    <listofallmembers>
+      <member refid="class_aasset_stream_buf_1a484cda9be552117aba2ff7315d4707f9" prot="public" virt="non-virtual"><scope>AassetStreamBuf</scope><name>AassetStreamBuf</name></member>
+      <member refid="class_aasset_stream_buf_1a0a857bad0ce575194c3936faa496e056" prot="private" virt="non-virtual"><scope>AassetStreamBuf</scope><name>asset</name></member>
+      <member refid="class_filesystem___stream_1_1_input_memory_stream_buf_view_1a2a117e6c06b99ed420a6941b4a857178" prot="public" virt="non-virtual"><scope>AassetStreamBuf</scope><name>InputMemoryStreamBufView</name></member>
+      <member refid="class_filesystem___stream_1_1_input_memory_stream_buf_view_1aad69f0efe0804d09b673acf3c733eb35" prot="public" virt="non-virtual"><scope>AassetStreamBuf</scope><name>InputMemoryStreamBufView</name></member>
+      <member refid="class_filesystem___stream_1_1_input_memory_stream_buf_view_1aab2a4fb7170ec064e1a01272cbd94a2a" prot="public" virt="non-virtual"><scope>AassetStreamBuf</scope><name>operator=</name></member>
+      <member refid="class_filesystem___stream_1_1_input_memory_stream_buf_view_1a5bea50d642c740df2477f3325636e426" prot="protected" virt="non-virtual"><scope>AassetStreamBuf</scope><name>seekoff</name></member>
+      <member refid="class_filesystem___stream_1_1_input_memory_stream_buf_view_1a4682f4f7b3b67acfe6f8cedaf156de9e" prot="protected" virt="non-virtual"><scope>AassetStreamBuf</scope><name>seekpos</name></member>
+      <member refid="class_aasset_stream_buf_1aef8eff2cdfb7c7aae9ab8f4d7ca4cb77" prot="public" virt="non-virtual"><scope>AassetStreamBuf</scope><name>~AassetStreamBuf</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

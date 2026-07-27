@@ -1,0 +1,1207 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___screen" kind="class" language="C++" prot="public">
+    <compoundname>Game_Screen</compoundname>
+    <includes refid="game__screen_8h" local="no">game_screen.h</includes>
+    <innerclass refid="struct_game___screen_1_1_particle" prot="public">Game_Screen::Particle</innerclass>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_game___screen_1ac0c7d104854f1aef32a821605b58b411" prot="public" static="no" strong="no">
+        <type></type>
+        <name>WeatherType</name>
+        <qualifiedname>Game_Screen::WeatherType</qualifiedname>
+        <enumvalue id="class_game___screen_1ac0c7d104854f1aef32a821605b58b411a563b10ab4b735b46ec83f360f606c1ca" prot="public">
+          <name>Weather_None</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___screen_1ac0c7d104854f1aef32a821605b58b411a6beae53ad9aa73db0ecb59f43581cd68" prot="public">
+          <name>Weather_Rain</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___screen_1ac0c7d104854f1aef32a821605b58b411a58fbda5b1b48eee6e838c2d40b05e2ff" prot="public">
+          <name>Weather_Snow</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___screen_1ac0c7d104854f1aef32a821605b58b411ad28ae31403759ad97b733adf840d65c8" prot="public">
+          <name>Weather_Fog</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___screen_1ac0c7d104854f1aef32a821605b58b411aeab5127282ffaeab1bc1984cc55af969" prot="public">
+          <name>Weather_Sandstorm</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="106" column="1" bodyfile="game_screen.h" bodystart="106" bodyend="112"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___screen_1a44bffbb2284f9a99658b0124c29aad5b" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_battle_animation_map" kindref="compound">BattleAnimationMap</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;BattleAnimationMap&gt; Game_Screen::animation</definition>
+        <argsstring></argsstring>
+        <name>animation</name>
+        <qualifiedname>Game_Screen::animation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="182" column="17" bodyfile="game_screen.h" bodystart="182" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___screen_1a10b751a8fd2cf7994563e0b50ea50c57" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_weather" kindref="compound">Weather</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Weather&gt; Game_Screen::weather</definition>
+        <argsstring></argsstring>
+        <name>weather</name>
+        <qualifiedname>Game_Screen::weather</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="183" column="17" bodyfile="game_screen.h" bodystart="183" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___screen_1a1676cf157de681c8b254456fbc4dc7ee" prot="private" static="no" mutable="no">
+        <type>lcf::rpg::SaveScreen</type>
+        <definition>lcf::rpg::SaveScreen Game_Screen::data</definition>
+        <argsstring></argsstring>
+        <name>data</name>
+        <qualifiedname>Game_Screen::data</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="185" column="22" bodyfile="game_screen.h" bodystart="185" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___screen_1a9ee9f354e29ac51f3998e81f1891a45f" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Screen::flash_sat</definition>
+        <argsstring></argsstring>
+        <name>flash_sat</name>
+        <qualifiedname>Game_Screen::flash_sat</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="186" column="5" bodyfile="game_screen.h" bodystart="186" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___screen_1aac9eb2d2ad32043ae3adac98cdbb9145" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Screen::flash_period</definition>
+        <argsstring></argsstring>
+        <name>flash_period</name>
+        <qualifiedname>Game_Screen::flash_period</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="187" column="5" bodyfile="game_screen.h" bodystart="187" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___screen_1a751ffc831a40a391420c30bb10322651" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Game_Screen::movie_filename</definition>
+        <argsstring></argsstring>
+        <name>movie_filename</name>
+        <qualifiedname>Game_Screen::movie_filename</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="189" column="13" bodyfile="game_screen.h" bodystart="189" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___screen_1a0a1a6eaad5390a5aceb033949d099578" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Screen::movie_pos_x</definition>
+        <argsstring></argsstring>
+        <name>movie_pos_x</name>
+        <qualifiedname>Game_Screen::movie_pos_x</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="190" column="5" bodyfile="game_screen.h" bodystart="190" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___screen_1aa328466a8fdc0881358dce60ff225983" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Screen::movie_pos_y</definition>
+        <argsstring></argsstring>
+        <name>movie_pos_y</name>
+        <qualifiedname>Game_Screen::movie_pos_y</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="191" column="5" bodyfile="game_screen.h" bodystart="191" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___screen_1a0a52b8ebf11e3c2e4b2c8e7d5081011e" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Screen::movie_res_x</definition>
+        <argsstring></argsstring>
+        <name>movie_res_x</name>
+        <qualifiedname>Game_Screen::movie_res_x</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="192" column="5" bodyfile="game_screen.h" bodystart="192" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___screen_1a94e05f5c481f2a542402936d0ea71df8" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Screen::movie_res_y</definition>
+        <argsstring></argsstring>
+        <name>movie_res_y</name>
+        <qualifiedname>Game_Screen::movie_res_y</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="193" column="5" bodyfile="game_screen.h" bodystart="193" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_game___screen_1adda04b430c427181d85bacac22a6f161" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="struct_game___screen_1_1_particle" kindref="compound">Particle</ref> &gt;</type>
+        <definition>std::vector&lt;Particle&gt; Game_Screen::particles</definition>
+        <argsstring></argsstring>
+        <name>particles</name>
+        <qualifiedname>Game_Screen::particles</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="196" column="13" bodyfile="game_screen.h" bodystart="196" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___screen_1a1f0b330d71bc6f1f8b03fdfee1b4761d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Screen::Game_Screen</definition>
+        <argsstring>()</argsstring>
+        <name>Game_Screen</name>
+        <qualifiedname>Game_Screen::Game_Screen</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="41" column="1" bodyfile="game_screen.cpp" bodystart="39" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a602c896f4f18d2993bdb214c73c00b74" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Screen::~Game_Screen</definition>
+        <argsstring>()</argsstring>
+        <name>~Game_Screen</name>
+        <qualifiedname>Game_Screen::~Game_Screen</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="42" column="1" bodyfile="game_screen.cpp" bodystart="43" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a0378d6a4a0e6376f4dec7cb230c6dd75" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::InitGraphics</definition>
+        <argsstring>()</argsstring>
+        <name>InitGraphics</name>
+        <qualifiedname>Game_Screen::InitGraphics</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="44" column="6" bodyfile="game_screen.cpp" bodystart="53" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a64e930e08fbb68f5ad21848cc67e32eb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::SetSaveData</definition>
+        <argsstring>(lcf::rpg::SaveScreen screen)</argsstring>
+        <name>SetSaveData</name>
+        <qualifiedname>Game_Screen::SetSaveData</qualifiedname>
+        <param>
+          <type>lcf::rpg::SaveScreen</type>
+          <declname>screen</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="46" column="6" bodyfile="game_screen.cpp" bodystart="46" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1ace56ec244fd87f5f004f19de379f6fcd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const lcf::rpg::SaveScreen &amp;</type>
+        <definition>const lcf::rpg::SaveScreen &amp; Game_Screen::GetSaveData</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSaveData</name>
+        <qualifiedname>Game_Screen::GetSaveData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="47" column="28" bodyfile="game_screen.h" bodystart="267" bodyend="269"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1ac0b903998a8ec854491a698d1986d3a6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::TintScreen</definition>
+        <argsstring>(int r, int g, int b, int s, int tenths)</argsstring>
+        <name>TintScreen</name>
+        <qualifiedname>Game_Screen::TintScreen</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>tenths</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="49" column="6" bodyfile="game_screen.cpp" bodystart="94" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a09a1c9d01467d74c89dd94240ff8926d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::FlashOnce</definition>
+        <argsstring>(int r, int g, int b, int s, int frames)</argsstring>
+        <name>FlashOnce</name>
+        <qualifiedname>Game_Screen::FlashOnce</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>frames</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="50" column="6" bodyfile="game_screen.cpp" bodystart="110" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a7e8536b4c1f4aefb5a839e65c8c73ada" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::FlashBegin</definition>
+        <argsstring>(int r, int g, int b, int s, int frames)</argsstring>
+        <name>FlashBegin</name>
+        <qualifiedname>Game_Screen::FlashBegin</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>frames</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="51" column="6" bodyfile="game_screen.cpp" bodystart="121" bodyend="126"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a36dd9279a8c7cf2e71e338cb737bdba8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::FlashEnd</definition>
+        <argsstring>()</argsstring>
+        <name>FlashEnd</name>
+        <qualifiedname>Game_Screen::FlashEnd</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="52" column="6" bodyfile="game_screen.cpp" bodystart="128" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1ac965b22ffba8544d599ffbc92a574225" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::FlashMapStepDamage</definition>
+        <argsstring>()</argsstring>
+        <name>FlashMapStepDamage</name>
+        <qualifiedname>Game_Screen::FlashMapStepDamage</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="53" column="6" bodyfile="game_screen.cpp" bodystart="135" bodyend="137"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1aa44ce0b88efaa41fa781be4d730f1772" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::ShakeOnce</definition>
+        <argsstring>(int power, int speed, int tenths)</argsstring>
+        <name>ShakeOnce</name>
+        <qualifiedname>Game_Screen::ShakeOnce</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>power</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>speed</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>tenths</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="54" column="6" bodyfile="game_screen.cpp" bodystart="139" bodyend="146"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a1b0a2983e2204e18d094cc123eeb4160" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::ShakeBegin</definition>
+        <argsstring>(int power, int speed)</argsstring>
+        <name>ShakeBegin</name>
+        <qualifiedname>Game_Screen::ShakeBegin</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>power</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>speed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="55" column="6" bodyfile="game_screen.cpp" bodystart="148" bodyend="155"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a52c1a92eb6198c6d63880fb3636bc552" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::ShakeEnd</definition>
+        <argsstring>()</argsstring>
+        <name>ShakeEnd</name>
+        <qualifiedname>Game_Screen::ShakeEnd</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="56" column="6" bodyfile="game_screen.cpp" bodystart="157" bodyend="161"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a420554ca25a5e87cb07c4b187638c296" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::SetWeatherEffect</definition>
+        <argsstring>(int type, int strength)</argsstring>
+        <name>SetWeatherEffect</name>
+        <qualifiedname>Game_Screen::SetWeatherEffect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>strength</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="57" column="6" bodyfile="game_screen.cpp" bodystart="163" bodyend="172"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a498671c3b7180439b60d076c216e220d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::PlayMovie</definition>
+        <argsstring>(std::string filename, int pos_x, int pos_y, int res_x, int res_y)</argsstring>
+        <name>PlayMovie</name>
+        <qualifiedname>Game_Screen::PlayMovie</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>pos_x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>pos_y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>res_x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>res_y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="58" column="6" bodyfile="game_screen.cpp" bodystart="174" bodyend="181"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1ac3aab72ab24d0b74bab8c9fc8ee3eb2e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>Game_Screen::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="60" column="6" bodyfile="game_screen.cpp" bodystart="353" bodyend="358"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a3d26d52e2cda3471f32dc4e6dcdaebc5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+        <definition>Tone Game_Screen::GetTone</definition>
+        <argsstring>()</argsstring>
+        <name>GetTone</name>
+        <qualifiedname>Game_Screen::GetTone</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the current screen tone.</para>
+<para><simplesect kind="return"><para><ref refid="class_tone" kindref="compound">Tone</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="67" column="6" bodyfile="game_screen.h" bodystart="240" bodyend="245"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1af071c026db0e8a7822b3867092c38d28" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color Game_Screen::GetFlashColor</definition>
+        <argsstring>() const</argsstring>
+        <name>GetFlashColor</name>
+        <qualifiedname>Game_Screen::GetFlashColor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the current flash color.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>current_level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current strength adjusted to 0-255 </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="namespace_flash" kindref="compound">Flash</ref> color </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="75" column="7" bodyfile="game_screen.h" bodystart="247" bodyend="249"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1aa8cb52607966188eed663e77e6abbb8f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Screen::GetWeatherType</definition>
+        <argsstring>()</argsstring>
+        <name>GetWeatherType</name>
+        <qualifiedname>Game_Screen::GetWeatherType</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the weather type</para>
+<para><simplesect kind="return"><para><ref refid="class_weather" kindref="compound">Weather</ref> type </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="82" column="5" bodyfile="game_screen.h" bodystart="251" bodyend="253"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1ad6eee5a0ad843a13716b4598b8fcd149" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Screen::GetWeatherStrength</definition>
+        <argsstring>()</argsstring>
+        <name>GetWeatherStrength</name>
+        <qualifiedname>Game_Screen::GetWeatherStrength</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns weather effect strength from (0 low to 2 high)</para>
+<para><simplesect kind="return"><para><ref refid="class_weather" kindref="compound">Weather</ref> effect strength </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="89" column="5" bodyfile="game_screen.h" bodystart="255" bodyend="257"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1af1948b71321be6ca345a2ccff9202098" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::vector&lt; <ref refid="struct_game___screen_1_1_particle" kindref="compound">Particle</ref> &gt; &amp;</type>
+        <definition>const std::vector&lt; Game_Screen::Particle &gt; &amp; Game_Screen::GetParticles</definition>
+        <argsstring>()</argsstring>
+        <name>GetParticles</name>
+        <qualifiedname>Game_Screen::GetParticles</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="104" column="19" bodyfile="game_screen.h" bodystart="259" bodyend="261"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1adf8eb979374efb2381636996a5c89e5e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Screen::ShowBattleAnimation</definition>
+        <argsstring>(int animation_id, int target_id, bool global, int start_frame=0)</argsstring>
+        <name>ShowBattleAnimation</name>
+        <qualifiedname>Game_Screen::ShowBattleAnimation</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>animation_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>target_id</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>global</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>start_frame</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Plays the given animation against a character.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>animation_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the animation ID </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the ID of the targeted character </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>global</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>whether to &quot;show on the entire map&quot; </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>start_frame</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which frame to start on.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the number of frames the animation will run. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="124" column="5" bodyfile="game_screen.cpp" bodystart="360" bodyend="387"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a9daa02775a74ad0e32e715c6ea90e468" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::UpdateBattleAnimation</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateBattleAnimation</name>
+        <qualifiedname>Game_Screen::UpdateBattleAnimation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Update the currently running battle animation by 1 frame. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="129" column="6" bodyfile="game_screen.cpp" bodystart="389" bodyend="402"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a8b62e7ec858e12f1a8b4c00ed90d2ffc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::CancelBattleAnimation</definition>
+        <argsstring>()</argsstring>
+        <name>CancelBattleAnimation</name>
+        <qualifiedname>Game_Screen::CancelBattleAnimation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Cancel the currently running battle animation. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="134" column="6" bodyfile="game_screen.cpp" bodystart="404" bodyend="409"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1aedc14a8f40d3ffa791f3b9f4fa07379d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Screen::IsBattleAnimationWaiting</definition>
+        <argsstring>()</argsstring>
+        <name>IsBattleAnimationWaiting</name>
+        <qualifiedname>Game_Screen::IsBattleAnimationWaiting</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Whether or not a battle animation is currently playing. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="139" column="6" bodyfile="game_screen.h" bodystart="263" bodyend="265"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a107266da35df563c22f586c6f9ce23ca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::UpdateUnderlyingEventReferences</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateUnderlyingEventReferences</name>
+        <qualifiedname>Game_Screen::UpdateUnderlyingEventReferences</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the event reference when the event vector was altered e.g. by SpawnMapEvent. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="144" column="6" bodyfile="game_screen.cpp" bodystart="411" bodyend="423"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a6804de01061212ce74d87c9ca6c2d45a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Screen::GetPanX</definition>
+        <argsstring>() const</argsstring>
+        <name>GetPanX</name>
+        <qualifiedname>Game_Screen::GetPanX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>current pan_x offset for screen effects in 1/16 pixels </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="147" column="5" bodyfile="game_screen.h" bodystart="212" bodyend="214"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1aa0c31e2700efd4cd5b5ff3819d8fc78f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Screen::GetPanY</definition>
+        <argsstring>() const</argsstring>
+        <name>GetPanY</name>
+        <qualifiedname>Game_Screen::GetPanY</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>current pan_y offset for screen effects in 1/16 pixels </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="150" column="5" bodyfile="game_screen.h" bodystart="216" bodyend="218"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a7f5b180efae74bbb70abfe9fabac9bd6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect Game_Screen::GetScreenEffectsRect</definition>
+        <argsstring>() const</argsstring>
+        <name>GetScreenEffectsRect</name>
+        <qualifiedname>Game_Screen::GetScreenEffectsRect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>a <ref refid="class_rect" kindref="compound">Rect</ref> describing position and size of screen effects in pixels </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="159" column="6" bodyfile="game_screen.h" bodystart="228" bodyend="230"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1ae02f05f2d8a2488b5e5d151bcd9ba77c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Screen::GetShakeOffsetX</definition>
+        <argsstring>() const</argsstring>
+        <name>GetShakeOffsetX</name>
+        <qualifiedname>Game_Screen::GetShakeOffsetX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Return screen shake X offset </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="162" column="5" bodyfile="game_screen.h" bodystart="232" bodyend="234"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1abd40c9f092d7f8c18a0fb658df14adcc" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Screen::GetShakeOffsetY</definition>
+        <argsstring>() const</argsstring>
+        <name>GetShakeOffsetY</name>
+        <qualifiedname>Game_Screen::GetShakeOffsetY</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Return screen shake Y offset </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="165" column="5" bodyfile="game_screen.h" bodystart="236" bodyend="238"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1aa69413f82fa1693227e8d721fe3edbc8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::OnMapChange</definition>
+        <argsstring>()</argsstring>
+        <name>OnMapChange</name>
+        <qualifiedname>Game_Screen::OnMapChange</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>To be called when the map changes </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="168" column="6" bodyfile="game_screen.cpp" bodystart="65" bodyend="92"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a4ade1da1759ce893cf93227d5481403e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::OnBattleEnd</definition>
+        <argsstring>()</argsstring>
+        <name>OnBattleEnd</name>
+        <qualifiedname>Game_Screen::OnBattleEnd</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>To be called when a battle ends </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="171" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a1a06a71490540d7e561f7c13c9b16cca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::OnMapScrolled</definition>
+        <argsstring>(int dx, int dy)</argsstring>
+        <name>OnMapScrolled</name>
+        <qualifiedname>Game_Screen::OnMapScrolled</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>dx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called when map scrolls</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x distance in 1/16th pixels </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y distance in 1/16th pixels </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="179" column="6" bodyfile="game_screen.cpp" bodystart="298" bodyend="304"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_game___screen_1a54a77c25313329241f9369b60e123263" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Screen::GetPanLimitX</definition>
+        <argsstring>()</argsstring>
+        <name>GetPanLimitX</name>
+        <qualifiedname>Game_Screen::GetPanLimitX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>maximum pan_x offset for screen effects in 1/16 pixels </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="153" column="12" bodyfile="game_screen.h" bodystart="220" bodyend="222"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1abe55ce217db6d15a4fd4e7d6720fb2cb" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Screen::GetPanLimitY</definition>
+        <argsstring>()</argsstring>
+        <name>GetPanLimitY</name>
+        <qualifiedname>Game_Screen::GetPanLimitY</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>maximum pan_y offset for screen effects in 1/16 pixels </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="156" column="12" bodyfile="game_screen.h" bodystart="224" bodyend="226"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_game___screen_1ae4de77c15476c2d53ab02926d3d5b483" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::StopWeather</definition>
+        <argsstring>()</argsstring>
+        <name>StopWeather</name>
+        <qualifiedname>Game_Screen::StopWeather</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="198" column="6" bodyfile="game_screen.cpp" bodystart="188" bodyend="191"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a2988f989a85985159ca42eddc940c7e1" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::UpdateRain</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateRain</name>
+        <qualifiedname>Game_Screen::UpdateRain</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="199" column="6" bodyfile="game_screen.cpp" bodystart="226" bodyend="238"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a7c585fec4167c897792668036824f094" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::UpdateSnow</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateSnow</name>
+        <qualifiedname>Game_Screen::UpdateSnow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="200" column="6" bodyfile="game_screen.cpp" bodystart="240" bodyend="252"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1ab353901311ca0eafdcaa235fb348a2f5" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::UpdateFog</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateFog</name>
+        <qualifiedname>Game_Screen::UpdateFog</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="201" column="6" bodyfile="game_screen.cpp" bodystart="254" bodyend="257"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1aadc319778edb217d022f56b5cc436d9f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::UpdateSandstorm</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateSandstorm</name>
+        <qualifiedname>Game_Screen::UpdateSandstorm</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="202" column="6" bodyfile="game_screen.cpp" bodystart="259" bodyend="296"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a0b992bc10b809d2edc3d0117ebcc9699" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::UpdateScreenEffects</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateScreenEffects</name>
+        <qualifiedname>Game_Screen::UpdateScreenEffects</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="203" column="6" bodyfile="game_screen.cpp" bodystart="306" bodyend="326"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a716c0094e56423145e32356da0db2956" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::UpdateMovie</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateMovie</name>
+        <qualifiedname>Game_Screen::UpdateMovie</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="204" column="6" bodyfile="game_screen.cpp" bodystart="328" bodyend="332"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1acd0db0d8f9f12a93006bfe806d9bad07" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::UpdateWeather</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateWeather</name>
+        <qualifiedname>Game_Screen::UpdateWeather</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="205" column="6" bodyfile="game_screen.cpp" bodystart="334" bodyend="351"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a65d3bf3befa3dd0466920466b3f0db7a" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::UpdateFog</definition>
+        <argsstring>(int dx, int dy)</argsstring>
+        <name>UpdateFog</name>
+        <qualifiedname>Game_Screen::UpdateFog</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>dx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="206" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1a060df1401b9b3366c36138e805af33d7" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::OnWeatherChanged</definition>
+        <argsstring>()</argsstring>
+        <name>OnWeatherChanged</name>
+        <qualifiedname>Game_Screen::OnWeatherChanged</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="207" column="6" bodyfile="game_screen.cpp" bodystart="193" bodyend="201"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___screen_1aab0a59470fb6f22ad589f8ab280d82f1" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Screen::InitParticles</definition>
+        <argsstring>(int n)</argsstring>
+        <name>InitParticles</name>
+        <qualifiedname>Game_Screen::InitParticles</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="209" column="6" bodyfile="game_screen.cpp" bodystart="203" bodyend="224"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_screen.h" line="38" column="1" bodyfile="game_screen.h" bodystart="38" bodyend="210"/>
+    <listofallmembers>
+      <member refid="class_game___screen_1a44bffbb2284f9a99658b0124c29aad5b" prot="private" virt="non-virtual"><scope>Game_Screen</scope><name>animation</name></member>
+      <member refid="class_game___screen_1a8b62e7ec858e12f1a8b4c00ed90d2ffc" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>CancelBattleAnimation</name></member>
+      <member refid="class_game___screen_1a1676cf157de681c8b254456fbc4dc7ee" prot="private" virt="non-virtual"><scope>Game_Screen</scope><name>data</name></member>
+      <member refid="class_game___screen_1aac9eb2d2ad32043ae3adac98cdbb9145" prot="private" virt="non-virtual"><scope>Game_Screen</scope><name>flash_period</name></member>
+      <member refid="class_game___screen_1a9ee9f354e29ac51f3998e81f1891a45f" prot="private" virt="non-virtual"><scope>Game_Screen</scope><name>flash_sat</name></member>
+      <member refid="class_game___screen_1a7e8536b4c1f4aefb5a839e65c8c73ada" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>FlashBegin</name></member>
+      <member refid="class_game___screen_1a36dd9279a8c7cf2e71e338cb737bdba8" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>FlashEnd</name></member>
+      <member refid="class_game___screen_1ac965b22ffba8544d599ffbc92a574225" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>FlashMapStepDamage</name></member>
+      <member refid="class_game___screen_1a09a1c9d01467d74c89dd94240ff8926d" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>FlashOnce</name></member>
+      <member refid="class_game___screen_1a1f0b330d71bc6f1f8b03fdfee1b4761d" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>Game_Screen</name></member>
+      <member refid="class_game___screen_1af071c026db0e8a7822b3867092c38d28" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>GetFlashColor</name></member>
+      <member refid="class_game___screen_1a54a77c25313329241f9369b60e123263" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>GetPanLimitX</name></member>
+      <member refid="class_game___screen_1abe55ce217db6d15a4fd4e7d6720fb2cb" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>GetPanLimitY</name></member>
+      <member refid="class_game___screen_1a6804de01061212ce74d87c9ca6c2d45a" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>GetPanX</name></member>
+      <member refid="class_game___screen_1aa0c31e2700efd4cd5b5ff3819d8fc78f" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>GetPanY</name></member>
+      <member refid="class_game___screen_1af1948b71321be6ca345a2ccff9202098" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>GetParticles</name></member>
+      <member refid="class_game___screen_1ace56ec244fd87f5f004f19de379f6fcd" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>GetSaveData</name></member>
+      <member refid="class_game___screen_1a7f5b180efae74bbb70abfe9fabac9bd6" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>GetScreenEffectsRect</name></member>
+      <member refid="class_game___screen_1ae02f05f2d8a2488b5e5d151bcd9ba77c" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>GetShakeOffsetX</name></member>
+      <member refid="class_game___screen_1abd40c9f092d7f8c18a0fb658df14adcc" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>GetShakeOffsetY</name></member>
+      <member refid="class_game___screen_1a3d26d52e2cda3471f32dc4e6dcdaebc5" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>GetTone</name></member>
+      <member refid="class_game___screen_1ad6eee5a0ad843a13716b4598b8fcd149" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>GetWeatherStrength</name></member>
+      <member refid="class_game___screen_1aa8cb52607966188eed663e77e6abbb8f" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>GetWeatherType</name></member>
+      <member refid="class_game___screen_1a0378d6a4a0e6376f4dec7cb230c6dd75" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>InitGraphics</name></member>
+      <member refid="class_game___screen_1aab0a59470fb6f22ad589f8ab280d82f1" prot="protected" virt="non-virtual"><scope>Game_Screen</scope><name>InitParticles</name></member>
+      <member refid="class_game___screen_1aedc14a8f40d3ffa791f3b9f4fa07379d" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>IsBattleAnimationWaiting</name></member>
+      <member refid="class_game___screen_1a751ffc831a40a391420c30bb10322651" prot="private" virt="non-virtual"><scope>Game_Screen</scope><name>movie_filename</name></member>
+      <member refid="class_game___screen_1a0a1a6eaad5390a5aceb033949d099578" prot="private" virt="non-virtual"><scope>Game_Screen</scope><name>movie_pos_x</name></member>
+      <member refid="class_game___screen_1aa328466a8fdc0881358dce60ff225983" prot="private" virt="non-virtual"><scope>Game_Screen</scope><name>movie_pos_y</name></member>
+      <member refid="class_game___screen_1a0a52b8ebf11e3c2e4b2c8e7d5081011e" prot="private" virt="non-virtual"><scope>Game_Screen</scope><name>movie_res_x</name></member>
+      <member refid="class_game___screen_1a94e05f5c481f2a542402936d0ea71df8" prot="private" virt="non-virtual"><scope>Game_Screen</scope><name>movie_res_y</name></member>
+      <member refid="class_game___screen_1a4ade1da1759ce893cf93227d5481403e" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>OnBattleEnd</name></member>
+      <member refid="class_game___screen_1aa69413f82fa1693227e8d721fe3edbc8" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>OnMapChange</name></member>
+      <member refid="class_game___screen_1a1a06a71490540d7e561f7c13c9b16cca" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>OnMapScrolled</name></member>
+      <member refid="class_game___screen_1a060df1401b9b3366c36138e805af33d7" prot="protected" virt="non-virtual"><scope>Game_Screen</scope><name>OnWeatherChanged</name></member>
+      <member refid="class_game___screen_1adda04b430c427181d85bacac22a6f161" prot="protected" virt="non-virtual"><scope>Game_Screen</scope><name>particles</name></member>
+      <member refid="class_game___screen_1a498671c3b7180439b60d076c216e220d" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>PlayMovie</name></member>
+      <member refid="class_game___screen_1a64e930e08fbb68f5ad21848cc67e32eb" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>SetSaveData</name></member>
+      <member refid="class_game___screen_1a420554ca25a5e87cb07c4b187638c296" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>SetWeatherEffect</name></member>
+      <member refid="class_game___screen_1a1b0a2983e2204e18d094cc123eeb4160" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>ShakeBegin</name></member>
+      <member refid="class_game___screen_1a52c1a92eb6198c6d63880fb3636bc552" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>ShakeEnd</name></member>
+      <member refid="class_game___screen_1aa44ce0b88efaa41fa781be4d730f1772" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>ShakeOnce</name></member>
+      <member refid="class_game___screen_1adf8eb979374efb2381636996a5c89e5e" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>ShowBattleAnimation</name></member>
+      <member refid="class_game___screen_1ae4de77c15476c2d53ab02926d3d5b483" prot="protected" virt="non-virtual"><scope>Game_Screen</scope><name>StopWeather</name></member>
+      <member refid="class_game___screen_1ac0b903998a8ec854491a698d1986d3a6" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>TintScreen</name></member>
+      <member refid="class_game___screen_1ac3aab72ab24d0b74bab8c9fc8ee3eb2e" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>Update</name></member>
+      <member refid="class_game___screen_1a9daa02775a74ad0e32e715c6ea90e468" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>UpdateBattleAnimation</name></member>
+      <member refid="class_game___screen_1ab353901311ca0eafdcaa235fb348a2f5" prot="protected" virt="non-virtual"><scope>Game_Screen</scope><name>UpdateFog</name></member>
+      <member refid="class_game___screen_1a65d3bf3befa3dd0466920466b3f0db7a" prot="protected" virt="non-virtual"><scope>Game_Screen</scope><name>UpdateFog</name></member>
+      <member refid="class_game___screen_1a716c0094e56423145e32356da0db2956" prot="protected" virt="non-virtual"><scope>Game_Screen</scope><name>UpdateMovie</name></member>
+      <member refid="class_game___screen_1a2988f989a85985159ca42eddc940c7e1" prot="protected" virt="non-virtual"><scope>Game_Screen</scope><name>UpdateRain</name></member>
+      <member refid="class_game___screen_1aadc319778edb217d022f56b5cc436d9f" prot="protected" virt="non-virtual"><scope>Game_Screen</scope><name>UpdateSandstorm</name></member>
+      <member refid="class_game___screen_1a0b992bc10b809d2edc3d0117ebcc9699" prot="protected" virt="non-virtual"><scope>Game_Screen</scope><name>UpdateScreenEffects</name></member>
+      <member refid="class_game___screen_1a7c585fec4167c897792668036824f094" prot="protected" virt="non-virtual"><scope>Game_Screen</scope><name>UpdateSnow</name></member>
+      <member refid="class_game___screen_1a107266da35df563c22f586c6f9ce23ca" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>UpdateUnderlyingEventReferences</name></member>
+      <member refid="class_game___screen_1acd0db0d8f9f12a93006bfe806d9bad07" prot="protected" virt="non-virtual"><scope>Game_Screen</scope><name>UpdateWeather</name></member>
+      <member refid="class_game___screen_1a10b751a8fd2cf7994563e0b50ea50c57" prot="private" virt="non-virtual"><scope>Game_Screen</scope><name>weather</name></member>
+      <member refid="class_game___screen_1ac0c7d104854f1aef32a821605b58b411ad28ae31403759ad97b733adf840d65c8" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>Weather_Fog</name></member>
+      <member refid="class_game___screen_1ac0c7d104854f1aef32a821605b58b411a563b10ab4b735b46ec83f360f606c1ca" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>Weather_None</name></member>
+      <member refid="class_game___screen_1ac0c7d104854f1aef32a821605b58b411a6beae53ad9aa73db0ecb59f43581cd68" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>Weather_Rain</name></member>
+      <member refid="class_game___screen_1ac0c7d104854f1aef32a821605b58b411aeab5127282ffaeab1bc1984cc55af969" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>Weather_Sandstorm</name></member>
+      <member refid="class_game___screen_1ac0c7d104854f1aef32a821605b58b411a58fbda5b1b48eee6e838c2d40b05e2ff" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>Weather_Snow</name></member>
+      <member refid="class_game___screen_1ac0c7d104854f1aef32a821605b58b411" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>WeatherType</name></member>
+      <member refid="class_game___screen_1a602c896f4f18d2993bdb214c73c00b74" prot="public" virt="non-virtual"><scope>Game_Screen</scope><name>~Game_Screen</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

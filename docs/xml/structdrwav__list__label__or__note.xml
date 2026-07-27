@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdrwav__list__label__or__note" kind="struct" language="C++" prot="public">
+    <compoundname>drwav_list_label_or_note</compoundname>
+    <includes refid="dr__wav_8h" local="no">dr_wav.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdrwav__list__label__or__note_1aef6a8cb3d5e47831c368b2e99f79161d" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_list_label_or_note::cuePointId</definition>
+        <argsstring></argsstring>
+        <name>cuePointId</name>
+        <qualifiedname>drwav_list_label_or_note::cuePointId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="697" column="18" bodyfile="external/dr_wav.h" bodystart="697" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__list__label__or__note_1ad0745f5ee87c42e66d74a27e89e6106d" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_list_label_or_note::stringLength</definition>
+        <argsstring></argsstring>
+        <name>stringLength</name>
+        <qualifiedname>drwav_list_label_or_note::stringLength</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="700" column="18" bodyfile="external/dr_wav.h" bodystart="700" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__list__label__or__note_1a8eefd08af1fbddba5ffb43760e8fc437" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* drwav_list_label_or_note::pString</definition>
+        <argsstring></argsstring>
+        <name>pString</name>
+        <qualifiedname>drwav_list_label_or_note::pString</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="703" column="10" bodyfile="external/dr_wav.h" bodystart="703" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="external/dr_wav.h" line="694" column="1" bodyfile="external/dr_wav.h" bodystart="695" bodyend="704"/>
+    <listofallmembers>
+      <member refid="structdrwav__list__label__or__note_1aef6a8cb3d5e47831c368b2e99f79161d" prot="public" virt="non-virtual"><scope>drwav_list_label_or_note</scope><name>cuePointId</name></member>
+      <member refid="structdrwav__list__label__or__note_1a8eefd08af1fbddba5ffb43760e8fc437" prot="public" virt="non-virtual"><scope>drwav_list_label_or_note</scope><name>pString</name></member>
+      <member refid="structdrwav__list__label__or__note_1ad0745f5ee87c42e66d74a27e89e6106d" prot="public" virt="non-virtual"><scope>drwav_list_label_or_note</scope><name>stringLength</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

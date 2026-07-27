@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_scene___game_browser_1_1_directory_stack" kind="struct" language="C++" prot="private">
+    <compoundname>Scene_GameBrowser::DirectoryStack</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_scene___game_browser_1_1_directory_stack_1ab6b8f04b56737457ee63beeb2b74ccf3" prot="public" static="no" mutable="no">
+        <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+        <definition>FilesystemView Scene_GameBrowser::DirectoryStack::filesystem</definition>
+        <argsstring></argsstring>
+        <name>filesystem</name>
+        <qualifiedname>Scene_GameBrowser::DirectoryStack::filesystem</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_gamebrowser.h" line="95" column="16" bodyfile="scene_gamebrowser.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_scene___game_browser_1_1_directory_stack_1ac0e5aa8ade3a454bd3235de5b6960b52" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_GameBrowser::DirectoryStack::index</definition>
+        <argsstring></argsstring>
+        <name>index</name>
+        <qualifiedname>Scene_GameBrowser::DirectoryStack::index</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_gamebrowser.h" line="96" column="5" bodyfile="scene_gamebrowser.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>FilesystemView</label>
+        <link refid="class_filesystem_view"/>
+      </node>
+      <node id="1">
+        <label>Scene_GameBrowser::DirectoryStack</label>
+        <childnode refid="2" relation="usage">
+          <edgelabel>filesystem</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="scene_gamebrowser.h" line="94" column="1" bodyfile="scene_gamebrowser.h" bodystart="94" bodyend="97"/>
+    <listofallmembers>
+      <member refid="struct_scene___game_browser_1_1_directory_stack_1ab6b8f04b56737457ee63beeb2b74ccf3" prot="public" virt="non-virtual"><scope>Scene_GameBrowser::DirectoryStack</scope><name>filesystem</name></member>
+      <member refid="struct_scene___game_browser_1_1_directory_stack_1ac0e5aa8ade3a454bd3235de5b6960b52" prot="public" virt="non-virtual"><scope>Scene_GameBrowser::DirectoryStack</scope><name>index</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

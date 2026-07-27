@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_window___interpreter_1_1_stack_item" kind="struct" language="C++" prot="private">
+    <compoundname>Window_Interpreter::StackItem</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_window___interpreter_1_1_stack_item_1aa53515265832412f32c43ae4fdfd2dae" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Window_Interpreter::StackItem::is_ce</definition>
+        <argsstring></argsstring>
+        <name>is_ce</name>
+        <qualifiedname>Window_Interpreter::StackItem::is_ce</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="99" column="6" bodyfile="window_interpreter.h" bodystart="99" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___interpreter_1_1_stack_item_1acc0ddc7cf413dcfbb0d460832c8374b6" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Interpreter::StackItem::evt_id</definition>
+        <argsstring></argsstring>
+        <name>evt_id</name>
+        <qualifiedname>Window_Interpreter::StackItem::evt_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="100" column="5" bodyfile="window_interpreter.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___interpreter_1_1_stack_item_1a7630f73b218255688faa91920efc89c4" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Interpreter::StackItem::page_id</definition>
+        <argsstring></argsstring>
+        <name>page_id</name>
+        <qualifiedname>Window_Interpreter::StackItem::page_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="100" column="12" bodyfile="window_interpreter.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___interpreter_1_1_stack_item_1af1156ec20443ccf127bc3c178a90801b" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Window_Interpreter::StackItem::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>Window_Interpreter::StackItem::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="101" column="13" bodyfile="window_interpreter.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___interpreter_1_1_stack_item_1aae9109e90b9117fcb28c456440bbe224" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Interpreter::StackItem::cmd_current</definition>
+        <argsstring></argsstring>
+        <name>cmd_current</name>
+        <qualifiedname>Window_Interpreter::StackItem::cmd_current</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="102" column="5" bodyfile="window_interpreter.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___interpreter_1_1_stack_item_1a68f0a8bc4d4cd3bc219bf83035e9beda" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Interpreter::StackItem::cmd_count</definition>
+        <argsstring></argsstring>
+        <name>cmd_count</name>
+        <qualifiedname>Window_Interpreter::StackItem::cmd_count</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="102" column="17" bodyfile="window_interpreter.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="window_interpreter.h" line="98" column="1" bodyfile="window_interpreter.h" bodystart="98" bodyend="103"/>
+    <listofallmembers>
+      <member refid="struct_window___interpreter_1_1_stack_item_1a68f0a8bc4d4cd3bc219bf83035e9beda" prot="public" virt="non-virtual"><scope>Window_Interpreter::StackItem</scope><name>cmd_count</name></member>
+      <member refid="struct_window___interpreter_1_1_stack_item_1aae9109e90b9117fcb28c456440bbe224" prot="public" virt="non-virtual"><scope>Window_Interpreter::StackItem</scope><name>cmd_current</name></member>
+      <member refid="struct_window___interpreter_1_1_stack_item_1acc0ddc7cf413dcfbb0d460832c8374b6" prot="public" virt="non-virtual"><scope>Window_Interpreter::StackItem</scope><name>evt_id</name></member>
+      <member refid="struct_window___interpreter_1_1_stack_item_1aa53515265832412f32c43ae4fdfd2dae" prot="public" virt="non-virtual"><scope>Window_Interpreter::StackItem</scope><name>is_ce</name></member>
+      <member refid="struct_window___interpreter_1_1_stack_item_1af1156ec20443ccf127bc3c178a90801b" prot="public" virt="non-virtual"><scope>Window_Interpreter::StackItem</scope><name>name</name></member>
+      <member refid="struct_window___interpreter_1_1_stack_item_1a7630f73b218255688faa91920efc89c4" prot="public" virt="non-virtual"><scope>Window_Interpreter::StackItem</scope><name>page_id</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

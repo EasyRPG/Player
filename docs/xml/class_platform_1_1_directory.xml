@@ -1,0 +1,252 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_platform_1_1_directory" kind="class" language="C++" prot="public">
+    <compoundname>Platform::Directory</compoundname>
+    <includes refid="platform_8h" local="no">platform.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_platform_1_1_directory_1a7a251f9738ce68b1a49629d0e8a6c123" prot="private" static="no" mutable="no">
+        <type>DIR *</type>
+        <definition>DIR* Platform::Directory::dir_handle</definition>
+        <argsstring></argsstring>
+        <name>dir_handle</name>
+        <qualifiedname>Platform::Directory::dir_handle</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="152" column="5" bodyfile="platform.h" bodystart="152" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_platform_1_1_directory_1a9905dbce60ba47fd81721ba391e41c9a" prot="private" static="no" mutable="no">
+        <type>struct dirent *</type>
+        <definition>struct dirent* Platform::Directory::entry</definition>
+        <argsstring></argsstring>
+        <name>entry</name>
+        <qualifiedname>Platform::Directory::entry</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="153" column="14" bodyfile="platform.h" bodystart="153" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_platform_1_1_directory_1a70f1da1a4a6789cc105b388e8764cff1" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Platform::Directory::valid_entry</definition>
+        <argsstring></argsstring>
+        <name>valid_entry</name>
+        <qualifiedname>Platform::Directory::valid_entry</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="155" column="6" bodyfile="platform.h" bodystart="155" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_platform_1_1_directory_1a8426a48514a1592718a1cf4287729244" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Platform::Directory::Directory</definition>
+        <argsstring>()=delete</argsstring>
+        <name>Directory</name>
+        <qualifiedname>Platform::Directory::Directory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="111" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_directory_1a6f5e3b6314bbb6375e815098b6f626d6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_platform_1_1_directory_1a8426a48514a1592718a1cf4287729244" kindref="member">Directory</ref> &amp;</type>
+        <definition>Directory &amp; Platform::Directory::operator=</definition>
+        <argsstring>(const Directory &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Platform::Directory::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_platform_1_1_directory_1a8426a48514a1592718a1cf4287729244" kindref="member">Directory</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="112" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_directory_1a896f69eb7b04826fd535558f9a7cf50b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Platform::Directory::Directory</definition>
+        <argsstring>(const Directory &amp;)=delete</argsstring>
+        <name>Directory</name>
+        <qualifiedname>Platform::Directory::Directory</qualifiedname>
+        <param>
+          <type>const Directory &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="113" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_directory_1ad2134972a365f54a74a06ec3d3b79e00" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Platform::Directory::Directory</definition>
+        <argsstring>(const std::string &amp;name)</argsstring>
+        <name>Directory</name>
+        <qualifiedname>Platform::Directory::Directory</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Opens a directory for reading.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_platform_1_1_directory" kindref="compound">Directory</ref> to open </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="120" column="10" bodyfile="platform.cpp" bodystart="192" bodyend="201"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_directory_1afb7435a7e149cb4cede8b692ad471372" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Platform::Directory::~Directory</definition>
+        <argsstring>()</argsstring>
+        <name>~Directory</name>
+        <qualifiedname>Platform::Directory::~Directory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="121" column="1" bodyfile="platform.cpp" bodystart="203" bodyend="205"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_directory_1a307c3805631327c9e1d424f64f7df4a6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Platform::Directory::Read</definition>
+        <argsstring>()</argsstring>
+        <name>Read</name>
+        <qualifiedname>Platform::Directory::Read</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reads one directory entry. Use GetEntryName/GetEntryType afterwards to retrieve information.</para>
+<para><simplesect kind="return"><para>true on success, false on failure or when end is reached. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="129" column="6" bodyfile="platform.cpp" bodystart="207" bodyend="230"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_directory_1a2c38538076b2cd881c2a83d86d5e1542" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Platform::Directory::GetEntryName</definition>
+        <argsstring>() const</argsstring>
+        <name>GetEntryName</name>
+        <qualifiedname>Platform::Directory::GetEntryName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Name of the last read entry </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="132" column="13" bodyfile="platform.cpp" bodystart="232" bodyend="242"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_directory_1af66804dcbc99734e16a6b1259c929a9e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespace_platform_1a21c8409c159650f93b6fdae62e17d0b2" kindref="member">FileType</ref></type>
+        <definition>Platform::FileType Platform::Directory::GetEntryType</definition>
+        <argsstring>() const</argsstring>
+        <name>GetEntryType</name>
+        <qualifiedname>Platform::Directory::GetEntryType</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Type of the last read entry </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="135" column="10" bodyfile="platform.cpp" bodystart="257" bodyend="276"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_directory_1af1b963a254efd97f15f5c577b068dac1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Platform::Directory::Close</definition>
+        <argsstring>()</argsstring>
+        <name>Close</name>
+        <qualifiedname>Platform::Directory::Close</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Closes the directory </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="138" column="6" bodyfile="platform.cpp" bodystart="278" bodyend="293"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_directory_1a3f72c5bf605fd03bc98534bef3849dc2" prot="public" static="no" const="yes" explicit="yes" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>Platform::Directory::operator bool</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>operator bool</name>
+        <qualifiedname>Platform::Directory::operator bool</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if opening the directory was successful </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="141" column="10" bodyfile="platform.h" bodystart="158" bodyend="164"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Wrapper around directory reading </para>
+    </detaileddescription>
+    <location file="platform.h" line="109" column="1" bodyfile="platform.h" bodystart="109" bodyend="156"/>
+    <listofallmembers>
+      <member refid="class_platform_1_1_directory_1af1b963a254efd97f15f5c577b068dac1" prot="public" virt="non-virtual"><scope>Platform::Directory</scope><name>Close</name></member>
+      <member refid="class_platform_1_1_directory_1a7a251f9738ce68b1a49629d0e8a6c123" prot="private" virt="non-virtual"><scope>Platform::Directory</scope><name>dir_handle</name></member>
+      <member refid="class_platform_1_1_directory_1a8426a48514a1592718a1cf4287729244" prot="public" virt="non-virtual"><scope>Platform::Directory</scope><name>Directory</name></member>
+      <member refid="class_platform_1_1_directory_1a896f69eb7b04826fd535558f9a7cf50b" prot="public" virt="non-virtual"><scope>Platform::Directory</scope><name>Directory</name></member>
+      <member refid="class_platform_1_1_directory_1ad2134972a365f54a74a06ec3d3b79e00" prot="public" virt="non-virtual"><scope>Platform::Directory</scope><name>Directory</name></member>
+      <member refid="class_platform_1_1_directory_1a9905dbce60ba47fd81721ba391e41c9a" prot="private" virt="non-virtual"><scope>Platform::Directory</scope><name>entry</name></member>
+      <member refid="class_platform_1_1_directory_1a2c38538076b2cd881c2a83d86d5e1542" prot="public" virt="non-virtual"><scope>Platform::Directory</scope><name>GetEntryName</name></member>
+      <member refid="class_platform_1_1_directory_1af66804dcbc99734e16a6b1259c929a9e" prot="public" virt="non-virtual"><scope>Platform::Directory</scope><name>GetEntryType</name></member>
+      <member refid="class_platform_1_1_directory_1a3f72c5bf605fd03bc98534bef3849dc2" prot="public" virt="non-virtual"><scope>Platform::Directory</scope><name>operator bool</name></member>
+      <member refid="class_platform_1_1_directory_1a6f5e3b6314bbb6375e815098b6f626d6" prot="public" virt="non-virtual"><scope>Platform::Directory</scope><name>operator=</name></member>
+      <member refid="class_platform_1_1_directory_1a307c3805631327c9e1d424f64f7df4a6" prot="public" virt="non-virtual"><scope>Platform::Directory</scope><name>Read</name></member>
+      <member refid="class_platform_1_1_directory_1a70f1da1a4a6789cc105b388e8764cff1" prot="private" virt="non-virtual"><scope>Platform::Directory</scope><name>valid_entry</name></member>
+      <member refid="class_platform_1_1_directory_1afb7435a7e149cb4cede8b692ad471372" prot="public" virt="non-virtual"><scope>Platform::Directory</scope><name>~Directory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

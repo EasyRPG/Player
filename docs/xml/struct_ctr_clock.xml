@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_ctr_clock" kind="struct" language="C++" prot="public">
+    <compoundname>CtrClock</compoundname>
+    <includes refid="3ds_2clock_8h" local="no">clock.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="struct_ctr_clock_1a034010a31a932ddcc659e4b04a64aa92" prot="public" static="no">
+        <type>int64_t</type>
+        <definition>using CtrClock::rep = int64_t</definition>
+        <argsstring></argsstring>
+        <name>rep</name>
+        <qualifiedname>CtrClock::rep</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/clock.h" line="28" column="1" bodyfile="platform/3ds/clock.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_ctr_clock_1a4349126fd44281ef2a101da157b6ee3c" prot="public" static="no">
+        <type>std::ratio&lt; 1, <ref refid="struct_ctr_clock_1ae7f9459d28025ccc6027ca0fae590a61" kindref="member">ticks_per_sec</ref> &gt;</type>
+        <definition>using CtrClock::period = std::ratio&lt;1,ticks_per_sec&gt;</definition>
+        <argsstring></argsstring>
+        <name>period</name>
+        <qualifiedname>CtrClock::period</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/clock.h" line="29" column="1" bodyfile="platform/3ds/clock.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_ctr_clock_1aaeb64d878da90b645980c16001436a81" prot="public" static="no">
+        <type>std::chrono::duration&lt; <ref refid="struct_ctr_clock_1a034010a31a932ddcc659e4b04a64aa92" kindref="member">rep</ref>, <ref refid="struct_ctr_clock_1a4349126fd44281ef2a101da157b6ee3c" kindref="member">period</ref> &gt;</type>
+        <definition>using CtrClock::duration = std::chrono::duration&lt;rep,period&gt;</definition>
+        <argsstring></argsstring>
+        <name>duration</name>
+        <qualifiedname>CtrClock::duration</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/clock.h" line="30" column="1" bodyfile="platform/3ds/clock.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_ctr_clock_1adcb201dc5d1476eadbcce1a4e6b9e616" prot="public" static="no">
+        <type>std::chrono::time_point&lt; <ref refid="struct_ctr_clock" kindref="compound">CtrClock</ref>, <ref refid="struct_ctr_clock_1aaeb64d878da90b645980c16001436a81" kindref="member">duration</ref> &gt;</type>
+        <definition>using CtrClock::time_point = std::chrono::time_point&lt;CtrClock,duration&gt;</definition>
+        <argsstring></argsstring>
+        <name>time_point</name>
+        <qualifiedname>CtrClock::time_point</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/clock.h" line="31" column="1" bodyfile="platform/3ds/clock.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="struct_ctr_clock_1ae7f9459d28025ccc6027ca0fae590a61" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int64_t</type>
+        <definition>int64_t CtrClock::ticks_per_sec</definition>
+        <argsstring></argsstring>
+        <name>ticks_per_sec</name>
+        <qualifiedname>CtrClock::ticks_per_sec</qualifiedname>
+        <initializer>= 268123480</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/clock.h" line="26" column="26" bodyfile="platform/3ds/clock.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_ctr_clock_1aaba9c81e122d41d97f7a5ae49399ee15" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool CtrClock::is_steady</definition>
+        <argsstring></argsstring>
+        <name>is_steady</name>
+        <qualifiedname>CtrClock::is_steady</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/clock.h" line="33" column="23" bodyfile="platform/3ds/clock.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="struct_ctr_clock_1a7942729538f79498b5a93454b676ff3f" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="struct_ctr_clock_1adcb201dc5d1476eadbcce1a4e6b9e616" kindref="member">time_point</ref></type>
+        <definition>CtrClock::time_point CtrClock::now</definition>
+        <argsstring>()</argsstring>
+        <name>now</name>
+        <qualifiedname>CtrClock::now</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/clock.h" line="35" column="19" bodyfile="platform/3ds/clock.h" bodystart="43" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_ctr_clock_1a4a2b2eb10a8022650f9168c382f667ef" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename R</type>
+          </param>
+          <param>
+            <type>typename P</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void CtrClock::SleepFor</definition>
+        <argsstring>(std::chrono::duration&lt; R, P &gt; dt)</argsstring>
+        <name>SleepFor</name>
+        <qualifiedname>CtrClock::SleepFor</qualifiedname>
+        <param>
+          <type>std::chrono::duration&lt; R, P &gt;</type>
+          <declname>dt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/clock.h" line="38" column="13" bodyfile="platform/3ds/clock.h" bodystart="49" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_ctr_clock_1a027557a6da2a7517e66eb8898d138553" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const char *</type>
+        <definition>const char * CtrClock::Name</definition>
+        <argsstring>()</argsstring>
+        <name>Name</name>
+        <qualifiedname>CtrClock::Name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/clock.h" line="40" column="29" bodyfile="platform/3ds/clock.h" bodystart="54" bodyend="56"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/3ds/clock.h" line="25" column="1" bodyfile="platform/3ds/clock.h" bodystart="25" bodyend="41"/>
+    <listofallmembers>
+      <member refid="struct_ctr_clock_1aaeb64d878da90b645980c16001436a81" prot="public" virt="non-virtual"><scope>CtrClock</scope><name>duration</name></member>
+      <member refid="struct_ctr_clock_1aaba9c81e122d41d97f7a5ae49399ee15" prot="public" virt="non-virtual"><scope>CtrClock</scope><name>is_steady</name></member>
+      <member refid="struct_ctr_clock_1a027557a6da2a7517e66eb8898d138553" prot="public" virt="non-virtual"><scope>CtrClock</scope><name>Name</name></member>
+      <member refid="struct_ctr_clock_1a7942729538f79498b5a93454b676ff3f" prot="public" virt="non-virtual"><scope>CtrClock</scope><name>now</name></member>
+      <member refid="struct_ctr_clock_1a4349126fd44281ef2a101da157b6ee3c" prot="public" virt="non-virtual"><scope>CtrClock</scope><name>period</name></member>
+      <member refid="struct_ctr_clock_1a034010a31a932ddcc659e4b04a64aa92" prot="public" virt="non-virtual"><scope>CtrClock</scope><name>rep</name></member>
+      <member refid="struct_ctr_clock_1a4a2b2eb10a8022650f9168c382f667ef" prot="public" virt="non-virtual"><scope>CtrClock</scope><name>SleepFor</name></member>
+      <member refid="struct_ctr_clock_1ae7f9459d28025ccc6027ca0fae590a61" prot="public" virt="non-virtual"><scope>CtrClock</scope><name>ticks_per_sec</name></member>
+      <member refid="struct_ctr_clock_1adcb201dc5d1476eadbcce1a4e6b9e616" prot="public" virt="non-virtual"><scope>CtrClock</scope><name>time_point</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

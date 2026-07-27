@@ -1,0 +1,481 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_control_variables" kind="namespace" language="C++">
+    <compoundname>ControlVariables</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_control_variables_1ac9470fc05d2c80a98b6fc86cf70cf1e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Random</definition>
+        <argsstring>(int value, int value2)</argsstring>
+        <name>Random</name>
+        <qualifiedname>ControlVariables::Random</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="28" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="37" bodyend="42" declfile="game_interpreter_control_variables.h" declline="28" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1a9a499d83059caef8146e72dd0331fe34" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Item</definition>
+        <argsstring>(int op, int item)</argsstring>
+        <name>Item</name>
+        <qualifiedname>ControlVariables::Item</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>item</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="29" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="44" bodyend="58" declfile="game_interpreter_control_variables.h" declline="29" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1a97956917e5c7861697ef295001fffe89" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Actor</definition>
+        <argsstring>(int op, int actor_id)</argsstring>
+        <name>Actor</name>
+        <qualifiedname>ControlVariables::Actor</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>actor_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="30" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="60" bodyend="145" declfile="game_interpreter_control_variables.h" declline="30" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1a16ebf5b39577ab9dd72b94945f55aba2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Party</definition>
+        <argsstring>(int op, int party_idx)</argsstring>
+        <name>Party</name>
+        <qualifiedname>ControlVariables::Party</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>party_idx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="31" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="147" bodyend="156" declfile="game_interpreter_control_variables.h" declline="31" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1a2c1c6345a3740f8087988402fcd6305a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Event</definition>
+        <argsstring>(int op, int event_id, const Game_BaseInterpreterContext &amp;interpreter)</argsstring>
+        <name>Event</name>
+        <qualifiedname>ControlVariables::Event</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>event_id</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___base_interpreter_context" kindref="compound">Game_BaseInterpreterContext</ref> &amp;</type>
+          <declname>interpreter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="32" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="158" bodyend="218" declfile="game_interpreter_control_variables.h" declline="32" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1a18bb3352bcddf17ff649e73d4a56865b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Other</definition>
+        <argsstring>(int op)</argsstring>
+        <name>Other</name>
+        <qualifiedname>ControlVariables::Other</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="33" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="220" bodyend="299" declfile="game_interpreter_control_variables.h" declline="33" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1a059eafb10247dfed61cb097ffbb9a230" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Enemy</definition>
+        <argsstring>(int op, int enemy_idx)</argsstring>
+        <name>Enemy</name>
+        <qualifiedname>ControlVariables::Enemy</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>enemy_idx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="34" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="301" bodyend="358" declfile="game_interpreter_control_variables.h" declline="34" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1a3d87d7e13572878799766213d2e39009" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Pow</definition>
+        <argsstring>(int arg1, int arg2)</argsstring>
+        <name>Pow</name>
+        <qualifiedname>ControlVariables::Pow</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>arg1</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="35" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="360" bodyend="362" declfile="game_interpreter_control_variables.h" declline="35" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1a67592df50967eadb28e017b337fa853e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Sqrt</definition>
+        <argsstring>(int arg, int mul)</argsstring>
+        <name>Sqrt</name>
+        <qualifiedname>ControlVariables::Sqrt</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>arg</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>mul</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="36" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="364" bodyend="371" declfile="game_interpreter_control_variables.h" declline="36" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1a66839cbf4720a67b211cf899a5902eec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Sin</definition>
+        <argsstring>(int arg1, int arg2, int mul)</argsstring>
+        <name>Sin</name>
+        <qualifiedname>ControlVariables::Sin</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>arg1</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg2</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>mul</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="37" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="373" bodyend="379" declfile="game_interpreter_control_variables.h" declline="37" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1aae4de40f49259f9764915022d7abb299" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Cos</definition>
+        <argsstring>(int arg1, int arg2, int mul)</argsstring>
+        <name>Cos</name>
+        <qualifiedname>ControlVariables::Cos</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>arg1</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg2</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>mul</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="38" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="381" bodyend="387" declfile="game_interpreter_control_variables.h" declline="38" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1a5f7cc6f5891696c25e2a9e2bb429b4af" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Atan2</definition>
+        <argsstring>(int arg1, int arg2, int mul)</argsstring>
+        <name>Atan2</name>
+        <qualifiedname>ControlVariables::Atan2</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>arg1</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg2</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>mul</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="39" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="389" bodyend="391" declfile="game_interpreter_control_variables.h" declline="39" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1a4932720ba4a628fe028cbc45de527ff1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Min</definition>
+        <argsstring>(int arg1, int arg2)</argsstring>
+        <name>Min</name>
+        <qualifiedname>ControlVariables::Min</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>arg1</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="40" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="393" bodyend="395" declfile="game_interpreter_control_variables.h" declline="40" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1a195ca13c987553fdc3637f9de15e989c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Max</definition>
+        <argsstring>(int arg1, int arg2)</argsstring>
+        <name>Max</name>
+        <qualifiedname>ControlVariables::Max</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>arg1</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="41" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="397" bodyend="399" declfile="game_interpreter_control_variables.h" declline="41" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1af370acb178631f4a03916fc945c2d8aa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Abs</definition>
+        <argsstring>(int arg)</argsstring>
+        <name>Abs</name>
+        <qualifiedname>ControlVariables::Abs</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>arg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="42" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="401" bodyend="403" declfile="game_interpreter_control_variables.h" declline="42" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1acf76915c3561093ed27c82583f9fa1c1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Binary</definition>
+        <argsstring>(int op, int arg1, int arg2)</argsstring>
+        <name>Binary</name>
+        <qualifiedname>ControlVariables::Binary</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg1</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="43" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="405" bodyend="457" declfile="game_interpreter_control_variables.h" declline="43" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1ae3c92db0712f585858a3947943d10ce0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Clamp</definition>
+        <argsstring>(int arg1, int arg2, int arg3)</argsstring>
+        <name>Clamp</name>
+        <qualifiedname>ControlVariables::Clamp</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>arg1</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg2</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg3</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="45" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="459" bodyend="461" declfile="game_interpreter_control_variables.h" declline="45" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1adccc6b1d1c7bbdff54937ad83b6c348e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Muldiv</definition>
+        <argsstring>(int arg1, int arg2, int arg3)</argsstring>
+        <name>Muldiv</name>
+        <qualifiedname>ControlVariables::Muldiv</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>arg1</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg2</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg3</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="46" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="463" bodyend="473" declfile="game_interpreter_control_variables.h" declline="46" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1ad284b308c72a79851f2def2d3d175f63" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Divmul</definition>
+        <argsstring>(int arg1, int arg2, int arg3)</argsstring>
+        <name>Divmul</name>
+        <qualifiedname>ControlVariables::Divmul</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>arg1</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg2</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg3</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="47" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="475" bodyend="485" declfile="game_interpreter_control_variables.h" declline="47" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_control_variables_1a8237fec307c4041a7696b63d4657fe13" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int ControlVariables::Between</definition>
+        <argsstring>(int arg1, int arg2, int arg3)</argsstring>
+        <name>Between</name>
+        <qualifiedname>ControlVariables::Between</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>arg1</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg2</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg3</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_control_variables.h" line="48" column="5" bodyfile="game_interpreter_control_variables.cpp" bodystart="487" bodyend="489" declfile="game_interpreter_control_variables.h" declline="48" declcolumn="5"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_interpreter_control_variables.h" line="27" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,226 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_caesar_stream_buf" kind="class" language="C++" prot="public">
+    <compoundname>CaesarStreamBuf</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::streambuf</basecompoundref>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_caesar_stream_buf_1a8260c344945611a9c48e84c85672862e" prot="private" static="no" mutable="no">
+        <type>std::streambuf *</type>
+        <definition>std::streambuf* CaesarStreamBuf::parent_sb</definition>
+        <argsstring></argsstring>
+        <name>parent_sb</name>
+        <qualifiedname>CaesarStreamBuf::parent_sb</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_hook.cpp" line="62" column="16" bodyfile="filesystem_hook.cpp" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_caesar_stream_buf_1ad27ef6cba33df6fea71fd5edd65f9eee" prot="private" static="no" mutable="no">
+        <type>char</type>
+        <definition>char CaesarStreamBuf::buf</definition>
+        <argsstring></argsstring>
+        <name>buf</name>
+        <qualifiedname>CaesarStreamBuf::buf</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_hook.cpp" line="64" column="6" bodyfile="filesystem_hook.cpp" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_caesar_stream_buf_1a5acac486a8565128afcbfafa43be138a" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int CaesarStreamBuf::n</definition>
+        <argsstring></argsstring>
+        <name>n</name>
+        <qualifiedname>CaesarStreamBuf::n</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_hook.cpp" line="65" column="5" bodyfile="filesystem_hook.cpp" bodystart="65" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_caesar_stream_buf_1ac38b953946c4a56b40ac8e5492bac0d4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>CaesarStreamBuf::CaesarStreamBuf</definition>
+        <argsstring>(std::streambuf *parent_sb, int n)</argsstring>
+        <name>CaesarStreamBuf</name>
+        <qualifiedname>CaesarStreamBuf::CaesarStreamBuf</qualifiedname>
+        <param>
+          <type>std::streambuf *</type>
+          <declname>parent_sb</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_hook.cpp" line="28" column="1" bodyfile="filesystem_hook.cpp" bodystart="28" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="class_caesar_stream_buf_1abef87b639377ecf8cb0b8c3d8d24bdf4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CaesarStreamBuf::CaesarStreamBuf</definition>
+        <argsstring>(CaesarStreamBuf const &amp;other)=delete</argsstring>
+        <name>CaesarStreamBuf</name>
+        <qualifiedname>CaesarStreamBuf::CaesarStreamBuf</qualifiedname>
+        <param>
+          <type><ref refid="class_caesar_stream_buf" kindref="compound">CaesarStreamBuf</ref> const &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_hook.cpp" line="31" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_caesar_stream_buf_1a2340eda3399a53251620101412e51f15" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_caesar_stream_buf" kindref="compound">CaesarStreamBuf</ref> const &amp;</type>
+        <definition>CaesarStreamBuf const  &amp; CaesarStreamBuf::operator=</definition>
+        <argsstring>(CaesarStreamBuf const &amp;other)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>CaesarStreamBuf::operator=</qualifiedname>
+        <param>
+          <type><ref refid="class_caesar_stream_buf" kindref="compound">CaesarStreamBuf</ref> const &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_hook.cpp" line="32" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_caesar_stream_buf_1a4b6a559106d3c5ed71440d8a26505f08" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>CaesarStreamBuf::~CaesarStreamBuf</definition>
+        <argsstring>()</argsstring>
+        <name>~CaesarStreamBuf</name>
+        <qualifiedname>CaesarStreamBuf::~CaesarStreamBuf</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_hook.cpp" line="33" column="1" bodyfile="filesystem_hook.cpp" bodystart="33" bodyend="35"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_caesar_stream_buf_1a73c8bb119ac911c6b0342a5c0a254615" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int_type</type>
+        <definition>int_type CaesarStreamBuf::underflow</definition>
+        <argsstring>() override</argsstring>
+        <name>underflow</name>
+        <qualifiedname>CaesarStreamBuf::underflow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_hook.cpp" line="38" column="10" bodyfile="filesystem_hook.cpp" bodystart="38" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="class_caesar_stream_buf_1aae003b587ef1d93f15803c8a91149cfc" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::streambuf::pos_type</type>
+        <definition>std::streambuf::pos_type CaesarStreamBuf::seekoff</definition>
+        <argsstring>(std::streambuf::off_type offset, std::ios_base::seekdir dir, std::ios_base::openmode) override</argsstring>
+        <name>seekoff</name>
+        <qualifiedname>CaesarStreamBuf::seekoff</qualifiedname>
+        <param>
+          <type>std::streambuf::off_type</type>
+          <declname>offset</declname>
+        </param>
+        <param>
+          <type>std::ios_base::seekdir</type>
+          <declname>dir</declname>
+        </param>
+        <param>
+          <type>std::ios_base::openmode</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_hook.cpp" line="53" column="26" bodyfile="filesystem_hook.cpp" bodystart="53" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="class_caesar_stream_buf_1a7a11f33e47cd5355361dcca4556f920b" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::streambuf::pos_type</type>
+        <definition>std::streambuf::pos_type CaesarStreamBuf::seekpos</definition>
+        <argsstring>(std::streambuf::pos_type pos, std::ios_base::openmode) override</argsstring>
+        <name>seekpos</name>
+        <qualifiedname>CaesarStreamBuf::seekpos</qualifiedname>
+        <param>
+          <type>std::streambuf::pos_type</type>
+          <declname>pos</declname>
+        </param>
+        <param>
+          <type>std::ios_base::openmode</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_hook.cpp" line="57" column="26" bodyfile="filesystem_hook.cpp" bodystart="57" bodyend="59"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>CaesarStreamBuf</label>
+        <link refid="class_caesar_stream_buf"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::streambuf</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>CaesarStreamBuf</label>
+        <link refid="class_caesar_stream_buf"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::streambuf</label>
+      </node>
+    </collaborationgraph>
+    <location file="filesystem_hook.cpp" line="26" column="1" bodyfile="filesystem_hook.cpp" bodystart="26" bodyend="66"/>
+    <listofallmembers>
+      <member refid="class_caesar_stream_buf_1ad27ef6cba33df6fea71fd5edd65f9eee" prot="private" virt="non-virtual"><scope>CaesarStreamBuf</scope><name>buf</name></member>
+      <member refid="class_caesar_stream_buf_1ac38b953946c4a56b40ac8e5492bac0d4" prot="public" virt="non-virtual"><scope>CaesarStreamBuf</scope><name>CaesarStreamBuf</name></member>
+      <member refid="class_caesar_stream_buf_1abef87b639377ecf8cb0b8c3d8d24bdf4" prot="public" virt="non-virtual"><scope>CaesarStreamBuf</scope><name>CaesarStreamBuf</name></member>
+      <member refid="class_caesar_stream_buf_1a5acac486a8565128afcbfafa43be138a" prot="private" virt="non-virtual"><scope>CaesarStreamBuf</scope><name>n</name></member>
+      <member refid="class_caesar_stream_buf_1a2340eda3399a53251620101412e51f15" prot="public" virt="non-virtual"><scope>CaesarStreamBuf</scope><name>operator=</name></member>
+      <member refid="class_caesar_stream_buf_1a8260c344945611a9c48e84c85672862e" prot="private" virt="non-virtual"><scope>CaesarStreamBuf</scope><name>parent_sb</name></member>
+      <member refid="class_caesar_stream_buf_1aae003b587ef1d93f15803c8a91149cfc" prot="protected" virt="non-virtual"><scope>CaesarStreamBuf</scope><name>seekoff</name></member>
+      <member refid="class_caesar_stream_buf_1a7a11f33e47cd5355361dcca4556f920b" prot="protected" virt="non-virtual"><scope>CaesarStreamBuf</scope><name>seekpos</name></member>
+      <member refid="class_caesar_stream_buf_1a73c8bb119ac911c6b0342a5c0a254615" prot="protected" virt="non-virtual"><scope>CaesarStreamBuf</scope><name>underflow</name></member>
+      <member refid="class_caesar_stream_buf_1a4b6a559106d3c5ed71440d8a26505f08" prot="public" virt="non-virtual"><scope>CaesarStreamBuf</scope><name>~CaesarStreamBuf</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

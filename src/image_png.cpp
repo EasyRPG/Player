@@ -293,3 +293,4 @@ bool ImagePNG::Write(std::ostream& os, uint32_t width, uint32_t height, uint32_t
 
 	return true;
 }
+

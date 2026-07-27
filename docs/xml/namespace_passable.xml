@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_passable" kind="namespace" language="C++">
+    <compoundname>Passable</compoundname>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6dec" prot="public" static="no" strong="no">
+        <type></type>
+        <name>Passable</name>
+        <qualifiedname>Passable::Passable</qualifiedname>
+        <enumvalue id="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6decada1a42f5efbffa313f9925a32765c22a" prot="public">
+          <name>Down</name>
+          <initializer>= 0x01</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6deca07f9040c8a22e8f43b8149a8ead42098" prot="public">
+          <name>Left</name>
+          <initializer>= 0x02</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6deca102d0be810cb2b76a63add6fd194b2a9" prot="public">
+          <name>Right</name>
+          <initializer>= 0x04</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6decac57cb9edfbba4057aa428338832c2774" prot="public">
+          <name>Up</name>
+          <initializer>= 0x08</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6deca3b2f44a508c64d962050c654fdfe00f5" prot="public">
+          <name>Above</name>
+          <initializer>= 0x10</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6decaf9504a5f03783937d87cb45590dfb7d8" prot="public">
+          <name>Wall</name>
+          <initializer>= 0x20</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6deca3f96ec2d45c13991090f883b70814bfa" prot="public">
+          <name>Counter</name>
+          <initializer>= 0x40</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="76" column="1" bodyfile="map_data.h" bodystart="76" bodyend="84"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Passability flags. </para>
+    </detaileddescription>
+    <location file="map_data.h" line="75" column="1"/>
+  </compounddef>
+</doxygen>

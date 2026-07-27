@@ -157,3 +157,4 @@ inline bool PermanentStates::Has(int state_id) const {
 }
 
 #endif
+

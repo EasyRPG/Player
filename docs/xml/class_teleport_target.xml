@@ -1,0 +1,368 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_teleport_target" kind="class" language="C++" prot="public">
+    <compoundname>TeleportTarget</compoundname>
+    <includes refid="teleport__target_8h" local="no">teleport_target.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_teleport_target_1a61677339ab9fd57ac157af8144c4d36c" prot="public" static="no" strong="no">
+        <type></type>
+        <name>Type</name>
+        <qualifiedname>TeleportTarget::Type</qualifiedname>
+        <enumvalue id="class_teleport_target_1a61677339ab9fd57ac157af8144c4d36cadae20a90ca4cdf3ba8f9e306b1f532fd" prot="public">
+          <name>eParallelTeleport</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>A teleport command from a parallel event </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_teleport_target_1a61677339ab9fd57ac157af8144c4d36ca6c50e2a4eacd98f49d39d85e988c4bf4" prot="public">
+          <name>eForegroundTeleport</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>A teleport command from a foreground event </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_teleport_target_1a61677339ab9fd57ac157af8144c4d36caf4df70f1ba4e7be276b3110572520143" prot="public">
+          <name>eSkillTeleport</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>An escape or teleport skill </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_teleport_target_1a61677339ab9fd57ac157af8144c4d36cafe793725bd64f895f7ed36591412b466" prot="public">
+          <name>eAsyncQuickTeleport</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>An immediate asynchronous teleport from a SetVehicleLocation() command. This is an RPG_RT bug we emulate because it is abused by some games. </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The type of teleport </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="teleport_target.h" line="30" column="1" bodyfile="teleport_target.h" bodystart="30" bodyend="42"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_teleport_target_1a5e6117b1a6b5ccc7cb3c04f7582a479f" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int TeleportTarget::map_id</definition>
+        <argsstring></argsstring>
+        <name>map_id</name>
+        <qualifiedname>TeleportTarget::map_id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="teleport_target.h" line="75" column="5" bodyfile="teleport_target.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_teleport_target_1ac6716eb33c2d2be017cf624eb3c96697" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int TeleportTarget::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <qualifiedname>TeleportTarget::x</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="teleport_target.h" line="76" column="5" bodyfile="teleport_target.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_teleport_target_1ada97999b23fcd4f3aa61e104f4dd0c98" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int TeleportTarget::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <qualifiedname>TeleportTarget::y</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="teleport_target.h" line="77" column="5" bodyfile="teleport_target.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_teleport_target_1a40f6feea807d53ab84b4e4d779d31002" prot="private" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t TeleportTarget::d</definition>
+        <argsstring></argsstring>
+        <name>d</name>
+        <qualifiedname>TeleportTarget::d</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="teleport_target.h" line="78" column="9" bodyfile="teleport_target.h" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_teleport_target_1af66615d6d6004dd6c8f7160c21a05f64" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t TeleportTarget::tt</definition>
+        <argsstring></argsstring>
+        <name>tt</name>
+        <qualifiedname>TeleportTarget::tt</qualifiedname>
+        <initializer>= <ref refid="class_teleport_target_1a61677339ab9fd57ac157af8144c4d36cadae20a90ca4cdf3ba8f9e306b1f532fd" kindref="member">eParallelTeleport</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="teleport_target.h" line="79" column="9" bodyfile="teleport_target.h" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_teleport_target_1aadfb1d78ba00a595ef570bcefd313ff8" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool TeleportTarget::active</definition>
+        <argsstring></argsstring>
+        <name>active</name>
+        <qualifiedname>TeleportTarget::active</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="teleport_target.h" line="80" column="6" bodyfile="teleport_target.h" bodystart="80" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_teleport_target_1a38a5abc356aca566dec45e7a10ec1e3c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>TeleportTarget::TeleportTarget</definition>
+        <argsstring>()=default</argsstring>
+        <name>TeleportTarget</name>
+        <qualifiedname>TeleportTarget::TeleportTarget</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Construct an inactive target </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="teleport_target.h" line="45" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_teleport_target_1ab7fccd42d69939e0cd2ddddd05460f06" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>TeleportTarget::TeleportTarget</definition>
+        <argsstring>(int map_id, int x, int y, int d, Type tt)</argsstring>
+        <name>TeleportTarget</name>
+        <qualifiedname>TeleportTarget::TeleportTarget</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>map_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>d</declname>
+        </param>
+        <param>
+          <type><ref refid="class_teleport_target_1a61677339ab9fd57ac157af8144c4d36c" kindref="member">Type</ref></type>
+          <declname>tt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Activate and set the target <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>map id </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x position </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y position </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>d</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>d direction, or -1 if retain direction. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>teleport type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="teleport_target.h" line="55" column="1" bodyfile="teleport_target.h" bodystart="84" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="function" id="class_teleport_target_1af81b5a6737649c9c946f80cc3d931998" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int TeleportTarget::GetMapId</definition>
+        <argsstring>() const</argsstring>
+        <name>GetMapId</name>
+        <qualifiedname>TeleportTarget::GetMapId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>map id </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="teleport_target.h" line="58" column="5" bodyfile="teleport_target.h" bodystart="93" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="function" id="class_teleport_target_1a98711f7bbcbaec8aec6a8da023f0a411" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int TeleportTarget::GetX</definition>
+        <argsstring>() const</argsstring>
+        <name>GetX</name>
+        <qualifiedname>TeleportTarget::GetX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>x position </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="teleport_target.h" line="61" column="5" bodyfile="teleport_target.h" bodystart="97" bodyend="99"/>
+      </memberdef>
+      <memberdef kind="function" id="class_teleport_target_1a774e41d81180fc0d48e778dbce95b0cb" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int TeleportTarget::GetY</definition>
+        <argsstring>() const</argsstring>
+        <name>GetY</name>
+        <qualifiedname>TeleportTarget::GetY</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>x position </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="teleport_target.h" line="64" column="5" bodyfile="teleport_target.h" bodystart="101" bodyend="103"/>
+      </memberdef>
+      <memberdef kind="function" id="class_teleport_target_1a0a83cc6292772e7801b2f498929a2a24" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int TeleportTarget::GetDirection</definition>
+        <argsstring>() const</argsstring>
+        <name>GetDirection</name>
+        <qualifiedname>TeleportTarget::GetDirection</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>direction, or -1 if retain direction </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="teleport_target.h" line="67" column="5" bodyfile="teleport_target.h" bodystart="105" bodyend="107"/>
+      </memberdef>
+      <memberdef kind="function" id="class_teleport_target_1acebbd06c10bfc9246b4dbb435facd308" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool TeleportTarget::IsActive</definition>
+        <argsstring>() const</argsstring>
+        <name>IsActive</name>
+        <qualifiedname>TeleportTarget::IsActive</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>whether this is active </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="teleport_target.h" line="70" column="6" bodyfile="teleport_target.h" bodystart="109" bodyend="111"/>
+      </memberdef>
+      <memberdef kind="function" id="class_teleport_target_1a40f6d133aa3931a6050fc6b9f8fb55f2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_teleport_target_1a61677339ab9fd57ac157af8144c4d36c" kindref="member">Type</ref></type>
+        <definition>TeleportTarget::Type TeleportTarget::GetType</definition>
+        <argsstring>() const</argsstring>
+        <name>GetType</name>
+        <qualifiedname>TeleportTarget::GetType</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>teleport type </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="teleport_target.h" line="73" column="6" bodyfile="teleport_target.h" bodystart="113" bodyend="115"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Defines a target for teleportation </para>
+    </detaileddescription>
+    <location file="teleport_target.h" line="27" column="1" bodyfile="teleport_target.h" bodystart="27" bodyend="81"/>
+    <listofallmembers>
+      <member refid="class_teleport_target_1aadfb1d78ba00a595ef570bcefd313ff8" prot="private" virt="non-virtual"><scope>TeleportTarget</scope><name>active</name></member>
+      <member refid="class_teleport_target_1a40f6feea807d53ab84b4e4d779d31002" prot="private" virt="non-virtual"><scope>TeleportTarget</scope><name>d</name></member>
+      <member refid="class_teleport_target_1a61677339ab9fd57ac157af8144c4d36cafe793725bd64f895f7ed36591412b466" prot="public" virt="non-virtual"><scope>TeleportTarget</scope><name>eAsyncQuickTeleport</name></member>
+      <member refid="class_teleport_target_1a61677339ab9fd57ac157af8144c4d36ca6c50e2a4eacd98f49d39d85e988c4bf4" prot="public" virt="non-virtual"><scope>TeleportTarget</scope><name>eForegroundTeleport</name></member>
+      <member refid="class_teleport_target_1a61677339ab9fd57ac157af8144c4d36cadae20a90ca4cdf3ba8f9e306b1f532fd" prot="public" virt="non-virtual"><scope>TeleportTarget</scope><name>eParallelTeleport</name></member>
+      <member refid="class_teleport_target_1a61677339ab9fd57ac157af8144c4d36caf4df70f1ba4e7be276b3110572520143" prot="public" virt="non-virtual"><scope>TeleportTarget</scope><name>eSkillTeleport</name></member>
+      <member refid="class_teleport_target_1a0a83cc6292772e7801b2f498929a2a24" prot="public" virt="non-virtual"><scope>TeleportTarget</scope><name>GetDirection</name></member>
+      <member refid="class_teleport_target_1af81b5a6737649c9c946f80cc3d931998" prot="public" virt="non-virtual"><scope>TeleportTarget</scope><name>GetMapId</name></member>
+      <member refid="class_teleport_target_1a40f6d133aa3931a6050fc6b9f8fb55f2" prot="public" virt="non-virtual"><scope>TeleportTarget</scope><name>GetType</name></member>
+      <member refid="class_teleport_target_1a98711f7bbcbaec8aec6a8da023f0a411" prot="public" virt="non-virtual"><scope>TeleportTarget</scope><name>GetX</name></member>
+      <member refid="class_teleport_target_1a774e41d81180fc0d48e778dbce95b0cb" prot="public" virt="non-virtual"><scope>TeleportTarget</scope><name>GetY</name></member>
+      <member refid="class_teleport_target_1acebbd06c10bfc9246b4dbb435facd308" prot="public" virt="non-virtual"><scope>TeleportTarget</scope><name>IsActive</name></member>
+      <member refid="class_teleport_target_1a5e6117b1a6b5ccc7cb3c04f7582a479f" prot="private" virt="non-virtual"><scope>TeleportTarget</scope><name>map_id</name></member>
+      <member refid="class_teleport_target_1a38a5abc356aca566dec45e7a10ec1e3c" prot="public" virt="non-virtual"><scope>TeleportTarget</scope><name>TeleportTarget</name></member>
+      <member refid="class_teleport_target_1ab7fccd42d69939e0cd2ddddd05460f06" prot="public" virt="non-virtual"><scope>TeleportTarget</scope><name>TeleportTarget</name></member>
+      <member refid="class_teleport_target_1af66615d6d6004dd6c8f7160c21a05f64" prot="private" virt="non-virtual"><scope>TeleportTarget</scope><name>tt</name></member>
+      <member refid="class_teleport_target_1a61677339ab9fd57ac157af8144c4d36c" prot="public" virt="non-virtual"><scope>TeleportTarget</scope><name>Type</name></member>
+      <member refid="class_teleport_target_1ac6716eb33c2d2be017cf624eb3c96697" prot="private" virt="non-virtual"><scope>TeleportTarget</scope><name>x</name></member>
+      <member refid="class_teleport_target_1ada97999b23fcd4f3aa61e104f4dd0c98" prot="private" virt="non-virtual"><scope>TeleportTarget</scope><name>y</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

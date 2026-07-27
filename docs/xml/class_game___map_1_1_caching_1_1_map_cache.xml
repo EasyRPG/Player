@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___map_1_1_caching_1_1_map_cache" kind="class" language="C++" prot="public">
+    <compoundname>Game_Map::Caching::MapCache</compoundname>
+    <includes refid="game__map_8h" local="no">game_map.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___map_1_1_caching_1_1_map_cache_1afb9508f08dcdd52a7660bcd36adda59e" prot="private" static="no" mutable="no">
+        <type><ref refid="namespace_game___map_1_1_caching_1afa392799bae1f4c3f9193ebeb582eb53" kindref="member">MapEventCacheData_t</ref></type>
+        <definition>MapEventCacheData_t Game_Map::Caching::MapCache::refresh_targets_by_varid[ObservedVarOps_END]</definition>
+        <argsstring>[ObservedVarOps_END]</argsstring>
+        <name>refresh_targets_by_varid</name>
+        <qualifiedname>Game_Map::Caching::MapCache::refresh_targets_by_varid</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="748" column="21" bodyfile="game_map.h" bodystart="748" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___map_1_1_caching_1_1_map_cache_1ade63591a5190eddd9fe2c3a628cb24eb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type><ref refid="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2" kindref="member">ObservedVarOps</ref></type>
+            <declname>Op</declname>
+            <defname>Op</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Game_Map::Caching::MapCache::AddEventAsRefreshTarget</definition>
+        <argsstring>(int var_id, const lcf::rpg::Event &amp;ev)</argsstring>
+        <name>AddEventAsRefreshTarget</name>
+        <qualifiedname>Game_Map::Caching::MapCache::AddEventAsRefreshTarget</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Event &amp;</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="738" column="6" bodyfile="game_map.h" bodystart="908" bodyend="913"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___map_1_1_caching_1_1_map_cache_1a2ec1a504f2969002519931139042e331" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type><ref refid="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2" kindref="member">ObservedVarOps</ref></type>
+            <declname>Op</declname>
+            <defname>Op</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Game_Map::Caching::MapCache::RemoveEventAsRefreshTarget</definition>
+        <argsstring>(int var_id, const lcf::rpg::Event &amp;ev)</argsstring>
+        <name>RemoveEventAsRefreshTarget</name>
+        <qualifiedname>Game_Map::Caching::MapCache::RemoveEventAsRefreshTarget</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Event &amp;</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="741" column="6" bodyfile="game_map.h" bodystart="916" bodyend="921"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___map_1_1_caching_1_1_map_cache_1acbbe9b403488a664f1faaa98c991a9b4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type><ref refid="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2" kindref="member">ObservedVarOps</ref></type>
+            <declname>Op</declname>
+            <defname>Op</defname>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Game_Map::Caching::MapCache::GetNeedRefresh</definition>
+        <argsstring>(int var_id)</argsstring>
+        <name>GetNeedRefresh</name>
+        <qualifiedname>Game_Map::Caching::MapCache::GetNeedRefresh</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="744" column="6" bodyfile="game_map.h" bodystart="924" bodyend="929"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___map_1_1_caching_1_1_map_cache_1abbeb58f79d9a394f79e5fe8f3c0de116" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Caching::MapCache::Clear</definition>
+        <argsstring>()</argsstring>
+        <name>Clear</name>
+        <qualifiedname>Game_Map::Caching::MapCache::Clear</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="746" column="6" bodyfile="game_map.cpp" bodystart="442" bodyend="446"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_map.h" line="735" column="1" bodyfile="game_map.h" bodystart="735" bodyend="749"/>
+    <listofallmembers>
+      <member refid="class_game___map_1_1_caching_1_1_map_cache_1ade63591a5190eddd9fe2c3a628cb24eb" prot="public" virt="non-virtual"><scope>Game_Map::Caching::MapCache</scope><name>AddEventAsRefreshTarget</name></member>
+      <member refid="class_game___map_1_1_caching_1_1_map_cache_1abbeb58f79d9a394f79e5fe8f3c0de116" prot="public" virt="non-virtual"><scope>Game_Map::Caching::MapCache</scope><name>Clear</name></member>
+      <member refid="class_game___map_1_1_caching_1_1_map_cache_1acbbe9b403488a664f1faaa98c991a9b4" prot="public" virt="non-virtual"><scope>Game_Map::Caching::MapCache</scope><name>GetNeedRefresh</name></member>
+      <member refid="class_game___map_1_1_caching_1_1_map_cache_1afb9508f08dcdd52a7660bcd36adda59e" prot="private" virt="non-virtual"><scope>Game_Map::Caching::MapCache</scope><name>refresh_targets_by_varid</name></member>
+      <member refid="class_game___map_1_1_caching_1_1_map_cache_1a2ec1a504f2969002519931139042e331" prot="public" virt="non-virtual"><scope>Game_Map::Caching::MapCache</scope><name>RemoveEventAsRefreshTarget</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

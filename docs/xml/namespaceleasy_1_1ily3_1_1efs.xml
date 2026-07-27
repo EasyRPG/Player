@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1ily3_1_1efs" kind="namespace" language="C++">
+    <compoundname>leasy::ily3::efs</compoundname>
+    <innerclass refid="structleasy_1_1ily3_1_1efs_1_1app__fs__ctx" prot="public">leasy::ily3::efs::app_fs_ctx</innerclass>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceleasy_1_1ily3_1_1efs_1aeed19c98c32e177fb69c490661579bed" prot="public" static="no" mutable="no">
+        <type><ref refid="class_native_filesystem" kindref="compound">NativeFilesystem</ref></type>
+        <definition>NativeFilesystem leasy::ily3::efs::nfs</definition>
+        <argsstring></argsstring>
+        <name>nfs</name>
+        <qualifiedname>leasy::ily3::efs::nfs</qualifiedname>
+        <initializer>= <ref refid="class_native_filesystem" kindref="compound">NativeFilesystem</ref>(std::filesystem::current_path().string(), <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref>())</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/easyfs.cpp" line="27" column="20" bodyfile="leasy/ily3/easyfs.cpp" bodystart="27" bodyend="-1" declfile="leasy/ily3/easyfs.hpp" declline="37" declcolumn="27"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ily3_1_1efs_1a9dc3ee2211b2488cc29ad9737a58e804" prot="public" static="no" mutable="no">
+        <type><ref refid="structleasy_1_1ily3_1_1efs_1_1app__fs__ctx" kindref="compound">app_fs_ctx</ref></type>
+        <definition>app_fs_ctx leasy::ily3::efs::glob</definition>
+        <argsstring></argsstring>
+        <name>glob</name>
+        <qualifiedname>leasy::ily3::efs::glob</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/easyfs.cpp" line="28" column="12" bodyfile="leasy/ily3/easyfs.cpp" bodystart="28" bodyend="28" declfile="leasy/ily3/easyfs.hpp" declline="38" declcolumn="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para>0xEF9087A </para>
+    </detaileddescription>
+    <location file="leasy/ily3/easyfs.cpp" line="26" column="1"/>
+  </compounddef>
+</doxygen>

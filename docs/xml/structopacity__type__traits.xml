@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structopacity__type__traits" kind="struct" language="C++" prot="public">
+    <compoundname>opacity_type_traits</compoundname>
+    <includes refid="pixel__format_8h" local="no">pixel_format.h</includes>
+    <templateparamlist>
+      <param>
+        <type>class TPF</type>
+      </param>
+      <param>
+        <type>bool</type>
+        <declname>dynamic_alpha</declname>
+        <defname>dynamic_alpha</defname>
+      </param>
+      <param>
+        <type><ref refid="namespace_p_f_1a323a70e21a8a35900f0d3e524d823fea" kindref="member">PF::OpacityType</ref></type>
+        <declname>opacity_type</declname>
+        <defname>opacity_type</defname>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pixel_format.h" line="308" column="1" bodyfile="pixel_format.h" bodystart="308" bodyend="308"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

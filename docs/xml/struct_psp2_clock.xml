@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_psp2_clock" kind="struct" language="C++" prot="public">
+    <compoundname>Psp2Clock</compoundname>
+    <includes refid="psvita_2clock_8h" local="no">clock.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="struct_psp2_clock_1ae77aa140834eeb169dfdd253523cc2ef" prot="public" static="no">
+        <type>int64_t</type>
+        <definition>using Psp2Clock::rep = int64_t</definition>
+        <argsstring></argsstring>
+        <name>rep</name>
+        <qualifiedname>Psp2Clock::rep</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/psvita/clock.h" line="27" column="1" bodyfile="platform/psvita/clock.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_psp2_clock_1aaa5668e3590a2e5b18f9bcc65d97b2ac" prot="public" static="no">
+        <type>std::micro</type>
+        <definition>using Psp2Clock::period = std::micro</definition>
+        <argsstring></argsstring>
+        <name>period</name>
+        <qualifiedname>Psp2Clock::period</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/psvita/clock.h" line="28" column="1" bodyfile="platform/psvita/clock.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_psp2_clock_1a50eb281332923fc461290abb45db4752" prot="public" static="no">
+        <type>std::chrono::duration&lt; <ref refid="struct_psp2_clock_1ae77aa140834eeb169dfdd253523cc2ef" kindref="member">rep</ref>, <ref refid="struct_psp2_clock_1aaa5668e3590a2e5b18f9bcc65d97b2ac" kindref="member">period</ref> &gt;</type>
+        <definition>using Psp2Clock::duration = std::chrono::duration&lt;rep,period&gt;</definition>
+        <argsstring></argsstring>
+        <name>duration</name>
+        <qualifiedname>Psp2Clock::duration</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/psvita/clock.h" line="29" column="1" bodyfile="platform/psvita/clock.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_psp2_clock_1a6e3f5770040e8ae2dceec7c82e13cd52" prot="public" static="no">
+        <type>std::chrono::time_point&lt; <ref refid="struct_psp2_clock" kindref="compound">Psp2Clock</ref>, <ref refid="struct_psp2_clock_1a50eb281332923fc461290abb45db4752" kindref="member">duration</ref> &gt;</type>
+        <definition>using Psp2Clock::time_point = std::chrono::time_point&lt;Psp2Clock,duration&gt;</definition>
+        <argsstring></argsstring>
+        <name>time_point</name>
+        <qualifiedname>Psp2Clock::time_point</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/psvita/clock.h" line="30" column="1" bodyfile="platform/psvita/clock.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="struct_psp2_clock_1a89e475b712c14b08cf66756f4ae8681c" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool Psp2Clock::is_steady</definition>
+        <argsstring></argsstring>
+        <name>is_steady</name>
+        <qualifiedname>Psp2Clock::is_steady</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/psvita/clock.h" line="32" column="23" bodyfile="platform/psvita/clock.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="struct_psp2_clock_1a76f131910bae2e86f376494a3718c355" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="struct_psp2_clock_1a6e3f5770040e8ae2dceec7c82e13cd52" kindref="member">time_point</ref></type>
+        <definition>Psp2Clock::time_point Psp2Clock::now</definition>
+        <argsstring>()</argsstring>
+        <name>now</name>
+        <qualifiedname>Psp2Clock::now</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/psvita/clock.h" line="34" column="19" bodyfile="platform/psvita/clock.h" bodystart="42" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_psp2_clock_1a9fd260e8fa8077cb3a10e832e74f20b0" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename R</type>
+          </param>
+          <param>
+            <type>typename P</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Psp2Clock::SleepFor</definition>
+        <argsstring>(std::chrono::duration&lt; R, P &gt; dt)</argsstring>
+        <name>SleepFor</name>
+        <qualifiedname>Psp2Clock::SleepFor</qualifiedname>
+        <param>
+          <type>std::chrono::duration&lt; R, P &gt;</type>
+          <declname>dt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/psvita/clock.h" line="37" column="13" bodyfile="platform/psvita/clock.h" bodystart="48" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_psp2_clock_1ae02990fd24eba9648eecc1521e28cc39" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const char *</type>
+        <definition>const char * Psp2Clock::Name</definition>
+        <argsstring>()</argsstring>
+        <name>Name</name>
+        <qualifiedname>Psp2Clock::Name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/psvita/clock.h" line="39" column="29" bodyfile="platform/psvita/clock.h" bodystart="53" bodyend="55"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/psvita/clock.h" line="26" column="1" bodyfile="platform/psvita/clock.h" bodystart="26" bodyend="40"/>
+    <listofallmembers>
+      <member refid="struct_psp2_clock_1a50eb281332923fc461290abb45db4752" prot="public" virt="non-virtual"><scope>Psp2Clock</scope><name>duration</name></member>
+      <member refid="struct_psp2_clock_1a89e475b712c14b08cf66756f4ae8681c" prot="public" virt="non-virtual"><scope>Psp2Clock</scope><name>is_steady</name></member>
+      <member refid="struct_psp2_clock_1ae02990fd24eba9648eecc1521e28cc39" prot="public" virt="non-virtual"><scope>Psp2Clock</scope><name>Name</name></member>
+      <member refid="struct_psp2_clock_1a76f131910bae2e86f376494a3718c355" prot="public" virt="non-virtual"><scope>Psp2Clock</scope><name>now</name></member>
+      <member refid="struct_psp2_clock_1aaa5668e3590a2e5b18f9bcc65d97b2ac" prot="public" virt="non-virtual"><scope>Psp2Clock</scope><name>period</name></member>
+      <member refid="struct_psp2_clock_1ae77aa140834eeb169dfdd253523cc2ef" prot="public" virt="non-virtual"><scope>Psp2Clock</scope><name>rep</name></member>
+      <member refid="struct_psp2_clock_1a9fd260e8fa8077cb3a10e832e74f20b0" prot="public" virt="non-virtual"><scope>Psp2Clock</scope><name>SleepFor</name></member>
+      <member refid="struct_psp2_clock_1a6e3f5770040e8ae2dceec7c82e13cd52" prot="public" virt="non-virtual"><scope>Psp2Clock</scope><name>time_point</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,486 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_mpg123_decoder" kind="class" language="C++" prot="public">
+    <compoundname>Mpg123Decoder</compoundname>
+    <basecompoundref refid="class_audio_decoder" prot="public" virt="non-virtual">AudioDecoder</basecompoundref>
+    <includes refid="decoder__mpg123_8h" local="no">decoder_mpg123.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_mpg123_decoder_1a8906d760f8fcacce3d3eee932dbdc21a" prot="private" static="no" mutable="no">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream Mpg123Decoder::stream</definition>
+        <argsstring></argsstring>
+        <name>stream</name>
+        <qualifiedname>Mpg123Decoder::stream</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_mpg123.h" line="60" column="32" bodyfile="decoder_mpg123.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_mpg123_decoder_1a6db549b4372ca311982c982aadf34b74" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Mpg123Decoder::err</definition>
+        <argsstring></argsstring>
+        <name>err</name>
+        <qualifiedname>Mpg123Decoder::err</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_mpg123.h" line="61" column="5" bodyfile="decoder_mpg123.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_mpg123_decoder_1a85f3f0308edbc3f07966a8ec4874ef65" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Mpg123Decoder::finished</definition>
+        <argsstring></argsstring>
+        <name>finished</name>
+        <qualifiedname>Mpg123Decoder::finished</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_mpg123.h" line="62" column="6" bodyfile="decoder_mpg123.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_mpg123_decoder_1ae5f606a37bbccb316b7000eb30021803" prot="private" static="no" mutable="no">
+        <type>long</type>
+        <definition>long Mpg123Decoder::samplerate</definition>
+        <argsstring></argsstring>
+        <name>samplerate</name>
+        <qualifiedname>Mpg123Decoder::samplerate</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_mpg123.h" line="64" column="6" bodyfile="decoder_mpg123.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_mpg123_decoder_1ad9ffc07509f57a711446c26bcd9f62f4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Mpg123Decoder::Mpg123Decoder</definition>
+        <argsstring>()</argsstring>
+        <name>Mpg123Decoder</name>
+        <qualifiedname>Mpg123Decoder::Mpg123Decoder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_mpg123.h" line="35" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_mpg123_decoder_1a1aea76f03a362cebdb7225636245dc71" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Mpg123Decoder::~Mpg123Decoder</definition>
+        <argsstring>()</argsstring>
+        <name>~Mpg123Decoder</name>
+        <qualifiedname>Mpg123Decoder::~Mpg123Decoder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_mpg123.h" line="37" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_mpg123_decoder_1aadcf11a88e63a553bc1a201a849559d2" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Mpg123Decoder::WasInited</definition>
+        <argsstring>() const override</argsstring>
+        <name>WasInited</name>
+        <qualifiedname>Mpg123Decoder::WasInited</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1ab939d02c28d911d06a0c68087afa90aa">WasInited</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the status of the newly created audio decoder. Used to make sure the underlying library is properly initialized.</para>
+<para><simplesect kind="return"><para>true if initializing was succesful, false otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_mpg123.h" line="39" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_mpg123_decoder_1a7fed93633ec5c7782dc3284654e8a6f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Mpg123Decoder::Open</definition>
+        <argsstring>(Filesystem_Stream::InputStream stream) override</argsstring>
+        <name>Open</name>
+        <qualifiedname>Mpg123Decoder::Open</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a572f94aa66fe630a45cbe1c500c55213">Open</reimplements>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+          <declname>stream</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Assigns a stream to the audio decoder. Open should be only called once per audio decoder instance. Use GetError to get the error reason on failure.</para>
+<para><simplesect kind="return"><para>true if initializing was successful, false otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_mpg123.h" line="41" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_mpg123_decoder_1adb8efee365fcff91bb7eb17924f4eb58" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Mpg123Decoder::Seek</definition>
+        <argsstring>(std::streamoff offset, std::ios_base::seekdir origin) override</argsstring>
+        <name>Seek</name>
+        <qualifiedname>Mpg123Decoder::Seek</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a5edd0cdbf8114d680a94c269b24e79f8">Seek</reimplements>
+        <param>
+          <type>std::streamoff</type>
+          <declname>offset</declname>
+        </param>
+        <param>
+          <type>std::ios_base::seekdir</type>
+          <declname>origin</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Seeks in the audio stream. The value of offset is implementation defined but is guaranteed to match the result of Tell. Libraries must support at least seek from the start for <ref refid="class_audio_decoder_base_1a2c9d165295deeb0cd12fea13cdd60467" kindref="member">Rewind()</ref>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>offset</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Offset to seek to </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>origin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Position to seek from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether seek was successful </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_mpg123.h" line="43" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_mpg123_decoder_1acd8eb99a2808772d4c155072e35d9cc3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Mpg123Decoder::IsFinished</definition>
+        <argsstring>() const override</argsstring>
+        <name>IsFinished</name>
+        <qualifiedname>Mpg123Decoder::IsFinished</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a6dc473563b9edccf21d07a39fae4fc2d">IsFinished</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines whether the stream is finished.</para>
+<para><simplesect kind="return"><para>true stream ended </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_mpg123.h" line="45" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_mpg123_decoder_1a34e8c8a672c461b493a9a4339232dec7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Mpg123Decoder::GetFormat</definition>
+        <argsstring>(int &amp;frequency, AudioDecoder::Format &amp;format, int &amp;channels) const override</argsstring>
+        <name>GetFormat</name>
+        <qualifiedname>Mpg123Decoder::GetFormat</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a1710868b1111bf6e33e43156958e0d57">GetFormat</reimplements>
+        <param>
+          <type>int &amp;</type>
+          <declname>frequency</declname>
+        </param>
+        <param>
+          <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">AudioDecoder::Format</ref> &amp;</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>channels</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieves the format of the audio decoder. It is guaranteed that these settings will stay constant the whole time.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>frequency</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the audio frequency </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the audio format </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>channels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the amount of channels </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_mpg123.h" line="47" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_mpg123_decoder_1acee7451a26e5fc894bb1430270a9ff06" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Mpg123Decoder::SetFormat</definition>
+        <argsstring>(int frequency, AudioDecoder::Format format, int channels) override</argsstring>
+        <name>SetFormat</name>
+        <qualifiedname>Mpg123Decoder::SetFormat</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1acabfabe4f0b75482cc967b19133288c2">SetFormat</reimplements>
+        <param>
+          <type>int</type>
+          <declname>frequency</declname>
+        </param>
+        <param>
+          <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">AudioDecoder::Format</ref></type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>channels</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Requests a preferred format from the audio decoder. Not all decoders support everything and it&apos;s recommended to use the audio hardware for audio processing. When false is returned use GetFormat to get the real format of the output data.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>frequency</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Audio frequency </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Audio format </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>channels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of channels </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true when all settings were set, otherwise false (use GetFormat) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_mpg123.h" line="49" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_mpg123_decoder_1a5275f2b96e07c697dabb051bb1fd12d7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Mpg123Decoder::GetTicks</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetTicks</name>
+        <qualifiedname>Mpg123Decoder::GetTicks</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1acecf36942396a6f78a9839b2dc2315db">GetTicks</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns a value suitable for the GetMidiTicks command. For MIDI this is the amount of MIDI ticks, for other formats usually the playback position in seconds.</para>
+<para><simplesect kind="return"><para>Amount of MIDI ticks or position in seconds </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_mpg123.h" line="51" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_mpg123_decoder_1aa5a35e4c1220729618a7be843ff28db6" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool Mpg123Decoder::IsMp3</definition>
+        <argsstring>(Filesystem_Stream::InputStream &amp;stream)</argsstring>
+        <name>IsMp3</name>
+        <qualifiedname>Mpg123Decoder::IsMp3</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref> &amp;</type>
+          <declname>stream</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_mpg123.h" line="53" column="13"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_mpg123_decoder_1a907ad7e260e7a1f973055cd515ab08e4" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Mpg123Decoder::FillBuffer</definition>
+        <argsstring>(uint8_t *buffer, int length) override</argsstring>
+        <name>FillBuffer</name>
+        <qualifiedname>Mpg123Decoder::FillBuffer</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1aa06a5130b4b45e44a364162230953636">FillBuffer</reimplements>
+        <param>
+          <type>uint8_t *</type>
+          <declname>buffer</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called by the Decode functions to fill the buffer.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>buffer</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Buffer to fill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Buffer size </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>number of bytes read or -1 on error </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_mpg123.h" line="55" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Audio decoder for MP3 powered by mpg123 </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>AudioDecoder</label>
+        <link refid="class_audio_decoder"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>AudioDecoderBase</label>
+        <link refid="class_audio_decoder_base"/>
+      </node>
+      <node id="1">
+        <label>Mpg123Decoder</label>
+        <link refid="class_mpg123_decoder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>AudioDecoder</label>
+        <link refid="class_audio_decoder"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>AudioDecoderBase</label>
+        <link refid="class_audio_decoder_base"/>
+      </node>
+      <node id="1">
+        <label>Mpg123Decoder</label>
+        <link refid="class_mpg123_decoder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="decoder_mpg123.h" line="33" column="1" bodyfile="decoder_mpg123.h" bodystart="33" bodyend="65"/>
+    <listofallmembers>
+      <member refid="class_audio_decoder_base_1ad75c2fadcdccc9bdf89626e9689dc73d" prot="public" virt="non-virtual"><scope>Mpg123Decoder</scope><name>AdjustVolume</name></member>
+      <member refid="class_audio_decoder_1a5cc996156bf9b185f46e501ae1d26edd" prot="public" virt="non-virtual"><scope>Mpg123Decoder</scope><name>Create</name></member>
+      <member refid="class_audio_decoder_base_1a176c25bf79b3e978665d01f649741dca" prot="public" virt="non-virtual"><scope>Mpg123Decoder</scope><name>Decode</name></member>
+      <member refid="class_audio_decoder_base_1aaec31de02d5329099c26005f8c365fff" prot="protected" virt="non-virtual"><scope>Mpg123Decoder</scope><name>Decode</name></member>
+      <member refid="class_audio_decoder_base_1a675f8d5337b547549b2c11ad63acffbd" prot="public" virt="non-virtual"><scope>Mpg123Decoder</scope><name>DecodeAll</name></member>
+      <member refid="class_mpg123_decoder_1a6db549b4372ca311982c982aadf34b74" prot="private" virt="non-virtual"><scope>Mpg123Decoder</scope><name>err</name></member>
+      <member refid="class_audio_decoder_base_1ad2ce3dacf661c0849a08d1cad2e598d8" prot="protected" virt="non-virtual"><scope>Mpg123Decoder</scope><name>error_message</name></member>
+      <member refid="class_mpg123_decoder_1a907ad7e260e7a1f973055cd515ab08e4" prot="private" virt="virtual"><scope>Mpg123Decoder</scope><name>FillBuffer</name></member>
+      <member refid="class_mpg123_decoder_1a85f3f0308edbc3f07966a8ec4874ef65" prot="private" virt="non-virtual"><scope>Mpg123Decoder</scope><name>finished</name></member>
+      <member refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" prot="public" virt="non-virtual"><scope>Mpg123Decoder</scope><name>Format</name></member>
+      <member refid="class_audio_decoder_base_1a6459a4a6bbef9a3c1e114687e1ee38a7" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>GetError</name></member>
+      <member refid="class_mpg123_decoder_1a34e8c8a672c461b493a9a4339232dec7" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>GetFormat</name></member>
+      <member refid="class_audio_decoder_base_1ada062070c78b1298131fc11bfb84e4b3" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>GetLoopCount</name></member>
+      <member refid="class_audio_decoder_base_1a0dc76b0664e5db6bbf08f15feac0b2f7" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>GetLooping</name></member>
+      <member refid="class_audio_decoder_base_1a2296a26d68cfe1f139cf82aa27c38019" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>GetPitch</name></member>
+      <member refid="class_audio_decoder_1a7f4f01e9acc6b7a7f4cf46f138f0c3cf" prot="public" virt="non-virtual"><scope>Mpg123Decoder</scope><name>GetSamplesizeForFormat</name></member>
+      <member refid="class_mpg123_decoder_1a5275f2b96e07c697dabb051bb1fd12d7" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>GetTicks</name></member>
+      <member refid="class_audio_decoder_base_1ad6fee4301b53a5891a4b37e6cab958f1" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>GetType</name></member>
+      <member refid="class_audio_decoder_1af6aa02e1eafb474d6bda180b432f5e15" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>GetVolume</name></member>
+      <member refid="class_mpg123_decoder_1acd8eb99a2808772d4c155072e35d9cc3" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>IsFinished</name></member>
+      <member refid="class_mpg123_decoder_1aa5a35e4c1220729618a7be843ff28db6" prot="public" virt="non-virtual"><scope>Mpg123Decoder</scope><name>IsMp3</name></member>
+      <member refid="class_audio_decoder_base_1ab8feafa866394875dc7c538b79021025" prot="protected" virt="non-virtual"><scope>Mpg123Decoder</scope><name>loop_count</name></member>
+      <member refid="class_audio_decoder_base_1a31c8df4d0267b8363daa9da00d2ed2f3" prot="protected" virt="non-virtual"><scope>Mpg123Decoder</scope><name>looping</name></member>
+      <member refid="class_mpg123_decoder_1ad9ffc07509f57a711446c26bcd9f62f4" prot="public" virt="non-virtual"><scope>Mpg123Decoder</scope><name>Mpg123Decoder</name></member>
+      <member refid="class_audio_decoder_base_1a0735cf7d77356fbc1a2735804211a9c8" prot="protected" virt="non-virtual"><scope>Mpg123Decoder</scope><name>music_type</name></member>
+      <member refid="class_mpg123_decoder_1a7fed93633ec5c7782dc3284654e8a6f1" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>Open</name></member>
+      <member refid="class_audio_decoder_1a50ddc8b699ec0ae2fc0495bfd0b1707b" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>Pause</name></member>
+      <member refid="class_audio_decoder_1aecdd23e1eeeb1a0b445302c3e61801b8" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>Resume</name></member>
+      <member refid="class_audio_decoder_base_1a2c9d165295deeb0cd12fea13cdd60467" prot="public" virt="non-virtual"><scope>Mpg123Decoder</scope><name>Rewind</name></member>
+      <member refid="class_mpg123_decoder_1ae5f606a37bbccb316b7000eb30021803" prot="private" virt="non-virtual"><scope>Mpg123Decoder</scope><name>samplerate</name></member>
+      <member refid="class_mpg123_decoder_1adb8efee365fcff91bb7eb17924f4eb58" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>Seek</name></member>
+      <member refid="class_audio_decoder_1a629190e608348a1b91237be1602004a2" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>SetFade</name></member>
+      <member refid="class_mpg123_decoder_1acee7451a26e5fc894bb1430270a9ff06" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>SetFormat</name></member>
+      <member refid="class_audio_decoder_base_1a840273aa05f6b6619863f9b7af142034" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>SetLooping</name></member>
+      <member refid="class_audio_decoder_base_1a81ca81aceceef4b9cc8a6818d3d199ca" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>SetPitch</name></member>
+      <member refid="class_audio_decoder_1ac6a23dcafc0da6b15539133234dad41b" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>SetVolume</name></member>
+      <member refid="class_mpg123_decoder_1a8906d760f8fcacce3d3eee932dbdc21a" prot="private" virt="non-virtual"><scope>Mpg123Decoder</scope><name>stream</name></member>
+      <member refid="class_audio_decoder_base_1a786745c4d49ed9146579c72a8b63ddd7" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>Tell</name></member>
+      <member refid="class_audio_decoder_1a279e144005fee23820bd0a02db5d87a6" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>Update</name></member>
+      <member refid="class_audio_decoder_base_1a11f5c509ee0dbc2e9e49505c27a8caf7" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>UpdateMidi</name></member>
+      <member refid="class_mpg123_decoder_1aadcf11a88e63a553bc1a201a849559d2" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>WasInited</name></member>
+      <member refid="class_audio_decoder_base_1a9b7f3034af094a9d71e48ac220b4ca6a" prot="public" virt="virtual"><scope>Mpg123Decoder</scope><name>~AudioDecoderBase</name></member>
+      <member refid="class_mpg123_decoder_1a1aea76f03a362cebdb7225636245dc71" prot="public" virt="non-virtual"><scope>Mpg123Decoder</scope><name>~Mpg123Decoder</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

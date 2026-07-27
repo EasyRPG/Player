@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dec_8h" kind="file" language="C++">
+    <compoundname>dec.h</compoundname>
+    <includedby refid="leasy_8hpp" local="yes">leasy/leasy.hpp</includedby>
+    <invincdepgraph>
+      <node id="3">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="4">
+        <label>graphics.cpp</label>
+        <link refid="graphics_8cpp"/>
+      </node>
+      <node id="1">
+        <label>leasy/dec.h</label>
+        <link refid="dec_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>leasy/leasy.cpp</label>
+        <link refid="leasy_8cpp"/>
+      </node>
+      <node id="2">
+        <label>leasy/leasy.hpp</label>
+        <link refid="leasy_8hpp"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>leasy/ui/winstream.hpp</label>
+        <link refid="winstream_8hpp"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>platform/sdl/main.cpp</label>
+        <link refid="sdl_2main_8cpp"/>
+      </node>
+      <node id="8">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="dec_8h_1a319dfa9b431f4f40f335eb8bafbe80ec" prot="public" static="no">
+        <name>LEASY_MOVED</name>
+        <param><defname>X</defname></param>
+        <initializer>L_MOVED_##X</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/dec.h" line="4" column="9" bodyfile="leasy/dec.h" bodystart="4" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>__LEASY_DEC_H__</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>__LEASY_DEC_H__</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4" refid="dec_8h_1a319dfa9b431f4f40f335eb8bafbe80ec" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LEASY_MOVED(X)<sp/>L_MOVED_##X</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>__LEASY_DEC_H__</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/dec.h"/>
+  </compounddef>
+</doxygen>

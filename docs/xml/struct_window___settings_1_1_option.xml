@@ -1,0 +1,227 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_window___settings_1_1_option" kind="struct" language="C++" prot="public">
+    <compoundname>Window_Settings::Option</compoundname>
+    <includes refid="window__settings_8h" local="no">window_settings.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_window___settings_1_1_option_1ac2c23071ae815a92c1b3e33b200ef362" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Window_Settings::Option::text</definition>
+        <argsstring></argsstring>
+        <name>text</name>
+        <qualifiedname>Window_Settings::Option::text</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="66" column="13" bodyfile="window_settings.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___settings_1_1_option_1a6b393f0431cec9aeef9fcd2a905361da" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Window_Settings::Option::value_text</definition>
+        <argsstring></argsstring>
+        <name>value_text</name>
+        <qualifiedname>Window_Settings::Option::value_text</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="67" column="13" bodyfile="window_settings.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___settings_1_1_option_1af11aa863c38f9823e92278ad771cef6f" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Window_Settings::Option::help</definition>
+        <argsstring></argsstring>
+        <name>help</name>
+        <qualifiedname>Window_Settings::Option::help</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="68" column="13" bodyfile="window_settings.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___settings_1_1_option_1a0bba107e8ecd0299d884acc27b6b2f01" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Window_Settings::Option::help2</definition>
+        <argsstring></argsstring>
+        <name>help2</name>
+        <qualifiedname>Window_Settings::Option::help2</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="69" column="13" bodyfile="window_settings.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___settings_1_1_option_1a9a5d671096348588e941ea98c4319541" prot="public" static="no" mutable="no">
+        <type>std::function&lt; void(void)&gt;</type>
+        <definition>std::function&lt;void(void)&gt; Window_Settings::Option::action</definition>
+        <argsstring></argsstring>
+        <name>action</name>
+        <qualifiedname>Window_Settings::Option::action</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="70" column="15" bodyfile="window_settings.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___settings_1_1_option_1aa8fd872e001511b624cbec0b376dfe66" prot="public" static="no" mutable="no">
+        <type><ref refid="class_window___settings_1a643af582bcf6d86b76c675dc545270b0" kindref="member">OptionMode</ref></type>
+        <definition>OptionMode Window_Settings::Option::mode</definition>
+        <argsstring></argsstring>
+        <name>mode</name>
+        <qualifiedname>Window_Settings::Option::mode</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="71" column="12" bodyfile="window_settings.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___settings_1_1_option_1a35b462da093ab89763b46f2bc6243a7a" prot="public" static="no" mutable="no">
+        <type><ref refid="class_font_1a300007dc1b65d906cf32066494d5cb8f" kindref="member">Font::SystemColor</ref></type>
+        <definition>Font::SystemColor Window_Settings::Option::color</definition>
+        <argsstring></argsstring>
+        <name>color</name>
+        <qualifiedname>Window_Settings::Option::color</qualifiedname>
+        <initializer>= <ref refid="class_font_1a300007dc1b65d906cf32066494d5cb8faab221bb13421493c5b0745d87ebc58e9" kindref="member">Font::ColorDefault</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="72" column="19" bodyfile="window_settings.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___settings_1_1_option_1ac8c005e753688c071a6d26f97818d707" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Settings::Option::current_value</definition>
+        <argsstring></argsstring>
+        <name>current_value</name>
+        <qualifiedname>Window_Settings::Option::current_value</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="73" column="5" bodyfile="window_settings.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___settings_1_1_option_1aef824aff542deb08b5264007da9ebd31" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Settings::Option::original_value</definition>
+        <argsstring></argsstring>
+        <name>original_value</name>
+        <qualifiedname>Window_Settings::Option::original_value</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="74" column="5" bodyfile="window_settings.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___settings_1_1_option_1a399e2e06fefc4df46066460eb6decbf9" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Settings::Option::min_value</definition>
+        <argsstring></argsstring>
+        <name>min_value</name>
+        <qualifiedname>Window_Settings::Option::min_value</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="75" column="5" bodyfile="window_settings.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___settings_1_1_option_1ae3ed23f10d87865b30f7f285dffdbdcb" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Settings::Option::max_value</definition>
+        <argsstring></argsstring>
+        <name>max_value</name>
+        <qualifiedname>Window_Settings::Option::max_value</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="76" column="5" bodyfile="window_settings.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___settings_1_1_option_1a842fd5850ce4a22a990e2de0969014cc" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; Window_Settings::Option::options_index</definition>
+        <argsstring></argsstring>
+        <name>options_index</name>
+        <qualifiedname>Window_Settings::Option::options_index</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="77" column="13" bodyfile="window_settings.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___settings_1_1_option_1a4360f955eee99043cdd11ce1358662eb" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt;std::string&gt; Window_Settings::Option::options_text</definition>
+        <argsstring></argsstring>
+        <name>options_text</name>
+        <qualifiedname>Window_Settings::Option::options_text</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="78" column="13" bodyfile="window_settings.h" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___settings_1_1_option_1a0f48481adfed78df63e1e954d8c67d1d" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt;std::string&gt; Window_Settings::Option::options_help</definition>
+        <argsstring></argsstring>
+        <name>options_help</name>
+        <qualifiedname>Window_Settings::Option::options_help</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="79" column="13" bodyfile="window_settings.h" bodystart="79" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="window_settings.h" line="65" column="1" bodyfile="window_settings.h" bodystart="65" bodyend="80"/>
+    <listofallmembers>
+      <member refid="struct_window___settings_1_1_option_1a9a5d671096348588e941ea98c4319541" prot="public" virt="non-virtual"><scope>Window_Settings::Option</scope><name>action</name></member>
+      <member refid="struct_window___settings_1_1_option_1a35b462da093ab89763b46f2bc6243a7a" prot="public" virt="non-virtual"><scope>Window_Settings::Option</scope><name>color</name></member>
+      <member refid="struct_window___settings_1_1_option_1ac8c005e753688c071a6d26f97818d707" prot="public" virt="non-virtual"><scope>Window_Settings::Option</scope><name>current_value</name></member>
+      <member refid="struct_window___settings_1_1_option_1af11aa863c38f9823e92278ad771cef6f" prot="public" virt="non-virtual"><scope>Window_Settings::Option</scope><name>help</name></member>
+      <member refid="struct_window___settings_1_1_option_1a0bba107e8ecd0299d884acc27b6b2f01" prot="public" virt="non-virtual"><scope>Window_Settings::Option</scope><name>help2</name></member>
+      <member refid="struct_window___settings_1_1_option_1ae3ed23f10d87865b30f7f285dffdbdcb" prot="public" virt="non-virtual"><scope>Window_Settings::Option</scope><name>max_value</name></member>
+      <member refid="struct_window___settings_1_1_option_1a399e2e06fefc4df46066460eb6decbf9" prot="public" virt="non-virtual"><scope>Window_Settings::Option</scope><name>min_value</name></member>
+      <member refid="struct_window___settings_1_1_option_1aa8fd872e001511b624cbec0b376dfe66" prot="public" virt="non-virtual"><scope>Window_Settings::Option</scope><name>mode</name></member>
+      <member refid="struct_window___settings_1_1_option_1a0f48481adfed78df63e1e954d8c67d1d" prot="public" virt="non-virtual"><scope>Window_Settings::Option</scope><name>options_help</name></member>
+      <member refid="struct_window___settings_1_1_option_1a842fd5850ce4a22a990e2de0969014cc" prot="public" virt="non-virtual"><scope>Window_Settings::Option</scope><name>options_index</name></member>
+      <member refid="struct_window___settings_1_1_option_1a4360f955eee99043cdd11ce1358662eb" prot="public" virt="non-virtual"><scope>Window_Settings::Option</scope><name>options_text</name></member>
+      <member refid="struct_window___settings_1_1_option_1aef824aff542deb08b5264007da9ebd31" prot="public" virt="non-virtual"><scope>Window_Settings::Option</scope><name>original_value</name></member>
+      <member refid="struct_window___settings_1_1_option_1ac2c23071ae815a92c1b3e33b200ef362" prot="public" virt="non-virtual"><scope>Window_Settings::Option</scope><name>text</name></member>
+      <member refid="struct_window___settings_1_1_option_1a6b393f0431cec9aeef9fcd2a905361da" prot="public" virt="non-virtual"><scope>Window_Settings::Option</scope><name>value_text</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

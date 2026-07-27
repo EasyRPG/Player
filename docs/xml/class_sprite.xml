@@ -1,0 +1,1443 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_sprite" kind="class" language="C++" prot="public">
+    <compoundname>Sprite</compoundname>
+    <basecompoundref refid="class_drawable" prot="public" virt="non-virtual">Drawable</basecompoundref>
+    <derivedcompoundref refid="class_battle_animation" prot="public" virt="non-virtual">BattleAnimation</derivedcompoundref>
+    <derivedcompoundref refid="class_sprite___airship_shadow" prot="public" virt="non-virtual">Sprite_AirshipShadow</derivedcompoundref>
+    <derivedcompoundref refid="class_sprite___battler" prot="public" virt="non-virtual">Sprite_Battler</derivedcompoundref>
+    <derivedcompoundref refid="class_sprite___character" prot="public" virt="non-virtual">Sprite_Character</derivedcompoundref>
+    <derivedcompoundref refid="class_sprite___picture" prot="public" virt="non-virtual">Sprite_Picture</derivedcompoundref>
+    <derivedcompoundref refid="class_sprite___timer" prot="public" virt="non-virtual">Sprite_Timer</derivedcompoundref>
+    <derivedcompoundref refid="class_sprite___weapon" prot="public" virt="non-virtual">Sprite_Weapon</derivedcompoundref>
+    <includes refid="sprite_8h" local="no">sprite.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_sprite_1a107202b13bff18068ef575063c963fee" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Sprite::bitmap</definition>
+        <argsstring></argsstring>
+        <name>bitmap</name>
+        <qualifiedname>Sprite::bitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="108" column="11" bodyfile="sprite.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1ab39633b5c20e0a970898723adfa693af" prot="private" static="no" mutable="no">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect Sprite::src_rect</definition>
+        <argsstring></argsstring>
+        <name>src_rect</name>
+        <qualifiedname>Sprite::src_rect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="110" column="6" bodyfile="sprite.h" bodystart="110" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1ab36028dcefdd4bf024c52c8d9519a283" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <qualifiedname>Sprite::x</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="111" column="5" bodyfile="sprite.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1a363e26017ee2aaed8636f7dab92af2cd" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <qualifiedname>Sprite::y</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="112" column="5" bodyfile="sprite.h" bodystart="112" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1a259d3d3338f43be54c4038847cf2595a" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite::ox</definition>
+        <argsstring></argsstring>
+        <name>ox</name>
+        <qualifiedname>Sprite::ox</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="113" column="5" bodyfile="sprite.h" bodystart="113" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1ac5cdbf24bf42742121ad122113455df8" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite::oy</definition>
+        <argsstring></argsstring>
+        <name>oy</name>
+        <qualifiedname>Sprite::oy</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="114" column="5" bodyfile="sprite.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1ae44428c94d577607b7b792193143ddee" prot="private" static="no" mutable="no">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect Sprite::src_rect_effect</definition>
+        <argsstring></argsstring>
+        <name>src_rect_effect</name>
+        <qualifiedname>Sprite::src_rect_effect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="116" column="6" bodyfile="sprite.h" bodystart="116" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1a7da5ad6f84a7ca26a4d0e49a7da63f5c" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite::opacity_top_effect</definition>
+        <argsstring></argsstring>
+        <name>opacity_top_effect</name>
+        <qualifiedname>Sprite::opacity_top_effect</qualifiedname>
+        <initializer>= 255</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="117" column="5" bodyfile="sprite.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1a5a1d73daf277fa7f29d3984014c0ddd7" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite::opacity_bottom_effect</definition>
+        <argsstring></argsstring>
+        <name>opacity_bottom_effect</name>
+        <qualifiedname>Sprite::opacity_bottom_effect</qualifiedname>
+        <initializer>= 128</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="118" column="5" bodyfile="sprite.h" bodystart="118" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1a897e392ed0a18b27dfeca6417e59e7da" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite::bush_effect</definition>
+        <argsstring></argsstring>
+        <name>bush_effect</name>
+        <qualifiedname>Sprite::bush_effect</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="119" column="5" bodyfile="sprite.h" bodystart="119" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1a872593c28f81aa7a458c170ae5142142" prot="private" static="no" mutable="no">
+        <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+        <definition>Tone Sprite::tone_effect</definition>
+        <argsstring></argsstring>
+        <name>tone_effect</name>
+        <qualifiedname>Sprite::tone_effect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="120" column="6" bodyfile="sprite.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1ae2fb8ddff048ecac1006d678f1d1ce28" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Sprite::zoom_x_effect</definition>
+        <argsstring></argsstring>
+        <name>zoom_x_effect</name>
+        <qualifiedname>Sprite::zoom_x_effect</qualifiedname>
+        <initializer>= 1.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="121" column="8" bodyfile="sprite.h" bodystart="121" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1a33cca451d32d209ac768ee780f9aa5c5" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Sprite::zoom_y_effect</definition>
+        <argsstring></argsstring>
+        <name>zoom_y_effect</name>
+        <qualifiedname>Sprite::zoom_y_effect</qualifiedname>
+        <initializer>= 1.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="122" column="8" bodyfile="sprite.h" bodystart="122" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1a0e0d68065c9cb7da72a5e4cec528884e" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Sprite::angle_effect</definition>
+        <argsstring></argsstring>
+        <name>angle_effect</name>
+        <qualifiedname>Sprite::angle_effect</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="123" column="8" bodyfile="sprite.h" bodystart="123" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1ae95e27722bcab0de35bd256efe5c424b" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite::blend_type_effect</definition>
+        <argsstring></argsstring>
+        <name>blend_type_effect</name>
+        <qualifiedname>Sprite::blend_type_effect</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="124" column="5" bodyfile="sprite.h" bodystart="124" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1afd6e114da7338af1ab7068af53213c08" prot="private" static="no" mutable="no">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color Sprite::blend_color_effect</definition>
+        <argsstring></argsstring>
+        <name>blend_color_effect</name>
+        <qualifiedname>Sprite::blend_color_effect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="125" column="7" bodyfile="sprite.h" bodystart="125" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1a3d2adb29cd6d4c28c38de931e329ad8f" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite::waver_effect_depth</definition>
+        <argsstring></argsstring>
+        <name>waver_effect_depth</name>
+        <qualifiedname>Sprite::waver_effect_depth</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="126" column="5" bodyfile="sprite.h" bodystart="126" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1ab17d5cc30cfd112f2ed68e04e66ccb02" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Sprite::waver_effect_phase</definition>
+        <argsstring></argsstring>
+        <name>waver_effect_phase</name>
+        <qualifiedname>Sprite::waver_effect_phase</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="127" column="8" bodyfile="sprite.h" bodystart="127" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1a25863620ccfb54fda3ecb28e2f27f30b" prot="private" static="no" mutable="no">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color Sprite::flash_effect</definition>
+        <argsstring></argsstring>
+        <name>flash_effect</name>
+        <qualifiedname>Sprite::flash_effect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="128" column="7" bodyfile="sprite.h" bodystart="128" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1a92859cf21bc5b8a68142ee34193198aa" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Sprite::bitmap_effects</definition>
+        <argsstring></argsstring>
+        <name>bitmap_effects</name>
+        <qualifiedname>Sprite::bitmap_effects</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="130" column="11" bodyfile="sprite.h" bodystart="130" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1a0dfa4af484a0404280d61cb1d91ce917" prot="private" static="no" mutable="no">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect Sprite::bitmap_effects_src_rect</definition>
+        <argsstring></argsstring>
+        <name>bitmap_effects_src_rect</name>
+        <qualifiedname>Sprite::bitmap_effects_src_rect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="132" column="6" bodyfile="sprite.h" bodystart="132" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1a8856bccfc022536b3802a488e755969c" prot="private" static="no" mutable="no">
+        <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+        <definition>Tone Sprite::current_tone</definition>
+        <argsstring></argsstring>
+        <name>current_tone</name>
+        <qualifiedname>Sprite::current_tone</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="134" column="6" bodyfile="sprite.h" bodystart="134" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1a01d3c4b5b08c8f0981418d6658097c2c" prot="private" static="no" mutable="no">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color Sprite::current_flash</definition>
+        <argsstring></argsstring>
+        <name>current_flash</name>
+        <qualifiedname>Sprite::current_flash</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="135" column="7" bodyfile="sprite.h" bodystart="135" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1ae026ae1a1526dafd8f5620931bb2a7e7" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Sprite::flipx_effect</definition>
+        <argsstring></argsstring>
+        <name>flipx_effect</name>
+        <qualifiedname>Sprite::flipx_effect</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="136" column="6" bodyfile="sprite.h" bodystart="136" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1a67ee6faec89cfbf02c194972123553e7" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Sprite::flipy_effect</definition>
+        <argsstring></argsstring>
+        <name>flipy_effect</name>
+        <qualifiedname>Sprite::flipy_effect</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="137" column="6" bodyfile="sprite.h" bodystart="137" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1a9c7f1c776c4d5045f0bd5b455bde1eed" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Sprite::current_flip_x</definition>
+        <argsstring></argsstring>
+        <name>current_flip_x</name>
+        <qualifiedname>Sprite::current_flip_x</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="138" column="6" bodyfile="sprite.h" bodystart="138" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1ae3a315588be72f4fbe514ba05819a02a" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Sprite::current_flip_y</definition>
+        <argsstring></argsstring>
+        <name>current_flip_y</name>
+        <qualifiedname>Sprite::current_flip_y</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="139" column="6" bodyfile="sprite.h" bodystart="139" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite_1a0ccd6ea285872766652c95318169c5b6" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Sprite::bitmap_changed</definition>
+        <argsstring></argsstring>
+        <name>bitmap_changed</name>
+        <qualifiedname>Sprite::bitmap_changed</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="140" column="6" bodyfile="sprite.h" bodystart="140" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_sprite_1aa3a20244c338653f65beaa26d6189581" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Sprite::Sprite</definition>
+        <argsstring>(Drawable::Flags flags=Drawable::Flags::Default)</argsstring>
+        <name>Sprite</name>
+        <qualifiedname>Sprite::Sprite</qualifiedname>
+        <param>
+          <type><ref refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" kindref="member">Drawable::Flags</ref></type>
+          <declname>flags</declname>
+          <defval><ref refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85a7a1920d61156abc05a60135aefe8bc67" kindref="member">Drawable::Flags::Default</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="34" column="10" bodyfile="sprite.cpp" bodystart="28" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a0a4a3bd44c2556cbbe47b4480fae2a5b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Sprite::Draw</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Sprite::Draw</qualifiedname>
+        <reimplements refid="class_drawable_1aa8a9b151f40368331f6fd8bbdd20133f">Draw</reimplements>
+        <reimplementedby refid="class_sprite___actor_1a2aeef2f6bd2722c71f09abf9acf4db25">Draw</reimplementedby>
+        <reimplementedby refid="class_sprite___airship_shadow_1a23db0371cd3365e6d4c2271535f17cbe">Draw</reimplementedby>
+        <reimplementedby refid="class_sprite___character_1a38aa5b4bda3b49f9c764b2706a8b1f5b">Draw</reimplementedby>
+        <reimplementedby refid="class_sprite___enemy_1a75e73445a851e236c7868e31ce637a25">Draw</reimplementedby>
+        <reimplementedby refid="class_sprite___picture_1a5f4769e22afa889e3ecea3e663668934">Draw</reimplementedby>
+        <reimplementedby refid="class_sprite___timer_1a27c4a3a0d7170ba0c48e0d2cadf880dd">Draw</reimplementedby>
+        <reimplementedby refid="class_sprite___weapon_1a1317ad37e465680258c8779c26c98278">Draw</reimplementedby>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="36" column="6" bodyfile="sprite.cpp" bodystart="34" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a190fdb389450b2a425d3b7256b10b041" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int Sprite::GetWidth</definition>
+        <argsstring>() const</argsstring>
+        <name>GetWidth</name>
+        <qualifiedname>Sprite::GetWidth</qualifiedname>
+        <reimplementedby refid="class_sprite___actor_1ae0a4fab049acfd277694045466df8191">GetWidth</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="38" column="13" bodyfile="sprite.h" bodystart="148" bodyend="150"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1ab10bdecf4bf20472b53a3102315180c2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int Sprite::GetHeight</definition>
+        <argsstring>() const</argsstring>
+        <name>GetHeight</name>
+        <qualifiedname>Sprite::GetHeight</qualifiedname>
+        <reimplementedby refid="class_sprite___actor_1a521e77503e7d23136f4025b406ef99ba">GetHeight</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="39" column="13" bodyfile="sprite.h" bodystart="152" bodyend="154"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a8692649cce1320c23d7216207805b990" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref> &amp;</type>
+        <definition>BitmapRef &amp; Sprite::GetBitmap</definition>
+        <argsstring>()</argsstring>
+        <name>GetBitmap</name>
+        <qualifiedname>Sprite::GetBitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="41" column="11" bodyfile="sprite.h" bodystart="156" bodyend="158"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1aa34fbb968bfb9441bca6a7be8a1e9629" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref> const &amp;</type>
+        <definition>BitmapRef const  &amp; Sprite::GetBitmap</definition>
+        <argsstring>() const</argsstring>
+        <name>GetBitmap</name>
+        <qualifiedname>Sprite::GetBitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="42" column="17" bodyfile="sprite.h" bodystart="160" bodyend="162"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a0b1f8eb93adbfffb165acb30699ddd78" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetBitmap</definition>
+        <argsstring>(BitmapRef const &amp;bitmap)</argsstring>
+        <name>SetBitmap</name>
+        <qualifiedname>Sprite::SetBitmap</qualifiedname>
+        <param>
+          <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref> const &amp;</type>
+          <declname>bitmap</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="43" column="6" bodyfile="sprite.cpp" bodystart="124" bodyend="135"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1ac50818cd2774516c70f2583d54845f98" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+        <definition>Rect const  &amp; Sprite::GetSrcRect</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSrcRect</name>
+        <qualifiedname>Sprite::GetSrcRect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="44" column="12" bodyfile="sprite.h" bodystart="164" bodyend="166"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a890398eafe1a9135d7baa939842a798a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetSrcRect</definition>
+        <argsstring>(Rect const &amp;src_rect)</argsstring>
+        <name>SetSrcRect</name>
+        <qualifiedname>Sprite::SetSrcRect</qualifiedname>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="45" column="6" bodyfile="sprite.h" bodystart="168" bodyend="170"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1ae0a9b0248ce543551c1486c824b2949c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetSpriteRect</definition>
+        <argsstring>(Rect const &amp;sprite_rect)</argsstring>
+        <name>SetSpriteRect</name>
+        <qualifiedname>Sprite::SetSpriteRect</qualifiedname>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>sprite_rect</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="46" column="6" bodyfile="sprite.h" bodystart="284" bodyend="286"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1aa87fb1678e6d814923b390085c8b47ca" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Sprite::GetX</definition>
+        <argsstring>() const</argsstring>
+        <name>GetX</name>
+        <qualifiedname>Sprite::GetX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="47" column="5" bodyfile="sprite.h" bodystart="172" bodyend="174"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a57277e7b2c107f36f587c46e99f7a48f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetX</definition>
+        <argsstring>(int x)</argsstring>
+        <name>SetX</name>
+        <qualifiedname>Sprite::SetX</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="48" column="6" bodyfile="sprite.h" bodystart="176" bodyend="178"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1af3bb2ded3b6d29905c717031e8e873e4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Sprite::GetY</definition>
+        <argsstring>() const</argsstring>
+        <name>GetY</name>
+        <qualifiedname>Sprite::GetY</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="49" column="5" bodyfile="sprite.h" bodystart="180" bodyend="182"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a0012676d8951dbf2342de94acc18eecd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetY</definition>
+        <argsstring>(int y)</argsstring>
+        <name>SetY</name>
+        <qualifiedname>Sprite::SetY</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="50" column="6" bodyfile="sprite.h" bodystart="184" bodyend="186"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1aa5c54c0b59a4f4247157e8446d588645" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Sprite::GetOx</definition>
+        <argsstring>() const</argsstring>
+        <name>GetOx</name>
+        <qualifiedname>Sprite::GetOx</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="51" column="5" bodyfile="sprite.h" bodystart="188" bodyend="190"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1ae2504fad70205dd8064392da7ceb4f71" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetOx</definition>
+        <argsstring>(int ox)</argsstring>
+        <name>SetOx</name>
+        <qualifiedname>Sprite::SetOx</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>ox</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="52" column="6" bodyfile="sprite.h" bodystart="192" bodyend="194"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a8acf5af95db9d7f29958277c2625b8c7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Sprite::GetOy</definition>
+        <argsstring>() const</argsstring>
+        <name>GetOy</name>
+        <qualifiedname>Sprite::GetOy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="53" column="5" bodyfile="sprite.h" bodystart="196" bodyend="198"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a0e189abc78607a4a6e011d6e394a43d7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetOy</definition>
+        <argsstring>(int oy)</argsstring>
+        <name>SetOy</name>
+        <qualifiedname>Sprite::SetOy</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>oy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="54" column="6" bodyfile="sprite.h" bodystart="200" bodyend="202"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1afdc1630a767fef01cb29f81983a25825" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Sprite::GetZoomX</definition>
+        <argsstring>() const</argsstring>
+        <name>GetZoomX</name>
+        <qualifiedname>Sprite::GetZoomX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="55" column="8" bodyfile="sprite.h" bodystart="204" bodyend="206"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a3e7151dfb8645a3fbb71395625af985c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetZoomX</definition>
+        <argsstring>(double zoom_x)</argsstring>
+        <name>SetZoomX</name>
+        <qualifiedname>Sprite::SetZoomX</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>zoom_x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="56" column="6" bodyfile="sprite.h" bodystart="212" bodyend="214"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a7fc9c4d33c7fade504f93a86c34a2b66" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Sprite::GetZoomY</definition>
+        <argsstring>() const</argsstring>
+        <name>GetZoomY</name>
+        <qualifiedname>Sprite::GetZoomY</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="57" column="8" bodyfile="sprite.h" bodystart="208" bodyend="210"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1aad6019d133e5abac3323d671af4ed06b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetZoomY</definition>
+        <argsstring>(double zoom_y)</argsstring>
+        <name>SetZoomY</name>
+        <qualifiedname>Sprite::SetZoomY</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>zoom_y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="58" column="6" bodyfile="sprite.h" bodystart="216" bodyend="218"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1ade47ec9b2fc6b79921a978ac85508eb4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Sprite::GetAngle</definition>
+        <argsstring>() const</argsstring>
+        <name>GetAngle</name>
+        <qualifiedname>Sprite::GetAngle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>rotation angle in radians </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="61" column="8" bodyfile="sprite.h" bodystart="220" bodyend="222"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1ab2ac97d71f9af168477ff5114e895021" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetAngle</definition>
+        <argsstring>(double angle)</argsstring>
+        <name>SetAngle</name>
+        <qualifiedname>Sprite::SetAngle</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>angle</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set rotation angle.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>angle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the angle in radians </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="67" column="6" bodyfile="sprite.h" bodystart="224" bodyend="226"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a120a7dccaeea0d7fd7bac4f87b4b9d00" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Sprite::GetFlipX</definition>
+        <argsstring>() const</argsstring>
+        <name>GetFlipX</name>
+        <qualifiedname>Sprite::GetFlipX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="69" column="6" bodyfile="sprite.h" bodystart="228" bodyend="230"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a85222d16191092db3e0d731f8a78d4a8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetFlipX</definition>
+        <argsstring>(bool flipx)</argsstring>
+        <name>SetFlipX</name>
+        <qualifiedname>Sprite::SetFlipX</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>flipx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="70" column="6" bodyfile="sprite.h" bodystart="288" bodyend="290"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a7217243249b11d9046369cd3f0141adb" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Sprite::GetFlipY</definition>
+        <argsstring>() const</argsstring>
+        <name>GetFlipY</name>
+        <qualifiedname>Sprite::GetFlipY</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="71" column="6" bodyfile="sprite.h" bodystart="232" bodyend="234"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a909b9d49b660fa592b0b753f602dddef" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetFlipY</definition>
+        <argsstring>(bool flipy)</argsstring>
+        <name>SetFlipY</name>
+        <qualifiedname>Sprite::SetFlipY</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>flipy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="72" column="6" bodyfile="sprite.h" bodystart="292" bodyend="294"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a9a5a480bc86ea9712a94303a53082da3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Sprite::GetBushDepth</definition>
+        <argsstring>() const</argsstring>
+        <name>GetBushDepth</name>
+        <qualifiedname>Sprite::GetBushDepth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="73" column="5" bodyfile="sprite.h" bodystart="236" bodyend="238"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a48f4b1522175b8aab5e7f2d6b11a9425" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetBushDepth</definition>
+        <argsstring>(int bush_depth)</argsstring>
+        <name>SetBushDepth</name>
+        <qualifiedname>Sprite::SetBushDepth</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>bush_depth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="74" column="6" bodyfile="sprite.h" bodystart="296" bodyend="298"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1ae6b8f3dd521db97853b3f2719e298db5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Sprite::GetOpacity</definition>
+        <argsstring>(int which=0) const</argsstring>
+        <name>GetOpacity</name>
+        <qualifiedname>Sprite::GetOpacity</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>which</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="75" column="5" bodyfile="sprite.h" bodystart="240" bodyend="242"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a00ec8dcc661ae5acea3c013dc12c07f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetOpacity</definition>
+        <argsstring>(int top_opacity, int bottom_opacity=-1)</argsstring>
+        <name>SetOpacity</name>
+        <qualifiedname>Sprite::SetOpacity</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>top_opacity</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>bottom_opacity</declname>
+          <defval>-1</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="76" column="6" bodyfile="sprite.cpp" bodystart="137" bodyend="146"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1ae5eb51cb5b55c057cbcafe69d13929a6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Sprite::GetBlendType</definition>
+        <argsstring>() const</argsstring>
+        <name>GetBlendType</name>
+        <qualifiedname>Sprite::GetBlendType</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="77" column="5" bodyfile="sprite.h" bodystart="244" bodyend="246"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a662cbae14d3628d670b865157b247df1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetBlendType</definition>
+        <argsstring>(int blend_type)</argsstring>
+        <name>SetBlendType</name>
+        <qualifiedname>Sprite::SetBlendType</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>blend_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="78" column="6" bodyfile="sprite.h" bodystart="248" bodyend="250"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a699b7b199c7e2ea838878d9058401911" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color Sprite::GetBlendColor</definition>
+        <argsstring>() const</argsstring>
+        <name>GetBlendColor</name>
+        <qualifiedname>Sprite::GetBlendColor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="79" column="7" bodyfile="sprite.h" bodystart="252" bodyend="254"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a5a80440fb552919c24e3320544554a62" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetBlendColor</definition>
+        <argsstring>(Color color)</argsstring>
+        <name>SetBlendColor</name>
+        <qualifiedname>Sprite::SetBlendColor</qualifiedname>
+        <param>
+          <type><ref refid="class_color" kindref="compound">Color</ref></type>
+          <declname>color</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="80" column="6" bodyfile="sprite.h" bodystart="256" bodyend="258"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1af315f162b8f1d0374d2bb4788f15eb59" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+        <definition>Tone Sprite::GetTone</definition>
+        <argsstring>() const</argsstring>
+        <name>GetTone</name>
+        <qualifiedname>Sprite::GetTone</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="81" column="6" bodyfile="sprite.h" bodystart="260" bodyend="262"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a89865e8080e634db19ab6409efc0ef2c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetTone</definition>
+        <argsstring>(Tone tone)</argsstring>
+        <name>SetTone</name>
+        <qualifiedname>Sprite::SetTone</qualifiedname>
+        <param>
+          <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+          <declname>tone</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="82" column="6" bodyfile="sprite.h" bodystart="264" bodyend="266"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1add7a9fa3823099c15d04bd98764c00b8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Sprite::GetWaverDepth</definition>
+        <argsstring>() const</argsstring>
+        <name>GetWaverDepth</name>
+        <qualifiedname>Sprite::GetWaverDepth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>wave depth in pixels </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="85" column="5" bodyfile="sprite.h" bodystart="268" bodyend="270"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a505321681169327d559b7f59146fdec9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetWaverDepth</definition>
+        <argsstring>(int depth)</argsstring>
+        <name>SetWaverDepth</name>
+        <qualifiedname>Sprite::SetWaverDepth</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>depth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set wave effect depth</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>depth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>in pixels </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="91" column="6" bodyfile="sprite.h" bodystart="276" bodyend="278"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a5781eeeb12fd97b447809efd0f14afea" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Sprite::GetWaverPhase</definition>
+        <argsstring>() const</argsstring>
+        <name>GetWaverPhase</name>
+        <qualifiedname>Sprite::GetWaverPhase</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>waver phase in radians </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="94" column="8" bodyfile="sprite.h" bodystart="272" bodyend="274"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a85f701cd0eb6033b471f84bb24f192b8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetWaverPhase</definition>
+        <argsstring>(double phase)</argsstring>
+        <name>SetWaverPhase</name>
+        <qualifiedname>Sprite::SetWaverPhase</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>phase</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set wave effect phase.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>angle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the phase in radians </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="100" column="6" bodyfile="sprite.h" bodystart="280" bodyend="282"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a88b06fec2499b21fb21445269cbee15f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::SetFlashEffect</definition>
+        <argsstring>(const Color &amp;color)</argsstring>
+        <name>SetFlashEffect</name>
+        <qualifiedname>Sprite::SetFlashEffect</qualifiedname>
+        <param>
+          <type>const <ref refid="class_color" kindref="compound">Color</ref> &amp;</type>
+          <declname>color</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the flash effect color </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="105" column="6" bodyfile="sprite.h" bodystart="300" bodyend="302"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_sprite_1ac3a4bbf98bab493b4c4eb14a35a18706" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::BlitScreen</definition>
+        <argsstring>(Bitmap &amp;dst)</argsstring>
+        <name>BlitScreen</name>
+        <qualifiedname>Sprite::BlitScreen</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="142" column="6" bodyfile="sprite.cpp" bodystart="40" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1adf7fd66b383781f84e3623494bf51f3c" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite::BlitScreenIntern</definition>
+        <argsstring>(Bitmap &amp;dst, Bitmap const &amp;draw_bitmap, Rect const &amp;src_rect) const</argsstring>
+        <name>BlitScreenIntern</name>
+        <qualifiedname>Sprite::BlitScreenIntern</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> const &amp;</type>
+          <declname>draw_bitmap</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>src_rect</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="143" column="6" bodyfile="sprite.cpp" bodystart="70" bodyend="79"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite_1a5d06b0f26511228264667b0067d8d9e0" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Sprite::Refresh</definition>
+        <argsstring>(Rect &amp;rect)</argsstring>
+        <name>Refresh</name>
+        <qualifiedname>Sprite::Refresh</qualifiedname>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> &amp;</type>
+          <declname>rect</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite.h" line="145" column="11" bodyfile="sprite.cpp" bodystart="81" bodyend="122"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_sprite" kindref="compound">Sprite</ref> class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>BattleAnimation</label>
+        <link refid="class_battle_animation"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>BattleAnimationBattle</label>
+        <link refid="class_battle_animation_battle"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>BattleAnimationBattler</label>
+        <link refid="class_battle_animation_battler"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>BattleAnimationMap</label>
+        <link refid="class_battle_animation_map"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>Sprite</label>
+        <link refid="class_sprite"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>Sprite_Actor</label>
+        <link refid="class_sprite___actor"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Sprite_AirshipShadow</label>
+        <link refid="class_sprite___airship_shadow"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Sprite_Battler</label>
+        <link refid="class_sprite___battler"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>Sprite_Character</label>
+        <link refid="class_sprite___character"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>Sprite_Enemy</label>
+        <link refid="class_sprite___enemy"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Sprite_Picture</label>
+        <link refid="class_sprite___picture"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>Sprite_Timer</label>
+        <link refid="class_sprite___timer"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>Sprite_Weapon</label>
+        <link refid="class_sprite___weapon"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>Sprite</label>
+        <link refid="class_sprite"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="sprite.h" line="32" column="1" bodyfile="sprite.h" bodystart="32" bodyend="146"/>
+    <listofallmembers>
+      <member refid="class_sprite_1a0e0d68065c9cb7da72a5e4cec528884e" prot="private" virt="non-virtual"><scope>Sprite</scope><name>angle_effect</name></member>
+      <member refid="class_sprite_1a107202b13bff18068ef575063c963fee" prot="private" virt="non-virtual"><scope>Sprite</scope><name>bitmap</name></member>
+      <member refid="class_sprite_1a0ccd6ea285872766652c95318169c5b6" prot="private" virt="non-virtual"><scope>Sprite</scope><name>bitmap_changed</name></member>
+      <member refid="class_sprite_1a92859cf21bc5b8a68142ee34193198aa" prot="private" virt="non-virtual"><scope>Sprite</scope><name>bitmap_effects</name></member>
+      <member refid="class_sprite_1a0dfa4af484a0404280d61cb1d91ce917" prot="private" virt="non-virtual"><scope>Sprite</scope><name>bitmap_effects_src_rect</name></member>
+      <member refid="class_sprite_1afd6e114da7338af1ab7068af53213c08" prot="private" virt="non-virtual"><scope>Sprite</scope><name>blend_color_effect</name></member>
+      <member refid="class_sprite_1ae95e27722bcab0de35bd256efe5c424b" prot="private" virt="non-virtual"><scope>Sprite</scope><name>blend_type_effect</name></member>
+      <member refid="class_sprite_1ac3a4bbf98bab493b4c4eb14a35a18706" prot="private" virt="non-virtual"><scope>Sprite</scope><name>BlitScreen</name></member>
+      <member refid="class_sprite_1adf7fd66b383781f84e3623494bf51f3c" prot="private" virt="non-virtual"><scope>Sprite</scope><name>BlitScreenIntern</name></member>
+      <member refid="class_sprite_1a897e392ed0a18b27dfeca6417e59e7da" prot="private" virt="non-virtual"><scope>Sprite</scope><name>bush_effect</name></member>
+      <member refid="class_sprite_1a01d3c4b5b08c8f0981418d6658097c2c" prot="private" virt="non-virtual"><scope>Sprite</scope><name>current_flash</name></member>
+      <member refid="class_sprite_1a9c7f1c776c4d5045f0bd5b455bde1eed" prot="private" virt="non-virtual"><scope>Sprite</scope><name>current_flip_x</name></member>
+      <member refid="class_sprite_1ae3a315588be72f4fbe514ba05819a02a" prot="private" virt="non-virtual"><scope>Sprite</scope><name>current_flip_y</name></member>
+      <member refid="class_sprite_1a8856bccfc022536b3802a488e755969c" prot="private" virt="non-virtual"><scope>Sprite</scope><name>current_tone</name></member>
+      <member refid="class_sprite_1a0a4a3bd44c2556cbbe47b4480fae2a5b" prot="public" virt="virtual"><scope>Sprite</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>Sprite</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>Sprite</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>Sprite</scope><name>Flags</name></member>
+      <member refid="class_sprite_1a25863620ccfb54fda3ecb28e2f27f30b" prot="private" virt="non-virtual"><scope>Sprite</scope><name>flash_effect</name></member>
+      <member refid="class_sprite_1ae026ae1a1526dafd8f5620931bb2a7e7" prot="private" virt="non-virtual"><scope>Sprite</scope><name>flipx_effect</name></member>
+      <member refid="class_sprite_1a67ee6faec89cfbf02c194972123553e7" prot="private" virt="non-virtual"><scope>Sprite</scope><name>flipy_effect</name></member>
+      <member refid="class_sprite_1ade47ec9b2fc6b79921a978ac85508eb4" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetAngle</name></member>
+      <member refid="class_sprite_1a8692649cce1320c23d7216207805b990" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetBitmap</name></member>
+      <member refid="class_sprite_1aa34fbb968bfb9441bca6a7be8a1e9629" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetBitmap</name></member>
+      <member refid="class_sprite_1a699b7b199c7e2ea838878d9058401911" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetBlendColor</name></member>
+      <member refid="class_sprite_1ae5eb51cb5b55c057cbcafe69d13929a6" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetBlendType</name></member>
+      <member refid="class_sprite_1a9a5a480bc86ea9712a94303a53082da3" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetBushDepth</name></member>
+      <member refid="class_sprite_1a120a7dccaeea0d7fd7bac4f87b4b9d00" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetFlipX</name></member>
+      <member refid="class_sprite_1a7217243249b11d9046369cd3f0141adb" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetFlipY</name></member>
+      <member refid="class_sprite_1ab10bdecf4bf20472b53a3102315180c2" prot="public" virt="virtual"><scope>Sprite</scope><name>GetHeight</name></member>
+      <member refid="class_sprite_1ae6b8f3dd521db97853b3f2719e298db5" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetOpacity</name></member>
+      <member refid="class_sprite_1aa5c54c0b59a4f4247157e8446d588645" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetOx</name></member>
+      <member refid="class_sprite_1a8acf5af95db9d7f29958277c2625b8c7" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetOy</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetRenderOy</name></member>
+      <member refid="class_sprite_1ac50818cd2774516c70f2583d54845f98" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetSrcRect</name></member>
+      <member refid="class_sprite_1af315f162b8f1d0374d2bb4788f15eb59" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetTone</name></member>
+      <member refid="class_sprite_1add7a9fa3823099c15d04bd98764c00b8" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetWaverDepth</name></member>
+      <member refid="class_sprite_1a5781eeeb12fd97b447809efd0f14afea" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetWaverPhase</name></member>
+      <member refid="class_sprite_1a190fdb389450b2a425d3b7256b10b041" prot="public" virt="virtual"><scope>Sprite</scope><name>GetWidth</name></member>
+      <member refid="class_sprite_1aa87fb1678e6d814923b390085c8b47ca" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetX</name></member>
+      <member refid="class_sprite_1af3bb2ded3b6d29905c717031e8e873e4" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetY</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetZ</name></member>
+      <member refid="class_sprite_1afdc1630a767fef01cb29f81983a25825" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetZoomX</name></member>
+      <member refid="class_sprite_1a7fc9c4d33c7fade504f93a86c34a2b66" prot="public" virt="non-virtual"><scope>Sprite</scope><name>GetZoomY</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>Sprite</scope><name>IsGlobal</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>Sprite</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>Sprite</scope><name>IsVisible</name></member>
+      <member refid="class_sprite_1a5a1d73daf277fa7f29d3984014c0ddd7" prot="private" virt="non-virtual"><scope>Sprite</scope><name>opacity_bottom_effect</name></member>
+      <member refid="class_sprite_1a7da5ad6f84a7ca26a4d0e49a7da63f5c" prot="private" virt="non-virtual"><scope>Sprite</scope><name>opacity_top_effect</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>Sprite</scope><name>operator=</name></member>
+      <member refid="class_sprite_1a259d3d3338f43be54c4038847cf2595a" prot="private" virt="non-virtual"><scope>Sprite</scope><name>ox</name></member>
+      <member refid="class_sprite_1ac5cdbf24bf42742121ad122113455df8" prot="private" virt="non-virtual"><scope>Sprite</scope><name>oy</name></member>
+      <member refid="class_sprite_1a5d06b0f26511228264667b0067d8d9e0" prot="private" virt="non-virtual"><scope>Sprite</scope><name>Refresh</name></member>
+      <member refid="class_sprite_1ab2ac97d71f9af168477ff5114e895021" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetAngle</name></member>
+      <member refid="class_sprite_1a0b1f8eb93adbfffb165acb30699ddd78" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetBitmap</name></member>
+      <member refid="class_sprite_1a5a80440fb552919c24e3320544554a62" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetBlendColor</name></member>
+      <member refid="class_sprite_1a662cbae14d3628d670b865157b247df1" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetBlendType</name></member>
+      <member refid="class_sprite_1a48f4b1522175b8aab5e7f2d6b11a9425" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetBushDepth</name></member>
+      <member refid="class_sprite_1a88b06fec2499b21fb21445269cbee15f" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetFlashEffect</name></member>
+      <member refid="class_sprite_1a85222d16191092db3e0d731f8a78d4a8" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetFlipX</name></member>
+      <member refid="class_sprite_1a909b9d49b660fa592b0b753f602dddef" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetFlipY</name></member>
+      <member refid="class_sprite_1a00ec8dcc661ae5acea3c013dc12c07f0" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetOpacity</name></member>
+      <member refid="class_sprite_1ae2504fad70205dd8064392da7ceb4f71" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetOx</name></member>
+      <member refid="class_sprite_1a0e189abc78607a4a6e011d6e394a43d7" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetOy</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetRenderOy</name></member>
+      <member refid="class_sprite_1ae0a9b0248ce543551c1486c824b2949c" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetSpriteRect</name></member>
+      <member refid="class_sprite_1a890398eafe1a9135d7baa939842a798a" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetSrcRect</name></member>
+      <member refid="class_sprite_1a89865e8080e634db19ab6409efc0ef2c" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetTone</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetVisible</name></member>
+      <member refid="class_sprite_1a505321681169327d559b7f59146fdec9" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetWaverDepth</name></member>
+      <member refid="class_sprite_1a85f701cd0eb6033b471f84bb24f192b8" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetWaverPhase</name></member>
+      <member refid="class_sprite_1a57277e7b2c107f36f587c46e99f7a48f" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetX</name></member>
+      <member refid="class_sprite_1a0012676d8951dbf2342de94acc18eecd" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetY</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetZ</name></member>
+      <member refid="class_sprite_1a3e7151dfb8645a3fbb71395625af985c" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetZoomX</name></member>
+      <member refid="class_sprite_1aad6019d133e5abac3323d671af4ed06b" prot="public" virt="non-virtual"><scope>Sprite</scope><name>SetZoomY</name></member>
+      <member refid="class_sprite_1aa3a20244c338653f65beaa26d6189581" prot="public" virt="non-virtual"><scope>Sprite</scope><name>Sprite</name></member>
+      <member refid="class_sprite_1ab39633b5c20e0a970898723adfa693af" prot="private" virt="non-virtual"><scope>Sprite</scope><name>src_rect</name></member>
+      <member refid="class_sprite_1ae44428c94d577607b7b792193143ddee" prot="private" virt="non-virtual"><scope>Sprite</scope><name>src_rect_effect</name></member>
+      <member refid="class_sprite_1a872593c28f81aa7a458c170ae5142142" prot="private" virt="non-virtual"><scope>Sprite</scope><name>tone_effect</name></member>
+      <member refid="class_sprite_1a3d2adb29cd6d4c28c38de931e329ad8f" prot="private" virt="non-virtual"><scope>Sprite</scope><name>waver_effect_depth</name></member>
+      <member refid="class_sprite_1ab17d5cc30cfd112f2ed68e04e66ccb02" prot="private" virt="non-virtual"><scope>Sprite</scope><name>waver_effect_phase</name></member>
+      <member refid="class_sprite_1ab36028dcefdd4bf024c52c8d9519a283" prot="private" virt="non-virtual"><scope>Sprite</scope><name>x</name></member>
+      <member refid="class_sprite_1a363e26017ee2aaed8636f7dab92af2cd" prot="private" virt="non-virtual"><scope>Sprite</scope><name>y</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>Sprite</scope><name>Z_t</name></member>
+      <member refid="class_sprite_1ae2fb8ddff048ecac1006d678f1d1ce28" prot="private" virt="non-virtual"><scope>Sprite</scope><name>zoom_x_effect</name></member>
+      <member refid="class_sprite_1a33cca451d32d209ac768ee780f9aa5c5" prot="private" virt="non-virtual"><scope>Sprite</scope><name>zoom_y_effect</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>Sprite</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

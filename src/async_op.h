@@ -323,3 +323,4 @@ inline AsyncOp AsyncOp::MakeDestroyMapEvent(int target_event_id) {
 }
 
 #endif
+

@@ -421,3 +421,4 @@ void Game_Screen::UpdateUnderlyingEventReferences() {
 		animation->SetTarget(*chara);
 	}
 }
+

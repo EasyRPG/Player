@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_window___interpreter_1_1_interp_display_item" kind="struct" language="C++" prot="private">
+    <compoundname>Window_Interpreter::InterpDisplayItem</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_window___interpreter_1_1_interp_display_item_1ae194b71a133c90bfc9d6cdf00fe42543" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Window_Interpreter::InterpDisplayItem::is_ce</definition>
+        <argsstring></argsstring>
+        <name>is_ce</name>
+        <qualifiedname>Window_Interpreter::InterpDisplayItem::is_ce</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="93" column="6" bodyfile="window_interpreter.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___interpreter_1_1_interp_display_item_1ad4e4517a359feb093639c3449e16024c" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Interpreter::InterpDisplayItem::owner_evt_id</definition>
+        <argsstring></argsstring>
+        <name>owner_evt_id</name>
+        <qualifiedname>Window_Interpreter::InterpDisplayItem::owner_evt_id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="94" column="5" bodyfile="window_interpreter.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___interpreter_1_1_interp_display_item_1a7eabd1b81be759b8bc882160a6438804" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Window_Interpreter::InterpDisplayItem::desc</definition>
+        <argsstring></argsstring>
+        <name>desc</name>
+        <qualifiedname>Window_Interpreter::InterpDisplayItem::desc</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="95" column="13" bodyfile="window_interpreter.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="window_interpreter.h" line="92" column="1" bodyfile="window_interpreter.h" bodystart="92" bodyend="96"/>
+    <listofallmembers>
+      <member refid="struct_window___interpreter_1_1_interp_display_item_1a7eabd1b81be759b8bc882160a6438804" prot="public" virt="non-virtual"><scope>Window_Interpreter::InterpDisplayItem</scope><name>desc</name></member>
+      <member refid="struct_window___interpreter_1_1_interp_display_item_1ae194b71a133c90bfc9d6cdf00fe42543" prot="public" virt="non-virtual"><scope>Window_Interpreter::InterpDisplayItem</scope><name>is_ce</name></member>
+      <member refid="struct_window___interpreter_1_1_interp_display_item_1ad4e4517a359feb093639c3449e16024c" prot="public" virt="non-virtual"><scope>Window_Interpreter::InterpDisplayItem</scope><name>owner_evt_id</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

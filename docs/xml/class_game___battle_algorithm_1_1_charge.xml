@@ -1,0 +1,249 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___battle_algorithm_1_1_charge" kind="class" language="C++" prot="public">
+    <compoundname>Game_BattleAlgorithm::Charge</compoundname>
+    <basecompoundref refid="class_game___battle_algorithm_1_1_algorithm_base" prot="public" virt="non-virtual">Game_BattleAlgorithm::AlgorithmBase</basecompoundref>
+    <includes refid="game__battlealgorithm_8h" local="no">game_battlealgorithm.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___battle_algorithm_1_1_charge_1a9162876abb99b1cd2745aab927774748" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_BattleAlgorithm::Charge::Charge</definition>
+        <argsstring>(Game_Battler *source)</argsstring>
+        <name>Charge</name>
+        <qualifiedname>Game_BattleAlgorithm::Charge::Charge</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battlealgorithm.h" line="784" column="1" bodyfile="game_battlealgorithm.cpp" bodystart="1490" bodyend="1493"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___battle_algorithm_1_1_charge_1a89579bae7731912cf559cdac4fa66e28" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Game_BattleAlgorithm::Charge::GetActionType</definition>
+        <argsstring>() override</argsstring>
+        <name>GetActionType</name>
+        <qualifiedname>Game_BattleAlgorithm::Charge::GetActionType</qualifiedname>
+        <reimplements refid="class_game___battle_algorithm_1_1_algorithm_base_1aa76b455eefafcd3de997b7a05a19e838">GetActionType</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the type associated with this action </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battlealgorithm.h" line="787" column="5" bodyfile="game_battlealgorithm.cpp" bodystart="1495" bodyend="1497"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___battle_algorithm_1_1_charge_1a0793ca6b49f2aee25edb9ac547b672ee" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Game_BattleAlgorithm::Charge::GetActionId</definition>
+        <argsstring>() override</argsstring>
+        <name>GetActionId</name>
+        <qualifiedname>Game_BattleAlgorithm::Charge::GetActionId</qualifiedname>
+        <reimplements refid="class_game___battle_algorithm_1_1_algorithm_base_1acab89adc4be0d999d569d95434750674">GetActionId</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the id associated with this action </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battlealgorithm.h" line="790" column="5" bodyfile="game_battlealgorithm.cpp" bodystart="1499" bodyend="1501"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___battle_algorithm_1_1_charge_1a429f3724bf22f363ba2ddc5eb91d3063" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string Game_BattleAlgorithm::Charge::GetStartMessage</definition>
+        <argsstring>(int line) const override</argsstring>
+        <name>GetStartMessage</name>
+        <qualifiedname>Game_BattleAlgorithm::Charge::GetStartMessage</qualifiedname>
+        <reimplements refid="class_game___battle_algorithm_1_1_algorithm_base_1ab145d65ec11f9b6513c6b1a7945fa63e">GetStartMessage</reimplements>
+        <param>
+          <type>int</type>
+          <declname>line</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the first line message that is displayed when the action is invoked. Usually of style &quot;[Name] uses/casts [Weapon/Item/Skill]&quot;.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>line</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which line of the message to fetch </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>message </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battlealgorithm.h" line="792" column="13" bodyfile="game_battlealgorithm.cpp" bodystart="1503" bodyend="1512"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___battle_algorithm_1_1_charge_1aea75e825c2c78adce178299f99867fea" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Game_BattleAlgorithm::Charge::ApplyCustomEffect</definition>
+        <argsstring>() override</argsstring>
+        <name>ApplyCustomEffect</name>
+        <qualifiedname>Game_BattleAlgorithm::Charge::ApplyCustomEffect</qualifiedname>
+        <reimplements refid="class_game___battle_algorithm_1_1_algorithm_base_1abf8dbc8c30a405b7313ff3a17ec9d2f7">ApplyCustomEffect</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Apply custom effects </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battlealgorithm.h" line="793" column="6" bodyfile="game_battlealgorithm.cpp" bodystart="1514" bodyend="1516"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Game_BattleAlgorithm::AlgorithmBase</label>
+        <link refid="class_game___battle_algorithm_1_1_algorithm_base"/>
+      </node>
+      <node id="1">
+        <label>Game_BattleAlgorithm::Charge</label>
+        <link refid="class_game___battle_algorithm_1_1_charge"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Game_BattleAlgorithm::AlgorithmBase</label>
+        <link refid="class_game___battle_algorithm_1_1_algorithm_base"/>
+      </node>
+      <node id="1">
+        <label>Game_BattleAlgorithm::Charge</label>
+        <link refid="class_game___battle_algorithm_1_1_charge"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="game_battlealgorithm.h" line="782" column="1" bodyfile="game_battlealgorithm.h" bodystart="782" bodyend="794"/>
+    <listofallmembers>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1aa90c45096a82c7493749b15a4aefd848" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>ActionIsPossible</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a659fea0ec576517d526238606d94fee0" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>AddAffectedAttribute</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ab95b871d82c6af69079d025ca76dfef7" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>AddAffectedState</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a283ba8425b8203575913998ea6b475fb" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>AddTarget</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ac57cdb2954710335ce0c49bc888d0d65" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>AddTargets</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ac2cfe090e91cdab01699441fc87f47dd" prot="protected" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>AlgorithmBase</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ab6d0c3440c0de798e2e4849a12d78d7a" prot="protected" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>AlgorithmBase</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a1b70883b2319f24ed37b9e363c2e3f52" prot="protected" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>AlgorithmBase</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ab390163eafdfa49eddd5ad657d4cb5ed" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>ApplyAgiEffect</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a6fd5c1fa6a830a2be9e0616d41dafab6" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>ApplyAll</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a9d4cb5ee0fdeddb08abe8cf901c08f8c" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>ApplyAtkEffect</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a4a73f79a1f18d82f2b5855938989bc87" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>ApplyAttributeShiftEffect</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a115d280a49d21245d1ba62aa44979a41" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>ApplyAttributeShiftEffects</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a4e6d70ee68671be8b30510d86fbf6185" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>ApplyComboHitsMultiplier</name></member>
+      <member refid="class_game___battle_algorithm_1_1_charge_1aea75e825c2c78adce178299f99867fea" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>ApplyCustomEffect</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a477c30c95514b5de790b05c67e75a84a" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>ApplyDefEffect</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a7d3bccaea221b690f373c4f47788ea1e" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>ApplyHpEffect</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1aeeb1250deedf2e26fd0aa6a83cce78b9" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>ApplySpEffect</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ab30facf153a214ca85a38e41b408ad4b" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>ApplySpiEffect</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1aedf6c0c5e917a27ff8581375e29c7ecf" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>ApplyStateEffect</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1aaa2fd7630d5a99dd4de4370c0f5ff382" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>ApplyStateEffects</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1af3bf941c0c5c36e80cc3c2242e84dd4f" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>ApplySwitchEffect</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ad8e51e3818745de3e2cd6958dbb6c9a9" prot="protected" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>BattlePhysicalStateHeal</name></member>
+      <member refid="class_game___battle_algorithm_1_1_charge_1a9162876abb99b1cd2745aab927774748" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>Charge</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ac3835f9962e04ce2f3a8238a3b833c39" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>Execute</name></member>
+      <member refid="class_game___battle_algorithm_1_1_charge_1a0793ca6b49f2aee25edb9ac547b672ee" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetActionId</name></member>
+      <member refid="class_game___battle_algorithm_1_1_charge_1a89579bae7731912cf559cdac4fa66e28" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetActionType</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ac8417b07c374d3781b0297c82e4db945" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetAffectedAgi</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a59a93f4e2342d4162b868993bb9d87e0" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetAffectedAtk</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1aa77682faae824bec7d8bdef3c9a5a5c2" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetAffectedDef</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a580fa019cb31c3abce5879ef8428b461" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetAffectedHp</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a4d2a69e3b10217d91498807d7d3d542c" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetAffectedSp</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a0d11175dca8ca3b53a0e40f7adbe9b9c" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetAffectedSpi</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a8a7e7cf23bf6414e135e478720cdc81e" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetAffectedSwitch</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a81020c5e2de624889e3e11947dcb55f6" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetAnimationId</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ab0e77df1b9e7715a2eda3b1dd51c85f7" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetCBAAfterimage</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a4bb0863af219678754db58857aad60a1" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetCBAMovement</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ac4028f17a76ae010f37f3a22bc2f2b10" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetCurrentRepeat</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a4f6c393a28300b11129c09df07799b4e" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetFailureMessage</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ac82ca208c8effd3c2d54d207a90a4f43" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetFailureSe</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a5d754037261e674ee39ab66d62b831c6" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetOriginalPartyTarget</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a28b2f5f806fc4934069e4a175bfbbae4" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetOriginalSingleTarget</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1aa1067a6b29a598bdbe0cd7a4583afd6c" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetOriginalTargets</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a7421c3b269a30c1b3c8413e1bb8ba72e" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetReflectTarget</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1abac16a58081d4e105c53bd94d84755d4" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetShiftedAttributes</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a91f86846a4445ae9d590087967043b09" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetSource</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a9feb69e70e32b5f115b24ea671fc85c7" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetSourcePose</name></member>
+      <member refid="class_game___battle_algorithm_1_1_charge_1a429f3724bf22f363ba2ddc5eb91d3063" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetStartMessage</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1aee8daffdda58a85eb0b177673ac67a70" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetStartSe</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a11feedaf3fa69f9d3c659d2ba06c3dfe" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetStateEffects</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a46fbeeafb191d0028f9f8691d090299c" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetTarget</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1addb84d391bf81521a34677abc0a52f5c" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetTotalRepetitions</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1af17f85c0df531aaf6983031c4105bee8" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetType</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a909ed521286ccc4c07cd55efdd04a8ba" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetWeaponAnimationData</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a7755e22173c0d04321123c999c3c7de7" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>GetWeaponData</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1aa4478464bc439894329e2fe813f70df2" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsAbsorbAgi</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a5f941bbfe096bc50da1a7fe67a725742" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsAbsorbAtk</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1af43adb0bbf278f7395c5586fced81785" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsAbsorbDef</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ab502bd94838d47dddc607f26e5cdd477" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsAbsorbHp</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ad608e25ae499cdac0755a0c8d24f8024" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsAbsorbSp</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a29f6e85afc3a289d8827b81b0dc2726d" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsAbsorbSpi</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a23f6cd0e432a96fd710b8b9346e16e51" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsAffectAgi</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a0ba9f2d7f651b88ef4f9261bd34a64da" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsAffectAtk</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a753e0e14c27cc9e15561edd04c8b315c" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsAffectDef</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ad611b168df793cf3268f67307e49f866" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsAffectHp</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a4aaf1658ac492287f4da6f113e7c6261" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsAffectSp</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1aa795d08944ac61724c56e2f0d7ec4656" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsAffectSpi</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a8723607902ad9104d7fbbfe6f481d8fa" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsCriticalHit</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ab2697798de0e5ff1cb5dc558ae3c7fcb" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsCurrentTargetValid</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ad3ff6f5ab47614c0e63476ce16d0f6da" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsPositive</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ac7a8f54338d045db74a671bc881cf8dc" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsReflected</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ad5a3ab8ba09667b58c233b87aafd2b77" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsRevived</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1aead0a64b080b2e1dcf7683b26c09d27b" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsSuccess</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1af7f1a715f4eb87bc9d32e4bb751893cd" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>IsTargetValid</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1acfbf5e28f1d2428e0b18b60929ba4da1" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>PlayAnimation</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a0a7aa80d35e70ec7d6f6af944960f2c9" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>ProcessPostActionSwitches</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a63efa1397b3c68453c4879e2d4016f0d" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>ReflectTargets</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a0cdcd0fb98873bdb66dcebdef6c1f414" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>RepeatNext</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a19e26bb5c47140831e1205abd2242a68" prot="protected" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>Reset</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a579b93dd7bb1ed0011e50125da01811f" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetAffectedAgi</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a3bb7a71d40ddef85b966cd57fc08d7c7" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetAffectedAtk</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ac084a390a05d74346cf84b0d9d145e78" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetAffectedDef</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a3a9266d188dea99d24b8262206dc665d" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetAffectedHp</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1aa61437abfb4df08850d398a810037aed" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetAffectedSp</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a352b522f06d9626316de679afe72ed6f" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetAffectedSpi</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a5ab64cde6c2d6cccb29e3030eae5f7ec" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetAffectedSwitch</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a9d507764fd6a116066596d975fb9214b" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetIsAbsorbAgi</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a6061bec1e21cb538fdee58fb9c95d1d1" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetIsAbsorbAtk</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ae3e85f679b1a2c7cf5c5ffd24e5ffa59" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetIsAbsorbDef</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a66a957afee8dfd63b64308d2a8e4f271" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetIsAbsorbHp</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a640757089caf7ea6325a29705d4563df" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetIsAbsorbSp</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a6f0a5c9949ef06232eeedcac1026e00d" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetIsAbsorbSpi</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1acddd24ed93bd187ae9f0a6ec3fc91ad5" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetIsCriticalHit</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a6c6985d773a52633511f5f8557b1dd2d" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetIsFailure</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1aa455563ffe15324c34ab4bb293e42513" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetIsPositive</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a01826ef0cc878f2f0d5def5894bd5873" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetIsSuccess</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1afdd4b2c8bc74a45087f74deea34b9153" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetIsSuccessIf</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1afa0c9f867e4f3a64decd65f8722c3965" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetRepeat</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a24e5f6acafbe72fcf55255f4a2f72ab3" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetSwitchDisable</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a7866b29582bc75ff39cc7eca11e0be04" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>SetSwitchEnable</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a5bd7b182bc104d267988dcfb3fe31cf5" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>Start</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1abf1ffb404a369329edbf8f73535b815c" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>TargetNext</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a0c37715b22d235016116c17437efa048" prot="protected" virt="non-virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>TargetNextInternal</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1adf6e09845442a62d42df7dc4a89dae2f" prot="protected" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>vExecute</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1a0a5cbda4dc290e17625c35bac2b3ede4" prot="protected" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>vStart</name></member>
+      <member refid="class_game___battle_algorithm_1_1_algorithm_base_1ab2554f0ab3c83d0a38b90a77596cacb4" prot="public" virt="virtual"><scope>Game_BattleAlgorithm::Charge</scope><name>~AlgorithmBase</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

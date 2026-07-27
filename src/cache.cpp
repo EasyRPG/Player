@@ -582,3 +582,4 @@ BitmapRef Cache::System2() {
 		return nullptr;
 	}
 }
+

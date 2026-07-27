@@ -1,0 +1,222 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="diagnostics_8hpp" kind="file" language="C++">
+    <compoundname>diagnostics.hpp</compoundname>
+    <includes refid="lio_8hpp" local="yes">../lio.hpp</includes>
+    <includes refid="here_8h" local="yes">here.h</includes>
+    <includes local="no">string</includes>
+    <includedby refid="game__actor_8cpp" local="yes">game_actor.cpp</includedby>
+    <includedby refid="game__character_8cpp" local="yes">game_character.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/diag5/diagnostics.hpp</label>
+        <link refid="diagnostics_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>here.h</label>
+        <link refid="here_8h"/>
+      </node>
+      <node id="17">
+        <label>kits/ps7k.hpp</label>
+        <link refid="ps7k_8hpp"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>../lio.hpp</label>
+        <link refid="lio_8hpp"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>algorithm</label>
+      </node>
+      <node id="4">
+        <label>chrono</label>
+      </node>
+      <node id="18">
+        <label>cstddef</label>
+      </node>
+      <node id="19">
+        <label>cstring</label>
+      </node>
+      <node id="5">
+        <label>filesystem</label>
+      </node>
+      <node id="6">
+        <label>fstream</label>
+      </node>
+      <node id="7">
+        <label>iomanip</label>
+      </node>
+      <node id="8">
+        <label>iostream</label>
+      </node>
+      <node id="22">
+        <label>iterator</label>
+      </node>
+      <node id="9">
+        <label>memory</label>
+      </node>
+      <node id="10">
+        <label>mutex</label>
+      </node>
+      <node id="11">
+        <label>optional</label>
+      </node>
+      <node id="12">
+        <label>sstream</label>
+      </node>
+      <node id="13">
+        <label>string</label>
+      </node>
+      <node id="14">
+        <label>string_view</label>
+      </node>
+      <node id="15">
+        <label>thread</label>
+      </node>
+      <node id="20">
+        <label>type_traits</label>
+      </node>
+      <node id="21">
+        <label>utility</label>
+      </node>
+      <node id="16">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>game_actor.cpp</label>
+        <link refid="game__actor_8cpp"/>
+      </node>
+      <node id="3">
+        <label>game_character.cpp</label>
+        <link refid="game__character_8cpp"/>
+      </node>
+      <node id="1">
+        <label>leasy/diag5/diagnostics.hpp</label>
+        <link refid="diagnostics_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structleasy_1_1diag5_1_1dgpoint" prot="public">leasy::diag5::dgpoint</innerclass>
+    <innernamespace refid="namespaceleasy">leasy</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1diag5">leasy::diag5</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="diagnostics_8hpp_1a7b0c82ba461d58c2de36d52262d29f66" prot="public" static="no">
+        <name>dumpvout</name>
+        <param><defname>X</defname></param>
+        <initializer>leasy::io.Debug.writeln(<ref refid="here_8h_1ad168922b1d1561628d162f20bc8ce420" kindref="member">here</ref>, &quot; &lt;dump&gt; @&quot;, #X, &quot;: &quot;, X)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/diag5/diagnostics.hpp" line="48" column="9" bodyfile="leasy/diag5/diagnostics.hpp" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="diagnostics_8hpp_1aa28236245818f0ea971471837048bb90" prot="public" static="no">
+        <name>dumpvasp</name>
+        <param><defname>X</defname></param>
+        <initializer>#X, X</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/diag5/diagnostics.hpp" line="49" column="9" bodyfile="leasy/diag5/diagnostics.hpp" bodystart="49" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lio_8hpp" kindref="compound">../lio.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="here_8h" kindref="compound">here.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="namespaceleasy_1_1diag5" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1diag5" kindref="compound">leasy::diag5</ref><sp/>{</highlight></codeline>
+<codeline lineno="31" refid="structleasy_1_1diag5_1_1dgpoint" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1diag5_1_1dgpoint_1a758febbb855c145a11da5319494e0c90" kindref="member">dgpoint</ref><sp/>{</highlight></codeline>
+<codeline lineno="32" refid="structleasy_1_1diag5_1_1dgpoint_1a76be930df695d09b7213600de9f2f66e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structleasy_1_1diag5_1_1dgpoint_1a76be930df695d09b7213600de9f2f66e" kindref="member">_name</ref>;</highlight></codeline>
+<codeline lineno="33" refid="structleasy_1_1diag5_1_1dgpoint_1a88dbabd9f41298c8b6ef675f46f9a036" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structleasy_1_1diag5_1_1dgpoint_1a88dbabd9f41298c8b6ef675f46f9a036" kindref="member">_id</ref>;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>...Args&gt;</highlight></codeline>
+<codeline lineno="36" refid="structleasy_1_1diag5_1_1dgpoint_1a758febbb855c145a11da5319494e0c90" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1diag5_1_1dgpoint_1a758febbb855c145a11da5319494e0c90" kindref="member">dgpoint</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>&amp;name,<sp/>Args&amp;&amp;...<sp/>args)</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="structleasy_1_1diag5_1_1dgpoint_1a76be930df695d09b7213600de9f2f66e" kindref="member">_name</ref>(name)<sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1a969ece27b2f9f49c39c191cbcd5098c1" kindref="member">io</ref>.Debug.writeln(</highlight><highlight class="stringliteral">&quot;&lt;dg&gt;<sp/>diagnostic<sp/>point<sp/>created<sp/>&lt;&quot;</highlight><highlight class="normal">,<sp/>name,<sp/></highlight><highlight class="stringliteral">&quot;&gt;&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>(<ref refid="namespaceleasy_1a969ece27b2f9f49c39c191cbcd5098c1" kindref="member">io</ref>.Debug.write(args,<sp/></highlight><highlight class="stringliteral">&quot;<sp/>&quot;</highlight><highlight class="normal">),<sp/>...);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="structleasy_1_1diag5_1_1dgpoint_1a85c92335e1e1dd8c34194ddab555bf78" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1diag5_1_1dgpoint_1a85c92335e1e1dd8c34194ddab555bf78" kindref="member">~dgpoint</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1a969ece27b2f9f49c39c191cbcd5098c1" kindref="member">io</ref>.Debug.writeln(</highlight><highlight class="stringliteral">&quot;&lt;dg&gt;<sp/>diagnostic<sp/>point<sp/>destroyed<sp/>&lt;&quot;</highlight><highlight class="normal">,<sp/><ref refid="structleasy_1_1diag5_1_1dgpoint_1a76be930df695d09b7213600de9f2f66e" kindref="member">_name</ref>,<sp/></highlight><highlight class="stringliteral">&quot;&gt;&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="46"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="diagnostics_8hpp_1a7b0c82ba461d58c2de36d52262d29f66" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>dumpvout(X)<sp/>leasy::io.Debug.writeln(here,<sp/>&quot;<sp/>&lt;dump&gt;<sp/>@&quot;,<sp/>#X,<sp/>&quot;:<sp/>&quot;,<sp/>X)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="diagnostics_8hpp_1aa28236245818f0ea971471837048bb90" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>dumpvasp(X)<sp/>#X,<sp/>X</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/diag5/diagnostics.hpp"/>
+  </compounddef>
+</doxygen>

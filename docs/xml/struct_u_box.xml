@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_u_box" kind="struct" language="C++" prot="public">
+    <compoundname>UBox</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_u_box_1ac4a9163b3ee9a05bb488114c2edbeb8f" prot="public" static="no" mutable="no">
+        <type>void *</type>
+        <definition>void* UBox::box</definition>
+        <argsstring></argsstring>
+        <name>box</name>
+        <qualifiedname>UBox::box</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.c" line="474" column="8" bodyfile="leasy/lua/lauxlib.c" bodystart="474" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_u_box_1a77483f4cd348b5f9d8eb095b590b02ba" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t UBox::bsize</definition>
+        <argsstring></argsstring>
+        <name>bsize</name>
+        <qualifiedname>UBox::bsize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.c" line="475" column="10" bodyfile="leasy/lua/lauxlib.c" bodystart="475" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/lua/lauxlib.c" line="473" column="1" bodyfile="leasy/lua/lauxlib.c" bodystart="473" bodyend="476"/>
+    <listofallmembers>
+      <member refid="struct_u_box_1ac4a9163b3ee9a05bb488114c2edbeb8f" prot="public" virt="non-virtual"><scope>UBox</scope><name>box</name></member>
+      <member refid="struct_u_box_1a77483f4cd348b5f9d8eb095b590b02ba" prot="public" virt="non-virtual"><scope>UBox</scope><name>bsize</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

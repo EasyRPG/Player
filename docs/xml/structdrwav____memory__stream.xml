@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdrwav____memory__stream" kind="struct" language="C++" prot="public">
+    <compoundname>drwav__memory_stream</compoundname>
+    <includes refid="dr__wav_8h" local="no">dr_wav.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdrwav____memory__stream_1a284990f6414466a6d43794ed00a5057c" prot="public" static="no" mutable="no">
+        <type>const <ref refid="dr__wav_8h_1ae433204b3e47bded80161f89f5d52895" kindref="member">drwav_uint8</ref> *</type>
+        <definition>const drwav_uint8* drwav__memory_stream::data</definition>
+        <argsstring></argsstring>
+        <name>data</name>
+        <qualifiedname>drwav__memory_stream::data</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="453" column="23" bodyfile="external/dr_wav.h" bodystart="453" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav____memory__stream_1ac9afa4dd398c46e0d690e41c79f1b984" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t drwav__memory_stream::dataSize</definition>
+        <argsstring></argsstring>
+        <name>dataSize</name>
+        <qualifiedname>drwav__memory_stream::dataSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="454" column="12" bodyfile="external/dr_wav.h" bodystart="454" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav____memory__stream_1ade61b945505553e8ba4318dfeed2afbe" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t drwav__memory_stream::currentReadPos</definition>
+        <argsstring></argsstring>
+        <name>currentReadPos</name>
+        <qualifiedname>drwav__memory_stream::currentReadPos</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="455" column="12" bodyfile="external/dr_wav.h" bodystart="455" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="external/dr_wav.h" line="451" column="1" bodyfile="external/dr_wav.h" bodystart="452" bodyend="456"/>
+    <listofallmembers>
+      <member refid="structdrwav____memory__stream_1ade61b945505553e8ba4318dfeed2afbe" prot="public" virt="non-virtual"><scope>drwav__memory_stream</scope><name>currentReadPos</name></member>
+      <member refid="structdrwav____memory__stream_1a284990f6414466a6d43794ed00a5057c" prot="public" virt="non-virtual"><scope>drwav__memory_stream</scope><name>data</name></member>
+      <member refid="structdrwav____memory__stream_1ac9afa4dd398c46e0d690e41c79f1b984" prot="public" virt="non-virtual"><scope>drwav__memory_stream</scope><name>dataSize</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

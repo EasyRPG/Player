@@ -1,0 +1,1722 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_input" kind="namespace" language="C++">
+    <compoundname>Input</compoundname>
+    <innerclass refid="struct_input_1_1_analog_input" prot="public">Input::AnalogInput</innerclass>
+    <innerclass refid="struct_input_1_1_touch_input" prot="public">Input::TouchInput</innerclass>
+    <innerclass refid="class_input_1_1_source" prot="public">Input::Source</innerclass>
+    <innerclass refid="class_input_1_1_ui_source" prot="public">Input::UiSource</innerclass>
+    <innerclass refid="class_input_1_1_log_source" prot="public">Input::LogSource</innerclass>
+    <innernamespace refid="namespace_input_1_1_direction">Input::Direction</innernamespace>
+    <innernamespace refid="namespace_input_1_1_keys">Input::Keys</innernamespace>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>InputButton</name>
+        <qualifiedname>Input::InputButton</qualifiedname>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a9ec921f299e4319707dfe2060dea69cf" prot="public">
+          <name>UP</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a9d978af135e87844101fc99e300c8f58" prot="public">
+          <name>DOWN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7ad44f3c96cfa9c446730f72f31c40c6a0" prot="public">
+          <name>LEFT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7ad1462d708a410892b3b73461bf9c566a" prot="public">
+          <name>RIGHT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7ad2568c4d3e7ca2d06f1d2f3a72ba82ae" prot="public">
+          <name>DECISION</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a352ed3bee72afbb016c0a97d59898cf5" prot="public">
+          <name>CANCEL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a98813aa5fbc2363d14db8548abd10ac4" prot="public">
+          <name>SHIFT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a27cfddc8440f06fecf935188babab137" prot="public">
+          <name>N0</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7ad3e422e6941cd8e6570359a528a461c8" prot="public">
+          <name>N1</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7aa8d32aba942407dc1aec861991a31265" prot="public">
+          <name>N2</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a92631570e3babc23badee9a9500b0ee0" prot="public">
+          <name>N3</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a6408956d2577225764f6d60daaa01974" prot="public">
+          <name>N4</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a2e7ff3d1cf724815114bce6adcce608a" prot="public">
+          <name>N5</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a2865f044d33f63bcdc529f8b7886db7c" prot="public">
+          <name>N6</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a0b46e503b1075d61a4f2647d3e597aa9" prot="public">
+          <name>N7</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a0ba9d96bad1e82b9815b09fd03a7e13d" prot="public">
+          <name>N8</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a06fafc020b265fceb0dc95d328d0cee0" prot="public">
+          <name>N9</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7ab7025a77bf0fcc28ddb6ca5048f3b719" prot="public">
+          <name>PLUS</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a81e404005b678e12590a7af64c8eea27" prot="public">
+          <name>MINUS</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7ac7dfa4400340ed929394dafeba2599d5" prot="public">
+          <name>MULTIPLY</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7aac7fc229e5664ee162a5023100562696" prot="public">
+          <name>DIVIDE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a296789e6fd5c2d0fc0ecc4ce3eb06350" prot="public">
+          <name>PERIOD</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a4225b336a4c2c6e5701ba7f1fa993eb7" prot="public">
+          <name>DEBUG_MENU</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a23310159074d5adccc14cf77c74daebc" prot="public">
+          <name>DEBUG_THROUGH</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a3cbb36900c390f02f9f1366650511843" prot="public">
+          <name>DEBUG_SAVE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7ab19535f4d8b77b4feef655e378d9e613" prot="public">
+          <name>DEBUG_ABORT_EVENT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a124ad408d2f6da7f08951a538e3bb4c0" prot="public">
+          <name>SETTINGS_MENU</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a60c0a84051350c78f90a5c0c455c39dd" prot="public">
+          <name>TOGGLE_FPS</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a8664a588a24a47384e3ef8dd0a8878a2" prot="public">
+          <name>TAKE_SCREENSHOT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a08a9d1b2b78616c4f29602de0c338471" prot="public">
+          <name>SHOW_LOG</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a0d015625d28ae97cd4c76cc81123adb4" prot="public">
+          <name>RESET</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7ae0443f23b394b15cf3ffaf2d7295eac2" prot="public">
+          <name>PAGE_UP</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7aa33ab2a89b7f1bc5006751e9fe812401" prot="public">
+          <name>PAGE_DOWN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a2d1b82fefd1f1e97b7e1efa605226a9a" prot="public">
+          <name>MOUSE_LEFT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a4f4bc5a6a7da2bfec483285b02c4fb9c" prot="public">
+          <name>MOUSE_RIGHT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a74286ad1b64e2bf95431944b5da79316" prot="public">
+          <name>MOUSE_MIDDLE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a79f453c64d2d86870165beb238ef3784" prot="public">
+          <name>SCROLL_UP</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a27e758129d31f572d27ef0fed5f4a2cf" prot="public">
+          <name>SCROLL_DOWN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7aaa7aadcf69be5574af655ae68a5b74dd" prot="public">
+          <name>FAST_FORWARD_A</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7afffc4047819df2bf3184f9a1f401a5cc" prot="public">
+          <name>FAST_FORWARD_B</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a67494d36f15833a353a690c0498c9239" prot="public">
+          <name>TOGGLE_FULLSCREEN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7acc5ee55ae1c88d1ebf4b2f849f9560e3" prot="public">
+          <name>TOGGLE_ZOOM</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a73e6218b7e59284f4b77124158ab1e1f" prot="public">
+          <name>BUTTON_COUNT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="namespace_input" kindref="compound">Input</ref> buttons list. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_buttons.h" line="46" column="1" bodyfile="input_buttons.h" bodystart="46" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_input_1adb5ed8536be0280ad0de1f6c0b7d057f" prot="public" static="no" strong="yes">
+        <type>char</type>
+        <name>RecordingData</name>
+        <qualifiedname>Input::RecordingData</qualifiedname>
+        <enumvalue id="namespace_input_1adb5ed8536be0280ad0de1f6c0b7d057fadf714287fd34ddf055d734552da38b15" prot="public">
+          <name>CommandLine</name>
+          <initializer>= &apos;C&apos;</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1adb5ed8536be0280ad0de1f6c0b7d057fa17ffe5865dd336b5a01edc64aadbf468" prot="public">
+          <name>EventCommand</name>
+          <initializer>= &apos;E&apos;</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1adb5ed8536be0280ad0de1f6c0b7d057fafae8a9257e154175da4193dbf6552ef6" prot="public">
+          <name>Hash</name>
+          <initializer>= &apos;L&apos;</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1adb5ed8536be0280ad0de1f6c0b7d057fa9b4eb3f43b662d688c5f643b5699873a" prot="public">
+          <name>MoveRoute</name>
+          <initializer>= &apos;M&apos;</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1adb5ed8536be0280ad0de1f6c0b7d057fa82b78f22a7dcfb943ca0584802b59732" prot="public">
+          <name>GameTitle</name>
+          <initializer>= &apos;N&apos;</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="35" column="1" bodyfile="input_source.h" bodystart="35" bodyend="41"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespace_input_1a6c58920837b877254184fff33f735e9f" prot="public" static="no">
+        <type><ref refid="class_flat_unique_multi_map" kindref="compound">FlatUniqueMultiMap</ref>&lt; <ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">InputButton</ref>, <ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8" kindref="member">Keys::InputKey</ref> &gt;</type>
+        <definition>using Input::ButtonMappingArray = FlatUniqueMultiMap&lt;InputButton,Keys::InputKey&gt;</definition>
+        <argsstring></argsstring>
+        <name>ButtonMappingArray</name>
+        <qualifiedname>Input::ButtonMappingArray</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_buttons.h" line="249" column="1" bodyfile="input_buttons.h" bodystart="249" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespace_input_1a8465f629363731a017646da416338027" prot="public" static="no">
+        <type><ref refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" kindref="member">ButtonMappingArray::pair_type</ref></type>
+        <definition>using Input::ButtonMapping = ButtonMappingArray::pair_type</definition>
+        <argsstring></argsstring>
+        <name>ButtonMapping</name>
+        <qualifiedname>Input::ButtonMapping</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>A mapping for a button to a input key </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_buttons.h" line="252" column="1" bodyfile="input_buttons.h" bodystart="252" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespace_input_1a094b7fb423e80f346cde45eea8f19375" prot="public" static="no">
+        <type><ref refid="class_flat_unique_multi_map" kindref="compound">FlatUniqueMultiMap</ref>&lt; <ref refid="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054" kindref="member">Direction::InputDirection</ref>, <ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">InputButton</ref> &gt;</type>
+        <definition>using Input::DirectionMappingArray = FlatUniqueMultiMap&lt;Direction::InputDirection, InputButton&gt;</definition>
+        <argsstring></argsstring>
+        <name>DirectionMappingArray</name>
+        <qualifiedname>Input::DirectionMappingArray</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_buttons.h" line="259" column="1" bodyfile="input_buttons.h" bodystart="259" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespace_input_1a274593b378905ccde2287f1e64e2a21e" prot="public" static="no">
+        <type><ref refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" kindref="member">DirectionMappingArray::pair_type</ref></type>
+        <definition>using Input::DirectionMapping = DirectionMappingArray::pair_type</definition>
+        <argsstring></argsstring>
+        <name>DirectionMapping</name>
+        <qualifiedname>Input::DirectionMapping</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>A mapping for a single direction to a button </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_buttons.h" line="262" column="1" bodyfile="input_buttons.h" bodystart="262" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespace_input_1a3cde3b1eef79d5f1ad0bc09f58bffc3c" prot="public" static="no">
+        <type>std::vector&lt; std::pair&lt; <ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8" kindref="member">Keys::InputKey</ref>, std::string &gt; &gt;</type>
+        <definition>using Input::KeyNamesArray = std::vector&lt;std::pair&lt;Keys::InputKey, std::string&gt;&gt;</definition>
+        <argsstring></argsstring>
+        <name>KeyNamesArray</name>
+        <qualifiedname>Input::KeyNamesArray</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Provides platform-specific, human readable name for an input key </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_buttons.h" line="270" column="1" bodyfile="input_buttons.h" bodystart="270" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespace_input_1a5d4e095f2c5875f466cf0dc5a358b074" prot="public" static="no">
+        <type>std::bitset&lt; <ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8abd075526b5c7e3bbe4e8853c17b66c28" kindref="member">Input::Keys::KEYS_COUNT</ref> &gt;</type>
+        <definition>using Input::KeyStatus = std::bitset&lt;Input::Keys::KEYS_COUNT&gt;</definition>
+        <argsstring></argsstring>
+        <name>KeyStatus</name>
+        <qualifiedname>Input::KeyStatus</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="33" column="1" bodyfile="input_source.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_input_1ac40326db2d4a84f30007d8289a6268c1" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Input::start_repeat_time</definition>
+        <argsstring></argsstring>
+        <name>start_repeat_time</name>
+        <qualifiedname>Input::start_repeat_time</qualifiedname>
+        <initializer>= 23</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Start repeat time (in frames) a key has to be maintained pressed before being repeated for fist time. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.cpp" line="40" column="15" bodyfile="input.cpp" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_input_1ad324a6f1338294b270ce1508d6cdea2e" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Input::repeat_time</definition>
+        <argsstring></argsstring>
+        <name>repeat_time</name>
+        <qualifiedname>Input::repeat_time</qualifiedname>
+        <initializer>= 4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Repeat time (in frames) a key has to be maintained pressed after the start repeat time has passed for being repeated again. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.cpp" line="47" column="15" bodyfile="input.cpp" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_input_1a4f76f2ee0dd980c69d7832658bbccfc8" prot="public" static="no" mutable="no">
+        <type>std::array&lt; int, <ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a73e6218b7e59284f4b77124158ab1e1f" kindref="member">BUTTON_COUNT</ref> &gt;</type>
+        <definition>std::array&lt; int, BUTTON_COUNT &gt; Input::press_time</definition>
+        <argsstring></argsstring>
+        <name>press_time</name>
+        <qualifiedname>Input::press_time</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Buttons press time (in frames). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.cpp" line="49" column="12" bodyfile="input.cpp" bodystart="49" bodyend="-1" declfile="input.h" declline="317" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_input_1a4bc7af0ab7e401d32e88f53c264822fb" prot="public" static="no" mutable="no">
+        <type>std::bitset&lt; <ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a73e6218b7e59284f4b77124158ab1e1f" kindref="member">BUTTON_COUNT</ref> &gt;</type>
+        <definition>std::bitset&lt; BUTTON_COUNT &gt; Input::triggered</definition>
+        <argsstring></argsstring>
+        <name>triggered</name>
+        <qualifiedname>Input::triggered</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Buttons trigger state. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.cpp" line="50" column="13" bodyfile="input.cpp" bodystart="50" bodyend="-1" declfile="input.h" declline="320" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_input_1a8bf676f8e41fe7e91391ef5f4e3ef27f" prot="public" static="no" mutable="no">
+        <type>std::bitset&lt; <ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a73e6218b7e59284f4b77124158ab1e1f" kindref="member">BUTTON_COUNT</ref> &gt;</type>
+        <definition>std::bitset&lt; BUTTON_COUNT &gt; Input::repeated</definition>
+        <argsstring></argsstring>
+        <name>repeated</name>
+        <qualifiedname>Input::repeated</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Buttons trigger state. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.cpp" line="50" column="23" bodyfile="input.cpp" bodystart="50" bodyend="-1" declfile="input.h" declline="323" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_input_1a8f0b508868842b754dcec02cd1c8f63f" prot="public" static="no" mutable="no">
+        <type>std::bitset&lt; <ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a73e6218b7e59284f4b77124158ab1e1f" kindref="member">BUTTON_COUNT</ref> &gt;</type>
+        <definition>std::bitset&lt; BUTTON_COUNT &gt; Input::released</definition>
+        <argsstring></argsstring>
+        <name>released</name>
+        <qualifiedname>Input::released</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Buttons trigger state. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.cpp" line="50" column="32" bodyfile="input.cpp" bodystart="50" bodyend="-1" declfile="input.h" declline="326" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_input_1a0379b5b6e19af26e36d847b605a1003e" prot="public" static="no" mutable="no">
+        <type><ref refid="namespace_input_1a5d4e095f2c5875f466cf0dc5a358b074" kindref="member">Input::KeyStatus</ref></type>
+        <definition>std::bitset&lt; Input::Keys::KEYS_COUNT &gt; Input::raw_triggered</definition>
+        <argsstring></argsstring>
+        <name>raw_triggered</name>
+        <qualifiedname>Input::raw_triggered</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Raw keys triggered state. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.cpp" line="51" column="18" bodyfile="input.cpp" bodystart="51" bodyend="-1" declfile="input.h" declline="329" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_input_1a0d37fd70b2d75facbf8304b3b6414c81" prot="public" static="no" mutable="no">
+        <type><ref refid="namespace_input_1a5d4e095f2c5875f466cf0dc5a358b074" kindref="member">Input::KeyStatus</ref></type>
+        <definition>std::bitset&lt; Input::Keys::KEYS_COUNT &gt; Input::raw_pressed</definition>
+        <argsstring></argsstring>
+        <name>raw_pressed</name>
+        <qualifiedname>Input::raw_pressed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Raw keys pressed state. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.cpp" line="51" column="32" bodyfile="input.cpp" bodystart="51" bodyend="-1" declfile="input.h" declline="332" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_input_1a1e2d1175334a2b5e435aadb985328008" prot="public" static="no" mutable="no">
+        <type><ref refid="namespace_input_1a5d4e095f2c5875f466cf0dc5a358b074" kindref="member">Input::KeyStatus</ref></type>
+        <definition>std::bitset&lt; Input::Keys::KEYS_COUNT &gt; Input::raw_released</definition>
+        <argsstring></argsstring>
+        <name>raw_released</name>
+        <qualifiedname>Input::raw_released</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Raw keys released state. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.cpp" line="51" column="44" bodyfile="input.cpp" bodystart="51" bodyend="-1" declfile="input.h" declline="335" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_input_1ab3342cbdb65a64bac054efd7331ba3e8" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Input::dir4</definition>
+        <argsstring></argsstring>
+        <name>dir4</name>
+        <qualifiedname>Input::dir4</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Horizontal and vertical directions state. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.cpp" line="52" column="5" bodyfile="input.cpp" bodystart="52" bodyend="-1" declfile="input.h" declline="338" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_input_1a8685b01472b8a44c27f7316ffdac050d" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Input::dir8</definition>
+        <argsstring></argsstring>
+        <name>dir8</name>
+        <qualifiedname>Input::dir8</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>All cardinal directions state. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.cpp" line="53" column="5" bodyfile="input.cpp" bodystart="53" bodyend="-1" declfile="input.h" declline="341" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_input_1a1a34afd15832ef0e3fda02b47bb1f80e" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_input_1_1_source" kindref="compound">Source</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Source &gt; Input::source</definition>
+        <argsstring></argsstring>
+        <name>source</name>
+        <qualifiedname>Input::source</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.cpp" line="54" column="17" bodyfile="input.cpp" bodystart="54" bodyend="-1" declfile="input_source.h" declline="203" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_input_1ab566813eeda142077dd0c18d9a27cfb0" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Input::wait_input</definition>
+        <argsstring></argsstring>
+        <name>wait_input</name>
+        <qualifiedname>Input::wait_input</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.cpp" line="56" column="6" bodyfile="input.cpp" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_input_1aa4120b539dd0380d0ce22a7ec14aabbb" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto Input::kInputButtonNames</definition>
+        <argsstring></argsstring>
+        <name>kInputButtonNames</name>
+        <qualifiedname>Input::kInputButtonNames</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_buttons.h" line="92" column="16" bodyfile="input_buttons.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_input_1af784d7f75443ff1bada4a9f6fe2359fe" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto Input::kInputButtonHelp</definition>
+        <argsstring></argsstring>
+        <name>kInputButtonHelp</name>
+        <qualifiedname>Input::kInputButtonHelp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_buttons.h" line="137" column="16" bodyfile="input_buttons.h" bodystart="137" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_input_1a2fa82b50abef8aaff9634abe68e2f048" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::Init</definition>
+        <argsstring>(Game_ConfigInput cfg, const std::string &amp;replay_from_path, const std::string &amp;record_to_path)</argsstring>
+        <name>Init</name>
+        <qualifiedname>Input::Init</qualifiedname>
+        <param>
+          <type><ref refid="struct_game___config_input" kindref="compound">Game_ConfigInput</ref></type>
+          <declname>cfg</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>replay_from_path</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>record_to_path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes <ref refid="namespace_input" kindref="compound">Input</ref>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>cfg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>input configuration </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>replay_from_path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>path to a log file to replay from, or the empty string if not replaying </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>record_to_path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>path to a file to record input to, or the empty string if not recording </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="50" column="6" bodyfile="input.cpp" bodystart="62" bodyend="89" declfile="input.h" declline="50" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1af80dcfde6dbfe39bf3bc0345c75595ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>Input::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates <ref refid="namespace_input" kindref="compound">Input</ref> state. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="59" column="6" bodyfile="input.cpp" bodystart="111" bodyend="175" declfile="input.h" declline="59" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a079feb8d8f651cdda03f22f9fcee5a17" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::UpdateSystem</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateSystem</name>
+        <qualifiedname>Input::UpdateSystem</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates <ref refid="namespace_input" kindref="compound">Input</ref> state for only system keys not used by game logic </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="64" column="6" bodyfile="input.cpp" bodystart="177" bodyend="188" declfile="input.h" declline="64" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1adbc4e998724f3d6a37fc00db313a2e30" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::ResetKeys</definition>
+        <argsstring>()</argsstring>
+        <name>ResetKeys</name>
+        <qualifiedname>Input::ResetKeys</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Resets all button states. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="69" column="6" bodyfile="input.cpp" bodystart="190" bodyend="206" declfile="input.h" declline="69" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1adb992aec147ff431ccd43538d3165976" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::ResetTriggerKeys</definition>
+        <argsstring>()</argsstring>
+        <name>ResetTriggerKeys</name>
+        <qualifiedname>Input::ResetTriggerKeys</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Resets only triggered states. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="74" column="6" bodyfile="input.cpp" bodystart="208" bodyend="210" declfile="input.h" declline="74" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a7abdf8b5f6817a9d8ea2cde395670f0f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::ResetNonSystemKeys</definition>
+        <argsstring>()</argsstring>
+        <name>ResetNonSystemKeys</name>
+        <qualifiedname>Input::ResetNonSystemKeys</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Resets all button states of buttons that are not system keys. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="79" column="6" bodyfile="input.cpp" bodystart="212" bodyend="230" declfile="input.h" declline="79" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a12af65b1e21a4ff7dae0ef810d2b8be7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::ResetDefaultMapping</definition>
+        <argsstring>(InputButton button)</argsstring>
+        <name>ResetDefaultMapping</name>
+        <qualifiedname>Input::ResetDefaultMapping</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">InputButton</ref></type>
+          <declname>button</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Loads the default mapping for a button</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>button</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Button to restore mapping of </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="86" column="6" bodyfile="input.cpp" bodystart="232" bodyend="241" declfile="input.h" declline="86" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a6ca6f3bd50e6c310893da0e47685b01a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::ResetAllMappings</definition>
+        <argsstring>()</argsstring>
+        <name>ResetAllMappings</name>
+        <qualifiedname>Input::ResetAllMappings</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Loads the default mapping for all buttons </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="91" column="6" bodyfile="input.cpp" bodystart="243" bodyend="246" declfile="input.h" declline="91" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a68ba2f84e1863c3e8844ad714a6c5413" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsPressed</definition>
+        <argsstring>(InputButton button)</argsstring>
+        <name>IsPressed</name>
+        <qualifiedname>Input::IsPressed</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">InputButton</ref></type>
+          <declname>button</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if a button is being pressed.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>button</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>button ID. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether the button is being pressed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="99" column="6" bodyfile="input.cpp" bodystart="248" bodyend="252" declfile="input.h" declline="99" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1ab6be4bcd3b976880b343d853d895a2dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsTriggered</definition>
+        <argsstring>(InputButton button)</argsstring>
+        <name>IsTriggered</name>
+        <qualifiedname>Input::IsTriggered</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">InputButton</ref></type>
+          <declname>button</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if a button is starting to being pressed.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>button</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>button ID. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether the button is being triggered. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="107" column="6" bodyfile="input.cpp" bodystart="254" bodyend="258" declfile="input.h" declline="107" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1aaeb9666738f2c5e2f66e55a72e3cde4d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsRepeated</definition>
+        <argsstring>(InputButton button)</argsstring>
+        <name>IsRepeated</name>
+        <qualifiedname>Input::IsRepeated</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">InputButton</ref></type>
+          <declname>button</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if a button is being repeated. A button is being repeated while it is maintained pressed and a certain amount of frames has passed after last repetition.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>button</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>button ID. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether the button is being repeated. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="118" column="6" bodyfile="input.cpp" bodystart="260" bodyend="264" declfile="input.h" declline="118" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1af89ee131400d8cad31e369646586d1e5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsReleased</definition>
+        <argsstring>(InputButton button)</argsstring>
+        <name>IsReleased</name>
+        <qualifiedname>Input::IsReleased</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">InputButton</ref></type>
+          <declname>button</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if a button is being released.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>button</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>button ID. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether the button is being released. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="126" column="6" bodyfile="input.cpp" bodystart="266" bodyend="270" declfile="input.h" declline="126" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1aa8bf3fc159f58e379bbc588a9d243e69" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsAnyPressed</definition>
+        <argsstring>()</argsstring>
+        <name>IsAnyPressed</name>
+        <qualifiedname>Input::IsAnyPressed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if any button is being pressed.</para>
+<para><simplesect kind="return"><para>whether any button is being pressed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="133" column="6" bodyfile="input.cpp" bodystart="292" bodyend="296" declfile="input.h" declline="133" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a5fb8712bd105a429f76664bd11dfca56" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsAnyTriggered</definition>
+        <argsstring>()</argsstring>
+        <name>IsAnyTriggered</name>
+        <qualifiedname>Input::IsAnyTriggered</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if any button is being triggered.</para>
+<para><simplesect kind="return"><para>whether any button is being triggered. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="140" column="6" bodyfile="input.cpp" bodystart="298" bodyend="301" declfile="input.h" declline="140" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a06e547268b292d90873e6e37ab0fe6e9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsAnyRepeated</definition>
+        <argsstring>()</argsstring>
+        <name>IsAnyRepeated</name>
+        <qualifiedname>Input::IsAnyRepeated</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if any button is being repeated.</para>
+<para><simplesect kind="return"><para>whether any button is being repeated. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="147" column="6" bodyfile="input.cpp" bodystart="303" bodyend="306" declfile="input.h" declline="147" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1aa6f81463073715739f358ec50d07ce5e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsAnyReleased</definition>
+        <argsstring>()</argsstring>
+        <name>IsAnyReleased</name>
+        <qualifiedname>Input::IsAnyReleased</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if any button is being released.</para>
+<para><simplesect kind="return"><para>whether any button is being released. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="154" column="6" bodyfile="input.cpp" bodystart="308" bodyend="311" declfile="input.h" declline="154" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1abc04d1639eba73fcd650bc9884994562" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsSystemPressed</definition>
+        <argsstring>(InputButton button)</argsstring>
+        <name>IsSystemPressed</name>
+        <qualifiedname>Input::IsSystemPressed</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">InputButton</ref></type>
+          <declname>button</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if a system button is being pressed.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>button</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>button ID. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether the button is being pressed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="162" column="6" bodyfile="input.cpp" bodystart="272" bodyend="275" declfile="input.h" declline="162" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a4be4abbb029fe7f441396d61f3ecfc97" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsSystemTriggered</definition>
+        <argsstring>(InputButton button)</argsstring>
+        <name>IsSystemTriggered</name>
+        <qualifiedname>Input::IsSystemTriggered</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">InputButton</ref></type>
+          <declname>button</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if a system button is starting to being pressed.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>button</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>button ID. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether the button is being triggered. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="170" column="6" bodyfile="input.cpp" bodystart="277" bodyend="280" declfile="input.h" declline="170" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1aa554dfd7f2b6315a15364f951cefcb43" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsSystemRepeated</definition>
+        <argsstring>(InputButton button)</argsstring>
+        <name>IsSystemRepeated</name>
+        <qualifiedname>Input::IsSystemRepeated</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">InputButton</ref></type>
+          <declname>button</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if a system button is being repeated. A button is being repeated while it is maintained pressed and a certain amount of frames has passed after last repetition.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>button</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>button ID. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether the button is being repeated. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="181" column="6" bodyfile="input.cpp" bodystart="282" bodyend="285" declfile="input.h" declline="181" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1aface4f5689d73713e41f65721289af16" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsSystemReleased</definition>
+        <argsstring>(InputButton button)</argsstring>
+        <name>IsSystemReleased</name>
+        <qualifiedname>Input::IsSystemReleased</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">InputButton</ref></type>
+          <declname>button</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if a system button is being released.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>button</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>button ID. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether the button is being released. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="189" column="6" bodyfile="input.cpp" bodystart="287" bodyend="290" declfile="input.h" declline="189" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a8976a111412806b82c9add209dd6a681" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">InputButton</ref> &gt;</type>
+        <definition>std::vector&lt; Input::InputButton &gt; Input::GetAllPressed</definition>
+        <argsstring>()</argsstring>
+        <name>GetAllPressed</name>
+        <qualifiedname>Input::GetAllPressed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets all buttons being pressed.</para>
+<para><simplesect kind="return"><para>a vector with the buttons IDs. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="196" column="13" bodyfile="input.cpp" bodystart="313" bodyend="321" declfile="input.h" declline="196" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a8a205e64ad2d777b576d6c039e56684a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">InputButton</ref> &gt;</type>
+        <definition>std::vector&lt; Input::InputButton &gt; Input::GetAllTriggered</definition>
+        <argsstring>()</argsstring>
+        <name>GetAllTriggered</name>
+        <qualifiedname>Input::GetAllTriggered</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets all buttons being triggered.</para>
+<para><simplesect kind="return"><para>a vector with the buttons IDs. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="203" column="13" bodyfile="input.cpp" bodystart="323" bodyend="331" declfile="input.h" declline="203" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a1287f428d63cc6e3c3efab923416c3b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">InputButton</ref> &gt;</type>
+        <definition>std::vector&lt; Input::InputButton &gt; Input::GetAllRepeated</definition>
+        <argsstring>()</argsstring>
+        <name>GetAllRepeated</name>
+        <qualifiedname>Input::GetAllRepeated</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets all buttons being repeated.</para>
+<para><simplesect kind="return"><para>a vector with the buttons IDs. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="210" column="13" bodyfile="input.cpp" bodystart="333" bodyend="341" declfile="input.h" declline="210" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1ad417325f847d303c94c586d3115ec76f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">InputButton</ref> &gt;</type>
+        <definition>std::vector&lt; Input::InputButton &gt; Input::GetAllReleased</definition>
+        <argsstring>()</argsstring>
+        <name>GetAllReleased</name>
+        <qualifiedname>Input::GetAllReleased</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets all buttons being released.</para>
+<para><simplesect kind="return"><para>a vector with the buttons IDs. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="217" column="13" bodyfile="input.cpp" bodystart="343" bodyend="351" declfile="input.h" declline="217" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1ad194d30adeb5762409a26689159ad0a6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespace_input_1a5d4e095f2c5875f466cf0dc5a358b074" kindref="member">Input::KeyStatus</ref></type>
+        <definition>Input::KeyStatus Input::GetMask</definition>
+        <argsstring>()</argsstring>
+        <name>GetMask</name>
+        <qualifiedname>Input::GetMask</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the key mask for manipulation. When a bit is set the key is ignored even if it is mapped. Only raw reads will return the key state.</para>
+<para><simplesect kind="return"><para>key mask </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="225" column="18" bodyfile="input.cpp" bodystart="396" bodyend="399" declfile="input.h" declline="225" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a7de66ba64f43a3ff4be44becd59354fc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::SetMask</definition>
+        <argsstring>(Input::KeyStatus new_mask)</argsstring>
+        <name>SetMask</name>
+        <qualifiedname>Input::SetMask</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1a5d4e095f2c5875f466cf0dc5a358b074" kindref="member">Input::KeyStatus</ref></type>
+          <declname>new_mask</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>new_mask</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The new key mask to set </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="230" column="6" bodyfile="input.cpp" bodystart="401" bodyend="404" declfile="input.h" declline="230" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a173d56da8f1b37e377b8f48f2e31692c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::ResetMask</definition>
+        <argsstring>()</argsstring>
+        <name>ResetMask</name>
+        <qualifiedname>Input::ResetMask</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Resets the key mask. All keys are reported again. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="235" column="6" bodyfile="input.cpp" bodystart="406" bodyend="409" declfile="input.h" declline="235" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a7af372c5ede9a3e2fbe415e9c7362632" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsRawKeyPressed</definition>
+        <argsstring>(Input::Keys::InputKey key)</argsstring>
+        <name>IsRawKeyPressed</name>
+        <qualifiedname>Input::IsRawKeyPressed</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8" kindref="member">Input::Keys::InputKey</ref></type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="244" column="6" bodyfile="input.cpp" bodystart="353" bodyend="355" declfile="input.h" declline="244" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1ad705856c9c6d4bf093a906459afce24d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsRawKeyTriggered</definition>
+        <argsstring>(Input::Keys::InputKey key)</argsstring>
+        <name>IsRawKeyTriggered</name>
+        <qualifiedname>Input::IsRawKeyTriggered</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8" kindref="member">Input::Keys::InputKey</ref></type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="253" column="6" bodyfile="input.cpp" bodystart="357" bodyend="359" declfile="input.h" declline="253" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a4ca098445ab1827ac0d8ca862b488c5d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsRawKeyReleased</definition>
+        <argsstring>(Input::Keys::InputKey key)</argsstring>
+        <name>IsRawKeyReleased</name>
+        <qualifiedname>Input::IsRawKeyReleased</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8" kindref="member">Input::Keys::InputKey</ref></type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="262" column="6" bodyfile="input.cpp" bodystart="361" bodyend="363" declfile="input.h" declline="262" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1ac0d30bcce1d1cb98f80d90deacab4921" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="namespace_input_1a5d4e095f2c5875f466cf0dc5a358b074" kindref="member">Input::KeyStatus</ref> &amp;</type>
+        <definition>const Input::KeyStatus &amp; Input::GetAllRawPressed</definition>
+        <argsstring>()</argsstring>
+        <name>GetAllRawPressed</name>
+        <qualifiedname>Input::GetAllRawPressed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets all raw keys being pressed.</para>
+<para><simplesect kind="return"><para>a vector with the key IDs. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="269" column="24" bodyfile="input.cpp" bodystart="365" bodyend="367" declfile="input.h" declline="269" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a69081473628d7a5223edc7e8fd2281a9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="namespace_input_1a5d4e095f2c5875f466cf0dc5a358b074" kindref="member">Input::KeyStatus</ref> &amp;</type>
+        <definition>const Input::KeyStatus &amp; Input::GetAllRawTriggered</definition>
+        <argsstring>()</argsstring>
+        <name>GetAllRawTriggered</name>
+        <qualifiedname>Input::GetAllRawTriggered</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets all raw keys being triggered.</para>
+<para><simplesect kind="return"><para>a vector with the key IDs. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="276" column="24" bodyfile="input.cpp" bodystart="369" bodyend="371" declfile="input.h" declline="276" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a61f2614b23334c777b20ce4345bd6e8b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="namespace_input_1a5d4e095f2c5875f466cf0dc5a358b074" kindref="member">Input::KeyStatus</ref> &amp;</type>
+        <definition>const Input::KeyStatus &amp; Input::GetAllRawReleased</definition>
+        <argsstring>()</argsstring>
+        <name>GetAllRawReleased</name>
+        <qualifiedname>Input::GetAllRawReleased</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets all raw keys being released.</para>
+<para><simplesect kind="return"><para>a vector with the key IDs. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="283" column="24" bodyfile="input.cpp" bodystart="373" bodyend="375" declfile="input.h" declline="283" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1afcc9cf786f8bc450c97e6477e3b826bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Input::GetMousePosition</definition>
+        <argsstring>()</argsstring>
+        <name>GetMousePosition</name>
+        <qualifiedname>Input::GetMousePosition</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Position of the mouse cursor relative to the screen </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="288" column="7" bodyfile="input.cpp" bodystart="377" bodyend="379" declfile="input.h" declline="288" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a97b1661557a962673f4a020748d07248" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::AddRecordingData</definition>
+        <argsstring>(RecordingData type, std::string_view data)</argsstring>
+        <name>AddRecordingData</name>
+        <qualifiedname>Input::AddRecordingData</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1adb5ed8536be0280ad0de1f6c0b7d057f" kindref="member">RecordingData</ref></type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Used to submit additional metadata for input recording <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>type of data sent </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Sent data </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="295" column="6" bodyfile="input.cpp" bodystart="381" bodyend="384" declfile="input.h" declline="295" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1af66085bb665e083918cdefc8bea73641" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsRecording</definition>
+        <argsstring>()</argsstring>
+        <name>IsRecording</name>
+        <qualifiedname>Input::IsRecording</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>If the input is recorded </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="298" column="6" bodyfile="input.cpp" bodystart="386" bodyend="389" declfile="input.h" declline="298" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a8aff3f4861cad6fea629846e3ac26593" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_input_1_1_source" kindref="compound">Source</ref> *</type>
+        <definition>Input::Source * Input::GetInputSource</definition>
+        <argsstring>()</argsstring>
+        <name>GetInputSource</name>
+        <qualifiedname>Input::GetInputSource</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Used to access the underlying input source. Only use this for low level access! <simplesect kind="return"><para>the input source </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="305" column="9" bodyfile="input.cpp" bodystart="391" bodyend="394" declfile="input.h" declline="305" declcolumn="9"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a40eeb88d5c6a09d0ed1a4891f7f50ab2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::SimulateButtonPress</definition>
+        <argsstring>(Input::InputButton button)</argsstring>
+        <name>SimulateButtonPress</name>
+        <qualifiedname>Input::SimulateButtonPress</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">Input::InputButton</ref></type>
+          <declname>button</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Used to simulate a button press. This is used for emulating the behavior of some runtime patches. Buttons for directional movement will be delegated to the underlying low level input source. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>button</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input button which should be registered as being &apos;pressed&apos; </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="314" column="6" bodyfile="input.cpp" bodystart="411" bodyend="434" declfile="input.h" declline="314" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1aac6d484cbfbf6a4b80be4533cc21b497" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsWaitingInput</definition>
+        <argsstring>()</argsstring>
+        <name>IsWaitingInput</name>
+        <qualifiedname>Input::IsWaitingInput</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="343" column="6" bodyfile="input.cpp" bodystart="59" bodyend="59" declfile="input.h" declline="343" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a5871c8a8aa7615b1a3decda5cad51c02" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::WaitInput</definition>
+        <argsstring>(bool val)</argsstring>
+        <name>WaitInput</name>
+        <qualifiedname>Input::WaitInput</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input.h" line="344" column="6" bodyfile="input.cpp" bodystart="60" bodyend="60" declfile="input.h" declline="344" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a5e101f44367f2d790b0a38976dfbf593" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsSystemButton</definition>
+        <argsstring>(InputButton b)</argsstring>
+        <name>IsSystemButton</name>
+        <qualifiedname>Input::IsSystemButton</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">InputButton</ref></type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return true if the given button is a system button. System buttons are refreshed on every physical frame and do not affect the game logic. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_buttons.h" line="187" column="16" bodyfile="input_buttons.h" bodystart="187" bodyend="199"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1aa39aa29f7b5e07bee87c65c8b1cd8b9d" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::IsProtectedButton</definition>
+        <argsstring>(InputButton b)</argsstring>
+        <name>IsProtectedButton</name>
+        <qualifiedname>Input::IsProtectedButton</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">InputButton</ref></type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Protected buttons are buttons where unmapping them makes the <ref refid="namespace_player" kindref="compound">Player</ref> unusable. <simplesect kind="return"><para>true when the button is protected </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_buttons.h" line="205" column="16" bodyfile="input_buttons.h" bodystart="205" bodyend="218"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a12077cb8e3dd3afbeca005af16db116d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::ostream &amp;</type>
+        <definition>std::ostream &amp; Input::operator&lt;&lt;</definition>
+        <argsstring>(std::ostream &amp;os, ButtonMapping bm)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <qualifiedname>Input::operator&lt;&lt;</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>os</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_input_1a8465f629363731a017646da416338027" kindref="member">ButtonMapping</ref></type>
+          <declname>bm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_buttons.h" line="254" column="8" bodyfile="input_buttons.h" bodystart="254" bodyend="257"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a4cdea6e04cd9604a9b16cc4249e7fc83" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::ostream &amp;</type>
+        <definition>std::ostream &amp; Input::operator&lt;&lt;</definition>
+        <argsstring>(std::ostream &amp;os, DirectionMapping dm)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <qualifiedname>Input::operator&lt;&lt;</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>os</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_input_1a274593b378905ccde2287f1e64e2a21e" kindref="member">DirectionMapping</ref></type>
+          <declname>dm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_buttons.h" line="264" column="8" bodyfile="input_buttons.h" bodystart="264" bodyend="267"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a2623f90624ed76850131e1d3b0f968ca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespace_input_1a6c58920837b877254184fff33f735e9f" kindref="member">ButtonMappingArray</ref></type>
+        <definition>Input::ButtonMappingArray Input::GetDefaultButtonMappings</definition>
+        <argsstring>()</argsstring>
+        <name>GetDefaultButtonMappings</name>
+        <qualifiedname>Input::GetDefaultButtonMappings</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns default button mappings </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_buttons.h" line="273" column="20" bodyfile="input_buttons_desktop.cpp" bodystart="26" bodyend="170" declfile="input_buttons.h" declline="273" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a189f091df311495eb1b87e0d86f6eb26" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespace_input_1a3cde3b1eef79d5f1ad0bc09f58bffc3c" kindref="member">KeyNamesArray</ref></type>
+        <definition>Input::KeyNamesArray Input::GetInputKeyNames</definition>
+        <argsstring>()</argsstring>
+        <name>GetInputKeyNames</name>
+        <qualifiedname>Input::GetInputKeyNames</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns platform-specific, human readable name for an input key </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_buttons.h" line="276" column="15" bodyfile="input_buttons_desktop.cpp" bodystart="172" bodyend="174" declfile="input_buttons.h" declline="276" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_input_1a1a071e3141f2cbf60d8c018d1c2bac71" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::GetSupportedConfig</definition>
+        <argsstring>(Game_ConfigInput &amp;cfg)</argsstring>
+        <name>GetSupportedConfig</name>
+        <qualifiedname>Input::GetSupportedConfig</qualifiedname>
+        <param>
+          <type><ref refid="struct_game___config_input" kindref="compound">Game_ConfigInput</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Used to declare which config options are available </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_buttons.h" line="279" column="6" bodyfile="input_buttons_desktop.cpp" bodystart="176" bodyend="182" declfile="input_buttons.h" declline="279" declcolumn="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="namespace_input" kindref="compound">Input</ref> namespace. <ref refid="namespace_input" kindref="compound">Input</ref> works with Button states. Buttons are representations of one or more keys or actions (like keyboard keys, mouse buttons, joystick axis). This way buttons are platform and device independent, while the assigned keys can vary by the system.</para>
+<para><ref refid="namespace_input" kindref="compound">Input</ref> namespace. </para>
+    </detaileddescription>
+    <location file="input.cpp" line="34" column="1"/>
+  </compounddef>
+</doxygen>

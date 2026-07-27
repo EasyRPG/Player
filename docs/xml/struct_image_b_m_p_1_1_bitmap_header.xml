@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_image_b_m_p_1_1_bitmap_header" kind="struct" language="C++" prot="public">
+    <compoundname>ImageBMP::BitmapHeader</compoundname>
+    <includes refid="image__bmp_8h" local="no">image_bmp.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_image_b_m_p_1_1_bitmap_header_1a21f0d3838198def73849d8b69c327300" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ImageBMP::BitmapHeader::size</definition>
+        <argsstring></argsstring>
+        <name>size</name>
+        <qualifiedname>ImageBMP::BitmapHeader::size</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_bmp.h" line="28" column="5" bodyfile="image_bmp.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_image_b_m_p_1_1_bitmap_header_1a86e91fee767747b37aa075b72a826d0c" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ImageBMP::BitmapHeader::w</definition>
+        <argsstring></argsstring>
+        <name>w</name>
+        <qualifiedname>ImageBMP::BitmapHeader::w</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_bmp.h" line="29" column="5" bodyfile="image_bmp.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_image_b_m_p_1_1_bitmap_header_1a6f813a47fd0e4e574fc0f743f441b410" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ImageBMP::BitmapHeader::h</definition>
+        <argsstring></argsstring>
+        <name>h</name>
+        <qualifiedname>ImageBMP::BitmapHeader::h</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_bmp.h" line="30" column="5" bodyfile="image_bmp.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_image_b_m_p_1_1_bitmap_header_1ac5c20a20355eec1c96dbe9b96c7b0952" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ImageBMP::BitmapHeader::planes</definition>
+        <argsstring></argsstring>
+        <name>planes</name>
+        <qualifiedname>ImageBMP::BitmapHeader::planes</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_bmp.h" line="31" column="5" bodyfile="image_bmp.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_image_b_m_p_1_1_bitmap_header_1abee29a4ea4949d2ceca9cc9a30716b11" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ImageBMP::BitmapHeader::depth</definition>
+        <argsstring></argsstring>
+        <name>depth</name>
+        <qualifiedname>ImageBMP::BitmapHeader::depth</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_bmp.h" line="32" column="5" bodyfile="image_bmp.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_image_b_m_p_1_1_bitmap_header_1a03c18eaf0262da4b6cae5fb6aeb8525d" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ImageBMP::BitmapHeader::compression</definition>
+        <argsstring></argsstring>
+        <name>compression</name>
+        <qualifiedname>ImageBMP::BitmapHeader::compression</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_bmp.h" line="33" column="5" bodyfile="image_bmp.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_image_b_m_p_1_1_bitmap_header_1a8007563572c596131d9fd86a35a4743c" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ImageBMP::BitmapHeader::num_colors</definition>
+        <argsstring></argsstring>
+        <name>num_colors</name>
+        <qualifiedname>ImageBMP::BitmapHeader::num_colors</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_bmp.h" line="34" column="5" bodyfile="image_bmp.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_image_b_m_p_1_1_bitmap_header_1a2cdd4b8b87b0f90979d503242a2aea0a" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ImageBMP::BitmapHeader::palette_size</definition>
+        <argsstring></argsstring>
+        <name>palette_size</name>
+        <qualifiedname>ImageBMP::BitmapHeader::palette_size</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_bmp.h" line="35" column="5" bodyfile="image_bmp.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="image_bmp.h" line="27" column="1" bodyfile="image_bmp.h" bodystart="27" bodyend="36"/>
+    <listofallmembers>
+      <member refid="struct_image_b_m_p_1_1_bitmap_header_1a03c18eaf0262da4b6cae5fb6aeb8525d" prot="public" virt="non-virtual"><scope>ImageBMP::BitmapHeader</scope><name>compression</name></member>
+      <member refid="struct_image_b_m_p_1_1_bitmap_header_1abee29a4ea4949d2ceca9cc9a30716b11" prot="public" virt="non-virtual"><scope>ImageBMP::BitmapHeader</scope><name>depth</name></member>
+      <member refid="struct_image_b_m_p_1_1_bitmap_header_1a6f813a47fd0e4e574fc0f743f441b410" prot="public" virt="non-virtual"><scope>ImageBMP::BitmapHeader</scope><name>h</name></member>
+      <member refid="struct_image_b_m_p_1_1_bitmap_header_1a8007563572c596131d9fd86a35a4743c" prot="public" virt="non-virtual"><scope>ImageBMP::BitmapHeader</scope><name>num_colors</name></member>
+      <member refid="struct_image_b_m_p_1_1_bitmap_header_1a2cdd4b8b87b0f90979d503242a2aea0a" prot="public" virt="non-virtual"><scope>ImageBMP::BitmapHeader</scope><name>palette_size</name></member>
+      <member refid="struct_image_b_m_p_1_1_bitmap_header_1ac5c20a20355eec1c96dbe9b96c7b0952" prot="public" virt="non-virtual"><scope>ImageBMP::BitmapHeader</scope><name>planes</name></member>
+      <member refid="struct_image_b_m_p_1_1_bitmap_header_1a21f0d3838198def73849d8b69c327300" prot="public" virt="non-virtual"><scope>ImageBMP::BitmapHeader</scope><name>size</name></member>
+      <member refid="struct_image_b_m_p_1_1_bitmap_header_1a86e91fee767747b37aa075b72a826d0c" prot="public" virt="non-virtual"><scope>ImageBMP::BitmapHeader</scope><name>w</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

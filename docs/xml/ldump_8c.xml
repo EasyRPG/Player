@@ -1,0 +1,944 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="ldump_8c" kind="file" language="C++">
+    <compoundname>ldump.c</compoundname>
+    <includes refid="lprefix_8h" local="yes">lprefix.h</includes>
+    <includes local="no">limits.h</includes>
+    <includes local="no">stddef.h</includes>
+    <includes refid="lua_8h" local="yes">lua.h</includes>
+    <includes refid="lapi_8h" local="yes">lapi.h</includes>
+    <includes refid="lgc_8h" local="yes">lgc.h</includes>
+    <includes refid="lobject_8h" local="yes">lobject.h</includes>
+    <includes refid="lstate_8h" local="yes">lstate.h</includes>
+    <includes refid="ltable_8h" local="yes">ltable.h</includes>
+    <includes refid="lundump_8h" local="yes">lundump.h</includes>
+    <incdepgraph>
+      <node id="8">
+        <label>lapi.h</label>
+        <link refid="lapi_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/ldump.c</label>
+        <link refid="ldump_8c"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>lgc.h</label>
+        <link refid="lgc_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>lmem.h</label>
+        <link refid="lmem_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>lobject.h</label>
+        <link refid="lobject_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>lprefix.h</label>
+        <link refid="lprefix_8h"/>
+      </node>
+      <node id="10">
+        <label>lstate.h</label>
+        <link refid="lstate_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>ltable.h</label>
+        <link refid="ltable_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>ltm.h</label>
+        <link refid="ltm_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>lundump.h</label>
+        <link refid="lundump_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>lzio.h</label>
+        <link refid="lzio_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>limits.h</label>
+      </node>
+      <node id="15">
+        <label>signal.h</label>
+      </node>
+      <node id="6">
+        <label>stdarg.h</label>
+      </node>
+      <node id="4">
+        <label>stddef.h</label>
+      </node>
+    </incdepgraph>
+    <innerclass refid="struct_dump_state" prot="public">DumpState</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="ldump_8c_1a305a0bdaea32b19e7f6d2cb6dce1cc81" prot="public" static="no">
+        <name>ldump_c</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="7" column="9" bodyfile="leasy/lua/ldump.c" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ldump_8c_1abf0b3947b59218777a8e928a10be205b" prot="public" static="no">
+        <name>LUA_CORE</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="8" column="9" bodyfile="leasy/lua/ldump.c" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ldump_8c_1aa57836f656453350c7d2b6b89df1b003" prot="public" static="no">
+        <name>dumpVector</name>
+        <param><defname>D</defname></param>
+        <param><defname>v</defname></param>
+        <param><defname>n</defname></param>
+        <initializer>dumpBlock(D,v,(n)*sizeof((v)[0]))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="42" column="9" bodyfile="leasy/lua/ldump.c" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ldump_8c_1a05e931c17f007b1c9d54080d6243af18" prot="public" static="no">
+        <name>dumpLiteral</name>
+        <param><defname>D</defname></param>
+        <param><defname>s</defname></param>
+        <initializer>dumpBlock(D,s,sizeof(s) - sizeof(char))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="44" column="9" bodyfile="leasy/lua/ldump.c" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ldump_8c_1ad2bf75eb38f1f5a5a7f71818fbb04098" prot="public" static="no">
+        <name>dumpVar</name>
+        <param><defname>D</defname></param>
+        <param><defname>x</defname></param>
+        <initializer><ref refid="ldump_8c_1aa57836f656453350c7d2b6b89df1b003" kindref="member">dumpVector</ref>(D,&amp;x,1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="77" column="9" bodyfile="leasy/lua/ldump.c" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ldump_8c_1a2a1ad4360d7023093f769ebda9341597" prot="public" static="no">
+        <name>DIBS</name>
+        <initializer>((<ref refid="llimits_8h_1ad40053171fbf571af0be66edc7a93457" kindref="member">l_numbits</ref>(<ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref>) + 6) / 7)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="90" column="9" bodyfile="leasy/lua/ldump.c" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ldump_8c_1a1b8c7443d1f215741e5c3fe82bb39e01" prot="public" static="no">
+        <name>dumpNumInfo</name>
+        <param><defname>D</defname></param>
+        <param><defname>tvar</defname></param>
+        <param><defname>value</defname></param>
+        <initializer>{ tvar i = value; dumpByte(D, sizeof(tvar)); <ref refid="ldump_8c_1ad2bf75eb38f1f5a5a7f71818fbb04098" kindref="member">dumpVar</ref>(D, i); }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="269" column="9" bodyfile="leasy/lua/ldump.c" bodystart="269" bodyend="270"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="ldump_8c_1adeca46278a770e7418d0eff725770e04" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void dumpBlock</definition>
+        <argsstring>(DumpState *D, const void *b, size_t size)</argsstring>
+        <name>dumpBlock</name>
+        <param>
+          <type><ref refid="struct_dump_state" kindref="compound">DumpState</ref> *</type>
+          <declname>D</declname>
+        </param>
+        <param>
+          <type>const void *</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="52" column="13" bodyfile="leasy/lua/ldump.c" bodystart="52" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="ldump_8c_1af57fdf5f40d3016394ff1b9ee9408120" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void dumpAlign</definition>
+        <argsstring>(DumpState *D, unsigned align)</argsstring>
+        <name>dumpAlign</name>
+        <param>
+          <type><ref refid="struct_dump_state" kindref="compound">DumpState</ref> *</type>
+          <declname>D</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>align</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="66" column="13" bodyfile="leasy/lua/ldump.c" bodystart="66" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="ldump_8c_1a4838cac003905fc2e95b522a03d4adfc" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void dumpByte</definition>
+        <argsstring>(DumpState *D, int y)</argsstring>
+        <name>dumpByte</name>
+        <param>
+          <type><ref refid="struct_dump_state" kindref="compound">DumpState</ref> *</type>
+          <declname>D</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="80" column="13" bodyfile="leasy/lua/ldump.c" bodystart="80" bodyend="83"/>
+      </memberdef>
+      <memberdef kind="function" id="ldump_8c_1a6c8f3d1fed1605d75277db01cf20ca88" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void dumpVarint</definition>
+        <argsstring>(DumpState *D, lua_Unsigned x)</argsstring>
+        <name>dumpVarint</name>
+        <param>
+          <type><ref refid="struct_dump_state" kindref="compound">DumpState</ref> *</type>
+          <declname>D</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref></type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="95" column="13" bodyfile="leasy/lua/ldump.c" bodystart="95" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="ldump_8c_1a959719e6a19716dd5c63b80a3d574de6" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void dumpSize</definition>
+        <argsstring>(DumpState *D, size_t sz)</argsstring>
+        <name>dumpSize</name>
+        <param>
+          <type><ref refid="struct_dump_state" kindref="compound">DumpState</ref> *</type>
+          <declname>D</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>sz</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="105" column="13" bodyfile="leasy/lua/ldump.c" bodystart="105" bodyend="107"/>
+      </memberdef>
+      <memberdef kind="function" id="ldump_8c_1af18972a3be9ad820b0d677891405d15b" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void dumpInt</definition>
+        <argsstring>(DumpState *D, int x)</argsstring>
+        <name>dumpInt</name>
+        <param>
+          <type><ref refid="struct_dump_state" kindref="compound">DumpState</ref> *</type>
+          <declname>D</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="110" column="13" bodyfile="leasy/lua/ldump.c" bodystart="110" bodyend="113"/>
+      </memberdef>
+      <memberdef kind="function" id="ldump_8c_1a671751477d7f491c5e9b2affbcd517a0" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void dumpNumber</definition>
+        <argsstring>(DumpState *D, lua_Number x)</argsstring>
+        <name>dumpNumber</name>
+        <param>
+          <type><ref refid="struct_dump_state" kindref="compound">DumpState</ref> *</type>
+          <declname>D</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref></type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="116" column="13" bodyfile="leasy/lua/ldump.c" bodystart="116" bodyend="118"/>
+      </memberdef>
+      <memberdef kind="function" id="ldump_8c_1a5bc42c8666f45652f5716243028c4b39" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void dumpInteger</definition>
+        <argsstring>(DumpState *D, lua_Integer x)</argsstring>
+        <name>dumpInteger</name>
+        <param>
+          <type><ref refid="struct_dump_state" kindref="compound">DumpState</ref> *</type>
+          <declname>D</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="127" column="13" bodyfile="leasy/lua/ldump.c" bodystart="127" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="function" id="ldump_8c_1a86429bc5ca5a8686e8bef38e599fdda0" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void dumpString</definition>
+        <argsstring>(DumpState *D, TString *ts)</argsstring>
+        <name>dumpString</name>
+        <param>
+          <type><ref refid="struct_dump_state" kindref="compound">DumpState</ref> *</type>
+          <declname>D</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+          <declname>ts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="143" column="13" bodyfile="leasy/lua/ldump.c" bodystart="143" bodyend="168"/>
+      </memberdef>
+      <memberdef kind="function" id="ldump_8c_1af4e6b3cad1a6436e065a811a3e6d4573" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void dumpCode</definition>
+        <argsstring>(DumpState *D, const Proto *f)</argsstring>
+        <name>dumpCode</name>
+        <param>
+          <type><ref refid="struct_dump_state" kindref="compound">DumpState</ref> *</type>
+          <declname>D</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_proto" kindref="compound">Proto</ref> *</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="171" column="13" bodyfile="leasy/lua/ldump.c" bodystart="171" bodyend="176"/>
+      </memberdef>
+      <memberdef kind="function" id="ldump_8c_1a07cc1a1a61a73817b0a3671ded25d247" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void dumpFunction</definition>
+        <argsstring>(DumpState *D, const Proto *f)</argsstring>
+        <name>dumpFunction</name>
+        <param>
+          <type><ref refid="struct_dump_state" kindref="compound">DumpState</ref> *</type>
+          <declname>D</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_proto" kindref="compound">Proto</ref> *</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="254" column="13" bodyfile="leasy/lua/ldump.c" bodystart="254" bodyend="266" declfile="leasy/lua/ldump.c" declline="179" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="ldump_8c_1a03c1c48bb784b200a4f8e982c9235456" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void dumpConstants</definition>
+        <argsstring>(DumpState *D, const Proto *f)</argsstring>
+        <name>dumpConstants</name>
+        <param>
+          <type><ref refid="struct_dump_state" kindref="compound">DumpState</ref> *</type>
+          <declname>D</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_proto" kindref="compound">Proto</ref> *</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="181" column="13" bodyfile="leasy/lua/ldump.c" bodystart="181" bodyend="204"/>
+      </memberdef>
+      <memberdef kind="function" id="ldump_8c_1a34567bcb1204f914b0316d5ac5532ae0" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void dumpProtos</definition>
+        <argsstring>(DumpState *D, const Proto *f)</argsstring>
+        <name>dumpProtos</name>
+        <param>
+          <type><ref refid="struct_dump_state" kindref="compound">DumpState</ref> *</type>
+          <declname>D</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_proto" kindref="compound">Proto</ref> *</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="207" column="13" bodyfile="leasy/lua/ldump.c" bodystart="207" bodyend="213"/>
+      </memberdef>
+      <memberdef kind="function" id="ldump_8c_1aa91ee935a3a398fdb0228107f579fb75" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void dumpUpvalues</definition>
+        <argsstring>(DumpState *D, const Proto *f)</argsstring>
+        <name>dumpUpvalues</name>
+        <param>
+          <type><ref refid="struct_dump_state" kindref="compound">DumpState</ref> *</type>
+          <declname>D</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_proto" kindref="compound">Proto</ref> *</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="216" column="13" bodyfile="leasy/lua/ldump.c" bodystart="216" bodyend="224"/>
+      </memberdef>
+      <memberdef kind="function" id="ldump_8c_1a57223a49768a740530eddd2f3ef19699" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void dumpDebug</definition>
+        <argsstring>(DumpState *D, const Proto *f)</argsstring>
+        <name>dumpDebug</name>
+        <param>
+          <type><ref refid="struct_dump_state" kindref="compound">DumpState</ref> *</type>
+          <declname>D</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_proto" kindref="compound">Proto</ref> *</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="227" column="13" bodyfile="leasy/lua/ldump.c" bodystart="227" bodyend="251"/>
+      </memberdef>
+      <memberdef kind="function" id="ldump_8c_1a7dff1d2107a66420c1476d4ecfa27b14" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void dumpHeader</definition>
+        <argsstring>(DumpState *D)</argsstring>
+        <name>dumpHeader</name>
+        <param>
+          <type><ref refid="struct_dump_state" kindref="compound">DumpState</ref> *</type>
+          <declname>D</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="273" column="13" bodyfile="leasy/lua/ldump.c" bodystart="273" bodyend="282"/>
+      </memberdef>
+      <memberdef kind="function" id="ldump_8c_1a808f6a29001ac6446f40c76014c6b6e9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int luaU_dump</definition>
+        <argsstring>(lua_State *L, const Proto *f, lua_Writer w, void *data, int strip)</argsstring>
+        <name>luaU_dump</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_proto" kindref="compound">Proto</ref> *</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a855729196d7066b2da21178284868a8d" kindref="member">lua_Writer</ref></type>
+          <declname>w</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>strip</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldump.c" line="288" column="5" bodyfile="leasy/lua/ldump.c" bodystart="288" bodyend="306"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>ldump.c<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>save<sp/>precompiled<sp/>Lua<sp/>chunks</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="ldump_8c_1a305a0bdaea32b19e7f6d2cb6dce1cc81" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ldump_c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="ldump_8c_1abf0b3947b59218777a8e928a10be205b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_CORE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lprefix_8h" kindref="compound">lprefix.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;limits.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stddef.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lua_8h" kindref="compound">lua.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lapi_8h" kindref="compound">lapi.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lgc_8h" kindref="compound">lgc.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lobject_8h" kindref="compound">lobject.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lstate_8h" kindref="compound">lstate.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ltable_8h" kindref="compound">ltable.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lundump_8h" kindref="compound">lundump.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="struct_dump_state" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="27" refid="struct_dump_state_1ac4aa62a665e8687596f6b6a4e0e77c18" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*<ref refid="struct_dump_state_1ac4aa62a665e8687596f6b6a4e0e77c18" kindref="member">L</ref>;</highlight></codeline>
+<codeline lineno="28" refid="struct_dump_state_1ac92b1985689ee766e53540b21702e7dc" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a855729196d7066b2da21178284868a8d" kindref="member">lua_Writer</ref><sp/><ref refid="struct_dump_state_1ac92b1985689ee766e53540b21702e7dc" kindref="member">writer</ref>;</highlight></codeline>
+<codeline lineno="29" refid="struct_dump_state_1a93fbf2fa246b0b54becb7001b826a1bd" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="struct_dump_state_1a93fbf2fa246b0b54becb7001b826a1bd" kindref="member">data</ref>;</highlight></codeline>
+<codeline lineno="30" refid="struct_dump_state_1a10f5ba92271e14a3b52251d7b93174cb" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="struct_dump_state_1a10f5ba92271e14a3b52251d7b93174cb" kindref="member">offset</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>current<sp/>position<sp/>relative<sp/>to<sp/>beginning<sp/>of<sp/>dump<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="struct_dump_state_1afd4b1bbfc1bd094919b8eca23a268391" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_dump_state_1afd4b1bbfc1bd094919b8eca23a268391" kindref="member">strip</ref>;</highlight></codeline>
+<codeline lineno="32" refid="struct_dump_state_1a673485f23b723a08f496b001ef8127de" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_dump_state_1a673485f23b723a08f496b001ef8127de" kindref="member">status</ref>;</highlight></codeline>
+<codeline lineno="33" refid="struct_dump_state_1a2f1eb653914e188fda9e634fa29b1653" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*<ref refid="struct_dump_state_1a2f1eb653914e188fda9e634fa29b1653" kindref="member">h</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>table<sp/>to<sp/>track<sp/>saved<sp/>strings<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="struct_dump_state_1a5f89980c816b49b9e8b64ef30056e6a9" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref><sp/><ref refid="struct_dump_state_1a5f89980c816b49b9e8b64ef30056e6a9" kindref="member">nstr</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>counter<sp/>for<sp/>counting<sp/>saved<sp/>strings<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal">}<sp/><ref refid="struct_dump_state" kindref="compound">DumpState</ref>;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="39"><highlight class="comment">**<sp/>All<sp/>high-level<sp/>dumps<sp/>go<sp/>through<sp/>dumpVector;<sp/>you<sp/>can<sp/>change<sp/>it<sp/>to</highlight></codeline>
+<codeline lineno="40"><highlight class="comment">**<sp/>change<sp/>the<sp/>endianness<sp/>of<sp/>the<sp/>result</highlight></codeline>
+<codeline lineno="41"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="ldump_8c_1aa57836f656453350c7d2b6b89df1b003" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>dumpVector(D,v,n)<sp/><sp/><sp/>dumpBlock(D,v,(n)*sizeof((v)[0]))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="ldump_8c_1a05e931c17f007b1c9d54080d6243af18" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>dumpLiteral(D,<sp/>s)<sp/><sp/><sp/>dumpBlock(D,s,sizeof(s)<sp/>-<sp/>sizeof(char))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="48"><highlight class="comment">**<sp/>Dump<sp/>the<sp/>block<sp/>of<sp/>memory<sp/>pointed<sp/>by<sp/>&apos;b&apos;<sp/>with<sp/>given<sp/>&apos;size&apos;.</highlight></codeline>
+<codeline lineno="49"><highlight class="comment">**<sp/>&apos;b&apos;<sp/>should<sp/>not<sp/>be<sp/>NULL,<sp/>except<sp/>for<sp/>the<sp/>last<sp/>call<sp/>signaling<sp/>the<sp/>end</highlight></codeline>
+<codeline lineno="50"><highlight class="comment">**<sp/>of<sp/>the<sp/>dump.</highlight></codeline>
+<codeline lineno="51"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>dumpBlock<sp/>(<ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>*D,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*b,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>size)<sp/>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(D-&gt;status<sp/>==<sp/>0)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>do<sp/>not<sp/>write<sp/>anything<sp/>after<sp/>an<sp/>error<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lapi_8h_1a1781f2a7d9161848a246d475a9171875" kindref="member">lua_unlock</ref>(D-&gt;L);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>D-&gt;status<sp/>=<sp/>(*D-&gt;writer)(D-&gt;L,<sp/>b,<sp/>size,<sp/>D-&gt;data);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lapi_8h_1aa68a48b9104aeadf4842c25c12a9b8c9" kindref="member">lua_lock</ref>(D-&gt;L);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>D-&gt;offset<sp/>+=<sp/>size;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="63"><highlight class="comment">**<sp/>Dump<sp/>enough<sp/>zeros<sp/>to<sp/>ensure<sp/>that<sp/>current<sp/>position<sp/>is<sp/>a<sp/>multiple<sp/>of</highlight></codeline>
+<codeline lineno="64"><highlight class="comment">**<sp/>&apos;align&apos;.</highlight></codeline>
+<codeline lineno="65"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>dumpAlign<sp/>(<ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>*D,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>align)<sp/>{</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>padding<sp/>=<sp/>align<sp/>-<sp/><ref refid="llimits_8h_1a6ce2ddc5b419ed6f302573db3cc03e56" kindref="member">cast_uint</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2f8d7f185272bc3b6821b17fe2079085" kindref="member">D</ref>-&gt;offset<sp/>%<sp/>align);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(padding<sp/>&lt;<sp/>align)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>padding<sp/>==<sp/>align<sp/>means<sp/>no<sp/>padding<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>paddingContent<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(align<sp/>&lt;=<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref>));</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>dumpBlock(D,<sp/>&amp;paddingContent,<sp/>padding);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2f8d7f185272bc3b6821b17fe2079085" kindref="member">D</ref>-&gt;offset<sp/>%<sp/>align<sp/>==<sp/>0);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77" refid="ldump_8c_1ad2bf75eb38f1f5a5a7f71818fbb04098" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>dumpVar(D,x)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dumpVector(D,&amp;x,1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>dumpByte<sp/>(<ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>*D,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y)<sp/>{</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/>x<sp/>=<sp/>(<ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref>)y;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><ref refid="ldump_8c_1ad2bf75eb38f1f5a5a7f71818fbb04098" kindref="member">dumpVar</ref>(D,<sp/>x);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="87"><highlight class="comment">**<sp/>size<sp/>for<sp/>&apos;dumpVarint&apos;<sp/>buffer:<sp/>each<sp/>byte<sp/>can<sp/>store<sp/>up<sp/>to<sp/>7<sp/>bits.</highlight></codeline>
+<codeline lineno="88"><highlight class="comment">**<sp/>(The<sp/>&quot;+6&quot;<sp/>rounds<sp/>up<sp/>the<sp/>division.)</highlight></codeline>
+<codeline lineno="89"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90" refid="ldump_8c_1a2a1ad4360d7023093f769ebda9341597" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>DIBS<sp/><sp/><sp/><sp/>((l_numbits(lua_Unsigned)<sp/>+<sp/>6)<sp/>/<sp/>7)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="93"><highlight class="comment">**<sp/>Dumps<sp/>an<sp/>unsigned<sp/>integer<sp/>using<sp/>the<sp/>MSB<sp/>Varint<sp/>encoding</highlight></codeline>
+<codeline lineno="94"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>dumpVarint<sp/>(<ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>*D,<sp/><ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref><sp/>x)<sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/>buff[<ref refid="ldump_8c_1a2a1ad4360d7023093f769ebda9341597" kindref="member">DIBS</ref>];</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>n<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/>buff[<ref refid="ldump_8c_1a2a1ad4360d7023093f769ebda9341597" kindref="member">DIBS</ref><sp/>-<sp/>1]<sp/>=<sp/>x<sp/>&amp;<sp/>0x7f;<sp/><sp/></highlight><highlight class="comment">/*<sp/>fill<sp/>least-significant<sp/>byte<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>((x<sp/>&gt;&gt;=<sp/>7)<sp/>!=<sp/>0)<sp/><sp/></highlight><highlight class="comment">/*<sp/>fill<sp/>other<sp/>bytes<sp/>in<sp/>reverse<sp/>order<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/>buff[<ref refid="ldump_8c_1a2a1ad4360d7023093f769ebda9341597" kindref="member">DIBS</ref><sp/>-<sp/>(++n)]<sp/>=<sp/><ref refid="llimits_8h_1a596f5b6e992f53a5a4e5732083448dd4" kindref="member">cast_byte</ref>((x<sp/>&amp;<sp/>0x7f)<sp/>|<sp/>0x80);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><ref refid="ldump_8c_1aa57836f656453350c7d2b6b89df1b003" kindref="member">dumpVector</ref>(D,<sp/>buff<sp/>+<sp/><ref refid="ldump_8c_1a2a1ad4360d7023093f769ebda9341597" kindref="member">DIBS</ref><sp/>-<sp/>n,<sp/>n);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>dumpSize<sp/>(<ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>*D,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>sz)<sp/>{</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/>dumpVarint(D,<sp/><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(<ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref>,<sp/>sz));</highlight></codeline>
+<codeline lineno="107"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>dumpInt<sp/>(<ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>*D,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x)<sp/>{</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(x<sp/>&gt;=<sp/>0);</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/>dumpVarint(D,<sp/><ref refid="llimits_8h_1a6ce2ddc5b419ed6f302573db3cc03e56" kindref="member">cast_uint</ref>(x));</highlight></codeline>
+<codeline lineno="113"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>dumpNumber<sp/>(<ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>*D,<sp/><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref><sp/>x)<sp/>{</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><ref refid="ldump_8c_1ad2bf75eb38f1f5a5a7f71818fbb04098" kindref="member">dumpVar</ref>(D,<sp/>x);</highlight></codeline>
+<codeline lineno="118"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="122"><highlight class="comment">**<sp/>Signed<sp/>integers<sp/>are<sp/>coded<sp/>to<sp/>keep<sp/>small<sp/>values<sp/>small.<sp/>(Coding<sp/>-1<sp/>as</highlight></codeline>
+<codeline lineno="123"><highlight class="comment">**<sp/>0xfff...fff<sp/>would<sp/>use<sp/>too<sp/>many<sp/>bytes<sp/>to<sp/>save<sp/>a<sp/>quite<sp/>common<sp/>value.)</highlight></codeline>
+<codeline lineno="124"><highlight class="comment">**<sp/>A<sp/>non-negative<sp/>x<sp/>is<sp/>coded<sp/>as<sp/>2x;<sp/>a<sp/>negative<sp/>x<sp/>is<sp/>coded<sp/>as<sp/>-2x<sp/>-<sp/>1.</highlight></codeline>
+<codeline lineno="125"><highlight class="comment">**<sp/>(0<sp/>=&gt;<sp/>0;<sp/>-1<sp/>=&gt;<sp/>1;<sp/>1<sp/>=&gt;<sp/>2;<sp/>-2<sp/>=&gt;<sp/>3;<sp/>2<sp/>=&gt;<sp/>4;<sp/>...)</highlight></codeline>
+<codeline lineno="126"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>dumpInteger<sp/>(<ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>*D,<sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>x)<sp/>{</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref><sp/>cx<sp/>=<sp/>(x<sp/>&gt;=<sp/>0)<sp/>?<sp/>2u<sp/>*<sp/><ref refid="llimits_8h_1a5871309e671ba9f938fcb1e0d3bcbeca" kindref="member">l_castS2U</ref>(x)</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>(2u<sp/>*<sp/><ref refid="llimits_8h_1a5871309e671ba9f938fcb1e0d3bcbeca" kindref="member">~l_castS2U</ref>(x))<sp/>+<sp/>1;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/>dumpVarint(D,<sp/>cx);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="135"><highlight class="comment">**<sp/>Dump<sp/>a<sp/>String.<sp/>First<sp/>dump<sp/>its<sp/>&quot;size&quot;:</highlight></codeline>
+<codeline lineno="136"><highlight class="comment">**<sp/>size==0<sp/>is<sp/>followed<sp/>by<sp/>an<sp/>index<sp/>and<sp/>means<sp/>&quot;reuse<sp/>saved<sp/>string<sp/>with</highlight></codeline>
+<codeline lineno="137"><highlight class="comment">**<sp/>that<sp/>index&quot;;<sp/>index==0<sp/>means<sp/>NULL.</highlight></codeline>
+<codeline lineno="138"><highlight class="comment">**<sp/>size&gt;=1<sp/>is<sp/>followed<sp/>by<sp/>the<sp/>string<sp/>contents<sp/>with<sp/>real<sp/>size==size-1<sp/>and</highlight></codeline>
+<codeline lineno="139"><highlight class="comment">**<sp/>means<sp/>that<sp/>string,<sp/>which<sp/>will<sp/>be<sp/>saved<sp/>with<sp/>the<sp/>next<sp/>available<sp/>index.</highlight></codeline>
+<codeline lineno="140"><highlight class="comment">**<sp/>The<sp/>real<sp/>size<sp/>does<sp/>not<sp/>include<sp/>the<sp/>ending<sp/>&apos;\0&apos;<sp/>(which<sp/>is<sp/>not<sp/>dumped),</highlight></codeline>
+<codeline lineno="141"><highlight class="comment">**<sp/>so<sp/>adding<sp/>1<sp/>to<sp/>it<sp/>cannot<sp/>overflow<sp/>a<sp/>size_t.</highlight></codeline>
+<codeline lineno="142"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>dumpString<sp/>(<ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>*D,<sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*ts)<sp/>{</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ts<sp/>==<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/>dumpVarint(D,<sp/>0);<sp/><sp/></highlight><highlight class="comment">/*<sp/>will<sp/>&quot;reuse&quot;<sp/>NULL<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/>dumpVarint(D,<sp/>0);<sp/><sp/></highlight><highlight class="comment">/*<sp/>special<sp/>index<sp/>for<sp/>NULL<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>idx;</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>tag<sp/>=<sp/><ref refid="ltable_8c_1aac1e3a57fa057cd3c3a8fd8e96671e3c" kindref="member">luaH_getstr</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2f8d7f185272bc3b6821b17fe2079085" kindref="member">D</ref>-&gt;h,<sp/>ts,<sp/>&amp;idx);</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="lobject_8h_1aec4fc2bddf98a2fc76c443e0653aedf3" kindref="member">tagisempty</ref>(tag))<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>string<sp/>already<sp/>saved?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>dumpVarint(D,<sp/>0);<sp/><sp/></highlight><highlight class="comment">/*<sp/>reuse<sp/>a<sp/>saved<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>dumpVarint(D,<sp/><ref refid="llimits_8h_1a5871309e671ba9f938fcb1e0d3bcbeca" kindref="member">l_castS2U</ref>(<ref refid="lobject_8h_1af1a59636db050b842a791cd19086d925" kindref="member">ivalue</ref>(&amp;idx)));<sp/><sp/></highlight><highlight class="comment">/*<sp/>index<sp/>of<sp/>saved<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>must<sp/>write<sp/>and<sp/>save<sp/>the<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/>value;<sp/><sp/></highlight><highlight class="comment">/*<sp/>to<sp/>save<sp/>the<sp/>string<sp/>in<sp/>the<sp/>hash<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>size;</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s<sp/>=<sp/><ref refid="lobject_8h_1ae4aa3e739eca19baaa815852b81c4ed1" kindref="member">getlstr</ref>(ts,<sp/>size);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>dumpSize(D,<sp/>size<sp/>+<sp/>1);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ldump_8c_1aa57836f656453350c7d2b6b89df1b003" kindref="member">dumpVector</ref>(D,<sp/>s,<sp/>size<sp/>+<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>include<sp/>ending<sp/>&apos;\0&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2f8d7f185272bc3b6821b17fe2079085" kindref="member">D</ref>-&gt;nstr++;<sp/><sp/></highlight><highlight class="comment">/*<sp/>one<sp/>more<sp/>saved<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1a251a2d3bada66aaed6249a89a0afe5f0" kindref="member">setsvalue</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2f8d7f185272bc3b6821b17fe2079085" kindref="member">D</ref>-&gt;L,<sp/>&amp;<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/>ts);<sp/><sp/></highlight><highlight class="comment">/*<sp/>the<sp/>string<sp/>is<sp/>the<sp/>key<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1af9dd109ba186841ab26efb2d62baf4f6" kindref="member">setivalue</ref>(&amp;value,<sp/><ref refid="llimits_8h_1a873fa1b216f8caed046edbcebd4c1bc8" kindref="member">l_castU2S</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2f8d7f185272bc3b6821b17fe2079085" kindref="member">D</ref>-&gt;nstr));<sp/><sp/></highlight><highlight class="comment">/*<sp/>its<sp/>index<sp/>is<sp/>the<sp/>value<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ltable_8c_1a2ea4f5ea50911a03375ba4d22ef72419" kindref="member">luaH_set</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2f8d7f185272bc3b6821b17fe2079085" kindref="member">D</ref>-&gt;L,<sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2f8d7f185272bc3b6821b17fe2079085" kindref="member">D</ref>-&gt;h,<sp/>&amp;<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/>&amp;value);<sp/><sp/></highlight><highlight class="comment">/*<sp/>h[ts]<sp/>=<sp/>nstr<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>integer<sp/>value<sp/>does<sp/>not<sp/>need<sp/>barrier<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="168"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>dumpCode<sp/>(<ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>*D,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*f)<sp/>{</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/>dumpInt(D,<sp/>f-&gt;<ref refid="struct_proto_1a43e4d3849b5859112d93bdc2534a7cc0" kindref="member">sizecode</ref>);</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/>dumpAlign(D,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(f-&gt;<ref refid="struct_proto_1a53b66e4e4ac4b612a41b67a0ace9b6a5" kindref="member">code</ref>[0]));</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(f-&gt;<ref refid="struct_proto_1a53b66e4e4ac4b612a41b67a0ace9b6a5" kindref="member">code</ref><sp/>!=<sp/>NULL);</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><ref refid="ldump_8c_1aa57836f656453350c7d2b6b89df1b003" kindref="member">dumpVector</ref>(D,<sp/>f-&gt;<ref refid="struct_proto_1a53b66e4e4ac4b612a41b67a0ace9b6a5" kindref="member">code</ref>,<sp/><ref refid="llimits_8h_1a6ce2ddc5b419ed6f302573db3cc03e56" kindref="member">cast_uint</ref>(f-&gt;<ref refid="struct_proto_1a43e4d3849b5859112d93bdc2534a7cc0" kindref="member">sizecode</ref>));</highlight></codeline>
+<codeline lineno="176"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>dumpFunction<sp/>(<ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>*D,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*f);</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>dumpConstants<sp/>(<ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>*D,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*f)<sp/>{</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i;</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n<sp/>=<sp/>f-&gt;<ref refid="struct_proto_1a5bd719e0486168f6ecd4b01bf41a7444" kindref="member">sizek</ref>;</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/>dumpInt(D,<sp/>n);</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*o<sp/>=<sp/>&amp;f-&gt;<ref refid="struct_proto_1ae292fb0c0558679704933824ce96eac2" kindref="member">k</ref>[i];</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>tt<sp/>=<sp/><ref refid="lobject_8h_1a01db083f8bc8b2eb51a45c0ba9967043" kindref="member">ttypetag</ref>(o);</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/>dumpByte(D,<sp/>tt);</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(tt)<sp/>{</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lobject_8h_1a19aaaf978586be9032b63b7a8807631a" kindref="member">LUA_VNUMFLT</ref>:</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dumpNumber(D,<sp/><ref refid="lobject_8h_1a7d7d6b08f40350c9e7364e9cb984d744" kindref="member">fltvalue</ref>(o));</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lobject_8h_1a69aa5cae89d634d458e0da4957257745" kindref="member">LUA_VNUMINT</ref>:</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dumpInteger(D,<sp/><ref refid="lobject_8h_1af1a59636db050b842a791cd19086d925" kindref="member">ivalue</ref>(o));</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lobject_8h_1a794410ffd7267ef873eb05ac695b1ba6" kindref="member">LUA_VSHRSTR</ref>:</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lobject_8h_1a6869fcb0a0178b6d70d431eae1683199" kindref="member">LUA_VLNGSTR</ref>:</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dumpString(D,<sp/><ref refid="lobject_8h_1a8661397faed512ccc9c70a4661f1a83d" kindref="member">tsvalue</ref>(o));</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(tt<sp/>==<sp/><ref refid="lobject_8h_1aac7a0aeb62c96ba16c7638e707bfaac0" kindref="member">LUA_VNIL</ref><sp/>||<sp/>tt<sp/>==<sp/><ref refid="lobject_8h_1a95236d400066ed64a37c72d3dada7e9d" kindref="member">LUA_VFALSE</ref><sp/>||<sp/>tt<sp/>==<sp/><ref refid="lobject_8h_1aed66cd95aa3f518c947b5bd9e17bab47" kindref="member">LUA_VTRUE</ref>);</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="204"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>dumpProtos<sp/>(<ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>*D,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*f)<sp/>{</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i;</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n<sp/>=<sp/>f-&gt;<ref refid="struct_proto_1a73ddad1a18b7c46be46ec32aa2a08632" kindref="member">sizep</ref>;</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/>dumpInt(D,<sp/>n);</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/>dumpFunction(D,<sp/>f-&gt;<ref refid="struct_proto_1a54dc8e2e8973007794fa0ab0e4a71461" kindref="member">p</ref>[i]);</highlight></codeline>
+<codeline lineno="213"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>dumpUpvalues<sp/>(<ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>*D,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*f)<sp/>{</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i,<sp/>n<sp/>=<sp/>f-&gt;<ref refid="struct_proto_1a6ecec897497ba7d94df6ef69289ef5c0" kindref="member">sizeupvalues</ref>;</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/>dumpInt(D,<sp/>n);</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/>dumpByte(D,<sp/>f-&gt;<ref refid="struct_proto_1a028070514796b4accbd99c59e6b83930" kindref="member">upvalues</ref>[i].<ref refid="struct_upvaldesc_1a1e5182ac7b8b72848ed71b7b4844e3d1" kindref="member">instack</ref>);</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/>dumpByte(D,<sp/>f-&gt;<ref refid="struct_proto_1a028070514796b4accbd99c59e6b83930" kindref="member">upvalues</ref>[i].<ref refid="struct_upvaldesc_1a8478ecca9cb593200c562a0837aedfac" kindref="member">idx</ref>);</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/>dumpByte(D,<sp/>f-&gt;<ref refid="struct_proto_1a028070514796b4accbd99c59e6b83930" kindref="member">upvalues</ref>[i].<ref refid="struct_upvaldesc_1a1315fb98c5f398c3f3323967cb9ec7ba" kindref="member">kind</ref>);</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="224"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"></highlight></codeline>
+<codeline lineno="226"><highlight class="normal"></highlight></codeline>
+<codeline lineno="227"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>dumpDebug<sp/>(<ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>*D,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*f)<sp/>{</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i,<sp/>n;</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/>n<sp/>=<sp/>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2f8d7f185272bc3b6821b17fe2079085" kindref="member">D</ref>-&gt;strip)<sp/>?<sp/>0<sp/>:<sp/>f-&gt;sizelineinfo;</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/>dumpInt(D,<sp/>n);</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(f-&gt;<ref refid="struct_proto_1a4d8b6a245668e28870027f70a98cce98" kindref="member">lineinfo</ref><sp/>!=<sp/>NULL)</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ldump_8c_1aa57836f656453350c7d2b6b89df1b003" kindref="member">dumpVector</ref>(D,<sp/>f-&gt;<ref refid="struct_proto_1a4d8b6a245668e28870027f70a98cce98" kindref="member">lineinfo</ref>,<sp/><ref refid="llimits_8h_1a6ce2ddc5b419ed6f302573db3cc03e56" kindref="member">cast_uint</ref>(n));</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/>n<sp/>=<sp/>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2f8d7f185272bc3b6821b17fe2079085" kindref="member">D</ref>-&gt;strip)<sp/>?<sp/>0<sp/>:<sp/>f-&gt;sizeabslineinfo;</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/>dumpInt(D,<sp/>n);</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(n<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;abslineinfo&apos;<sp/>is<sp/>an<sp/>array<sp/>of<sp/>structures<sp/>of<sp/>int&apos;s<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/>dumpAlign(D,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ldump_8c_1aa57836f656453350c7d2b6b89df1b003" kindref="member">dumpVector</ref>(D,<sp/>f-&gt;<ref refid="struct_proto_1a012268f6cdec514d296b50356decff4e" kindref="member">abslineinfo</ref>,<sp/><ref refid="llimits_8h_1a6ce2ddc5b419ed6f302573db3cc03e56" kindref="member">cast_uint</ref>(n));</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/>n<sp/>=<sp/>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2f8d7f185272bc3b6821b17fe2079085" kindref="member">D</ref>-&gt;strip)<sp/>?<sp/>0<sp/>:<sp/>f-&gt;sizelocvars;</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/>dumpInt(D,<sp/>n);</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/>dumpString(D,<sp/>f-&gt;<ref refid="struct_proto_1a41d627972548e1a6aaf358480ed46f69" kindref="member">locvars</ref>[i].<ref refid="struct_loc_var_1acf62684d78349320b90b4acfa3b6d22a" kindref="member">varname</ref>);</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/>dumpInt(D,<sp/>f-&gt;<ref refid="struct_proto_1a41d627972548e1a6aaf358480ed46f69" kindref="member">locvars</ref>[i].<ref refid="struct_loc_var_1ac5a8bf5a59430eea070db5b1a97d8b88" kindref="member">startpc</ref>);</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/>dumpInt(D,<sp/>f-&gt;<ref refid="struct_proto_1a41d627972548e1a6aaf358480ed46f69" kindref="member">locvars</ref>[i].<ref refid="struct_loc_var_1af7f0f7d509579ffec5610e329f85693b" kindref="member">endpc</ref>);</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/>n<sp/>=<sp/>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2f8d7f185272bc3b6821b17fe2079085" kindref="member">D</ref>-&gt;strip)<sp/>?<sp/>0<sp/>:<sp/>f-&gt;sizeupvalues;</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/>dumpInt(D,<sp/>n);</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/>dumpString(D,<sp/>f-&gt;<ref refid="struct_proto_1a028070514796b4accbd99c59e6b83930" kindref="member">upvalues</ref>[i].<ref refid="struct_upvaldesc_1a8870289fbc6611275d093ef1c08cf9ed" kindref="member">name</ref>);</highlight></codeline>
+<codeline lineno="251"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>dumpFunction<sp/>(<ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>*D,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*f)<sp/>{</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/>dumpInt(D,<sp/>f-&gt;<ref refid="struct_proto_1a62cf1c61b70bfaa4f1fb839b7398160b" kindref="member">linedefined</ref>);</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/>dumpInt(D,<sp/>f-&gt;<ref refid="struct_proto_1a9ef7fae1b22b11f5a145cfee8150059c" kindref="member">lastlinedefined</ref>);</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/>dumpByte(D,<sp/>f-&gt;<ref refid="struct_proto_1a3f106f177af6c68ffd8b042713266b98" kindref="member">numparams</ref>);</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/>dumpByte(D,<sp/>f-&gt;<ref refid="struct_proto_1a16d8b2f349f89bdeabda995cf96c1fb0" kindref="member">flag</ref>);</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/>dumpByte(D,<sp/>f-&gt;<ref refid="struct_proto_1a9c9ed4e9d996233f75cdf56b912e4803" kindref="member">maxstacksize</ref>);</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/>dumpCode(D,<sp/>f);</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/>dumpConstants(D,<sp/>f);</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/>dumpUpvalues(D,<sp/>f);</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/>dumpProtos(D,<sp/>f);</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/>dumpString(D,<sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2f8d7f185272bc3b6821b17fe2079085" kindref="member">D</ref>-&gt;strip<sp/>?<sp/>NULL<sp/>:<sp/>f-&gt;<ref refid="struct_proto_1a92b6ec319e7aa1ee8b8ff7807353ad96" kindref="member">source</ref>);</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/>dumpDebug(D,<sp/>f);</highlight></codeline>
+<codeline lineno="266"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"></highlight></codeline>
+<codeline lineno="268"><highlight class="normal"></highlight></codeline>
+<codeline lineno="269" refid="ldump_8c_1a1b8c7443d1f215741e5c3fe82bb39e01" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>dumpNumInfo(D,<sp/>tvar,<sp/>value)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="270"><highlight class="preprocessor"><sp/><sp/>{<sp/>tvar<sp/>i<sp/>=<sp/>value;<sp/>dumpByte(D,<sp/>sizeof(tvar));<sp/>dumpVar(D,<sp/>i);<sp/>}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="271"><highlight class="normal"></highlight></codeline>
+<codeline lineno="272"><highlight class="normal"></highlight></codeline>
+<codeline lineno="273"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>dumpHeader<sp/>(<ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>*D)<sp/>{</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><ref refid="ldump_8c_1a05e931c17f007b1c9d54080d6243af18" kindref="member">dumpLiteral</ref>(D,<sp/><ref refid="lua_8h_1af21c9fa681dc005c17a7b288882cae1b" kindref="member">LUA_SIGNATURE</ref>);</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/>dumpByte(D,<sp/><ref refid="lundump_8h_1aaef225d352d4ab1461adc02e4fa027cd" kindref="member">LUAC_VERSION</ref>);</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/>dumpByte(D,<sp/><ref refid="lundump_8h_1a1898203259aab6e1d60737b1e95c2adc" kindref="member">LUAC_FORMAT</ref>);</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><ref refid="ldump_8c_1a05e931c17f007b1c9d54080d6243af18" kindref="member">dumpLiteral</ref>(D,<sp/><ref refid="lundump_8h_1ad6f33b546a90e78ddb67428b712b48ae" kindref="member">LUAC_DATA</ref>);</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><ref refid="ldump_8c_1a1b8c7443d1f215741e5c3fe82bb39e01" kindref="member">dumpNumInfo</ref>(D,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">,<sp/><ref refid="lundump_8h_1af8b5bd7f864ed14aef7a9e7405ce6aad" kindref="member">LUAC_INT</ref>);</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><ref refid="ldump_8c_1a1b8c7443d1f215741e5c3fe82bb39e01" kindref="member">dumpNumInfo</ref>(D,<sp/><ref refid="lobject_8h_1aa81d2e7f7263ef29946852d4966a192e" kindref="member">Instruction</ref>,<sp/><ref refid="lundump_8h_1acc5e08088d3780b427e5dc124ab75087" kindref="member">LUAC_INST</ref>);</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><ref refid="ldump_8c_1a1b8c7443d1f215741e5c3fe82bb39e01" kindref="member">dumpNumInfo</ref>(D,<sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref>,<sp/><ref refid="lundump_8h_1af8b5bd7f864ed14aef7a9e7405ce6aad" kindref="member">LUAC_INT</ref>);</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><ref refid="ldump_8c_1a1b8c7443d1f215741e5c3fe82bb39e01" kindref="member">dumpNumInfo</ref>(D,<sp/><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref>,<sp/><ref refid="lundump_8h_1a83a08bb2d400b526bb4a2f449523dd62" kindref="member">LUAC_NUM</ref>);</highlight></codeline>
+<codeline lineno="282"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"></highlight></codeline>
+<codeline lineno="284"><highlight class="normal"></highlight></codeline>
+<codeline lineno="285"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="286"><highlight class="comment">**<sp/>dump<sp/>Lua<sp/>function<sp/>as<sp/>precompiled<sp/>chunk</highlight></codeline>
+<codeline lineno="287"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="288" refid="ldump_8c_1a808f6a29001ac6446f40c76014c6b6e9" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="ldump_8c_1a808f6a29001ac6446f40c76014c6b6e9" kindref="member">luaU_dump</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*f,<sp/><ref refid="lua_8h_1a855729196d7066b2da21178284868a8d" kindref="member">lua_Writer</ref><sp/>w,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*data,</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>strip)<sp/>{</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><ref refid="struct_dump_state" kindref="compound">DumpState</ref><sp/>D;</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/>D.h<sp/>=<sp/><ref refid="ltable_8c_1a47b1a680f251e08074df2b9a5a7c028e" kindref="member">luaH_new</ref>(L);<sp/><sp/></highlight><highlight class="comment">/*<sp/>aux.<sp/>table<sp/>to<sp/>keep<sp/>strings<sp/>already<sp/>dumped<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1aea789832f6c549f64cb3903216a7aeac" kindref="member">sethvalue2s</ref>(L,<sp/>L-&gt;top.p,<sp/>D.h);<sp/><sp/></highlight><highlight class="comment">/*<sp/>anchor<sp/>it<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/>L-&gt;top.p++;</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/>D.L<sp/>=<sp/>L;</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/>D.writer<sp/>=<sp/>w;</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/>D.offset<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/>D.data<sp/>=<sp/>data;</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/>D.strip<sp/>=<sp/>strip;</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/>D.status<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/>D.nstr<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/>dumpHeader(&amp;D);</highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/>dumpByte(&amp;D,<sp/>f-&gt;<ref refid="struct_proto_1a6ecec897497ba7d94df6ef69289ef5c0" kindref="member">sizeupvalues</ref>);</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/>dumpFunction(&amp;D,<sp/>f);</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"><sp/><sp/>dumpBlock(&amp;D,<sp/>NULL,<sp/>0);<sp/><sp/></highlight><highlight class="comment">/*<sp/>signal<sp/>end<sp/>of<sp/>dump<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>D.status;</highlight></codeline>
+<codeline lineno="306"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"></highlight></codeline>
+<codeline lineno="308"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/ldump.c"/>
+  </compounddef>
+</doxygen>

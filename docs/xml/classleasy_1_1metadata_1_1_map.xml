@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1metadata_1_1_map" kind="class" language="C++" prot="public">
+    <compoundname>leasy::metadata::Map</compoundname>
+    <includes refid="object_8hpp" local="no">object.hpp</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classleasy_1_1metadata_1_1_map_1a906f9eb8fa740e5f09d909d6d8b9a15b" prot="protected" static="no" mutable="no">
+        <type>std::unordered_map&lt; std::string, std::shared_ptr&lt; <ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref> &gt; &gt;</type>
+        <definition>std::unordered_map&lt;std::string, std::shared_ptr&lt;Object&gt; &gt; leasy::metadata::Map::data</definition>
+        <argsstring></argsstring>
+        <name>data</name>
+        <qualifiedname>leasy::metadata::Map::data</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/object.hpp" line="57" column="24" bodyfile="leasy/metadata/object.hpp" bodystart="57" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_map_1ae23a3806531e7d1a7fffcfb87c7accb2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::unordered_map&lt; std::string, <ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref> &gt;</type>
+        <definition>std::unordered_map&lt; std::string, Object &gt; leasy::metadata::Map::values</definition>
+        <argsstring>() const</argsstring>
+        <name>values</name>
+        <qualifiedname>leasy::metadata::Map::values</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/object.hpp" line="60" column="31" bodyfile="leasy/metadata/object.hpp" bodystart="107" bodyend="115"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_map_1a294f10efc817dfd3025e182c3c219d58" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classleasy_1_1metadata_1_1_map" kindref="compound">Map</ref> &amp;</type>
+        <definition>Map &amp; leasy::metadata::Map::add</definition>
+        <argsstring>(const std::string &amp;, const Object &amp;)</argsstring>
+        <name>add</name>
+        <qualifiedname>leasy::metadata::Map::add</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <defname>k</defname>
+        </param>
+        <param>
+          <type>const <ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref> &amp;</type>
+          <defname>v</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/object.hpp" line="61" column="16" bodyfile="leasy/metadata/object.hpp" bodystart="117" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_map_1a219a83ff553d14b1f4e03cfe690eb1aa" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref> &amp;</type>
+        <definition>Object &amp; leasy::metadata::Map::operator[]</definition>
+        <argsstring>(const std::string &amp;)</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>leasy::metadata::Map::operator[]</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <defname>k</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/object.hpp" line="62" column="19" bodyfile="leasy/metadata/object.hpp" bodystart="122" bodyend="129"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_map_1a9e99a0aaf925bd7322d69f29a8cae375" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref> &amp;</type>
+        <definition>const Object &amp; leasy::metadata::Map::operator[]</definition>
+        <argsstring>(const std::string &amp;) const</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>leasy::metadata::Map::operator[]</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <defname>k</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/object.hpp" line="63" column="18" bodyfile="leasy/metadata/object.hpp" bodystart="131" bodyend="133"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/metadata/object.hpp" line="55" column="3" bodyfile="leasy/metadata/object.hpp" bodystart="55" bodyend="64"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1metadata_1_1_map_1a294f10efc817dfd3025e182c3c219d58" prot="public" virt="non-virtual"><scope>leasy::metadata::Map</scope><name>add</name></member>
+      <member refid="classleasy_1_1metadata_1_1_map_1a906f9eb8fa740e5f09d909d6d8b9a15b" prot="protected" virt="non-virtual"><scope>leasy::metadata::Map</scope><name>data</name></member>
+      <member refid="classleasy_1_1metadata_1_1_map_1a219a83ff553d14b1f4e03cfe690eb1aa" prot="public" virt="non-virtual"><scope>leasy::metadata::Map</scope><name>operator[]</name></member>
+      <member refid="classleasy_1_1metadata_1_1_map_1a9e99a0aaf925bd7322d69f29a8cae375" prot="public" virt="non-virtual"><scope>leasy::metadata::Map</scope><name>operator[]</name></member>
+      <member refid="classleasy_1_1metadata_1_1_map_1ae23a3806531e7d1a7fffcfb87c7accb2" prot="public" virt="non-virtual"><scope>leasy::metadata::Map</scope><name>values</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

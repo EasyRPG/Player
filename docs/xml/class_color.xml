@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_color" kind="class" language="C++" prot="public">
+    <compoundname>Color</compoundname>
+    <includes refid="color_8h" local="no">color.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_color_1a8c55aa73e839e57527559cd732bda475" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t Color::red</definition>
+        <argsstring></argsstring>
+        <name>red</name>
+        <qualifiedname>Color::red</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Red component. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="color.h" line="47" column="9" bodyfile="color.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_color_1a4f8414e1814c166da1859ce388149d78" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t Color::green</definition>
+        <argsstring></argsstring>
+        <name>green</name>
+        <qualifiedname>Color::green</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Green component. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="color.h" line="50" column="9" bodyfile="color.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_color_1acad45c325d520d1c24ea774099821c7c" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t Color::blue</definition>
+        <argsstring></argsstring>
+        <name>blue</name>
+        <qualifiedname>Color::blue</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Blue component. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="color.h" line="53" column="9" bodyfile="color.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_color_1a8f76c7e20ecccd56a47950cda706c5e2" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t Color::alpha</definition>
+        <argsstring></argsstring>
+        <name>alpha</name>
+        <qualifiedname>Color::alpha</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Alpha component. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="color.h" line="56" column="9" bodyfile="color.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_color_1a1f3353ab5941b4ff491ef2417e439fc5" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>Color::Color</definition>
+        <argsstring>()=default</argsstring>
+        <name>Color</name>
+        <qualifiedname>Color::Color</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor. All components are set to 0. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="color.h" line="34" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="class_color_1aab1e2e08e8ad9f55ef65c6d4a56d31fc" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>Color::Color</definition>
+        <argsstring>(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)</argsstring>
+        <name>Color</name>
+        <qualifiedname>Color::Color</qualifiedname>
+        <param>
+          <type>uint8_t</type>
+          <declname>red</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>green</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>blue</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>alpha</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>red</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>red component. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>green</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>green component. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>blue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>blue component. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>alpha</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>alpha component. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="color.h" line="44" column="11" bodyfile="color.h" bodystart="85" bodyend="90"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_color" kindref="compound">Color</ref> class. </para>
+    </detaileddescription>
+    <location file="color.h" line="29" column="1" bodyfile="color.h" bodystart="29" bodyend="57"/>
+    <listofallmembers>
+      <member refid="class_color_1a8f76c7e20ecccd56a47950cda706c5e2" prot="public" virt="non-virtual"><scope>Color</scope><name>alpha</name></member>
+      <member refid="class_color_1acad45c325d520d1c24ea774099821c7c" prot="public" virt="non-virtual"><scope>Color</scope><name>blue</name></member>
+      <member refid="class_color_1a1f3353ab5941b4ff491ef2417e439fc5" prot="public" virt="non-virtual"><scope>Color</scope><name>Color</name></member>
+      <member refid="class_color_1aab1e2e08e8ad9f55ef65c6d4a56d31fc" prot="public" virt="non-virtual"><scope>Color</scope><name>Color</name></member>
+      <member refid="class_color_1a4f8414e1814c166da1859ce388149d78" prot="public" virt="non-virtual"><scope>Color</scope><name>green</name></member>
+      <member refid="class_color_1a8c55aa73e839e57527559cd732bda475" prot="public" virt="non-virtual"><scope>Color</scope><name>red</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

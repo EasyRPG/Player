@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_8bbdd70d8d6cf5bf505cb18bcc336c87" kind="dir">
+    <compoundname>platform/android</compoundname>
+    <innerfile refid="android_8cpp">android.cpp</innerfile>
+    <innerfile refid="android_8h">android.h</innerfile>
+    <innerfile refid="filesystem__apk_8cpp">filesystem_apk.cpp</innerfile>
+    <innerfile refid="filesystem__apk_8h">filesystem_apk.h</innerfile>
+    <innerfile refid="filesystem__saf_8cpp">filesystem_saf.cpp</innerfile>
+    <innerfile refid="filesystem__saf_8h">filesystem_saf.h</innerfile>
+    <innerfile refid="org__easyrpg__player__player___easy_rpg_player_activity_8cpp">org_easyrpg_player_player_EasyRpgPlayerActivity.cpp</innerfile>
+    <innerfile refid="org__easyrpg__player__player___easy_rpg_player_activity_8h">org_easyrpg_player_player_EasyRpgPlayerActivity.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/android/"/>
+  </compounddef>
+</doxygen>

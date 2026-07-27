@@ -1,0 +1,992 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_destiny" kind="namespace" language="C++">
+    <compoundname>Destiny</compoundname>
+    <innerclass refid="struct_destiny_1_1_version" prot="public">Destiny::Version</innerclass>
+    <innernamespace refid="namespace_destiny_1_1_main_functions">Destiny::MainFunctions</innernamespace>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_destiny_1af2ffc09ae3a91df3dd32776e4fd0e293" prot="public" static="no" strong="no">
+        <type></type>
+        <name>Language</name>
+        <qualifiedname>Destiny::Language</qualifiedname>
+        <enumvalue id="namespace_destiny_1af2ffc09ae3a91df3dd32776e4fd0e293a06f9dd2e095b386c8457e8bc354759dd" prot="public">
+          <name>DEUTSCH</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1af2ffc09ae3a91df3dd32776e4fd0e293ae4aadb7994692c8ab9559207a329bb38" prot="public">
+          <name>ENGLISH</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="109" column="1" bodyfile="game_destiny.h" bodystart="110" bodyend="113"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574ef" prot="public" static="no" strong="no">
+        <type></type>
+        <name>InterpretFlag</name>
+        <qualifiedname>Destiny::InterpretFlag</qualifiedname>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efa25058d9a59f29258266424914a33e742" prot="public">
+          <name>IF_ERROR</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efac8a0b7ee3b933d0f2e3f9d9b4f8b55bb" prot="public">
+          <name>IF_COMMAND</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efa9b17ca09e40b8aacf622dfc3d79447fe" prot="public">
+          <name>IF_IF</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efa07281bbaa1f62dd0563eae6097e6e0fa" prot="public">
+          <name>IF_ELSEIF</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efa494ae82a520730ed65df44940e179545" prot="public">
+          <name>IF_ELSE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efad2f957717476cad7ec92d3825858e4a2" prot="public">
+          <name>IF_ENDIF</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efa845e58a7487798efac22c33fc13be1c5" prot="public">
+          <name>IF_DO</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efaec6163700e5c3e10a76c5160425d2483" prot="public">
+          <name>IF_LOOP</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efa92c7d4a5ca1b8d25e43e1defc3ccaa4c" prot="public">
+          <name>IF_WHILE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efaa903e82f091e9b539f3ff6484ff932f9" prot="public">
+          <name>IF_UNTIL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efa35618a9e804c49fdc76ae8d3a22cef3e" prot="public">
+          <name>IF_BREAK</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efa17a2ec7ec29db52c9a5b9d54c582e918" prot="public">
+          <name>IF_FOR</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efa036fd26c1a28d653eddc288e1851c53c" prot="public">
+          <name>IF_NEXT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efa1bf81072ce0c1d4328d0be017c6bbdc6" prot="public">
+          <name>IF_SWITCH</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efa3dc878cc6e32c9592669381d0ca53ec0" prot="public">
+          <name>IF_CASE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efa7312b7870d62047186c145b4beda64e9" prot="public">
+          <name>IF_DEFAULT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efa22be2edcffb00d9a0de6e81012fa55c9" prot="public">
+          <name>IF_ENDSWITCH</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574eface74893f82485f208149120f91b538d9" prot="public">
+          <name>IF_CONTINUE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efa9db22fa831818894b773d75ee12d0d56" prot="public">
+          <name>IF_PAUSE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_destiny_1a2720d4b27856ddbd78e35e8a8bf574efa2f24097bd979cb984534efa9820c9bf2" prot="public">
+          <name>IF_EXIT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="115" column="1" bodyfile="game_destiny.h" bodystart="116" bodyend="137"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_destiny_1a66caf610dec5b463a7e34f462b9c97f4" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_NONE</definition>
+        <argsstring></argsstring>
+        <name>OF_NONE</name>
+        <qualifiedname>Destiny::OF_NONE</qualifiedname>
+        <initializer>= 0x00</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="40" column="26" bodyfile="game_destiny.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1af18672333f33d86141f2876a4d31f91a" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_CALL</definition>
+        <argsstring></argsstring>
+        <name>OF_CALL</name>
+        <qualifiedname>Destiny::OF_CALL</qualifiedname>
+        <initializer>= 0x01</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="41" column="26" bodyfile="game_destiny.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a3c186fe14e76ba990d93d79d1e3e31a3" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_ARRAY</definition>
+        <argsstring></argsstring>
+        <name>OF_ARRAY</name>
+        <qualifiedname>Destiny::OF_ARRAY</qualifiedname>
+        <initializer>= 0x02</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="42" column="26" bodyfile="game_destiny.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a0450e42c3bda956a3d79e2d23f7efc5e" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_CONSTANT</definition>
+        <argsstring></argsstring>
+        <name>OF_CONSTANT</name>
+        <qualifiedname>Destiny::OF_CONSTANT</qualifiedname>
+        <initializer>= 0x04</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="43" column="26" bodyfile="game_destiny.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1aded8ea44a59db24767593e1406a2a99f" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::PF_NONE</definition>
+        <argsstring></argsstring>
+        <name>PF_NONE</name>
+        <qualifiedname>Destiny::PF_NONE</qualifiedname>
+        <initializer>= 0x0000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="46" column="26" bodyfile="game_destiny.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a1a9c4b9bf99af94553574bc22eed71d7" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::PF_BYTE</definition>
+        <argsstring></argsstring>
+        <name>PF_BYTE</name>
+        <qualifiedname>Destiny::PF_BYTE</qualifiedname>
+        <initializer>= 0x0001</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="47" column="26" bodyfile="game_destiny.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a8220b0fe2f75a54551b9778e252f31bf" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::PF_WORD</definition>
+        <argsstring></argsstring>
+        <name>PF_WORD</name>
+        <qualifiedname>Destiny::PF_WORD</qualifiedname>
+        <initializer>= 0x0002</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="48" column="26" bodyfile="game_destiny.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a6e13a764af002682b6d2ce99fb0c9227" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::PF_DWORD</definition>
+        <argsstring></argsstring>
+        <name>PF_DWORD</name>
+        <qualifiedname>Destiny::PF_DWORD</qualifiedname>
+        <initializer>= 0x0003</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="49" column="26" bodyfile="game_destiny.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a7da29e9486ddfc835063ab1a5f77cb6d" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::PF_DOUBLE</definition>
+        <argsstring></argsstring>
+        <name>PF_DOUBLE</name>
+        <qualifiedname>Destiny::PF_DOUBLE</qualifiedname>
+        <initializer>= 0x0004</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="50" column="26" bodyfile="game_destiny.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a515bda5bc20bcc6df46bc1904456d67f" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::PF_BOOL</definition>
+        <argsstring></argsstring>
+        <name>PF_BOOL</name>
+        <qualifiedname>Destiny::PF_BOOL</qualifiedname>
+        <initializer>= 0x0005</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="51" column="26" bodyfile="game_destiny.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1afc0bcc83c57f89d50c5f04e1422f68d4" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::PF_STRING</definition>
+        <argsstring></argsstring>
+        <name>PF_STRING</name>
+        <qualifiedname>Destiny::PF_STRING</qualifiedname>
+        <initializer>= 0x0006</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="52" column="26" bodyfile="game_destiny.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1ae0196d3d78c568e834c2674a61e17b22" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::PF_EXTRA1</definition>
+        <argsstring></argsstring>
+        <name>PF_EXTRA1</name>
+        <qualifiedname>Destiny::PF_EXTRA1</qualifiedname>
+        <initializer>= 0x0100</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="53" column="26" bodyfile="game_destiny.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1ae3417d5088e0967737064278730db2f4" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::PF_EXTRA2</definition>
+        <argsstring></argsstring>
+        <name>PF_EXTRA2</name>
+        <qualifiedname>Destiny::PF_EXTRA2</qualifiedname>
+        <initializer>= 0x0200</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="54" column="26" bodyfile="game_destiny.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1af412e24d5f67202aa321e7e4bc740f75" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::PF_EXTRA3</definition>
+        <argsstring></argsstring>
+        <name>PF_EXTRA3</name>
+        <qualifiedname>Destiny::PF_EXTRA3</qualifiedname>
+        <initializer>= 0x0400</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="55" column="26" bodyfile="game_destiny.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a11f9e94f9c243d8c04213c36dbb46592" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::PF_EXTRA4</definition>
+        <argsstring></argsstring>
+        <name>PF_EXTRA4</name>
+        <qualifiedname>Destiny::PF_EXTRA4</qualifiedname>
+        <initializer>= 0x0800</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="56" column="26" bodyfile="game_destiny.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a15cfe0f612b06545b41808d3a7a8900c" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::PF_FIXED</definition>
+        <argsstring></argsstring>
+        <name>PF_FIXED</name>
+        <qualifiedname>Destiny::PF_FIXED</qualifiedname>
+        <initializer>= 0x1000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="57" column="26" bodyfile="game_destiny.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a0b3f7746b69732cf1c92f9ec39dd6290" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::PF_OBJECT</definition>
+        <argsstring></argsstring>
+        <name>PF_OBJECT</name>
+        <qualifiedname>Destiny::PF_OBJECT</qualifiedname>
+        <initializer>= 0x2000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="58" column="26" bodyfile="game_destiny.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a5d9f140ff58b2edaef2f9e56b9c6602f" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::PF_FUNCTION</definition>
+        <argsstring></argsstring>
+        <name>PF_FUNCTION</name>
+        <qualifiedname>Destiny::PF_FUNCTION</qualifiedname>
+        <initializer>= 0x4000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="59" column="26" bodyfile="game_destiny.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1ab3c0e06310382147e3881b4416d4c00f" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::PF_POINTER</definition>
+        <argsstring></argsstring>
+        <name>PF_POINTER</name>
+        <qualifiedname>Destiny::PF_POINTER</qualifiedname>
+        <initializer>= 0x8000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="60" column="26" bodyfile="game_destiny.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a03680eafe0764b77a0a98b73e2cedee4" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::VF_NONE</definition>
+        <argsstring></argsstring>
+        <name>VF_NONE</name>
+        <qualifiedname>Destiny::VF_NONE</qualifiedname>
+        <initializer>= 0x0000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="63" column="26" bodyfile="game_destiny.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1aca2818ec67341aab844c28bee664ff11" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::VF_PLUS</definition>
+        <argsstring></argsstring>
+        <name>VF_PLUS</name>
+        <qualifiedname>Destiny::VF_PLUS</qualifiedname>
+        <initializer>= 0x0001</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="64" column="26" bodyfile="game_destiny.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a264cc749393f45d2e2d8515db1809589" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::VF_MINUS</definition>
+        <argsstring></argsstring>
+        <name>VF_MINUS</name>
+        <qualifiedname>Destiny::VF_MINUS</qualifiedname>
+        <initializer>= 0x0002</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="65" column="26" bodyfile="game_destiny.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a9645d7c039acfc826f23f6dd79ad169b" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::VF_BINARYNOT</definition>
+        <argsstring></argsstring>
+        <name>VF_BINARYNOT</name>
+        <qualifiedname>Destiny::VF_BINARYNOT</qualifiedname>
+        <initializer>= 0x0003</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="66" column="26" bodyfile="game_destiny.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a0ccd2721a19d61126c3bea8657e23915" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::VF_LOGICALNOT</definition>
+        <argsstring></argsstring>
+        <name>VF_LOGICALNOT</name>
+        <qualifiedname>Destiny::VF_LOGICALNOT</qualifiedname>
+        <initializer>= 0x0004</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="67" column="26" bodyfile="game_destiny.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a066683c9e226911c8c9ded74e7f7b2cf" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::VF_INCREMENT</definition>
+        <argsstring></argsstring>
+        <name>VF_INCREMENT</name>
+        <qualifiedname>Destiny::VF_INCREMENT</qualifiedname>
+        <initializer>= 0x0100</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="68" column="26" bodyfile="game_destiny.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a7e93c39546738c3f96140d381e4786e9" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::VF_DECREMENT</definition>
+        <argsstring></argsstring>
+        <name>VF_DECREMENT</name>
+        <qualifiedname>Destiny::VF_DECREMENT</qualifiedname>
+        <initializer>= 0x0200</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="69" column="26" bodyfile="game_destiny.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1adbd762ffdd98cf648dbbe04d346f1111" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_LOGICALOR</definition>
+        <argsstring></argsstring>
+        <name>OF_LOGICALOR</name>
+        <qualifiedname>Destiny::OF_LOGICALOR</qualifiedname>
+        <initializer>= 0x0001</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="72" column="26" bodyfile="game_destiny.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1ab131f20391b6b04788935018a56d428a" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_LOGICALAND</definition>
+        <argsstring></argsstring>
+        <name>OF_LOGICALAND</name>
+        <qualifiedname>Destiny::OF_LOGICALAND</qualifiedname>
+        <initializer>= 0x0002</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="73" column="26" bodyfile="game_destiny.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a39438a0c90ed3e21ad293dc3958d00cc" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_EQUAL</definition>
+        <argsstring></argsstring>
+        <name>OF_EQUAL</name>
+        <qualifiedname>Destiny::OF_EQUAL</qualifiedname>
+        <initializer>= 0x0003</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="74" column="26" bodyfile="game_destiny.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a6dd49810ad8c244a1114d1db97d4ea6d" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_UNEQUAL</definition>
+        <argsstring></argsstring>
+        <name>OF_UNEQUAL</name>
+        <qualifiedname>Destiny::OF_UNEQUAL</qualifiedname>
+        <initializer>= 0x0004</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="75" column="26" bodyfile="game_destiny.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1ac7634b2a3a18d37825eed5310957b402" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_ABOVE</definition>
+        <argsstring></argsstring>
+        <name>OF_ABOVE</name>
+        <qualifiedname>Destiny::OF_ABOVE</qualifiedname>
+        <initializer>= 0x0005</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="76" column="26" bodyfile="game_destiny.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1ad0e53d1aac401023b7cfa329196a6ebe" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_ABOVEEQUAL</definition>
+        <argsstring></argsstring>
+        <name>OF_ABOVEEQUAL</name>
+        <qualifiedname>Destiny::OF_ABOVEEQUAL</qualifiedname>
+        <initializer>= 0x0006</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="77" column="26" bodyfile="game_destiny.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1aa537f4d885ccbb7ef1a7ac7ba02d38cb" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_BELOW</definition>
+        <argsstring></argsstring>
+        <name>OF_BELOW</name>
+        <qualifiedname>Destiny::OF_BELOW</qualifiedname>
+        <initializer>= 0x0007</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="78" column="26" bodyfile="game_destiny.h" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1ac3188c37fcd27a3363b98ae381070d87" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_BELOWEQUAL</definition>
+        <argsstring></argsstring>
+        <name>OF_BELOWEQUAL</name>
+        <qualifiedname>Destiny::OF_BELOWEQUAL</qualifiedname>
+        <initializer>= 0x0008</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="79" column="26" bodyfile="game_destiny.h" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a5d65006c8a771f916a71a18922fc72e8" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_CONCAT</definition>
+        <argsstring></argsstring>
+        <name>OF_CONCAT</name>
+        <qualifiedname>Destiny::OF_CONCAT</qualifiedname>
+        <initializer>= 0x0009</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="80" column="26" bodyfile="game_destiny.h" bodystart="80" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a3a4c4d493723cd568c85ff73d5cf67b4" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_ADD</definition>
+        <argsstring></argsstring>
+        <name>OF_ADD</name>
+        <qualifiedname>Destiny::OF_ADD</qualifiedname>
+        <initializer>= 0x000A</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="81" column="26" bodyfile="game_destiny.h" bodystart="81" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a26d63fb0dd1414c206fa8852660ba1f9" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_SUBTRACT</definition>
+        <argsstring></argsstring>
+        <name>OF_SUBTRACT</name>
+        <qualifiedname>Destiny::OF_SUBTRACT</qualifiedname>
+        <initializer>= 0x000B</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="82" column="26" bodyfile="game_destiny.h" bodystart="82" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a543e45bc65c159ba43583bad233f78f3" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_MULTIPLY</definition>
+        <argsstring></argsstring>
+        <name>OF_MULTIPLY</name>
+        <qualifiedname>Destiny::OF_MULTIPLY</qualifiedname>
+        <initializer>= 0x000C</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="83" column="26" bodyfile="game_destiny.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1aa1c61705679a866ad75dbe7dd131c279" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_DIVIDE</definition>
+        <argsstring></argsstring>
+        <name>OF_DIVIDE</name>
+        <qualifiedname>Destiny::OF_DIVIDE</qualifiedname>
+        <initializer>= 0x000D</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="84" column="26" bodyfile="game_destiny.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1aee6bd7d0eb274893e0349eb8dbf8053d" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_MODULO</definition>
+        <argsstring></argsstring>
+        <name>OF_MODULO</name>
+        <qualifiedname>Destiny::OF_MODULO</qualifiedname>
+        <initializer>= 0x000E</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="85" column="26" bodyfile="game_destiny.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a47087c695fd5cb6d5f3a150fa5dee3d0" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_SHIFTLEFT</definition>
+        <argsstring></argsstring>
+        <name>OF_SHIFTLEFT</name>
+        <qualifiedname>Destiny::OF_SHIFTLEFT</qualifiedname>
+        <initializer>= 0x000F</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="86" column="26" bodyfile="game_destiny.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1ab8c5536ee8405335a2c2079d145baecd" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_SHIFTRIGHT</definition>
+        <argsstring></argsstring>
+        <name>OF_SHIFTRIGHT</name>
+        <qualifiedname>Destiny::OF_SHIFTRIGHT</qualifiedname>
+        <initializer>= 0x0010</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="87" column="26" bodyfile="game_destiny.h" bodystart="87" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a95676cddc9067f1f11fda15a5e5b3ea3" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_BINARYOR</definition>
+        <argsstring></argsstring>
+        <name>OF_BINARYOR</name>
+        <qualifiedname>Destiny::OF_BINARYOR</qualifiedname>
+        <initializer>= 0x0011</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="88" column="26" bodyfile="game_destiny.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1ad0cffc729bc286acf932a47122788134" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_BINARYXOR</definition>
+        <argsstring></argsstring>
+        <name>OF_BINARYXOR</name>
+        <qualifiedname>Destiny::OF_BINARYXOR</qualifiedname>
+        <initializer>= 0x0012</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="89" column="26" bodyfile="game_destiny.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1ad128bc1cb8f406482d5e2585e6b2cc34" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_BINARYAND</definition>
+        <argsstring></argsstring>
+        <name>OF_BINARYAND</name>
+        <qualifiedname>Destiny::OF_BINARYAND</qualifiedname>
+        <initializer>= 0x0013</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="90" column="26" bodyfile="game_destiny.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a6221912c5a0ffe98709be43761a786f5" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint16_t</type>
+        <definition>const uint16_t Destiny::OF_SET</definition>
+        <argsstring></argsstring>
+        <name>OF_SET</name>
+        <qualifiedname>Destiny::OF_SET</qualifiedname>
+        <initializer>= 0x0100</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="91" column="26" bodyfile="game_destiny.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a0082d789265c79fee2c03231aa9040f5" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint32_t</type>
+        <definition>const uint32_t Destiny::DF_TRUECOLOR</definition>
+        <argsstring></argsstring>
+        <name>DF_TRUECOLOR</name>
+        <qualifiedname>Destiny::DF_TRUECOLOR</qualifiedname>
+        <initializer>= 0b0001</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="94" column="26" bodyfile="game_destiny.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1af65789eabfc8f7ec3832a9d9262d7765" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint32_t</type>
+        <definition>const uint32_t Destiny::DF_EVENTSYSTEM</definition>
+        <argsstring></argsstring>
+        <name>DF_EVENTSYSTEM</name>
+        <qualifiedname>Destiny::DF_EVENTSYSTEM</qualifiedname>
+        <initializer>= 0b0010</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="95" column="26" bodyfile="game_destiny.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a78bb4dd2e516fd9926f2611291624004" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint32_t</type>
+        <definition>const uint32_t Destiny::DF_HARMONY</definition>
+        <argsstring></argsstring>
+        <name>DF_HARMONY</name>
+        <qualifiedname>Destiny::DF_HARMONY</qualifiedname>
+        <initializer>= 0b0100</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="96" column="26" bodyfile="game_destiny.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a48c6aebf3ca557e2c188d6934bc13e2d" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint32_t</type>
+        <definition>const uint32_t Destiny::DF_PROTECT</definition>
+        <argsstring></argsstring>
+        <name>DF_PROTECT</name>
+        <qualifiedname>Destiny::DF_PROTECT</qualifiedname>
+        <initializer>= 0b1000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="97" column="26" bodyfile="game_destiny.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a4ac2823319e8718ea5e5ad484c5dc94a" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint8_t</type>
+        <definition>const uint8_t Destiny::FILE_READ</definition>
+        <argsstring></argsstring>
+        <name>FILE_READ</name>
+        <qualifiedname>Destiny::FILE_READ</qualifiedname>
+        <initializer>= 0b0001</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="100" column="25" bodyfile="game_destiny.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a01b3d95a3ac047ad605ade86d798f2f5" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint8_t</type>
+        <definition>const uint8_t Destiny::FILE_WRITE</definition>
+        <argsstring></argsstring>
+        <name>FILE_WRITE</name>
+        <qualifiedname>Destiny::FILE_WRITE</qualifiedname>
+        <initializer>= 0b0010</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="101" column="25" bodyfile="game_destiny.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_destiny_1a3eaefb47acd4db22faed0846017114da" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const uint8_t</type>
+        <definition>const uint8_t Destiny::FILE_APPEND</definition>
+        <argsstring></argsstring>
+        <name>FILE_APPEND</name>
+        <qualifiedname>Destiny::FILE_APPEND</qualifiedname>
+        <initializer>= 0b0100</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="102" column="25" bodyfile="game_destiny.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_destiny.h" line="33" column="1"/>
+  </compounddef>
+</doxygen>

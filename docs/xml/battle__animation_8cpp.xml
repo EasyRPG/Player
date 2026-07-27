@@ -1,0 +1,2235 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="battle__animation_8cpp" kind="file" language="C++">
+    <compoundname>battle_animation.cpp</compoundname>
+    <includes refid="bitmap_8h" local="yes">bitmap.h</includes>
+    <includes local="no">lcf/rpg/animation.h</includes>
+    <includes refid="output_8h" local="yes">output.h</includes>
+    <includes refid="game__battle_8h" local="yes">game_battle.h</includes>
+    <includes refid="game__system_8h" local="yes">game_system.h</includes>
+    <includes refid="game__screen_8h" local="yes">game_screen.h</includes>
+    <includes refid="game__map_8h" local="yes">game_map.h</includes>
+    <includes refid="main__data_8h" local="yes">main_data.h</includes>
+    <includes refid="filefinder_8h" local="yes">filefinder.h</includes>
+    <includes refid="cache_8h" local="yes">cache.h</includes>
+    <includes refid="battle__animation_8h" local="yes">battle_animation.h</includes>
+    <includes refid="baseui_8h" local="yes">baseui.h</includes>
+    <includes refid="spriteset__battle_8h" local="yes">spriteset_battle.h</includes>
+    <includes refid="player_8h" local="yes">player.h</includes>
+    <includes refid="options_8h" local="yes">options.h</includes>
+    <includes refid="drawable__mgr_8h" local="yes">drawable_mgr.h</includes>
+    <includes refid="scene__map_8h" local="yes">scene_map.h</includes>
+    <includes refid="spriteset__map_8h" local="yes">spriteset_map.h</includes>
+    <incdepgraph>
+      <node id="61">
+        <label>async_handler.h</label>
+        <link refid="async__handler_8h"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="83">
+        <label>async_op.h</label>
+        <link refid="async__op_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="159">
+        <label>background.h</label>
+        <link refid="background_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="151">
+        <label>baseui.h</label>
+        <link refid="baseui_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="152" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="153" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="117" relation="include">
+        </childnode>
+        <childnode refid="111" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="155" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>battle_animation.cpp</label>
+        <link refid="battle__animation_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="119" relation="include">
+        </childnode>
+        <childnode refid="136" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="150" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="151" relation="include">
+        </childnode>
+        <childnode refid="158" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="163" relation="include">
+        </childnode>
+        <childnode refid="164" relation="include">
+        </childnode>
+        <childnode refid="165" relation="include">
+        </childnode>
+      </node>
+      <node id="93">
+        <label>battle_animation.h</label>
+        <link refid="battle__animation_8h"/>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>bitmap.h</label>
+        <link refid="bitmap_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="150">
+        <label>cache.h</label>
+        <link refid="cache_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="79">
+        <label>compiler.h</label>
+        <link refid="compiler_8h"/>
+      </node>
+      <node id="112">
+        <label>config_param.h</label>
+        <link refid="config__param_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="113" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="91">
+        <label>drawable_list.h</label>
+        <link refid="drawable__list_8h"/>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+      </node>
+      <node id="163">
+        <label>drawable_mgr.h</label>
+        <link refid="drawable__mgr_8h"/>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="96">
+        <label>fileext_guesser.h</label>
+        <link refid="fileext__guesser_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+      </node>
+      <node id="99">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>flash.h</label>
+        <link refid="flash_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="116">
+        <label>flat_map.h</label>
+        <link refid="flat__map_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="113" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="115" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+      </node>
+      <node id="153">
+        <label>font.h</label>
+        <link refid="font_8h"/>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="154" relation="include">
+        </childnode>
+      </node>
+      <node id="166">
+        <label>frame.h</label>
+        <link refid="frame_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+      </node>
+      <node id="62">
+        <label>game_actor.h</label>
+        <link refid="game__actor_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>game_battle.h</label>
+        <link refid="game__battle_8h"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="66">
+        <label>game_battler.h</label>
+        <link refid="game__battler_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>game_character.h</label>
+        <link refid="game__character_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="105">
+        <label>game_clock.h</label>
+        <link refid="game__clock_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="107" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="120">
+        <label>game_commonevent.h</label>
+        <link refid="game__commonevent_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="121" relation="include">
+        </childnode>
+        <childnode refid="122" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="111">
+        <label>game_config.h</label>
+        <link refid="game__config_8h"/>
+        <childnode refid="112" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="114" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="118">
+        <label>game_config_game.h</label>
+        <link refid="game__config__game_8h"/>
+        <childnode refid="112" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="123">
+        <label>game_event.h</label>
+        <link refid="game__event_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="124" relation="include">
+        </childnode>
+        <childnode refid="125" relation="include">
+        </childnode>
+        <childnode refid="121" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+      </node>
+      <node id="60">
+        <label>game_interpreter.h</label>
+        <link refid="game__interpreter_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>game_interpreter_battle.h</label>
+        <link refid="game__interpreter__battle_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+      </node>
+      <node id="121">
+        <label>game_interpreter_map.h</label>
+        <link refid="game__interpreter__map_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+      </node>
+      <node id="75">
+        <label>game_interpreter_shared.h</label>
+        <link refid="game__interpreter__shared_8h"/>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+      </node>
+      <node id="119">
+        <label>game_map.h</label>
+        <link refid="game__map_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="115" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="120" relation="include">
+        </childnode>
+        <childnode refid="123" relation="include">
+        </childnode>
+        <childnode refid="126" relation="include">
+        </childnode>
+        <childnode refid="128" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="130" relation="include">
+        </childnode>
+        <childnode refid="131" relation="include">
+        </childnode>
+        <childnode refid="132" relation="include">
+        </childnode>
+        <childnode refid="133" relation="include">
+        </childnode>
+        <childnode refid="134" relation="include">
+        </childnode>
+        <childnode refid="129" relation="include">
+        </childnode>
+        <childnode refid="127" relation="include">
+        </childnode>
+        <childnode refid="135" relation="include">
+        </childnode>
+      </node>
+      <node id="128">
+        <label>game_player.h</label>
+        <link refid="game__player_8h"/>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="129" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+      </node>
+      <node id="92">
+        <label>game_screen.h</label>
+        <link refid="game__screen_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+      </node>
+      <node id="85">
+        <label>game_system.h</label>
+        <link refid="game__system_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="126">
+        <label>game_vehicle.h</label>
+        <link refid="game__vehicle_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="127" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+      </node>
+      <node id="155">
+        <label>input.h</label>
+        <link refid="input_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="152" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="114" relation="include">
+        </childnode>
+        <childnode refid="156" relation="include">
+        </childnode>
+        <childnode refid="117" relation="include">
+        </childnode>
+        <childnode refid="111" relation="include">
+        </childnode>
+      </node>
+      <node id="114">
+        <label>input_buttons.h</label>
+        <link refid="input__buttons_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="113" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="115" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="116" relation="include">
+        </childnode>
+        <childnode refid="117" relation="include">
+        </childnode>
+      </node>
+      <node id="156">
+        <label>input_source.h</label>
+        <link refid="input__source_8h"/>
+        <childnode refid="152" relation="include">
+        </childnode>
+        <childnode refid="157" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="111" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="114" relation="include">
+        </childnode>
+        <childnode refid="117" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="117">
+        <label>keys.h</label>
+        <link refid="keys_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+      </node>
+      <node id="137">
+        <label>lcf/data.h</label>
+        <link refid="data_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="138" relation="include">
+        </childnode>
+        <childnode refid="139" relation="include">
+        </childnode>
+        <childnode refid="140" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="141" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="142" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="143" relation="include">
+        </childnode>
+        <childnode refid="144" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="122" relation="include">
+        </childnode>
+        <childnode refid="145" relation="include">
+        </childnode>
+        <childnode refid="146" relation="include">
+        </childnode>
+        <childnode refid="147" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="148" relation="include">
+        </childnode>
+        <childnode refid="149" relation="include">
+        </childnode>
+      </node>
+      <node id="136">
+        <label>main_data.h</label>
+        <link refid="main__data_8h"/>
+        <childnode refid="137" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="97">
+        <label>meta.h</label>
+        <link refid="meta_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>opacity.h</label>
+        <link refid="opacity_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="43">
+        <label>output.h</label>
+        <link refid="output_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="178">
+        <label>pending_message.h</label>
+        <link refid="pending__message_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="152" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>pixel_format.h</label>
+        <link refid="pixel__format_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>pixman_image_ptr.h</label>
+        <link refid="pixman__image__ptr_8h"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="167">
+        <label>plane.h</label>
+        <link refid="plane_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="107">
+        <label>platform/clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+        <childnode refid="110" relation="include">
+        </childnode>
+      </node>
+      <node id="95">
+        <label>player.h</label>
+        <link refid="player_8h"/>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="111" relation="include">
+        </childnode>
+        <childnode refid="118" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>point.h</label>
+        <link refid="point_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>rect.h</label>
+        <link refid="rect_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="90">
+        <label>scene.h</label>
+        <link refid="scene_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+      </node>
+      <node id="164">
+        <label>scene_map.h</label>
+        <link refid="scene__map_8h"/>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="165" relation="include">
+        </childnode>
+        <childnode refid="171" relation="include">
+        </childnode>
+        <childnode refid="179" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="119" relation="include">
+        </childnode>
+      </node>
+      <node id="160">
+        <label>screen.h</label>
+        <link refid="screen_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="72">
+        <label>sprite.h</label>
+        <link refid="sprite_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="74">
+        <label>sprite_actor.h</label>
+        <link refid="sprite__actor_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+      </node>
+      <node id="168">
+        <label>sprite_airshipshadow.h</label>
+        <link refid="sprite__airshipshadow_8h"/>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="71">
+        <label>sprite_battler.h</label>
+        <link refid="sprite__battler_8h"/>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+      </node>
+      <node id="161">
+        <label>sprite_character.h</label>
+        <link refid="sprite__character_8h"/>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+      </node>
+      <node id="162">
+        <label>sprite_timer.h</label>
+        <link refid="sprite__timer_8h"/>
+        <childnode refid="72" relation="include">
+        </childnode>
+      </node>
+      <node id="73">
+        <label>sprite_weapon.h</label>
+        <link refid="sprite__weapon_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+      </node>
+      <node id="158">
+        <label>spriteset_battle.h</label>
+        <link refid="spriteset__battle_8h"/>
+        <childnode refid="159" relation="include">
+        </childnode>
+        <childnode refid="160" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="161" relation="include">
+        </childnode>
+        <childnode refid="162" relation="include">
+        </childnode>
+      </node>
+      <node id="165">
+        <label>spriteset_map.h</label>
+        <link refid="spriteset__map_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="166" relation="include">
+        </childnode>
+        <childnode refid="167" relation="include">
+        </childnode>
+        <childnode refid="160" relation="include">
+        </childnode>
+        <childnode refid="168" relation="include">
+        </childnode>
+        <childnode refid="161" relation="include">
+        </childnode>
+        <childnode refid="162" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="169" relation="include">
+        </childnode>
+      </node>
+      <node id="70">
+        <label>state.h</label>
+        <link refid="state_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+      </node>
+      <node id="110">
+        <label>std_clock.h</label>
+        <link refid="std__clock_8h"/>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>teleport_target.h</label>
+        <link refid="teleport__target_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>text.h</label>
+        <link refid="text_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="169">
+        <label>tilemap.h</label>
+        <link refid="tilemap_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="170" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="170">
+        <label>tilemap_layer.h</label>
+        <link refid="tilemap__layer_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>tone.h</label>
+        <link refid="tone_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="89">
+        <label>transition.h</label>
+        <link refid="transition_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="103">
+        <label>translation.h</label>
+        <link refid="translation_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="174">
+        <label>window.h</label>
+        <link refid="window_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="173">
+        <label>window_base.h</label>
+        <link refid="window__base_8h"/>
+        <childnode refid="113" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="174" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="136" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="172">
+        <label>window_gold.h</label>
+        <link refid="window__gold_8h"/>
+        <childnode refid="173" relation="include">
+        </childnode>
+      </node>
+      <node id="177">
+        <label>window_help.h</label>
+        <link refid="window__help_8h"/>
+        <childnode refid="173" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="153" relation="include">
+        </childnode>
+      </node>
+      <node id="171">
+        <label>window_message.h</label>
+        <link refid="window__message_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="172" relation="include">
+        </childnode>
+        <childnode refid="175" relation="include">
+        </childnode>
+        <childnode refid="176" relation="include">
+        </childnode>
+        <childnode refid="178" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+      </node>
+      <node id="175">
+        <label>window_numberinput.h</label>
+        <link refid="window__numberinput_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="176" relation="include">
+        </childnode>
+      </node>
+      <node id="176">
+        <label>window_selectable.h</label>
+        <link refid="window__selectable_8h"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="173" relation="include">
+        </childnode>
+        <childnode refid="177" relation="include">
+        </childnode>
+      </node>
+      <node id="179">
+        <label>window_varlist.h</label>
+        <link refid="window__varlist_8h"/>
+        <childnode refid="176" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>algorithm</label>
+      </node>
+      <node id="113">
+        <label>array</label>
+      </node>
+      <node id="152">
+        <label>bitset</label>
+      </node>
+      <node id="7">
+        <label>cassert</label>
+      </node>
+      <node id="106">
+        <label>chrono</label>
+      </node>
+      <node id="36">
+        <label>climits</label>
+      </node>
+      <node id="3">
+        <label>cstdint</label>
+      </node>
+      <node id="101">
+        <label>cstdio</label>
+      </node>
+      <node id="18">
+        <label>cstdlib</label>
+      </node>
+      <node id="19">
+        <label>cstring</label>
+      </node>
+      <node id="22">
+        <label>ctime</label>
+      </node>
+      <node id="27">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="28">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="157">
+        <label>fstream</label>
+      </node>
+      <node id="23">
+        <label>functional</label>
+      </node>
+      <node id="115">
+        <label>initializer_list</label>
+      </node>
+      <node id="102">
+        <label>ios</label>
+      </node>
+      <node id="44">
+        <label>iosfwd</label>
+      </node>
+      <node id="38">
+        <label>istream</label>
+      </node>
+      <node id="81">
+        <label>lcf/dbarray.h</label>
+      </node>
+      <node id="69">
+        <label>lcf/dbbitarray.h</label>
+      </node>
+      <node id="26">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="100">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="82">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="98">
+        <label>lcf/inireader.h</label>
+      </node>
+      <node id="64">
+        <label>lcf/rpg/actor.h</label>
+      </node>
+      <node id="42">
+        <label>lcf/rpg/animation.h</label>
+      </node>
+      <node id="141">
+        <label>lcf/rpg/attribute.h</label>
+      </node>
+      <node id="146">
+        <label>lcf/rpg/battlecommand.h</label>
+      </node>
+      <node id="147">
+        <label>lcf/rpg/battleranimation.h</label>
+      </node>
+      <node id="143">
+        <label>lcf/rpg/chipset.h</label>
+      </node>
+      <node id="145">
+        <label>lcf/rpg/class.h</label>
+      </node>
+      <node id="122">
+        <label>lcf/rpg/commonevent.h</label>
+      </node>
+      <node id="149">
+        <label>lcf/rpg/database.h</label>
+      </node>
+      <node id="130">
+        <label>lcf/rpg/encounter.h</label>
+      </node>
+      <node id="140">
+        <label>lcf/rpg/enemy.h</label>
+      </node>
+      <node id="124">
+        <label>lcf/rpg/event.h</label>
+      </node>
+      <node id="58">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="55">
+        <label>lcf/rpg/eventpage.h</label>
+      </node>
+      <node id="46">
+        <label>lcf/rpg/fwd.h</label>
+      </node>
+      <node id="139">
+        <label>lcf/rpg/item.h</label>
+      </node>
+      <node id="65">
+        <label>lcf/rpg/learning.h</label>
+      </node>
+      <node id="131">
+        <label>lcf/rpg/map.h</label>
+      </node>
+      <node id="132">
+        <label>lcf/rpg/mapinfo.h</label>
+      </node>
+      <node id="76">
+        <label>lcf/rpg/movecommand.h</label>
+      </node>
+      <node id="54">
+        <label>lcf/rpg/moveroute.h</label>
+      </node>
+      <node id="86">
+        <label>lcf/rpg/music.h</label>
+      </node>
+      <node id="63">
+        <label>lcf/rpg/saveactor.h</label>
+      </node>
+      <node id="135">
+        <label>lcf/rpg/savecommonevent.h</label>
+      </node>
+      <node id="78">
+        <label>lcf/rpg/saveeventexecframe.h</label>
+      </node>
+      <node id="77">
+        <label>lcf/rpg/saveeventexecstate.h</label>
+      </node>
+      <node id="125">
+        <label>lcf/rpg/savemapevent.h</label>
+      </node>
+      <node id="56">
+        <label>lcf/rpg/savemapeventbase.h</label>
+      </node>
+      <node id="133">
+        <label>lcf/rpg/savemapinfo.h</label>
+      </node>
+      <node id="134">
+        <label>lcf/rpg/savepanorama.h</label>
+      </node>
+      <node id="129">
+        <label>lcf/rpg/savepartylocation.h</label>
+      </node>
+      <node id="94">
+        <label>lcf/rpg/savescreen.h</label>
+      </node>
+      <node id="88">
+        <label>lcf/rpg/savesystem.h</label>
+      </node>
+      <node id="127">
+        <label>lcf/rpg/savevehiclelocation.h</label>
+      </node>
+      <node id="138">
+        <label>lcf/rpg/skill.h</label>
+      </node>
+      <node id="87">
+        <label>lcf/rpg/sound.h</label>
+      </node>
+      <node id="68">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="47">
+        <label>lcf/rpg/system.h</label>
+      </node>
+      <node id="144">
+        <label>lcf/rpg/terms.h</label>
+      </node>
+      <node id="142">
+        <label>lcf/rpg/terrain.h</label>
+      </node>
+      <node id="148">
+        <label>lcf/rpg/treemap.h</label>
+      </node>
+      <node id="48">
+        <label>lcf/rpg/troop.h</label>
+      </node>
+      <node id="59">
+        <label>lcf/rpg/trooppagecondition.h</label>
+      </node>
+      <node id="154">
+        <label>lcf/scope_guard.h</label>
+      </node>
+      <node id="30">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="25">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="67">
+        <label>limits</label>
+      </node>
+      <node id="5">
+        <label>map</label>
+      </node>
+      <node id="12">
+        <label>memory</label>
+      </node>
+      <node id="80">
+        <label>optional</label>
+      </node>
+      <node id="15">
+        <label>ostream</label>
+      </node>
+      <node id="8">
+        <label>pixman.h</label>
+      </node>
+      <node id="104">
+        <label>sstream</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="109">
+        <label>thread</label>
+      </node>
+      <node id="14">
+        <label>tuple</label>
+      </node>
+      <node id="108">
+        <label>type_traits</label>
+      </node>
+      <node id="40">
+        <label>unordered_map</label>
+      </node>
+      <node id="52">
+        <label>unordered_set</label>
+      </node>
+      <node id="84">
+        <label>utility</label>
+      </node>
+      <node id="6">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="battle__animation_8cpp_1a1765cab1fe324328f4eedf249944f43c" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int CalculateFlashPower</definition>
+        <argsstring>(int frames, int power)</argsstring>
+        <name>CalculateFlashPower</name>
+        <param>
+          <type>int</type>
+          <declname>frames</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>power</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.cpp" line="181" column="12" bodyfile="battle_animation.cpp" bodystart="181" bodyend="186"/>
+      </memberdef>
+      <memberdef kind="function" id="battle__animation_8cpp_1a4df0650cfa7a22065b328988fddd51ed" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int CalculateOffset</definition>
+        <argsstring>(int pos, int target_height)</argsstring>
+        <name>CalculateOffset</name>
+        <param>
+          <type>int</type>
+          <declname>pos</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>target_height</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.cpp" line="219" column="12" bodyfile="battle_animation.cpp" bodystart="219" bodyend="228"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="bitmap_8h" kindref="compound">bitmap.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/animation.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="output_8h" kindref="compound">output.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__battle_8h" kindref="compound">game_battle.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__system_8h" kindref="compound">game_system.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__screen_8h" kindref="compound">game_screen.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__map_8h" kindref="compound">game_map.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="main__data_8h" kindref="compound">main_data.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="filefinder_8h" kindref="compound">filefinder.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="cache_8h" kindref="compound">cache.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="battle__animation_8h" kindref="compound">battle_animation.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="baseui_8h" kindref="compound">baseui.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="spriteset__battle_8h" kindref="compound">spriteset_battle.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="player_8h" kindref="compound">player.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="options_8h" kindref="compound">options.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="drawable__mgr_8h" kindref="compound">drawable_mgr.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="scene__map_8h" kindref="compound">scene_map.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="spriteset__map_8h" kindref="compound">spriteset_map.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="class_battle_animation_1a965b86b1aa70f7b87867c61298a39f4b" refkind="member"><highlight class="normal"><ref refid="class_battle_animation_1a965b86b1aa70f7b87867c61298a39f4b" kindref="member">BattleAnimation::BattleAnimation</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Animation&amp;<sp/>anim,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_1a4fbf55edc415246a02541fdeeab08612" kindref="member">only_sound</ref>,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>cutoff)<sp/>:</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" kindref="member">animation</ref>(anim),<sp/><ref refid="class_battle_animation_1a4fbf55edc415246a02541fdeeab08612" kindref="member">only_sound</ref>(<ref refid="class_battle_animation_1a4fbf55edc415246a02541fdeeab08612" kindref="member">only_sound</ref>)</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a065f8f241f897526c8d4a7b1551c0475" kindref="member">num_frames</ref><sp/>=<sp/><ref refid="class_battle_animation_1ae4bb9615843f26a2fe1678478b0e8b48" kindref="member">GetRealFrames</ref>()<sp/>*<sp/>2;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(cutoff<sp/>&gt;=<sp/>0<sp/>&amp;&amp;<sp/>cutoff<sp/>&lt;<sp/><ref refid="class_battle_animation_1a065f8f241f897526c8d4a7b1551c0475" kindref="member">num_frames</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a065f8f241f897526c8d4a7b1551c0475" kindref="member">num_frames</ref><sp/>=<sp/>cutoff;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" kindref="member">SetZ</ref>(<ref refid="drawable_8h_1a61c85b23eaec819f8e89dc0c97d58983aaa2371ff6bc4349c6eb57b13c0e9e0c3" kindref="member">Priority_BattleAnimation</ref>);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string_view<sp/>name<sp/>=<sp/><ref refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" kindref="member">animation</ref>.animation_name;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/>graphic;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(name.empty())<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" kindref="member">animation</ref>.large)<sp/>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_file_request_async" kindref="compound">FileRequestAsync</ref>*<sp/>request<sp/>=<sp/><ref refid="namespace_async_handler_1a9fda46064b52ed2379e26e9483993fe1" kindref="member">AsyncHandler::RequestFile</ref>(</highlight><highlight class="stringliteral">&quot;Battle2&quot;</highlight><highlight class="normal">,<sp/>name);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>request-&gt;<ref refid="class_file_request_async_1ad58ab06b33fe6e8d42392734fd48bfe5" kindref="member">SetGraphicFile</ref>(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1aa9727836097bb50a0b65c8b693159d16" kindref="member">request_id</ref><sp/>=<sp/>request-&gt;<ref refid="class_file_request_async_1a042f21382c31aaccc80a6ec1b0697169" kindref="member">Bind</ref>(&amp;<ref refid="class_battle_animation_1a3e28e58e04c5eae2287d4b6163af708b" kindref="member">BattleAnimation::OnBattle2SpriteReady</ref>,<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>request-&gt;<ref refid="class_file_request_async_1a51c4a038e3b18ec6d8bd03df2763ad17" kindref="member">Start</ref>();</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_file_request_async" kindref="compound">FileRequestAsync</ref>*<sp/>request<sp/>=<sp/><ref refid="namespace_async_handler_1a9fda46064b52ed2379e26e9483993fe1" kindref="member">AsyncHandler::RequestFile</ref>(</highlight><highlight class="stringliteral">&quot;Battle&quot;</highlight><highlight class="normal">,<sp/>name);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>request-&gt;<ref refid="class_file_request_async_1ad58ab06b33fe6e8d42392734fd48bfe5" kindref="member">SetGraphicFile</ref>(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1aa9727836097bb50a0b65c8b693159d16" kindref="member">request_id</ref><sp/>=<sp/>request-&gt;<ref refid="class_file_request_async_1a042f21382c31aaccc80a6ec1b0697169" kindref="member">Bind</ref>(&amp;<ref refid="class_battle_animation_1a21d1269c5279ec4ffda9ca1e47c754f4" kindref="member">BattleAnimation::OnBattleSpriteReady</ref>,<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>request-&gt;<ref refid="class_file_request_async_1a51c4a038e3b18ec6d8bd03df2763ad17" kindref="member">Start</ref>();</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="63"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="class_battle_animation_1ad1065b9da7c0947a87647aaec82dfc3f" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_1ad1065b9da7c0947a87647aaec82dfc3f" kindref="member">BattleAnimation::Update</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="class_battle_animation_1ac795090c6ee8442903eec3e9ec961aec" kindref="member">IsDone</ref>()<sp/>&amp;&amp;<sp/>(<ref refid="class_battle_animation_1acce5d9ed3e850f9deb262e050312cec0" kindref="member">frame</ref><sp/>&amp;<sp/>1)<sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Lookup<sp/>any<sp/>timed<sp/>SFX<sp/>(SE/flash/shake)<sp/>data<sp/>for<sp/>this<sp/>frame</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>timing:<sp/><ref refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" kindref="member">animation</ref>.timings)<sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(timing.frame<sp/>==<sp/><ref refid="class_battle_animation_1a7a9e2cd68529ddbefeade09fdcfc31ca" kindref="member">GetRealFrame</ref>()<sp/>+<sp/>1)<sp/>{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a20a80c0e92534632094b03c84ab94f13" kindref="member">ProcessAnimationTiming</ref>(timing);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a460072ba858ace5c0bb81ce3a5cbc780" kindref="member">UpdateScreenFlash</ref>();</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1ac597c5fb50f7cae29c7ea65eeccc69bc" kindref="member">UpdateTargetFlash</ref>();</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a88b06fec2499b21fb21445269cbee15f" kindref="member">SetFlashEffect</ref>(<ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;GetFlashColor());</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1acce5d9ed3e850f9deb262e050312cec0" kindref="member">frame</ref>++;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83" refid="class_battle_animation_1a21d1269c5279ec4ffda9ca1e47c754f4" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_1a21d1269c5279ec4ffda9ca1e47c754f4" kindref="member">BattleAnimation::OnBattleSpriteReady</ref>(<ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref>*<sp/>result)<sp/>{</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/>bitmap<sp/>=<sp/><ref refid="namespace_cache_1a662dab6f7d8825c2ec943a177a23b273" kindref="member">Cache::Battle</ref>(result-&gt;<ref refid="struct_file_request_result_1ab9cbc6a573dcbacd9f0a653babe6f068" kindref="member">file</ref>);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a0b1f8eb93adbfffb165acb30699ddd78" kindref="member">SetBitmap</ref>(bitmap);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a890398eafe1a9135d7baa939842a798a" kindref="member">SetSrcRect</ref>(<ref refid="class_rect" kindref="compound">Rect</ref>(0,<sp/>0,<sp/>0,<sp/>0));</highlight></codeline>
+<codeline lineno="87"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89" refid="class_battle_animation_1a3e28e58e04c5eae2287d4b6163af708b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_1a3e28e58e04c5eae2287d4b6163af708b" kindref="member">BattleAnimation::OnBattle2SpriteReady</ref>(<ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref>*<sp/>result)<sp/>{</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/>bitmap<sp/>=<sp/><ref refid="namespace_cache_1a7e8f7249a2ab350bfdd1f560d0fab8f1" kindref="member">Cache::Battle2</ref>(result-&gt;<ref refid="struct_file_request_result_1ab9cbc6a573dcbacd9f0a653babe6f068" kindref="member">file</ref>);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a0b1f8eb93adbfffb165acb30699ddd78" kindref="member">SetBitmap</ref>(bitmap);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a890398eafe1a9135d7baa939842a798a" kindref="member">SetSrcRect</ref>(<ref refid="class_rect" kindref="compound">Rect</ref>(0,<sp/>0,<sp/>0,<sp/>0));</highlight></codeline>
+<codeline lineno="93"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="class_battle_animation_1a519790fc37d667776815911e013589f2" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_1a519790fc37d667776815911e013589f2" kindref="member">BattleAnimation::DrawAt</ref>(<ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>dst,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y)<sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_battle_animation_1ac795090c6ee8442903eec3e9ec961aec" kindref="member">IsDone</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::AnimationFrame&amp;<sp/>anim_frame<sp/>=<sp/><ref refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" kindref="member">animation</ref>.frames[<ref refid="class_battle_animation_1a7a9e2cd68529ddbefeade09fdcfc31ca" kindref="member">GetRealFrame</ref>()];</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;lcf::rpg::AnimationCellData&gt;::const_iterator<sp/>it;</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(it<sp/>=<sp/>anim_frame.cells.begin();<sp/>it<sp/>!=<sp/>anim_frame.cells.end();<sp/>++it)<sp/>{</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::AnimationCellData&amp;<sp/>cell<sp/>=<sp/>*it;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!cell.valid)<sp/>{</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Skip<sp/>unused<sp/>cells<sp/>(they<sp/>are<sp/>created<sp/>by<sp/>deleting<sp/>cells<sp/>in<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>animation<sp/>editor,<sp/>resulting<sp/>in<sp/>gaps)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a57277e7b2c107f36f587c46e99f7a48f" kindref="member">SetX</ref>(<ref refid="class_battle_animation_1a36b7ca7c32723570212381dd40cf220f" kindref="member">invert</ref><sp/>?<sp/>x<sp/>-<sp/>cell.x<sp/>:<sp/>cell.x<sp/>+<sp/>x);</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a0012676d8951dbf2342de94acc18eecd" kindref="member">SetY</ref>(cell.y<sp/>+<sp/>y);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>sx<sp/>=<sp/>cell.cell_id<sp/>%<sp/>5;</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>sy<sp/>=<sp/>cell.cell_id<sp/>/<sp/>5;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>size<sp/>=<sp/><ref refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" kindref="member">animation</ref>.large<sp/>?<sp/>128<sp/>:<sp/>96;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a890398eafe1a9135d7baa939842a798a" kindref="member">SetSrcRect</ref>(<ref refid="class_rect" kindref="compound">Rect</ref>(sx<sp/>*<sp/>size,<sp/>sy<sp/>*<sp/>size,<sp/>size,<sp/>size));</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_sprite_1ae2504fad70205dd8064392da7ceb4f71" kindref="member">SetOx</ref>(size<sp/>/<sp/>2);</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a0e189abc78607a4a6e011d6e394a43d7" kindref="member">SetOy</ref>(size<sp/>/<sp/>2);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a89865e8080e634db19ab6409efc0ef2c" kindref="member">SetTone</ref>(<ref refid="class_tone" kindref="compound">Tone</ref>(cell.tone_red<sp/>*<sp/>128<sp/>/<sp/>100,</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cell.tone_green<sp/>*<sp/>128<sp/>/<sp/>100,</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cell.tone_blue<sp/>*<sp/>128<sp/>/<sp/>100,</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cell.tone_gray<sp/>*<sp/>128<sp/>/<sp/>100));</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a00ec8dcc661ae5acea3c013dc12c07f0" kindref="member">SetOpacity</ref>(255<sp/>*<sp/>(100<sp/>-<sp/>cell.transparency)<sp/>/<sp/>100);</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a3e7151dfb8645a3fbb71395625af985c" kindref="member">SetZoomX</ref>(cell.zoom<sp/>/<sp/>100.0);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_sprite_1aad6019d133e5abac3323d671af4ed06b" kindref="member">SetZoomY</ref>(cell.zoom<sp/>/<sp/>100.0);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a85222d16191092db3e0d731f8a78d4a8" kindref="member">SetFlipX</ref>(<ref refid="class_battle_animation_1a36b7ca7c32723570212381dd40cf220f" kindref="member">invert</ref>);</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a0a4a3bd44c2556cbbe47b4480fae2a5b" kindref="member">Sprite::Draw</ref>(dst);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(anim_frame.cells.empty())<sp/>{</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Draw<sp/>an<sp/>empty<sp/>sprite<sp/>when<sp/>no<sp/>cell<sp/>is<sp/>available<sp/>in<sp/>the<sp/>animation</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a890398eafe1a9135d7baa939842a798a" kindref="member">SetSrcRect</ref>(<ref refid="class_rect" kindref="compound">Rect</ref>(0,<sp/>0,<sp/>0,<sp/>0));</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a0a4a3bd44c2556cbbe47b4480fae2a5b" kindref="member">Sprite::Draw</ref>(dst);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="136"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138" refid="class_battle_animation_1a9adf84fdc69160f511c16ecfcd814a23" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_1a9adf84fdc69160f511c16ecfcd814a23" kindref="member">BattleAnimation::ProcessAnimationFlash</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::AnimationTiming&amp;<sp/>timing)<sp/>{</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_battle_animation_1a9b06b35b9872adbd7bd382e6e85caeb0" kindref="member">IsOnlySound</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(timing.flash_scope<sp/>==<sp/>lcf::rpg::AnimationTiming::FlashScope_target)<sp/>{</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1ad63e43a253972b91c122da841a0d8c47" kindref="member">target_flash_timing</ref><sp/>=<sp/>&amp;timing<sp/>-<sp/><ref refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" kindref="member">animation</ref>.timings.data();</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(timing.flash_scope<sp/>==<sp/>lcf::rpg::AnimationTiming::FlashScope_screen)<sp/>{</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1aaa54fffc4357ce65277bc545ea853e5c" kindref="member">screen_flash_timing</ref><sp/>=<sp/>&amp;timing<sp/>-<sp/><ref refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" kindref="member">animation</ref>.timings.data();</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150" refid="class_battle_animation_1a20a80c0e92534632094b03c84ab94f13" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_1a20a80c0e92534632094b03c84ab94f13" kindref="member">BattleAnimation::ProcessAnimationTiming</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::AnimationTiming&amp;<sp/>timing)<sp/>{</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Play<sp/>the<sp/>SE.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;SePlay(timing.se);</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_battle_animation_1a9b06b35b9872adbd7bd382e6e85caeb0" kindref="member">IsOnlySound</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Flash.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a9adf84fdc69160f511c16ecfcd814a23" kindref="member">ProcessAnimationFlash</ref>(timing);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Shake<sp/>(only<sp/>happens<sp/>in<sp/>battle).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_game___battle_1af32623a9af3ddb112a2e4f43b1375094" kindref="member">Game_Battle::IsBattleRunning</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(timing.screen_shake)<sp/>{</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>lcf::rpg::AnimationTiming::ScreenShake_nothing:</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>lcf::rpg::AnimationTiming::ScreenShake_target:</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>FIXME:<sp/>Estimate,<sp/>see<sp/>below<sp/>for<sp/>screen<sp/>shake.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a9c69718e20a5e4ba692d3d7afa99d394" kindref="member">ShakeTargets</ref>(3,<sp/>5,<sp/>32);</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>lcf::rpg::AnimationTiming::ScreenShake_screen:</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___screen" kindref="compound">Game_Screen</ref>*<sp/>screen<sp/>=<sp/><ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>.get();</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>FIXME:<sp/>This<sp/>is<sp/>not<sp/>proven<sp/>accurate.<sp/>Screen<sp/>captures<sp/>show<sp/>that</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>the<sp/>shake<sp/>effect<sp/>lasts<sp/>for<sp/>16<sp/>animation<sp/>frames<sp/>(32<sp/>real<sp/>frames).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>maximum<sp/>offset<sp/>observed<sp/>was<sp/>6<sp/>or<sp/>7,<sp/>which<sp/>makes<sp/>these<sp/>numbers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>seem<sp/>reasonable.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>screen-&gt;<ref refid="class_game___screen_1aa44ce0b88efaa41fa781be4d730f1772" kindref="member">ShakeOnce</ref>(3,<sp/>5,<sp/>32);</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="179"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>CalculateFlashPower(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>frames,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>power)<sp/>{</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>This<sp/>algorithm<sp/>was<sp/>determined<sp/>numerically<sp/>by<sp/>measuring<sp/>the<sp/>flash</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>power<sp/>for<sp/>each<sp/>frame<sp/>of<sp/>battle<sp/>animation<sp/>flashs.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>f<sp/>=<sp/>7<sp/>-<sp/>((frames<sp/>+<sp/>1)<sp/>/<sp/>2);</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::min(f<sp/>*<sp/>power<sp/>/<sp/>6,<sp/>31);</highlight></codeline>
+<codeline lineno="186"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="188" refid="class_battle_animation_1a4baaa539b44ac01fa720ae03d7525a62" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_1a4baaa539b44ac01fa720ae03d7525a62" kindref="member">BattleAnimation::UpdateFlashGeneric</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>timing_idx,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/>r,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/>g,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/>b,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/>p)<sp/>{</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/>r<sp/>=<sp/>0;<sp/>g<sp/>=<sp/>0;<sp/>b<sp/>=<sp/>0;<sp/>p<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(timing_idx<sp/>&gt;=<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>timing<sp/>=<sp/><ref refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" kindref="member">animation</ref>.timings[timing_idx];</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>start_frame<sp/>=<sp/>(timing.frame<sp/>-<sp/>1)<sp/>*<sp/>2;</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>delta_frames<sp/>=<sp/><ref refid="class_battle_animation_1a9e591b8cc396c2a64f8ee5b5c3432e8b" kindref="member">GetFrame</ref>()<sp/>-<sp/>start_frame;</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(delta_frames<sp/>&lt;=<sp/>10)<sp/>{</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>r<sp/>=<sp/>timing.flash_red;</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>g<sp/>=<sp/>timing.flash_green;</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>b<sp/>=<sp/>timing.flash_blue;</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p<sp/>=<sp/>CalculateFlashPower(delta_frames,<sp/>timing.flash_power);</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="202"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight></codeline>
+<codeline lineno="204" refid="class_battle_animation_1a460072ba858ace5c0bb81ce3a5cbc780" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_1a460072ba858ace5c0bb81ce3a5cbc780" kindref="member">BattleAnimation::UpdateScreenFlash</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>r,<sp/>g,<sp/>b,<sp/>p;</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a4baaa539b44ac01fa720ae03d7525a62" kindref="member">UpdateFlashGeneric</ref>(<ref refid="class_battle_animation_1aaa54fffc4357ce65277bc545ea853e5c" kindref="member">screen_flash_timing</ref>,<sp/>r,<sp/>g,<sp/>b,<sp/>p);</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;FlashOnce(r,<sp/>g,<sp/>b,<sp/>p,<sp/>0);</highlight></codeline>
+<codeline lineno="208"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight></codeline>
+<codeline lineno="210" refid="class_battle_animation_1ac597c5fb50f7cae29c7ea65eeccc69bc" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_1ac597c5fb50f7cae29c7ea65eeccc69bc" kindref="member">BattleAnimation::UpdateTargetFlash</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>r,<sp/>g,<sp/>b,<sp/>p;</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a4baaa539b44ac01fa720ae03d7525a62" kindref="member">UpdateFlashGeneric</ref>(<ref refid="class_battle_animation_1ad63e43a253972b91c122da841a0d8c47" kindref="member">target_flash_timing</ref>,<sp/>r,<sp/>g,<sp/>b,<sp/>p);</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a4af3c1c8e2b58f57c15ce4dd931ce083" kindref="member">FlashTargets</ref>(r,<sp/>g,<sp/>b,<sp/>p);</highlight></codeline>
+<codeline lineno="214"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight><highlight class="comment">//<sp/>For<sp/>handling<sp/>the<sp/>vertical<sp/>position.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight><highlight class="comment">//<sp/>(The<sp/>first<sp/>argument<sp/>should<sp/>be<sp/>an<sp/>lcf::rpg::Animation::Position,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight><highlight class="comment">//<sp/>but<sp/>the<sp/>position<sp/>member<sp/>is<sp/>an<sp/>int,<sp/>so<sp/>take<sp/>an<sp/>int.)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>CalculateOffset(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pos,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>target_height)<sp/>{</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(pos)<sp/>{</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>lcf::rpg::Animation::Position_down:</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>target_height<sp/>/<sp/>2;</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>lcf::rpg::Animation::Position_up:</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>-(target_height<sp/>/<sp/>2);</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="228"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight></codeline>
+<codeline lineno="231"><highlight class="normal"></highlight></codeline>
+<codeline lineno="232" refid="class_battle_animation_map_1a2c21a19142754cb12e003c471cfd18df" refkind="member"><highlight class="normal"><ref refid="class_battle_animation_map_1a2c21a19142754cb12e003c471cfd18df" kindref="member">BattleAnimationMap::BattleAnimationMap</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Animation&amp;<sp/>anim,<sp/><ref refid="class_game___character" kindref="compound">Game_Character</ref>&amp;<sp/><ref refid="class_battle_animation_map_1a0239d515b49e193a43940c01d0df734a" kindref="member">target</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_map_1af1af7e5bc82ff5eb806d92ba599d9735" kindref="member">global</ref>)<sp/>:</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a965b86b1aa70f7b87867c61298a39f4b" kindref="member">BattleAnimation</ref>(anim),<sp/><ref refid="class_battle_animation_map_1a0239d515b49e193a43940c01d0df734a" kindref="member">target</ref>(&amp;<ref refid="class_battle_animation_map_1a0239d515b49e193a43940c01d0df734a" kindref="member">target</ref>),<sp/><ref refid="class_battle_animation_map_1af1af7e5bc82ff5eb806d92ba599d9735" kindref="member">global</ref>(<ref refid="class_battle_animation_map_1af1af7e5bc82ff5eb806d92ba599d9735" kindref="member">global</ref>)</highlight></codeline>
+<codeline lineno="234"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="235"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight></codeline>
+<codeline lineno="237" refid="class_battle_animation_map_1aba352145086e36c2cd5c56c80d75ea21" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_map_1aba352145086e36c2cd5c56c80d75ea21" kindref="member">BattleAnimationMap::SetTarget</ref>(<ref refid="class_game___character" kindref="compound">Game_Character</ref>&amp;<sp/><ref refid="class_battle_animation_map_1a0239d515b49e193a43940c01d0df734a" kindref="member">target</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/>this-&gt;target<sp/>=<sp/>&amp;<ref refid="class_battle_animation_map_1a0239d515b49e193a43940c01d0df734a" kindref="member">target</ref>;</highlight></codeline>
+<codeline lineno="239"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"></highlight></codeline>
+<codeline lineno="241" refid="class_battle_animation_map_1adb8a8c24632a6e72a3286a34a41d5872" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_map_1adb8a8c24632a6e72a3286a34a41d5872" kindref="member">BattleAnimationMap::Draw</ref>(<ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>dst)<sp/>{</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_battle_animation_1a9b06b35b9872adbd7bd382e6e85caeb0" kindref="member">IsOnlySound</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"></highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_battle_animation_map_1af1af7e5bc82ff5eb806d92ba599d9735" kindref="member">global</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_map_1a40946d323103cb5e29c9833cfe923b99" kindref="member">DrawGlobal</ref>(dst);</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_map_1a23d6a66e4e64eea7274ced3d9688796f" kindref="member">DrawSingle</ref>(dst);</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="251"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"></highlight></codeline>
+<codeline lineno="253" refid="class_battle_animation_map_1a40946d323103cb5e29c9833cfe923b99" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_map_1a40946d323103cb5e29c9833cfe923b99" kindref="member">BattleAnimationMap::DrawGlobal</ref>(<ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>dst)<sp/>{</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>rect<sp/>=<sp/><ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;GetScreenEffectsRect();</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y<sp/>=<sp/>-1;<sp/>y<sp/>&lt;<sp/>2;<sp/>++y)<sp/>{</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x<sp/>=<sp/>-1;<sp/>x<sp/>&lt;<sp/>2;<sp/>++x)<sp/>{</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a519790fc37d667776815911e013589f2" kindref="member">DrawAt</ref>(dst,<sp/>rect.<ref refid="class_bitmap_1a024d56da8ce9d02a8f37fef652cdf557" kindref="member">width</ref><sp/>*<sp/>x<sp/>+<sp/>rect.x,<sp/>rect.height<sp/>*<sp/>y<sp/>+<sp/>rect.y);</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="261"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"></highlight></codeline>
+<codeline lineno="263" refid="class_battle_animation_map_1a23d6a66e4e64eea7274ced3d9688796f" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_map_1a23d6a66e4e64eea7274ced3d9688796f" kindref="member">BattleAnimationMap::DrawSingle</ref>(<ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>dst)<sp/>{</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//If<sp/>animation<sp/>is<sp/>targeted<sp/>on<sp/>the<sp/>screen</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" kindref="member">animation</ref>.scope<sp/>==<sp/>lcf::rpg::Animation::Scope_screen)<sp/>{</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a519790fc37d667776815911e013589f2" kindref="member">DrawAt</ref>(dst,<sp/><ref refid="namespace_player_1a425e5dd4f451a22e3dae2dcf195f3b8d" kindref="member">Player::screen_width</ref><sp/>/<sp/>2,<sp/><ref refid="namespace_player_1a5aafc46e1566a41091e8acf119327267" kindref="member">Player::screen_height</ref><sp/>/<sp/>2);</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>character_height<sp/>=<sp/>24;</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x_off<sp/>=<sp/><ref refid="class_battle_animation_map_1a0239d515b49e193a43940c01d0df734a" kindref="member">target</ref>-&gt;GetScreenX();</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y_off<sp/>=<sp/><ref refid="class_battle_animation_map_1a0239d515b49e193a43940c01d0df734a" kindref="member">target</ref>-&gt;GetScreenY(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_scene_1ac348fc3b0beb12093144a1f03d81449d" kindref="member">Scene::instance</ref>-&gt;type<sp/>==<sp/><ref refid="class_scene_1adf61561da781541f6b9ec5590756b09eae39f3115e47e2cc1a161ab73db4819a6" kindref="member">Scene::Map</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>x_off<sp/>+=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal"><ref refid="class_scene___map" kindref="compound">Scene_Map</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(<ref refid="class_scene_1ac348fc3b0beb12093144a1f03d81449d" kindref="member">Scene::instance</ref>.get())-&gt;<ref refid="class_scene___map_1a305a7c7afb02e3c810cfce0be2fc33f9" kindref="member">spriteset</ref>-&gt;GetRenderOx();</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>y_off<sp/>+=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal"><ref refid="class_scene___map" kindref="compound">Scene_Map</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(<ref refid="class_scene_1ac348fc3b0beb12093144a1f03d81449d" kindref="member">Scene::instance</ref>.get())-&gt;<ref refid="class_scene___map_1a305a7c7afb02e3c810cfce0be2fc33f9" kindref="member">spriteset</ref>-&gt;GetRenderOy();</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>vertical_center<sp/>=<sp/>y_off<sp/>-<sp/>character_height<sp/>/<sp/>2;</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>offset<sp/>=<sp/>CalculateOffset(<ref refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" kindref="member">animation</ref>.position,<sp/>character_height);</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"></highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a519790fc37d667776815911e013589f2" kindref="member">DrawAt</ref>(dst,<sp/>x_off,<sp/>vertical_center<sp/>+<sp/>offset);</highlight></codeline>
+<codeline lineno="280"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"></highlight></codeline>
+<codeline lineno="282" refid="class_battle_animation_map_1ab76791c072b59a9040b657eb3a509d0b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_map_1ab76791c072b59a9040b657eb3a509d0b" kindref="member">BattleAnimationMap::FlashTargets</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>r,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>g,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>b,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>p)<sp/>{</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_map_1a0239d515b49e193a43940c01d0df734a" kindref="member">target</ref>-&gt;Flash(r,<sp/>g,<sp/>b,<sp/>p,<sp/>0);</highlight></codeline>
+<codeline lineno="284"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"></highlight></codeline>
+<codeline lineno="286" refid="class_battle_animation_map_1ae226f7a5def3c8888bfee94fd262248b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_map_1ae226f7a5def3c8888bfee94fd262248b" kindref="member">BattleAnimationMap::ShakeTargets</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">/*<sp/>str<sp/>*/</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">/*<sp/>spd<sp/>*/</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="comment">/*<sp/>time<sp/>*/</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="287"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"></highlight></codeline>
+<codeline lineno="290"><highlight class="normal"></highlight></codeline>
+<codeline lineno="291" refid="class_battle_animation_battle_1a02c53232c8f6d4bec2414bbadf8c9452" refkind="member"><highlight class="normal"><ref refid="class_battle_animation_battle_1a02c53232c8f6d4bec2414bbadf8c9452" kindref="member">BattleAnimationBattle::BattleAnimationBattle</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Animation&amp;<sp/>anim,<sp/>std::vector&lt;Game_Battler*&gt;<sp/><ref refid="class_battle_animation_battle_1af140719103845fffcf3a9fdacc55489e" kindref="member">battlers</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_1a4fbf55edc415246a02541fdeeab08612" kindref="member">only_sound</ref>,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>cutoff_frame,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>set_invert)<sp/>:</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a965b86b1aa70f7b87867c61298a39f4b" kindref="member">BattleAnimation</ref>(anim,<sp/><ref refid="class_battle_animation_1a4fbf55edc415246a02541fdeeab08612" kindref="member">only_sound</ref>,<sp/>cutoff_frame),<sp/><ref refid="class_battle_animation_battle_1af140719103845fffcf3a9fdacc55489e" kindref="member">battlers</ref>(<ref refid="namespacestd" kindref="compound">std</ref>::move(<ref refid="class_battle_animation_battle_1af140719103845fffcf3a9fdacc55489e" kindref="member">battlers</ref>))</highlight></codeline>
+<codeline lineno="293"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a36b7ca7c32723570212381dd40cf220f" kindref="member">invert</ref><sp/>=<sp/>set_invert;</highlight></codeline>
+<codeline lineno="295"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"></highlight></codeline>
+<codeline lineno="297" refid="class_battle_animation_battle_1ae97ebe6c57993fe31b81b7a4b06d736a" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_battle_1ae97ebe6c57993fe31b81b7a4b06d736a" kindref="member">BattleAnimationBattle::Draw</ref>(<ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>dst)<sp/>{</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_battle_animation_1a9b06b35b9872adbd7bd382e6e85caeb0" kindref="member">IsOnlySound</ref>())</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" kindref="member">animation</ref>.scope<sp/>==<sp/>lcf::rpg::Animation::Scope_screen)<sp/>{</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a519790fc37d667776815911e013589f2" kindref="member">DrawAt</ref>(dst,<sp/><ref refid="namespace_player_1a6792adc4fef140f00049262f670d8db2" kindref="member">Player::menu_offset_x</ref><sp/>+<sp/>(<ref refid="namespace_player_1a425e5dd4f451a22e3dae2dcf195f3b8d" kindref="member">Player::screen_width</ref><sp/>/<sp/>2),<sp/><ref refid="namespace_player_1a608c5e18406217fb2c22f7c64437e6bc" kindref="member">Player::menu_offset_y</ref><sp/>+<sp/>(<ref refid="namespace_player_1a5aafc46e1566a41091e8acf119327267" kindref="member">Player::screen_height</ref><sp/>/<sp/>3));</highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"></highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>battler:<sp/><ref refid="class_battle_animation_battle_1af140719103845fffcf3a9fdacc55489e" kindref="member">battlers</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_sprite___battler" kindref="compound">Sprite_Battler</ref>*<sp/>sprite<sp/>=<sp/>battler-&gt;GetBattleSprite();</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>offset<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sprite)<sp/>{</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sprite-&gt;<ref refid="class_sprite_1a8692649cce1320c23d7216207805b990" kindref="member">GetBitmap</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>offset<sp/>=<sp/>CalculateOffset(<ref refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" kindref="member">animation</ref>.position,<sp/>sprite-&gt;<ref refid="class_sprite_1ab10bdecf4bf20472b53a3102315180c2" kindref="member">GetHeight</ref>());</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>offset<sp/>=<sp/>CalculateOffset(<ref refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" kindref="member">animation</ref>.position,<sp/><ref refid="class_battle_animation_1a807bc1f8a658b9aa177b113c9ffbd1d2" kindref="member">GetAnimationCellHeight</ref>()<sp/>/<sp/>2);</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a519790fc37d667776815911e013589f2" kindref="member">DrawAt</ref>(dst,<sp/><ref refid="namespace_player_1a6792adc4fef140f00049262f670d8db2" kindref="member">Player::menu_offset_x</ref><sp/>+<sp/>battler-&gt;GetBattlePosition().x,<sp/><ref refid="namespace_player_1a608c5e18406217fb2c22f7c64437e6bc" kindref="member">Player::menu_offset_y</ref><sp/>+<sp/>battler-&gt;GetBattlePosition().y<sp/>+<sp/>offset);</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="317"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="318" refid="class_battle_animation_battle_1ab67969422de12bf8b9719e73c041762c" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_battle_1ab67969422de12bf8b9719e73c041762c" kindref="member">BattleAnimationBattle::FlashTargets</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>r,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>g,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>b,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>p)<sp/>{</highlight></codeline>
+<codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>battler:<sp/><ref refid="class_battle_animation_battle_1af140719103845fffcf3a9fdacc55489e" kindref="member">battlers</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="320"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>battler-&gt;Flash(r,<sp/>g,<sp/>b,<sp/>p,<sp/>0);</highlight></codeline>
+<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="322"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"></highlight></codeline>
+<codeline lineno="324" refid="class_battle_animation_battle_1a7f78e72f4f96dce095f07e81422d30aa" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_battle_1a7f78e72f4f96dce095f07e81422d30aa" kindref="member">BattleAnimationBattle::ShakeTargets</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>str,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>spd,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>time)<sp/>{</highlight></codeline>
+<codeline lineno="325"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>battler:<sp/><ref refid="class_battle_animation_battle_1af140719103845fffcf3a9fdacc55489e" kindref="member">battlers</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="326"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>battler-&gt;ShakeOnce(str,<sp/>spd,<sp/>time);</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="328"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="329"><highlight class="normal"></highlight></codeline>
+<codeline lineno="330" refid="class_battle_animation_battler_1a6585d811ef20c0f746e3c208c9071113" refkind="member"><highlight class="normal"><ref refid="class_battle_animation_battler_1a6585d811ef20c0f746e3c208c9071113" kindref="member">BattleAnimationBattler::BattleAnimationBattler</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Animation&amp;<sp/>anim,<sp/>std::vector&lt;Game_Battler*&gt;<sp/><ref refid="class_battle_animation_battler_1ac74db8a6d35dd45bc76f20263d6da531" kindref="member">battlers</ref>,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_1a4fbf55edc415246a02541fdeeab08612" kindref="member">only_sound</ref>,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>cutoff_frame,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>set_invert)<sp/>:</highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a965b86b1aa70f7b87867c61298a39f4b" kindref="member">BattleAnimation</ref>(anim,<sp/><ref refid="class_battle_animation_1a4fbf55edc415246a02541fdeeab08612" kindref="member">only_sound</ref>,<sp/>cutoff_frame),<sp/><ref refid="class_battle_animation_battler_1ac74db8a6d35dd45bc76f20263d6da531" kindref="member">battlers</ref>(<ref refid="namespacestd" kindref="compound">std</ref>::move(<ref refid="class_battle_animation_battler_1ac74db8a6d35dd45bc76f20263d6da531" kindref="member">battlers</ref>))</highlight></codeline>
+<codeline lineno="332"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a36b7ca7c32723570212381dd40cf220f" kindref="member">invert</ref><sp/>=<sp/>set_invert;</highlight></codeline>
+<codeline lineno="334"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"></highlight></codeline>
+<codeline lineno="336" refid="class_battle_animation_battler_1a4944775f2af1aa0a2614d1e2f662be63" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_battler_1a4944775f2af1aa0a2614d1e2f662be63" kindref="member">BattleAnimationBattler::Draw</ref>(<ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>dst)<sp/>{</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_battle_animation_1a9b06b35b9872adbd7bd382e6e85caeb0" kindref="member">IsOnlySound</ref>())</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" kindref="member">animation</ref>.scope<sp/>==<sp/>lcf::rpg::Animation::Scope_screen)<sp/>{</highlight></codeline>
+<codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a519790fc37d667776815911e013589f2" kindref="member">DrawAt</ref>(dst,<sp/><ref refid="namespace_player_1a6792adc4fef140f00049262f670d8db2" kindref="member">Player::menu_offset_x</ref><sp/>+<sp/><ref refid="namespace_player_1a425e5dd4f451a22e3dae2dcf195f3b8d" kindref="member">Player::screen_width</ref><sp/>/<sp/>2,<sp/><ref refid="namespace_player_1a608c5e18406217fb2c22f7c64437e6bc" kindref="member">Player::menu_offset_y</ref><sp/>+<sp/><ref refid="namespace_player_1a5aafc46e1566a41091e8acf119327267" kindref="member">Player::screen_height</ref><sp/>/<sp/>3);</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"></highlight></codeline>
+<codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>battler:<sp/><ref refid="class_battle_animation_battler_1ac74db8a6d35dd45bc76f20263d6da531" kindref="member">battlers</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_sprite_1a88b06fec2499b21fb21445269cbee15f" kindref="member">SetFlashEffect</ref>(battler-&gt;GetFlashColor());</highlight></codeline>
+<codeline lineno="346"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Game_Battler::GetDisplayX()<sp/>and<sp/>Game_Battler::GetDisplayX()<sp/>already<sp/>add<sp/>MENU_OFFSET</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a519790fc37d667776815911e013589f2" kindref="member">DrawAt</ref>(dst,<sp/>battler-&gt;GetDisplayX(),<sp/>battler-&gt;GetDisplayY());</highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="349"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"></highlight></codeline>
+<codeline lineno="351" refid="class_battle_animation_battler_1a56b8e309d50c9e6a5a3dbf65264c12f3" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_battler_1a56b8e309d50c9e6a5a3dbf65264c12f3" kindref="member">BattleAnimationBattler::FlashTargets</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>r,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>g,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>b,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>p)<sp/>{</highlight></codeline>
+<codeline lineno="352"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>battler:<sp/><ref refid="class_battle_animation_battler_1ac74db8a6d35dd45bc76f20263d6da531" kindref="member">battlers</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="353"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>battler-&gt;Flash(r,<sp/>g,<sp/>b,<sp/>p,<sp/>0);</highlight></codeline>
+<codeline lineno="354"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="355"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="356"><highlight class="normal"></highlight></codeline>
+<codeline lineno="357" refid="class_battle_animation_battler_1ab80fdf1559dded1a3ce4e3f394967f84" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_battler_1ab80fdf1559dded1a3ce4e3f394967f84" kindref="member">BattleAnimationBattler::ShakeTargets</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>str,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>spd,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>time)<sp/>{</highlight></codeline>
+<codeline lineno="358"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>battler:<sp/><ref refid="class_battle_animation_battler_1ac74db8a6d35dd45bc76f20263d6da531" kindref="member">battlers</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="359"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>battler-&gt;ShakeOnce(str,<sp/>spd,<sp/>time);</highlight></codeline>
+<codeline lineno="360"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="361"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="362"><highlight class="normal"></highlight></codeline>
+<codeline lineno="363" refid="class_battle_animation_battler_1a314ea2f11c275f461d5d1e3ae1138bfd" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_battler_1a314ea2f11c275f461d5d1e3ae1138bfd" kindref="member">BattleAnimationBattler::ProcessAnimationTiming</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::AnimationTiming&amp;<sp/>timing)<sp/>{</highlight></codeline>
+<codeline lineno="364"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Play<sp/>the<sp/>SE.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="365"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;SePlay(timing.se);</highlight></codeline>
+<codeline lineno="366"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_battle_animation_1a9b06b35b9872adbd7bd382e6e85caeb0" kindref="member">IsOnlySound</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="368"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="369"><highlight class="normal"></highlight></codeline>
+<codeline lineno="370"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Flash.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="371"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_battler_1a08b09591c6d3992875622de13ef3f886" kindref="member">ProcessAnimationFlash</ref>(timing);</highlight></codeline>
+<codeline lineno="372"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="373"><highlight class="normal"></highlight></codeline>
+<codeline lineno="374" refid="class_battle_animation_battler_1a08b09591c6d3992875622de13ef3f886" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_battler_1a08b09591c6d3992875622de13ef3f886" kindref="member">BattleAnimationBattler::ProcessAnimationFlash</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::AnimationTiming&amp;<sp/>timing)<sp/>{</highlight></codeline>
+<codeline lineno="375"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_battle_animation_1a9b06b35b9872adbd7bd382e6e85caeb0" kindref="member">IsOnlySound</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="376"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="377"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="378"><highlight class="normal"></highlight></codeline>
+<codeline lineno="379"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(timing.flash_scope<sp/>==<sp/>lcf::rpg::AnimationTiming::FlashScope_screen)<sp/>{</highlight></codeline>
+<codeline lineno="380"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1ad63e43a253972b91c122da841a0d8c47" kindref="member">target_flash_timing</ref><sp/>=<sp/>&amp;timing<sp/>-<sp/><ref refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" kindref="member">animation</ref>.timings.data();</highlight></codeline>
+<codeline lineno="381"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="382"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="383"><highlight class="normal"></highlight></codeline>
+<codeline lineno="384" refid="class_battle_animation_battler_1a599dbe12c984ff73e92b6ddbe22a5f4a" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_battler_1a599dbe12c984ff73e92b6ddbe22a5f4a" kindref="member">BattleAnimationBattler::UpdateScreenFlash</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="385"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>r,<sp/>g,<sp/>b,<sp/>p;</highlight></codeline>
+<codeline lineno="386"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a4baaa539b44ac01fa720ae03d7525a62" kindref="member">UpdateFlashGeneric</ref>(<ref refid="class_battle_animation_1aaa54fffc4357ce65277bc545ea853e5c" kindref="member">screen_flash_timing</ref>,<sp/>r,<sp/>g,<sp/>b,<sp/>p);</highlight></codeline>
+<codeline lineno="387"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(r<sp/>&gt;<sp/>0<sp/>||<sp/>g<sp/>&gt;<sp/>0<sp/>||<sp/>b<sp/>&gt;<sp/>0<sp/>||<sp/>p<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="388"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" kindref="member">Main_Data::game_screen</ref>-&gt;FlashOnce(r,<sp/>g,<sp/>b,<sp/>p,<sp/>0);</highlight></codeline>
+<codeline lineno="389"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="390"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="391"><highlight class="normal"></highlight></codeline>
+<codeline lineno="392" refid="class_battle_animation_battler_1aa6310c61f3d69baa8c5a7ccf78c6e03c" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_battler_1aa6310c61f3d69baa8c5a7ccf78c6e03c" kindref="member">BattleAnimationBattler::UpdateTargetFlash</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="393"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>r,<sp/>g,<sp/>b,<sp/>p;</highlight></codeline>
+<codeline lineno="394"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a4baaa539b44ac01fa720ae03d7525a62" kindref="member">UpdateFlashGeneric</ref>(<ref refid="class_battle_animation_1ad63e43a253972b91c122da841a0d8c47" kindref="member">target_flash_timing</ref>,<sp/>r,<sp/>g,<sp/>b,<sp/>p);</highlight></codeline>
+<codeline lineno="395"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(r<sp/>&gt;<sp/>0<sp/>||<sp/>g<sp/>&gt;<sp/>0<sp/>||<sp/>b<sp/>&gt;<sp/>0<sp/>||<sp/>p<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="396"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_battler_1a56b8e309d50c9e6a5a3dbf65264c12f3" kindref="member">FlashTargets</ref>(r,<sp/>g,<sp/>b,<sp/>p);</highlight></codeline>
+<codeline lineno="397"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="398"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="399"><highlight class="normal"></highlight></codeline>
+<codeline lineno="400" refid="class_battle_animation_1a7216ccfe6f66cb2448c1c6e9d6269f9a" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_1a7216ccfe6f66cb2448c1c6e9d6269f9a" kindref="member">BattleAnimation::SetFrame</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_1acce5d9ed3e850f9deb262e050312cec0" kindref="member">frame</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="401"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Reset<sp/>pending<sp/>flash.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="402"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>real_frame<sp/>=<sp/><ref refid="class_battle_animation_1acce5d9ed3e850f9deb262e050312cec0" kindref="member">frame</ref><sp/>/<sp/>2;</highlight></codeline>
+<codeline lineno="403"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1aaa54fffc4357ce65277bc545ea853e5c" kindref="member">screen_flash_timing</ref><sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="404"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1ad63e43a253972b91c122da841a0d8c47" kindref="member">target_flash_timing</ref><sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="405"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>timing:<sp/><ref refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" kindref="member">animation</ref>.timings)<sp/>{</highlight></codeline>
+<codeline lineno="406"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(timing.frame<sp/>&gt;<sp/>real_frame<sp/>+<sp/>1)<sp/>{</highlight></codeline>
+<codeline lineno="407"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="408"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="409"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a9adf84fdc69160f511c16ecfcd814a23" kindref="member">ProcessAnimationFlash</ref>(timing);</highlight></codeline>
+<codeline lineno="410"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="411"><highlight class="normal"></highlight></codeline>
+<codeline lineno="412"><highlight class="normal"><sp/><sp/><sp/><sp/>this-&gt;frame<sp/>=<sp/><ref refid="class_battle_animation_1acce5d9ed3e850f9deb262e050312cec0" kindref="member">frame</ref>;</highlight></codeline>
+<codeline lineno="413"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="414"><highlight class="normal"></highlight></codeline>
+<codeline lineno="415" refid="class_battle_animation_1ac0df1e2470a7364bdc05f7b0cf27895d" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_battle_animation_1ac0df1e2470a7364bdc05f7b0cf27895d" kindref="member">BattleAnimation::SetInvert</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>inverted)<sp/>{</highlight></codeline>
+<codeline lineno="416"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_battle_animation_1a36b7ca7c32723570212381dd40cf220f" kindref="member">invert</ref><sp/>=<sp/>inverted;</highlight></codeline>
+<codeline lineno="417"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="418"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="battle_animation.cpp"/>
+  </compounddef>
+</doxygen>

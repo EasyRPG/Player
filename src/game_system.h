@@ -665,3 +665,4 @@ inline bool Game_System::GetAllowMenu() {
 
 
 #endif
+

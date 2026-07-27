@@ -905,3 +905,4 @@ void TilemapLayer::SetTone(Tone tone) {
 	}
 	chipset_tone_tiles.clear();
 }
+

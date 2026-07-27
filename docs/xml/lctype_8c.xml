@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lctype_8c" kind="file" language="C++">
+    <compoundname>lctype.c</compoundname>
+    <includes refid="lprefix_8h" local="yes">lprefix.h</includes>
+    <includes refid="lctype_8h" local="yes">lctype.h</includes>
+    <includes local="no">limits.h</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/lua/lctype.c</label>
+        <link refid="lctype_8c"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>lctype.h</label>
+        <link refid="lctype_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>lprefix.h</label>
+        <link refid="lprefix_8h"/>
+      </node>
+      <node id="4">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>limits.h</label>
+      </node>
+      <node id="5">
+        <label>stdarg.h</label>
+      </node>
+      <node id="6">
+        <label>stddef.h</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lctype_8c_1a8148bc2e65ef31d75ddc222c9f6cfbbc" prot="public" static="no">
+        <name>lctype_c</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.c" line="7" column="9" bodyfile="leasy/lua/lctype.c" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lctype_8c_1abf0b3947b59218777a8e928a10be205b" prot="public" static="no">
+        <name>LUA_CORE</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.c" line="8" column="9" bodyfile="leasy/lua/lctype.c" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" prot="public" static="no">
+        <name>NONA</name>
+        <initializer>0x00    /* default */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.c" line="24" column="10" bodyfile="leasy/lua/lctype.c" bodystart="24" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="lctype_8c_1a0fb53cca0a77a27211713000fc8f66b2" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1affa3a74c87c69373c262fdbdc7f97837" kindref="member">LUAI_DDEF</ref> const <ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>LUAI_DDEF const lu_byte luai_ctype_[UCHAR_MAX+2]</definition>
+        <argsstring>[UCHAR_MAX+2]</argsstring>
+        <name>luai_ctype_</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.c" line="28" column="25" bodyfile="leasy/lua/lctype.c" bodystart="28" bodyend="62"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lctype.c<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>&apos;ctype&apos;<sp/>functions<sp/>for<sp/>Lua</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="lctype_8c_1a8148bc2e65ef31d75ddc222c9f6cfbbc" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lctype_c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="lctype_8c_1abf0b3947b59218777a8e928a10be205b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_CORE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lprefix_8h" kindref="compound">lprefix.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lctype_8h" kindref="compound">lctype.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!LUA_USE_CTYPE<sp/><sp/></highlight><highlight class="comment">/*<sp/>{<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;limits.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined<sp/>(LUA_UCID)<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>accept<sp/>UniCode<sp/>IDentifiers?<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>consider<sp/>all<sp/>non-ASCII<sp/>codepoints<sp/>to<sp/>be<sp/>alphabetic<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NONA<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0x01</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NONA<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0x00<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>default<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="lctype_8c_1a0fb53cca0a77a27211713000fc8f66b2" refkind="member"><highlight class="normal"><ref refid="llimits_8h_1affa3a74c87c69373c262fdbdc7f97837" kindref="member">LUAI_DDEF</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="lctype_8c_1a0fb53cca0a77a27211713000fc8f66b2" kindref="member">luai_ctype_</ref>[UCHAR_MAX<sp/>+<sp/>2]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/>0x00,<sp/><sp/></highlight><highlight class="comment">/*<sp/>EOZ<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>0.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/>0x00,<sp/><sp/>0x08,<sp/><sp/>0x08,<sp/><sp/>0x08,<sp/><sp/>0x08,<sp/><sp/>0x08,<sp/><sp/>0x00,<sp/><sp/>0x00,</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>1.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/>0x0c,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>2.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/>0x16,<sp/><sp/>0x16,<sp/><sp/>0x16,<sp/><sp/>0x16,<sp/><sp/>0x16,<sp/><sp/>0x16,<sp/><sp/>0x16,<sp/><sp/>0x16,<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>3.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/>0x16,<sp/><sp/>0x16,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/>0x04,<sp/><sp/>0x15,<sp/><sp/>0x15,<sp/><sp/>0x15,<sp/><sp/>0x15,<sp/><sp/>0x15,<sp/><sp/>0x15,<sp/><sp/>0x05,<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>4.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>5.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x05,</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/>0x04,<sp/><sp/>0x15,<sp/><sp/>0x15,<sp/><sp/>0x15,<sp/><sp/>0x15,<sp/><sp/>0x15,<sp/><sp/>0x15,<sp/><sp/>0x05,<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>6.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>7.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x05,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x04,<sp/><sp/>0x00,</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>8.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>9.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>a.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>b.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>c.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>d.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>e.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/><ref refid="lctype_8c_1a707d5bdc6c7254edbe532bc3962ea5f2" kindref="member">NONA</ref>,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>f.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00,<sp/><sp/>0x00</highlight></codeline>
+<codeline lineno="62"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>}<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lctype.c"/>
+  </compounddef>
+</doxygen>

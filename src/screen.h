@@ -57,3 +57,4 @@ inline void Screen::SetViewport(const Rect &rect) {
 }
 
 #endif
+

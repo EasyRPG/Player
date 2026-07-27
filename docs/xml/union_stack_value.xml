@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="union_stack_value" kind="union" language="C++" prot="public">
+    <compoundname>StackValue</compoundname>
+    <includes refid="lobject_8h" local="no">lobject.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="union_stack_value_1a8427f32076f2a9ad8db716da1deeb468" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_value" kindref="compound">TValue</ref></type>
+        <definition>TValue StackValue::val</definition>
+        <argsstring></argsstring>
+        <name>val</name>
+        <qualifiedname>StackValue::val</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="149" column="10" bodyfile="leasy/lua/lobject.h" bodystart="149" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="union_stack_value_1a26033019ebf5144b31ae1c442c539cd4" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>StackValue::TValuefields</definition>
+        <argsstring></argsstring>
+        <name>TValuefields</name>
+        <qualifiedname>StackValue::TValuefields</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="151" column="5" bodyfile="leasy/lua/lobject.h" bodystart="151" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="union_stack_value_1a7771cd1552c09ee6ed38b626b2159c14" prot="public" static="no" mutable="no">
+        <type>unsigned short</type>
+        <definition>unsigned short StackValue::delta</definition>
+        <argsstring></argsstring>
+        <name>delta</name>
+        <qualifiedname>StackValue::delta</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="152" column="20" bodyfile="leasy/lua/lobject.h" bodystart="152" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="union_stack_value_1a6501ca9bf373b2f1418e24b06a4a14b9" prot="public" static="no" mutable="no">
+        <type>struct StackValue::@251212377374072171335256037346222252206254304041</type>
+        <definition>struct StackValue::@251212377374072171335256037346222252206254304041 StackValue::tbclist</definition>
+        <argsstring></argsstring>
+        <name>tbclist</name>
+        <qualifiedname>StackValue::tbclist</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="153" column="11"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>StackValue</label>
+        <link refid="union_stack_value"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>val</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>TValue</label>
+        <link refid="struct_t_value"/>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lobject.h" line="148" column="1" bodyfile="leasy/lua/lobject.h" bodystart="148" bodyend="154"/>
+    <listofallmembers>
+      <member refid="union_stack_value_1a7771cd1552c09ee6ed38b626b2159c14" prot="public" virt="non-virtual"><scope>StackValue</scope><name>delta</name></member>
+      <member refid="union_stack_value_1a6501ca9bf373b2f1418e24b06a4a14b9" prot="public" virt="non-virtual"><scope>StackValue</scope><name>tbclist</name></member>
+      <member refid="union_stack_value_1a26033019ebf5144b31ae1c442c539cd4" prot="public" virt="non-virtual"><scope>StackValue</scope><name>TValuefields</name></member>
+      <member refid="union_stack_value_1a8427f32076f2a9ad8db716da1deeb468" prot="public" virt="non-virtual"><scope>StackValue</scope><name>val</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

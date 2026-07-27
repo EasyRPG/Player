@@ -1,0 +1,308 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_audio_se_cache" kind="class" language="C++" prot="public">
+    <compoundname>AudioSeCache</compoundname>
+    <includes refid="audio__secache_8h" local="no">audio_secache.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_audio_se_cache_1aed6c8467858cef2add4a56b4d1dc6f84" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_audio_decoder_base" kindref="compound">AudioDecoderBase</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;AudioDecoderBase&gt; AudioSeCache::audio_decoder</definition>
+        <argsstring></argsstring>
+        <name>audio_decoder</name>
+        <qualifiedname>AudioSeCache::audio_decoder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_secache.h" line="143" column="17" bodyfile="audio_secache.h" bodystart="143" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_se_cache_1a4dbb4ca1a8027df9de9064643ec39d18" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string AudioSeCache::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>AudioSeCache::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_secache.h" line="145" column="13" bodyfile="audio_secache.h" bodystart="145" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_audio_se_cache_1adf50819484f875839185a1572c30cf3d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unique_ptr&lt; <ref refid="class_audio_se_cache" kindref="compound">AudioSeCache</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; AudioSeCache &gt; AudioSeCache::Create</definition>
+        <argsstring>(Filesystem_Stream::InputStream stream, std::string_view name)</argsstring>
+        <name>Create</name>
+        <qualifiedname>AudioSeCache::Create</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+          <declname>stream</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Opens the passed filename with the internal audio decoder.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stream to the audio file </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name for the cache entry </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An <ref refid="class_audio_se_cache" kindref="compound">AudioSeCache</ref> instance when the format was detected, otherwise null </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_secache.h" line="87" column="24" bodyfile="audio_secache.cpp" bodystart="71" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_se_cache_1a45338e39503fb5a0494d1e68effdadde" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unique_ptr&lt; <ref refid="class_audio_se_cache" kindref="compound">AudioSeCache</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; AudioSeCache &gt; AudioSeCache::GetCachedSe</definition>
+        <argsstring>(std::string_view name)</argsstring>
+        <name>GetCachedSe</name>
+        <qualifiedname>AudioSeCache::GetCachedSe</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>If already cached returns the cached SE</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="namespace_cache" kindref="compound">Cache</ref> entry name </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>SE is already in cache, nullptr otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_secache.h" line="105" column="24" bodyfile="audio_secache.cpp" bodystart="110" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_se_cache_1a9b5d95f6383d19f111cb5ea928191cea" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AudioSeCache::Clear</definition>
+        <argsstring>()</argsstring>
+        <name>Clear</name>
+        <qualifiedname>AudioSeCache::Clear</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_secache.h" line="141" column="13" bodyfile="audio_secache.cpp" bodystart="190" bodyend="193"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_audio_se_cache_1a1ac5633bf801e3ac09a74870a60d4b69" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AudioSeCache::GetFormat</definition>
+        <argsstring>(int &amp;frequency, AudioDecoder::Format &amp;format, int &amp;channels) const</argsstring>
+        <name>GetFormat</name>
+        <qualifiedname>AudioSeCache::GetFormat</qualifiedname>
+        <param>
+          <type>int &amp;</type>
+          <declname>frequency</declname>
+        </param>
+        <param>
+          <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">AudioDecoder::Format</ref> &amp;</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>channels</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieves the format of the internal audio decoder. It is guaranteed that these settings will stay constant the whole time.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>frequency</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the audio frequency </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the audio format </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>channels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the amount of channels </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_secache.h" line="97" column="6" bodyfile="audio_secache.cpp" bodystart="98" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_se_cache_1a5a95c4e2db985848c528956d02bbc28e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool AudioSeCache::GetCachedFormat</definition>
+        <argsstring>(int &amp;frequency, AudioDecoder::Format &amp;format, int &amp;channels) const</argsstring>
+        <name>GetCachedFormat</name>
+        <qualifiedname>AudioSeCache::GetCachedFormat</qualifiedname>
+        <param>
+          <type>int &amp;</type>
+          <declname>frequency</declname>
+        </param>
+        <param>
+          <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">AudioDecoder::Format</ref> &amp;</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>channels</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieves the format of the cached file. It is guaranteed that these settings will stay constant the whole time. When the format is not cached (false returned) the arguments are not populated.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>frequency</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the audio frequency </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the audio format </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>channels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the amount of channels </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true when format was cached, the values were populated </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_secache.h" line="118" column="6" bodyfile="audio_secache.cpp" bodystart="122" bodyend="134"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_se_cache_1aef1af3296c65d6474ef89276e831eb36" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unique_ptr&lt; <ref refid="class_audio_decoder_base" kindref="compound">AudioDecoderBase</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; AudioDecoderBase &gt; AudioSeCache::CreateSeDecoder</definition>
+        <argsstring>()</argsstring>
+        <name>CreateSeDecoder</name>
+        <qualifiedname>AudioSeCache::CreateSeDecoder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Decodes the whole sample without doing any resampling and caches it. When cached the decoding step is skipped. The returned <ref refid="class_audio_decoder" kindref="compound">AudioDecoder</ref> contains the SE sample.</para>
+<para><simplesect kind="return"><para>Decoded sound effect </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_secache.h" line="127" column="17" bodyfile="audio_secache.cpp" bodystart="136" bodyend="181"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_se_cache_1a5453fb3b71f7dbaeaab751a94b18dbee" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="audio__secache_8h_1ae50ed35eda2671c9209064143298f7af" kindref="member">AudioSeRef</ref></type>
+        <definition>AudioSeRef AudioSeCache::GetSeData</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSeData</name>
+        <qualifiedname>AudioSeCache::GetSeData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the SE sample data handled by this SeCache.</para>
+<para><simplesect kind="return"><para>sample data </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_secache.h" line="134" column="12" bodyfile="audio_secache.cpp" bodystart="183" bodyend="188"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_se_cache_1abdc5fefc96a38a97dd8d8444debb0899" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view AudioSeCache::GetName</definition>
+        <argsstring>() const</argsstring>
+        <name>GetName</name>
+        <qualifiedname>AudioSeCache::GetName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>name of the cached SE </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_secache.h" line="139" column="18" bodyfile="audio_secache.cpp" bodystart="195" bodyend="197"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_audio_se_cache" kindref="compound">AudioSeCache</ref> provides an interface for accessing sound effects. It also provides an automatic cache management, any SE is only decoded once, otherwise returned from the cache. The cache is flushed from recently (&gt;10 seconds by default) unused samples when it reaches the memory limit (5 MB by default). Uses an internal <ref refid="class_audio_decoder" kindref="compound">AudioDecoder</ref> for handling the decoding. </para>
+    </detaileddescription>
+    <location file="audio_secache.h" line="78" column="1" bodyfile="audio_secache.h" bodystart="78" bodyend="146"/>
+    <listofallmembers>
+      <member refid="class_audio_se_cache_1aed6c8467858cef2add4a56b4d1dc6f84" prot="private" virt="non-virtual"><scope>AudioSeCache</scope><name>audio_decoder</name></member>
+      <member refid="class_audio_se_cache_1a9b5d95f6383d19f111cb5ea928191cea" prot="public" virt="non-virtual"><scope>AudioSeCache</scope><name>Clear</name></member>
+      <member refid="class_audio_se_cache_1adf50819484f875839185a1572c30cf3d" prot="public" virt="non-virtual"><scope>AudioSeCache</scope><name>Create</name></member>
+      <member refid="class_audio_se_cache_1aef1af3296c65d6474ef89276e831eb36" prot="public" virt="non-virtual"><scope>AudioSeCache</scope><name>CreateSeDecoder</name></member>
+      <member refid="class_audio_se_cache_1a5a95c4e2db985848c528956d02bbc28e" prot="public" virt="non-virtual"><scope>AudioSeCache</scope><name>GetCachedFormat</name></member>
+      <member refid="class_audio_se_cache_1a45338e39503fb5a0494d1e68effdadde" prot="public" virt="non-virtual"><scope>AudioSeCache</scope><name>GetCachedSe</name></member>
+      <member refid="class_audio_se_cache_1a1ac5633bf801e3ac09a74870a60d4b69" prot="public" virt="non-virtual"><scope>AudioSeCache</scope><name>GetFormat</name></member>
+      <member refid="class_audio_se_cache_1abdc5fefc96a38a97dd8d8444debb0899" prot="public" virt="non-virtual"><scope>AudioSeCache</scope><name>GetName</name></member>
+      <member refid="class_audio_se_cache_1a5453fb3b71f7dbaeaab751a94b18dbee" prot="public" virt="non-virtual"><scope>AudioSeCache</scope><name>GetSeData</name></member>
+      <member refid="class_audio_se_cache_1a4dbb4ca1a8027df9de9064643ec39d18" prot="private" virt="non-virtual"><scope>AudioSeCache</scope><name>name</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

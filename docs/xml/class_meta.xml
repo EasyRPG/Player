@@ -1,0 +1,512 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_meta" kind="class" language="C++" prot="public">
+    <compoundname>Meta</compoundname>
+    <includes refid="meta_8h" local="no">meta.h</includes>
+    <innerclass refid="struct_meta_1_1_file_item" prot="public">Meta::FileItem</innerclass>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_meta_1a82d5616d8ea4587828ee1d916884a71b" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; lcf::INIReader &gt;</type>
+        <definition>std::unique_ptr&lt;lcf::INIReader&gt; Meta::ini</definition>
+        <argsstring></argsstring>
+        <name>ini</name>
+        <qualifiedname>Meta::ini</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Root of the lcf::INIReader </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="171" column="17" bodyfile="meta.h" bodystart="171" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_meta_1ae97f95b5475b02999d1769650fdef399" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Meta::canon_ini_lookup</definition>
+        <argsstring></argsstring>
+        <name>canon_ini_lookup</name>
+        <qualifiedname>Meta::canon_ini_lookup</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Current canonical lookup string in easyrpg.ini Format is &quot;Crc32LMT/Crc32LDB&quot;, where Crc32LDB can be &quot;*&quot; to represent &quot;any&quot;. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="178" column="13" bodyfile="meta.h" bodystart="178" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_meta_1acbd02f4aa1f955d9e53c85ee5d930311" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Meta::Meta</definition>
+        <argsstring>(std::string_view meta_file)</argsstring>
+        <name>Meta</name>
+        <qualifiedname>Meta::Meta</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>meta_file</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Construct a <ref refid="class_meta" kindref="compound">Meta</ref> object by parsing a file <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>meta_file</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The path to the ini file to load </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="44" column="1" bodyfile="meta.cpp" bodystart="71" bodyend="89"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meta_1a83427cb3ff066fe00a52e28d2eb5f3c4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Meta::ReInitForNonStandardExtensions</definition>
+        <argsstring>(std::string_view file1, std::string_view file2)</argsstring>
+        <name>ReInitForNonStandardExtensions</name>
+        <qualifiedname>Meta::ReInitForNonStandardExtensions</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>file1</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>file2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="54" column="6" bodyfile="meta.cpp" bodystart="91" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meta_1ae4f5a45ffdaca5a7b39e2e05b46ff76b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Meta::GetPivotMap</definition>
+        <argsstring>() const</argsstring>
+        <name>GetPivotMap</name>
+        <qualifiedname>Meta::GetPivotMap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieves the map used for pivoting between multi-game save files All save files listed will match the given pivot map ID (i.e., &quot;last saved here&quot;) <simplesect kind="return"><para>the pivot map ID, or 0 (on error) for &quot;no map restriction&quot; </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="61" column="5" bodyfile="meta.cpp" bodystart="103" bodyend="109"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meta_1a8efbb67e52fffea67eec67869e027928" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Meta::GetParentGame</definition>
+        <argsstring>() const</argsstring>
+        <name>GetParentGame</name>
+        <qualifiedname>Meta::GetParentGame</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieves the canonical name of the parent game (i.e., the prequel) for multi-game save files. <simplesect kind="return"><para>the parent game name </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="67" column="13" bodyfile="meta.cpp" bodystart="111" bodyend="117"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meta_1ac40d8f829ca16c365507f3da1cbd2a8f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt; std::string &gt; Meta::GetImportChildPaths</definition>
+        <argsstring>(const FilesystemView &amp;parent_fs) const</argsstring>
+        <name>GetImportChildPaths</name>
+        <qualifiedname>Meta::GetImportChildPaths</qualifiedname>
+        <param>
+          <type>const <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> &amp;</type>
+          <declname>parent_fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieves a vector of paths of child games (../ from the current game) that may be considered when searching for multi-game save files. These should be passed to <ref refid="class_meta_1a04b2c0df729ea27ec71e1c44973c3956" kindref="member">SearchImportPaths()</ref> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>parent_fs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the filesystem for the parent folder of the current game (../) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>vector of paths of child game folders, including that of the current game </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="82" column="13" bodyfile="meta.cpp" bodystart="119" bodyend="135"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meta_1a04b2c0df729ea27ec71e1c44973c3956" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="struct_meta_1_1_file_item" kindref="compound">FileItem</ref> &gt;</type>
+        <definition>std::vector&lt; Meta::FileItem &gt; Meta::SearchImportPaths</definition>
+        <argsstring>(const FilesystemView &amp;parent_fs, std::string_view child_path) const</argsstring>
+        <name>SearchImportPaths</name>
+        <qualifiedname>Meta::SearchImportPaths</qualifiedname>
+        <param>
+          <type>const <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> &amp;</type>
+          <declname>parent_fs</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>child_path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Given a parent/child game, retrieves a vector of save files that are considered for multi-game importing. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>parent_fs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the filesystem for the parent folder of the current game (../) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>child_path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the path of the child relative to parent_tree </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>vector of FileItems; one for each valid save file on this child_path </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="90" column="13" bodyfile="meta.cpp" bodystart="137" bodyend="145"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meta_1ac2cb072204436c5f923ccf7349ad419f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Meta::GetLdbAlias</definition>
+        <argsstring>() const</argsstring>
+        <name>GetLdbAlias</name>
+        <qualifiedname>Meta::GetLdbAlias</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieve the LDB extension&apos;s replacement in non-standard projects. <simplesect kind="return"><para>The extension&apos;s alias, or the empty string if none could be found. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="96" column="13" bodyfile="meta.cpp" bodystart="204" bodyend="209"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meta_1a319d082ee1109702c9d1862ceb25070d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Meta::GetLmtAlias</definition>
+        <argsstring>() const</argsstring>
+        <name>GetLmtAlias</name>
+        <qualifiedname>Meta::GetLmtAlias</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieve the LMT extension&apos;s replacement in non-standard projects. <simplesect kind="return"><para>The extension&apos;s alias, or the empty string if none could be found. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="102" column="13" bodyfile="meta.cpp" bodystart="211" bodyend="216"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meta_1ae6923da8e5de5ed9b2ef91bbfbcd6b18" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Meta::GetLmuAlias</definition>
+        <argsstring>() const</argsstring>
+        <name>GetLmuAlias</name>
+        <qualifiedname>Meta::GetLmuAlias</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieve the LMU extension&apos;s replacement in non-standard projects. <simplesect kind="return"><para>The extension&apos;s alias, or the empty string if none could be found. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="108" column="13" bodyfile="meta.cpp" bodystart="218" bodyend="223"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meta_1aa2270fec9572fbb4a0a739ead52aeb69" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Meta::IsImportEnabled</definition>
+        <argsstring>() const</argsstring>
+        <name>IsImportEnabled</name>
+        <qualifiedname>Meta::IsImportEnabled</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Is multi-game save importing enabled? If so, the title screen should show an Import option. <simplesect kind="return"><para>true if the meta INI file contains a parentGame for this game </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="114" column="6" bodyfile="meta.cpp" bodystart="226" bodyend="228"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meta_1aad3ab31d45d894567d8296ff2b0ed319" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Meta::GetExVocabImportSaveHelpText</definition>
+        <argsstring>() const</argsstring>
+        <name>GetExVocabImportSaveHelpText</name>
+        <qualifiedname>Meta::GetExVocabImportSaveHelpText</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieve the Help window text for <ref refid="class_scene___import" kindref="compound">Scene_Import</ref> <simplesect kind="return"><para>the INI-defined value, or the defualt value for this vocabulary term </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="120" column="13" bodyfile="meta.cpp" bodystart="231" bodyend="233"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meta_1a53db6abbecce54d1e5cfa07d402a5e1f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Meta::GetExVocabImportSaveTitleText</definition>
+        <argsstring>() const</argsstring>
+        <name>GetExVocabImportSaveTitleText</name>
+        <qualifiedname>Meta::GetExVocabImportSaveTitleText</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieve the menu item text for Scene_Ttile importing <simplesect kind="return"><para>the INI-defined value, or the defualt value for this vocabulary term </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="126" column="13" bodyfile="meta.cpp" bodystart="235" bodyend="237"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meta_1a2a43d901f70a0874cc6ca94d0f6b97fe" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Meta::GetExVocabTranslateTitleText</definition>
+        <argsstring>() const</argsstring>
+        <name>GetExVocabTranslateTitleText</name>
+        <qualifiedname>Meta::GetExVocabTranslateTitleText</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieve the menu item text for Scen_Title translations (languages) <simplesect kind="return"><para>the INI-defined value, or the default value for this vocabulary term </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="132" column="13" bodyfile="meta.cpp" bodystart="239" bodyend="253"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_meta_1af8ab4d3f199aa0a552ae75e332925fad" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Meta::GetExVocab</definition>
+        <argsstring>(std::string_view term, std::string_view def_value) const</argsstring>
+        <name>GetExVocab</name>
+        <qualifiedname>Meta::GetExVocab</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>term</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>def_value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieve an extended vocabulary term (something defined in easyrpg.ini) A list of terms and default values can be found in <ref refid="meta_8cpp" kindref="compound">meta.cpp</ref> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>term</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The keyword to search for </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>def_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The default value to return if the ini contains no override. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the INI-defined value, or the defualt value for this vocabulary term </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="143" column="13" bodyfile="meta.cpp" bodystart="255" bodyend="261"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meta_1a6867861cfde92999491757d14ae6c50b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Meta::IdentifyCanonName</definition>
+        <argsstring>(std::string_view lmtFile, std::string_view ldbFile)</argsstring>
+        <name>IdentifyCanonName</name>
+        <qualifiedname>Meta::IdentifyCanonName</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>lmtFile</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>ldbFile</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Heuristically tries to guess the canonical name of this game, and stores it locally in this <ref refid="class_meta" kindref="compound">Meta</ref> object.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>lmtFile</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The path to the file we expect to be RPG_RT.lmt </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ldbFile</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The path to the file we expect to be RPG_RT.ldb </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="152" column="6" bodyfile="meta.cpp" bodystart="263" bodyend="282"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meta_1ac4837ac27927e113f54979386e067712" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="struct_meta_1_1_file_item" kindref="compound">FileItem</ref> &gt;</type>
+        <definition>std::vector&lt; Meta::FileItem &gt; Meta::BuildImportCandidateList</definition>
+        <argsstring>(const FilesystemView &amp;parent_fs, std::string_view child_path, std::string_view parent_game_name, int pivot_map_id) const</argsstring>
+        <name>BuildImportCandidateList</name>
+        <qualifiedname>Meta::BuildImportCandidateList</qualifiedname>
+        <param>
+          <type>const <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> &amp;</type>
+          <declname>parent_fs</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>child_path</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>parent_game_name</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>pivot_map_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Internal function called by SearchImportPaths <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>parent_fs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the filesystem for the parent folder of the current game (../) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>child_path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the path of the child relative to parent_tree </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>parent_game_name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>canonical name of the parent game </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pivot_map_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the id of the map used to pivot between the prequel and the current game </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>vector of FileItems; one for each valid save file on this child_path </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="162" column="13" bodyfile="meta.cpp" bodystart="148" bodyend="202"/>
+      </memberdef>
+      <memberdef kind="function" id="class_meta_1a83b3aeb9fcae7036db6092c2e7697761" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Meta::Empty</definition>
+        <argsstring>() const</argsstring>
+        <name>Empty</name>
+        <qualifiedname>Meta::Empty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Was the INI file passed to the constructor invalid or empty? <simplesect kind="return"><para>true if this class should be considered &quot;empty&quot; </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="168" column="6" bodyfile="meta.cpp" bodystart="284" bodyend="286"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>The <ref refid="class_meta" kindref="compound">Meta</ref> class loads from a file (easyrpg.ini) and contains additional information on a per-game basis. Every public function in this class is safe to call and returns sensible defaults, even if the INI file passed in to the constructor is missing or invalid. </para>
+    </detaileddescription>
+    <location file="meta.h" line="38" column="1" bodyfile="meta.h" bodystart="38" bodyend="179"/>
+    <listofallmembers>
+      <member refid="class_meta_1ac4837ac27927e113f54979386e067712" prot="private" virt="non-virtual"><scope>Meta</scope><name>BuildImportCandidateList</name></member>
+      <member refid="class_meta_1ae97f95b5475b02999d1769650fdef399" prot="private" virt="non-virtual"><scope>Meta</scope><name>canon_ini_lookup</name></member>
+      <member refid="class_meta_1a83b3aeb9fcae7036db6092c2e7697761" prot="private" virt="non-virtual"><scope>Meta</scope><name>Empty</name></member>
+      <member refid="class_meta_1af8ab4d3f199aa0a552ae75e332925fad" prot="private" virt="non-virtual"><scope>Meta</scope><name>GetExVocab</name></member>
+      <member refid="class_meta_1aad3ab31d45d894567d8296ff2b0ed319" prot="public" virt="non-virtual"><scope>Meta</scope><name>GetExVocabImportSaveHelpText</name></member>
+      <member refid="class_meta_1a53db6abbecce54d1e5cfa07d402a5e1f" prot="public" virt="non-virtual"><scope>Meta</scope><name>GetExVocabImportSaveTitleText</name></member>
+      <member refid="class_meta_1a2a43d901f70a0874cc6ca94d0f6b97fe" prot="public" virt="non-virtual"><scope>Meta</scope><name>GetExVocabTranslateTitleText</name></member>
+      <member refid="class_meta_1ac40d8f829ca16c365507f3da1cbd2a8f" prot="public" virt="non-virtual"><scope>Meta</scope><name>GetImportChildPaths</name></member>
+      <member refid="class_meta_1ac2cb072204436c5f923ccf7349ad419f" prot="public" virt="non-virtual"><scope>Meta</scope><name>GetLdbAlias</name></member>
+      <member refid="class_meta_1a319d082ee1109702c9d1862ceb25070d" prot="public" virt="non-virtual"><scope>Meta</scope><name>GetLmtAlias</name></member>
+      <member refid="class_meta_1ae6923da8e5de5ed9b2ef91bbfbcd6b18" prot="public" virt="non-virtual"><scope>Meta</scope><name>GetLmuAlias</name></member>
+      <member refid="class_meta_1a8efbb67e52fffea67eec67869e027928" prot="public" virt="non-virtual"><scope>Meta</scope><name>GetParentGame</name></member>
+      <member refid="class_meta_1ae4f5a45ffdaca5a7b39e2e05b46ff76b" prot="public" virt="non-virtual"><scope>Meta</scope><name>GetPivotMap</name></member>
+      <member refid="class_meta_1a6867861cfde92999491757d14ae6c50b" prot="private" virt="non-virtual"><scope>Meta</scope><name>IdentifyCanonName</name></member>
+      <member refid="class_meta_1a82d5616d8ea4587828ee1d916884a71b" prot="private" virt="non-virtual"><scope>Meta</scope><name>ini</name></member>
+      <member refid="class_meta_1aa2270fec9572fbb4a0a739ead52aeb69" prot="public" virt="non-virtual"><scope>Meta</scope><name>IsImportEnabled</name></member>
+      <member refid="class_meta_1acbd02f4aa1f955d9e53c85ee5d930311" prot="public" virt="non-virtual"><scope>Meta</scope><name>Meta</name></member>
+      <member refid="class_meta_1a83427cb3ff066fe00a52e28d2eb5f3c4" prot="public" virt="non-virtual"><scope>Meta</scope><name>ReInitForNonStandardExtensions</name></member>
+      <member refid="class_meta_1a04b2c0df729ea27ec71e1c44973c3956" prot="public" virt="non-virtual"><scope>Meta</scope><name>SearchImportPaths</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

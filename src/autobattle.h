@@ -209,3 +209,4 @@ inline void SelectAutoBattleActionRpgRtCompat(Game_Actor& source, lcf::rpg::Syst
 } // namespace AutoBattle
 
 #endif
+

@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="mem_8cpp" kind="file" language="C++">
+    <compoundname>mem.cpp</compoundname>
+    <includes refid="mem_8hpp" local="yes">mem.hpp</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/iky7/mem.cpp</label>
+        <link refid="mem_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>mem.hpp</label>
+        <link refid="mem_8hpp"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>memory</label>
+      </node>
+      <node id="3">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceleasy">leasy</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1iky7">leasy::iky7</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="mem_8hpp" kindref="compound">mem.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1iky7" kindref="compound">leasy::iky7</ref><sp/>{</highlight></codeline>
+<codeline lineno="27" refid="namespaceleasy_1_1iky7_1a3218bf48a4a160d77409431684168cb7" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classleasy_1_1iky7_1_1mmchunk" kindref="compound">mmchunk</ref><sp/><ref refid="namespaceleasy_1_1iky7_1a3218bf48a4a160d77409431684168cb7" kindref="member">chunk</ref>;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="leasy/iky7/mem.cpp"/>
+  </compounddef>
+</doxygen>

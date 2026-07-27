@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ily3_1_1pair" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ily3::pair</compoundname>
+    <includes refid="basetypes_8hpp" local="no">basetypes.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type>typename TX</type>
+      </param>
+      <param>
+        <type>typename TY</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structleasy_1_1ily3_1_1pair_1a81332548ebd999e518e87f053c1768c0" prot="public" static="no" mutable="no">
+        <type>TX</type>
+        <definition>TX leasy::ily3::pair&lt; TX, TY &gt;::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <qualifiedname>leasy::ily3::pair::x</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/basetypes.hpp" line="29" column="8" bodyfile="leasy/ily3/basetypes.hpp" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1ily3_1_1pair_1a80d8f40e1335c1b57dec8a8bd499e7f7" prot="public" static="no" mutable="no">
+        <type>TY</type>
+        <definition>TY leasy::ily3::pair&lt; TX, TY &gt;::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <qualifiedname>leasy::ily3::pair::y</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/basetypes.hpp" line="30" column="8" bodyfile="leasy/ily3/basetypes.hpp" bodystart="30" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ily3/basetypes.hpp" line="28" column="16" bodyfile="leasy/ily3/basetypes.hpp" bodystart="28" bodyend="31"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ily3_1_1pair_1a81332548ebd999e518e87f053c1768c0" prot="public" virt="non-virtual"><scope>leasy::ily3::pair</scope><name>x</name></member>
+      <member refid="structleasy_1_1ily3_1_1pair_1a80d8f40e1335c1b57dec8a8bd499e7f7" prot="public" virt="non-virtual"><scope>leasy::ily3::pair</scope><name>y</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

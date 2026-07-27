@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_input_1_1_direction" kind="namespace" language="C++">
+    <compoundname>Input::Direction</compoundname>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>InputDirection</name>
+        <qualifiedname>Input::Direction::InputDirection</qualifiedname>
+        <enumvalue id="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054aeb13920e6856eba1deb636f35cf8e651" prot="public">
+          <name>NONE</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054aa50462f156a6f229930818ec40f95f10" prot="public">
+          <name>DOWNLEFT</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054a1c36cb50519f795f50197c8d1c54dd07" prot="public">
+          <name>DOWN</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054ab08c3af2cbbba51b19c1fa2ceae21b81" prot="public">
+          <name>DOWNRIGHT</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054a1ac680d64d34332effcb5a9142e84af3" prot="public">
+          <name>LEFT</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054aa0ffe43ab9fefae6e8b4902dc2eb2dc5" prot="public">
+          <name>CENTER</name>
+          <initializer>= 5</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054a3afc3acbd9c10695b63a10bccc995f12" prot="public">
+          <name>RIGHT</name>
+          <initializer>= 6</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054ad973082f5941e36e38e4ac8757df7509" prot="public">
+          <name>UPLEFT</name>
+          <initializer>= 7</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054af648852ecf7f179c3aade95ab73ca77e" prot="public">
+          <name>UP</name>
+          <initializer>= 8</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054a8a53b449ef6430e85136788626a11b62" prot="public">
+          <name>UPRIGHT</name>
+          <initializer>= 9</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054a7b12b0224558ef3054ea8407f5e42a9c" prot="public">
+          <name>NUM_DIRECTIONS</name>
+          <initializer>= 10</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_buttons.h" line="221" column="1" bodyfile="input_buttons.h" bodystart="221" bodyend="233"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_input_1_1_direction_1a411280e9d086b3d8b664ddf737abe1d3" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto Input::Direction::kInputDirectionNames</definition>
+        <argsstring></argsstring>
+        <name>kInputDirectionNames</name>
+        <qualifiedname>Input::Direction::kInputDirectionNames</qualifiedname>
+        <initializer>                               = lcf::makeEnumTags&lt;<ref refid="namespace_input_1_1_direction_1ae8bc0a153ad880692ab50b96816e2054" kindref="member">InputDirection</ref>&gt;(
+&quot;NONE&quot;,
+&quot;DOWNLEFT&quot;,
+&quot;DOWN&quot;,
+&quot;DOWNRIGHT&quot;,
+&quot;LEFT&quot;,
+&quot;CENTER&quot;,
+&quot;RIGHT&quot;,
+&quot;UPLEFT&quot;,
+&quot;UP&quot;,
+&quot;UPRIGHT&quot;,
+&quot;NUM_DIRECTIONS&quot;)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_buttons.h" line="235" column="23" bodyfile="input_buttons.h" bodystart="235" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="input_buttons.h" line="220" column="1"/>
+  </compounddef>
+</doxygen>

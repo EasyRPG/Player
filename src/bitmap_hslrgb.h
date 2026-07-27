@@ -69,3 +69,4 @@ static inline void RGB_adjust_HSL(uint8_t& r, uint8_t& g, uint8_t& b,
 	HSL_adjust(h, s, l, hue);
 	HSL_to_RGB(h, s, l, r, g, b);
 }
+

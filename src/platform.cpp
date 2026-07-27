@@ -291,3 +291,4 @@ void Platform::Directory::Close() {
 
 	valid_entry = false;
 }
+

@@ -38,3 +38,4 @@ LUAI_FUNC int luaU_dump (lua_State* L, const Proto* f, lua_Writer w,
                          void* data, int strip);
 
 #endif
+

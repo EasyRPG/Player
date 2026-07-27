@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_utils_1_1detail" kind="namespace" language="C++">
+    <compoundname>Utils::detail</compoundname>
+    <innerclass refid="struct_utils_1_1detail_1_1_make_array_return_helper" prot="public">Utils::detail::MakeArrayReturnHelper</innerclass>
+    <innerclass refid="struct_utils_1_1detail_1_1_make_array_return_helper_3_01void_00_01_types_8_8_8_01_4" prot="public">Utils::detail::MakeArrayReturnHelper&lt; void, Types... &gt;</innerclass>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespace_utils_1_1detail_1af398ca31195252084365cbd51d0371b9" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename D</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Types</declname>
+            <defname>Types</defname>
+          </param>
+        </templateparamlist>
+        <type>std::array&lt; typename <ref refid="struct_utils_1_1detail_1_1_make_array_return_helper" kindref="compound">MakeArrayReturnHelper</ref>&lt; D, Types... &gt;::type, sizeof...(Types)&gt;</type>
+        <definition>using Utils::detail::MakeArrayReturn = std::array&lt;typename MakeArrayReturnHelper&lt;D,Types...&gt;::type, sizeof...(Types)&gt;</definition>
+        <argsstring></argsstring>
+        <name>MakeArrayReturn</name>
+        <qualifiedname>Utils::detail::MakeArrayReturn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="374" column="15" bodyfile="utils.h" bodystart="374" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespace_utils_1_1detail_1a64d3f6e06e1a1275b71950bbbc1c6810" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename D</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Types</declname>
+            <defname>Types</defname>
+          </param>
+        </templateparamlist>
+        <type>std::vector&lt; typename <ref refid="struct_utils_1_1detail_1_1_make_array_return_helper" kindref="compound">MakeArrayReturnHelper</ref>&lt; D, Types... &gt;::type &gt;</type>
+        <definition>using Utils::detail::MakeVectorReturn = std::vector&lt;typename MakeArrayReturnHelper&lt;D,Types...&gt;::type&gt;</definition>
+        <argsstring></argsstring>
+        <name>MakeVectorReturn</name>
+        <qualifiedname>Utils::detail::MakeVectorReturn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="375" column="15" bodyfile="utils.h" bodystart="375" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="utils.h" line="371" column="1"/>
+  </compounddef>
+</doxygen>

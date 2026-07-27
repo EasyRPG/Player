@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_counters" kind="struct" language="C++" prot="public">
+    <compoundname>Counters</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_counters_1a6dd53ee31990813bd4abf25f3c72ec95" prot="public" static="no" mutable="no">
+        <type>unsigned</type>
+        <definition>unsigned Counters::total</definition>
+        <argsstring></argsstring>
+        <name>total</name>
+        <qualifiedname>Counters::total</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.c" line="422" column="12" bodyfile="leasy/lua/ltable.c" bodystart="422" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_counters_1a743b1b70422fd29b21caa00eaf20dce4" prot="public" static="no" mutable="no">
+        <type>unsigned</type>
+        <definition>unsigned Counters::na</definition>
+        <argsstring></argsstring>
+        <name>na</name>
+        <qualifiedname>Counters::na</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.c" line="423" column="12" bodyfile="leasy/lua/ltable.c" bodystart="423" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_counters_1a75fc09f972e1cd4f08c7f95c81b33e02" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Counters::deleted</definition>
+        <argsstring></argsstring>
+        <name>deleted</name>
+        <qualifiedname>Counters::deleted</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.c" line="424" column="7" bodyfile="leasy/lua/ltable.c" bodystart="424" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_counters_1a68048c009d38a12b98174fb7bd7ca1e8" prot="public" static="no" mutable="no">
+        <type>unsigned</type>
+        <definition>unsigned Counters::nums[MAXABITS+1]</definition>
+        <argsstring>[MAXABITS+1]</argsstring>
+        <name>nums</name>
+        <qualifiedname>Counters::nums</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.c" line="425" column="12" bodyfile="leasy/lua/ltable.c" bodystart="425" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/lua/ltable.c" line="421" column="1" bodyfile="leasy/lua/ltable.c" bodystart="421" bodyend="426"/>
+    <listofallmembers>
+      <member refid="struct_counters_1a75fc09f972e1cd4f08c7f95c81b33e02" prot="public" virt="non-virtual"><scope>Counters</scope><name>deleted</name></member>
+      <member refid="struct_counters_1a743b1b70422fd29b21caa00eaf20dce4" prot="public" virt="non-virtual"><scope>Counters</scope><name>na</name></member>
+      <member refid="struct_counters_1a68048c009d38a12b98174fb7bd7ca1e8" prot="public" virt="non-virtual"><scope>Counters</scope><name>nums</name></member>
+      <member refid="struct_counters_1a6dd53ee31990813bd4abf25f3c72ec95" prot="public" virt="non-virtual"><scope>Counters</scope><name>total</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

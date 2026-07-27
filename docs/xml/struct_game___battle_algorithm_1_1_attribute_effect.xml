@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___battle_algorithm_1_1_attribute_effect" kind="struct" language="C++" prot="public">
+    <compoundname>Game_BattleAlgorithm::AttributeEffect</compoundname>
+    <includes refid="game__battlealgorithm_8h" local="no">game_battlealgorithm.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___battle_algorithm_1_1_attribute_effect_1a7d220c5429e16925d53710b82597f083" prot="public" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t Game_BattleAlgorithm::AttributeEffect::attr_id</definition>
+        <argsstring></argsstring>
+        <name>attr_id</name>
+        <qualifiedname>Game_BattleAlgorithm::AttributeEffect::attr_id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battlealgorithm.h" line="75" column="9" bodyfile="game_battlealgorithm.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___battle_algorithm_1_1_attribute_effect_1acae4dba748a39a2024a8ea1a7b6ca8ce" prot="public" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t Game_BattleAlgorithm::AttributeEffect::shift</definition>
+        <argsstring></argsstring>
+        <name>shift</name>
+        <qualifiedname>Game_BattleAlgorithm::AttributeEffect::shift</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battlealgorithm.h" line="76" column="9" bodyfile="game_battlealgorithm.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_game___battle_algorithm_1_1_attribute_effect_1a173cf6a2186503b32d913e20c6402c79" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_BattleAlgorithm::AttributeEffect::AttributeEffect</definition>
+        <argsstring>()=default</argsstring>
+        <name>AttributeEffect</name>
+        <qualifiedname>Game_BattleAlgorithm::AttributeEffect::AttributeEffect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battlealgorithm.h" line="78" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_game___battle_algorithm_1_1_attribute_effect_1a0c99997c4277756e19886ed2b91d71f6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Game_BattleAlgorithm::AttributeEffect::AttributeEffect</definition>
+        <argsstring>(int id, int shift)</argsstring>
+        <name>AttributeEffect</name>
+        <qualifiedname>Game_BattleAlgorithm::AttributeEffect::AttributeEffect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>shift</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battlealgorithm.h" line="79" column="1" bodyfile="game_battlealgorithm.h" bodystart="79" bodyend="80"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_battlealgorithm.h" line="74" column="1" bodyfile="game_battlealgorithm.h" bodystart="74" bodyend="81"/>
+    <listofallmembers>
+      <member refid="struct_game___battle_algorithm_1_1_attribute_effect_1a7d220c5429e16925d53710b82597f083" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::AttributeEffect</scope><name>attr_id</name></member>
+      <member refid="struct_game___battle_algorithm_1_1_attribute_effect_1a173cf6a2186503b32d913e20c6402c79" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::AttributeEffect</scope><name>AttributeEffect</name></member>
+      <member refid="struct_game___battle_algorithm_1_1_attribute_effect_1a0c99997c4277756e19886ed2b91d71f6" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::AttributeEffect</scope><name>AttributeEffect</name></member>
+      <member refid="struct_game___battle_algorithm_1_1_attribute_effect_1acae4dba748a39a2024a8ea1a7b6ca8ce" prot="public" virt="non-virtual"><scope>Game_BattleAlgorithm::AttributeEffect</scope><name>shift</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

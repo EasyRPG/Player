@@ -159,3 +159,4 @@ int ApplyAttributeSkillMultiplier(int effect, const Game_Battler& target, const 
 }
 
 } // namespace Attribute
+

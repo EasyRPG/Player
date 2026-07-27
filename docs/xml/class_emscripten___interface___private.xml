@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_emscripten___interface___private" kind="class" language="C++" prot="public">
+    <compoundname>Emscripten_Interface_Private</compoundname>
+    <includes refid="interface_8h" local="no">interface.h</includes>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_emscripten___interface___private_1a975c5bf02fd2315b96d2c3025041f190" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Emscripten_Interface_Private::UploadSavegameStep2</definition>
+        <argsstring>(int slot, int buffer_addr, int size)</argsstring>
+        <name>UploadSavegameStep2</name>
+        <qualifiedname>Emscripten_Interface_Private::UploadSavegameStep2</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>slot</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>buffer_addr</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/interface.h" line="37" column="13" bodyfile="platform/emscripten/interface.cpp" bodystart="91" bodyend="112"/>
+      </memberdef>
+      <memberdef kind="function" id="class_emscripten___interface___private_1a317aa02a948bc1eac46a437ea1ef8e1a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Emscripten_Interface_Private::UploadFontStep2</definition>
+        <argsstring>(std::string name, int buffer_addr, int size)</argsstring>
+        <name>UploadFontStep2</name>
+        <qualifiedname>Emscripten_Interface_Private::UploadFontStep2</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>buffer_addr</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/interface.h" line="38" column="17" bodyfile="platform/emscripten/interface.cpp" bodystart="141" bodyend="166"/>
+      </memberdef>
+      <memberdef kind="function" id="class_emscripten___interface___private_1a488d5cff8411c707aeb1d78f87841b20" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Emscripten_Interface_Private::UploadSoundfontStep2</definition>
+        <argsstring>(std::string name, int buffer_addr, int size)</argsstring>
+        <name>UploadSoundfontStep2</name>
+        <qualifiedname>Emscripten_Interface_Private::UploadSoundfontStep2</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>buffer_addr</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/interface.h" line="39" column="17" bodyfile="platform/emscripten/interface.cpp" bodystart="114" bodyend="139"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/emscripten/interface.h" line="35" column="1" bodyfile="platform/emscripten/interface.h" bodystart="35" bodyend="40"/>
+    <listofallmembers>
+      <member refid="class_emscripten___interface___private_1a317aa02a948bc1eac46a437ea1ef8e1a" prot="public" virt="non-virtual"><scope>Emscripten_Interface_Private</scope><name>UploadFontStep2</name></member>
+      <member refid="class_emscripten___interface___private_1a975c5bf02fd2315b96d2c3025041f190" prot="public" virt="non-virtual"><scope>Emscripten_Interface_Private</scope><name>UploadSavegameStep2</name></member>
+      <member refid="class_emscripten___interface___private_1a488d5cff8411c707aeb1d78f87841b20" prot="public" virt="non-virtual"><scope>Emscripten_Interface_Private</scope><name>UploadSoundfontStep2</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

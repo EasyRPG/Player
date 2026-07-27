@@ -365,3 +365,4 @@ void Weather::OnWeatherChanged() {
 		tone_bitmap->Clear();
 	}
 }
+

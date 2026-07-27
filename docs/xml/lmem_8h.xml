@@ -1,0 +1,1006 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lmem_8h" kind="file" language="C++">
+    <compoundname>lmem.h</compoundname>
+    <includes local="no">stddef.h</includes>
+    <includes refid="llimits_8h" local="yes">llimits.h</includes>
+    <includes refid="lua_8h" local="yes">lua.h</includes>
+    <includedby refid="lapi_8c" local="yes">leasy/lua/lapi.c</includedby>
+    <includedby refid="lcode_8c" local="yes">leasy/lua/lcode.c</includedby>
+    <includedby refid="ldo_8c" local="yes">leasy/lua/ldo.c</includedby>
+    <includedby refid="lfunc_8c" local="yes">leasy/lua/lfunc.c</includedby>
+    <includedby refid="lgc_8c" local="yes">leasy/lua/lgc.c</includedby>
+    <includedby refid="lmem_8c" local="yes">leasy/lua/lmem.c</includedby>
+    <includedby refid="lobject_8c" local="yes">leasy/lua/lobject.c</includedby>
+    <includedby refid="lparser_8c" local="yes">leasy/lua/lparser.c</includedby>
+    <includedby refid="lstate_8c" local="yes">leasy/lua/lstate.c</includedby>
+    <includedby refid="lstring_8c" local="yes">leasy/lua/lstring.c</includedby>
+    <includedby refid="ltable_8c" local="yes">leasy/lua/ltable.c</includedby>
+    <includedby refid="lundump_8c" local="yes">leasy/lua/lundump.c</includedby>
+    <includedby refid="lzio_8c" local="yes">leasy/lua/lzio.c</includedby>
+    <includedby refid="lzio_8h" local="yes">leasy/lua/lzio.h</includedby>
+    <incdepgraph>
+      <node id="3">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lmem.h</label>
+        <link refid="lmem_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>limits.h</label>
+      </node>
+      <node id="6">
+        <label>stdarg.h</label>
+      </node>
+      <node id="2">
+        <label>stddef.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>leasy/lua/lapi.c</label>
+        <link refid="lapi_8c"/>
+      </node>
+      <node id="26">
+        <label>leasy/lua/lapi.h</label>
+        <link refid="lapi_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>leasy/lua/lcode.c</label>
+        <link refid="lcode_8c"/>
+      </node>
+      <node id="23">
+        <label>leasy/lua/lcode.h</label>
+        <link refid="lcode_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>leasy/lua/ldebug.c</label>
+        <link refid="ldebug_8c"/>
+      </node>
+      <node id="28">
+        <label>leasy/lua/ldebug.h</label>
+        <link refid="ldebug_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>leasy/lua/ldo.c</label>
+        <link refid="ldo_8c"/>
+      </node>
+      <node id="16">
+        <label>leasy/lua/ldo.h</label>
+        <link refid="ldo_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>leasy/lua/ldump.c</label>
+        <link refid="ldump_8c"/>
+      </node>
+      <node id="5">
+        <label>leasy/lua/lfunc.c</label>
+        <link refid="lfunc_8c"/>
+      </node>
+      <node id="6">
+        <label>leasy/lua/lgc.c</label>
+        <link refid="lgc_8c"/>
+      </node>
+      <node id="29">
+        <label>leasy/lua/lgc.h</label>
+        <link refid="lgc_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>leasy/lua/llex.c</label>
+        <link refid="llex_8c"/>
+      </node>
+      <node id="22">
+        <label>leasy/lua/llex.h</label>
+        <link refid="llex_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>leasy/lua/lmem.c</label>
+        <link refid="lmem_8c"/>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lmem.h</label>
+        <link refid="lmem_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>leasy/lua/lobject.c</label>
+        <link refid="lobject_8c"/>
+      </node>
+      <node id="9">
+        <label>leasy/lua/lparser.c</label>
+        <link refid="lparser_8c"/>
+      </node>
+      <node id="24">
+        <label>leasy/lua/lparser.h</label>
+        <link refid="lparser_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>leasy/lua/lstate.c</label>
+        <link refid="lstate_8c"/>
+      </node>
+      <node id="25">
+        <label>leasy/lua/lstate.h</label>
+        <link refid="lstate_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>leasy/lua/lstring.c</label>
+        <link refid="lstring_8c"/>
+      </node>
+      <node id="30">
+        <label>leasy/lua/lstring.h</label>
+        <link refid="lstring_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>leasy/lua/ltable.c</label>
+        <link refid="ltable_8c"/>
+      </node>
+      <node id="19">
+        <label>leasy/lua/ltm.c</label>
+        <link refid="ltm_8c"/>
+      </node>
+      <node id="13">
+        <label>leasy/lua/lundump.c</label>
+        <link refid="lundump_8c"/>
+      </node>
+      <node id="31">
+        <label>leasy/lua/lundump.h</label>
+        <link refid="lundump_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>leasy/lua/lvm.c</label>
+        <link refid="lvm_8c"/>
+      </node>
+      <node id="21">
+        <label>leasy/lua/lvm.h</label>
+        <link refid="lvm_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>leasy/lua/lzio.c</label>
+        <link refid="lzio_8c"/>
+      </node>
+      <node id="15">
+        <label>leasy/lua/lzio.h</label>
+        <link refid="lzio_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lmem_8h_1ae11aaaf07d13b2f0c3a671b01d7e3822" prot="public" static="no">
+        <name>luaM_error</name>
+        <param><defname>L</defname></param>
+        <initializer><ref refid="ldo_8c_1a717a80f91a6e8dd85101173268d94eca" kindref="member">luaD_throw</ref>(L, <ref refid="lua_8h_1ac28ced8d63f58b5164a298d7d254f658" kindref="member">LUA_ERRMEM</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="17" column="9" bodyfile="leasy/lua/lmem.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8h_1aaa4ae2ac3a122058ba3e73b1f438a89c" prot="public" static="no">
+        <name>luaM_testsize</name>
+        <param><defname>n</defname></param>
+        <param><defname>e</defname></param>
+        <initializer>(sizeof(n) &gt;= sizeof(size_t) &amp;&amp; <ref refid="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" kindref="member">cast_sizet</ref>((n)) + 1 &gt; <ref refid="llimits_8h_1aa927c7bf177c162feda3483e1e972b3a" kindref="member">MAX_SIZET</ref>/(e))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="31" column="9" bodyfile="leasy/lua/lmem.h" bodystart="31" bodyend="32"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8h_1a0ab87210cc8c1a531b9397f6d55b1a97" prot="public" static="no">
+        <name>luaM_checksize</name>
+        <param><defname>L</defname></param>
+        <param><defname>n</defname></param>
+        <param><defname>e</defname></param>
+        <initializer>(<ref refid="lmem_8h_1aaa4ae2ac3a122058ba3e73b1f438a89c" kindref="member">luaM_testsize</ref>(n,e) ? <ref refid="lmem_8h_1a23b8703b7b50e1c5dd37d41569a09a9a" kindref="member">luaM_toobig</ref>(L) : <ref refid="llimits_8h_1a52a5166d7dc0590b63a9331cfc0f4564" kindref="member">cast_void</ref>(0))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="34" column="9" bodyfile="leasy/lua/lmem.h" bodystart="34" bodyend="35"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8h_1a29ccefa76d4743ffb490cdbc291f708a" prot="public" static="no">
+        <name>luaM_limitN</name>
+        <param><defname>n</defname></param>
+        <param><defname>t</defname></param>
+        <initializer>((<ref refid="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" kindref="member">cast_sizet</ref>(n) &lt;= <ref refid="llimits_8h_1aa927c7bf177c162feda3483e1e972b3a" kindref="member">MAX_SIZET</ref>/sizeof(t)) ? (n) :  \
+   <ref refid="llimits_8h_1a37a9e2c4b53433d34bad0f12a1500c08" kindref="member">cast_int</ref>((<ref refid="llimits_8h_1aa927c7bf177c162feda3483e1e972b3a" kindref="member">MAX_SIZET</ref>/sizeof(t))))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="44" column="9" bodyfile="leasy/lua/lmem.h" bodystart="44" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8h_1a5904278d180acc29faf199e1d76f3e85" prot="public" static="no">
+        <name>luaM_reallocvchar</name>
+        <param><defname>L</defname></param>
+        <param><defname>b</defname></param>
+        <param><defname>on</defname></param>
+        <param><defname>n</defname></param>
+        <initializer><ref refid="llimits_8h_1a1d905979f8c901b7143b43ee98341206" kindref="member">cast_charp</ref>(<ref refid="lmem_8h_1af857f53df3465facdda7f0453b04cc46" kindref="member">luaM_saferealloc_</ref>(L, (b), (on)*sizeof(char), (n)*sizeof(char)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="52" column="9" bodyfile="leasy/lua/lmem.h" bodystart="52" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8h_1a159fd0a4f45c4aa195990526f9d0bf01" prot="public" static="no">
+        <name>luaM_freemem</name>
+        <param><defname>L</defname></param>
+        <param><defname>b</defname></param>
+        <param><defname>s</defname></param>
+        <initializer><ref refid="lmem_8h_1a1596632e07c593bd9558ee4920fbe5de" kindref="member">luaM_free_</ref>(L, (b), (s))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="55" column="9" bodyfile="leasy/lua/lmem.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8h_1ad927ceb6a17a9e89a00b83dcc4482988" prot="public" static="no">
+        <name>luaM_free</name>
+        <param><defname>L</defname></param>
+        <param><defname>b</defname></param>
+        <initializer><ref refid="lmem_8h_1a1596632e07c593bd9558ee4920fbe5de" kindref="member">luaM_free_</ref>(L, (b), sizeof(*(b)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="56" column="9" bodyfile="leasy/lua/lmem.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8h_1a574612879aa6814c76b8b57c41e4af5a" prot="public" static="no">
+        <name>luaM_freearray</name>
+        <param><defname>L</defname></param>
+        <param><defname>b</defname></param>
+        <param><defname>n</defname></param>
+        <initializer><ref refid="lmem_8h_1a1596632e07c593bd9558ee4920fbe5de" kindref="member">luaM_free_</ref>(L, (b), (n)*sizeof(*(b)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="57" column="9" bodyfile="leasy/lua/lmem.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8h_1ae72bd363be924fa9a67be67de0802ad7" prot="public" static="no">
+        <name>luaM_new</name>
+        <param><defname>L</defname></param>
+        <param><defname>t</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(t*, <ref refid="lmem_8h_1afec71d56433572a98317d256cb6c6c11" kindref="member">luaM_malloc_</ref>(L, sizeof(t), 0))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="59" column="9" bodyfile="leasy/lua/lmem.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8h_1a715cc368a85506c7a104cda58f270f3e" prot="public" static="no">
+        <name>luaM_newvector</name>
+        <param><defname>L</defname></param>
+        <param><defname>n</defname></param>
+        <param><defname>t</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(t*, <ref refid="lmem_8h_1afec71d56433572a98317d256cb6c6c11" kindref="member">luaM_malloc_</ref>(L, <ref refid="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" kindref="member">cast_sizet</ref>(n)*sizeof(t), 0))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="60" column="9" bodyfile="leasy/lua/lmem.h" bodystart="60" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8h_1ab223744a0660c0aa48e388ca51466839" prot="public" static="no">
+        <name>luaM_newvectorchecked</name>
+        <param><defname>L</defname></param>
+        <param><defname>n</defname></param>
+        <param><defname>t</defname></param>
+        <initializer>(<ref refid="lmem_8h_1a0ab87210cc8c1a531b9397f6d55b1a97" kindref="member">luaM_checksize</ref>(L,n,sizeof(t)), <ref refid="lmem_8h_1a715cc368a85506c7a104cda58f270f3e" kindref="member">luaM_newvector</ref>(L,n,t))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="62" column="9" bodyfile="leasy/lua/lmem.h" bodystart="62" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8h_1a0ce640c4b032a327440e3820365d7167" prot="public" static="no">
+        <name>luaM_newobject</name>
+        <param><defname>L</defname></param>
+        <param><defname>tag</defname></param>
+        <param><defname>s</defname></param>
+        <initializer><ref refid="lmem_8h_1afec71d56433572a98317d256cb6c6c11" kindref="member">luaM_malloc_</ref>(L, (s), tag)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="65" column="9" bodyfile="leasy/lua/lmem.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8h_1a145325e561c4f718a732ebc6bce1dc38" prot="public" static="no">
+        <name>luaM_newblock</name>
+        <param><defname>L</defname></param>
+        <param><defname>size</defname></param>
+        <initializer><ref refid="lmem_8h_1a715cc368a85506c7a104cda58f270f3e" kindref="member">luaM_newvector</ref>(L, size, char)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="67" column="9" bodyfile="leasy/lua/lmem.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8h_1a38823c4cdf0d53b73e1e3015affb06f9" prot="public" static="no">
+        <name>luaM_growvector</name>
+        <param><defname>L</defname></param>
+        <param><defname>v</defname></param>
+        <param><defname>nelems</defname></param>
+        <param><defname>size</defname></param>
+        <param><defname>t</defname></param>
+        <param><defname>limit</defname></param>
+        <param><defname>e</defname></param>
+        <initializer>((v)=<ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(t *, <ref refid="lmem_8h_1ad2a00a983d282f85f14ed4574a958369" kindref="member">luaM_growaux_</ref>(L,v,nelems,&amp;(size),sizeof(t), \
+                     <ref refid="lmem_8h_1a29ccefa76d4743ffb490cdbc291f708a" kindref="member">luaM_limitN</ref>(limit,t),e)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="69" column="9" bodyfile="leasy/lua/lmem.h" bodystart="69" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8h_1ab1174e625ed7a62e5f8ba33a7e1c1917" prot="public" static="no">
+        <name>luaM_reallocvector</name>
+        <param><defname>L</defname></param>
+        <param><defname>v</defname></param>
+        <param><defname>oldn</defname></param>
+        <param><defname>n</defname></param>
+        <param><defname>t</defname></param>
+        <initializer>(<ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(t *, <ref refid="lmem_8h_1ae5c8a16bb1c249e63cb08e0e2bd5a8d0" kindref="member">luaM_realloc_</ref>(L, v, <ref refid="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" kindref="member">cast_sizet</ref>(oldn) * sizeof(t), \
+                               <ref refid="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" kindref="member">cast_sizet</ref>(n) * sizeof(t))))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="73" column="9" bodyfile="leasy/lua/lmem.h" bodystart="73" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="define" id="lmem_8h_1ab90797c53a311d30154c486b2b8561d5" prot="public" static="no">
+        <name>luaM_shrinkvector</name>
+        <param><defname>L</defname></param>
+        <param><defname>v</defname></param>
+        <param><defname>size</defname></param>
+        <param><defname>fs</defname></param>
+        <param><defname>t</defname></param>
+        <initializer>((v)=<ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(t *, <ref refid="lmem_8h_1a9b0e7fcca89e578ea39b2d7479373fd1" kindref="member">luaM_shrinkvector_</ref>(L, v, &amp;(size), fs, sizeof(t))))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="77" column="9" bodyfile="leasy/lua/lmem.h" bodystart="77" bodyend="78"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="lmem_8h_1a23b8703b7b50e1c5dd37d41569a09a9a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref></type>
+        <definition>LUAI_FUNC l_noret luaM_toobig</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaM_toobig</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="80" column="19" bodyfile="leasy/lua/lmem.c" bodystart="142" bodyend="144" declfile="leasy/lua/lmem.h" declline="80" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="lmem_8h_1ae5c8a16bb1c249e63cb08e0e2bd5a8d0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void *</type>
+        <definition>LUAI_FUNC void * luaM_realloc_</definition>
+        <argsstring>(lua_State *L, void *block, size_t oldsize, size_t size)</argsstring>
+        <name>luaM_realloc_</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>block</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>oldsize</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="83" column="16" bodyfile="leasy/lua/lmem.c" bodystart="176" bodyend="189" declfile="leasy/lua/lmem.h" declline="83" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lmem_8h_1af857f53df3465facdda7f0453b04cc46" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void *</type>
+        <definition>LUAI_FUNC void * luaM_saferealloc_</definition>
+        <argsstring>(lua_State *L, void *block, size_t oldsize, size_t size)</argsstring>
+        <name>luaM_saferealloc_</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>block</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>oldsize</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="85" column="16" bodyfile="leasy/lua/lmem.c" bodystart="192" bodyend="198" declfile="leasy/lua/lmem.h" declline="85" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lmem_8h_1a1596632e07c593bd9558ee4920fbe5de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaM_free_</definition>
+        <argsstring>(lua_State *L, void *block, size_t osize)</argsstring>
+        <name>luaM_free_</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>block</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>osize</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="87" column="16" bodyfile="leasy/lua/lmem.c" bodystart="150" bodyend="155" declfile="leasy/lua/lmem.h" declline="87" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lmem_8h_1ad2a00a983d282f85f14ed4574a958369" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void *</type>
+        <definition>LUAI_FUNC void * luaM_growaux_</definition>
+        <argsstring>(lua_State *L, void *block, int nelems, int *size, unsigned size_elem, int limit, const char *what)</argsstring>
+        <name>luaM_growaux_</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>block</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nelems</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>size</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>size_elem</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>limit</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>what</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="88" column="16" bodyfile="leasy/lua/lmem.c" bodystart="97" bodyend="119" declfile="leasy/lua/lmem.h" declline="88" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lmem_8h_1a9b0e7fcca89e578ea39b2d7479373fd1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void *</type>
+        <definition>LUAI_FUNC void * luaM_shrinkvector_</definition>
+        <argsstring>(lua_State *L, void *block, int *nelem, int final_n, unsigned size_elem)</argsstring>
+        <name>luaM_shrinkvector_</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>block</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>nelem</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>final_n</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>size_elem</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="91" column="16" bodyfile="leasy/lua/lmem.c" bodystart="128" bodyend="137" declfile="leasy/lua/lmem.h" declline="91" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lmem_8h_1afec71d56433572a98317d256cb6c6c11" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void *</type>
+        <definition>LUAI_FUNC void * luaM_malloc_</definition>
+        <argsstring>(lua_State *L, size_t size, int tag)</argsstring>
+        <name>luaM_malloc_</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>tag</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmem.h" line="93" column="16" bodyfile="leasy/lua/lmem.c" bodystart="201" bodyend="215" declfile="leasy/lua/lmem.h" declline="93" declcolumn="16"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lmem.h<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Interface<sp/>to<sp/>Memory<sp/>Manager</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>lmem_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lmem_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stddef.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="llimits_8h" kindref="compound">llimits.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lua_8h" kindref="compound">lua.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17" refid="lmem_8h_1ae11aaaf07d13b2f0c3a671b01d7e3822" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaM_error(L)<sp/><sp/><sp/>luaD_throw(L,<sp/>LUA_ERRMEM)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment">**<sp/>This<sp/>macro<sp/>tests<sp/>whether<sp/>it<sp/>is<sp/>safe<sp/>to<sp/>multiply<sp/>&apos;n&apos;<sp/>by<sp/>the<sp/>size<sp/>of</highlight></codeline>
+<codeline lineno="22"><highlight class="comment">**<sp/>type<sp/>&apos;t&apos;<sp/>without<sp/>overflows.<sp/>Because<sp/>&apos;e&apos;<sp/>is<sp/>always<sp/>constant,<sp/>it<sp/>avoids</highlight></codeline>
+<codeline lineno="23"><highlight class="comment">**<sp/>the<sp/>runtime<sp/>division<sp/>MAX_SIZET/(e).</highlight></codeline>
+<codeline lineno="24"><highlight class="comment">**<sp/>(The<sp/>macro<sp/>is<sp/>somewhat<sp/>complex<sp/>to<sp/>avoid<sp/>warnings:<sp/><sp/>The<sp/>&apos;sizeof&apos;</highlight></codeline>
+<codeline lineno="25"><highlight class="comment">**<sp/>comparison<sp/>avoids<sp/>a<sp/>runtime<sp/>comparison<sp/>when<sp/>overflow<sp/>cannot<sp/>occur.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment">**<sp/>The<sp/>compiler<sp/>should<sp/>be<sp/>able<sp/>to<sp/>optimize<sp/>the<sp/>real<sp/>test<sp/>by<sp/>itself,<sp/>but</highlight></codeline>
+<codeline lineno="27"><highlight class="comment">**<sp/>when<sp/>it<sp/>does<sp/>it,<sp/>it<sp/>may<sp/>give<sp/>a<sp/>warning<sp/>about<sp/>&quot;comparison<sp/>is<sp/>always</highlight></codeline>
+<codeline lineno="28"><highlight class="comment">**<sp/>false<sp/>due<sp/>to<sp/>limited<sp/>range<sp/>of<sp/>data<sp/>type&quot;;<sp/>the<sp/>+1<sp/>tricks<sp/>the<sp/>compiler,</highlight></codeline>
+<codeline lineno="29"><highlight class="comment">**<sp/>avoiding<sp/>this<sp/>warning<sp/>but<sp/>also<sp/>this<sp/>optimization.)</highlight></codeline>
+<codeline lineno="30"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="lmem_8h_1aaa4ae2ac3a122058ba3e73b1f438a89c" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaM_testsize(n,e)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="32"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>(sizeof(n)<sp/>&gt;=<sp/>sizeof(size_t)<sp/>&amp;&amp;<sp/>cast_sizet((n))<sp/>+<sp/>1<sp/>&gt;<sp/>MAX_SIZET/(e))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="lmem_8h_1a0ab87210cc8c1a531b9397f6d55b1a97" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaM_checksize(L,n,e)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="35"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>(luaM_testsize(n,e)<sp/>?<sp/>luaM_toobig(L)<sp/>:<sp/>cast_void(0))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="39"><highlight class="comment">**<sp/>Computes<sp/>the<sp/>minimum<sp/>between<sp/>&apos;n&apos;<sp/>and<sp/>&apos;MAX_SIZET/sizeof(t)&apos;,<sp/>so<sp/>that</highlight></codeline>
+<codeline lineno="40"><highlight class="comment">**<sp/>the<sp/>result<sp/>is<sp/>not<sp/>larger<sp/>than<sp/>&apos;n&apos;<sp/>and<sp/>cannot<sp/>overflow<sp/>a<sp/>&apos;size_t&apos;</highlight></codeline>
+<codeline lineno="41"><highlight class="comment">**<sp/>when<sp/>multiplied<sp/>by<sp/>the<sp/>size<sp/>of<sp/>type<sp/>&apos;t&apos;.<sp/>(Assumes<sp/>that<sp/>&apos;n&apos;<sp/>is<sp/>an</highlight></codeline>
+<codeline lineno="42"><highlight class="comment">**<sp/>&apos;int&apos;<sp/>and<sp/>that<sp/>&apos;int&apos;<sp/>is<sp/>not<sp/>larger<sp/>than<sp/>&apos;size_t&apos;.)</highlight></codeline>
+<codeline lineno="43"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="lmem_8h_1a29ccefa76d4743ffb490cdbc291f708a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaM_limitN(n,t)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="45"><highlight class="preprocessor"><sp/><sp/>((cast_sizet(n)<sp/>&lt;=<sp/>MAX_SIZET/sizeof(t))<sp/>?<sp/>(n)<sp/>:<sp/><sp/>\</highlight></codeline>
+<codeline lineno="46"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/>cast_int((MAX_SIZET/sizeof(t))))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="50"><highlight class="comment">**<sp/>Arrays<sp/>of<sp/>chars<sp/>do<sp/>not<sp/>need<sp/>any<sp/>test</highlight></codeline>
+<codeline lineno="51"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52" refid="lmem_8h_1a5904278d180acc29faf199e1d76f3e85" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaM_reallocvchar(L,b,on,n)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="53"><highlight class="preprocessor"><sp/><sp/>cast_charp(luaM_saferealloc_(L,<sp/>(b),<sp/>(on)*sizeof(char),<sp/>(n)*sizeof(char)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55" refid="lmem_8h_1a159fd0a4f45c4aa195990526f9d0bf01" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaM_freemem(L,<sp/>b,<sp/>s)<sp/><sp/><sp/>luaM_free_(L,<sp/>(b),<sp/>(s))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="lmem_8h_1ad927ceb6a17a9e89a00b83dcc4482988" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaM_free(L,<sp/>b)<sp/><sp/><sp/><sp/><sp/>luaM_free_(L,<sp/>(b),<sp/>sizeof(*(b)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57" refid="lmem_8h_1a574612879aa6814c76b8b57c41e4af5a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaM_freearray(L,<sp/>b,<sp/>n)<sp/><sp/><sp/>luaM_free_(L,<sp/>(b),<sp/>(n)*sizeof(*(b)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="lmem_8h_1ae72bd363be924fa9a67be67de0802ad7" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaM_new(L,t)<sp/><sp/><sp/><sp/><sp/><sp/><sp/>cast(t*,<sp/>luaM_malloc_(L,<sp/>sizeof(t),<sp/>0))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60" refid="lmem_8h_1a715cc368a85506c7a104cda58f270f3e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaM_newvector(L,n,t)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="61"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>cast(t*,<sp/>luaM_malloc_(L,<sp/>cast_sizet(n)*sizeof(t),<sp/>0))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="lmem_8h_1ab223744a0660c0aa48e388ca51466839" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaM_newvectorchecked(L,n,t)<sp/>\</highlight></codeline>
+<codeline lineno="63"><highlight class="preprocessor"><sp/><sp/>(luaM_checksize(L,n,sizeof(t)),<sp/>luaM_newvector(L,n,t))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="lmem_8h_1a0ce640c4b032a327440e3820365d7167" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaM_newobject(L,tag,s)<sp/>luaM_malloc_(L,<sp/>(s),<sp/>tag)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67" refid="lmem_8h_1a145325e561c4f718a732ebc6bce1dc38" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaM_newblock(L,<sp/>size)<sp/><sp/>luaM_newvector(L,<sp/>size,<sp/>char)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="lmem_8h_1a38823c4cdf0d53b73e1e3015affb06f9" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaM_growvector(L,v,nelems,size,t,limit,e)<sp/>\</highlight></codeline>
+<codeline lineno="70"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>((v)=cast(t<sp/>*,<sp/>luaM_growaux_(L,v,nelems,&amp;(size),sizeof(t),<sp/>\</highlight></codeline>
+<codeline lineno="71"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>luaM_limitN(limit,t),e)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73" refid="lmem_8h_1ab1174e625ed7a62e5f8ba33a7e1c1917" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaM_reallocvector(L,<sp/>v,oldn,n,t)<sp/>\</highlight></codeline>
+<codeline lineno="74"><highlight class="preprocessor"><sp/><sp/><sp/>(cast(t<sp/>*,<sp/>luaM_realloc_(L,<sp/>v,<sp/>cast_sizet(oldn)<sp/>*<sp/>sizeof(t),<sp/>\</highlight></codeline>
+<codeline lineno="75"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cast_sizet(n)<sp/>*<sp/>sizeof(t))))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77" refid="lmem_8h_1ab90797c53a311d30154c486b2b8561d5" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaM_shrinkvector(L,v,size,fs,t)<sp/>\</highlight></codeline>
+<codeline lineno="78"><highlight class="preprocessor"><sp/><sp/><sp/>((v)=cast(t<sp/>*,<sp/>luaM_shrinkvector_(L,<sp/>v,<sp/>&amp;(size),<sp/>fs,<sp/>sizeof(t))))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref><sp/><ref refid="lmem_8h_1a23b8703b7b50e1c5dd37d41569a09a9a" kindref="member">luaM_toobig</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>not<sp/>to<sp/>be<sp/>called<sp/>directly<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="lmem_8h_1ae5c8a16bb1c249e63cb08e0e2bd5a8d0" kindref="member">luaM_realloc_</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*block,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>oldsize,</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>size);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="lmem_8h_1af857f53df3465facdda7f0453b04cc46" kindref="member">luaM_saferealloc_</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*block,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>oldsize,</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>size);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lmem_8h_1a1596632e07c593bd9558ee4920fbe5de" kindref="member">luaM_free_</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*block,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>osize);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="lmem_8h_1ad2a00a983d282f85f14ed4574a958369" kindref="member">luaM_growaux_</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*block,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nelems,</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*size,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>size_elem,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>limit,</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*what);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="lmem_8h_1a9b0e7fcca89e578ea39b2d7479373fd1" kindref="member">luaM_shrinkvector_</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*block,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*nelem,</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>final_n,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>size_elem);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="lmem_8h_1afec71d56433572a98317d256cb6c6c11" kindref="member">luaM_malloc_</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>size,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>tag);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lmem.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_call_s" kind="struct" language="C++" prot="public">
+    <compoundname>CallS</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_call_s_1ad175aaaa032f3e446b391f4e04bd1a6b" prot="public" static="no" mutable="no">
+        <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+        <definition>StkId CallS::func</definition>
+        <argsstring></argsstring>
+        <name>func</name>
+        <qualifiedname>CallS::func</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lapi.c" line="1064" column="9" bodyfile="leasy/lua/lapi.c" bodystart="1064" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_call_s_1ad786e0ae2bf61fad4a46b048830c9569" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int CallS::nresults</definition>
+        <argsstring></argsstring>
+        <name>nresults</name>
+        <qualifiedname>CallS::nresults</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lapi.c" line="1065" column="7" bodyfile="leasy/lua/lapi.c" bodystart="1065" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>CallS</label>
+        <link refid="struct_call_s"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>func</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>StackValue</label>
+        <link refid="union_stack_value"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>val</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>TValue</label>
+        <link refid="struct_t_value"/>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lapi.c" line="1063" column="1" bodyfile="leasy/lua/lapi.c" bodystart="1063" bodyend="1066"/>
+    <listofallmembers>
+      <member refid="struct_call_s_1ad175aaaa032f3e446b391f4e04bd1a6b" prot="public" virt="non-virtual"><scope>CallS</scope><name>func</name></member>
+      <member refid="struct_call_s_1ad786e0ae2bf61fad4a46b048830c9569" prot="public" virt="non-virtual"><scope>CallS</scope><name>nresults</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

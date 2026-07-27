@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_actor_message" kind="namespace" language="C++">
+    <compoundname>ActorMessage</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_actor_message_1af9a579143a695b32c032e7913643d6f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string ActorMessage::GetLevelUpMessage</definition>
+        <argsstring>(const Game_Actor &amp;actor, int new_level)</argsstring>
+        <name>GetLevelUpMessage</name>
+        <qualifiedname>ActorMessage::GetLevelUpMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>new_level</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="30" column="13" bodyfile="game_message_terms.cpp" bodystart="30" bodyend="68" declfile="game_message_terms.h" declline="31" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_actor_message_1a7fd0e07776b2719f4eb43ab32baa888f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string ActorMessage::GetLearningMessage</definition>
+        <argsstring>(const Game_Actor &amp;actor, const lcf::rpg::Skill &amp;skill)</argsstring>
+        <name>GetLearningMessage</name>
+        <qualifiedname>ActorMessage::GetLearningMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="70" column="13" bodyfile="game_message_terms.cpp" bodystart="70" bodyend="85" declfile="game_message_terms.h" declline="33" declcolumn="13"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_message_terms.cpp" line="28" column="1"/>
+  </compounddef>
+</doxygen>

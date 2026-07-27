@@ -222,3 +222,4 @@ void Scene_Equip::UpdateItemSelection() {
 		}
 	}
 }
+

@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___clock_1_1_data" kind="struct" language="C++" prot="private">
+    <compoundname>Game_Clock::Data</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___clock_1_1_data_1aa6be8014ad5a817d1737af791fbec129" prot="public" static="no" mutable="no">
+        <type><ref refid="class_game___clock_1a7da5a97294e9d1b3dddb617d90eea63e" kindref="member">time_point</ref></type>
+        <definition>time_point Game_Clock::Data::frame_time</definition>
+        <argsstring></argsstring>
+        <name>frame_time</name>
+        <qualifiedname>Game_Clock::Data::frame_time</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="115" column="12" bodyfile="game_clock.h" bodystart="115" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___clock_1_1_data_1a584d585ba598fd11ab94f8d34bcdb8b7" prot="public" static="no" mutable="no">
+        <type><ref refid="class_game___clock_1a636ab985f05b7e289d6c3ad1984e1e9f" kindref="member">duration</ref></type>
+        <definition>duration Game_Clock::Data::frame_accumulator</definition>
+        <argsstring></argsstring>
+        <name>frame_accumulator</name>
+        <qualifiedname>Game_Clock::Data::frame_accumulator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="116" column="10" bodyfile="game_clock.h" bodystart="116" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___clock_1_1_data_1af93b01a91d637235ea8f0ceb872985b7" prot="public" static="no" mutable="no">
+        <type><ref refid="class_game___clock_1a636ab985f05b7e289d6c3ad1984e1e9f" kindref="member">duration</ref></type>
+        <definition>duration Game_Clock::Data::max_frame_accumulator</definition>
+        <argsstring></argsstring>
+        <name>max_frame_accumulator</name>
+        <qualifiedname>Game_Clock::Data::max_frame_accumulator</qualifiedname>
+        <initializer>= std::chrono::duration_cast&lt;<ref refid="class_game___clock_1a636ab985f05b7e289d6c3ad1984e1e9f" kindref="member">duration</ref>&gt;(std::chrono::milliseconds(200))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="117" column="10" bodyfile="game_clock.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___clock_1_1_data_1aed599c0f6ab0e29b91695921419fe6ce" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float Game_Clock::Data::speed</definition>
+        <argsstring></argsstring>
+        <name>speed</name>
+        <qualifiedname>Game_Clock::Data::speed</qualifiedname>
+        <initializer>= 1.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="118" column="7" bodyfile="game_clock.h" bodystart="118" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___clock_1_1_data_1a5476ac1e727b3bb9d1c83a6a6cd2efd0" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float Game_Clock::Data::fps</definition>
+        <argsstring></argsstring>
+        <name>fps</name>
+        <qualifiedname>Game_Clock::Data::fps</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="119" column="7" bodyfile="game_clock.h" bodystart="119" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___clock_1_1_data_1a1fca1417932ffdc89afa94d02c2c366b" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Clock::Data::frame</definition>
+        <argsstring></argsstring>
+        <name>frame</name>
+        <qualifiedname>Game_Clock::Data::frame</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="120" column="5" bodyfile="game_clock.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_clock.h" line="114" column="1" bodyfile="game_clock.h" bodystart="114" bodyend="121"/>
+    <listofallmembers>
+      <member refid="struct_game___clock_1_1_data_1a5476ac1e727b3bb9d1c83a6a6cd2efd0" prot="public" virt="non-virtual"><scope>Game_Clock::Data</scope><name>fps</name></member>
+      <member refid="struct_game___clock_1_1_data_1a1fca1417932ffdc89afa94d02c2c366b" prot="public" virt="non-virtual"><scope>Game_Clock::Data</scope><name>frame</name></member>
+      <member refid="struct_game___clock_1_1_data_1a584d585ba598fd11ab94f8d34bcdb8b7" prot="public" virt="non-virtual"><scope>Game_Clock::Data</scope><name>frame_accumulator</name></member>
+      <member refid="struct_game___clock_1_1_data_1aa6be8014ad5a817d1737af791fbec129" prot="public" virt="non-virtual"><scope>Game_Clock::Data</scope><name>frame_time</name></member>
+      <member refid="struct_game___clock_1_1_data_1af93b01a91d637235ea8f0ceb872985b7" prot="public" virt="non-virtual"><scope>Game_Clock::Data</scope><name>max_frame_accumulator</name></member>
+      <member refid="struct_game___clock_1_1_data_1aed599c0f6ab0e29b91695921419fe6ce" prot="public" virt="non-virtual"><scope>Game_Clock::Data</scope><name>speed</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

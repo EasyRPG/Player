@@ -1,0 +1,1594 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_scene___debug" kind="class" language="C++" prot="public">
+    <compoundname>Scene_Debug</compoundname>
+    <basecompoundref refid="class_scene" prot="public" virt="non-virtual">Scene</basecompoundref>
+    <includes refid="scene__debug_8h" local="no">scene_debug.h</includes>
+    <innerclass refid="struct_scene___debug_1_1_stack_frame" prot="private">Scene_Debug::StackFrame</innerclass>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58c" prot="public" static="no" strong="no">
+        <type></type>
+        <name>Mode</name>
+        <qualifiedname>Scene_Debug::Mode</qualifiedname>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca9a794ee12bb004fdeea7bd4a6d4d1329" prot="public">
+          <name>eMain</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca51d51ed88fbce9f12ee64f077828760c" prot="public">
+          <name>eSave</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58caeb9902def004f97cbc47a1110e7babcb" prot="public">
+          <name>eLoad</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca9cad0fb6d75e93227d68cae588f95c59" prot="public">
+          <name>eSwitch</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58cace9744d7266b0234a612d5bd3dbe097b" prot="public">
+          <name>eVariable</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca5f36be5c51153655c91d824a18e26b35" prot="public">
+          <name>eGold</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca81112774b88d339ae752086f0843bc5a" prot="public">
+          <name>eItem</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca7f1f49ef2d7720a994e0bcc896c02350" prot="public">
+          <name>eBattle</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca4ad8c64481b4a24a2ccba92b9b0cc4d1" prot="public">
+          <name>eMap</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58cac840e08b57ff0e157b14efa8d5d4c685" prot="public">
+          <name>eFullHeal</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58cacc8b47a48435a99a488703cf0ab6ae75" prot="public">
+          <name>eLevel</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58cac3f176205ec38b9082b48010d413bb0c" prot="public">
+          <name>eMoveSpeed</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58cadfd5a565ecc6dcdbd97e8fec5bde3f09" prot="public">
+          <name>eCallCommonEvent</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58caa4cf5988daddca2cd2f3991d80ee49b5" prot="public">
+          <name>eCallMapEvent</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58cae85867cc49fd7695684f046ca3639fcd" prot="public">
+          <name>eCallBattleEvent</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca32120281826fd0c66ffaf06ad2abb462" prot="public">
+          <name>eString</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58caa751159bba0ca42a1cebe274eb4b2b2e" prot="public">
+          <name>eInterpreter</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca3c71339481940fcef1849675dff63e0f" prot="public">
+          <name>eOpenMenu</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58cafb87aa731add9a7caa1227b64813b1a9" prot="public">
+          <name>eLastMainMenuOption</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="58" column="1" bodyfile="scene_debug.h" bodystart="58" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="enum" id="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85" prot="public" static="no" strong="no">
+        <type></type>
+        <name>UiMode</name>
+        <qualifiedname>Scene_Debug::UiMode</qualifiedname>
+        <enumvalue id="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85aadb11e95808cf9e7707dcc76cf1a19aa" prot="public">
+          <name>eUiMain</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85ac14e97802f5ac6a720896ba879e82c9e" prot="public">
+          <name>eUiRangeList</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85a8ab0e5a18ba03495362230cbcf3bfc8a" prot="public">
+          <name>eUiVarList</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85ab37730f297d19c217852c162810488dc" prot="public">
+          <name>eUiNumberInput</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85aab91e0e4d9de9719014985cff6b6edb1" prot="public">
+          <name>eUiStringView</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85a259f9108eaa06cdc5b28fbf7181dc91e" prot="public">
+          <name>eUiChoices</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85aca3df344f4c38fd4c609ed95ed62b3ef" prot="public">
+          <name>eUiInterpreterView</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="80" column="1" bodyfile="scene_debug.h" bodystart="80" bodyend="88"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_scene___debug_1aaa8e6ebea617b0e555d1fd7af2b606ea" prot="private" static="no" mutable="no">
+        <type><ref refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58c" kindref="member">Mode</ref></type>
+        <definition>Mode Scene_Debug::mode</definition>
+        <argsstring></argsstring>
+        <name>mode</name>
+        <qualifiedname>Scene_Debug::mode</qualifiedname>
+        <initializer>= <ref refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca9a794ee12bb004fdeea7bd4a6d4d1329" kindref="member">eMain</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="90" column="6" bodyfile="scene_debug.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1ac90f0e70ccb2a2a75bb29d8c048602a0" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Debug::range_page</definition>
+        <argsstring></argsstring>
+        <name>range_page</name>
+        <qualifiedname>Scene_Debug::range_page</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Current Page being displayed </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="93" column="5" bodyfile="scene_debug.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1adf03a917021263f97cd0d922e340297f" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Debug::range_index</definition>
+        <argsstring></argsstring>
+        <name>range_index</name>
+        <qualifiedname>Scene_Debug::range_index</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Current range being displayed. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="95" column="5" bodyfile="scene_debug.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1aac57321e5ae5ed1801e017b00efd0200" prot="private" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Scene_Debug::choice_window_width</definition>
+        <argsstring></argsstring>
+        <name>choice_window_width</name>
+        <qualifiedname>Scene_Debug::choice_window_width</qualifiedname>
+        <initializer>= 120</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="141" column="11" bodyfile="scene_debug.h" bodystart="141" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1ab55050f6da7b3234cc57e834fe4fb1be" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___command" kindref="compound">Window_Command</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Command&gt; Scene_Debug::range_window</definition>
+        <argsstring></argsstring>
+        <name>range_window</name>
+        <qualifiedname>Scene_Debug::range_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Displays a range selection for mode. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="144" column="17" bodyfile="scene_debug.h" bodystart="144" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1aa5ac1948728ccbd3564765f9fa272ea6" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___var_list" kindref="compound">Window_VarList</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_VarList&gt; Scene_Debug::var_window</definition>
+        <argsstring></argsstring>
+        <name>var_window</name>
+        <qualifiedname>Scene_Debug::var_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Displays the vars inside the current range. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="146" column="17" bodyfile="scene_debug.h" bodystart="146" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1aaf3c17ec7ea7a28e61468c165656b1f1" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___number_input" kindref="compound">Window_NumberInput</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_NumberInput&gt; Scene_Debug::numberinput_window</definition>
+        <argsstring></argsstring>
+        <name>numberinput_window</name>
+        <qualifiedname>Scene_Debug::numberinput_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Number Editor. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="148" column="17" bodyfile="scene_debug.h" bodystart="148" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1aa0ee08a0144d0306ef450f5891fd72e2" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___command" kindref="compound">Window_Command</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Command&gt; Scene_Debug::choices_window</definition>
+        <argsstring></argsstring>
+        <name>choices_window</name>
+        <qualifiedname>Scene_Debug::choices_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Choices window. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="150" column="17" bodyfile="scene_debug.h" bodystart="150" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1a7e55e8398bf3612a1159bbb174cf3170" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___string_view" kindref="compound">Window_StringView</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_StringView&gt; Scene_Debug::stringview_window</definition>
+        <argsstring></argsstring>
+        <name>stringview_window</name>
+        <qualifiedname>Scene_Debug::stringview_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Windows for displaying multiline strings. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="152" column="17" bodyfile="scene_debug.h" bodystart="152" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1a1d9adc443a35386516c7b5f1fd0dbec4" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___interpreter" kindref="compound">Window_Interpreter</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Interpreter&gt; Scene_Debug::interpreter_window</definition>
+        <argsstring></argsstring>
+        <name>interpreter_window</name>
+        <qualifiedname>Scene_Debug::interpreter_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Displays the currently running inteprreters. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="154" column="17" bodyfile="scene_debug.h" bodystart="154" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1a82dc8cd4ef34206736abe296127b021b" prot="private" static="no" mutable="no">
+        <type>std::array&lt; StackFrame, 8 &gt;</type>
+        <definition>std::array&lt;StackFrame,8&gt; Scene_Debug::stack</definition>
+        <argsstring></argsstring>
+        <name>stack</name>
+        <qualifiedname>Scene_Debug::stack</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="160" column="12" bodyfile="scene_debug.h" bodystart="160" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1a04e142a7410dacbe3921e6f513e699f1" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Debug::stack_index</definition>
+        <argsstring></argsstring>
+        <name>stack_index</name>
+        <qualifiedname>Scene_Debug::stack_index</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="161" column="5" bodyfile="scene_debug.h" bodystart="161" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1a6d2e82b1dd2f7ecdaae301dc6e1883bd" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Debug::arrow_frame</definition>
+        <argsstring></argsstring>
+        <name>arrow_frame</name>
+        <qualifiedname>Scene_Debug::arrow_frame</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="189" column="5" bodyfile="scene_debug.h" bodystart="189" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1a0461326576796c67c2f4b223c8ad76ec" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Debug::interpreter_states_cached</definition>
+        <argsstring></argsstring>
+        <name>interpreter_states_cached</name>
+        <qualifiedname>Scene_Debug::interpreter_states_cached</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="191" column="6" bodyfile="scene_debug.h" bodystart="191" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1a6774b7cbd3373e34e9dcaf7525395085" prot="private" static="no" mutable="no">
+        <type>struct Scene_Debug::@047134337002231237273120255043135172071106375270</type>
+        <definition>struct Scene_Debug::@047134337002231237273120255043135172071106375270 Scene_Debug::state_interpreter</definition>
+        <argsstring></argsstring>
+        <name>state_interpreter</name>
+        <qualifiedname>Scene_Debug::state_interpreter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="207" column="19"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_scene___debug_1a6be913c6993742fea43824da230f54e0" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; Scene_Debug::ev</definition>
+        <argsstring></argsstring>
+        <name>ev</name>
+        <qualifiedname>Scene_Debug::ev</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="197" column="13" bodyfile="scene_debug.h" bodystart="197" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1a61c473eb9239ccfa6fe6bd2715a85ad3" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; Scene_Debug::ce</definition>
+        <argsstring></argsstring>
+        <name>ce</name>
+        <qualifiedname>Scene_Debug::ce</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="198" column="13" bodyfile="scene_debug.h" bodystart="198" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1aef35ca1366838b48ca9fe639145507b8" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; lcf::rpg::SaveEventExecState &gt;</type>
+        <definition>std::vector&lt;lcf::rpg::SaveEventExecState&gt; Scene_Debug::state_ev</definition>
+        <argsstring></argsstring>
+        <name>state_ev</name>
+        <qualifiedname>Scene_Debug::state_ev</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="199" column="13" bodyfile="scene_debug.h" bodystart="199" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1adbb86dd8bd3f7e9c565a79a1f11e0071" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; lcf::rpg::SaveEventExecState &gt;</type>
+        <definition>std::vector&lt;lcf::rpg::SaveEventExecState&gt; Scene_Debug::state_ce</definition>
+        <argsstring></argsstring>
+        <name>state_ce</name>
+        <qualifiedname>Scene_Debug::state_ce</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="200" column="13" bodyfile="scene_debug.h" bodystart="200" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1a0cc96bd050ac609d456209ec8fa81386" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Debug::selected_state</definition>
+        <argsstring></argsstring>
+        <name>selected_state</name>
+        <qualifiedname>Scene_Debug::selected_state</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="205" column="5" bodyfile="scene_debug.h" bodystart="205" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___debug_1a2e8543cd70303cf80eb21bf07bd5c678" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Debug::selected_frame</definition>
+        <argsstring></argsstring>
+        <name>selected_frame</name>
+        <qualifiedname>Scene_Debug::selected_frame</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="206" column="5" bodyfile="scene_debug.h" bodystart="206" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_scene___debug_1abcb06f3ab55c0ee0e3124808cfe6a59f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Scene_Debug::Scene_Debug</definition>
+        <argsstring>()</argsstring>
+        <name>Scene_Debug</name>
+        <qualifiedname>Scene_Debug::Scene_Debug</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="41" column="1" bodyfile="scene_debug.cpp" bodystart="62" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1aa3f9e727b4b52afbcf4061c7c358e0c3" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::Start</definition>
+        <argsstring>() override</argsstring>
+        <name>Start</name>
+        <qualifiedname>Scene_Debug::Start</qualifiedname>
+        <reimplements refid="class_scene_1a31e0e1b9ce39bd9f5ec160835cc94d44">Start</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Start processing. This function is executed while the screen is faded out. All objects needed for the scene should be created here. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="43" column="6" bodyfile="scene_debug.cpp" bodystart="70" bodyend="89"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1abdf514e7f401b9dbe69829cada6a3965" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::vUpdate</definition>
+        <argsstring>() override</argsstring>
+        <name>vUpdate</name>
+        <qualifiedname>Scene_Debug::vUpdate</qualifiedname>
+        <reimplements refid="class_scene_1a8111b81e59b90b6711e9a39a507a32eb">vUpdate</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called every frame from Update. The scene should redraw all elements. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="44" column="6" bodyfile="scene_debug.cpp" bodystart="414" bodyend="684"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a62c4a4456bd331cafc4807f8f84d9225" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::TransitionIn</definition>
+        <argsstring>(SceneType prev_scene) override</argsstring>
+        <name>TransitionIn</name>
+        <qualifiedname>Scene_Debug::TransitionIn</qualifiedname>
+        <reimplements refid="class_scene_1a4a594aefe6bd86e17042acf7c76eb0e6">TransitionIn</reimplements>
+        <param>
+          <type><ref refid="class_scene_1adf61561da781541f6b9ec5590756b09e" kindref="member">SceneType</ref></type>
+          <declname>prev_scene</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Used to configure the transition upon starting or resuming the scene.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>prev_scene</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the scene we transitioned from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="45" column="6" bodyfile="scene_debug.cpp" bodystart="1200" bodyend="1202"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a59bcca899dae36388bc15b3705cc7919" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::TransitionOut</definition>
+        <argsstring>(SceneType next_scene) override</argsstring>
+        <name>TransitionOut</name>
+        <qualifiedname>Scene_Debug::TransitionOut</qualifiedname>
+        <reimplements refid="class_scene_1a64d36508ee1971f89c7d5e8513d777b1">TransitionOut</reimplements>
+        <param>
+          <type><ref refid="class_scene_1adf61561da781541f6b9ec5590756b09e" kindref="member">SceneType</ref></type>
+          <declname>next_scene</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Used to configure the transition upon ending or suspending the scene.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>next_scene</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the scene we will transition to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="46" column="6" bodyfile="scene_debug.cpp" bodystart="1204" bodyend="1206"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1afc8cc928d0299e9e591d1f1431b42087" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::UpdateRangeListWindow</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateRangeListWindow</name>
+        <qualifiedname>Scene_Debug::UpdateRangeListWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the range list window. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="51" column="6" bodyfile="scene_debug.cpp" bodystart="699" bodyend="888"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_scene___debug_1a68c6cee1d346957b238ef890d2ede2f1" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::ResetPrevIndices</definition>
+        <argsstring>()</argsstring>
+        <name>ResetPrevIndices</name>
+        <qualifiedname>Scene_Debug::ResetPrevIndices</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Resets the remembered indices </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="56" column="13" bodyfile="scene_debug.cpp" bodystart="66" bodyend="68"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_scene___debug_1a59af30156a321a283474104fb51a00b2" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::CreateRangeWindow</definition>
+        <argsstring>()</argsstring>
+        <name>CreateRangeWindow</name>
+        <qualifiedname>Scene_Debug::CreateRangeWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates Range window. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="98" column="6" bodyfile="scene_debug.cpp" bodystart="686" bodyend="697"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1aca1459f20e5f9e23ec7aa5a844eaf272" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::CreateVarListWindow</definition>
+        <argsstring>()</argsstring>
+        <name>CreateVarListWindow</name>
+        <qualifiedname>Scene_Debug::CreateVarListWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates variable list View window. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="101" column="6" bodyfile="scene_debug.cpp" bodystart="906" bodyend="914"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a8f87f8782176a6bfb591612549b63c97" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::CreateNumberInputWindow</definition>
+        <argsstring>()</argsstring>
+        <name>CreateNumberInputWindow</name>
+        <qualifiedname>Scene_Debug::CreateNumberInputWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates number input window. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="104" column="6" bodyfile="scene_debug.cpp" bodystart="916" bodyend="922"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a93e3a65840587aadcef58b5563c52b70" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::CreateChoicesWindow</definition>
+        <argsstring>()</argsstring>
+        <name>CreateChoicesWindow</name>
+        <qualifiedname>Scene_Debug::CreateChoicesWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates choices window. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="107" column="6" bodyfile="scene_debug.cpp" bodystart="924" bodyend="935"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a2570ef53000949160c0af57b1a74e4cd" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::CreateStringViewWindow</definition>
+        <argsstring>()</argsstring>
+        <name>CreateStringViewWindow</name>
+        <qualifiedname>Scene_Debug::CreateStringViewWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates string view window. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="110" column="6" bodyfile="scene_debug.cpp" bodystart="937" bodyend="941"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a1f47781fdcf26e5da9ec8ed7b1f1b6b9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::CreateInterpreterWindow</definition>
+        <argsstring>()</argsstring>
+        <name>CreateInterpreterWindow</name>
+        <qualifiedname>Scene_Debug::CreateInterpreterWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates interpreter window. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="113" column="6" bodyfile="scene_debug.cpp" bodystart="943" bodyend="947"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a80f439b046d3d6344c3fb57cdb5e743e" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Scene_Debug::GetLastPage</definition>
+        <argsstring>() const</argsstring>
+        <name>GetLastPage</name>
+        <qualifiedname>Scene_Debug::GetLastPage</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the last page for the current mode </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="116" column="5" bodyfile="scene_debug.cpp" bodystart="953" bodyend="999"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a4910a88f70fac0171d1d8ad3e6016c0b" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Scene_Debug::GetSelectedIndexFromRange</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSelectedIndexFromRange</name>
+        <qualifiedname>Scene_Debug::GetSelectedIndexFromRange</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the first item number for the selected range </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="119" column="5" bodyfile="scene_debug.cpp" bodystart="160" bodyend="162"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1ab2e65c191d15974472923ea45121cdfb" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Scene_Debug::GetSelectedIndexFromRange</definition>
+        <argsstring>(Window_VarList::Mode window_mode, int range_page, int range_index) const</argsstring>
+        <name>GetSelectedIndexFromRange</name>
+        <qualifiedname>Scene_Debug::GetSelectedIndexFromRange</qualifiedname>
+        <param>
+          <type><ref refid="class_window___var_list_1a49b4d5a512ed13f181674bd9dd154734" kindref="member">Window_VarList::Mode</ref></type>
+          <declname>window_mode</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>range_page</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>range_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="121" column="5" bodyfile="scene_debug.cpp" bodystart="164" bodyend="176"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a8a42081c03876e82fb91ec56edecd2bc" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::RestoreRangeSelectionFromSelectedValue</definition>
+        <argsstring>(int value)</argsstring>
+        <name>RestoreRangeSelectionFromSelectedValue</name>
+        <qualifiedname>Scene_Debug::RestoreRangeSelectionFromSelectedValue</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="123" column="6" bodyfile="scene_debug.cpp" bodystart="179" bodyend="197"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a0edbcd58b3d6ea19ab057d3878a58733" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Scene_Debug::GetNumMainMenuItems</definition>
+        <argsstring>() const</argsstring>
+        <name>GetNumMainMenuItems</name>
+        <qualifiedname>Scene_Debug::GetNumMainMenuItems</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="125" column="5" bodyfile="scene_debug.cpp" bodystart="949" bodyend="951"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a045786a84e890e558373d5306ade8f30" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::DoSwitch</definition>
+        <argsstring>()</argsstring>
+        <name>DoSwitch</name>
+        <qualifiedname>Scene_Debug::DoSwitch</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="127" column="6" bodyfile="scene_debug.cpp" bodystart="1009" bodyend="1017"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a75d035c8240a39c19c73147cb01567c6" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::DoVariable</definition>
+        <argsstring>()</argsstring>
+        <name>DoVariable</name>
+        <qualifiedname>Scene_Debug::DoVariable</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="128" column="6" bodyfile="scene_debug.cpp" bodystart="1019" bodyend="1026"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a78c35369ab30a30bb9c14353e027edb4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::DoGold</definition>
+        <argsstring>()</argsstring>
+        <name>DoGold</name>
+        <qualifiedname>Scene_Debug::DoGold</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="129" column="6" bodyfile="scene_debug.cpp" bodystart="1028" bodyend="1033"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1ad027ef33aab520735b49a70940788abe" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::DoItem</definition>
+        <argsstring>()</argsstring>
+        <name>DoItem</name>
+        <qualifiedname>Scene_Debug::DoItem</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="130" column="6" bodyfile="scene_debug.cpp" bodystart="1035" bodyend="1044"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a37fb5edd57106c48ee374a6f986eeb61" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::DoBattle</definition>
+        <argsstring>()</argsstring>
+        <name>DoBattle</name>
+        <qualifiedname>Scene_Debug::DoBattle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="131" column="6" bodyfile="scene_debug.cpp" bodystart="1046" bodyend="1067"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a8861443478a1edcbf110a976a4421ce8" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::DoMap</definition>
+        <argsstring>()</argsstring>
+        <name>DoMap</name>
+        <qualifiedname>Scene_Debug::DoMap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="132" column="6" bodyfile="scene_debug.cpp" bodystart="1069" bodyend="1078"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1ae08fd38e9cba6791ac8e90bc7680ec03" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::DoFullHeal</definition>
+        <argsstring>()</argsstring>
+        <name>DoFullHeal</name>
+        <qualifiedname>Scene_Debug::DoFullHeal</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="133" column="6" bodyfile="scene_debug.cpp" bodystart="1080" bodyend="1097"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1ae5a2f2f3dac559bb3e933ea59f81bb08" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::DoLevel</definition>
+        <argsstring>()</argsstring>
+        <name>DoLevel</name>
+        <qualifiedname>Scene_Debug::DoLevel</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="134" column="6" bodyfile="scene_debug.cpp" bodystart="1099" bodyend="1112"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a70bc5ceca95db607d8206e8bfc70ebc7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::DoMoveSpeed</definition>
+        <argsstring>()</argsstring>
+        <name>DoMoveSpeed</name>
+        <qualifiedname>Scene_Debug::DoMoveSpeed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="135" column="6" bodyfile="scene_debug.cpp" bodystart="1114" bodyend="1118"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a51374b1f685eb0412842d4d0726a0462" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::DoCallCommonEvent</definition>
+        <argsstring>()</argsstring>
+        <name>DoCallCommonEvent</name>
+        <qualifiedname>Scene_Debug::DoCallCommonEvent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="136" column="6" bodyfile="scene_debug.cpp" bodystart="1120" bodyend="1138"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a572b188d9d6860a929e3ebbce4676637" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::DoCallMapEvent</definition>
+        <argsstring>()</argsstring>
+        <name>DoCallMapEvent</name>
+        <qualifiedname>Scene_Debug::DoCallMapEvent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="137" column="6" bodyfile="scene_debug.cpp" bodystart="1140" bodyend="1167"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a0ab8bcab0828352e012d067dbbfb1e73" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::DoCallBattleEvent</definition>
+        <argsstring>()</argsstring>
+        <name>DoCallBattleEvent</name>
+        <qualifiedname>Scene_Debug::DoCallBattleEvent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="138" column="6" bodyfile="scene_debug.cpp" bodystart="1169" bodyend="1190"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a419c986d4b060c7521df8ffd861f2398" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::DoOpenMenu</definition>
+        <argsstring>()</argsstring>
+        <name>DoOpenMenu</name>
+        <qualifiedname>Scene_Debug::DoOpenMenu</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="139" column="6" bodyfile="scene_debug.cpp" bodystart="1192" bodyend="1198"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a150859c51c6319cc3712a264bd6f2fb7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>StackFrame &amp;</type>
+        <definition>Scene_Debug::StackFrame &amp; Scene_Debug::GetFrame</definition>
+        <argsstring>(int n=0)</argsstring>
+        <name>GetFrame</name>
+        <qualifiedname>Scene_Debug::GetFrame</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="163" column="12" bodyfile="scene_debug.cpp" bodystart="91" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a8054573a39fe7299c3c625403b1feeea" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const StackFrame &amp;</type>
+        <definition>const Scene_Debug::StackFrame &amp; Scene_Debug::GetFrame</definition>
+        <argsstring>(int n=0) const</argsstring>
+        <name>GetFrame</name>
+        <qualifiedname>Scene_Debug::GetFrame</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="164" column="18" bodyfile="scene_debug.cpp" bodystart="97" bodyend="101"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a2b079fef1cfde6c9160096102e5c2d9b" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Scene_Debug::GetStackSize</definition>
+        <argsstring>() const</argsstring>
+        <name>GetStackSize</name>
+        <qualifiedname>Scene_Debug::GetStackSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="166" column="5" bodyfile="scene_debug.cpp" bodystart="103" bodyend="105"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a6f015bd4c39b17e749c59f2590090ffc" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::Push</definition>
+        <argsstring>(UiMode ui)</argsstring>
+        <name>Push</name>
+        <qualifiedname>Scene_Debug::Push</qualifiedname>
+        <param>
+          <type><ref refid="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85" kindref="member">UiMode</ref></type>
+          <declname>ui</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="168" column="6" bodyfile="scene_debug.cpp" bodystart="145" bodyend="158"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a530360a82a9228df1099dbc4fff999f7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::Pop</definition>
+        <argsstring>()</argsstring>
+        <name>Pop</name>
+        <qualifiedname>Scene_Debug::Pop</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="169" column="6" bodyfile="scene_debug.cpp" bodystart="336" bodyend="412"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1aaf39a08b89f77b31e8a041a7d611d940" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::SetupUiRangeList</definition>
+        <argsstring>()</argsstring>
+        <name>SetupUiRangeList</name>
+        <qualifiedname>Scene_Debug::SetupUiRangeList</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="171" column="6" bodyfile="scene_debug.cpp" bodystart="199" bodyend="210"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a85a495d4d1ad6cf63bf4fdc653754dc0" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::PushUiRangeList</definition>
+        <argsstring>()</argsstring>
+        <name>PushUiRangeList</name>
+        <qualifiedname>Scene_Debug::PushUiRangeList</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="172" column="6" bodyfile="scene_debug.cpp" bodystart="212" bodyend="225"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1abb64cfa5393a1013b7b7ee7834530408" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::PushUiVarList</definition>
+        <argsstring>()</argsstring>
+        <name>PushUiVarList</name>
+        <qualifiedname>Scene_Debug::PushUiVarList</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="173" column="6" bodyfile="scene_debug.cpp" bodystart="227" bodyend="243"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a5ce167a90d986b41833bc77e556de63c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::PushUiNumberInput</definition>
+        <argsstring>(int init_value, int digits, bool show_operator)</argsstring>
+        <name>PushUiNumberInput</name>
+        <qualifiedname>Scene_Debug::PushUiNumberInput</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>init_value</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>digits</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>show_operator</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="174" column="6" bodyfile="scene_debug.cpp" bodystart="245" bodyend="257"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1ac9bf7c8d5bc70cf7f760fa7a31d62185" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::PushUiChoices</definition>
+        <argsstring>(std::vector&lt; std::string &gt; choices, std::vector&lt; bool &gt; choices_enabled)</argsstring>
+        <name>PushUiChoices</name>
+        <qualifiedname>Scene_Debug::PushUiChoices</qualifiedname>
+        <param>
+          <type>std::vector&lt; std::string &gt;</type>
+          <declname>choices</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; bool &gt;</type>
+          <declname>choices_enabled</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="175" column="6" bodyfile="scene_debug.cpp" bodystart="259" bodyend="275"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a586aca4c7a11d7463950d0db98c57730" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::PushUiStringView</definition>
+        <argsstring>()</argsstring>
+        <name>PushUiStringView</name>
+        <qualifiedname>Scene_Debug::PushUiStringView</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="176" column="6" bodyfile="scene_debug.cpp" bodystart="277" bodyend="309"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1aff771b4f571aa2dab594074c54e02be5" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::PushUiInterpreterView</definition>
+        <argsstring>()</argsstring>
+        <name>PushUiInterpreterView</name>
+        <qualifiedname>Scene_Debug::PushUiInterpreterView</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="177" column="6" bodyfile="scene_debug.cpp" bodystart="311" bodyend="333"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a0fff62df25abfa2e1080bf27768ca9a8" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_window___var_list_1a49b4d5a512ed13f181674bd9dd154734" kindref="member">Window_VarList::Mode</ref></type>
+        <definition>Window_VarList::Mode Scene_Debug::GetWindowMode</definition>
+        <argsstring>() const</argsstring>
+        <name>GetWindowMode</name>
+        <qualifiedname>Scene_Debug::GetWindowMode</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="179" column="22" bodyfile="scene_debug.cpp" bodystart="107" bodyend="109"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a689339c7de072b81bbb29f55e2f1f6bf" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::UpdateFrameValueFromUi</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateFrameValueFromUi</name>
+        <qualifiedname>Scene_Debug::UpdateFrameValueFromUi</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="182" column="6" bodyfile="scene_debug.cpp" bodystart="111" bodyend="143"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a756f1a2e6cfaf95bf52eef757852f8d6" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::UpdateDetailWindow</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateDetailWindow</name>
+        <qualifiedname>Scene_Debug::UpdateDetailWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="183" column="6" bodyfile="scene_debug.cpp" bodystart="890" bodyend="896"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a0127d11094f91232feba560d27c08411" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::RefreshDetailWindow</definition>
+        <argsstring>()</argsstring>
+        <name>RefreshDetailWindow</name>
+        <qualifiedname>Scene_Debug::RefreshDetailWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="184" column="6" bodyfile="scene_debug.cpp" bodystart="898" bodyend="904"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1af306b7694b3ee6c99e1650571cb432ec" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Debug::IsValidMapId</definition>
+        <argsstring>(int map_id) const</argsstring>
+        <name>IsValidMapId</name>
+        <qualifiedname>Scene_Debug::IsValidMapId</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>map_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="186" column="6" bodyfile="scene_debug.cpp" bodystart="1001" bodyend="1007"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1ad13efa8b02938b610a523d73c64e9d02" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::UpdateArrows</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateArrows</name>
+        <qualifiedname>Scene_Debug::UpdateArrows</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="188" column="6" bodyfile="scene_debug.cpp" bodystart="1208" bodyend="1218"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a2db3494b75443cfd5a3412ac5d1595a5" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::UpdateInterpreterWindow</definition>
+        <argsstring>(int index)</argsstring>
+        <name>UpdateInterpreterWindow</name>
+        <qualifiedname>Scene_Debug::UpdateInterpreterWindow</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="193" column="6" bodyfile="scene_debug.cpp" bodystart="1244" bodyend="1279"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1aac9f95b19f701edf0fdcb6f5a8089b26" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>lcf::rpg::SaveEventExecFrame &amp;</type>
+        <definition>lcf::rpg::SaveEventExecFrame &amp; Scene_Debug::GetSelectedInterpreterFrameFromUiState</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSelectedInterpreterFrameFromUiState</name>
+        <qualifiedname>Scene_Debug::GetSelectedInterpreterFrameFromUiState</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="194" column="30" bodyfile="scene_debug.cpp" bodystart="1281" bodyend="1309"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___debug_1a3f3c57d09f1f37795b5288bb9fdb32d3" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Debug::CacheBackgroundInterpreterStates</definition>
+        <argsstring>()</argsstring>
+        <name>CacheBackgroundInterpreterStates</name>
+        <qualifiedname>Scene_Debug::CacheBackgroundInterpreterStates</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="195" column="6" bodyfile="scene_debug.cpp" bodystart="1220" bodyend="1242"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_scene___debug_1aaed44dc682889004982a6d5d370f3298" prot="private" static="yes" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_window___var_list_1a49b4d5a512ed13f181674bd9dd154734" kindref="member">Window_VarList::Mode</ref></type>
+        <definition>Window_VarList::Mode Scene_Debug::GetWindowMode</definition>
+        <argsstring>(Mode mode)</argsstring>
+        <name>GetWindowMode</name>
+        <qualifiedname>Scene_Debug::GetWindowMode</qualifiedname>
+        <param>
+          <type><ref refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58c" kindref="member">Mode</ref></type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_debug.h" line="180" column="39" bodyfile="scene_debug.h" bodystart="210" bodyend="235"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_scene" kindref="compound">Scene</ref> Equip class. Displays the equipment of a hero. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="1">
+        <label>Scene_Debug</label>
+        <link refid="class_scene___debug"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="1">
+        <label>Scene_Debug</label>
+        <link refid="class_scene___debug"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="scene_debug.h" line="35" column="1" bodyfile="scene_debug.h" bodystart="35" bodyend="208"/>
+    <listofallmembers>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea525fafbc764da0de39c27dea3ffeb3d0" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>ActorTarget</name></member>
+      <member refid="class_scene___debug_1a6d2e82b1dd2f7ecdaae301dc6e1883bd" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>arrow_frame</name></member>
+      <member refid="class_scene_1a6091a98761b264c35a150bc28ee4a505" prot="protected" virt="non-virtual"><scope>Scene_Debug</scope><name>async_continuation</name></member>
+      <member refid="class_scene_1a30c5c46dd99e4825df2d69518748c8ac" prot="protected" virt="non-virtual"><scope>Scene_Debug</scope><name>AsyncContinuation</name></member>
+      <member refid="class_scene_1a40aec0ae8ed38526531911eea247398b" prot="protected" virt="non-virtual"><scope>Scene_Debug</scope><name>AsyncNext</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea705f705b65bac2369f3cb10f5e89453a" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Battle</name></member>
+      <member refid="class_scene___debug_1a3f3c57d09f1f37795b5288bb9fdb32d3" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>CacheBackgroundInterpreterStates</name></member>
+      <member refid="class_scene___debug_1a61c473eb9239ccfa6fe6bd2715a85ad3" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>ce</name></member>
+      <member refid="class_scene_1a91e354ab86259cd3bc94c094036280da" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>CheckSceneExit</name></member>
+      <member refid="class_scene___debug_1aac57321e5ae5ed1801e017b00efd0200" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>choice_window_width</name></member>
+      <member refid="class_scene___debug_1aa0ee08a0144d0306ef450f5891fd72e2" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>choices_window</name></member>
+      <member refid="class_scene_1ac612b681d0de7c100f580b4bc446887b" prot="public" virt="virtual"><scope>Scene_Debug</scope><name>Continue</name></member>
+      <member refid="class_scene___debug_1a93e3a65840587aadcef58b5563c52b70" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>CreateChoicesWindow</name></member>
+      <member refid="class_scene___debug_1a1f47781fdcf26e5da9ec8ed7b1f1b6b9" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>CreateInterpreterWindow</name></member>
+      <member refid="class_scene___debug_1a8f87f8782176a6bfb591612549b63c97" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>CreateNumberInputWindow</name></member>
+      <member refid="class_scene___debug_1a59af30156a321a283474104fb51a00b2" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>CreateRangeWindow</name></member>
+      <member refid="class_scene___debug_1a2570ef53000949160c0af57b1a74e4cd" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>CreateStringViewWindow</name></member>
+      <member refid="class_scene___debug_1aca1459f20e5f9e23ec7aa5a844eaf272" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>CreateVarListWindow</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea418b00b4c130e675ac7512610ed3f473" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Debug</name></member>
+      <member refid="class_scene___debug_1a37fb5edd57106c48ee374a6f986eeb61" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>DoBattle</name></member>
+      <member refid="class_scene___debug_1a0ab8bcab0828352e012d067dbbfb1e73" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>DoCallBattleEvent</name></member>
+      <member refid="class_scene___debug_1a51374b1f685eb0412842d4d0726a0462" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>DoCallCommonEvent</name></member>
+      <member refid="class_scene___debug_1a572b188d9d6860a929e3ebbce4676637" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>DoCallMapEvent</name></member>
+      <member refid="class_scene___debug_1ae08fd38e9cba6791ac8e90bc7680ec03" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>DoFullHeal</name></member>
+      <member refid="class_scene___debug_1a78c35369ab30a30bb9c14353e027edb4" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>DoGold</name></member>
+      <member refid="class_scene___debug_1ad027ef33aab520735b49a70940788abe" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>DoItem</name></member>
+      <member refid="class_scene___debug_1ae5a2f2f3dac559bb3e933ea59f81bb08" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>DoLevel</name></member>
+      <member refid="class_scene___debug_1a8861443478a1edcbf110a976a4421ce8" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>DoMap</name></member>
+      <member refid="class_scene___debug_1a70bc5ceca95db607d8206e8bfc70ebc7" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>DoMoveSpeed</name></member>
+      <member refid="class_scene___debug_1a419c986d4b060c7521df8ffd861f2398" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>DoOpenMenu</name></member>
+      <member refid="class_scene___debug_1a045786a84e890e558373d5306ade8f30" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>DoSwitch</name></member>
+      <member refid="class_scene___debug_1a75d035c8240a39c19c73147cb01567c6" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>DoVariable</name></member>
+      <member refid="class_scene_1a1fcc0d5308270cc967966da917957bdf" prot="public" virt="virtual"><scope>Scene_Debug</scope><name>DrawBackground</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca7f1f49ef2d7720a994e0bcc896c02350" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eBattle</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58cae85867cc49fd7695684f046ca3639fcd" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eCallBattleEvent</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58cadfd5a565ecc6dcdbd97e8fec5bde3f09" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eCallCommonEvent</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58caa4cf5988daddca2cd2f3991d80ee49b5" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eCallMapEvent</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58cac840e08b57ff0e157b14efa8d5d4c685" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eFullHeal</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca5f36be5c51153655c91d824a18e26b35" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eGold</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58caa751159bba0ca42a1cebe274eb4b2b2e" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eInterpreter</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca81112774b88d339ae752086f0843bc5a" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eItem</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58cafb87aa731add9a7caa1227b64813b1a9" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eLastMainMenuOption</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58cacc8b47a48435a99a488703cf0ab6ae75" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eLevel</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58caeb9902def004f97cbc47a1110e7babcb" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eLoad</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca9a794ee12bb004fdeea7bd4a6d4d1329" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eMain</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca4ad8c64481b4a24a2ccba92b9b0cc4d1" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eMap</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58cac3f176205ec38b9082b48010d413bb0c" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eMoveSpeed</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaee9d4a8ee40ca6e8310597315e07b978" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>End</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca3c71339481940fcef1849675dff63e0f" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eOpenMenu</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea302637f5f0048f4433949f10fc6c8f58" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Equip</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca51d51ed88fbce9f12ee64f077828760c" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eSave</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca32120281826fd0c66ffaf06ad2abb462" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eString</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58ca9cad0fb6d75e93227d68cae588f95c59" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eSwitch</name></member>
+      <member refid="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85a259f9108eaa06cdc5b28fbf7181dc91e" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eUiChoices</name></member>
+      <member refid="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85aca3df344f4c38fd4c609ed95ed62b3ef" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eUiInterpreterView</name></member>
+      <member refid="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85aadb11e95808cf9e7707dcc76cf1a19aa" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eUiMain</name></member>
+      <member refid="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85ab37730f297d19c217852c162810488dc" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eUiNumberInput</name></member>
+      <member refid="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85ac14e97802f5ac6a720896ba879e82c9e" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eUiRangeList</name></member>
+      <member refid="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85aab91e0e4d9de9719014985cff6b6edb1" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eUiStringView</name></member>
+      <member refid="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85a8ab0e5a18ba03495362230cbcf3bfc8a" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eUiVarList</name></member>
+      <member refid="class_scene___debug_1a6be913c6993742fea43824da230f54e0" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>ev</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58cace9744d7266b0234a612d5bd3dbe097b" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>eVariable</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea85a7c5a46a3ca806d41de80e68da80e1" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>File</name></member>
+      <member refid="class_scene_1aa8b96a758c0f1ea4cf28808089ff7123" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Find</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea895a9b137f215eee5613d6a546275f5b" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>GameBrowser</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ead885a8fd6d0f378a99ee56a676029bca" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Gameover</name></member>
+      <member refid="class_scene_1ad837b22dff59e9c21f31204d958a24d7" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>GetDrawableList</name></member>
+      <member refid="class_scene___debug_1a150859c51c6319cc3712a264bd6f2fb7" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>GetFrame</name></member>
+      <member refid="class_scene___debug_1a8054573a39fe7299c3c625403b1feeea" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>GetFrame</name></member>
+      <member refid="class_scene___debug_1a80f439b046d3d6344c3fb57cdb5e743e" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>GetLastPage</name></member>
+      <member refid="class_scene___debug_1a0edbcd58b3d6ea19ab057d3878a58733" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>GetNumMainMenuItems</name></member>
+      <member refid="class_scene_1ab9edda06ab170512d308c0c9fb38056b" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>GetRequestedSceneType</name></member>
+      <member refid="class_scene___debug_1a4910a88f70fac0171d1d8ad3e6016c0b" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>GetSelectedIndexFromRange</name></member>
+      <member refid="class_scene___debug_1ab2e65c191d15974472923ea45121cdfb" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>GetSelectedIndexFromRange</name></member>
+      <member refid="class_scene___debug_1aac9f95b19f701edf0fdcb6f5a8089b26" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>GetSelectedInterpreterFrameFromUiState</name></member>
+      <member refid="class_scene___debug_1a2b079fef1cfde6c9160096102e5c2d9b" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>GetStackSize</name></member>
+      <member refid="class_scene___debug_1a0fff62df25abfa2e1080bf27768ca9a8" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>GetWindowMode</name></member>
+      <member refid="class_scene___debug_1aaed44dc682889004982a6d5d370f3298" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>GetWindowMode</name></member>
+      <member refid="class_scene_1a203eba321fedc8a26c8802f4b9a84e01" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>HasDelayFrames</name></member>
+      <member refid="class_scene_1a1acd1e4345dfecb30c7c35f6d3e8130b" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>HasRequestedScene</name></member>
+      <member refid="class_scene_1ac348fc3b0beb12093144a1f03d81449d" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>instance</name></member>
+      <member refid="class_scene___debug_1a0461326576796c67c2f4b223c8ad76ec" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>interpreter_states_cached</name></member>
+      <member refid="class_scene___debug_1a1d9adc443a35386516c7b5f1fd0dbec4" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>interpreter_window</name></member>
+      <member refid="class_scene_1a5a8c37138fc3a2dda1e0e077b472ab7b" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>IsAsyncPending</name></member>
+      <member refid="class_scene_1a0e0d605d080b286e73a07587d72dfe70" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>IsInitialized</name></member>
+      <member refid="class_scene___debug_1af306b7694b3ee6c99e1650571cb432ec" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>IsValidMapId</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea70390d274c6e9c167ac095faaa160c7c" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Item</name></member>
+      <member refid="class_scene_1a119de9e0876281a6eee15c7d15618d87" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>kReturnTitleDelayFrames</name></member>
+      <member refid="class_scene_1a563850d0f01381b76420c22ac335a103" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>kStartGameDelayFrames</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea16a3c57786ccf0d21f72a774d43957ab" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>LanguageMenu</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eac3db6576c8c7dc6e5d007d989f5022ea" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Load</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea4615e1aa6a92b7860d342a6aaf642611" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Logo</name></member>
+      <member refid="class_scene_1ae7f0f916c29e55b282dfe4ae522d2096" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>MainFunction</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eae39f3115e47e2cc1a161ab73db4819a6" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Map</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea2412b59539890965aeb61a22141a781b" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Menu</name></member>
+      <member refid="class_scene___debug_1a02614f70dc24ae6e33b0cef61450b58c" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Mode</name></member>
+      <member refid="class_scene___debug_1aaa8e6ebea617b0e555d1fd7af2b606ea" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>mode</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea05b82d049724f3ca8838b9800e8f3f3e" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Name</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea352ebbd390cdf4d31336a52af54fca32" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Null</name></member>
+      <member refid="class_scene___debug_1aaf3c17ec7ea7a28e61468c165656b1f1" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>numberinput_window</name></member>
+      <member refid="class_scene_1a71555af047b54446dfc4fd2b0e6f78bd" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>old_instances</name></member>
+      <member refid="class_scene_1a7388cece257333bb2c98a202135adf51" prot="public" virt="virtual"><scope>Scene_Debug</scope><name>OnEventHpChanged</name></member>
+      <member refid="class_scene_1a80c10e8f0c10921300be168e67ddf3ed" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>OnFinishAsync</name></member>
+      <member refid="class_scene_1a05be417a18748b38a3cd18566edd6d2d" prot="public" virt="virtual"><scope>Scene_Debug</scope><name>OnPartyChanged</name></member>
+      <member refid="class_scene_1ac6fa936fd2dc55f41889400d36d855e6" prot="public" virt="virtual"><scope>Scene_Debug</scope><name>OnTranslationChanged</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea26ab4613edf5d94d74a5e1ad4ec37fa3" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Order</name></member>
+      <member refid="class_scene_1a29b08fddcde74b786ec01129847454ba" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Peek</name></member>
+      <member refid="class_scene___debug_1a530360a82a9228df1099dbc4fff999f7" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>Pop</name></member>
+      <member refid="class_scene_1ac657b33df6c856847d87aa976ae9a9eb" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>PopUntil</name></member>
+      <member refid="class_scene___debug_1a6f015bd4c39b17e749c59f2590090ffc" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>Push</name></member>
+      <member refid="class_scene_1a61c10b38185eac9925da70d7fb915890" prot="public" virt="non-virtual" ambiguityscope="Scene::"><scope>Scene_Debug</scope><name>Push</name></member>
+      <member refid="class_scene_1afb9e8385131d0524f0d9afa946096709" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>PushTitleScene</name></member>
+      <member refid="class_scene___debug_1ac9bf7c8d5bc70cf7f760fa7a31d62185" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>PushUiChoices</name></member>
+      <member refid="class_scene___debug_1aff771b4f571aa2dab594074c54e02be5" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>PushUiInterpreterView</name></member>
+      <member refid="class_scene___debug_1a5ce167a90d986b41833bc77e556de63c" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>PushUiNumberInput</name></member>
+      <member refid="class_scene___debug_1a85a495d4d1ad6cf63bf4fdc653754dc0" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>PushUiRangeList</name></member>
+      <member refid="class_scene___debug_1a586aca4c7a11d7463950d0db98c57730" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>PushUiStringView</name></member>
+      <member refid="class_scene___debug_1abb64cfa5393a1013b7b7ee7834530408" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>PushUiVarList</name></member>
+      <member refid="class_scene___debug_1adf03a917021263f97cd0d922e340297f" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>range_index</name></member>
+      <member refid="class_scene___debug_1ac90f0e70ccb2a2a75bb29d8c048602a0" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>range_page</name></member>
+      <member refid="class_scene___debug_1ab55050f6da7b3234cc57e834fe4fb1be" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>range_window</name></member>
+      <member refid="class_scene_1a5ecd59170e0a54d6216ccebd76702dd6" prot="public" virt="virtual"><scope>Scene_Debug</scope><name>Refresh</name></member>
+      <member refid="class_scene___debug_1a0127d11094f91232feba560d27c08411" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>RefreshDetailWindow</name></member>
+      <member refid="class_scene___debug_1a68c6cee1d346957b238ef890d2ede2f1" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>ResetPrevIndices</name></member>
+      <member refid="class_scene___debug_1a8a42081c03876e82fb91ec56edecd2bc" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>RestoreRangeSelectionFromSelectedValue</name></member>
+      <member refid="class_scene_1a902f2993901187b05d8e42188b7e8156" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>ReturnToTitleScene</name></member>
+      <member refid="class_scene_1a495973012445184e00a31dd31e217b7e" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>rpgRtSceneFromSceneType</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc195dbdbaa61f7b6b3ecb3236592d17" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Save</name></member>
+      <member refid="class_scene_1ad10176d75a9cc0da56626f682d083507" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Scene</name></member>
+      <member refid="class_scene___debug_1abcb06f3ab55c0ee0e3124808cfe6a59f" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Scene_Debug</name></member>
+      <member refid="class_scene_1a300d6b1274f226a1e69a552858414ba3" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>scene_names</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea7484d8e1128440652139839089e85604" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>SceneMax</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09e" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>SceneType</name></member>
+      <member refid="class_scene___debug_1a2e8543cd70303cf80eb21bf07bd5c678" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>selected_frame</name></member>
+      <member refid="class_scene___debug_1a0cc96bd050ac609d456209ec8fa81386" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>selected_state</name></member>
+      <member refid="class_scene_1a40c9e3ffb2917b1e3880e2ff5733b1b6" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>SetDelayFrames</name></member>
+      <member refid="class_scene_1a9f641fa0061cebf4294009cb1d860cbe" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>SetRequestedScene</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc93e55e9b1ff9b798d1fb0ee22abab0" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Settings</name></member>
+      <member refid="class_scene___debug_1aaf39a08b89f77b31e8a041a7d611d940" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>SetupUiRangeList</name></member>
+      <member refid="class_scene_1a287b3a8a6fdaa0eb6e9b43ae7c774c8b" prot="protected" virt="non-virtual"><scope>Scene_Debug</scope><name>SetUseSharedDrawables</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea40484f6fb0aae90d36b27e9f7abfee9c" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Shop</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafd156984a4436ea28706dc0c7873c8fc" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Skill</name></member>
+      <member refid="class_scene___debug_1a82dc8cd4ef34206736abe296127b021b" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>stack</name></member>
+      <member refid="class_scene___debug_1a04e142a7410dacbe3921e6f513e699f1" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>stack_index</name></member>
+      <member refid="class_scene___debug_1aa3f9e727b4b52afbcf4061c7c358e0c3" prot="public" virt="virtual"><scope>Scene_Debug</scope><name>Start</name></member>
+      <member refid="class_scene___debug_1adbb86dd8bd3f7e9c565a79a1f11e0071" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>state_ce</name></member>
+      <member refid="class_scene___debug_1aef35ca1366838b48ca9fe639145507b8" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>state_ev</name></member>
+      <member refid="class_scene___debug_1a6774b7cbd3373e34e9dcaf7525395085" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>state_interpreter</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eabe141c1b0922ac825b014da56774c2dc" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Status</name></member>
+      <member refid="class_scene___debug_1a7e55e8398bf3612a1159bbb174cf3170" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>stringview_window</name></member>
+      <member refid="class_scene_1ac6413c7a3e405e57e415bec3c3096f26" prot="public" virt="virtual"><scope>Scene_Debug</scope><name>Suspend</name></member>
+      <member refid="class_scene_1a2ac1629e5d081accb6b3d2682c8aac18" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>TakeRequestedScene</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eadce8e1c84d0a06f5a005b24a6e602424" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Teleport</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaf3446103059a7e7c2333b8e0f81377d0" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Title</name></member>
+      <member refid="class_scene_1a1e97664b3509e2eb64b1aa621634703c" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>TransferDrawablesFrom</name></member>
+      <member refid="class_scene___debug_1a62c4a4456bd331cafc4807f8f84d9225" prot="public" virt="virtual"><scope>Scene_Debug</scope><name>TransitionIn</name></member>
+      <member refid="class_scene___debug_1a59bcca899dae36388bc15b3705cc7919" prot="public" virt="virtual"><scope>Scene_Debug</scope><name>TransitionOut</name></member>
+      <member refid="class_scene_1a8320189e28f3918a4f0200aedb97ccb5" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>type</name></member>
+      <member refid="class_scene___debug_1a345d6c433f8a5cdc2fac7976b51dee85" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>UiMode</name></member>
+      <member refid="class_scene_1a71a71b4f7752b853ff8032b0941a9d8d" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>Update</name></member>
+      <member refid="class_scene___debug_1ad13efa8b02938b610a523d73c64e9d02" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>UpdateArrows</name></member>
+      <member refid="class_scene_1a85503cbb64a2f88b227d926768ed0100" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>UpdateDelayFrames</name></member>
+      <member refid="class_scene___debug_1a756f1a2e6cfaf95bf52eef757852f8d6" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>UpdateDetailWindow</name></member>
+      <member refid="class_scene___debug_1a689339c7de072b81bbb29f55e2f1f6bf" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>UpdateFrameValueFromUi</name></member>
+      <member refid="class_scene_1affa07b015ecebcf18cc0d652ab9a2fd4" prot="public" virt="virtual"><scope>Scene_Debug</scope><name>UpdateGraphics</name></member>
+      <member refid="class_scene___debug_1a2db3494b75443cfd5a3412ac5d1595a5" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>UpdateInterpreterWindow</name></member>
+      <member refid="class_scene___debug_1afc8cc928d0299e9e591d1f1431b42087" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>UpdateRangeListWindow</name></member>
+      <member refid="class_scene_1ac41adc09c7fed6609df594bf5bcdc1c5" prot="public" virt="non-virtual"><scope>Scene_Debug</scope><name>UsesSharedDrawables</name></member>
+      <member refid="class_scene___debug_1aa5ac1948728ccbd3564765f9fa272ea6" prot="private" virt="non-virtual"><scope>Scene_Debug</scope><name>var_window</name></member>
+      <member refid="class_scene___debug_1abdf514e7f401b9dbe69829cada6a3965" prot="public" virt="virtual"><scope>Scene_Debug</scope><name>vUpdate</name></member>
+      <member refid="class_scene_1aa0a5be58e2ee2d1fdafc5fb46b5e661e" prot="public" virt="virtual"><scope>Scene_Debug</scope><name>~Scene</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

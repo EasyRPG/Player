@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1metadata_1_1json_1_1options" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::metadata::json::options</compoundname>
+    <includes refid="json_8hpp" local="no">json.hpp</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structleasy_1_1metadata_1_1json_1_1options_1a7afdecc9fb1bcbafaa90ac07c79fbf49" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t leasy::metadata::json::options::indent</definition>
+        <argsstring></argsstring>
+        <name>indent</name>
+        <qualifiedname>leasy::metadata::json::options::indent</qualifiedname>
+        <initializer>= 2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/json.hpp" line="33" column="13" bodyfile="leasy/metadata/json.hpp" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1metadata_1_1json_1_1options_1ae9ac3f17194178c5c4ab69a61774078a" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool leasy::metadata::json::options::newlines</definition>
+        <argsstring></argsstring>
+        <name>newlines</name>
+        <qualifiedname>leasy::metadata::json::options::newlines</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/json.hpp" line="34" column="13" bodyfile="leasy/metadata/json.hpp" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1metadata_1_1json_1_1options_1a802619a04675ae12d92296206c7c14de" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool leasy::metadata::json::options::space_colon</definition>
+        <argsstring></argsstring>
+        <name>space_colon</name>
+        <qualifiedname>leasy::metadata::json::options::space_colon</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/json.hpp" line="35" column="13" bodyfile="leasy/metadata/json.hpp" bodystart="35" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/metadata/json.hpp" line="32" column="3" bodyfile="leasy/metadata/json.hpp" bodystart="32" bodyend="36"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1metadata_1_1json_1_1options_1a7afdecc9fb1bcbafaa90ac07c79fbf49" prot="public" virt="non-virtual"><scope>leasy::metadata::json::options</scope><name>indent</name></member>
+      <member refid="structleasy_1_1metadata_1_1json_1_1options_1ae9ac3f17194178c5c4ab69a61774078a" prot="public" virt="non-virtual"><scope>leasy::metadata::json::options</scope><name>newlines</name></member>
+      <member refid="structleasy_1_1metadata_1_1json_1_1options_1a802619a04675ae12d92296206c7c14de" prot="public" virt="non-virtual"><scope>leasy::metadata::json::options</scope><name>space_colon</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

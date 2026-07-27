@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_instrumentation_1_1_frame_scope" kind="class" language="C++" prot="public">
+    <compoundname>Instrumentation::FrameScope</compoundname>
+    <includes refid="instrumentation_8h" local="no">instrumentation.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_instrumentation_1_1_frame_scope_1ad1771fa70afba2e42c311c70d65af36b" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Instrumentation::FrameScope::begun</definition>
+        <argsstring></argsstring>
+        <name>begun</name>
+        <qualifiedname>Instrumentation::FrameScope::begun</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="instrumentation.h" line="74" column="6" bodyfile="instrumentation.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_instrumentation_1_1_frame_scope_1ab564b22c9b37091e3f6c14f97c9e7b3b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Instrumentation::FrameScope::FrameScope</definition>
+        <argsstring>(bool frame_begin=true)</argsstring>
+        <name>FrameScope</name>
+        <qualifiedname>Instrumentation::FrameScope::FrameScope</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>frame_begin</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Create a <ref refid="class_instrumentation_1_1_frame_scope" kindref="compound">FrameScope</ref></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>frame_begin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, call <ref refid="class_instrumentation_1_1_frame_scope_1a904c3e9c74e989046d572a85b8404e46" kindref="member">Begin()</ref> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="instrumentation.h" line="54" column="1" bodyfile="instrumentation.h" bodystart="96" bodyend="101"/>
+      </memberdef>
+      <memberdef kind="function" id="class_instrumentation_1_1_frame_scope_1ab5e70f31032dfd79f5aa5e4768a9afd7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Instrumentation::FrameScope::FrameScope</definition>
+        <argsstring>(const FrameScope &amp;)=delete</argsstring>
+        <name>FrameScope</name>
+        <qualifiedname>Instrumentation::FrameScope::FrameScope</qualifiedname>
+        <param>
+          <type>const FrameScope &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="instrumentation.h" line="56" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_instrumentation_1_1_frame_scope_1a5dde466d81d651f6657fec35b3f76b8e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_instrumentation_1_1_frame_scope_1ab564b22c9b37091e3f6c14f97c9e7b3b" kindref="member">FrameScope</ref> &amp;</type>
+        <definition>FrameScope &amp; Instrumentation::FrameScope::operator=</definition>
+        <argsstring>(const FrameScope &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Instrumentation::FrameScope::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_instrumentation_1_1_frame_scope_1ab564b22c9b37091e3f6c14f97c9e7b3b" kindref="member">FrameScope</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="instrumentation.h" line="57" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_instrumentation_1_1_frame_scope_1a8cecf1c08ba74e044f30a61c262ecf5e" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>Instrumentation::FrameScope::FrameScope</definition>
+        <argsstring>(FrameScope &amp;&amp;) noexcept</argsstring>
+        <name>FrameScope</name>
+        <qualifiedname>Instrumentation::FrameScope::FrameScope</qualifiedname>
+        <param>
+          <type>FrameScope &amp;&amp;</type>
+          <defname>o</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Take ownership of <ref refid="class_frame" kindref="compound">Frame</ref> scope </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="instrumentation.h" line="60" column="1" bodyfile="instrumentation.h" bodystart="103" bodyend="107"/>
+      </memberdef>
+      <memberdef kind="function" id="class_instrumentation_1_1_frame_scope_1a2d555f9ea7566e785fb8e98b0bbbe18a" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_instrumentation_1_1_frame_scope_1ab564b22c9b37091e3f6c14f97c9e7b3b" kindref="member">FrameScope</ref> &amp;</type>
+        <definition>Instrumentation::FrameScope &amp; Instrumentation::FrameScope::operator=</definition>
+        <argsstring>(FrameScope &amp;&amp;) noexcept</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Instrumentation::FrameScope::operator=</qualifiedname>
+        <param>
+          <type><ref refid="class_instrumentation_1_1_frame_scope_1ab564b22c9b37091e3f6c14f97c9e7b3b" kindref="member">FrameScope</ref> &amp;&amp;</type>
+          <defname>o</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Take ownership of <ref refid="class_frame" kindref="compound">Frame</ref> scope </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="instrumentation.h" line="62" column="12" bodyfile="instrumentation.h" bodystart="109" bodyend="117"/>
+      </memberdef>
+      <memberdef kind="function" id="class_instrumentation_1_1_frame_scope_1acc5b46a5400e195436d1868a3bc993e7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Instrumentation::FrameScope::~FrameScope</definition>
+        <argsstring>()</argsstring>
+        <name>~FrameScope</name>
+        <qualifiedname>Instrumentation::FrameScope::~FrameScope</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calls <ref refid="class_instrumentation_1_1_frame_scope_1a516523c3a417c64427db0a1c5353b93b" kindref="member">End()</ref> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="instrumentation.h" line="65" column="1" bodyfile="instrumentation.h" bodystart="119" bodyend="121"/>
+      </memberdef>
+      <memberdef kind="function" id="class_instrumentation_1_1_frame_scope_1a904c3e9c74e989046d572a85b8404e46" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Instrumentation::FrameScope::Begin</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>Begin</name>
+        <qualifiedname>Instrumentation::FrameScope::Begin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calls <ref refid="class_instrumentation_1aa1c99543543ff756b7044775863fcbac" kindref="member">FrameBegin()</ref> if not already begin </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="instrumentation.h" line="68" column="6" bodyfile="instrumentation.h" bodystart="123" bodyend="128"/>
+      </memberdef>
+      <memberdef kind="function" id="class_instrumentation_1_1_frame_scope_1a516523c3a417c64427db0a1c5353b93b" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Instrumentation::FrameScope::End</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>End</name>
+        <qualifiedname>Instrumentation::FrameScope::End</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calls <ref refid="class_instrumentation_1a39d8cd44d43905c1fcf85c309add09f0" kindref="member">FrameEnd()</ref> if <ref refid="class_instrumentation_1_1_frame_scope_1a904c3e9c74e989046d572a85b8404e46" kindref="member">Begin()</ref> was called </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="instrumentation.h" line="70" column="6" bodyfile="instrumentation.h" bodystart="130" bodyend="135"/>
+      </memberdef>
+      <memberdef kind="function" id="class_instrumentation_1_1_frame_scope_1a80c427a20b3975fc40cdb8ca00972249" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Instrumentation::FrameScope::Dismiss</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>Dismiss</name>
+        <qualifiedname>Instrumentation::FrameScope::Dismiss</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Disables the <ref refid="class_instrumentation_1_1_frame_scope" kindref="compound">FrameScope</ref> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="instrumentation.h" line="72" column="6" bodyfile="instrumentation.h" bodystart="137" bodyend="139"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>RAII wrapper around <ref refid="class_instrumentation_1aa1c99543543ff756b7044775863fcbac" kindref="member">FrameBegin()</ref> / <ref refid="class_instrumentation_1a39d8cd44d43905c1fcf85c309add09f0" kindref="member">FrameEnd()</ref> </para>
+    </detaileddescription>
+    <location file="instrumentation.h" line="47" column="1" bodyfile="instrumentation.h" bodystart="47" bodyend="75"/>
+    <listofallmembers>
+      <member refid="class_instrumentation_1_1_frame_scope_1a904c3e9c74e989046d572a85b8404e46" prot="public" virt="non-virtual"><scope>Instrumentation::FrameScope</scope><name>Begin</name></member>
+      <member refid="class_instrumentation_1_1_frame_scope_1ad1771fa70afba2e42c311c70d65af36b" prot="private" virt="non-virtual"><scope>Instrumentation::FrameScope</scope><name>begun</name></member>
+      <member refid="class_instrumentation_1_1_frame_scope_1a80c427a20b3975fc40cdb8ca00972249" prot="public" virt="non-virtual"><scope>Instrumentation::FrameScope</scope><name>Dismiss</name></member>
+      <member refid="class_instrumentation_1_1_frame_scope_1a516523c3a417c64427db0a1c5353b93b" prot="public" virt="non-virtual"><scope>Instrumentation::FrameScope</scope><name>End</name></member>
+      <member refid="class_instrumentation_1_1_frame_scope_1ab564b22c9b37091e3f6c14f97c9e7b3b" prot="public" virt="non-virtual"><scope>Instrumentation::FrameScope</scope><name>FrameScope</name></member>
+      <member refid="class_instrumentation_1_1_frame_scope_1ab5e70f31032dfd79f5aa5e4768a9afd7" prot="public" virt="non-virtual"><scope>Instrumentation::FrameScope</scope><name>FrameScope</name></member>
+      <member refid="class_instrumentation_1_1_frame_scope_1a8cecf1c08ba74e044f30a61c262ecf5e" prot="public" virt="non-virtual"><scope>Instrumentation::FrameScope</scope><name>FrameScope</name></member>
+      <member refid="class_instrumentation_1_1_frame_scope_1a5dde466d81d651f6657fec35b3f76b8e" prot="public" virt="non-virtual"><scope>Instrumentation::FrameScope</scope><name>operator=</name></member>
+      <member refid="class_instrumentation_1_1_frame_scope_1a2d555f9ea7566e785fb8e98b0bbbe18a" prot="public" virt="non-virtual"><scope>Instrumentation::FrameScope</scope><name>operator=</name></member>
+      <member refid="class_instrumentation_1_1_frame_scope_1acc5b46a5400e195436d1868a3bc993e7" prot="public" virt="non-virtual"><scope>Instrumentation::FrameScope</scope><name>~FrameScope</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

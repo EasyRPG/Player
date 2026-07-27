@@ -1,0 +1,1067 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="game__strings_8h" kind="file" language="C++">
+    <compoundname>game_strings.h</compoundname>
+    <includes refid="system_8h" local="yes">system.h</includes>
+    <includes local="no">cstdint</includes>
+    <includes local="no">string</includes>
+    <includes refid="data_8h" local="no">lcf/data.h</includes>
+    <includes refid="compiler_8h" local="yes">compiler.h</includes>
+    <includes refid="game__variables_8h" local="yes">game_variables.h</includes>
+    <includes refid="main__data_8h" local="yes">main_data.h</includes>
+    <includes refid="output_8h" local="yes">output.h</includes>
+    <includes refid="pending__message_8h" local="yes">pending_message.h</includes>
+    <includes refid="player_8h" local="yes">player.h</includes>
+    <includes refid="string__view_8h" local="yes">string_view.h</includes>
+    <includes refid="utils_8h" local="yes">utils.h</includes>
+    <includes local="no">regex</includes>
+    <includedby refid="game__dynrpg_8cpp" local="yes">game_dynrpg.cpp</includedby>
+    <includedby refid="game__message_8cpp" local="yes">game_message.cpp</includedby>
+    <includedby refid="game__strings_8cpp" local="yes">game_strings.cpp</includedby>
+    <includedby refid="game__windows_8cpp" local="yes">game_windows.cpp</includedby>
+    <includedby refid="main__data_8cpp" local="yes">main_data.cpp</includedby>
+    <includedby refid="maniac__patch_8h" local="yes">maniac_patch.h</includedby>
+    <includedby refid="pending__message_8cpp" local="yes">pending_message.cpp</includedby>
+    <includedby refid="player_8cpp" local="yes">player.cpp</includedby>
+    <includedby refid="scene__debug_8cpp" local="yes">scene_debug.cpp</includedby>
+    <includedby refid="scene__save_8cpp" local="yes">scene_save.cpp</includedby>
+    <includedby refid="window__varlist_8cpp" local="yes">window_varlist.cpp</includedby>
+    <incdepgraph>
+      <node id="69">
+        <label>async_handler.h</label>
+        <link refid="async__handler_8h"/>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>async_op.h</label>
+        <link refid="async__op_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>compiler.h</label>
+        <link refid="compiler_8h"/>
+      </node>
+      <node id="78">
+        <label>config_param.h</label>
+        <link refid="config__param_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="59">
+        <label>fileext_guesser.h</label>
+        <link refid="fileext__guesser_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+      </node>
+      <node id="63">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="84">
+        <label>flat_map.h</label>
+        <link refid="flat__map_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+      </node>
+      <node id="70">
+        <label>game_clock.h</label>
+        <link refid="game__clock_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+      </node>
+      <node id="77">
+        <label>game_config.h</label>
+        <link refid="game__config_8h"/>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+      </node>
+      <node id="86">
+        <label>game_config_game.h</label>
+        <link refid="game__config__game_8h"/>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="87">
+        <label>game_interpreter_shared.h</label>
+        <link refid="game__interpreter__shared_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>game_strings.h</label>
+        <link refid="game__strings_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>game_variables.h</label>
+        <link refid="game__variables_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="82">
+        <label>input_buttons.h</label>
+        <link refid="input__buttons_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+      </node>
+      <node id="85">
+        <label>keys.h</label>
+        <link refid="keys_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>lcf/data.h</label>
+        <link refid="data_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>main_data.h</label>
+        <link refid="main__data_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="60">
+        <label>meta.h</label>
+        <link refid="meta_8h"/>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="39">
+        <label>output.h</label>
+        <link refid="output_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>pending_message.h</label>
+        <link refid="pending__message_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+      </node>
+      <node id="72">
+        <label>platform/clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+      </node>
+      <node id="58">
+        <label>player.h</label>
+        <link refid="player_8h"/>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+      </node>
+      <node id="48">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="75">
+        <label>std_clock.h</label>
+        <link refid="std__clock_8h"/>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="67">
+        <label>translation.h</label>
+        <link refid="translation_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+      </node>
+      <node id="76">
+        <label>algorithm</label>
+      </node>
+      <node id="79">
+        <label>array</label>
+      </node>
+      <node id="54">
+        <label>bitset</label>
+      </node>
+      <node id="42">
+        <label>cassert</label>
+      </node>
+      <node id="71">
+        <label>chrono</label>
+      </node>
+      <node id="6">
+        <label>cstdint</label>
+      </node>
+      <node id="65">
+        <label>cstdio</label>
+      </node>
+      <node id="51">
+        <label>ctime</label>
+      </node>
+      <node id="36">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="37">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="52">
+        <label>functional</label>
+      </node>
+      <node id="83">
+        <label>initializer_list</label>
+      </node>
+      <node id="66">
+        <label>ios</label>
+      </node>
+      <node id="40">
+        <label>iosfwd</label>
+      </node>
+      <node id="43">
+        <label>istream</label>
+      </node>
+      <node id="35">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="64">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="81">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="62">
+        <label>lcf/inireader.h</label>
+      </node>
+      <node id="10">
+        <label>lcf/rpg/actor.h</label>
+      </node>
+      <node id="18">
+        <label>lcf/rpg/animation.h</label>
+      </node>
+      <node id="15">
+        <label>lcf/rpg/attribute.h</label>
+      </node>
+      <node id="24">
+        <label>lcf/rpg/battlecommand.h</label>
+      </node>
+      <node id="25">
+        <label>lcf/rpg/battleranimation.h</label>
+      </node>
+      <node id="19">
+        <label>lcf/rpg/chipset.h</label>
+      </node>
+      <node id="23">
+        <label>lcf/rpg/class.h</label>
+      </node>
+      <node id="22">
+        <label>lcf/rpg/commonevent.h</label>
+      </node>
+      <node id="30">
+        <label>lcf/rpg/database.h</label>
+      </node>
+      <node id="13">
+        <label>lcf/rpg/enemy.h</label>
+      </node>
+      <node id="28">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="12">
+        <label>lcf/rpg/item.h</label>
+      </node>
+      <node id="88">
+        <label>lcf/rpg/movecommand.h</label>
+      </node>
+      <node id="27">
+        <label>lcf/rpg/music.h</label>
+      </node>
+      <node id="90">
+        <label>lcf/rpg/saveeventexecframe.h</label>
+      </node>
+      <node id="89">
+        <label>lcf/rpg/saveeventexecstate.h</label>
+      </node>
+      <node id="11">
+        <label>lcf/rpg/skill.h</label>
+      </node>
+      <node id="26">
+        <label>lcf/rpg/sound.h</label>
+      </node>
+      <node id="16">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="21">
+        <label>lcf/rpg/system.h</label>
+      </node>
+      <node id="20">
+        <label>lcf/rpg/terms.h</label>
+      </node>
+      <node id="17">
+        <label>lcf/rpg/terrain.h</label>
+      </node>
+      <node id="29">
+        <label>lcf/rpg/treemap.h</label>
+      </node>
+      <node id="14">
+        <label>lcf/rpg/troop.h</label>
+      </node>
+      <node id="49">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="34">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="80">
+        <label>limits</label>
+      </node>
+      <node id="61">
+        <label>map</label>
+      </node>
+      <node id="5">
+        <label>memory</label>
+      </node>
+      <node id="55">
+        <label>optional</label>
+      </node>
+      <node id="44">
+        <label>ostream</label>
+      </node>
+      <node id="91">
+        <label>regex</label>
+      </node>
+      <node id="68">
+        <label>sstream</label>
+      </node>
+      <node id="7">
+        <label>string</label>
+      </node>
+      <node id="74">
+        <label>thread</label>
+      </node>
+      <node id="73">
+        <label>type_traits</label>
+      </node>
+      <node id="46">
+        <label>unordered_map</label>
+      </node>
+      <node id="57">
+        <label>utility</label>
+      </node>
+      <node id="9">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>game_dynrpg.cpp</label>
+        <link refid="game__dynrpg_8cpp"/>
+      </node>
+      <node id="8">
+        <label>game_interpreter.cpp</label>
+        <link refid="game__interpreter_8cpp"/>
+      </node>
+      <node id="9">
+        <label>game_interpreter_shared.cpp</label>
+        <link refid="game__interpreter__shared_8cpp"/>
+      </node>
+      <node id="3">
+        <label>game_message.cpp</label>
+        <link refid="game__message_8cpp"/>
+      </node>
+      <node id="4">
+        <label>game_strings.cpp</label>
+        <link refid="game__strings_8cpp"/>
+      </node>
+      <node id="1">
+        <label>game_strings.h</label>
+        <link refid="game__strings_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>game_windows.cpp</label>
+        <link refid="game__windows_8cpp"/>
+      </node>
+      <node id="6">
+        <label>main_data.cpp</label>
+        <link refid="main__data_8cpp"/>
+      </node>
+      <node id="10">
+        <label>maniac_patch.cpp</label>
+        <link refid="maniac__patch_8cpp"/>
+      </node>
+      <node id="7">
+        <label>maniac_patch.h</label>
+        <link refid="maniac__patch_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>pending_message.cpp</label>
+        <link refid="pending__message_8cpp"/>
+      </node>
+      <node id="12">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="13">
+        <label>scene_debug.cpp</label>
+        <link refid="scene__debug_8cpp"/>
+      </node>
+      <node id="14">
+        <label>scene_save.cpp</label>
+        <link refid="scene__save_8cpp"/>
+      </node>
+      <node id="15">
+        <label>window_varlist.cpp</label>
+        <link refid="window__varlist_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_game___strings" prot="public">Game_Strings</innerclass>
+    <innerclass refid="struct_game___strings_1_1_str___params" prot="public">Game_Strings::Str_Params</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="system_8h" kindref="compound">system.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstdint&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="data_8h" kindref="compound">lcf/data.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="compiler_8h" kindref="compound">compiler.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__variables_8h" kindref="compound">game_variables.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="main__data_8h" kindref="compound">main_data.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="output_8h" kindref="compound">output.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="pending__message_8h" kindref="compound">pending_message.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="player_8h" kindref="compound">player.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="string__view_8h" kindref="compound">string_view.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="utils_8h" kindref="compound">utils.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;regex&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>HAVE_NLOHMANN_JSON</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;nlohmann/json.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="class_game___strings" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_game___strings_1ac03f21d802b8f0864c46683f308c274b" kindref="member">Game_Strings</ref><sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="51" refid="class_game___strings_1a4329cc6ceaa8d9482762533234bd81a5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_game___strings_1a4329cc6ceaa8d9482762533234bd81a5" kindref="member">Strings_t</ref><sp/>=<sp/>std::unordered_map&lt;int,<sp/>std::string&gt;;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>currently<sp/>only<sp/>warns<sp/>when<sp/>ID<sp/>&lt;=<sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54" refid="class_game___strings_1ad86102bf95ad47074deb7e39fba96de9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1ad86102bf95ad47074deb7e39fba96de9" kindref="member">max_warnings</ref><sp/>=<sp/>10;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="struct_game___strings_1_1_str___params" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_game___strings_1_1_str___params_1a7fac2ecfe3b0132d6e2a05235b16ec1c" kindref="member">Str_Params</ref><sp/>{</highlight></codeline>
+<codeline lineno="57" refid="struct_game___strings_1_1_str___params_1adc14a878e776742716733df6610b2422" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___strings_1_1_str___params_1a9340dca54b6c118333d791aece73e41f" kindref="member">string_id</ref><sp/>=<sp/>0,<sp/><ref refid="struct_game___strings_1_1_str___params_1a78b5b0224a13c149f93b7ddb7e787447" kindref="member">hex</ref><sp/>=<sp/>0,<sp/><ref refid="struct_game___strings_1_1_str___params_1adc14a878e776742716733df6610b2422" kindref="member">extract</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="struct_game___strings_1_1_str___params_1a7fac2ecfe3b0132d6e2a05235b16ec1c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_game___strings_1_1_str___params_1a7fac2ecfe3b0132d6e2a05235b16ec1c" kindref="member">Str_Params</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___strings_1_1_str___params_1a9340dca54b6c118333d791aece73e41f" kindref="member">string_id</ref>)<sp/>:<sp/><ref refid="struct_game___strings_1_1_str___params_1a9340dca54b6c118333d791aece73e41f" kindref="member">string_id</ref>(<ref refid="struct_game___strings_1_1_str___params_1a9340dca54b6c118333d791aece73e41f" kindref="member">string_id</ref>)<sp/>{}</highlight></codeline>
+<codeline lineno="60" refid="struct_game___strings_1_1_str___params_1a4b048b91cbe973600992b28babc3dada" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_game___strings_1_1_str___params_1a4b048b91cbe973600992b28babc3dada" kindref="member">Str_Params</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___strings_1_1_str___params_1a9340dca54b6c118333d791aece73e41f" kindref="member">string_id</ref>,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___strings_1_1_str___params_1a78b5b0224a13c149f93b7ddb7e787447" kindref="member">hex</ref>,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___strings_1_1_str___params_1adc14a878e776742716733df6610b2422" kindref="member">extract</ref>)<sp/>:<sp/><ref refid="struct_game___strings_1_1_str___params_1a9340dca54b6c118333d791aece73e41f" kindref="member">string_id</ref>(<ref refid="struct_game___strings_1_1_str___params_1a9340dca54b6c118333d791aece73e41f" kindref="member">string_id</ref>),<sp/><ref refid="struct_game___strings_1_1_str___params_1a78b5b0224a13c149f93b7ddb7e787447" kindref="member">hex</ref>(<ref refid="struct_game___strings_1_1_str___params_1a78b5b0224a13c149f93b7ddb7e787447" kindref="member">hex</ref>),<sp/><ref refid="struct_game___strings_1_1_str___params_1adc14a878e776742716733df6610b2422" kindref="member">extract</ref>(<ref refid="struct_game___strings_1_1_str___params_1adc14a878e776742716733df6610b2422" kindref="member">extract</ref>)<sp/>{}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63" refid="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aa" kindref="member">StringEvalMode</ref><sp/>:<sp/>std::int8_t<sp/>{<sp/></highlight><highlight class="comment">//<sp/>4<sp/>bits</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64" refid="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aaa80e30b69c4d654637cddf7018054afbe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aaa80e30b69c4d654637cddf7018054afbe" kindref="member">eStringEval_Text</ref><sp/>=<sp/>0,<sp/></highlight><highlight class="comment">//<sp/>String<sp/>is<sp/>taken<sp/>from<sp/>com.string</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aaa18abdad0e519a2dbdcee50d0090025b3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aaa18abdad0e519a2dbdcee50d0090025b3" kindref="member">eStringEval_Direct</ref><sp/>=<sp/>1,<sp/></highlight><highlight class="comment">//<sp/>String<sp/>is<sp/>referenced<sp/>directly<sp/>by<sp/>string<sp/>id</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aaa6af60a62cf7ff02e312fcf82a077552f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aaa6af60a62cf7ff02e312fcf82a077552f" kindref="member">eStringEval_Indirect</ref><sp/>=<sp/>2<sp/></highlight><highlight class="comment">//<sp/>String<sp/>is<sp/>referenced<sp/>indirectly<sp/>by<sp/>variable<sp/>id</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="class_game___strings_1ac03f21d802b8f0864c46683f308c274b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___strings_1ac03f21d802b8f0864c46683f308c274b" kindref="member">Game_Strings</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a2f38e3c4c8823900a4ec5b5611a14f75" kindref="member">SetData</ref>(<ref refid="class_game___strings_1a4329cc6ceaa8d9482762533234bd81a5" kindref="member">Strings_t</ref><sp/>s);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a2f38e3c4c8823900a4ec5b5611a14f75" kindref="member">SetData</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;lcf::DBString&gt;&amp;<sp/>s);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a4329cc6ceaa8d9482762533234bd81a5" kindref="member">Strings_t</ref>&amp;<sp/><ref refid="class_game___strings_1a0ab1a7ccdac87b840c0f6a034865e591" kindref="member">GetData</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;lcf::DBString&gt;<sp/><ref refid="class_game___strings_1a427cee6bdbaec04fb46eb93362b5a23f" kindref="member">GetLcfData</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string_view<sp/><ref refid="class_game___strings_1a0c736e121f4483d618933187b2ad4385" kindref="member">Get</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string_view<sp/><ref refid="class_game___strings_1ad903a732f178870bacfdac95de334cae" kindref="member">GetIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___variables" kindref="compound">Game_Variables</ref>&amp;<sp/>variables)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string_view<sp/><ref refid="class_game___strings_1a8f778d81feec969f048153c18a72b3a7" kindref="member">GetWithMode</ref>(std::string_view<sp/>str_data,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mode,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___variables" kindref="compound">Game_Variables</ref>&amp;<sp/>variables)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="class_game___strings_1a17f82ef47dc69fcb8ffcf35b4102a7e4" kindref="member">GetWithModeAndPos</ref>(std::string_view<sp/>str_data,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mode,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/>pos,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___variables" kindref="compound">Game_Variables</ref>&amp;<sp/>variables);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a9550f2405857ff04e25c86fda6b83b5d" kindref="member">GetSizeWithLimit</ref>();</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string_view<sp/><ref refid="class_game___strings_1a0c59ef26e0c3249aad84d447534480bc" kindref="member">GetName</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>HAVE_NLOHMANN_JSON</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>nlohmann::ordered_json*<sp/>ParseJson(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string_view<sp/><ref refid="class_game___strings_1ab9a38c73466233e8dde526cf30b59a8c" kindref="member">Asg</ref>(<ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref><sp/>params,<sp/>std::string_view<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string_view<sp/><ref refid="class_game___strings_1ac7b0851e7f1ba7480baae0eff6328023" kindref="member">Cat</ref>(<ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref><sp/>params,<sp/>std::string_view<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1ad89fe70b96bb9abd5caccdf8c3191340" kindref="member">ToNum</ref>(<ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref><sp/>params,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id,<sp/><ref refid="class_game___variables" kindref="compound">Game_Variables</ref>&amp;<sp/>variables);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a9bc176c4bd26343868313d30d289117f" kindref="member">GetLen</ref>(<ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref><sp/>params,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id,<sp/><ref refid="class_game___variables" kindref="compound">Game_Variables</ref>&amp;<sp/>variables)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1ab00e40f63195ac651578956561e106ae" kindref="member">InStr</ref>(<ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref><sp/>params,<sp/>std::string<sp/>search,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>begin,<sp/><ref refid="class_game___variables" kindref="compound">Game_Variables</ref>&amp;<sp/>variables)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a215ba66b2a8433504a744ba267b57c72" kindref="member">Split</ref>(<ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref><sp/>params,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>delimiter,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>string_out_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id,<sp/><ref refid="class_game___variables" kindref="compound">Game_Variables</ref>&amp;<sp/>variables);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::string<sp/><ref refid="class_game___strings_1a048e0a86c9a4721237d4331321a263d9" kindref="member">FromFile</ref>(std::string_view<sp/>filename,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>encoding,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">&amp;<sp/>do_yield);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a1ebca7a26f21f614465b0b953fb72ace" kindref="member">ToFile</ref>(<ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref><sp/>params,<sp/>std::string<sp/>filename,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>encoding);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string_view<sp/><ref refid="class_game___strings_1a508ccff93e75eee3dcb34424c870f642" kindref="member">PopLine</ref>(<ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref><sp/>params,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>offset,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>string_out_id);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string_view<sp/><ref refid="class_game___strings_1a8224c867a03706cf792ba0d25697a72b" kindref="member">ExMatch</ref>(<ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref><sp/>params,<sp/>std::string<sp/>expr,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>begin,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>string_out_id,<sp/><ref refid="class_game___variables" kindref="compound">Game_Variables</ref>&amp;<sp/>variables);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a4329cc6ceaa8d9482762533234bd81a5" kindref="member">Strings_t</ref>&amp;<sp/><ref refid="class_game___strings_1a6837bc356d7a9963dde86c29b5714737" kindref="member">RangeOp</ref>(<ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref><sp/>params,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>string_id_1,<sp/>std::string<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>op,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>args[],<sp/><ref refid="class_game___variables" kindref="compound">Game_Variables</ref>&amp;<sp/>variables);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::string<sp/><ref refid="class_game___strings_1a49b7cc845e63051dcef232dcfad0c084" kindref="member">PrependMin</ref>(std::string_view<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>min_size,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>c);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::string<sp/><ref refid="class_game___strings_1a95903a8e07676fa4895b0c6e1255098e" kindref="member">Extract</ref>(std::string_view<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>as_hex);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::string<sp/><ref refid="class_game___strings_1a9e4bb6611d8496acb243c74c6e600a4a" kindref="member">Substring</ref>(std::string_view<sp/>source,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>begin,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>length);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::string<sp/><ref refid="class_game___strings_1a162b6ce16cd5fbfbcc47518d88c2088a" kindref="member">Insert</ref>(std::string_view<sp/>source,<sp/>std::string_view<sp/>what,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>where);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::string<sp/><ref refid="class_game___strings_1a9c57a56488388cbd31c16d610ece79a4" kindref="member">Erase</ref>(std::string_view<sp/>source,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>begin,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>length);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::string<sp/><ref refid="class_game___strings_1a6a07c0787ee9fefd98ed2778861d1ccf" kindref="member">RegExReplace</ref>(std::string_view<sp/>str,<sp/>std::string_view<sp/>search,<sp/>std::string_view<sp/>replace,<sp/>std::regex_constants::match_flag_type<sp/>flags<sp/>=<sp/>std::regex_constants::match_default);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1ab83096da17049e81b18d67875998b2ef" kindref="member">AdjustIndex</ref>(std::string_view<sp/>str,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>index);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::optional&lt;std::string&gt;<sp/><ref refid="class_game___strings_1a2934be2b60aa391e7c13b3870d66a751" kindref="member">ManiacsCommandInserter</ref>(</highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>ch,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">**<sp/>iter,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>end,<sp/>uint32_t<sp/>escape_char);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::optional&lt;std::string&gt;<sp/><ref refid="class_game___strings_1a3f30ab13cf4daa046b5c98b1330816ce" kindref="member">ManiacsCommandInserterHex</ref>(</highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>ch,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">**<sp/>iter,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>end,<sp/>uint32_t<sp/>escape_char);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Set(<ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref><sp/>params,<sp/>std::string_view<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ShouldWarn(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>WarnGet(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___strings_1a4329cc6ceaa8d9482762533234bd81a5" kindref="member">Strings_t</ref><sp/>_strings;</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">mutable</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>_warnings<sp/>=<sp/><ref refid="class_game___strings_1ad86102bf95ad47074deb7e39fba96de9" kindref="member">max_warnings</ref>;</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>_size<sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>HAVE_NLOHMANN_JSON</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unordered_map&lt;int,<sp/>nlohmann::ordered_json&gt;<sp/>_json_cache;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="124" refid="class_game___strings_1ae60e888f01e861f90c85fcb73dca975f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">friend</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_game___strings_1ae60e888f01e861f90c85fcb73dca975f" kindref="member">Scene_Debug</ref>;</highlight></codeline>
+<codeline lineno="125" refid="class_game___strings_1ae0af4286df416c2f98ec9191e4c62b5d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">friend</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_game___strings_1ae0af4286df416c2f98ec9191e4c62b5d" kindref="member">Window_VarList</ref>;</highlight></codeline>
+<codeline lineno="126"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Game_Strings::Set(Str_Params<sp/>params,<sp/>std::string_view<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(params.string_id<sp/>&lt;=<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>ins_string<sp/>=<sp/>ToString(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(params.extract)<sp/>{</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ins_string<sp/>=<sp/><ref refid="class_game___strings_1a95903a8e07676fa4895b0c6e1255098e" kindref="member">Extract</ref>(ins_string,<sp/>params.hex);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>it<sp/>=<sp/>_strings.find(params.string_id);</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(it<sp/>==<sp/>_strings.end())<sp/>{</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ins_string.empty())<sp/>{</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_strings[params.string_id]<sp/>=<sp/>ins_string;</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(params.string_id<sp/>&gt;<sp/>_size)<sp/>{</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_size<sp/>=<sp/>params.string_id;</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>it-&gt;second<sp/>=<sp/>ins_string;</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>HAVE_NLOHMANN_JSON</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/>_json_cache.erase(params.string_id);</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157" refid="class_game___strings_1a2f38e3c4c8823900a4ec5b5611a14f75" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a2f38e3c4c8823900a4ec5b5611a14f75" kindref="member">Game_Strings::SetData</ref>(<ref refid="class_game___strings_1a4329cc6ceaa8d9482762533234bd81a5" kindref="member">Strings_t</ref><sp/>s)<sp/>{</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/>_strings<sp/>=<sp/>std::move(s);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/>_size<sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>HAVE_NLOHMANN_JSON</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/>_json_cache.clear();</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166" refid="class_game___strings_1a2ea96a10d8305997932201b98b85ebd1" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a2f38e3c4c8823900a4ec5b5611a14f75" kindref="member">Game_Strings::SetData</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;lcf::DBString&gt;&amp;<sp/>s)<sp/>{</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal">:<sp/>s)<sp/>{</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!s.empty())<sp/>{</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_strings[i]<sp/>=<sp/>ToString(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>++i;</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((i<sp/>-<sp/>1)<sp/>&gt;<sp/>_size)<sp/>{</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_size<sp/>=<sp/>i<sp/>-<sp/>1;</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>HAVE_NLOHMANN_JSON</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/>_json_cache.clear();</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="182" refid="class_game___strings_1a0ab1a7ccdac87b840c0f6a034865e591" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a4329cc6ceaa8d9482762533234bd81a5" kindref="member">Game_Strings::Strings_t</ref>&amp;<sp/><ref refid="class_game___strings_1a0ab1a7ccdac87b840c0f6a034865e591" kindref="member">Game_Strings::GetData</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_strings;</highlight></codeline>
+<codeline lineno="184"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186" refid="class_game___strings_1a427cee6bdbaec04fb46eb93362b5a23f" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::vector&lt;lcf::DBString&gt;<sp/><ref refid="class_game___strings_1a427cee6bdbaec04fb46eb93362b5a23f" kindref="member">Game_Strings::GetLcfData</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;lcf::DBString&gt;<sp/>lcf_data;</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>[index,<sp/>value]:<sp/>_strings)<sp/>{</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(index<sp/>&gt;<sp/>0);</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(index<sp/>&gt;=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(lcf_data.size()))<sp/>{</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lcf_data.resize(index<sp/>+<sp/>1);</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lcf_data[index<sp/>-<sp/>1]<sp/>=<sp/>lcf::DBString(value);</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lcf_data;</highlight></codeline>
+<codeline lineno="198"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>Game_Strings::ShouldWarn(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>id<sp/>&lt;=<sp/>0<sp/>&amp;&amp;<sp/>_warnings<sp/>&gt;<sp/>0;</highlight></codeline>
+<codeline lineno="202"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight></codeline>
+<codeline lineno="204" refid="class_game___strings_1a0c736e121f4483d618933187b2ad4385" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::string_view<sp/><ref refid="class_game___strings_1a0c736e121f4483d618933187b2ad4385" kindref="member">Game_Strings::Get</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="compiler_8h_1a6193ed68030ec53b5e6be36887041873" kindref="member">EP_UNLIKELY</ref>(ShouldWarn(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">)))<sp/>{</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>WarnGet(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>it<sp/>=<sp/>_strings.find(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(it<sp/>==<sp/>_strings.end())<sp/>{</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{};</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>it-&gt;second;</highlight></codeline>
+<codeline lineno="213"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+<codeline lineno="215" refid="class_game___strings_1ad903a732f178870bacfdac95de334cae" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::string_view<sp/><ref refid="class_game___strings_1ad903a732f178870bacfdac95de334cae" kindref="member">Game_Strings::GetIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___variables" kindref="compound">Game_Variables</ref>&amp;<sp/>variables)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>val_indirect<sp/>=<sp/>variables.Get(</highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a0c736e121f4483d618933187b2ad4385" kindref="member">Get</ref>(</highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(val_indirect));</highlight></codeline>
+<codeline lineno="218"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight></codeline>
+<codeline lineno="220" refid="class_game___strings_1a8f778d81feec969f048153c18a72b3a7" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::string_view<sp/><ref refid="class_game___strings_1a8f778d81feec969f048153c18a72b3a7" kindref="member">Game_Strings::GetWithMode</ref>(std::string_view<sp/>str_data,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mode,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___variables" kindref="compound">Game_Variables</ref>&amp;<sp/>variables)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(mode)<sp/>{</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aaa18abdad0e519a2dbdcee50d0090025b3" kindref="member">StringEvalMode::eStringEval_Direct</ref>:</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a0c736e121f4483d618933187b2ad4385" kindref="member">Get</ref>(arg);</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aaa6af60a62cf7ff02e312fcf82a077552f" kindref="member">StringEvalMode::eStringEval_Indirect</ref>:</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1ad903a732f178870bacfdac95de334cae" kindref="member">GetIndirect</ref>(arg,<sp/>variables);</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>str_data;</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="229"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"></highlight></codeline>
+<codeline lineno="231" refid="class_game___strings_1a17f82ef47dc69fcb8ffcf35b4102a7e4" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::string<sp/><ref refid="class_game___strings_1a17f82ef47dc69fcb8ffcf35b4102a7e4" kindref="member">Game_Strings::GetWithModeAndPos</ref>(std::string_view<sp/>str_data,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mode,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/>pos,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___variables" kindref="compound">Game_Variables</ref>&amp;<sp/>variables)<sp/>{</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>ret;</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(mode)<sp/>{</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aaa80e30b69c4d654637cddf7018054afbe" kindref="member">StringEvalMode::eStringEval_Text</ref>:<sp/>{</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>end<sp/>=<sp/>str_data.data()<sp/>+<sp/>str_data.size();</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="lparser_8c_1a3584754acc5e91c03d6fc91359eefd78" kindref="member">left</ref><sp/>=<sp/><ref refid="namespace_utils_1ac6946b15c94fa3fbf8bc8705166c0cf9" kindref="member">Utils::UTF8Skip</ref>(str_data.data(),<sp/>end,<sp/>pos);</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="lparser_8c_1a34b07942956eb7acd9d02c5b75177ae6" kindref="member">right</ref><sp/>=<sp/><ref refid="namespace_utils_1ac6946b15c94fa3fbf8bc8705166c0cf9" kindref="member">Utils::UTF8Skip</ref>(<ref refid="lparser_8c_1a3584754acc5e91c03d6fc91359eefd78" kindref="member">left</ref>.next,<sp/>end,<sp/>arg);</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"></highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ret<sp/>=<sp/>std::string(<ref refid="lparser_8c_1a3584754acc5e91c03d6fc91359eefd78" kindref="member">left</ref>.next,<sp/><ref refid="lparser_8c_1a34b07942956eb7acd9d02c5b75177ae6" kindref="member">right</ref>.next);</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos<sp/>+=<sp/>arg;</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ret;</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aaa18abdad0e519a2dbdcee50d0090025b3" kindref="member">StringEvalMode::eStringEval_Direct</ref>:</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ToString(<ref refid="class_game___strings_1a0c736e121f4483d618933187b2ad4385" kindref="member">Get</ref>(arg));</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aaa6af60a62cf7ff02e312fcf82a077552f" kindref="member">StringEvalMode::eStringEval_Indirect</ref>:</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ToString(<ref refid="class_game___strings_1ad903a732f178870bacfdac95de334cae" kindref="member">GetIndirect</ref>(arg,<sp/>variables));</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ret;</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="251"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="game_strings.h"/>
+  </compounddef>
+</doxygen>

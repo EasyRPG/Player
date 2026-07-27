@@ -85,3 +85,4 @@ inline void FpsOverlay::SetDrawFps(bool value) {
 }
 
 #endif
+

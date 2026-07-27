@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ily3_1_1guard" kind="struct" language="C++" prot="public" final="yes">
+    <compoundname>leasy::ily3::guard</compoundname>
+    <includes refid="memguard_8hpp" local="no">memguard.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structleasy_1_1ily3_1_1guard_1a0a58a2860927185fdda9bacf05f1598d" prot="public" static="no" mutable="no">
+        <type>T</type>
+        <definition>T leasy::ily3::guard&lt; T &gt;::resource</definition>
+        <argsstring></argsstring>
+        <name>resource</name>
+        <qualifiedname>leasy::ily3::guard::resource</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/memguard.hpp" line="29" column="7" bodyfile="leasy/ily3/memguard.hpp" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1ily3_1_1guard_1a838c17106dce0e61e5a461b8056e7758" prot="public" static="no" mutable="no">
+        <type>void(*</type>
+        <definition>void(* leasy::ily3::guard&lt; T &gt;::deleter) (T *)</definition>
+        <argsstring>)(T *)</argsstring>
+        <name>deleter</name>
+        <qualifiedname>leasy::ily3::guard::deleter</qualifiedname>
+        <initializer>= [](T*) -&gt; void {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/memguard.hpp" line="30" column="5" bodyfile="leasy/ily3/memguard.hpp" bodystart="30" bodyend="30"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structleasy_1_1ily3_1_1guard_1acb48057b82bd29e9d07736928b3ff1f5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ily3::guard&lt; T &gt;::guard</definition>
+        <argsstring>()</argsstring>
+        <name>guard</name>
+        <qualifiedname>leasy::ily3::guard::guard</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/memguard.hpp" line="32" column="12" bodyfile="leasy/ily3/memguard.hpp" bodystart="32" bodyend="32"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1ily3_1_1guard_1a3b03e2e3b5232f26610ca9a8d99e28d4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ily3::guard&lt; T &gt;::guard</definition>
+        <argsstring>(const T &amp;RES)</argsstring>
+        <name>guard</name>
+        <qualifiedname>leasy::ily3::guard::guard</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>RES</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/memguard.hpp" line="33" column="12" bodyfile="leasy/ily3/memguard.hpp" bodystart="33" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1ily3_1_1guard_1a333ac0cdca8915e4c096a4467f5fd192" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ily3::guard&lt; T &gt;::guard</definition>
+        <argsstring>(const T &amp;RES, void(*_deleter)(T *))</argsstring>
+        <name>guard</name>
+        <qualifiedname>leasy::ily3::guard::guard</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>RES</declname>
+        </param>
+        <param>
+          <type>void(*)(T *)</type>
+          <declname>_deleter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/memguard.hpp" line="36" column="12" bodyfile="leasy/ily3/memguard.hpp" bodystart="36" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1ily3_1_1guard_1a188d13c1695d28c6dfccb087bbfbd158" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ily3::guard&lt; T &gt;::~guard</definition>
+        <argsstring>()</argsstring>
+        <name>~guard</name>
+        <qualifiedname>leasy::ily3::guard::~guard</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/memguard.hpp" line="39" column="12" bodyfile="leasy/ily3/memguard.hpp" bodystart="39" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1ily3_1_1guard_1ac56f2b884bca9dc333f5e77c98bacb89" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ily3::guard&lt; T &gt;::operator=</definition>
+        <argsstring>(const T &amp;other)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>leasy::ily3::guard::operator=</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/memguard.hpp" line="43" column="17" bodyfile="leasy/ily3/memguard.hpp" bodystart="43" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1ily3_1_1guard_1a9d4dee1655ca15388618609ded2094e2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ily3::guard&lt; T &gt;::reset</definition>
+        <argsstring>(void)</argsstring>
+        <name>reset</name>
+        <qualifiedname>leasy::ily3::guard::reset</qualifiedname>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/memguard.hpp" line="48" column="17" bodyfile="leasy/ily3/memguard.hpp" bodystart="48" bodyend="51"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ily3/memguard.hpp" line="28" column="14" bodyfile="leasy/ily3/memguard.hpp" bodystart="28" bodyend="52"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ily3_1_1guard_1a838c17106dce0e61e5a461b8056e7758" prot="public" virt="non-virtual"><scope>leasy::ily3::guard</scope><name>deleter</name></member>
+      <member refid="structleasy_1_1ily3_1_1guard_1acb48057b82bd29e9d07736928b3ff1f5" prot="public" virt="non-virtual"><scope>leasy::ily3::guard</scope><name>guard</name></member>
+      <member refid="structleasy_1_1ily3_1_1guard_1a3b03e2e3b5232f26610ca9a8d99e28d4" prot="public" virt="non-virtual"><scope>leasy::ily3::guard</scope><name>guard</name></member>
+      <member refid="structleasy_1_1ily3_1_1guard_1a333ac0cdca8915e4c096a4467f5fd192" prot="public" virt="non-virtual"><scope>leasy::ily3::guard</scope><name>guard</name></member>
+      <member refid="structleasy_1_1ily3_1_1guard_1ac56f2b884bca9dc333f5e77c98bacb89" prot="public" virt="non-virtual"><scope>leasy::ily3::guard</scope><name>operator=</name></member>
+      <member refid="structleasy_1_1ily3_1_1guard_1a9d4dee1655ca15388618609ded2094e2" prot="public" virt="non-virtual"><scope>leasy::ily3::guard</scope><name>reset</name></member>
+      <member refid="structleasy_1_1ily3_1_1guard_1a0a58a2860927185fdda9bacf05f1598d" prot="public" virt="non-virtual"><scope>leasy::ily3::guard</scope><name>resource</name></member>
+      <member refid="structleasy_1_1ily3_1_1guard_1a188d13c1695d28c6dfccb087bbfbd158" prot="public" virt="non-virtual"><scope>leasy::ily3::guard</scope><name>~guard</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

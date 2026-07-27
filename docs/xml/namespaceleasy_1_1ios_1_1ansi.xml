@@ -1,0 +1,318 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1ios_1_1ansi" kind="namespace" language="C++">
+    <compoundname>leasy::ios::ansi</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1afd420b5651258944b8fb7d4e218acf13" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::reset</definition>
+        <argsstring></argsstring>
+        <name>reset</name>
+        <qualifiedname>leasy::ios::ansi::reset</qualifiedname>
+        <initializer>= &quot;\033[0m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="47" column="35" bodyfile="leasy/lio.hpp" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1a034778092ee8a95663ba9796536223e9" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::black</definition>
+        <argsstring></argsstring>
+        <name>black</name>
+        <qualifiedname>leasy::ios::ansi::black</qualifiedname>
+        <initializer>= &quot;\033[30m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="48" column="35" bodyfile="leasy/lio.hpp" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1ac579fd85300f30152bfd5569f6c1d2ba" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::red</definition>
+        <argsstring></argsstring>
+        <name>red</name>
+        <qualifiedname>leasy::ios::ansi::red</qualifiedname>
+        <initializer>= &quot;\033[31m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="49" column="35" bodyfile="leasy/lio.hpp" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1a9844e2a8effa4987f85550718c0ce7cd" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::green</definition>
+        <argsstring></argsstring>
+        <name>green</name>
+        <qualifiedname>leasy::ios::ansi::green</qualifiedname>
+        <initializer>= &quot;\033[32m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="50" column="35" bodyfile="leasy/lio.hpp" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1a8f4e966e8f33867b7faf6cc8c0a84327" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::yellow</definition>
+        <argsstring></argsstring>
+        <name>yellow</name>
+        <qualifiedname>leasy::ios::ansi::yellow</qualifiedname>
+        <initializer>= &quot;\033[33m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="51" column="35" bodyfile="leasy/lio.hpp" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1aea8ad6029d73d61b6f694db4112207e7" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::blue</definition>
+        <argsstring></argsstring>
+        <name>blue</name>
+        <qualifiedname>leasy::ios::ansi::blue</qualifiedname>
+        <initializer>= &quot;\033[34m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="52" column="35" bodyfile="leasy/lio.hpp" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1abaae583f649ac42b83b4af7970a8f217" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::magenta</definition>
+        <argsstring></argsstring>
+        <name>magenta</name>
+        <qualifiedname>leasy::ios::ansi::magenta</qualifiedname>
+        <initializer>= &quot;\033[35m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="53" column="35" bodyfile="leasy/lio.hpp" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1a26cb530ffefa5f1eb60090e4d6546901" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::cyan</definition>
+        <argsstring></argsstring>
+        <name>cyan</name>
+        <qualifiedname>leasy::ios::ansi::cyan</qualifiedname>
+        <initializer>= &quot;\033[36m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="54" column="35" bodyfile="leasy/lio.hpp" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1a854cef693faf01610c36c71c56cf6b7c" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::white</definition>
+        <argsstring></argsstring>
+        <name>white</name>
+        <qualifiedname>leasy::ios::ansi::white</qualifiedname>
+        <initializer>= &quot;\033[37m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="55" column="35" bodyfile="leasy/lio.hpp" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1af49b36b9babd1061993931b4174b8603" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::bright_black</definition>
+        <argsstring></argsstring>
+        <name>bright_black</name>
+        <qualifiedname>leasy::ios::ansi::bright_black</qualifiedname>
+        <initializer>= &quot;\033[90m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="56" column="35" bodyfile="leasy/lio.hpp" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1a6dd9ab02906d28e1333ca6d50f35940f" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::bright_red</definition>
+        <argsstring></argsstring>
+        <name>bright_red</name>
+        <qualifiedname>leasy::ios::ansi::bright_red</qualifiedname>
+        <initializer>= &quot;\033[91m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="57" column="35" bodyfile="leasy/lio.hpp" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1acb263f385c15a05fe5385e8cdff5a6a9" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::bright_green</definition>
+        <argsstring></argsstring>
+        <name>bright_green</name>
+        <qualifiedname>leasy::ios::ansi::bright_green</qualifiedname>
+        <initializer>= &quot;\033[92m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="58" column="35" bodyfile="leasy/lio.hpp" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1a628f805048e9d9205b4e81625d2eae1d" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::bright_yellow</definition>
+        <argsstring></argsstring>
+        <name>bright_yellow</name>
+        <qualifiedname>leasy::ios::ansi::bright_yellow</qualifiedname>
+        <initializer>= &quot;\033[93m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="59" column="35" bodyfile="leasy/lio.hpp" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1a90057408a3f010ba613ccf0e533259bb" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::bright_blue</definition>
+        <argsstring></argsstring>
+        <name>bright_blue</name>
+        <qualifiedname>leasy::ios::ansi::bright_blue</qualifiedname>
+        <initializer>= &quot;\033[94m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="60" column="35" bodyfile="leasy/lio.hpp" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1a7b6fdf34c96b1a0d75b274b16cb435af" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::bright_magenta</definition>
+        <argsstring></argsstring>
+        <name>bright_magenta</name>
+        <qualifiedname>leasy::ios::ansi::bright_magenta</qualifiedname>
+        <initializer>= &quot;\033[95m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="61" column="35" bodyfile="leasy/lio.hpp" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1ab0d3f0d17b4348c7cb34e7711ee0f1ca" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::bright_cyan</definition>
+        <argsstring></argsstring>
+        <name>bright_cyan</name>
+        <qualifiedname>leasy::ios::ansi::bright_cyan</qualifiedname>
+        <initializer>= &quot;\033[96m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="62" column="35" bodyfile="leasy/lio.hpp" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1a62ca4b7a2a8d922ce9c571c17f54aabf" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::bright_white</definition>
+        <argsstring></argsstring>
+        <name>bright_white</name>
+        <qualifiedname>leasy::ios::ansi::bright_white</qualifiedname>
+        <initializer>= &quot;\033[97m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="63" column="35" bodyfile="leasy/lio.hpp" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1a43e4803c64ca409f1845a42b9cb0c56a" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::bold</definition>
+        <argsstring></argsstring>
+        <name>bold</name>
+        <qualifiedname>leasy::ios::ansi::bold</qualifiedname>
+        <initializer>= &quot;\033[1m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="64" column="35" bodyfile="leasy/lio.hpp" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ios_1_1ansi_1a1191a5ef7316b395c076e777ae5b3899" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view leasy::ios::ansi::dim</definition>
+        <argsstring></argsstring>
+        <name>dim</name>
+        <qualifiedname>leasy::ios::ansi::dim</qualifiedname>
+        <initializer>= &quot;\033[2m&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="65" column="35" bodyfile="leasy/lio.hpp" bodystart="65" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceleasy_1_1ios_1_1ansi_1a7ce2395276dd66e195ec1b5d354a57cb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string leasy::ios::ansi::strip</definition>
+        <argsstring>(std::string_view text)</argsstring>
+        <name>strip</name>
+        <qualifiedname>leasy::ios::ansi::strip</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>text</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="67" column="20" bodyfile="leasy/lio.hpp" bodystart="67" bodyend="81"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/lio.hpp" line="45" column="1"/>
+  </compounddef>
+</doxygen>

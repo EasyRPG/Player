@@ -1,0 +1,332 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_fluid_synth_decoder" kind="class" language="C++" prot="public">
+    <compoundname>FluidSynthDecoder</compoundname>
+    <basecompoundref refid="class_midi_decoder" prot="public" virt="non-virtual">MidiDecoder</basecompoundref>
+    <includes refid="decoder__fluidsynth_8h" local="no">decoder_fluidsynth.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_fluid_synth_decoder_1a11f0be87277dba20ae4b1b44d5135ebc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>FluidSynthDecoder::FluidSynthDecoder</definition>
+        <argsstring>()</argsstring>
+        <name>FluidSynthDecoder</name>
+        <qualifiedname>FluidSynthDecoder::FluidSynthDecoder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_fluidsynth.h" line="45" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_fluid_synth_decoder_1a442c076b4c8493b1706b7d4f9808d23b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>FluidSynthDecoder::~FluidSynthDecoder</definition>
+        <argsstring>() override</argsstring>
+        <name>~FluidSynthDecoder</name>
+        <qualifiedname>FluidSynthDecoder::~FluidSynthDecoder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_fluidsynth.h" line="46" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_fluid_synth_decoder_1ac24c5034648c139b92fb8d9154c91a05" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int FluidSynthDecoder::FillBuffer</definition>
+        <argsstring>(uint8_t *buffer, int length) override</argsstring>
+        <name>FillBuffer</name>
+        <qualifiedname>FluidSynthDecoder::FillBuffer</qualifiedname>
+        <reimplements refid="class_midi_decoder_1a9b662741035e2a82a9b7e2aa9a406bd8">FillBuffer</reimplements>
+        <param>
+          <type>uint8_t *</type>
+          <declname>buffer</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>length</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called when the synthesizer shall write data in a buffer.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>buffer</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Buffer to fill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Buffer size </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>number of bytes read or -1 on error </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_fluidsynth.h" line="52" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_fluid_synth_decoder_1ac99c8e2975c8ca11313e5cc37a5207a9" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void FluidSynthDecoder::SendMidiMessage</definition>
+        <argsstring>(uint32_t message) override</argsstring>
+        <name>SendMidiMessage</name>
+        <qualifiedname>FluidSynthDecoder::SendMidiMessage</qualifiedname>
+        <reimplements refid="class_midi_decoder_1a224acd738e2f9c66e4caabdfb4653d61">SendMidiMessage</reimplements>
+        <param>
+          <type>uint32_t</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Forwards a Midi message to the Midi decoder</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Midi message </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_fluidsynth.h" line="54" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_fluid_synth_decoder_1a4813ce502673a68e6da2e7763036ba6d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void FluidSynthDecoder::SendSysExMessage</definition>
+        <argsstring>(const uint8_t *data, size_t size) override</argsstring>
+        <name>SendSysExMessage</name>
+        <qualifiedname>FluidSynthDecoder::SendSysExMessage</qualifiedname>
+        <reimplements refid="class_midi_decoder_1a15e5774605a1d77b05e5d332ebef74c9">SendSysExMessage</reimplements>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Forwards a SysEx Message to the Midi Decoder</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>sysex content </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>length of sysex content (data) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_fluidsynth.h" line="56" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_fluid_synth_decoder_1a41dc64bf0f3f28bd57774880d195b7a2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string FluidSynthDecoder::GetName</definition>
+        <argsstring>() override</argsstring>
+        <name>GetName</name>
+        <qualifiedname>FluidSynthDecoder::GetName</qualifiedname>
+        <reimplements refid="class_midi_decoder_1af4d40d12d6758967cb2dcb73f3a06900">GetName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the unique name of the Midi decoder.</para>
+<para><simplesect kind="return"><para>decoder name </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_fluidsynth.h" line="58" column="13" bodyfile="decoder_fluidsynth.h" bodystart="58" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="class_fluid_synth_decoder_1ad9c29a594c4dfbc6e04e0abd456f00f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void FluidSynthDecoder::OnNewMidi</definition>
+        <argsstring>() override</argsstring>
+        <name>OnNewMidi</name>
+        <qualifiedname>FluidSynthDecoder::OnNewMidi</qualifiedname>
+        <reimplements refid="class_midi_decoder_1a6806f9b6c94b9275b4495d8466692b4a">OnNewMidi</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Notifies the sequencer that a new MIDI is about to start. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_fluidsynth.h" line="66" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_fluid_synth_decoder_1a690a736c7f30e9f7686ebc2cb3cda810" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool FluidSynthDecoder::NeedsSoftReset</definition>
+        <argsstring>() override</argsstring>
+        <name>NeedsSoftReset</name>
+        <qualifiedname>FluidSynthDecoder::NeedsSoftReset</qualifiedname>
+        <reimplements refid="class_midi_decoder_1afd17f90102463d31d3b739936f3e70dd">NeedsSoftReset</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_fluidsynth.h" line="68" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_fluid_synth_decoder_1aaf854c199b43aa88f6b14a2eb7cd7391" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool FluidSynthDecoder::Initialize</definition>
+        <argsstring>(std::string &amp;status_message)</argsstring>
+        <name>Initialize</name>
+        <qualifiedname>FluidSynthDecoder::Initialize</qualifiedname>
+        <param>
+          <type>std::string &amp;</type>
+          <declname>status_message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_fluidsynth.h" line="48" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_fluid_synth_decoder_1a3d9033eabc7a78bf269f8c6f41397872" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void FluidSynthDecoder::ResetState</definition>
+        <argsstring>()</argsstring>
+        <name>ResetState</name>
+        <qualifiedname>FluidSynthDecoder::ResetState</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_fluidsynth.h" line="49" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_fluid_synth_decoder_1ab7ed1ff8c62a2d2c403af31ca0608bd6" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool FluidSynthDecoder::ChangeGlobalSoundfont</definition>
+        <argsstring>(std::string_view sf_path, std::string &amp;status_message)</argsstring>
+        <name>ChangeGlobalSoundfont</name>
+        <qualifiedname>FluidSynthDecoder::ChangeGlobalSoundfont</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>sf_path</declname>
+        </param>
+        <param>
+          <type>std::string &amp;</type>
+          <declname>status_message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_fluidsynth.h" line="50" column="13"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Audio decoder for MIDI powered by FluidSynth or FluidLite </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>FluidSynthDecoder</label>
+        <link refid="class_fluid_synth_decoder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MidiDecoder</label>
+        <link refid="class_midi_decoder"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>FluidSynthDecoder</label>
+        <link refid="class_fluid_synth_decoder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MidiDecoder</label>
+        <link refid="class_midi_decoder"/>
+      </node>
+    </collaborationgraph>
+    <location file="decoder_fluidsynth.h" line="43" column="1" bodyfile="decoder_fluidsynth.h" bodystart="43" bodyend="77"/>
+    <listofallmembers>
+      <member refid="class_midi_decoder_1a03c883f6c10808ce7f95559018eb9f07" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>ChangeFluidsynthSoundfont</name></member>
+      <member refid="class_fluid_synth_decoder_1ab7ed1ff8c62a2d2c403af31ca0608bd6" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>ChangeGlobalSoundfont</name></member>
+      <member refid="class_midi_decoder_1a3df91771d3a83c4d52c5706af9619fa7" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>CheckFluidsynth</name></member>
+      <member refid="class_midi_decoder_1a9beb09513b83be3c65ace1c700cb7b13" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>CheckWildMidi</name></member>
+      <member refid="class_midi_decoder_1aea38a9c8766ad49ee47cd509b71889f3" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>Create</name></member>
+      <member refid="class_midi_decoder_1ab90e4f43be463ff0f045f320569d6d3f" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>CreateFluidsynth</name></member>
+      <member refid="class_midi_decoder_1a1bfc000db967fff83a03b9737ae22571" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>CreateFmMidi</name></member>
+      <member refid="class_midi_decoder_1ac027fd25d15a3eab594f85448c3e9aac" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>CreateWildMidi</name></member>
+      <member refid="class_fluid_synth_decoder_1ac24c5034648c139b92fb8d9154c91a05" prot="public" virt="virtual"><scope>FluidSynthDecoder</scope><name>FillBuffer</name></member>
+      <member refid="class_fluid_synth_decoder_1a11f0be87277dba20ae4b1b44d5135ebc" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>FluidSynthDecoder</name></member>
+      <member refid="class_midi_decoder_1a4cc4e1c89b089d4ebeaab82d89a8332c" prot="protected" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>frequency</name></member>
+      <member refid="class_midi_decoder_1a6417064ebe5f3b42299facc0b54f341b" prot="public" virt="virtual"><scope>FluidSynthDecoder</scope><name>GetFormat</name></member>
+      <member refid="class_fluid_synth_decoder_1a41dc64bf0f3f28bd57774880d195b7a2" prot="public" virt="virtual"><scope>FluidSynthDecoder</scope><name>GetName</name></member>
+      <member refid="class_fluid_synth_decoder_1aaf854c199b43aa88f6b14a2eb7cd7391" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>Initialize</name></member>
+      <member refid="class_midi_decoder_1a9111f9360e9afe04c4a36e1fb45181e2" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>MidiDecoder</name></member>
+      <member refid="class_midi_decoder_1a282d792c6c08f01e8980bae08bc9be90" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>MidiDecoder</name></member>
+      <member refid="class_midi_decoder_1a83eb8eec90b545be05f4d5506d22a3cd" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>MidiDecoder</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>MidiEvent</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92aefb0f519c3e8dacf7f5e687d0d27c4a6" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>MidiEvent_ChannelPressure</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92adea32a25b2d36ebbfe69c3efac1e1501" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>MidiEvent_Controller</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92ab3c25e6206ee22d077812a5a3b94a211" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>MidiEvent_KeyPressure</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a27cba7e4508b870ae8ea80ca162c4433" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>MidiEvent_NoteOff</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a53a94fde6f981169615b7d5427cccb78" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>MidiEvent_NoteOn</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92aa1ff6af7ff6c70ca07022bf620b3ccd3" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>MidiEvent_PitchBend</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a3509a9d33ea0da16a480395a0ee4af5e" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>MidiEvent_ProgramChange</name></member>
+      <member refid="class_fluid_synth_decoder_1a690a736c7f30e9f7686ebc2cb3cda810" prot="public" virt="virtual"><scope>FluidSynthDecoder</scope><name>NeedsSoftReset</name></member>
+      <member refid="class_fluid_synth_decoder_1ad9c29a594c4dfbc6e04e0abd456f00f0" prot="public" virt="virtual"><scope>FluidSynthDecoder</scope><name>OnNewMidi</name></member>
+      <member refid="class_midi_decoder_1a622decc74141fffbb272c8be23af0215" prot="public" virt="virtual"><scope>FluidSynthDecoder</scope><name>Open</name></member>
+      <member refid="class_midi_decoder_1a463917459cc34a694f53c50b9e00f267" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>operator=</name></member>
+      <member refid="class_midi_decoder_1a4b5c64f6f1256d07812614519240a6bb" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>operator=</name></member>
+      <member refid="class_midi_decoder_1aa4c0f006466de50a3f7c84460cf0f1ea" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>Reset</name></member>
+      <member refid="class_fluid_synth_decoder_1a3d9033eabc7a78bf269f8c6f41397872" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>ResetState</name></member>
+      <member refid="class_midi_decoder_1abad45713922fef863804905572041ef0" prot="public" virt="virtual"><scope>FluidSynthDecoder</scope><name>Seek</name></member>
+      <member refid="class_fluid_synth_decoder_1ac99c8e2975c8ca11313e5cc37a5207a9" prot="public" virt="virtual"><scope>FluidSynthDecoder</scope><name>SendMidiMessage</name></member>
+      <member refid="class_fluid_synth_decoder_1a4813ce502673a68e6da2e7763036ba6d" prot="public" virt="virtual"><scope>FluidSynthDecoder</scope><name>SendSysExMessage</name></member>
+      <member refid="class_midi_decoder_1aecab4ef828716841e2c6f5468a734961" prot="public" virt="virtual"><scope>FluidSynthDecoder</scope><name>SetFormat</name></member>
+      <member refid="class_midi_decoder_1ab492d527453d3b8513c2e7c2cb34b237" prot="public" virt="virtual"><scope>FluidSynthDecoder</scope><name>SetPitch</name></member>
+      <member refid="class_midi_decoder_1a07adfc534e13ab8dabac2ca2abf68676" prot="public" virt="virtual"><scope>FluidSynthDecoder</scope><name>SupportsMidiMessages</name></member>
+      <member refid="class_fluid_synth_decoder_1a442c076b4c8493b1706b7d4f9808d23b" prot="public" virt="non-virtual"><scope>FluidSynthDecoder</scope><name>~FluidSynthDecoder</name></member>
+      <member refid="class_midi_decoder_1a62bb942c2ce3a52b4f8903b80bb94065" prot="public" virt="virtual"><scope>FluidSynthDecoder</scope><name>~MidiDecoder</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

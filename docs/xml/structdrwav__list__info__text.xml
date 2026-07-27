@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdrwav__list__info__text" kind="struct" language="C++" prot="public">
+    <compoundname>drwav_list_info_text</compoundname>
+    <includes refid="dr__wav_8h" local="no">dr_wav.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdrwav__list__info__text_1af57e1d30067f58928f9eab30178990fc" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_list_info_text::stringLength</definition>
+        <argsstring></argsstring>
+        <name>stringLength</name>
+        <qualifiedname>drwav_list_info_text::stringLength</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="755" column="18" bodyfile="external/dr_wav.h" bodystart="755" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__list__info__text_1ae8222a1024eb1c090a4c0fa671837ec2" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* drwav_list_info_text::pString</definition>
+        <argsstring></argsstring>
+        <name>pString</name>
+        <qualifiedname>drwav_list_info_text::pString</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="758" column="10" bodyfile="external/dr_wav.h" bodystart="758" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="external/dr_wav.h" line="752" column="1" bodyfile="external/dr_wav.h" bodystart="753" bodyend="759"/>
+    <listofallmembers>
+      <member refid="structdrwav__list__info__text_1ae8222a1024eb1c090a4c0fa671837ec2" prot="public" virt="non-virtual"><scope>drwav_list_info_text</scope><name>pString</name></member>
+      <member refid="structdrwav__list__info__text_1af57e1d30067f58928f9eab30178990fc" prot="public" virt="non-virtual"><scope>drwav_list_info_text</scope><name>stringLength</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

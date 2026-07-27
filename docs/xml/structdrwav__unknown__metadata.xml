@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdrwav__unknown__metadata" kind="struct" language="C++" prot="public">
+    <compoundname>drwav_unknown_metadata</compoundname>
+    <includes refid="dr__wav_8h" local="no">dr_wav.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdrwav__unknown__metadata_1a208d4f1abb0e77ea9a07154bc7daf22f" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ae433204b3e47bded80161f89f5d52895" kindref="member">drwav_uint8</ref></type>
+        <definition>drwav_uint8 drwav_unknown_metadata::id[4]</definition>
+        <argsstring>[4]</argsstring>
+        <name>id</name>
+        <qualifiedname>drwav_unknown_metadata::id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="810" column="17" bodyfile="external/dr_wav.h" bodystart="810" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__unknown__metadata_1ab2e36f12caab0fefecc2e44b0c610363" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a05b21c382728ebf22956e23b9c694369" kindref="member">drwav_metadata_location</ref></type>
+        <definition>drwav_metadata_location drwav_unknown_metadata::chunkLocation</definition>
+        <argsstring></argsstring>
+        <name>chunkLocation</name>
+        <qualifiedname>drwav_unknown_metadata::chunkLocation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="811" column="29" bodyfile="external/dr_wav.h" bodystart="811" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__unknown__metadata_1ad91f5a0711bb8d0b65706ca155f1a9d7" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_unknown_metadata::dataSizeInBytes</definition>
+        <argsstring></argsstring>
+        <name>dataSizeInBytes</name>
+        <qualifiedname>drwav_unknown_metadata::dataSizeInBytes</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="812" column="18" bodyfile="external/dr_wav.h" bodystart="812" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__unknown__metadata_1af35b81cde2405d462d49ad05c9b8bfa8" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ae433204b3e47bded80161f89f5d52895" kindref="member">drwav_uint8</ref> *</type>
+        <definition>drwav_uint8* drwav_unknown_metadata::pData</definition>
+        <argsstring></argsstring>
+        <name>pData</name>
+        <qualifiedname>drwav_unknown_metadata::pData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="813" column="17" bodyfile="external/dr_wav.h" bodystart="813" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="external/dr_wav.h" line="808" column="1" bodyfile="external/dr_wav.h" bodystart="809" bodyend="814"/>
+    <listofallmembers>
+      <member refid="structdrwav__unknown__metadata_1ab2e36f12caab0fefecc2e44b0c610363" prot="public" virt="non-virtual"><scope>drwav_unknown_metadata</scope><name>chunkLocation</name></member>
+      <member refid="structdrwav__unknown__metadata_1ad91f5a0711bb8d0b65706ca155f1a9d7" prot="public" virt="non-virtual"><scope>drwav_unknown_metadata</scope><name>dataSizeInBytes</name></member>
+      <member refid="structdrwav__unknown__metadata_1a208d4f1abb0e77ea9a07154bc7daf22f" prot="public" virt="non-virtual"><scope>drwav_unknown_metadata</scope><name>id</name></member>
+      <member refid="structdrwav__unknown__metadata_1af35b81cde2405d462d49ad05c9b8bfa8" prot="public" virt="non-virtual"><scope>drwav_unknown_metadata</scope><name>pData</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

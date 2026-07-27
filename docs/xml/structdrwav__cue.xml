@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdrwav__cue" kind="struct" language="C++" prot="public">
+    <compoundname>drwav_cue</compoundname>
+    <includes refid="dr__wav_8h" local="no">dr_wav.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdrwav__cue_1a47bab6e8f5d57849078619b49ef1e56a" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_cue::cuePointCount</definition>
+        <argsstring></argsstring>
+        <name>cuePointCount</name>
+        <qualifiedname>drwav_cue::cuePointCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="646" column="18" bodyfile="external/dr_wav.h" bodystart="646" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__cue_1a50dcea34d2696e0294c60f450dfa7d38" prot="public" static="no" mutable="no">
+        <type><ref refid="structdrwav__cue__point" kindref="compound">drwav_cue_point</ref> *</type>
+        <definition>drwav_cue_point* drwav_cue::pCuePoints</definition>
+        <argsstring></argsstring>
+        <name>pCuePoints</name>
+        <qualifiedname>drwav_cue::pCuePoints</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="647" column="21" bodyfile="external/dr_wav.h" bodystart="647" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>drwav_cue</label>
+        <link refid="structdrwav__cue"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>pCuePoints</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>drwav_cue_point</label>
+        <link refid="structdrwav__cue__point"/>
+      </node>
+    </collaborationgraph>
+    <location file="external/dr_wav.h" line="644" column="1" bodyfile="external/dr_wav.h" bodystart="645" bodyend="648"/>
+    <listofallmembers>
+      <member refid="structdrwav__cue_1a47bab6e8f5d57849078619b49ef1e56a" prot="public" virt="non-virtual"><scope>drwav_cue</scope><name>cuePointCount</name></member>
+      <member refid="structdrwav__cue_1a50dcea34d2696e0294c60f450dfa7d38" prot="public" virt="non-virtual"><scope>drwav_cue</scope><name>pCuePoints</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ui3_1_1_graphical_string" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ui3::GraphicalString</compoundname>
+    <includes refid="winstream_8hpp" local="no">winstream.hpp</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structleasy_1_1ui3_1_1_graphical_string_1ac224d7922697837c3cc474b34da8a38b" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string leasy::ui3::GraphicalString::text</definition>
+        <argsstring></argsstring>
+        <name>text</name>
+        <qualifiedname>leasy::ui3::GraphicalString::text</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ui/winstream.hpp" line="39" column="23" bodyfile="leasy/ui/winstream.hpp" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1ui3_1_1_graphical_string_1a761e1de4c880725483c6609c7b80e99f" prot="public" static="no" mutable="no">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color leasy::ui3::GraphicalString::color</definition>
+        <argsstring></argsstring>
+        <name>color</name>
+        <qualifiedname>leasy::ui3::GraphicalString::color</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ui/winstream.hpp" line="40" column="23" bodyfile="leasy/ui/winstream.hpp" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1ui3_1_1_graphical_string_1a098bd9056329faad96805c562494ea10" prot="public" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int leasy::ui3::GraphicalString::lifetime</definition>
+        <argsstring></argsstring>
+        <name>lifetime</name>
+        <qualifiedname>leasy::ui3::GraphicalString::lifetime</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ui/winstream.hpp" line="41" column="23" bodyfile="leasy/ui/winstream.hpp" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1ui3_1_1_graphical_string_1a335a9dd10dd6fa82437bd86bb9a26aff" prot="public" static="no" mutable="no">
+        <type>clock::time_point</type>
+        <definition>clock::time_point leasy::ui3::GraphicalString::point</definition>
+        <argsstring></argsstring>
+        <name>point</name>
+        <qualifiedname>leasy::ui3::GraphicalString::point</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ui/winstream.hpp" line="42" column="23" bodyfile="leasy/ui/winstream.hpp" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1ui3_1_1_graphical_string_1a43601cfc48dc6980f46b703e1d59fe11" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int leasy::ui3::GraphicalString::linealpha</definition>
+        <argsstring></argsstring>
+        <name>linealpha</name>
+        <qualifiedname>leasy::ui3::GraphicalString::linealpha</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ui/winstream.hpp" line="43" column="23" bodyfile="leasy/ui/winstream.hpp" bodystart="43" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>Color</label>
+        <link refid="class_color"/>
+      </node>
+      <node id="1">
+        <label>leasy::ui3::GraphicalString</label>
+        <link refid="structleasy_1_1ui3_1_1_graphical_string"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>color</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/ui/winstream.hpp" line="38" column="3" bodyfile="leasy/ui/winstream.hpp" bodystart="38" bodyend="44"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ui3_1_1_graphical_string_1a761e1de4c880725483c6609c7b80e99f" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalString</scope><name>color</name></member>
+      <member refid="structleasy_1_1ui3_1_1_graphical_string_1a098bd9056329faad96805c562494ea10" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalString</scope><name>lifetime</name></member>
+      <member refid="structleasy_1_1ui3_1_1_graphical_string_1a43601cfc48dc6980f46b703e1d59fe11" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalString</scope><name>linealpha</name></member>
+      <member refid="structleasy_1_1ui3_1_1_graphical_string_1a335a9dd10dd6fa82437bd86bb9a26aff" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalString</scope><name>point</name></member>
+      <member refid="structleasy_1_1ui3_1_1_graphical_string_1ac224d7922697837c3cc474b34da8a38b" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalString</scope><name>text</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

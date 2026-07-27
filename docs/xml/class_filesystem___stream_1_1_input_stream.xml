@@ -1,0 +1,394 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_filesystem___stream_1_1_input_stream" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>Filesystem_Stream::InputStream</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::istream</basecompoundref>
+    <includes refid="filesystem__stream_8h" local="no">filesystem_stream.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_filesystem___stream_1_1_input_stream_1acb7dcad508a018db0358320efa24c9a1" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Filesystem_Stream::InputStream::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>Filesystem_Stream::InputStream::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="52" column="13" bodyfile="filesystem_stream.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_filesystem___stream_1_1_input_stream_1a40ef3fc663dae2b8ebe04fdfb9c09bd1" prot="private" static="no" mutable="yes">
+        <type>bool</type>
+        <definition>bool Filesystem_Stream::InputStream::size_cached</definition>
+        <argsstring></argsstring>
+        <name>size_cached</name>
+        <qualifiedname>Filesystem_Stream::InputStream::size_cached</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="53" column="14" bodyfile="filesystem_stream.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_filesystem___stream_1_1_input_stream_1a33f2dab2bc3ab4db9f8607937149753d" prot="private" static="no" mutable="yes">
+        <type>std::streampos</type>
+        <definition>std::streampos Filesystem_Stream::InputStream::size</definition>
+        <argsstring></argsstring>
+        <name>size</name>
+        <qualifiedname>Filesystem_Stream::InputStream::size</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="54" column="24" bodyfile="filesystem_stream.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_stream_1a9d7cedab6696e8901603f3715a8c132b" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Filesystem_Stream::InputStream::InputStream</definition>
+        <argsstring>()</argsstring>
+        <name>InputStream</name>
+        <qualifiedname>Filesystem_Stream::InputStream::InputStream</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="33" column="10" bodyfile="filesystem_stream.h" bodystart="33" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_stream_1a38c9e86a27e549de46340fb97b6170b5" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Filesystem_Stream::InputStream::InputStream</definition>
+        <argsstring>(std::streambuf *sb, std::string name)</argsstring>
+        <name>InputStream</name>
+        <qualifiedname>Filesystem_Stream::InputStream::InputStream</qualifiedname>
+        <param>
+          <type>std::streambuf *</type>
+          <declname>sb</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="34" column="10" bodyfile="filesystem_stream.cpp" bodystart="26" bodyend="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_stream_1a311a89167175d58023374c7e2f242dae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Filesystem_Stream::InputStream::~InputStream</definition>
+        <argsstring>() override</argsstring>
+        <name>~InputStream</name>
+        <qualifiedname>Filesystem_Stream::InputStream::~InputStream</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="35" column="1" bodyfile="filesystem_stream.cpp" bodystart="29" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_stream_1a471cd11acf62b7748c4a4eae3b81e1c2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Filesystem_Stream::InputStream::InputStream</definition>
+        <argsstring>(const InputStream &amp;)=delete</argsstring>
+        <name>InputStream</name>
+        <qualifiedname>Filesystem_Stream::InputStream::InputStream</qualifiedname>
+        <param>
+          <type>const InputStream &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="36" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_stream_1a965723a3bea7a26e9f9dacee3ef8b1c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream_1a9d7cedab6696e8901603f3715a8c132b" kindref="member">InputStream</ref> &amp;</type>
+        <definition>InputStream &amp; Filesystem_Stream::InputStream::operator=</definition>
+        <argsstring>(const InputStream &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Filesystem_Stream::InputStream::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_filesystem___stream_1_1_input_stream_1a9d7cedab6696e8901603f3715a8c132b" kindref="member">InputStream</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="37" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_stream_1a6f95f14e745912386950a18c5ce9b1b2" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>Filesystem_Stream::InputStream::InputStream</definition>
+        <argsstring>(InputStream &amp;&amp;is) noexcept</argsstring>
+        <name>InputStream</name>
+        <qualifiedname>Filesystem_Stream::InputStream::InputStream</qualifiedname>
+        <param>
+          <type>InputStream &amp;&amp;</type>
+          <declname>is</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="38" column="1" bodyfile="filesystem_stream.cpp" bodystart="33" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_stream_1a84b4d740e0121e3b56fad26ccd31d1c9" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream_1a9d7cedab6696e8901603f3715a8c132b" kindref="member">InputStream</ref> &amp;</type>
+        <definition>Filesystem_Stream::InputStream &amp; Filesystem_Stream::InputStream::operator=</definition>
+        <argsstring>(InputStream &amp;&amp;is) noexcept</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Filesystem_Stream::InputStream::operator=</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream_1a9d7cedab6696e8901603f3715a8c132b" kindref="member">InputStream</ref> &amp;&amp;</type>
+          <declname>is</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="39" column="13" bodyfile="filesystem_stream.cpp" bodystart="39" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_stream_1a93ba5f95a2738307a23e45139493a10c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Filesystem_Stream::InputStream::GetName</definition>
+        <argsstring>() const</argsstring>
+        <name>GetName</name>
+        <qualifiedname>Filesystem_Stream::InputStream::GetName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="41" column="18" bodyfile="filesystem_stream.cpp" bodystart="48" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_stream_1a00cc36fc1d8a592a2ed369dbb9e75797" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::streampos</type>
+        <definition>std::streampos Filesystem_Stream::InputStream::GetSize</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSize</name>
+        <qualifiedname>Filesystem_Stream::InputStream::GetSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="42" column="16" bodyfile="filesystem_stream.cpp" bodystart="52" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_stream_1a39b3162827914bae2eb17f84b2752cfb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Filesystem_Stream::InputStream::Close</definition>
+        <argsstring>()</argsstring>
+        <name>Close</name>
+        <qualifiedname>Filesystem_Stream::InputStream::Close</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="43" column="6" bodyfile="filesystem_stream.cpp" bodystart="62" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_stream_1ac24bd172c0e68edcd4edffab72c287ea" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Filesystem_Stream::InputStream::ReadIntoObj</definition>
+        <argsstring>(T &amp;obj)</argsstring>
+        <name>ReadIntoObj</name>
+        <qualifiedname>Filesystem_Stream::InputStream::ReadIntoObj</qualifiedname>
+        <param>
+          <type>T &amp;</type>
+          <declname>obj</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="46" column="6" bodyfile="filesystem_stream.h" bodystart="142" bodyend="144"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_stream_1ac6312ae89cf06f9dbdd06577f9179617" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Filesystem_Stream::InputStream::ReadIntoObj</definition>
+        <argsstring>(int16_t &amp;obj)</argsstring>
+        <name>ReadIntoObj</name>
+        <qualifiedname>Filesystem_Stream::InputStream::ReadIntoObj</qualifiedname>
+        <param>
+          <type>int16_t &amp;</type>
+          <declname>obj</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="147" column="13" bodyfile="filesystem_stream.h" bodystart="147" bodyend="153"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_stream_1a03507fa465a6b1d3098c738fd7d3749c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Filesystem_Stream::InputStream::ReadIntoObj</definition>
+        <argsstring>(uint16_t &amp;obj)</argsstring>
+        <name>ReadIntoObj</name>
+        <qualifiedname>Filesystem_Stream::InputStream::ReadIntoObj</qualifiedname>
+        <param>
+          <type>uint16_t &amp;</type>
+          <declname>obj</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="156" column="13" bodyfile="filesystem_stream.h" bodystart="156" bodyend="160"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_stream_1af8c6241332427a2f50d0418f2738940d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Filesystem_Stream::InputStream::ReadIntoObj</definition>
+        <argsstring>(int32_t &amp;obj)</argsstring>
+        <name>ReadIntoObj</name>
+        <qualifiedname>Filesystem_Stream::InputStream::ReadIntoObj</qualifiedname>
+        <param>
+          <type>int32_t &amp;</type>
+          <declname>obj</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="163" column="13" bodyfile="filesystem_stream.h" bodystart="163" bodyend="169"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_stream_1af0103526150074d6ec7144857ac582a9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Filesystem_Stream::InputStream::ReadIntoObj</definition>
+        <argsstring>(uint32_t &amp;obj)</argsstring>
+        <name>ReadIntoObj</name>
+        <qualifiedname>Filesystem_Stream::InputStream::ReadIntoObj</qualifiedname>
+        <param>
+          <type>uint32_t &amp;</type>
+          <declname>obj</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="172" column="13" bodyfile="filesystem_stream.h" bodystart="172" bodyend="176"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_stream_1a3992a075d3a3db98ae790162660501f2" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Filesystem_Stream::InputStream::Read0</definition>
+        <argsstring>(T &amp;obj)</argsstring>
+        <name>Read0</name>
+        <qualifiedname>Filesystem_Stream::InputStream::Read0</qualifiedname>
+        <param>
+          <type>T &amp;</type>
+          <declname>obj</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="50" column="6" bodyfile="filesystem_stream.h" bodystart="137" bodyend="139"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Filesystem_Stream::InputStream</label>
+        <link refid="class_filesystem___stream_1_1_input_stream"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::istream</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Filesystem_Stream::InputStream</label>
+        <link refid="class_filesystem___stream_1_1_input_stream"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::istream</label>
+      </node>
+    </collaborationgraph>
+    <location file="filesystem_stream.h" line="31" column="1" bodyfile="filesystem_stream.h" bodystart="31" bodyend="55"/>
+    <listofallmembers>
+      <member refid="class_filesystem___stream_1_1_input_stream_1a39b3162827914bae2eb17f84b2752cfb" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>Close</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1a93ba5f95a2738307a23e45139493a10c" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>GetName</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1a00cc36fc1d8a592a2ed369dbb9e75797" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>GetSize</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1a9d7cedab6696e8901603f3715a8c132b" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>InputStream</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1a38c9e86a27e549de46340fb97b6170b5" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>InputStream</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1a471cd11acf62b7748c4a4eae3b81e1c2" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>InputStream</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1a6f95f14e745912386950a18c5ce9b1b2" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>InputStream</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1acb7dcad508a018db0358320efa24c9a1" prot="private" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>name</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1a965723a3bea7a26e9f9dacee3ef8b1c9" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>operator=</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1a84b4d740e0121e3b56fad26ccd31d1c9" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>operator=</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1a3992a075d3a3db98ae790162660501f2" prot="private" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>Read0</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1ac24bd172c0e68edcd4edffab72c287ea" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>ReadIntoObj</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1ac6312ae89cf06f9dbdd06577f9179617" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>ReadIntoObj</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1a03507fa465a6b1d3098c738fd7d3749c" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>ReadIntoObj</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1af8c6241332427a2f50d0418f2738940d" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>ReadIntoObj</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1af0103526150074d6ec7144857ac582a9" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>ReadIntoObj</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1a33f2dab2bc3ab4db9f8607937149753d" prot="private" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>size</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1a40ef3fc663dae2b8ebe04fdfb9c09bd1" prot="private" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>size_cached</name></member>
+      <member refid="class_filesystem___stream_1_1_input_stream_1a311a89167175d58023374c7e2f242dae" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputStream</scope><name>~InputStream</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

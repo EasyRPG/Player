@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="here_8h" kind="file" language="C++">
+    <compoundname>here.h</compoundname>
+    <includedby refid="game__actor_8cpp" local="yes">game_actor.cpp</includedby>
+    <includedby refid="game__character_8cpp" local="yes">game_character.cpp</includedby>
+    <includedby refid="game__map_8cpp" local="yes">game_map.cpp</includedby>
+    <includedby refid="diagnostics_8hpp" local="yes">leasy/diag5/diagnostics.hpp</includedby>
+    <includedby refid="leasy_8cpp" local="yes">leasy/leasy.cpp</includedby>
+    <invincdepgraph>
+      <node id="2">
+        <label>game_actor.cpp</label>
+        <link refid="game__actor_8cpp"/>
+      </node>
+      <node id="3">
+        <label>game_character.cpp</label>
+        <link refid="game__character_8cpp"/>
+      </node>
+      <node id="4">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="5">
+        <label>leasy/diag5/diagnostics.hpp</label>
+        <link refid="diagnostics_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/diag5/here.h</label>
+        <link refid="here_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>leasy/leasy.cpp</label>
+        <link refid="leasy_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="here_8h_1a5919ce40dcf38a3dd9c1cb0b1fd208e8" prot="public" static="no">
+        <name>__FUCKING_HERE_SHIT_H__</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para><ulink url="mailto:0xEF9087A@wys-prog.https">0xEF9087A@wys-prog.https</ulink>://github.com/wys-prog/leasy </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/diag5/here.h" line="24" column="9" bodyfile="leasy/diag5/here.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="here_8h_1af0d6b9e45ca9d895948eb6b1d206d752" prot="public" static="no">
+        <name>FUNC_NAME</name>
+        <initializer>__func__</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/diag5/here.h" line="31" column="13" bodyfile="leasy/diag5/here.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="here_8h_1ac8a66a18d26209f0d893dbe246f6cc1f" prot="public" static="no">
+        <name>STR2</name>
+        <param><defname>x</defname></param>
+        <initializer>#x</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/diag5/here.h" line="34" column="9" bodyfile="leasy/diag5/here.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="here_8h_1a18d295a837ac71add5578860b55e5502" prot="public" static="no">
+        <name>STR</name>
+        <param><defname>x</defname></param>
+        <initializer><ref refid="here_8h_1ac8a66a18d26209f0d893dbe246f6cc1f" kindref="member">STR2</ref>(x)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/diag5/here.h" line="35" column="9" bodyfile="leasy/diag5/here.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="here_8h_1abbf15a0311131b997540e8f0fdc70c23" prot="public" static="no">
+        <name>SOURCE_POS</name>
+        <initializer>__FILE__ &quot;:&quot; <ref refid="here_8h_1a18d295a837ac71add5578860b55e5502" kindref="member">STR</ref>(__LINE__)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/diag5/here.h" line="37" column="9" bodyfile="leasy/diag5/here.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="here_8h_1ad168922b1d1561628d162f20bc8ce420" prot="public" static="no">
+        <name>here</name>
+        <initializer><ref refid="here_8h_1abbf15a0311131b997540e8f0fdc70c23" kindref="member">SOURCE_POS</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/diag5/here.h" line="39" column="9" bodyfile="leasy/diag5/here.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>__FUCKING_HERE_SHIT_H__</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="here_8h_1a5919ce40dcf38a3dd9c1cb0b1fd208e8" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>__FUCKING_HERE_SHIT_H__<sp/></highlight><highlight class="comment">//<sp/>I<sp/>think<sp/>nobody<sp/>would<sp/>define<sp/>a<sp/>macro<sp/>like<sp/>that<sp/>one<sp/>...<sp/>Like<sp/>honestly</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(__clang__)<sp/>||<sp/>defined(__GNUC__)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/><sp/>define<sp/>FUNC_NAME<sp/>__PRETTY_FUNCTION__</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>defined(_MSC_VER)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/><sp/>define<sp/>FUNC_NAME<sp/>__FUNCSIG__</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="here_8h_1af0d6b9e45ca9d895948eb6b1d206d752" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#<sp/><sp/><sp/>define<sp/>FUNC_NAME<sp/>__func__</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="here_8h_1ac8a66a18d26209f0d893dbe246f6cc1f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>STR2(x)<sp/>#x</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="here_8h_1a18d295a837ac71add5578860b55e5502" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>STR(x)<sp/>STR2(x)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="here_8h_1abbf15a0311131b997540e8f0fdc70c23" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>SOURCE_POS<sp/>__FILE__<sp/>&quot;:&quot;<sp/>STR(__LINE__)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="here_8h_1ad168922b1d1561628d162f20bc8ce420" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>here<sp/>SOURCE_POS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>__FUCKING_HERE_SHIT_H__</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/diag5/here.h"/>
+  </compounddef>
+</doxygen>

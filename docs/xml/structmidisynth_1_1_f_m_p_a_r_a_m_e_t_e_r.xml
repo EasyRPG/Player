@@ -1,0 +1,284 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r" kind="struct" language="C++" prot="public">
+    <compoundname>midisynth::FMPARAMETER</compoundname>
+    <derivedcompoundref refid="structmidisynth_1_1_d_r_u_m_p_a_r_a_m_e_t_e_r" prot="public" virt="non-virtual">midisynth::DRUMPARAMETER</derivedcompoundref>
+    <includes refid="midisynth_8h" local="no">midisynth.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1ab1f5da94869ac1756bdeee9ee9a2c6ee" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::FMPARAMETER::ALG</definition>
+        <argsstring></argsstring>
+        <name>ALG</name>
+        <qualifiedname>midisynth::FMPARAMETER::ALG</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="322" column="13" bodyfile="midisynth.h" bodystart="322" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a2de5dad00bd190216f8858f86a3170ae" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::FMPARAMETER::FB</definition>
+        <argsstring></argsstring>
+        <name>FB</name>
+        <qualifiedname>midisynth::FMPARAMETER::FB</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="322" column="17" bodyfile="midisynth.h" bodystart="322" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1aaa2c121a6fd1b4a4f25e043f6f1cc7c0" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::FMPARAMETER::LFO</definition>
+        <argsstring></argsstring>
+        <name>LFO</name>
+        <qualifiedname>midisynth::FMPARAMETER::LFO</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="322" column="20" bodyfile="midisynth.h" bodystart="322" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1aa5f041403fe26779573dba2ddaa1bac1" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::FMPARAMETER::AR</definition>
+        <argsstring></argsstring>
+        <name>AR</name>
+        <qualifiedname>midisynth::FMPARAMETER::AR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="324" column="17" bodyfile="midisynth.h" bodystart="324" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1aa2d5813f5fd93dcec149f71a7b0342c6" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::FMPARAMETER::DR</definition>
+        <argsstring></argsstring>
+        <name>DR</name>
+        <qualifiedname>midisynth::FMPARAMETER::DR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="324" column="20" bodyfile="midisynth.h" bodystart="324" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a115d1ebb2b18bfdc9796354393caa594" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::FMPARAMETER::SR</definition>
+        <argsstring></argsstring>
+        <name>SR</name>
+        <qualifiedname>midisynth::FMPARAMETER::SR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="324" column="23" bodyfile="midisynth.h" bodystart="324" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a3cd8e7951a380cb4d9535862916c8b72" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::FMPARAMETER::RR</definition>
+        <argsstring></argsstring>
+        <name>RR</name>
+        <qualifiedname>midisynth::FMPARAMETER::RR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="324" column="26" bodyfile="midisynth.h" bodystart="324" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1affbaf7ffbbf6da1157dc897ffc6e2d4d" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::FMPARAMETER::SL</definition>
+        <argsstring></argsstring>
+        <name>SL</name>
+        <qualifiedname>midisynth::FMPARAMETER::SL</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="324" column="29" bodyfile="midisynth.h" bodystart="324" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a217a1262075ad82d2c1518bc99ebc8d4" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::FMPARAMETER::TL</definition>
+        <argsstring></argsstring>
+        <name>TL</name>
+        <qualifiedname>midisynth::FMPARAMETER::TL</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="324" column="32" bodyfile="midisynth.h" bodystart="324" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a16daaa93b02807cf68c20c8ec47b8d22" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::FMPARAMETER::KS</definition>
+        <argsstring></argsstring>
+        <name>KS</name>
+        <qualifiedname>midisynth::FMPARAMETER::KS</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="324" column="35" bodyfile="midisynth.h" bodystart="324" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1afee525ea34e4ceb1e31369b5bb29cf35" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::FMPARAMETER::ML</definition>
+        <argsstring></argsstring>
+        <name>ML</name>
+        <qualifiedname>midisynth::FMPARAMETER::ML</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="324" column="38" bodyfile="midisynth.h" bodystart="324" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a4b69805fa6c50221b648ad0d215153e0" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::FMPARAMETER::DT</definition>
+        <argsstring></argsstring>
+        <name>DT</name>
+        <qualifiedname>midisynth::FMPARAMETER::DT</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="324" column="41" bodyfile="midisynth.h" bodystart="324" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a50908a110685e8b083e6205d9e9259ff" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::FMPARAMETER::AMS</definition>
+        <argsstring></argsstring>
+        <name>AMS</name>
+        <qualifiedname>midisynth::FMPARAMETER::AMS</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="324" column="44" bodyfile="midisynth.h" bodystart="324" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a962207aa90fe24e6dd1ee8abc5065a8d" prot="public" static="no" mutable="no">
+        <type>struct midisynth::FMPARAMETER::@113007337343023170341120236175363026251000230247</type>
+        <definition>struct midisynth::FMPARAMETER::@113007337343023170341120236175363026251000230247 midisynth::FMPARAMETER::op1</definition>
+        <argsstring></argsstring>
+        <name>op1</name>
+        <qualifiedname>midisynth::FMPARAMETER::op1</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="325" column="12"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a5e848a38e82c6498ed20c679ea7fea9c" prot="public" static="no" mutable="no">
+        <type>struct midisynth::FMPARAMETER::@113007337343023170341120236175363026251000230247</type>
+        <definition>struct midisynth::FMPARAMETER::@113007337343023170341120236175363026251000230247 midisynth::FMPARAMETER::op2</definition>
+        <argsstring></argsstring>
+        <name>op2</name>
+        <qualifiedname>midisynth::FMPARAMETER::op2</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="325" column="16"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1ab8cee703cdfa8482614c8569d75db297" prot="public" static="no" mutable="no">
+        <type>struct midisynth::FMPARAMETER::@113007337343023170341120236175363026251000230247</type>
+        <definition>struct midisynth::FMPARAMETER::@113007337343023170341120236175363026251000230247 midisynth::FMPARAMETER::op3</definition>
+        <argsstring></argsstring>
+        <name>op3</name>
+        <qualifiedname>midisynth::FMPARAMETER::op3</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="325" column="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1ae7ed4d4422709df9b4a8aa9118b2b5e8" prot="public" static="no" mutable="no">
+        <type>struct midisynth::FMPARAMETER::@113007337343023170341120236175363026251000230247</type>
+        <definition>struct midisynth::FMPARAMETER::@113007337343023170341120236175363026251000230247 midisynth::FMPARAMETER::op4</definition>
+        <argsstring></argsstring>
+        <name>op4</name>
+        <qualifiedname>midisynth::FMPARAMETER::op4</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="325" column="24"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>midisynth::DRUMPARAMETER</label>
+        <link refid="structmidisynth_1_1_d_r_u_m_p_a_r_a_m_e_t_e_r"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>midisynth::FMPARAMETER</label>
+        <link refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r"/>
+      </node>
+    </inheritancegraph>
+    <location file="midisynth.h" line="321" column="5" bodyfile="midisynth.h" bodystart="321" bodyend="326"/>
+    <listofallmembers>
+      <member refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1ab1f5da94869ac1756bdeee9ee9a2c6ee" prot="public" virt="non-virtual"><scope>midisynth::FMPARAMETER</scope><name>ALG</name></member>
+      <member refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a50908a110685e8b083e6205d9e9259ff" prot="public" virt="non-virtual"><scope>midisynth::FMPARAMETER</scope><name>AMS</name></member>
+      <member refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1aa5f041403fe26779573dba2ddaa1bac1" prot="public" virt="non-virtual"><scope>midisynth::FMPARAMETER</scope><name>AR</name></member>
+      <member refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1aa2d5813f5fd93dcec149f71a7b0342c6" prot="public" virt="non-virtual"><scope>midisynth::FMPARAMETER</scope><name>DR</name></member>
+      <member refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a4b69805fa6c50221b648ad0d215153e0" prot="public" virt="non-virtual"><scope>midisynth::FMPARAMETER</scope><name>DT</name></member>
+      <member refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a2de5dad00bd190216f8858f86a3170ae" prot="public" virt="non-virtual"><scope>midisynth::FMPARAMETER</scope><name>FB</name></member>
+      <member refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a16daaa93b02807cf68c20c8ec47b8d22" prot="public" virt="non-virtual"><scope>midisynth::FMPARAMETER</scope><name>KS</name></member>
+      <member refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1aaa2c121a6fd1b4a4f25e043f6f1cc7c0" prot="public" virt="non-virtual"><scope>midisynth::FMPARAMETER</scope><name>LFO</name></member>
+      <member refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1afee525ea34e4ceb1e31369b5bb29cf35" prot="public" virt="non-virtual"><scope>midisynth::FMPARAMETER</scope><name>ML</name></member>
+      <member refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a962207aa90fe24e6dd1ee8abc5065a8d" prot="public" virt="non-virtual"><scope>midisynth::FMPARAMETER</scope><name>op1</name></member>
+      <member refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a5e848a38e82c6498ed20c679ea7fea9c" prot="public" virt="non-virtual"><scope>midisynth::FMPARAMETER</scope><name>op2</name></member>
+      <member refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1ab8cee703cdfa8482614c8569d75db297" prot="public" virt="non-virtual"><scope>midisynth::FMPARAMETER</scope><name>op3</name></member>
+      <member refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1ae7ed4d4422709df9b4a8aa9118b2b5e8" prot="public" virt="non-virtual"><scope>midisynth::FMPARAMETER</scope><name>op4</name></member>
+      <member refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a3cd8e7951a380cb4d9535862916c8b72" prot="public" virt="non-virtual"><scope>midisynth::FMPARAMETER</scope><name>RR</name></member>
+      <member refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1affbaf7ffbbf6da1157dc897ffc6e2d4d" prot="public" virt="non-virtual"><scope>midisynth::FMPARAMETER</scope><name>SL</name></member>
+      <member refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a115d1ebb2b18bfdc9796354393caa594" prot="public" virt="non-virtual"><scope>midisynth::FMPARAMETER</scope><name>SR</name></member>
+      <member refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r_1a217a1262075ad82d2c1518bc99ebc8d4" prot="public" virt="non-virtual"><scope>midisynth::FMPARAMETER</scope><name>TL</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,1116 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_font" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Font</compoundname>
+    <includes refid="font_8h" local="no">font.h</includes>
+    <innerclass refid="struct_font_1_1_glyph_ret" prot="public">Font::GlyphRet</innerclass>
+    <innerclass refid="struct_font_1_1_shape_ret" prot="public">Font::ShapeRet</innerclass>
+    <innerclass refid="struct_font_1_1_style" prot="public">Font::Style</innerclass>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_font_1a300007dc1b65d906cf32066494d5cb8f" prot="public" static="no" strong="no">
+        <type></type>
+        <name>SystemColor</name>
+        <qualifiedname>Font::SystemColor</qualifiedname>
+        <enumvalue id="class_font_1a300007dc1b65d906cf32066494d5cb8fa155320969a182bbbcaf000f3aa952655" prot="public">
+          <name>ColorShadow</name>
+          <initializer>= -1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_font_1a300007dc1b65d906cf32066494d5cb8faab221bb13421493c5b0745d87ebc58e9" prot="public">
+          <name>ColorDefault</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_font_1a300007dc1b65d906cf32066494d5cb8fab8ed6e99e1a66f149943130adf9b6f04" prot="public">
+          <name>ColorDisabled</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_font_1a300007dc1b65d906cf32066494d5cb8fa698f342ab3c951daa68980eaade14bcf" prot="public">
+          <name>ColorCritical</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_font_1a300007dc1b65d906cf32066494d5cb8fa087922fff006f0fd6d56792a180db8e9" prot="public">
+          <name>ColorKnockout</name>
+          <initializer>= 5</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_font_1a300007dc1b65d906cf32066494d5cb8fac167e4c10106e223bda5db277e8821d0" prot="public">
+          <name>ColorHeal</name>
+          <initializer>= 9</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="242" column="1" bodyfile="font.h" bodystart="242" bodyend="249"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_font_1a1298f4b5f9727479f6065f92a88172f3" prot="public" static="no">
+        <type>lcf::ScopeGuard&lt; std::function&lt; void()&gt; &gt;</type>
+        <definition>using Font::StyleScopeGuard = lcf::ScopeGuard&lt;std::function&lt;void()&gt;&gt;</definition>
+        <argsstring></argsstring>
+        <name>StyleScopeGuard</name>
+        <qualifiedname>Font::StyleScopeGuard</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="199" column="1" bodyfile="font.h" bodystart="199" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_font_1a04e3b7aae1274e360aba4880d1b4d6dc" prot="public" static="yes" mutable="no">
+        <type><ref refid="memory__management_8h_1aaf8ae77b19585a8879a7c74d841e8baa" kindref="member">FontRef</ref></type>
+        <definition>FontRef Font::exfont</definition>
+        <argsstring></argsstring>
+        <name>exfont</name>
+        <qualifiedname>Font::exfont</qualifiedname>
+        <initializer>= std::make_shared&lt;ExFont&gt;()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="240" column="16" bodyfile="font.h" bodystart="240" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_font_1a60d1f9d2201ce3d92d76882d6b7c2578" prot="protected" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Font::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>Font::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="261" column="13" bodyfile="font.h" bodystart="261" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_font_1a908066078a68d89aaba64189db2c2e70" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Font::style_applied</definition>
+        <argsstring></argsstring>
+        <name>style_applied</name>
+        <qualifiedname>Font::style_applied</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="262" column="6" bodyfile="font.h" bodystart="262" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_font_1afa11ba7f7f3b37b60a53542f7793eec8" prot="protected" static="no" mutable="no">
+        <type><ref refid="struct_font_1_1_style" kindref="compound">Style</ref></type>
+        <definition>Style Font::original_style</definition>
+        <argsstring></argsstring>
+        <name>original_style</name>
+        <qualifiedname>Font::original_style</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="263" column="7" bodyfile="font.h" bodystart="263" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_font_1a83c224fe21f9f10f7e0255207cabd4bc" prot="protected" static="no" mutable="no">
+        <type><ref refid="struct_font_1_1_style" kindref="compound">Style</ref></type>
+        <definition>Style Font::current_style</definition>
+        <argsstring></argsstring>
+        <name>current_style</name>
+        <qualifiedname>Font::current_style</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="264" column="7" bodyfile="font.h" bodystart="264" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_font_1a167de502d94a88ccf00776346790ca5d" prot="protected" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1aaf8ae77b19585a8879a7c74d841e8baa" kindref="member">FontRef</ref></type>
+        <definition>FontRef Font::fallback_font</definition>
+        <argsstring></argsstring>
+        <name>fallback_font</name>
+        <qualifiedname>Font::fallback_font</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="265" column="9" bodyfile="font.h" bodystart="265" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_font_1aa6c4353c7fae81039c49b4a4f26086ff" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Font::~Font</definition>
+        <argsstring>()=default</argsstring>
+        <name>~Font</name>
+        <qualifiedname>Font::~Font</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="100" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a3177310fbcd0d34d8b767c1b524f4ee9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Font::GetName</definition>
+        <argsstring>() const</argsstring>
+        <name>GetName</name>
+        <qualifiedname>Font::GetName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Name of the font </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="105" column="19" bodyfile="font.cpp" bodystart="703" bodyend="705"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a8bbe4cffdb253b09abdc4929b2d3a886" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect Font::GetSize</definition>
+        <argsstring>(char32_t glyph) const</argsstring>
+        <name>GetSize</name>
+        <qualifiedname>Font::GetSize</qualifiedname>
+        <param>
+          <type>char32_t</type>
+          <declname>glyph</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines the size of a bitmap required to render a single character. The dimensions of the <ref refid="class_rect" kindref="compound">Rect</ref> describe a bounding box to fit the text. To get the real height the glyph must be rendered. For performance reasons the height matches the size of the active style instead.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>glyph</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the glyph to measure. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="see"><para><ref refid="namespace_text_1a44a9a92712bc276c7925dfec2a5f4bc0" kindref="member">Text::GetSize</ref> </para>
+</simplesect>
+<simplesect kind="return"><para><ref refid="class_rect" kindref="compound">Rect</ref> describing the rendered string boundary </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="117" column="6" bodyfile="font.cpp" bodystart="707" bodyend="721"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a49cf013c87a1f37309f5ea383b34215e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect Font::GetSize</definition>
+        <argsstring>(const ShapeRet &amp;shape_ret) const</argsstring>
+        <name>GetSize</name>
+        <qualifiedname>Font::GetSize</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_font_1_1_shape_ret" kindref="compound">ShapeRet</ref> &amp;</type>
+          <declname>shape_ret</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines the size of a bitmap required to render a single character. The dimensions of the <ref refid="class_rect" kindref="compound">Rect</ref> describe a bounding box to fit the text. To get the real height the glyph must be rendered. For performance reasons the height matches the size of the active style instead.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>glyph</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the glyph to measure. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="see"><para><ref refid="namespace_text_1a44a9a92712bc276c7925dfec2a5f4bc0" kindref="member">Text::GetSize</ref> </para>
+</simplesect>
+<simplesect kind="return"><para><ref refid="class_rect" kindref="compound">Rect</ref> describing the rendered string boundary </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="129" column="6" bodyfile="font.cpp" bodystart="723" bodyend="727"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1ab8d8e689da7ef1f5f91963a70e94f5ef" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Font::Render</definition>
+        <argsstring>(Bitmap &amp;dest, int x, int y, const Bitmap &amp;sys, int color, char32_t glyph) const</argsstring>
+        <name>Render</name>
+        <qualifiedname>Font::Render</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dest</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>sys</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>color</declname>
+        </param>
+        <param>
+          <type>char32_t</type>
+          <declname>glyph</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Renders the glyph onto bitmap at the given position with system graphic and color</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the bitmap to render to </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>X offset to render glyph </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Y offset to render glyph </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sys</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>system graphic to use </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which color in the system graphic </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>glyph</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which utf32 glyph to render</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref> containing how far to advance in x/y direction. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="143" column="7" bodyfile="font.cpp" bodystart="729" bodyend="743"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a1578367b6b51765b78119b2876741d59" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Font::Render</definition>
+        <argsstring>(Bitmap &amp;dest, int x, int y, const Bitmap &amp;sys, int color, const ShapeRet &amp;shape) const</argsstring>
+        <name>Render</name>
+        <qualifiedname>Font::Render</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dest</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>sys</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>color</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_font_1_1_shape_ret" kindref="compound">ShapeRet</ref> &amp;</type>
+          <declname>shape</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Renders the glyph onto bitmap at the given position with system graphic and color. For glyph positioning pre-calculated shaping data can be specified.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the bitmap to render to </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>X offset to render glyph </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Y offset to render glyph </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sys</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>system graphic to use </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which color in the system graphic </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>shape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>shaping information for the glyph</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="class_rect" kindref="compound">Rect</ref> containing the x offset, y offset, width, and height of the subrect that was blitted onto dest. Not including text shadow! </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="158" column="7" bodyfile="font.cpp" bodystart="745" bodyend="758"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a70785f3a56f134c1d130623f919419cb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Font::Render</definition>
+        <argsstring>(Bitmap &amp;dest, int x, int y, Color const &amp;color, char32_t glyph) const</argsstring>
+        <name>Render</name>
+        <qualifiedname>Font::Render</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dest</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type><ref refid="class_color" kindref="compound">Color</ref> const &amp;</type>
+          <declname>color</declname>
+        </param>
+        <param>
+          <type>char32_t</type>
+          <declname>glyph</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Renders the glyph onto bitmap at the given position with system graphic and color</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the bitmap to render to </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>X offset to render glyph </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Y offset to render glyph </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which color in the system graphic </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>glyph</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which utf32 glyph to render</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref> containing how far to advance in x/y direction. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="171" column="7" bodyfile="font.cpp" bodystart="865" bodyend="881"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a16331a1a99cbe64fa9655514850d87da" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Font::CanShape</definition>
+        <argsstring>() const</argsstring>
+        <name>CanShape</name>
+        <qualifiedname>Font::CanShape</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines if the used font supports shaping. This will only return true when the font uses FreeType and HarfBuzz is enabled.</para>
+<para><simplesect kind="return"><para>Whether shaping is supported. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="179" column="6" bodyfile="font.cpp" bodystart="883" bodyend="885"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a2399e84bb5b3dc5529f6a4e71735e9be" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="struct_font_1_1_shape_ret" kindref="compound">ShapeRet</ref> &gt;</type>
+        <definition>std::vector&lt; Font::ShapeRet &gt; Font::Shape</definition>
+        <argsstring>(std::u32string_view text) const</argsstring>
+        <name>Shape</name>
+        <qualifiedname>Font::Shape</qualifiedname>
+        <param>
+          <type>std::u32string_view</type>
+          <declname>text</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Shapes the passed text and returns new codepoints and positioning information. This method will abort when shaping is not supported.</para>
+<para><simplesect kind="see"><para><ref refid="class_font_1a16331a1a99cbe64fa9655514850d87da" kindref="member">CanShape()</ref> </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>text</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="namespace_text" kindref="compound">Text</ref> to shape </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Shaping information. See <ref refid="struct_font_1_1_shape_ret" kindref="compound">Font::ShapeRet</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="189" column="13" bodyfile="font.cpp" bodystart="887" bodyend="891"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a89177ca090537417674145d902fa3ee7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Font::SetFallbackFont</definition>
+        <argsstring>(FontRef fallback_font)</argsstring>
+        <name>SetFallbackFont</name>
+        <qualifiedname>Font::SetFallbackFont</qualifiedname>
+        <param>
+          <type><ref refid="memory__management_8h_1aaf8ae77b19585a8879a7c74d841e8baa" kindref="member">FontRef</ref></type>
+          <declname>fallback_font</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Defines a fallback font that shall be used when a glyph is not found in the current font. Currently only used by FreeType Fonts.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fallback_font</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_font" kindref="compound">Font</ref> to fallback to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="197" column="6" bodyfile="font.cpp" bodystart="893" bodyend="895"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1ac40660f5de87b471ba5a72163869b7ae" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Font::IsStyleApplied</definition>
+        <argsstring>() const</argsstring>
+        <name>IsStyleApplied</name>
+        <qualifiedname>Font::IsStyleApplied</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Whether a custom style is currently active </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="204" column="6" bodyfile="font.cpp" bodystart="897" bodyend="899"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1afdaea9c08cd6c9f45f85b69b1650c5af" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_font_1_1_style" kindref="compound">Style</ref></type>
+        <definition>Font::Style Font::GetCurrentStyle</definition>
+        <argsstring>() const</argsstring>
+        <name>GetCurrentStyle</name>
+        <qualifiedname>Font::GetCurrentStyle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the current font style used for rendering.</para>
+<para><simplesect kind="return"><para>current style </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="211" column="7" bodyfile="font.cpp" bodystart="901" bodyend="903"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a37c84d2662efd9554392096fdef003cb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_font_1a1298f4b5f9727479f6065f92a88172f3" kindref="member">StyleScopeGuard</ref></type>
+        <definition>Font::StyleScopeGuard Font::ApplyStyle</definition>
+        <argsstring>(Style new_style)</argsstring>
+        <name>ApplyStyle</name>
+        <qualifiedname>Font::ApplyStyle</qualifiedname>
+        <param>
+          <type><ref refid="struct_font_1_1_style" kindref="compound">Style</ref></type>
+          <declname>new_style</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Applies a new text style for rendering. The style is reverted to the original style afterwards through the returned scope guard.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>new_style</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new style to apply </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="class_font_1a1298f4b5f9727479f6065f92a88172f3" kindref="member">StyleScopeGuard</ref> When destroyed, reverts to the old style </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="220" column="17" bodyfile="font.cpp" bodystart="905" bodyend="915"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a490ca2cee6c9ea8b3a4293b68e62b752" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>virtual Rect Font::vGetSize</definition>
+        <argsstring>(char32_t glyph) const =0</argsstring>
+        <name>vGetSize</name>
+        <qualifiedname>Font::vGetSize</qualifiedname>
+        <param>
+          <type>char32_t</type>
+          <declname>glyph</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="251" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1af896da00af4845ae5eb39e879d7a6d66" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="struct_font_1_1_glyph_ret" kindref="compound">GlyphRet</ref></type>
+        <definition>virtual GlyphRet Font::vRender</definition>
+        <argsstring>(char32_t glyph) const =0</argsstring>
+        <name>vRender</name>
+        <qualifiedname>Font::vRender</qualifiedname>
+        <param>
+          <type>char32_t</type>
+          <declname>glyph</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="252" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a0ecfccb04e76fb92aad8405fdb7d16c9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="struct_font_1_1_glyph_ret" kindref="compound">GlyphRet</ref></type>
+        <definition>virtual GlyphRet Font::vRenderShaped</definition>
+        <argsstring>(char32_t glyph) const</argsstring>
+        <name>vRenderShaped</name>
+        <qualifiedname>Font::vRenderShaped</qualifiedname>
+        <param>
+          <type>char32_t</type>
+          <declname>glyph</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="253" column="18" bodyfile="font.h" bodystart="253" bodyend="253"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1ae2c75b75c76089016580d481fe59293b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool Font::vCanShape</definition>
+        <argsstring>() const</argsstring>
+        <name>vCanShape</name>
+        <qualifiedname>Font::vCanShape</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="254" column="14" bodyfile="font.h" bodystart="254" bodyend="254"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a620d9f3c6320aa8ba1d623b7b1affd0e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::vector&lt; <ref refid="struct_font_1_1_shape_ret" kindref="compound">ShapeRet</ref> &gt;</type>
+        <definition>virtual std::vector&lt; ShapeRet &gt; Font::vShape</definition>
+        <argsstring>(std::u32string_view) const</argsstring>
+        <name>vShape</name>
+        <qualifiedname>Font::vShape</qualifiedname>
+        <param>
+          <type>std::u32string_view</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="255" column="21" bodyfile="font.h" bodystart="255" bodyend="255"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a486e602552f855ae8760e829bff92dbf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Font::vApplyStyle</definition>
+        <argsstring>(const Style &amp;style)</argsstring>
+        <name>vApplyStyle</name>
+        <qualifiedname>Font::vApplyStyle</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_font_1_1_style" kindref="compound">Style</ref> &amp;</type>
+          <declname>style</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="256" column="14" bodyfile="font.h" bodystart="256" bodyend="256"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_font_1a2afdbae04ad313221ab432ff67427d88" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1aaf8ae77b19585a8879a7c74d841e8baa" kindref="member">FontRef</ref></type>
+        <definition>FontRef Font::CreateFtFont</definition>
+        <argsstring>(Filesystem_Stream::InputStream is, int size, bool bold, bool italic)</argsstring>
+        <name>CreateFtFont</name>
+        <qualifiedname>Font::CreateFtFont</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+          <declname>is</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>size</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>bold</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>italic</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Uses the FreeType library to load a font from the provided stream.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>is</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stream to read from </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_font" kindref="compound">Font</ref> size (height) in px </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>bold</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Configure for bold rendering. This option is ignored. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>italic</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Configure for italic rendering. This option is ignored. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>font handle or nullptr on failure or if FreeType is unavailable </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="231" column="16" bodyfile="font.cpp" bodystart="630" bodyend="658"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a0c0af671fc4de3e9ba8b758869080142" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1aaf8ae77b19585a8879a7c74d841e8baa" kindref="member">FontRef</ref></type>
+        <definition>FontRef Font::Default</definition>
+        <argsstring>()</argsstring>
+        <name>Default</name>
+        <qualifiedname>Font::Default</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="232" column="16" bodyfile="font.cpp" bodystart="589" bodyend="592"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a427d7564e0a11ecc7e565b65733351de" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1aaf8ae77b19585a8879a7c74d841e8baa" kindref="member">FontRef</ref></type>
+        <definition>FontRef Font::Default</definition>
+        <argsstring>(bool use_mincho)</argsstring>
+        <name>Default</name>
+        <qualifiedname>Font::Default</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>use_mincho</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="233" column="16" bodyfile="font.cpp" bodystart="594" bodyend="602"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1ae40bf016893532af228bf215d7e8ef53" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1aaf8ae77b19585a8879a7c74d841e8baa" kindref="member">FontRef</ref></type>
+        <definition>FontRef Font::DefaultBitmapFont</definition>
+        <argsstring>()</argsstring>
+        <name>DefaultBitmapFont</name>
+        <qualifiedname>Font::DefaultBitmapFont</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="234" column="16" bodyfile="font.cpp" bodystart="604" bodyend="607"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a5bdb2caccefa6338a4a8eec8868d6c31" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1aaf8ae77b19585a8879a7c74d841e8baa" kindref="member">FontRef</ref></type>
+        <definition>FontRef Font::DefaultBitmapFont</definition>
+        <argsstring>(bool use_mincho)</argsstring>
+        <name>DefaultBitmapFont</name>
+        <qualifiedname>Font::DefaultBitmapFont</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>use_mincho</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="235" column="16" bodyfile="font.cpp" bodystart="609" bodyend="616"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a46a5baaf1a1034b5a6c59ffb145bd667" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Font::SetDefault</definition>
+        <argsstring>(FontRef new_default, bool use_mincho)</argsstring>
+        <name>SetDefault</name>
+        <qualifiedname>Font::SetDefault</qualifiedname>
+        <param>
+          <type><ref refid="memory__management_8h_1aaf8ae77b19585a8879a7c74d841e8baa" kindref="member">FontRef</ref></type>
+          <declname>new_default</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>use_mincho</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="236" column="13" bodyfile="font.cpp" bodystart="618" bodyend="628"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1aca5757f249b4ab69c287f2cc7b7be4a1" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Font::ResetDefault</definition>
+        <argsstring>()</argsstring>
+        <name>ResetDefault</name>
+        <qualifiedname>Font::ResetDefault</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="237" column="13" bodyfile="font.cpp" bodystart="660" bodyend="679"/>
+      </memberdef>
+      <memberdef kind="function" id="class_font_1a936b1fee87e014cf3017233ec5ec7319" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Font::Dispose</definition>
+        <argsstring>()</argsstring>
+        <name>Dispose</name>
+        <qualifiedname>Font::Dispose</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="238" column="13" bodyfile="font.cpp" bodystart="681" bodyend="691"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_font_1aadae23b69cada8ef103331e77d7e66b0" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Font::Font</definition>
+        <argsstring>(std::string_view name, int size, bool bold, bool italic)</argsstring>
+        <name>Font</name>
+        <qualifiedname>Font::Font</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>size</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>bold</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>italic</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="259" column="1" bodyfile="font.cpp" bodystart="694" bodyend="701"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_font_1aab745192792a90c4347b9795e56f3877" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Font::RenderImpl</definition>
+        <argsstring>(Bitmap &amp;dest, int const x, int const y, const Bitmap &amp;sys, int color, const GlyphRet &amp;gret) const</argsstring>
+        <name>RenderImpl</name>
+        <qualifiedname>Font::RenderImpl</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dest</declname>
+        </param>
+        <param>
+          <type>int const</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int const</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>sys</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>color</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_font_1_1_glyph_ret" kindref="compound">GlyphRet</ref> &amp;</type>
+          <declname>gret</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="268" column="6" bodyfile="font.cpp" bodystart="760" bodyend="863"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_font" kindref="compound">Font</ref> class.</para>
+<para>All methods in this class are private API. Only use it when low level access is required. Use the API in <ref refid="namespace_text" kindref="compound">Text</ref> instead.</para>
+<para><simplesect kind="see"><para><ref refid="namespace_text" kindref="compound">Text</ref> </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>Font</label>
+        <link refid="class_font"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>current_style</edgelabel>
+          <edgelabel>original_style</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Font::Style</label>
+        <link refid="struct_font_1_1_style"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>color_offset</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+    </collaborationgraph>
+    <location file="font.h" line="44" column="1" bodyfile="font.h" bodystart="44" bodyend="269"/>
+    <listofallmembers>
+      <member refid="class_font_1a37c84d2662efd9554392096fdef003cb" prot="public" virt="non-virtual"><scope>Font</scope><name>ApplyStyle</name></member>
+      <member refid="class_font_1a16331a1a99cbe64fa9655514850d87da" prot="public" virt="non-virtual"><scope>Font</scope><name>CanShape</name></member>
+      <member refid="class_font_1a300007dc1b65d906cf32066494d5cb8fa698f342ab3c951daa68980eaade14bcf" prot="public" virt="non-virtual"><scope>Font</scope><name>ColorCritical</name></member>
+      <member refid="class_font_1a300007dc1b65d906cf32066494d5cb8faab221bb13421493c5b0745d87ebc58e9" prot="public" virt="non-virtual"><scope>Font</scope><name>ColorDefault</name></member>
+      <member refid="class_font_1a300007dc1b65d906cf32066494d5cb8fab8ed6e99e1a66f149943130adf9b6f04" prot="public" virt="non-virtual"><scope>Font</scope><name>ColorDisabled</name></member>
+      <member refid="class_font_1a300007dc1b65d906cf32066494d5cb8fac167e4c10106e223bda5db277e8821d0" prot="public" virt="non-virtual"><scope>Font</scope><name>ColorHeal</name></member>
+      <member refid="class_font_1a300007dc1b65d906cf32066494d5cb8fa087922fff006f0fd6d56792a180db8e9" prot="public" virt="non-virtual"><scope>Font</scope><name>ColorKnockout</name></member>
+      <member refid="class_font_1a300007dc1b65d906cf32066494d5cb8fa155320969a182bbbcaf000f3aa952655" prot="public" virt="non-virtual"><scope>Font</scope><name>ColorShadow</name></member>
+      <member refid="class_font_1a2afdbae04ad313221ab432ff67427d88" prot="public" virt="non-virtual"><scope>Font</scope><name>CreateFtFont</name></member>
+      <member refid="class_font_1a83c224fe21f9f10f7e0255207cabd4bc" prot="protected" virt="non-virtual"><scope>Font</scope><name>current_style</name></member>
+      <member refid="class_font_1a0c0af671fc4de3e9ba8b758869080142" prot="public" virt="non-virtual"><scope>Font</scope><name>Default</name></member>
+      <member refid="class_font_1a427d7564e0a11ecc7e565b65733351de" prot="public" virt="non-virtual"><scope>Font</scope><name>Default</name></member>
+      <member refid="class_font_1ae40bf016893532af228bf215d7e8ef53" prot="public" virt="non-virtual"><scope>Font</scope><name>DefaultBitmapFont</name></member>
+      <member refid="class_font_1a5bdb2caccefa6338a4a8eec8868d6c31" prot="public" virt="non-virtual"><scope>Font</scope><name>DefaultBitmapFont</name></member>
+      <member refid="class_font_1a936b1fee87e014cf3017233ec5ec7319" prot="public" virt="non-virtual"><scope>Font</scope><name>Dispose</name></member>
+      <member refid="class_font_1a04e3b7aae1274e360aba4880d1b4d6dc" prot="public" virt="non-virtual"><scope>Font</scope><name>exfont</name></member>
+      <member refid="class_font_1a167de502d94a88ccf00776346790ca5d" prot="protected" virt="non-virtual"><scope>Font</scope><name>fallback_font</name></member>
+      <member refid="class_font_1aadae23b69cada8ef103331e77d7e66b0" prot="protected" virt="non-virtual"><scope>Font</scope><name>Font</name></member>
+      <member refid="class_font_1afdaea9c08cd6c9f45f85b69b1650c5af" prot="public" virt="non-virtual"><scope>Font</scope><name>GetCurrentStyle</name></member>
+      <member refid="class_font_1a3177310fbcd0d34d8b767c1b524f4ee9" prot="public" virt="non-virtual"><scope>Font</scope><name>GetName</name></member>
+      <member refid="class_font_1a8bbe4cffdb253b09abdc4929b2d3a886" prot="public" virt="non-virtual"><scope>Font</scope><name>GetSize</name></member>
+      <member refid="class_font_1a49cf013c87a1f37309f5ea383b34215e" prot="public" virt="non-virtual"><scope>Font</scope><name>GetSize</name></member>
+      <member refid="class_font_1ac40660f5de87b471ba5a72163869b7ae" prot="public" virt="non-virtual"><scope>Font</scope><name>IsStyleApplied</name></member>
+      <member refid="class_font_1a60d1f9d2201ce3d92d76882d6b7c2578" prot="protected" virt="non-virtual"><scope>Font</scope><name>name</name></member>
+      <member refid="class_font_1afa11ba7f7f3b37b60a53542f7793eec8" prot="protected" virt="non-virtual"><scope>Font</scope><name>original_style</name></member>
+      <member refid="class_font_1ab8d8e689da7ef1f5f91963a70e94f5ef" prot="public" virt="non-virtual"><scope>Font</scope><name>Render</name></member>
+      <member refid="class_font_1a1578367b6b51765b78119b2876741d59" prot="public" virt="non-virtual"><scope>Font</scope><name>Render</name></member>
+      <member refid="class_font_1a70785f3a56f134c1d130623f919419cb" prot="public" virt="non-virtual"><scope>Font</scope><name>Render</name></member>
+      <member refid="class_font_1aab745192792a90c4347b9795e56f3877" prot="private" virt="non-virtual"><scope>Font</scope><name>RenderImpl</name></member>
+      <member refid="class_font_1aca5757f249b4ab69c287f2cc7b7be4a1" prot="public" virt="non-virtual"><scope>Font</scope><name>ResetDefault</name></member>
+      <member refid="class_font_1a46a5baaf1a1034b5a6c59ffb145bd667" prot="public" virt="non-virtual"><scope>Font</scope><name>SetDefault</name></member>
+      <member refid="class_font_1a89177ca090537417674145d902fa3ee7" prot="public" virt="non-virtual"><scope>Font</scope><name>SetFallbackFont</name></member>
+      <member refid="class_font_1a2399e84bb5b3dc5529f6a4e71735e9be" prot="public" virt="non-virtual"><scope>Font</scope><name>Shape</name></member>
+      <member refid="class_font_1a908066078a68d89aaba64189db2c2e70" prot="protected" virt="non-virtual"><scope>Font</scope><name>style_applied</name></member>
+      <member refid="class_font_1a1298f4b5f9727479f6065f92a88172f3" prot="public" virt="non-virtual"><scope>Font</scope><name>StyleScopeGuard</name></member>
+      <member refid="class_font_1a300007dc1b65d906cf32066494d5cb8f" prot="public" virt="non-virtual"><scope>Font</scope><name>SystemColor</name></member>
+      <member refid="class_font_1a486e602552f855ae8760e829bff92dbf" prot="public" virt="virtual"><scope>Font</scope><name>vApplyStyle</name></member>
+      <member refid="class_font_1ae2c75b75c76089016580d481fe59293b" prot="public" virt="virtual"><scope>Font</scope><name>vCanShape</name></member>
+      <member refid="class_font_1a490ca2cee6c9ea8b3a4293b68e62b752" prot="public" virt="pure-virtual"><scope>Font</scope><name>vGetSize</name></member>
+      <member refid="class_font_1af896da00af4845ae5eb39e879d7a6d66" prot="public" virt="pure-virtual"><scope>Font</scope><name>vRender</name></member>
+      <member refid="class_font_1a0ecfccb04e76fb92aad8405fdb7d16c9" prot="public" virt="virtual"><scope>Font</scope><name>vRenderShaped</name></member>
+      <member refid="class_font_1a620d9f3c6320aa8ba1d623b7b1affd0e" prot="public" virt="virtual"><scope>Font</scope><name>vShape</name></member>
+      <member refid="class_font_1aa6c4353c7fae81039c49b4a4f26086ff" prot="public" virt="virtual"><scope>Font</scope><name>~Font</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

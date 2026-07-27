@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_generic_audio_1_1_se_channel" kind="struct" language="C++" prot="private">
+    <compoundname>GenericAudio::SeChannel</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_generic_audio_1_1_se_channel_1a141372f7ee66dcbcd8c9ea64e6d0a389" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int GenericAudio::SeChannel::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <qualifiedname>GenericAudio::SeChannel::id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="91" column="5" bodyfile="audio_generic.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_generic_audio_1_1_se_channel_1a9648beee1df5a82a7e77bcb28bcf82cf" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_audio_decoder_base" kindref="compound">AudioDecoderBase</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;AudioDecoderBase&gt; GenericAudio::SeChannel::decoder</definition>
+        <argsstring></argsstring>
+        <name>decoder</name>
+        <qualifiedname>GenericAudio::SeChannel::decoder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="92" column="17" bodyfile="audio_generic.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_generic_audio_1_1_se_channel_1a6e28fe0f6baa288d4dbff4b2da251f97" prot="public" static="no" mutable="no">
+        <type><ref refid="class_generic_audio" kindref="compound">GenericAudio</ref> *</type>
+        <definition>GenericAudio* GenericAudio::SeChannel::instance</definition>
+        <argsstring></argsstring>
+        <name>instance</name>
+        <qualifiedname>GenericAudio::SeChannel::instance</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="93" column="14" bodyfile="audio_generic.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_generic_audio_1_1_se_channel_1a44203254bbce1b4a09ba4f8a11d19a8a" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool GenericAudio::SeChannel::paused</definition>
+        <argsstring></argsstring>
+        <name>paused</name>
+        <qualifiedname>GenericAudio::SeChannel::paused</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="94" column="6" bodyfile="audio_generic.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_generic_audio_1_1_se_channel_1a41e1f7115b6c3f1006ff97194011cd84" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool GenericAudio::SeChannel::stopped</definition>
+        <argsstring></argsstring>
+        <name>stopped</name>
+        <qualifiedname>GenericAudio::SeChannel::stopped</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="95" column="6" bodyfile="audio_generic.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="3">
+        <label>AudioInterface</label>
+        <link refid="struct_audio_interface"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>cfg</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>ConfigParam&lt; std::string &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="6">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="11">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="4">
+        <label>Game_ConfigAudio</label>
+        <link refid="struct_game___config_audio"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>music_volume</edgelabel>
+          <edgelabel>sound_volume</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>fluidsynth_midi</edgelabel>
+          <edgelabel>native_midi</edgelabel>
+          <edgelabel>wildmidi_midi</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>fmmidi_midi</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>soundfont</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>GenericAudio</label>
+        <link refid="class_generic_audio"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>GenericAudio::SeChannel</label>
+        <childnode refid="2" relation="usage">
+          <edgelabel>instance</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>LockedConfigParam&lt; std::string &gt;</label>
+        <link refid="class_locked_config_param"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>PathConfigParam</label>
+        <link refid="class_path_config_param"/>
+        <childnode refid="13" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>StringConfigParam</label>
+        <link refid="class_config_param"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="audio_generic.h" line="90" column="1" bodyfile="audio_generic.h" bodystart="90" bodyend="96"/>
+    <listofallmembers>
+      <member refid="struct_generic_audio_1_1_se_channel_1a9648beee1df5a82a7e77bcb28bcf82cf" prot="public" virt="non-virtual"><scope>GenericAudio::SeChannel</scope><name>decoder</name></member>
+      <member refid="struct_generic_audio_1_1_se_channel_1a141372f7ee66dcbcd8c9ea64e6d0a389" prot="public" virt="non-virtual"><scope>GenericAudio::SeChannel</scope><name>id</name></member>
+      <member refid="struct_generic_audio_1_1_se_channel_1a6e28fe0f6baa288d4dbff4b2da251f97" prot="public" virt="non-virtual"><scope>GenericAudio::SeChannel</scope><name>instance</name></member>
+      <member refid="struct_generic_audio_1_1_se_channel_1a44203254bbce1b4a09ba4f8a11d19a8a" prot="public" virt="non-virtual"><scope>GenericAudio::SeChannel</scope><name>paused</name></member>
+      <member refid="struct_generic_audio_1_1_se_channel_1a41e1f7115b6c3f1006ff97194011cd84" prot="public" virt="non-virtual"><scope>GenericAudio::SeChannel</scope><name>stopped</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

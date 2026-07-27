@@ -1,0 +1,287 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_input_1_1_log_source" kind="class" language="C++" prot="public">
+    <compoundname>Input::LogSource</compoundname>
+    <basecompoundref refid="class_input_1_1_source" prot="public" virt="non-virtual">Input::Source</basecompoundref>
+    <includes refid="input__source_8h" local="no">input_source.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_input_1_1_log_source_1aeac2dd67652ca35310159a57691da575" prot="private" static="no" mutable="no">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream Input::LogSource::log_file</definition>
+        <argsstring></argsstring>
+        <name>log_file</name>
+        <qualifiedname>Input::LogSource::log_file</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="196" column="32" bodyfile="input_source.h" bodystart="196" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_input_1_1_log_source_1aa03fc142025a096eb1739db09ebd2fc1" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Input::LogSource::version</definition>
+        <argsstring></argsstring>
+        <name>version</name>
+        <qualifiedname>Input::LogSource::version</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="197" column="5" bodyfile="input_source.h" bodystart="197" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_input_1_1_log_source_1ac6f94c00d5994af522c087242142fa03" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Input::LogSource::last_read_frame</definition>
+        <argsstring></argsstring>
+        <name>last_read_frame</name>
+        <qualifiedname>Input::LogSource::last_read_frame</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="198" column="5" bodyfile="input_source.h" bodystart="198" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_input_1_1_log_source_1a68e9bb1833cf82f64425a048b0f5e367" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt;std::string&gt; Input::LogSource::keys</definition>
+        <argsstring></argsstring>
+        <name>keys</name>
+        <qualifiedname>Input::LogSource::keys</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="200" column="13" bodyfile="input_source.h" bodystart="200" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_input_1_1_log_source_1a5d4e397e9baf898228c5bffea41c28be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Input::LogSource::LogSource</definition>
+        <argsstring>(const char *log_path, const Game_ConfigInput &amp;cfg, DirectionMappingArray directions)</argsstring>
+        <name>LogSource</name>
+        <qualifiedname>Input::LogSource::LogSource</qualifiedname>
+        <param>
+          <type>const char *</type>
+          <declname>log_path</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_game___config_input" kindref="compound">Game_ConfigInput</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_input_1a094b7fb423e80f346cde45eea8f19375" kindref="member">DirectionMappingArray</ref></type>
+          <declname>directions</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="189" column="1" bodyfile="input_source.cpp" bodystart="85" bodyend="107"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_log_source_1af054cafb74cb5df214962ff51a46e2c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Input::LogSource::Update</definition>
+        <argsstring>() override</argsstring>
+        <name>Update</name>
+        <qualifiedname>Input::LogSource::Update</qualifiedname>
+        <reimplements refid="class_input_1_1_source_1ab0c520beeebaf152b22756d440157c52">Update</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called once each logical frame to update pressed_buttons. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="191" column="6" bodyfile="input_source.cpp" bodystart="109" bodyend="147"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_log_source_1aaf2e77cac64b1b2239c20665f4a69572" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Input::LogSource::UpdateSystem</definition>
+        <argsstring>() override</argsstring>
+        <name>UpdateSystem</name>
+        <qualifiedname>Input::LogSource::UpdateSystem</qualifiedname>
+        <reimplements refid="class_input_1_1_source_1a2fc938d54856cc79eb7e8fec7a17ce3d">UpdateSystem</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called once each physical frame when no logical frames occured to update pressed_buttons for system buttons. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="192" column="6" bodyfile="input_source.cpp" bodystart="338" bodyend="340"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_log_source_1a18eded4cb10cc631872d3781cd686999" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Input::LogSource::operator bool</definition>
+        <argsstring>() const</argsstring>
+        <name>operator bool</name>
+        <qualifiedname>Input::LogSource::operator bool</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="194" column="1" bodyfile="input_source.h" bodystart="194" bodyend="194"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_input_1_1_source" kindref="compound">Source</ref> that replays button presses from a log file. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Input::LogSource</label>
+        <link refid="class_input_1_1_log_source"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Input::Source</label>
+        <link refid="class_input_1_1_source"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="6">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="5">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="9">
+        <label>FlatUniqueMultiMap&lt; Direction::InputDirection, InputButton &gt;</label>
+        <link refid="class_flat_unique_multi_map"/>
+      </node>
+      <node id="8">
+        <label>FlatUniqueMultiMap&lt; InputButton, Keys::InputKey &gt;</label>
+        <link refid="class_flat_unique_multi_map"/>
+      </node>
+      <node id="3">
+        <label>Game_ConfigInput</label>
+        <link refid="struct_game___config_input"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>speed_modifier_a</edgelabel>
+          <edgelabel>speed_modifier_b</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>gamepad_swap_ab_and_xy</edgelabel>
+          <edgelabel>gamepad_swap_analog</edgelabel>
+          <edgelabel>gamepad_swap_dpad_with_buttons</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>buttons</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>Input::AnalogInput</label>
+        <link refid="struct_input_1_1_analog_input"/>
+        <childnode refid="12" relation="usage">
+          <edgelabel>primary</edgelabel>
+          <edgelabel>secondary</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Input::LogSource</label>
+        <link refid="class_input_1_1_log_source"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Input::Source</label>
+        <link refid="class_input_1_1_source"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>cfg</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>direction_mappings</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>mouse_pos</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>analog_input</edgelabel>
+        </childnode>
+      </node>
+      <node id="12">
+        <label>PointT&lt; float &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="10">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="4">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="input_source.h" line="187" column="1" bodyfile="input_source.h" bodystart="187" bodyend="201"/>
+    <listofallmembers>
+      <member refid="class_input_1_1_source_1a5b289173d39509170fb4943264d7e980" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>AddRecordingData</name></member>
+      <member refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" prot="protected" virt="non-virtual"><scope>Input::LogSource</scope><name>analog_input</name></member>
+      <member refid="class_input_1_1_source_1a7d49f9da22d14d6f3633540da1d1d75d" prot="protected" virt="non-virtual"><scope>Input::LogSource</scope><name>cfg</name></member>
+      <member refid="class_input_1_1_source_1ae5ab013140c27051f874b0ab79b9f305" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>Create</name></member>
+      <member refid="class_input_1_1_source_1aefc8686cceeef0f696ad026c997a7979" prot="protected" virt="non-virtual"><scope>Input::LogSource</scope><name>direction_mappings</name></member>
+      <member refid="class_input_1_1_source_1ad4e99d535d4ae4c791498c07b2d0fb33" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>GetAnalogInput</name></member>
+      <member refid="class_input_1_1_source_1a18ecff052f3ca5180ddda3738bf2e034" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>GetButtonMappings</name></member>
+      <member refid="class_input_1_1_source_1a2de1d1dcd5f836efa40af6c828d9fa02" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>GetButtonMappings</name></member>
+      <member refid="class_input_1_1_source_1abe03af834a37175ffb8e3afb692ae2d3" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>GetConfig</name></member>
+      <member refid="class_input_1_1_source_1af29e150d688735d670f044a1032c6457" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>GetConfig</name></member>
+      <member refid="class_input_1_1_source_1a40a04787d3862d8117542da85cb5beeb" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>GetDirectionMappings</name></member>
+      <member refid="class_input_1_1_source_1aaa309312c6a45afb2afbf5e2bb3bc09d" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>GetDirectionMappings</name></member>
+      <member refid="class_input_1_1_source_1af3a7100749aed300dfd467b234d62fd9" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>GetMask</name></member>
+      <member refid="class_input_1_1_source_1acb8933d65b6fc80e7b0731a0303f9011" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>GetMask</name></member>
+      <member refid="class_input_1_1_source_1a58e4cf0eb57fcce2bde4f298e787a764" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>GetMousePosition</name></member>
+      <member refid="class_input_1_1_source_1a0e5e6209e3e596239faf8e67809ea7f1" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>GetPressedButtons</name></member>
+      <member refid="class_input_1_1_source_1a1f29ceeb0b25bdbfdc883adea47ea428" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>GetPressedKeys</name></member>
+      <member refid="class_input_1_1_source_1adc07bfc874e8e9d86896ce66c1e18973" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>GetPressedNonSystemButtons</name></member>
+      <member refid="class_input_1_1_source_1af068911ebcf40e1cdf10d5998bc52dd9" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>InitRecording</name></member>
+      <member refid="class_input_1_1_source_1ae9f40c3ce9baf9d823e8f6a96e8f4ae7" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>IsRecording</name></member>
+      <member refid="class_input_1_1_source_1ae8db377ac12acae2a615d924415189e0" prot="protected" virt="non-virtual"><scope>Input::LogSource</scope><name>keymask</name></member>
+      <member refid="class_input_1_1_log_source_1a68e9bb1833cf82f64425a048b0f5e367" prot="private" virt="non-virtual"><scope>Input::LogSource</scope><name>keys</name></member>
+      <member refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" prot="protected" virt="non-virtual"><scope>Input::LogSource</scope><name>keystates</name></member>
+      <member refid="class_input_1_1_source_1aae308b32662d7101d5fec61fa70f4cb1" prot="protected" virt="non-virtual"><scope>Input::LogSource</scope><name>keystates_virtual</name></member>
+      <member refid="class_input_1_1_log_source_1ac6f94c00d5994af522c087242142fa03" prot="private" virt="non-virtual"><scope>Input::LogSource</scope><name>last_read_frame</name></member>
+      <member refid="class_input_1_1_source_1aa3815c9c3f5b27e8d7a337aa458e3817" prot="protected" virt="non-virtual"><scope>Input::LogSource</scope><name>last_written_frame</name></member>
+      <member refid="class_input_1_1_log_source_1aeac2dd67652ca35310159a57691da575" prot="private" virt="non-virtual"><scope>Input::LogSource</scope><name>log_file</name></member>
+      <member refid="class_input_1_1_log_source_1a5d4e397e9baf898228c5bffea41c28be" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>LogSource</name></member>
+      <member refid="class_input_1_1_source_1ad9f701998248a2269f5acce0971796fc" prot="protected" virt="non-virtual"><scope>Input::LogSource</scope><name>mouse_pos</name></member>
+      <member refid="class_input_1_1_log_source_1a18eded4cb10cc631872d3781cd686999" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>operator bool</name></member>
+      <member refid="class_input_1_1_source_1acc99a6137cd256dfa0d3b18ccac0c2e4" prot="protected" virt="non-virtual"><scope>Input::LogSource</scope><name>pressed_buttons</name></member>
+      <member refid="class_input_1_1_source_1a8330a3b51f5d9aa49c41e60f0572a050" prot="protected" virt="non-virtual"><scope>Input::LogSource</scope><name>Record</name></member>
+      <member refid="class_input_1_1_source_1a2c381b04768233a026a8daf6b6c9530d" prot="protected" virt="non-virtual"><scope>Input::LogSource</scope><name>record_log</name></member>
+      <member refid="class_input_1_1_source_1a247a838e52667aa5e73847f7390b0361" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>SimulateKeyPress</name></member>
+      <member refid="class_input_1_1_source_1a41d404f825ce6c9e494c63d633a1d3a2" prot="public" virt="non-virtual"><scope>Input::LogSource</scope><name>Source</name></member>
+      <member refid="class_input_1_1_log_source_1af054cafb74cb5df214962ff51a46e2c9" prot="public" virt="virtual"><scope>Input::LogSource</scope><name>Update</name></member>
+      <member refid="class_input_1_1_source_1a28ae745813ef5cc169192da88a676f49" prot="protected" virt="non-virtual"><scope>Input::LogSource</scope><name>UpdateGamepad</name></member>
+      <member refid="class_input_1_1_log_source_1aaf2e77cac64b1b2239c20665f4a69572" prot="public" virt="virtual"><scope>Input::LogSource</scope><name>UpdateSystem</name></member>
+      <member refid="class_input_1_1_source_1a1ed54e82804b5e7c53d899e0146d97ce" prot="protected" virt="non-virtual"><scope>Input::LogSource</scope><name>UpdateTouch</name></member>
+      <member refid="class_input_1_1_log_source_1aa03fc142025a096eb1739db09ebd2fc1" prot="private" virt="non-virtual"><scope>Input::LogSource</scope><name>version</name></member>
+      <member refid="class_input_1_1_source_1a285b6aeee22b9d3951d6bb3c017eefaa" prot="public" virt="virtual"><scope>Input::LogSource</scope><name>~Source</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

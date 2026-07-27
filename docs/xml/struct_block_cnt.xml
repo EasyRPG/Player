@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_block_cnt" kind="struct" language="C++" prot="public">
+    <compoundname>BlockCnt</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_block_cnt_1ad8896bfd8de35494fc3b7f1e31eb0032" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="struct_block_cnt" kindref="compound">BlockCnt</ref> *</type>
+        <definition>struct BlockCnt* BlockCnt::previous</definition>
+        <argsstring></argsstring>
+        <name>previous</name>
+        <qualifiedname>BlockCnt::previous</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.c" line="50" column="17" bodyfile="leasy/lua/lparser.c" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_block_cnt_1a6758e42029ff5971cac824a5d1a318b3" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int BlockCnt::firstlabel</definition>
+        <argsstring></argsstring>
+        <name>firstlabel</name>
+        <qualifiedname>BlockCnt::firstlabel</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.c" line="51" column="7" bodyfile="leasy/lua/lparser.c" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_block_cnt_1a71f625e92cb712d1ee99eb33fbd1b6eb" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int BlockCnt::firstgoto</definition>
+        <argsstring></argsstring>
+        <name>firstgoto</name>
+        <qualifiedname>BlockCnt::firstgoto</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.c" line="52" column="7" bodyfile="leasy/lua/lparser.c" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_block_cnt_1aabdf57df8e41414e31fbfc2b22b7a71b" prot="public" static="no" mutable="no">
+        <type>short</type>
+        <definition>short BlockCnt::nactvar</definition>
+        <argsstring></argsstring>
+        <name>nactvar</name>
+        <qualifiedname>BlockCnt::nactvar</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.c" line="53" column="9" bodyfile="leasy/lua/lparser.c" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_block_cnt_1a42e96c963c3c53887b4c93e9b7a53bac" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte BlockCnt::upval</definition>
+        <argsstring></argsstring>
+        <name>upval</name>
+        <qualifiedname>BlockCnt::upval</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.c" line="54" column="11" bodyfile="leasy/lua/lparser.c" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_block_cnt_1a6434a0c8f9724248c839b6e9e6d9ec00" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte BlockCnt::isloop</definition>
+        <argsstring></argsstring>
+        <name>isloop</name>
+        <qualifiedname>BlockCnt::isloop</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.c" line="55" column="11" bodyfile="leasy/lua/lparser.c" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_block_cnt_1a33066e7c373e7732f5971d470f4580b7" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte BlockCnt::insidetbc</definition>
+        <argsstring></argsstring>
+        <name>insidetbc</name>
+        <qualifiedname>BlockCnt::insidetbc</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.c" line="56" column="11" bodyfile="leasy/lua/lparser.c" bodystart="56" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>BlockCnt</label>
+        <link refid="struct_block_cnt"/>
+        <childnode refid="1" relation="usage">
+          <edgelabel>previous</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lparser.c" line="49" column="1" bodyfile="leasy/lua/lparser.c" bodystart="49" bodyend="57"/>
+    <listofallmembers>
+      <member refid="struct_block_cnt_1a71f625e92cb712d1ee99eb33fbd1b6eb" prot="public" virt="non-virtual"><scope>BlockCnt</scope><name>firstgoto</name></member>
+      <member refid="struct_block_cnt_1a6758e42029ff5971cac824a5d1a318b3" prot="public" virt="non-virtual"><scope>BlockCnt</scope><name>firstlabel</name></member>
+      <member refid="struct_block_cnt_1a33066e7c373e7732f5971d470f4580b7" prot="public" virt="non-virtual"><scope>BlockCnt</scope><name>insidetbc</name></member>
+      <member refid="struct_block_cnt_1a6434a0c8f9724248c839b6e9e6d9ec00" prot="public" virt="non-virtual"><scope>BlockCnt</scope><name>isloop</name></member>
+      <member refid="struct_block_cnt_1aabdf57df8e41414e31fbfc2b22b7a71b" prot="public" virt="non-virtual"><scope>BlockCnt</scope><name>nactvar</name></member>
+      <member refid="struct_block_cnt_1ad8896bfd8de35494fc3b7f1e31eb0032" prot="public" virt="non-virtual"><scope>BlockCnt</scope><name>previous</name></member>
+      <member refid="struct_block_cnt_1a42e96c963c3c53887b4c93e9b7a53bac" prot="public" virt="non-virtual"><scope>BlockCnt</scope><name>upval</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

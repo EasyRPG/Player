@@ -1,0 +1,319 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_map_update_async_context" kind="class" language="C++" prot="public">
+    <compoundname>MapUpdateAsyncContext</compoundname>
+    <includes refid="game__map_8h" local="no">game_map.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_map_update_async_context_1a81f7c07642b51155ec71e0eb0c5c118d" prot="private" static="no" mutable="no">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp MapUpdateAsyncContext::async_op</definition>
+        <argsstring></argsstring>
+        <name>async_op</name>
+        <qualifiedname>MapUpdateAsyncContext::async_op</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="71" column="9" bodyfile="game_map.h" bodystart="71" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_map_update_async_context_1afdf6e636515c619641ff842c74f1ecc0" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int MapUpdateAsyncContext::common_event</definition>
+        <argsstring></argsstring>
+        <name>common_event</name>
+        <qualifiedname>MapUpdateAsyncContext::common_event</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="72" column="5" bodyfile="game_map.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_map_update_async_context_1ae60c4c7ba093c76d0cfb187d29b9d5e2" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int MapUpdateAsyncContext::map_event</definition>
+        <argsstring></argsstring>
+        <name>map_event</name>
+        <qualifiedname>MapUpdateAsyncContext::map_event</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="73" column="5" bodyfile="game_map.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_map_update_async_context_1a33483c4f60827249f3a80407701cf5ce" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool MapUpdateAsyncContext::foreground_event</definition>
+        <argsstring></argsstring>
+        <name>foreground_event</name>
+        <qualifiedname>MapUpdateAsyncContext::foreground_event</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="74" column="6" bodyfile="game_map.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_map_update_async_context_1a4e653477a917a0281a39138bfc860efd" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool MapUpdateAsyncContext::message</definition>
+        <argsstring></argsstring>
+        <name>message</name>
+        <qualifiedname>MapUpdateAsyncContext::message</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="75" column="6" bodyfile="game_map.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_map_update_async_context_1aa2b0a8fecfed09bd6741045e8d83f356" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MapUpdateAsyncContext::MapUpdateAsyncContext</definition>
+        <argsstring>()=default</argsstring>
+        <name>MapUpdateAsyncContext</name>
+        <qualifiedname>MapUpdateAsyncContext::MapUpdateAsyncContext</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="53" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_map_update_async_context_1a19433aa2a44d51fdf503faa96f20b897" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp MapUpdateAsyncContext::GetAsyncOp</definition>
+        <argsstring>() const</argsstring>
+        <name>GetAsyncOp</name>
+        <qualifiedname>MapUpdateAsyncContext::GetAsyncOp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="60" column="9" bodyfile="game_map.h" bodystart="839" bodyend="841"/>
+      </memberdef>
+      <memberdef kind="function" id="class_map_update_async_context_1a70b32b8b0cfb0330f282612607679f06" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int MapUpdateAsyncContext::GetParallelCommonEvent</definition>
+        <argsstring>() const</argsstring>
+        <name>GetParallelCommonEvent</name>
+        <qualifiedname>MapUpdateAsyncContext::GetParallelCommonEvent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="62" column="5" bodyfile="game_map.h" bodystart="879" bodyend="881"/>
+      </memberdef>
+      <memberdef kind="function" id="class_map_update_async_context_1aca6b94625e29bc4def1c39ce3c31c9fc" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int MapUpdateAsyncContext::GetParallelMapEvent</definition>
+        <argsstring>() const</argsstring>
+        <name>GetParallelMapEvent</name>
+        <qualifiedname>MapUpdateAsyncContext::GetParallelMapEvent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="63" column="5" bodyfile="game_map.h" bodystart="883" bodyend="885"/>
+      </memberdef>
+      <memberdef kind="function" id="class_map_update_async_context_1a90b036789dd7af5baf67ce5a62678e6c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool MapUpdateAsyncContext::IsForegroundEvent</definition>
+        <argsstring>() const</argsstring>
+        <name>IsForegroundEvent</name>
+        <qualifiedname>MapUpdateAsyncContext::IsForegroundEvent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="65" column="6" bodyfile="game_map.h" bodystart="887" bodyend="889"/>
+      </memberdef>
+      <memberdef kind="function" id="class_map_update_async_context_1a16af607061bdda2d0aa7c231ac5ddca1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool MapUpdateAsyncContext::IsParallelCommonEvent</definition>
+        <argsstring>() const</argsstring>
+        <name>IsParallelCommonEvent</name>
+        <qualifiedname>MapUpdateAsyncContext::IsParallelCommonEvent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="66" column="6" bodyfile="game_map.h" bodystart="891" bodyend="893"/>
+      </memberdef>
+      <memberdef kind="function" id="class_map_update_async_context_1a0d05b141572e42a06d99f1d6bc9dc175" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool MapUpdateAsyncContext::IsParallelMapEvent</definition>
+        <argsstring>() const</argsstring>
+        <name>IsParallelMapEvent</name>
+        <qualifiedname>MapUpdateAsyncContext::IsParallelMapEvent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="67" column="6" bodyfile="game_map.h" bodystart="895" bodyend="897"/>
+      </memberdef>
+      <memberdef kind="function" id="class_map_update_async_context_1ae41be6a8a4aa779d0189515bdaede65e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool MapUpdateAsyncContext::IsMessage</definition>
+        <argsstring>() const</argsstring>
+        <name>IsMessage</name>
+        <qualifiedname>MapUpdateAsyncContext::IsMessage</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="68" column="6" bodyfile="game_map.h" bodystart="899" bodyend="901"/>
+      </memberdef>
+      <memberdef kind="function" id="class_map_update_async_context_1a46f4bf5a0c896f80cfe485f153a4ef25" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool MapUpdateAsyncContext::IsActive</definition>
+        <argsstring>() const</argsstring>
+        <name>IsActive</name>
+        <qualifiedname>MapUpdateAsyncContext::IsActive</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="69" column="6" bodyfile="game_map.h" bodystart="903" bodyend="905"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_map_update_async_context_1a28916ea0501cc296d80d2d342282f90b" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_map_update_async_context" kindref="compound">MapUpdateAsyncContext</ref></type>
+        <definition>MapUpdateAsyncContext MapUpdateAsyncContext::FromCommonEvent</definition>
+        <argsstring>(int ce, AsyncOp aop)</argsstring>
+        <name>FromCommonEvent</name>
+        <qualifiedname>MapUpdateAsyncContext::FromCommonEvent</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>ce</declname>
+        </param>
+        <param>
+          <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+          <declname>aop</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="55" column="30" bodyfile="game_map.h" bodystart="843" bodyend="850"/>
+      </memberdef>
+      <memberdef kind="function" id="class_map_update_async_context_1a31730e8ed1d2e445b6fc8e42b78874c6" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_map_update_async_context" kindref="compound">MapUpdateAsyncContext</ref></type>
+        <definition>MapUpdateAsyncContext MapUpdateAsyncContext::FromMapEvent</definition>
+        <argsstring>(int ce, AsyncOp aop)</argsstring>
+        <name>FromMapEvent</name>
+        <qualifiedname>MapUpdateAsyncContext::FromMapEvent</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>ce</declname>
+        </param>
+        <param>
+          <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+          <declname>aop</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="56" column="30" bodyfile="game_map.h" bodystart="852" bodyend="859"/>
+      </memberdef>
+      <memberdef kind="function" id="class_map_update_async_context_1aa41f63f1f86b92d314e1fa2bf10b81eb" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_map_update_async_context" kindref="compound">MapUpdateAsyncContext</ref></type>
+        <definition>MapUpdateAsyncContext MapUpdateAsyncContext::FromForegroundEvent</definition>
+        <argsstring>(AsyncOp aop)</argsstring>
+        <name>FromForegroundEvent</name>
+        <qualifiedname>MapUpdateAsyncContext::FromForegroundEvent</qualifiedname>
+        <param>
+          <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+          <declname>aop</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="57" column="30" bodyfile="game_map.h" bodystart="861" bodyend="868"/>
+      </memberdef>
+      <memberdef kind="function" id="class_map_update_async_context_1a4544973acef75752aa651dbfbc3ad9ba" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_map_update_async_context" kindref="compound">MapUpdateAsyncContext</ref></type>
+        <definition>MapUpdateAsyncContext MapUpdateAsyncContext::FromMessage</definition>
+        <argsstring>(AsyncOp aop)</argsstring>
+        <name>FromMessage</name>
+        <qualifiedname>MapUpdateAsyncContext::FromMessage</qualifiedname>
+        <param>
+          <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+          <declname>aop</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="58" column="30" bodyfile="game_map.h" bodystart="870" bodyend="877"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_map.h" line="51" column="1" bodyfile="game_map.h" bodystart="51" bodyend="76"/>
+    <listofallmembers>
+      <member refid="class_map_update_async_context_1a81f7c07642b51155ec71e0eb0c5c118d" prot="private" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>async_op</name></member>
+      <member refid="class_map_update_async_context_1afdf6e636515c619641ff842c74f1ecc0" prot="private" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>common_event</name></member>
+      <member refid="class_map_update_async_context_1a33483c4f60827249f3a80407701cf5ce" prot="private" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>foreground_event</name></member>
+      <member refid="class_map_update_async_context_1a28916ea0501cc296d80d2d342282f90b" prot="public" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>FromCommonEvent</name></member>
+      <member refid="class_map_update_async_context_1aa41f63f1f86b92d314e1fa2bf10b81eb" prot="public" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>FromForegroundEvent</name></member>
+      <member refid="class_map_update_async_context_1a31730e8ed1d2e445b6fc8e42b78874c6" prot="public" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>FromMapEvent</name></member>
+      <member refid="class_map_update_async_context_1a4544973acef75752aa651dbfbc3ad9ba" prot="public" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>FromMessage</name></member>
+      <member refid="class_map_update_async_context_1a19433aa2a44d51fdf503faa96f20b897" prot="public" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>GetAsyncOp</name></member>
+      <member refid="class_map_update_async_context_1a70b32b8b0cfb0330f282612607679f06" prot="public" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>GetParallelCommonEvent</name></member>
+      <member refid="class_map_update_async_context_1aca6b94625e29bc4def1c39ce3c31c9fc" prot="public" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>GetParallelMapEvent</name></member>
+      <member refid="class_map_update_async_context_1a46f4bf5a0c896f80cfe485f153a4ef25" prot="public" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>IsActive</name></member>
+      <member refid="class_map_update_async_context_1a90b036789dd7af5baf67ce5a62678e6c" prot="public" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>IsForegroundEvent</name></member>
+      <member refid="class_map_update_async_context_1ae41be6a8a4aa779d0189515bdaede65e" prot="public" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>IsMessage</name></member>
+      <member refid="class_map_update_async_context_1a16af607061bdda2d0aa7c231ac5ddca1" prot="public" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>IsParallelCommonEvent</name></member>
+      <member refid="class_map_update_async_context_1a0d05b141572e42a06d99f1d6bc9dc175" prot="public" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>IsParallelMapEvent</name></member>
+      <member refid="class_map_update_async_context_1ae60c4c7ba093c76d0cfb187d29b9d5e2" prot="private" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>map_event</name></member>
+      <member refid="class_map_update_async_context_1aa2b0a8fecfed09bd6741045e8d83f356" prot="public" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>MapUpdateAsyncContext</name></member>
+      <member refid="class_map_update_async_context_1a4e653477a917a0281a39138bfc860efd" prot="private" virt="non-virtual"><scope>MapUpdateAsyncContext</scope><name>message</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

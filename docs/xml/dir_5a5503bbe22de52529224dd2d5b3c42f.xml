@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_5a5503bbe22de52529224dd2d5b3c42f" kind="dir">
+    <compoundname>platform/libretro</compoundname>
+    <innerfile refid="platform_2libretro_2audio_8cpp">audio.cpp</innerfile>
+    <innerfile refid="platform_2libretro_2audio_8h">audio.h</innerfile>
+    <innerfile refid="clock_8cpp">clock.cpp</innerfile>
+    <innerfile refid="libretro_2clock_8h">clock.h</innerfile>
+    <innerfile refid="libretro_2input__buttons_8cpp">input_buttons.cpp</innerfile>
+    <innerfile refid="midiout__device_8cpp">midiout_device.cpp</innerfile>
+    <innerfile refid="midiout__device_8h">midiout_device.h</innerfile>
+    <innerfile refid="libretro_2ui_8cpp">ui.cpp</innerfile>
+    <innerfile refid="libretro_2ui_8h">ui.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/libretro/"/>
+  </compounddef>
+</doxygen>

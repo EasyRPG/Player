@@ -148,3 +148,4 @@ inline bool Game_Interpreter_Battle::IsForceFleeEnabled() const {
 }
 
 #endif
+

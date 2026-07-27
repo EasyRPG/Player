@@ -1537,3 +1537,4 @@ void Game_Actor::UpdateBattle() {
 		weapon->Update();
 	}
 }
+

@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_image_x_y_z" kind="namespace" language="C++">
+    <compoundname>ImageXYZ</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_image_x_y_z_1a5772961c1e4657f863f9da8d2204cda1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ImageXYZ::Read</definition>
+        <argsstring>(const uint8_t *data, unsigned len, bool transparent, ImageOut &amp;output)</argsstring>
+        <name>Read</name>
+        <qualifiedname>ImageXYZ::Read</qualifiedname>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>len</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>transparent</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_image_out" kindref="compound">ImageOut</ref> &amp;</type>
+          <declname>output</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_xyz.h" line="28" column="6" bodyfile="image_xyz.cpp" bodystart="27" bodyend="73" declfile="image_xyz.h" declline="28" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_image_x_y_z_1aaec9a25db036c050be0cec899bb2fd17" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ImageXYZ::Read</definition>
+        <argsstring>(Filesystem_Stream::InputStream &amp;stream, bool transparent, ImageOut &amp;output)</argsstring>
+        <name>Read</name>
+        <qualifiedname>ImageXYZ::Read</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref> &amp;</type>
+          <declname>stream</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>transparent</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_image_out" kindref="compound">ImageOut</ref> &amp;</type>
+          <declname>output</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="image_xyz.h" line="29" column="6" bodyfile="image_xyz.cpp" bodystart="75" bodyend="78" declfile="image_xyz.h" declline="29" declcolumn="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="image_xyz.h" line="27" column="1"/>
+  </compounddef>
+</doxygen>

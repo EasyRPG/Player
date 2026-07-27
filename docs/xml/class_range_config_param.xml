@@ -1,0 +1,375 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_range_config_param" kind="class" language="C++" prot="public">
+    <compoundname>RangeConfigParam</compoundname>
+    <basecompoundref refid="class_config_param_base" prot="public" virt="non-virtual">ConfigParamBase&lt; T &gt;</basecompoundref>
+    <includes refid="config__param_8h" local="no">config_param.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_range_config_param_1ae583d2a595a8a7e0ce08226923e5e0f3" prot="private" static="no" mutable="no">
+        <type>T</type>
+        <definition>T RangeConfigParam&lt; T &gt;::_min</definition>
+        <argsstring></argsstring>
+        <name>_min</name>
+        <qualifiedname>RangeConfigParam::_min</qualifiedname>
+        <initializer>= std::numeric_limits&lt;T&gt;<ref refid="util__macro_8h_1adf77a48fdc00d2f05c34a228d1e1c237" kindref="member">::min</ref>()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="320" column="3" bodyfile="config_param.h" bodystart="320" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_range_config_param_1a58317b7261786c069d8ba92124660cb9" prot="private" static="no" mutable="no">
+        <type>T</type>
+        <definition>T RangeConfigParam&lt; T &gt;::_max</definition>
+        <argsstring></argsstring>
+        <name>_max</name>
+        <qualifiedname>RangeConfigParam::_max</qualifiedname>
+        <initializer>= std::numeric_limits&lt;T&gt;<ref refid="util__macro_8h_1a3f4ae913e2a7b3479faa6afe7c6948cd" kindref="member">::max</ref>()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="321" column="3" bodyfile="config_param.h" bodystart="321" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_range_config_param_1a428166c2f9f29f0b03c7811d33defe7e" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>RangeConfigParam&lt; T &gt;::RangeConfigParam</definition>
+        <argsstring>(std::string_view name, std::string_view description, std::string_view config_section, std::string_view config_key, T value={})</argsstring>
+        <name>RangeConfigParam</name>
+        <qualifiedname>RangeConfigParam::RangeConfigParam</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>description</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>config_section</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>config_key</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>value</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Construct with name and initial value </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="260" column="10" bodyfile="config_param.h" bodystart="260" bodyend="261"/>
+      </memberdef>
+      <memberdef kind="function" id="class_range_config_param_1a7c08b7be6c17baa04dcac176dd27d5c4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>RangeConfigParam&lt; T &gt;::RangeConfigParam</definition>
+        <argsstring>(std::string_view name, std::string_view description, std::string_view config_section, std::string_view config_key, T value, T minval, T maxval)</argsstring>
+        <name>RangeConfigParam</name>
+        <qualifiedname>RangeConfigParam::RangeConfigParam</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>description</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>config_section</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>config_key</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>minval</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>maxval</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Construct with name and initial value, min, and max </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="264" column="1" bodyfile="config_param.h" bodystart="264" bodyend="265"/>
+      </memberdef>
+      <memberdef kind="function" id="class_range_config_param_1a8a406de5e67e36b9f74d27f8fe844803" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>bool RangeConfigParam&lt; T &gt;::vIsValid</definition>
+        <argsstring>(const T &amp;value) const override</argsstring>
+        <name>vIsValid</name>
+        <qualifiedname>RangeConfigParam::vIsValid</qualifiedname>
+        <reimplements refid="class_config_param_base_1a8b8d537bc0275c083bffaf98116f0dda">vIsValid</reimplements>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Check if a value is valid <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the value to check </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if this value can be set </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="272" column="6" bodyfile="config_param.h" bodystart="272" bodyend="274"/>
+      </memberdef>
+      <memberdef kind="function" id="class_range_config_param_1ae8ee989c66eea64fe949ddd207358aa2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>T RangeConfigParam&lt; T &gt;::GetMin</definition>
+        <argsstring>() const</argsstring>
+        <name>GetMin</name>
+        <qualifiedname>RangeConfigParam::GetMin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="276" column="3" bodyfile="config_param.h" bodystart="276" bodyend="278"/>
+      </memberdef>
+      <memberdef kind="function" id="class_range_config_param_1ae08a9f0564594efb4017269314a2f49c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>T RangeConfigParam&lt; T &gt;::GetMax</definition>
+        <argsstring>() const</argsstring>
+        <name>GetMax</name>
+        <qualifiedname>RangeConfigParam::GetMax</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="280" column="3" bodyfile="config_param.h" bodystart="280" bodyend="282"/>
+      </memberdef>
+      <memberdef kind="function" id="class_range_config_param_1a4721508b2a7bb8d7cb8d4637d9641ccb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void RangeConfigParam&lt; T &gt;::SetMin</definition>
+        <argsstring>(T minval)</argsstring>
+        <name>SetMin</name>
+        <qualifiedname>RangeConfigParam::SetMin</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>minval</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set minimum allowed value. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>minval</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the new minimum </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="post"><para>If the current value is &lt; minval, it will be set equal to minval </para>
+</simplesect>
+<simplesect kind="post"><para>If the current maximum &lt; minval, this parameter is disabled. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="290" column="6" bodyfile="config_param.h" bodystart="290" bodyend="290"/>
+      </memberdef>
+      <memberdef kind="function" id="class_range_config_param_1a483204e1a96448bb7ed438e2653c387e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void RangeConfigParam&lt; T &gt;::SetMax</definition>
+        <argsstring>(T maxval)</argsstring>
+        <name>SetMax</name>
+        <qualifiedname>RangeConfigParam::SetMax</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>maxval</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set maximum allowed value. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>maxval</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the new maximum </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="post"><para>If the current value is &gt; maxval, it will be set equal to maxval </para>
+</simplesect>
+<simplesect kind="post"><para>If the current minimum &gt; maxval, this parameter is disabled. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="298" column="6" bodyfile="config_param.h" bodystart="298" bodyend="298"/>
+      </memberdef>
+      <memberdef kind="function" id="class_range_config_param_1acb7ac467d4458665b26ac97f0a3d3d16" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void RangeConfigParam&lt; T &gt;::SetRange</definition>
+        <argsstring>(T minval, T maxval)</argsstring>
+        <name>SetRange</name>
+        <qualifiedname>RangeConfigParam::SetRange</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>minval</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>maxval</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set allowed range of values. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>minval</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the new maximum </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>maxval</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the new maximum </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="post"><para>If the current value is outside the range, it will be clamped. </para>
+</simplesect>
+<simplesect kind="post"><para>If the minval &gt; maxval, this parameter is disabled. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="307" column="6" bodyfile="config_param.h" bodystart="307" bodyend="313"/>
+      </memberdef>
+      <memberdef kind="function" id="class_range_config_param_1a648c73358512c55cfdd3323366b6433c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string RangeConfigParam&lt; T &gt;::ValueToString</definition>
+        <argsstring>() const override</argsstring>
+        <name>ValueToString</name>
+        <qualifiedname>RangeConfigParam::ValueToString</qualifiedname>
+        <reimplements refid="class_config_param_base_1aa50c70a0101b92717f895a0d101f4037">ValueToString</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>human readable representation of the value for the settings scene </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="315" column="13" bodyfile="config_param.h" bodystart="315" bodyend="317"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>A configuration parameter with a range </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="1">
+        <label>RangeConfigParam&lt; T &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="1">
+        <label>RangeConfigParam&lt; T &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="config_param.h" line="257" column="1" bodyfile="config_param.h" bodystart="257" bodyend="322"/>
+    <listofallmembers>
+      <member refid="class_config_param_base_1a8ca4a74a2f3d5d8cc252162190893c9e" prot="protected" virt="non-virtual"><scope>RangeConfigParam</scope><name>_config_key</name></member>
+      <member refid="class_config_param_base_1a9093f720aa1025c05d48316d0ccefe65" prot="protected" virt="non-virtual"><scope>RangeConfigParam</scope><name>_config_section</name></member>
+      <member refid="class_config_param_base_1a6b63463243218d57495cd29033f1736c" prot="protected" virt="non-virtual"><scope>RangeConfigParam</scope><name>_description</name></member>
+      <member refid="class_range_config_param_1a58317b7261786c069d8ba92124660cb9" prot="private" virt="non-virtual"><scope>RangeConfigParam</scope><name>_max</name></member>
+      <member refid="class_range_config_param_1ae583d2a595a8a7e0ce08226923e5e0f3" prot="private" virt="non-virtual"><scope>RangeConfigParam</scope><name>_min</name></member>
+      <member refid="class_config_param_base_1ac46a1abdfbd2aea6d6ad84000e43ce41" prot="protected" virt="non-virtual"><scope>RangeConfigParam</scope><name>_name</name></member>
+      <member refid="class_config_param_base_1ad486a9f44dcf1b8d760071884d29ce89" prot="protected" virt="non-virtual"><scope>RangeConfigParam</scope><name>_value</name></member>
+      <member refid="class_config_param_base_1ab00b08f1b9375287f6cb07e6731781a3" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>ConfigParamBase</name></member>
+      <member refid="class_config_param_base_1a0baf7f7760a3141267184a0e251c3ba2" prot="public" virt="virtual"><scope>RangeConfigParam</scope><name>FromIni</name></member>
+      <member refid="class_config_param_base_1a69547a9d358dae48d13b2115c17efd53" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>Get</name></member>
+      <member refid="class_config_param_base_1a928b6c9786fe9f1aa6237a097d20e8b0" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>GetDescription</name></member>
+      <member refid="class_range_config_param_1ae08a9f0564594efb4017269314a2f49c" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>GetMax</name></member>
+      <member refid="class_range_config_param_1ae8ee989c66eea64fe949ddd207358aa2" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>GetMin</name></member>
+      <member refid="class_config_param_base_1a88ae1702b97bd390636496a4e7114edd" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>GetName</name></member>
+      <member refid="class_config_param_base_1a2f8f8f70ca825f22319102ac3cb75bbd" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>IsLocked</name></member>
+      <member refid="class_config_param_base_1ad022cc572286546bcaa541de5859d24f" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>IsOptionVisible</name></member>
+      <member refid="class_config_param_base_1ab3e65722fba80c0bcd4420fe1bab8dc9" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>IsValid</name></member>
+      <member refid="class_config_param_base_1ac8648cf6d4b5ae495f5dc02bdf1074ac" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>Lock</name></member>
+      <member refid="class_range_config_param_1a428166c2f9f29f0b03c7811d33defe7e" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>RangeConfigParam</name></member>
+      <member refid="class_range_config_param_1a7c08b7be6c17baa04dcac176dd27d5c4" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>RangeConfigParam</name></member>
+      <member refid="class_config_param_base_1a8b45465ea459016817e6cc38a7fe1950" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>Set</name></member>
+      <member refid="class_config_param_base_1abe0d636ddc983d8965c70493f434ef2d" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>SetDescription</name></member>
+      <member refid="class_config_param_base_1afcca350f7a5df7e9e60f768fc69ce82a" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>SetLocked</name></member>
+      <member refid="class_range_config_param_1a483204e1a96448bb7ed438e2653c387e" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>SetMax</name></member>
+      <member refid="class_range_config_param_1a4721508b2a7bb8d7cb8d4637d9641ccb" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>SetMin</name></member>
+      <member refid="class_config_param_base_1a19e2a139b6abf38a353e5f8e9055137b" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>SetName</name></member>
+      <member refid="class_config_param_base_1ae462283da6956166010805a492fbb12f" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>SetOptionVisible</name></member>
+      <member refid="class_range_config_param_1acb7ac467d4458665b26ac97f0a3d3d16" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>SetRange</name></member>
+      <member refid="class_config_param_base_1a8b033b1d1596ba80bdf4ca9e79db1f47" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>ToIni</name></member>
+      <member refid="class_config_param_base_1a64e7e428e4d66ab9e00ad46ef146ceb1" prot="public" virt="non-virtual"><scope>RangeConfigParam</scope><name>value_type</name></member>
+      <member refid="class_range_config_param_1a648c73358512c55cfdd3323366b6433c" prot="public" virt="virtual"><scope>RangeConfigParam</scope><name>ValueToString</name></member>
+      <member refid="class_range_config_param_1a8a406de5e67e36b9f74d27f8fe844803" prot="public" virt="virtual"><scope>RangeConfigParam</scope><name>vIsValid</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

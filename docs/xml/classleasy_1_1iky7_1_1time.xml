@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1iky7_1_1time" kind="class" language="C++" prot="public">
+    <compoundname>leasy::iky7::time</compoundname>
+    <includes refid="time_8hpp" local="no">time.hpp</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classleasy_1_1iky7_1_1time_1afac9d85592c39a9bde6469f2b118f84d" prot="private" static="no" mutable="no">
+        <type>std::chrono::duration&lt; uint64_t &gt;</type>
+        <definition>std::chrono::duration&lt;uint64_t&gt; leasy::iky7::time::p</definition>
+        <argsstring></argsstring>
+        <name>p</name>
+        <qualifiedname>leasy::iky7::time::p</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/iky7/time.hpp" line="34" column="27" bodyfile="leasy/iky7/time.hpp" bodystart="34" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1iky7_1_1time_1a1c9dd9fcefe8e574dd11b29d809dde73" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::iky7::time::time</definition>
+        <argsstring>()</argsstring>
+        <name>time</name>
+        <qualifiedname>leasy::iky7::time::time</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/iky7/time.hpp" line="37" column="12" bodyfile="leasy/iky7/time.hpp" bodystart="37" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1iky7_1_1time_1a5ed21ec73b91be75905b06c6d03f1aec" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classleasy_1_1iky7_1_1time_1a1c9dd9fcefe8e574dd11b29d809dde73" kindref="member">time</ref></type>
+        <definition>time leasy::iky7::time::then</definition>
+        <argsstring>(const std::function&lt; void(time)&gt; &amp;f) const</argsstring>
+        <name>then</name>
+        <qualifiedname>leasy::iky7::time::then</qualifiedname>
+        <param>
+          <type>const std::function&lt; void(<ref refid="classleasy_1_1iky7_1_1time_1a1c9dd9fcefe8e574dd11b29d809dde73" kindref="member">time</ref>)&gt; &amp;</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/iky7/time.hpp" line="38" column="17" bodyfile="leasy/iky7/time.hpp" bodystart="38" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1iky7_1_1time_1ad860ef183f15030d4ef90eaf5982f262" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classleasy_1_1iky7_1_1time_1a1c9dd9fcefe8e574dd11b29d809dde73" kindref="member">time</ref></type>
+        <definition>time leasy::iky7::time::wait</definition>
+        <argsstring>(uint64_t ms) const</argsstring>
+        <name>wait</name>
+        <qualifiedname>leasy::iky7::time::wait</qualifiedname>
+        <param>
+          <type>uint64_t</type>
+          <declname>ms</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/iky7/time.hpp" line="43" column="17" bodyfile="leasy/iky7/time.hpp" bodystart="43" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1iky7_1_1time_1a3ded03f31a501dc8bbaf0238c33a697f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::chrono::duration&lt; uint64_t &gt;</type>
+        <definition>std::chrono::duration&lt; uint64_t &gt; leasy::iky7::time::internalpoint</definition>
+        <argsstring>() const</argsstring>
+        <name>internalpoint</name>
+        <qualifiedname>leasy::iky7::time::internalpoint</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/iky7/time.hpp" line="48" column="34" bodyfile="leasy/iky7/time.hpp" bodystart="48" bodyend="48"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/iky7/time.hpp" line="32" column="3" bodyfile="leasy/iky7/time.hpp" bodystart="32" bodyend="49"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1iky7_1_1time_1a3ded03f31a501dc8bbaf0238c33a697f" prot="public" virt="non-virtual"><scope>leasy::iky7::time</scope><name>internalpoint</name></member>
+      <member refid="classleasy_1_1iky7_1_1time_1afac9d85592c39a9bde6469f2b118f84d" prot="private" virt="non-virtual"><scope>leasy::iky7::time</scope><name>p</name></member>
+      <member refid="classleasy_1_1iky7_1_1time_1a5ed21ec73b91be75905b06c6d03f1aec" prot="public" virt="non-virtual"><scope>leasy::iky7::time</scope><name>then</name></member>
+      <member refid="classleasy_1_1iky7_1_1time_1a1c9dd9fcefe8e574dd11b29d809dde73" prot="public" virt="non-virtual"><scope>leasy::iky7::time</scope><name>time</name></member>
+      <member refid="classleasy_1_1iky7_1_1time_1ad860ef183f15030d4ef90eaf5982f262" prot="public" virt="non-virtual"><scope>leasy::iky7::time</scope><name>wait</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1243,3 +1243,4 @@ void Game_Character::UpdateFacing() {
 		SetFacing(dir);
 	}
 }
+

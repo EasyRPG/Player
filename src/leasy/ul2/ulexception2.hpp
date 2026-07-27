@@ -48,3 +48,4 @@ namespace leasy::ul2 {
 
 #define ulthrow(X) throw leasy::ul2::ulexception2(__FILE__ + std::string(":") + (std::to_string(__LINE__) + ":") + __func__, X)
 #define ulmkerr(X) leasy::ul2::ulexception2(__FILE__ + std::string(":") + (std::to_string(__LINE__) + ":") + __func__, X)
+

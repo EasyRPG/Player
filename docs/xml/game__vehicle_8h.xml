@@ -1,0 +1,620 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="game__vehicle_8h" kind="file" language="C++">
+    <compoundname>game_vehicle.h</compoundname>
+    <includes local="no">string</includes>
+    <includes local="no">lcf/rpg/music.h</includes>
+    <includes local="no">lcf/rpg/savevehiclelocation.h</includes>
+    <includes refid="game__character_8h" local="yes">game_character.h</includes>
+    <includedby refid="game__map_8h" local="yes">game_map.h</includedby>
+    <includedby refid="game__vehicle_8cpp" local="yes">game_vehicle.cpp</includedby>
+    <includedby refid="spriteset__map_8cpp" local="yes">spriteset_map.cpp</includedby>
+    <incdepgraph>
+      <node id="8">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>flash.h</label>
+        <link refid="flash_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>game_character.h</label>
+        <link refid="game__character_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>game_vehicle.h</label>
+        <link refid="game__vehicle_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>cstdint</label>
+      </node>
+      <node id="18">
+        <label>ctime</label>
+      </node>
+      <node id="24">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="25">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="19">
+        <label>functional</label>
+      </node>
+      <node id="23">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="13">
+        <label>lcf/rpg/eventpage.h</label>
+      </node>
+      <node id="12">
+        <label>lcf/rpg/moveroute.h</label>
+      </node>
+      <node id="3">
+        <label>lcf/rpg/music.h</label>
+      </node>
+      <node id="14">
+        <label>lcf/rpg/savemapeventbase.h</label>
+      </node>
+      <node id="4">
+        <label>lcf/rpg/savevehiclelocation.h</label>
+      </node>
+      <node id="27">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="22">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="16">
+        <label>memory</label>
+      </node>
+      <node id="10">
+        <label>ostream</label>
+      </node>
+      <node id="2">
+        <label>string</label>
+      </node>
+      <node id="9">
+        <label>tuple</label>
+      </node>
+      <node id="7">
+        <label>unordered_set</label>
+      </node>
+      <node id="20">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="3">
+        <label>battle_animation.cpp</label>
+        <link refid="battle__animation_8cpp"/>
+      </node>
+      <node id="5">
+        <label>dynrpg_easyrpg.cpp</label>
+        <link refid="dynrpg__easyrpg_8cpp"/>
+      </node>
+      <node id="4">
+        <label>dynrpg_easyrpg.h</label>
+        <link refid="dynrpg__easyrpg_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>dynrpg_textplugin.cpp</label>
+        <link refid="dynrpg__textplugin_8cpp"/>
+      </node>
+      <node id="8">
+        <label>game_character.cpp</label>
+        <link refid="game__character_8cpp"/>
+      </node>
+      <node id="9">
+        <label>game_commonevent.cpp</label>
+        <link refid="game__commonevent_8cpp"/>
+      </node>
+      <node id="6">
+        <label>game_dynrpg.cpp</label>
+        <link refid="game__dynrpg_8cpp"/>
+      </node>
+      <node id="10">
+        <label>game_event.cpp</label>
+        <link refid="game__event_8cpp"/>
+      </node>
+      <node id="11">
+        <label>game_interpreter.cpp</label>
+        <link refid="game__interpreter_8cpp"/>
+      </node>
+      <node id="12">
+        <label>game_interpreter_battle.cpp</label>
+        <link refid="game__interpreter__battle_8cpp"/>
+      </node>
+      <node id="13">
+        <label>game_interpreter_map.cpp</label>
+        <link refid="game__interpreter__map_8cpp"/>
+      </node>
+      <node id="14">
+        <label>game_interpreter_shared.cpp</label>
+        <link refid="game__interpreter__shared_8cpp"/>
+      </node>
+      <node id="15">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="2">
+        <label>game_map.h</label>
+        <link refid="game__map_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>game_party.cpp</label>
+        <link refid="game__party_8cpp"/>
+      </node>
+      <node id="17">
+        <label>game_pictures.cpp</label>
+        <link refid="game__pictures_8cpp"/>
+      </node>
+      <node id="18">
+        <label>game_player.cpp</label>
+        <link refid="game__player_8cpp"/>
+      </node>
+      <node id="19">
+        <label>game_screen.cpp</label>
+        <link refid="game__screen_8cpp"/>
+      </node>
+      <node id="20">
+        <label>game_strings.cpp</label>
+        <link refid="game__strings_8cpp"/>
+      </node>
+      <node id="31">
+        <label>game_system.cpp</label>
+        <link refid="game__system_8cpp"/>
+      </node>
+      <node id="21">
+        <label>game_vehicle.cpp</label>
+        <link refid="game__vehicle_8cpp"/>
+      </node>
+      <node id="1">
+        <label>game_vehicle.h</label>
+        <link refid="game__vehicle_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>main_data.cpp</label>
+        <link refid="main__data_8cpp"/>
+      </node>
+      <node id="23">
+        <label>maniac_patch.cpp</label>
+        <link refid="maniac__patch_8cpp"/>
+      </node>
+      <node id="24">
+        <label>plane.cpp</label>
+        <link refid="plane_8cpp"/>
+      </node>
+      <node id="25">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="26">
+        <label>scene.cpp</label>
+        <link refid="scene_8cpp"/>
+      </node>
+      <node id="27">
+        <label>scene_debug.cpp</label>
+        <link refid="scene__debug_8cpp"/>
+      </node>
+      <node id="28">
+        <label>scene_item.cpp</label>
+        <link refid="scene__item_8cpp"/>
+      </node>
+      <node id="32">
+        <label>scene_load.cpp</label>
+        <link refid="scene__load_8cpp"/>
+      </node>
+      <node id="29">
+        <label>scene_map.cpp</label>
+        <link refid="scene__map_8cpp"/>
+      </node>
+      <node id="30">
+        <label>scene_map.h</label>
+        <link refid="scene__map_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>scene_order.cpp</label>
+        <link refid="scene__order_8cpp"/>
+      </node>
+      <node id="35">
+        <label>scene_save.cpp</label>
+        <link refid="scene__save_8cpp"/>
+      </node>
+      <node id="36">
+        <label>scene_skill.cpp</label>
+        <link refid="scene__skill_8cpp"/>
+      </node>
+      <node id="37">
+        <label>sprite_airshipshadow.cpp</label>
+        <link refid="sprite__airshipshadow_8cpp"/>
+      </node>
+      <node id="38">
+        <label>sprite_character.cpp</label>
+        <link refid="sprite__character_8cpp"/>
+      </node>
+      <node id="39">
+        <label>spriteset_map.cpp</label>
+        <link refid="spriteset__map_8cpp"/>
+      </node>
+      <node id="40">
+        <label>tilemap_layer.cpp</label>
+        <link refid="tilemap__layer_8cpp"/>
+      </node>
+      <node id="34">
+        <label>transition.cpp</label>
+        <link refid="transition_8cpp"/>
+      </node>
+      <node id="41">
+        <label>translation.cpp</label>
+        <link refid="translation_8cpp"/>
+      </node>
+      <node id="42">
+        <label>window_interpreter.cpp</label>
+        <link refid="window__interpreter_8cpp"/>
+      </node>
+      <node id="43">
+        <label>window_message.cpp</label>
+        <link refid="window__message_8cpp"/>
+      </node>
+      <node id="44">
+        <label>window_settings.cpp</label>
+        <link refid="window__settings_8cpp"/>
+      </node>
+      <node id="45">
+        <label>window_teleport.cpp</label>
+        <link refid="window__teleport_8cpp"/>
+      </node>
+      <node id="46">
+        <label>window_varlist.cpp</label>
+        <link refid="window__varlist_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_game___vehicle" prot="public">Game_Vehicle</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="game__vehicle_8h_1ace4f470cb441d4943eb265658b7a2270" prot="public" static="no">
+        <name>EP_GAME_VEHICLE_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_vehicle.h" line="20" column="9" bodyfile="game_vehicle.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="game__vehicle_8h_1a01172a921f135d3bdcc6984437661be1" prot="public" static="no">
+        <type><ref refid="class_game___character_data_storage" kindref="compound">Game_CharacterDataStorage</ref>&lt; lcf::rpg::SaveVehicleLocation &gt;</type>
+        <definition>using Game_VehicleBase = Game_CharacterDataStorage&lt;lcf::rpg::SaveVehicleLocation&gt;</definition>
+        <argsstring></argsstring>
+        <name>Game_VehicleBase</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_vehicle.h" line="28" column="1" bodyfile="game_vehicle.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_GAME_VEHICLE_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="game__vehicle_8h_1ace4f470cb441d4943eb265658b7a2270" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_GAME_VEHICLE_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/music.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/savevehiclelocation.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__character_8h" kindref="compound">game_character.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="class_game___vehicle_1a5f991e8c1b6d0aee0df8ae5b70895a8c" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="game__vehicle_8h_1a01172a921f135d3bdcc6984437661be1" kindref="member">Game_VehicleBase</ref><sp/>=<sp/><ref refid="class_game___character_data_storage_1a905e76bde08925c0328ea4956eec5cf6" kindref="member">Game_CharacterDataStorage&lt;lcf::rpg::SaveVehicleLocation&gt;</ref>;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="class_game___vehicle" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_game___vehicle_1a146e0b947527506f53bdf43da1c5b616" kindref="member">Game_Vehicle</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="game__vehicle_8h_1a01172a921f135d3bdcc6984437661be1" kindref="member">Game_VehicleBase</ref><sp/>{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="35" refid="class_game___vehicle_1a9c3a795cbe2144dd4ebf289c95e815a5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a9c3a795cbe2144dd4ebf289c95e815a5" kindref="member">Type</ref><sp/>{</highlight></codeline>
+<codeline lineno="36" refid="class_game___vehicle_1a9c3a795cbe2144dd4ebf289c95e815a5a9315f9e951f9644b8c929fa20a9aeaf2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___vehicle_1a9c3a795cbe2144dd4ebf289c95e815a5a9315f9e951f9644b8c929fa20a9aeaf2" kindref="member">None</ref><sp/>=<sp/>0,</highlight></codeline>
+<codeline lineno="37" refid="class_game___vehicle_1a9c3a795cbe2144dd4ebf289c95e815a5a850f154634e28c74231475ca5c00ca15" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___vehicle_1a9c3a795cbe2144dd4ebf289c95e815a5a850f154634e28c74231475ca5c00ca15" kindref="member">Boat</ref>,</highlight></codeline>
+<codeline lineno="38" refid="class_game___vehicle_1a9c3a795cbe2144dd4ebf289c95e815a5a7ae661aeb2bebeb379fb45d4fe8d2a50" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___vehicle_1a9c3a795cbe2144dd4ebf289c95e815a5a7ae661aeb2bebeb379fb45d4fe8d2a50" kindref="member">Ship</ref>,</highlight></codeline>
+<codeline lineno="39" refid="class_game___vehicle_1a9c3a795cbe2144dd4ebf289c95e815a5aae72b4b2d7b002a08e34325be1fd2083" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___vehicle_1a9c3a795cbe2144dd4ebf289c95e815a5aae72b4b2d7b002a08e34325be1fd2083" kindref="member">Airship</ref></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a5f991e8c1b6d0aee0df8ae5b70895a8c" kindref="member">TypeNames</ref>[4][8];</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a146e0b947527506f53bdf43da1c5b616" kindref="member">Game_Vehicle</ref>(<ref refid="class_game___vehicle_1a9c3a795cbe2144dd4ebf289c95e815a5" kindref="member">Type</ref><sp/>type);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a1af2ed5eafe4a16abc33a76726349eae" kindref="member">SetSaveData</ref>(lcf::rpg::SaveVehicleLocation<sp/>save);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>lcf::rpg::SaveVehicleLocation<sp/><ref refid="class_game___vehicle_1a85e2f1e210c28505153d76da92c806ff" kindref="member">GetSaveData</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1aac15a531208f6c9d8ca6f0af5a6e8141" kindref="member">UpdateNextMovementAction</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1ad02c48f5179484278ccd8b4e21aeed4b" kindref="member">UpdateAnimation</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a23755d37cdd4743bec54400983336fe8" kindref="member">Update</ref>();</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Music&amp;<sp/><ref refid="class_game___vehicle_1a8fc8521a1d78217f4acb93f02aba95ca" kindref="member">GetBGM</ref>();</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a026d7aae767aa586287a5fec46f3e961" kindref="member">GetVehicleType</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a56d237ff6f51c26e7e1fd76bf1c83712" kindref="member">IsInCurrentMap</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a54d37578c11a41ed1c9067dc6e3c7401" kindref="member">IsInPosition</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a90410430d2d183e431a94403a4ee013f" kindref="member">IsVisible</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1af62942258ba3df103944f5e3f16ae871" kindref="member">IsAscending</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1ad9783d658ac7633677b4faae9a6cf352" kindref="member">IsDescending</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a1b8c32c8e69c10073f10193ec2aa114b" kindref="member">IsAscendingOrDescending</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1ab91ddf991fb5bba0d26978aedbf14972" kindref="member">GetAltitude</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a2e86e9085da9be77721817ef01729226" kindref="member">IsInUse</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1af2386a0adb39d27ae36322d582b85d53" kindref="member">IsAboard</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1ab0ed0c8b89a3be6de4299e8ce7cc4ec4" kindref="member">SyncWithRider</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___character" kindref="compound">Game_Character</ref>*<sp/>rider);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1afa1fd6cc6c0907688d77de566dab8ed2" kindref="member">AnimateAscentDescent</ref>();</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a06577269d8ce80846e3e30d9f363872a" kindref="member">GetScreenY</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>apply_jump<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a4efa6f960c3762491da3c2129c2d5da5" kindref="member">CanLand</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a40f96fc7778628222ea98509f39233b1" kindref="member">StartAscent</ref>();</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1aef48f713930736367bcddeb99ee759aa" kindref="member">StartDescent</ref>();</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a0d3dcfc27eb3674a6726af49ff061dbd" kindref="member">SetDefaultDirection</ref>();</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a136709ed445a7abf09228a45c6dafeed" kindref="member">ForceLand</ref>();</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a0070d215110b2597379ba7ebecb22da8" kindref="member">SetOrigSpriteGraphic</ref>(std::string<sp/>sprite_name,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>index);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string_view<sp/><ref refid="class_game___vehicle_1a67e6e4b8801bcb7438763bf5ea898498" kindref="member">GetOrigSpriteName</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1ad0ade94ca8fc4a7bee64c9488cbec3b2" kindref="member">GetOrigSpriteIndex</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98" refid="class_game___vehicle_1a0070d215110b2597379ba7ebecb22da8" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a0070d215110b2597379ba7ebecb22da8" kindref="member">Game_Vehicle::SetOrigSpriteGraphic</ref>(std::string<sp/>sprite_name,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>index)<sp/>{</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___character_data_storage_1a16e7afaf2cf6a7d2b65a4a355f70974a" kindref="member">data</ref>()-&gt;orig_sprite_name<sp/>=<sp/>std::move(sprite_name);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___character_data_storage_1a16e7afaf2cf6a7d2b65a4a355f70974a" kindref="member">data</ref>()-&gt;orig_sprite_id<sp/>=<sp/>index;</highlight></codeline>
+<codeline lineno="101"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103" refid="class_game___vehicle_1a85e2f1e210c28505153d76da92c806ff" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>lcf::rpg::SaveVehicleLocation<sp/><ref refid="class_game___vehicle_1a85e2f1e210c28505153d76da92c806ff" kindref="member">Game_Vehicle::GetSaveData</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*<ref refid="class_game___character_data_storage_1a16e7afaf2cf6a7d2b65a4a355f70974a" kindref="member">data</ref>();</highlight></codeline>
+<codeline lineno="105"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107" refid="class_game___vehicle_1a54d37578c11a41ed1c9067dc6e3c7401" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a54d37578c11a41ed1c9067dc6e3c7401" kindref="member">Game_Vehicle::IsInPosition</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a56d237ff6f51c26e7e1fd76bf1c83712" kindref="member">IsInCurrentMap</ref>()<sp/>&amp;&amp;<sp/><ref refid="class_game___character_1a855ebd6bbb5623af5b669c8ab329b541" kindref="member">Game_Character::IsInPosition</ref>(x,<sp/>y);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111" refid="class_game___vehicle_1af62942258ba3df103944f5e3f16ae871" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1af62942258ba3df103944f5e3f16ae871" kindref="member">Game_Vehicle::IsAscending</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___character_data_storage_1a16e7afaf2cf6a7d2b65a4a355f70974a" kindref="member">data</ref>()-&gt;remaining_ascent<sp/>&gt;<sp/>0;</highlight></codeline>
+<codeline lineno="113"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115" refid="class_game___vehicle_1ad9783d658ac7633677b4faae9a6cf352" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1ad9783d658ac7633677b4faae9a6cf352" kindref="member">Game_Vehicle::IsDescending</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___character_data_storage_1a16e7afaf2cf6a7d2b65a4a355f70974a" kindref="member">data</ref>()-&gt;remaining_descent<sp/>&gt;<sp/>0;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119" refid="class_game___vehicle_1a1b8c32c8e69c10073f10193ec2aa114b" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a1b8c32c8e69c10073f10193ec2aa114b" kindref="member">Game_Vehicle::IsAscendingOrDescending</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1af62942258ba3df103944f5e3f16ae871" kindref="member">IsAscending</ref>()<sp/>||<sp/><ref refid="class_game___vehicle_1ad9783d658ac7633677b4faae9a6cf352" kindref="member">IsDescending</ref>();</highlight></codeline>
+<codeline lineno="121"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123" refid="class_game___vehicle_1a90410430d2d183e431a94403a4ee013f" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a90410430d2d183e431a94403a4ee013f" kindref="member">Game_Vehicle::IsVisible</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a56d237ff6f51c26e7e1fd76bf1c83712" kindref="member">IsInCurrentMap</ref>()<sp/>&amp;&amp;<sp/><ref refid="class_game___character_1a1512c8154f3ab6a8204c32a5cbc8932d" kindref="member">Game_Character::IsVisible</ref>();</highlight></codeline>
+<codeline lineno="125"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127" refid="class_game___vehicle_1a0d3dcfc27eb3674a6726af49ff061dbd" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a0d3dcfc27eb3674a6726af49ff061dbd" kindref="member">Game_Vehicle::SetDefaultDirection</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___character_1afd3c7a42938315ee89ad94ae753834b1" kindref="member">SetDirection</ref>(<ref refid="class_game___character_1a3ff0827fc381f3543e684edf43804107a7565b10b237eba80ff2907790fbfae19" kindref="member">Left</ref>);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___character_1a55801035e6050e4511b42814606811c1" kindref="member">SetFacing</ref>(<ref refid="class_game___character_1a3ff0827fc381f3543e684edf43804107a7565b10b237eba80ff2907790fbfae19" kindref="member">Left</ref>);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132" refid="class_game___vehicle_1a026d7aae767aa586287a5fec46f3e961" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___vehicle_1a026d7aae767aa586287a5fec46f3e961" kindref="member">Game_Vehicle::GetVehicleType</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___character_data_storage_1a16e7afaf2cf6a7d2b65a4a355f70974a" kindref="member">data</ref>()-&gt;vehicle;</highlight></codeline>
+<codeline lineno="134"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="game_vehicle.h"/>
+  </compounddef>
+</doxygen>

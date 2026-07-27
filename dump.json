@@ -13,7 +13,7 @@
             {
               "return": {
                 "size": 0,
-                "hash": 6628506493,
+                "hash": 6615858045,
                 "implname": "b",
                 "name": "bool"
               },
@@ -32,7 +32,7 @@
                 },
                 {
                   "size": 0,
-                  "hash": 6628506493,
+                  "hash": 6615858045,
                   "implname": "b",
                   "name": "bool"
                 }
@@ -42,14 +42,14 @@
             {
               "return": {
                 "size": 0,
-                "hash": 6628506493,
+                "hash": 6615858045,
                 "implname": "b",
                 "name": "bool"
               },
               "arguments": [
                 {
                   "size": 0,
-                  "hash": 4340839793,
+                  "hash": 4337531473,
                   "implname": "12Game_Battler",
                   "name": "const Game_Battler &"
                 },
@@ -61,13 +61,13 @@
                 },
                 {
                   "size": 0,
-                  "hash": 6628506493,
+                  "hash": 6615858045,
                   "implname": "b",
                   "name": "bool"
                 },
                 {
                   "size": 0,
-                  "hash": 6628506493,
+                  "hash": 6615858045,
                   "implname": "b",
                   "name": "bool"
                 }
@@ -88,7 +88,7 @@
           ],
           "return": {
             "size": 0,
-            "hash": 6628506493,
+            "hash": 6615858045,
             "implname": "b",
             "name": "bool"
           }
@@ -98,26 +98,26 @@
           "arguments": [
             {
               "size": 0,
-              "hash": 4340839793,
+              "hash": 4337531473,
               "implname": "12Game_Battler",
               "name": "const Game_Battler &"
             },
             {
               "size": 0,
-              "hash": 4340839793,
+              "hash": 4337531473,
               "implname": "12Game_Battler",
               "name": "const Game_Battler &"
             },
             {
               "size": 0,
-              "hash": 6628506493,
+              "hash": 6615858045,
               "implname": "b",
               "name": "bool"
             }
           ],
           "return": {
             "size": 0,
-            "hash": 6628506556,
+            "hash": 6615858108,
             "implname": "i",
             "name": "int"
           }
@@ -127,13 +127,13 @@
           "arguments": [
             {
               "size": 0,
-              "hash": 4340839793,
+              "hash": 4337531473,
               "implname": "12Game_Battler",
               "name": "const Game_Battler &"
             },
             {
               "size": 0,
-              "hash": 4340839793,
+              "hash": 4337531473,
               "implname": "12Game_Battler",
               "name": "const Game_Battler &"
             },
@@ -151,14 +151,14 @@
             },
             {
               "size": 0,
-              "hash": 6628506493,
+              "hash": 6615858045,
               "implname": "b",
               "name": "bool"
             }
           ],
           "return": {
             "size": 0,
-            "hash": 6628506556,
+            "hash": 6615858108,
             "implname": "i",
             "name": "int"
           }
@@ -168,13 +168,13 @@
           "arguments": [
             {
               "size": 0,
-              "hash": 4340839793,
+              "hash": 4337531473,
               "implname": "12Game_Battler",
               "name": "const Game_Battler &"
             },
             {
               "size": 0,
-              "hash": 4340839793,
+              "hash": 4337531473,
               "implname": "12Game_Battler",
               "name": "const Game_Battler &"
             },
@@ -186,14 +186,14 @@
             },
             {
               "size": 0,
-              "hash": 6628506556,
+              "hash": 6615858108,
               "implname": "i",
               "name": "int"
             }
           ],
           "return": {
             "size": 0,
-            "hash": 6628506556,
+            "hash": 6615858108,
             "implname": "i",
             "name": "int"
           }
@@ -203,13 +203,13 @@
           "arguments": [
             {
               "size": 0,
-              "hash": 4340839793,
+              "hash": 4337531473,
               "implname": "12Game_Battler",
               "name": "const Game_Battler &"
             },
             {
               "size": 0,
-              "hash": 4340839793,
+              "hash": 4337531473,
               "implname": "12Game_Battler",
               "name": "const Game_Battler &"
             },
@@ -227,14 +227,14 @@
             },
             {
               "size": 0,
-              "hash": 6628506493,
+              "hash": 6615858045,
               "implname": "b",
               "name": "bool"
             }
           ],
           "return": {
             "size": 0,
-            "hash": 6628506556,
+            "hash": 6615858108,
             "implname": "i",
             "name": "int"
           }
@@ -244,13 +244,13 @@
           "arguments": [
             {
               "size": 0,
-              "hash": 4340839793,
+              "hash": 4337531473,
               "implname": "12Game_Battler",
               "name": "const Game_Battler &"
             },
             {
               "size": 0,
-              "hash": 4340839793,
+              "hash": 4337531473,
               "implname": "12Game_Battler",
               "name": "const Game_Battler &"
             },
@@ -262,19 +262,19 @@
             },
             {
               "size": 0,
-              "hash": 6628506493,
+              "hash": 6615858045,
               "implname": "b",
               "name": "bool"
             },
             {
               "size": 0,
-              "hash": 6628506493,
+              "hash": 6615858045,
               "implname": "b",
               "name": "bool"
             },
             {
               "size": 0,
-              "hash": 6628506493,
+              "hash": 6615858045,
               "implname": "b",
               "name": "bool"
             },
@@ -286,14 +286,14 @@
             },
             {
               "size": 0,
-              "hash": 6628506493,
+              "hash": 6615858045,
               "implname": "b",
               "name": "bool"
             }
           ],
           "return": {
             "size": 0,
-            "hash": 6628506556,
+            "hash": 6615858108,
             "implname": "i",
             "name": "int"
           }
@@ -309,20 +309,20 @@
             },
             {
               "size": 0,
-              "hash": 6628506556,
+              "hash": 6615858108,
               "implname": "i",
               "name": "int"
             },
             {
               "size": 0,
-              "hash": 6628506493,
+              "hash": 6615858045,
               "implname": "b",
               "name": "bool"
             }
           ],
           "return": {
             "size": 0,
-            "hash": 6628506556,
+            "hash": 6615858108,
             "implname": "i",
             "name": "int"
           }
@@ -332,20 +332,20 @@
           "arguments": [
             {
               "size": 0,
-              "hash": 6628506556,
+              "hash": 6615858108,
               "implname": "i",
               "name": "int"
             },
             {
               "size": 0,
-              "hash": 6628506556,
+              "hash": 6615858108,
               "implname": "i",
               "name": "int"
             }
           ],
           "return": {
             "size": 0,
-            "hash": 6628506556,
+            "hash": 6615858108,
             "implname": "i",
             "name": "int"
           }
@@ -361,14 +361,14 @@
             },
             {
               "size": 0,
-              "hash": 6628506556,
+              "hash": 6615858108,
               "implname": "i",
               "name": "int"
             }
           ],
           "return": {
             "size": 0,
-            "hash": 6628506556,
+            "hash": 6615858108,
             "implname": "i",
             "name": "int"
           }
@@ -378,20 +378,20 @@
           "arguments": [
             {
               "size": 0,
-              "hash": 6628506556,
+              "hash": 6615858108,
               "implname": "i",
               "name": "int"
             },
             {
               "size": 0,
-              "hash": 4340839793,
+              "hash": 4337531473,
               "implname": "12Game_Battler",
               "name": "const Game_Battler &"
             }
           ],
           "return": {
             "size": 0,
-            "hash": 6628506556,
+            "hash": 6615858108,
             "implname": "i",
             "name": "int"
           }
@@ -401,13 +401,13 @@
           "arguments": [
             {
               "size": 0,
-              "hash": 4340839793,
+              "hash": 4337531473,
               "implname": "12Game_Battler",
               "name": "const Game_Battler &"
             },
             {
               "size": 0,
-              "hash": 4340839793,
+              "hash": 4337531473,
               "implname": "12Game_Battler",
               "name": "const Game_Battler &"
             },
@@ -419,13 +419,13 @@
             },
             {
               "size": 0,
-              "hash": 6628506493,
+              "hash": 6615858045,
               "implname": "b",
               "name": "bool"
             },
             {
               "size": 0,
-              "hash": 6628506493,
+              "hash": 6615858045,
               "implname": "b",
               "name": "bool"
             },
@@ -437,14 +437,14 @@
             },
             {
               "size": 0,
-              "hash": 6628506493,
+              "hash": 6615858045,
               "implname": "b",
               "name": "bool"
             }
           ],
           "return": {
             "size": 0,
-            "hash": 6628506556,
+            "hash": 6615858108,
             "implname": "i",
             "name": "int"
           }
@@ -460,14 +460,14 @@
             },
             {
               "size": 0,
-              "hash": 6628506493,
+              "hash": 6615858045,
               "implname": "b",
               "name": "bool"
             }
           ],
           "return": {
             "size": 0,
-            "hash": 6628506493,
+            "hash": 6615858045,
             "implname": "b",
             "name": "bool"
           }
@@ -484,7 +484,7 @@
           ],
           "return": {
             "size": 0,
-            "hash": 6628506493,
+            "hash": 6615858045,
             "implname": "b",
             "name": "bool"
           }
@@ -501,7 +501,7 @@
           ],
           "return": {
             "size": 0,
-            "hash": 6628506493,
+            "hash": 6615858045,
             "implname": "b",
             "name": "bool"
           }
@@ -518,7 +518,7 @@
           ],
           "return": {
             "size": 0,
-            "hash": 6628506493,
+            "hash": 6615858045,
             "implname": "b",
             "name": "bool"
           }
@@ -528,7 +528,7 @@
           "arguments": [
             {
               "size": 0,
-              "hash": 6628506556,
+              "hash": 6615858108,
               "implname": "i",
               "name": "int"
             },
@@ -541,7 +541,7 @@
           ],
           "return": {
             "size": 0,
-            "hash": 6628506556,
+            "hash": 6615858108,
             "implname": "i",
             "name": "int"
           }

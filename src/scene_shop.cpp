@@ -342,3 +342,4 @@ void Scene_Shop::Suspend(SceneType /* next_scene */) {
 		on_finish(did_transaction);
 	}
 }
+

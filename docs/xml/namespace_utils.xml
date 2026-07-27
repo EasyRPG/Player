@@ -1,0 +1,1479 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_utils" kind="namespace" language="C++">
+    <compoundname>Utils</compoundname>
+    <innerclass refid="struct_utils_1_1_utf_next_result" prot="public">Utils::UtfNextResult</innerclass>
+    <innerclass refid="struct_utils_1_1_ex_font_ret" prot="public">Utils::ExFontRet</innerclass>
+    <innerclass refid="struct_utils_1_1_text_ret" prot="public">Utils::TextRet</innerclass>
+    <innernamespace refid="namespace_utils_1_1detail">Utils::detail</innernamespace>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_utils_1a06d1b20f554713b8240be1aad902c49c" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view Utils::DateFormat_YYMMDD</definition>
+        <argsstring></argsstring>
+        <name>DateFormat_YYMMDD</name>
+        <qualifiedname>Utils::DateFormat_YYMMDD</qualifiedname>
+        <initializer>= &quot;%y%m%d&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="31" column="28" bodyfile="utils.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_utils_1a588ef89496aa119c3601fe41a202aefd" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view Utils::DateFormat_HHMMSS</definition>
+        <argsstring></argsstring>
+        <name>DateFormat_HHMMSS</name>
+        <qualifiedname>Utils::DateFormat_HHMMSS</qualifiedname>
+        <initializer>= &quot;%H%M%S&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="32" column="28" bodyfile="utils.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_utils_1a703afebe36421cf9f37034df30ee772c" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>std::string_view</type>
+        <definition>std::string_view Utils::DateFormat_YYYYMMDD_HHMMSS</definition>
+        <argsstring></argsstring>
+        <name>DateFormat_YYYYMMDD_HHMMSS</name>
+        <qualifiedname>Utils::DateFormat_YYYYMMDD_HHMMSS</qualifiedname>
+        <initializer>= &quot;%Y%m%d_%H%M%S&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="33" column="28" bodyfile="utils.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_utils_1a786a3621fa0da79feae5dc50b9041d8b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Utils::LowerCase</definition>
+        <argsstring>(std::string_view str)</argsstring>
+        <name>LowerCase</name>
+        <qualifiedname>Utils::LowerCase</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Converts a string to lower case (ASCII only)</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>string to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the converted string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="41" column="13" bodyfile="utils.cpp" bodystart="49" bodyend="53" declfile="utils.h" declline="41" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a21b3adf2db5b989b7b9216b05cb9ec22" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string &amp;</type>
+        <definition>std::string &amp; Utils::LowerCaseInPlace</definition>
+        <argsstring>(std::string &amp;str)</argsstring>
+        <name>LowerCaseInPlace</name>
+        <qualifiedname>Utils::LowerCaseInPlace</qualifiedname>
+        <param>
+          <type>std::string &amp;</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Converts a string to lower case in-place (ASCII only, faster)</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>string to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the passed and lowered string </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="49" column="13" bodyfile="utils.cpp" bodystart="55" bodyend="58" declfile="utils.h" declline="49" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a813e2982899efb1ea65b7c23051e0b7b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Utils::UpperCase</definition>
+        <argsstring>(std::string_view str)</argsstring>
+        <name>UpperCase</name>
+        <qualifiedname>Utils::UpperCase</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Converts a string to upper case. (ASCII only)</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>string to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the converted string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="57" column="13" bodyfile="utils.cpp" bodystart="60" bodyend="64" declfile="utils.h" declline="57" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a5fc658cac8f1cdb29a304daa0b18f785" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string &amp;</type>
+        <definition>std::string &amp; Utils::UpperCaseInPlace</definition>
+        <argsstring>(std::string &amp;str)</argsstring>
+        <name>UpperCaseInPlace</name>
+        <qualifiedname>Utils::UpperCaseInPlace</qualifiedname>
+        <param>
+          <type>std::string &amp;</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Converts a string to upper case in-place. (ASCII only, faster)</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>string to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the converted string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="65" column="13" bodyfile="utils.cpp" bodystart="66" bodyend="69" declfile="utils.h" declline="65" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1ad2ecacc68a4f959020374c3218d177cf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Utils::StrICmp</definition>
+        <argsstring>(const char *l, const char *r)</argsstring>
+        <name>StrICmp</name>
+        <qualifiedname>Utils::StrICmp</qualifiedname>
+        <param>
+          <type>const char *</type>
+          <declname>l</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Case insensitive (ascii only) lexicographical compare of 2 strings.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>l</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>left string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>right string</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>&lt; 0 if l is before r, 0 if equal, &gt; 0 l is after r </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="75" column="5" bodyfile="utils.cpp" bodystart="71" bodyend="83" declfile="utils.h" declline="75" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1ac1b0ed14f4aa211e2547c6e7bb3d679a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Utils::StrICmp</definition>
+        <argsstring>(std::string_view l, std::string_view r)</argsstring>
+        <name>StrICmp</name>
+        <qualifiedname>Utils::StrICmp</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>l</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Case insensitive (ascii only) lexicographical compare of 2 strings.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>l</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>left string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>right string</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>&lt; 0 if l is before r, 0 if equal, &gt; 0 l is after r </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="85" column="5" bodyfile="utils.cpp" bodystart="85" bodyend="93" declfile="utils.h" declline="85" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1ac49015a8905bec46a77343529b5f5922" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::u16string</type>
+        <definition>std::u16string Utils::DecodeUTF16</definition>
+        <argsstring>(std::string_view str)</argsstring>
+        <name>DecodeUTF16</name>
+        <qualifiedname>Utils::DecodeUTF16</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Converts Utf8 to UTF-16.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>string to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the converted string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="93" column="16" bodyfile="utils.cpp" bodystart="95" bodyend="168" declfile="utils.h" declline="93" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1ac214f07427780ba1b119749b09c8f99d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::u32string</type>
+        <definition>std::u32string Utils::DecodeUTF32</definition>
+        <argsstring>(std::string_view str)</argsstring>
+        <name>DecodeUTF32</name>
+        <qualifiedname>Utils::DecodeUTF32</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Converts UTF-8 to UTF-32.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>string to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the converted string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="101" column="16" bodyfile="utils.cpp" bodystart="170" bodyend="235" declfile="utils.h" declline="101" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1aa4e3c021a5b98a7ca6eee385154a4c2c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Utils::EncodeUTF</definition>
+        <argsstring>(const std::u16string &amp;str)</argsstring>
+        <name>EncodeUTF</name>
+        <qualifiedname>Utils::EncodeUTF</qualifiedname>
+        <param>
+          <type>const std::u16string &amp;</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Converts UTF-16 to UTF-8.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>string to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the converted string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="109" column="13" bodyfile="utils.cpp" bodystart="237" bodyend="278" declfile="utils.h" declline="109" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a110a3075616185f95d829c3b89d67302" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Utils::EncodeUTF</definition>
+        <argsstring>(const std::u32string &amp;str)</argsstring>
+        <name>EncodeUTF</name>
+        <qualifiedname>Utils::EncodeUTF</qualifiedname>
+        <param>
+          <type>const std::u32string &amp;</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Converts UTF-32 to UTF-8.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>string to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the converted string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="117" column="13" bodyfile="utils.cpp" bodystart="280" bodyend="305" declfile="utils.h" declline="117" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1af2a73c960d30cb093e0c50994aa37b2b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_utils_1_1_utf_next_result" kindref="compound">UtfNextResult</ref></type>
+        <definition>Utils::UtfNextResult Utils::UTF8Next</definition>
+        <argsstring>(const char *iter, const char *end)</argsstring>
+        <name>UTF8Next</name>
+        <qualifiedname>Utils::UTF8Next</qualifiedname>
+        <param>
+          <type>const char *</type>
+          <declname>iter</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>end</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Decodes the next UTF-8 character and returns it and the iterator to the next</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iter</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>begginning of the range to convert from </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>end</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>end of the range to convert from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>iter to the next character and codepoint number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="132" column="15" bodyfile="utils.cpp" bodystart="307" bodyend="377" declfile="utils.h" declline="132" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1ac6946b15c94fa3fbf8bc8705166c0cf9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_utils_1_1_utf_next_result" kindref="compound">UtfNextResult</ref></type>
+        <definition>Utils::UtfNextResult Utils::UTF8Skip</definition>
+        <argsstring>(const char *iter, const char *end, int skip)</argsstring>
+        <name>UTF8Skip</name>
+        <qualifiedname>Utils::UTF8Skip</qualifiedname>
+        <param>
+          <type>const char *</type>
+          <declname>iter</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>end</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>skip</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Like UTF8Next but skips &quot;skip&quot; characters.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iter</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>begginning of the range to convert from </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>end</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>end of the range to convert from </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>skip</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>how many characters to skip </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>iter to the next character and codepoint number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="142" column="15" bodyfile="utils.cpp" bodystart="379" bodyend="393" declfile="utils.h" declline="142" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a1bcd464ee87ea6518ef11a4b8808c272" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Utils::UTF8Length</definition>
+        <argsstring>(std::string_view str)</argsstring>
+        <name>UTF8Length</name>
+        <qualifiedname>Utils::UTF8Length</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines how many codepoints are in the passed string.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>unicode string </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>amount of codepoints </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="150" column="5" bodyfile="utils.cpp" bodystart="395" bodyend="407" declfile="utils.h" declline="150" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a0df3695dc5182f585f777131d9bd1137" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::wstring</type>
+        <definition>std::wstring Utils::ToWideString</definition>
+        <argsstring>(std::string_view str)</argsstring>
+        <name>ToWideString</name>
+        <qualifiedname>Utils::ToWideString</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Converts UTF-8 string to std::wstring.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>string to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the converted string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="159" column="14" bodyfile="utils.cpp" bodystart="473" bodyend="475" declfile="utils.h" declline="159" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a5b5499f11e2bf9496646d3a7e169cab3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Utils::FromWideString</definition>
+        <argsstring>(const std::wstring &amp;str)</argsstring>
+        <name>FromWideString</name>
+        <qualifiedname>Utils::FromWideString</qualifiedname>
+        <param>
+          <type>const std::wstring &amp;</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Converts std::wstring to UTF-8 string.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>string to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the converted string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="167" column="13" bodyfile="utils.cpp" bodystart="491" bodyend="493" declfile="utils.h" declline="167" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a4690359d624169274dbdcb2adbd3fdaa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_utils_1_1_ex_font_ret" kindref="compound">ExFontRet</ref></type>
+        <definition>Utils::ExFontRet Utils::ExFontNext</definition>
+        <argsstring>(const char *iter, const char *end)</argsstring>
+        <name>ExFontNext</name>
+        <qualifiedname>Utils::ExFontNext</qualifiedname>
+        <param>
+          <type>const char *</type>
+          <declname>iter</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>end</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determine if the next character is an exfont character (example: $A)</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iter</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer to next character </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>end</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer to end of string. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>if this is an exfont char, returns a pointer to the next character after. Otherwise, returns iter. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="185" column="11" bodyfile="utils.cpp" bodystart="409" bodyend="423" declfile="utils.h" declline="185" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1acc7ba538b3abf32d58de5670195c3762" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_utils_1_1_text_ret" kindref="compound">TextRet</ref></type>
+        <definition>Utils::TextRet Utils::TextNext</definition>
+        <argsstring>(const char *iter, const char *end, char32_t escape)</argsstring>
+        <name>TextNext</name>
+        <qualifiedname>Utils::TextNext</qualifiedname>
+        <param>
+          <type>const char *</type>
+          <declname>iter</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>end</declname>
+        </param>
+        <param>
+          <type>char32_t</type>
+          <declname>escape</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Parses the next character out of the given text range. Assumes UTF8 and supports exfont.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iter</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer to beginning of UTF8 string. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>end</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer to end of UTF8 string. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>escape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the escape character for escape sequences. Ignored if set to 0. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="struct_utils_1_1_text_ret" kindref="compound">TextRet</ref> object, @refer <ref refid="struct_utils_1_1_text_ret" kindref="compound">TextRet</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="209" column="9" bodyfile="utils.cpp" bodystart="425" bodyend="454" declfile="utils.h" declline="209" declcolumn="9"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1afcd07e6efce25b62af3b120142e248b2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Utils::PositiveModulo</definition>
+        <argsstring>(int i, int m)</argsstring>
+        <name>PositiveModulo</name>
+        <qualifiedname>Utils::PositiveModulo</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calculates the modulo of number i ensuring the result is non-negative for all values of i when m &gt; 0.</para>
+<para>via: <ulink url="https://stackoverflow.com/q/14997165">https://stackoverflow.com/q/14997165</ulink></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Modulo </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>positive modulo of i % m </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="221" column="5" bodyfile="utils.cpp" bodystart="495" bodyend="497" declfile="utils.h" declline="221" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a060fd384079cb241a11a7dde5e9bfbf3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Utils::SwapByteOrder</definition>
+        <argsstring>(uint16_t &amp;us)</argsstring>
+        <name>SwapByteOrder</name>
+        <qualifiedname>Utils::SwapByteOrder</qualifiedname>
+        <param>
+          <type>uint16_t &amp;</type>
+          <declname>us</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Swaps the byte order of the passed number when on big endian systems. Does nothing otherwise.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>us</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number to swap </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="229" column="6" bodyfile="utils.cpp" bodystart="499" bodyend="506" declfile="utils.h" declline="229" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a1d829f42a8772a63f165291212bc01f2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Utils::SwapByteOrder</definition>
+        <argsstring>(uint32_t &amp;ui)</argsstring>
+        <name>SwapByteOrder</name>
+        <qualifiedname>Utils::SwapByteOrder</qualifiedname>
+        <param>
+          <type>uint32_t &amp;</type>
+          <declname>ui</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Swaps the byte order of the passed number when on big endian systems. Does nothing otherwise.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ui</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number to swap </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="237" column="6" bodyfile="utils.cpp" bodystart="508" bodyend="517" declfile="utils.h" declline="237" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a1b5c3f4a459588eef4365a68eaa941cf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Utils::SwapByteOrder</definition>
+        <argsstring>(double &amp;d)</argsstring>
+        <name>SwapByteOrder</name>
+        <qualifiedname>Utils::SwapByteOrder</qualifiedname>
+        <param>
+          <type>double &amp;</type>
+          <declname>d</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Swaps the byte order of the passed number when on big endian systems. Does nothing otherwise.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>d</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number to swap </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="245" column="6" bodyfile="utils.cpp" bodystart="519" bodyend="530" declfile="utils.h" declline="245" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a5b69953b5fdf9d9f9c6d48987cab1af0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>int Utils::Signum</definition>
+        <argsstring>(const T &amp;val)</argsstring>
+        <name>Signum</name>
+        <qualifiedname>Utils::Signum</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>-1 if t &lt; 0, 0 if t== 0, 1 if t &gt; 0 </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="249" column="5" bodyfile="utils.h" bodystart="462" bodyend="464" declfile="utils.h" declline="249" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a1a364b3fff266d7b294f675f0ce32641" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>int Utils::Sign</definition>
+        <argsstring>(const T &amp;val)</argsstring>
+        <name>Sign</name>
+        <qualifiedname>Utils::Sign</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>1 if t &gt;= 0 or -1 if t &lt; 0 </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="253" column="5" bodyfile="utils.h" bodystart="467" bodyend="469" declfile="utils.h" declline="253" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1ac6417a19b9c8a2ddc94d45eeb1a3c19a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Utils::ReadLine</definition>
+        <argsstring>(std::istream &amp;is, std::string &amp;line_out)</argsstring>
+        <name>ReadLine</name>
+        <qualifiedname>Utils::ReadLine</qualifiedname>
+        <param>
+          <type>std::istream &amp;</type>
+          <declname>is</declname>
+        </param>
+        <param>
+          <type>std::string &amp;</type>
+          <declname>line_out</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reads a line from a stream and returns it. Same as std::getline but handles linebreaks independent of the platform correctly.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>is</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="namespace_input" kindref="compound">Input</ref> stream to read </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">Content</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>of the read line </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true when a line was read, false on error (e.g. EOF) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="264" column="6" bodyfile="utils.cpp" bodystart="533" bodyend="564" declfile="utils.h" declline="264" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a062db69d426bf97996b1b760e58d6f2f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt; std::string &gt; Utils::Tokenize</definition>
+        <argsstring>(std::string_view str_to_tokenize, const std::function&lt; bool(char32_t)&gt; predicate)</argsstring>
+        <name>Tokenize</name>
+        <qualifiedname>Utils::Tokenize</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>str_to_tokenize</declname>
+        </param>
+        <param>
+          <type>const std::function&lt; bool(char32_t)&gt;</type>
+          <declname>predicate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Splits a string into tokens specified by a predicate function.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>str_to_tokenize</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>String that is tokenized </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>predicate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Predicate function, must return true when the character is used for splitting. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>vector containing the elements between the tokens </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="273" column="13" bodyfile="utils.cpp" bodystart="566" bodyend="584" declfile="utils.h" declline="273" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1aceb5b05337c96d3b37e77e3b45960dbf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Utils::ForEachLine</definition>
+        <argsstring>(std::string_view line, F &amp;&amp;f)</argsstring>
+        <name>ForEachLine</name>
+        <qualifiedname>Utils::ForEachLine</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>line</declname>
+        </param>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="282" column="6" bodyfile="utils.h" bodystart="418" bodyend="433" declfile="utils.h" declline="282" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a7a06140dad3eaa2af56aee4137db24c5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; uint8_t &gt;</type>
+        <definition>std::vector&lt; uint8_t &gt; Utils::ReadStream</definition>
+        <argsstring>(std::istream &amp;stream)</argsstring>
+        <name>ReadStream</name>
+        <qualifiedname>Utils::ReadStream</qualifiedname>
+        <param>
+          <type>std::istream &amp;</type>
+          <declname>stream</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reads a stream until EOF and returns the read bytes.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>input stream to read </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>content read from stream </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="290" column="13" bodyfile="utils.cpp" bodystart="586" bodyend="598" declfile="utils.h" declline="290" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a76b66639f2241a2e892f9f95974e1bdd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t Utils::CRC32</definition>
+        <argsstring>(std::istream &amp;stream)</argsstring>
+        <name>CRC32</name>
+        <qualifiedname>Utils::CRC32</qualifiedname>
+        <param>
+          <type>std::istream &amp;</type>
+          <declname>stream</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calculates the CRC32 of the stream content <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stream to calculate crc32 from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>crc32 </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="297" column="10" bodyfile="utils.cpp" bodystart="600" bodyend="608" declfile="utils.h" declline="297" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a28f1483c7de9957aedf9b51e4503d1db" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Utils::ReplaceAll</definition>
+        <argsstring>(std::string str, const std::string &amp;search, const std::string &amp;replace)</argsstring>
+        <name>ReplaceAll</name>
+        <qualifiedname>Utils::ReplaceAll</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>str</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>search</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>replace</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Replaces all occurences of text in a string.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="namespace_input" kindref="compound">Input</ref> string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>search</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>String to search for </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>replace</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>String to replace with </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>String with replacement </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="307" column="13" bodyfile="utils.cpp" bodystart="611" bodyend="622" declfile="utils.h" declline="307" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a108ec8ba4fb5d70cc0cdbba3cde62a12" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Utils::ReplacePlaceholders</definition>
+        <argsstring>(std::string_view text_template, Span&lt; const char &gt; types, Span&lt; const std::string_view &gt; values)</argsstring>
+        <name>ReplacePlaceholders</name>
+        <qualifiedname>Utils::ReplacePlaceholders</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>text_template</declname>
+        </param>
+        <param>
+          <type>Span&lt; const char &gt;</type>
+          <declname>types</declname>
+        </param>
+        <param>
+          <type>Span&lt; const std::string_view &gt;</type>
+          <declname>values</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Replaces placeholders (like S, O, V, U) in strings.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>text_template</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>String with placeholders to replace. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>types</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of uppercase characters like &apos;S&apos;, &apos;O&apos;, &apos;V&apos;, &apos;U&apos;. Should have the same number of elements as the values param. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>values</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of replacements strings, should match types in number of elements and order. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A new string with placeholders replaced. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="320" column="13" bodyfile="utils.cpp" bodystart="624" bodyend="648" declfile="utils.h" declline="320" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a805d2bcdaa90b0f02e1806941e8e9cd2" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T Utils::Clamp</definition>
+        <argsstring>(T value, const T &amp;minv, const T &amp;maxv)</argsstring>
+        <name>Clamp</name>
+        <qualifiedname>Utils::Clamp</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>minv</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>maxv</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>value clamped between min and max </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="326" column="13" bodyfile="utils.h" bodystart="413" bodyend="415" declfile="utils.h" declline="326" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1af283eb4479c71b0aef9e55aa065a8dff" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Utils::IsControlCharacter</definition>
+        <argsstring>(T ch)</argsstring>
+        <name>IsControlCharacter</name>
+        <qualifiedname>Utils::IsControlCharacter</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>ch</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines if a char is a control character (0x00-0x1F and 0x7F) <simplesect kind="return"><para>true when ch is a control character </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="333" column="6" bodyfile="utils.h" bodystart="436" bodyend="438" declfile="utils.h" declline="333" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1ae11c63cfe6151c3b6bd886b108ffbe5c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Utils::StringIsAscii</definition>
+        <argsstring>(std::string_view s)</argsstring>
+        <name>StringIsAscii</name>
+        <qualifiedname>Utils::StringIsAscii</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines if a passed string contains only ASCII characters (0x00 to 0x7F) <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true when s contains only ASCII </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="341" column="6" bodyfile="utils.h" bodystart="440" bodyend="445" declfile="utils.h" declline="341" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a01aa1e9d06dd93e9a9b54229c64677e9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Utils::TrimWhitespace</definition>
+        <argsstring>(std::string_view s)</argsstring>
+        <name>TrimWhitespace</name>
+        <qualifiedname>Utils::TrimWhitespace</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Trims whitespace from the start and the end of a string</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>String to trim </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>View on the trimmed string </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="349" column="18" bodyfile="utils.cpp" bodystart="650" bodyend="672" declfile="utils.h" declline="349" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a00fc9341b28b2e2909d39917ea21efe2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Utils::FormatDate</definition>
+        <argsstring>(const std::tm *tm, std::string_view format)</argsstring>
+        <name>FormatDate</name>
+        <qualifiedname>Utils::FormatDate</qualifiedname>
+        <param>
+          <type>const std::tm *</type>
+          <declname>tm</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>format</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Formats a date.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>tm</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time structure </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Format string (See strftime) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>formatted date </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="358" column="13" bodyfile="utils.cpp" bodystart="674" bodyend="681" declfile="utils.h" declline="358" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a3c42755ce0d916d0381a72310ad94343" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Dest</type>
+          </param>
+          <param>
+            <type>typename Src</type>
+          </param>
+        </templateparamlist>
+        <type>std::enable_if_t&lt; std::is_arithmetic&lt; Src &gt;::value &amp;&amp;std::is_arithmetic&lt; Dest &gt;::value, Dest &gt;</type>
+        <definition>std::enable_if_t&lt; std::is_arithmetic&lt; Src &gt;::value &amp;&amp;std::is_arithmetic&lt; Dest &gt;::value, Dest &gt; Utils::RoundTo</definition>
+        <argsstring>(Src v)</argsstring>
+        <name>RoundTo</name>
+        <qualifiedname>Utils::RoundTo</qualifiedname>
+        <param>
+          <type>Src</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>RPG_RT / Delphi compatible rounding of floating point.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>v</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the float value to convert </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>integral result</para>
+</simplesect>
+<simplesect kind="see"><para><ulink url="http://www.delphibasics.co.uk/RTL.asp?Name=Round">http://www.delphibasics.co.uk/RTL.asp?Name=Round</ulink> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="369" column="20" bodyfile="utils.h" bodystart="448" bodyend="459" declfile="utils.h" declline="369" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a2687ddf9fe6f1adb99c9feab34acb587" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename D</type>
+            <defval>void</defval>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Types</declname>
+            <defname>Types</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespace_utils_1_1detail_1af398ca31195252084365cbd51d0371b9" kindref="member">detail::MakeArrayReturn</ref>&lt; D, Types... &gt;</type>
+        <definition>detail::MakeArrayReturn&lt; D, Types... &gt; Utils::MakeArray</definition>
+        <argsstring>(Types &amp;&amp;... t)</argsstring>
+        <name>MakeArray</name>
+        <qualifiedname>Utils::MakeArray</qualifiedname>
+        <param>
+          <type>Types &amp;&amp;...</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Create a std::array from the given parameters, automatically deducing the type and size. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="382" column="35" bodyfile="utils.h" bodystart="382" bodyend="384"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename D</type>
+            <defval>void</defval>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Types</declname>
+            <defname>Types</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Utils::MakeSvArray</definition>
+        <argsstring>(Types &amp;&amp;... t)</argsstring>
+        <name>MakeSvArray</name>
+        <qualifiedname>Utils::MakeSvArray</qualifiedname>
+        <param>
+          <type>Types &amp;&amp;...</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Create a std::array&lt;std::string_view,N&gt; from the given parameters, automatically deducing the size. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="390" column="16" bodyfile="utils.h" bodystart="390" bodyend="392"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a2893da27a309c48530fb8309c079bb65" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename D</type>
+            <defval>void</defval>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Types</declname>
+            <defname>Types</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespace_utils_1_1detail_1a64d3f6e06e1a1275b71950bbbc1c6810" kindref="member">detail::MakeVectorReturn</ref>&lt; D, Types... &gt;</type>
+        <definition>detail::MakeVectorReturn&lt; D, Types... &gt; Utils::MakeVector</definition>
+        <argsstring>(Types &amp;&amp;... t)</argsstring>
+        <name>MakeVector</name>
+        <qualifiedname>Utils::MakeVector</qualifiedname>
+        <param>
+          <type>Types &amp;&amp;...</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Create a std::vector from the given parameters, automatically deducing the type. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="398" column="36" bodyfile="utils.h" bodystart="398" bodyend="400"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_utils_1a6cd68ab5b29a5edbbe7c7325498e8cf8" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename D</type>
+            <defval>void</defval>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Types</declname>
+            <defname>Types</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Utils::MakeSvVector</definition>
+        <argsstring>(Types &amp;&amp;... t)</argsstring>
+        <name>MakeSvVector</name>
+        <qualifiedname>Utils::MakeSvVector</qualifiedname>
+        <param>
+          <type>Types &amp;&amp;...</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Create a std::vector&lt;std::string_view&gt; from the given parameters. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="406" column="16" bodyfile="utils.h" bodystart="406" bodyend="408"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="utils.h" line="30" column="1"/>
+  </compounddef>
+</doxygen>

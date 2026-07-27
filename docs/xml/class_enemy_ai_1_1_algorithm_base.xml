@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_enemy_ai_1_1_algorithm_base" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>EnemyAi::AlgorithmBase</compoundname>
+    <derivedcompoundref refid="class_enemy_ai_1_1_rpg_rt_compat" prot="public" virt="non-virtual">EnemyAi::RpgRtCompat</derivedcompoundref>
+    <derivedcompoundref refid="class_enemy_ai_1_1_rpg_rt_improved" prot="public" virt="non-virtual">EnemyAi::RpgRtImproved</derivedcompoundref>
+    <includes refid="enemyai_8h" local="no">enemyai.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_enemy_ai_1_1_algorithm_base_1acd20fee2b691b49475b25e0e9e39254f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type></type>
+        <definition>virtual EnemyAi::AlgorithmBase::~AlgorithmBase</definition>
+        <argsstring>()</argsstring>
+        <name>~AlgorithmBase</name>
+        <qualifiedname>EnemyAi::AlgorithmBase::~AlgorithmBase</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="enemyai.h" line="46" column="9" bodyfile="enemyai.h" bodystart="46" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="class_enemy_ai_1_1_algorithm_base_1a549c4925dd6f6c07682c87ace7c9630f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int EnemyAi::AlgorithmBase::GetId</definition>
+        <argsstring>() const =0</argsstring>
+        <name>GetId</name>
+        <qualifiedname>EnemyAi::AlgorithmBase::GetId</qualifiedname>
+        <reimplementedby refid="class_enemy_ai_1_1_rpg_rt_compat_1a7949bb44fbfddad5f12b683262c5446e">GetId</reimplementedby>
+        <reimplementedby refid="class_enemy_ai_1_1_rpg_rt_improved_1abd1557430de835b4b68890bfdfeeff8e">GetId</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the id of this algorithm </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="enemyai.h" line="49" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_enemy_ai_1_1_algorithm_base_1a132b6cb918093134644d6bdc7fdf9d6f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::string_view</type>
+        <definition>virtual std::string_view EnemyAi::AlgorithmBase::GetName</definition>
+        <argsstring>() const =0</argsstring>
+        <name>GetName</name>
+        <qualifiedname>EnemyAi::AlgorithmBase::GetName</qualifiedname>
+        <reimplementedby refid="class_enemy_ai_1_1_rpg_rt_compat_1aaedc28cf22f4a42280fe0b95feef2eff">GetName</reimplementedby>
+        <reimplementedby refid="class_enemy_ai_1_1_rpg_rt_improved_1a99af6d865d6d99e8b2091e6f0df5442d">GetName</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the name of this algorithm </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="enemyai.h" line="52" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="class_enemy_ai_1_1_algorithm_base_1ade74592d147bb2adb204598d1fd7053e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void EnemyAi::AlgorithmBase::SetEnemyAiAction</definition>
+        <argsstring>(Game_Enemy &amp;source)</argsstring>
+        <name>SetEnemyAiAction</name>
+        <qualifiedname>EnemyAi::AlgorithmBase::SetEnemyAiAction</qualifiedname>
+        <param>
+          <type><ref refid="class_game___enemy" kindref="compound">Game_Enemy</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calculates the enemy ai algorithm and sets the algorithm on source. This computation ignores states on the actor, it is the resposibility of the caller to handle death, confuse, provoke, etc..</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The source actor to set the action for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="post"><para>source will have a BattleAlgorithm set. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="enemyai.h" line="62" column="6" bodyfile="enemyai.cpp" bodystart="67" bodyend="72"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_enemy_ai_1_1_algorithm_base_1adf52024a923a266f1400423a7dd4c994" prot="private" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void EnemyAi::AlgorithmBase::vSetEnemyAiAction</definition>
+        <argsstring>(Game_Enemy &amp;source)=0</argsstring>
+        <name>vSetEnemyAiAction</name>
+        <qualifiedname>EnemyAi::AlgorithmBase::vSetEnemyAiAction</qualifiedname>
+        <reimplementedby refid="class_enemy_ai_1_1_rpg_rt_compat_1a3d3a6c68b7b37530fd774de5c0bd08ce">vSetEnemyAiAction</reimplementedby>
+        <reimplementedby refid="class_enemy_ai_1_1_rpg_rt_improved_1a5d3f7083bf8a5a320be6c2502ad5740d">vSetEnemyAiAction</reimplementedby>
+        <param>
+          <type><ref refid="class_game___enemy" kindref="compound">Game_Enemy</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="enemyai.h" line="64" column="14"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Base class for enemy ai algorithm implementations. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>EnemyAi::AlgorithmBase</label>
+        <link refid="class_enemy_ai_1_1_algorithm_base"/>
+      </node>
+      <node id="2">
+        <label>EnemyAi::RpgRtCompat</label>
+        <link refid="class_enemy_ai_1_1_rpg_rt_compat"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>EnemyAi::RpgRtImproved</label>
+        <link refid="class_enemy_ai_1_1_rpg_rt_improved"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="enemyai.h" line="44" column="1" bodyfile="enemyai.h" bodystart="44" bodyend="65"/>
+    <listofallmembers>
+      <member refid="class_enemy_ai_1_1_algorithm_base_1a549c4925dd6f6c07682c87ace7c9630f" prot="public" virt="pure-virtual"><scope>EnemyAi::AlgorithmBase</scope><name>GetId</name></member>
+      <member refid="class_enemy_ai_1_1_algorithm_base_1a132b6cb918093134644d6bdc7fdf9d6f" prot="public" virt="pure-virtual"><scope>EnemyAi::AlgorithmBase</scope><name>GetName</name></member>
+      <member refid="class_enemy_ai_1_1_algorithm_base_1ade74592d147bb2adb204598d1fd7053e" prot="public" virt="non-virtual"><scope>EnemyAi::AlgorithmBase</scope><name>SetEnemyAiAction</name></member>
+      <member refid="class_enemy_ai_1_1_algorithm_base_1adf52024a923a266f1400423a7dd4c994" prot="private" virt="pure-virtual"><scope>EnemyAi::AlgorithmBase</scope><name>vSetEnemyAiAction</name></member>
+      <member refid="class_enemy_ai_1_1_algorithm_base_1acd20fee2b691b49475b25e0e9e39254f" prot="public" virt="virtual"><scope>EnemyAi::AlgorithmBase</scope><name>~AlgorithmBase</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

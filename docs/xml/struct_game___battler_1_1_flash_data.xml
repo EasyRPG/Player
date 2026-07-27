@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___battler_1_1_flash_data" kind="struct" language="C++" prot="protected">
+    <compoundname>Game_Battler::FlashData</compoundname>
+    <includes refid="game__battler_8h" local="no">game_battler.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___battler_1_1_flash_data_1ac54e979c1a61b7f75de5df651e2a8382" prot="public" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t Game_Battler::FlashData::red</definition>
+        <argsstring></argsstring>
+        <name>red</name>
+        <qualifiedname>Game_Battler::FlashData::red</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battler.h" line="979" column="9" bodyfile="game_battler.h" bodystart="979" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___battler_1_1_flash_data_1a2d8e42c3d6ded4c5c29f92bd7bc32fba" prot="public" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t Game_Battler::FlashData::green</definition>
+        <argsstring></argsstring>
+        <name>green</name>
+        <qualifiedname>Game_Battler::FlashData::green</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battler.h" line="980" column="9" bodyfile="game_battler.h" bodystart="980" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___battler_1_1_flash_data_1ab57c8efdbabc678e2c28e6a78935fe7d" prot="public" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t Game_Battler::FlashData::blue</definition>
+        <argsstring></argsstring>
+        <name>blue</name>
+        <qualifiedname>Game_Battler::FlashData::blue</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battler.h" line="981" column="9" bodyfile="game_battler.h" bodystart="981" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___battler_1_1_flash_data_1acb4f98ce021c20e010bbdd9822b5e4af" prot="public" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t Game_Battler::FlashData::time_left</definition>
+        <argsstring></argsstring>
+        <name>time_left</name>
+        <qualifiedname>Game_Battler::FlashData::time_left</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battler.h" line="982" column="9" bodyfile="game_battler.h" bodystart="982" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___battler_1_1_flash_data_1ac5e0c91224ef7cc02ac6a426a7b3d648" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Game_Battler::FlashData::current_level</definition>
+        <argsstring></argsstring>
+        <name>current_level</name>
+        <qualifiedname>Game_Battler::FlashData::current_level</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battler.h" line="983" column="8" bodyfile="game_battler.h" bodystart="983" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_battler.h" line="978" column="1" bodyfile="game_battler.h" bodystart="978" bodyend="984"/>
+    <listofallmembers>
+      <member refid="struct_game___battler_1_1_flash_data_1ab57c8efdbabc678e2c28e6a78935fe7d" prot="public" virt="non-virtual"><scope>Game_Battler::FlashData</scope><name>blue</name></member>
+      <member refid="struct_game___battler_1_1_flash_data_1ac5e0c91224ef7cc02ac6a426a7b3d648" prot="public" virt="non-virtual"><scope>Game_Battler::FlashData</scope><name>current_level</name></member>
+      <member refid="struct_game___battler_1_1_flash_data_1a2d8e42c3d6ded4c5c29f92bd7bc32fba" prot="public" virt="non-virtual"><scope>Game_Battler::FlashData</scope><name>green</name></member>
+      <member refid="struct_game___battler_1_1_flash_data_1ac54e979c1a61b7f75de5df651e2a8382" prot="public" virt="non-virtual"><scope>Game_Battler::FlashData</scope><name>red</name></member>
+      <member refid="struct_game___battler_1_1_flash_data_1acb4f98ce021c20e010bbdd9822b5e4af" prot="public" virt="non-virtual"><scope>Game_Battler::FlashData</scope><name>time_left</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

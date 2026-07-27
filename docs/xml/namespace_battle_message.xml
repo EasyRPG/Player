@@ -1,0 +1,1112 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_battle_message" kind="namespace" language="C++">
+    <compoundname>BattleMessage</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_battle_message_1ac07f169765a582779b82e3a8c9d1566a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>static std::string BattleMessage::GetStateMessage</definition>
+        <argsstring>(std::string_view target_name, std::string_view message)</argsstring>
+        <name>GetStateMessage</name>
+        <qualifiedname>BattleMessage::GetStateMessage</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>target_name</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="91" column="20" bodyfile="game_message_terms.cpp" bodystart="91" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a8bf730c3b7f2ac480874aac6279dd426" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetStateInflictMessage</definition>
+        <argsstring>(const Game_Battler &amp;target, const lcf::rpg::State &amp;state)</argsstring>
+        <name>GetStateInflictMessage</name>
+        <qualifiedname>BattleMessage::GetStateInflictMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::State &amp;</type>
+          <declname>state</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="104" column="13" bodyfile="game_message_terms.cpp" bodystart="104" bodyend="112" declfile="game_message_terms.h" declline="39" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a08ed0237f7ede61af586dff05a912197" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetStateRecoveryMessage</definition>
+        <argsstring>(const Game_Battler &amp;target, const lcf::rpg::State &amp;state)</argsstring>
+        <name>GetStateRecoveryMessage</name>
+        <qualifiedname>BattleMessage::GetStateRecoveryMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::State &amp;</type>
+          <declname>state</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="114" column="13" bodyfile="game_message_terms.cpp" bodystart="114" bodyend="116" declfile="game_message_terms.h" declline="41" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a74ab896434aadfcf04ec52b7b33609bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetStateAffectedMessage</definition>
+        <argsstring>(const Game_Battler &amp;target, const lcf::rpg::State &amp;state)</argsstring>
+        <name>GetStateAffectedMessage</name>
+        <qualifiedname>BattleMessage::GetStateAffectedMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::State &amp;</type>
+          <declname>state</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="118" column="13" bodyfile="game_message_terms.cpp" bodystart="118" bodyend="120" declfile="game_message_terms.h" declline="43" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a79534f6a1012f6d2019506ce81e7b4a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetStateAlreadyMessage</definition>
+        <argsstring>(const Game_Battler &amp;target, const lcf::rpg::State &amp;state)</argsstring>
+        <name>GetStateAlreadyMessage</name>
+        <qualifiedname>BattleMessage::GetStateAlreadyMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::State &amp;</type>
+          <declname>state</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="122" column="13" bodyfile="game_message_terms.cpp" bodystart="122" bodyend="124" declfile="game_message_terms.h" declline="45" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1aae3133b5b42aba4657715599c4647ebc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetDeathMessage</definition>
+        <argsstring>(const Game_Battler &amp;target)</argsstring>
+        <name>GetDeathMessage</name>
+        <qualifiedname>BattleMessage::GetDeathMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="126" column="13" bodyfile="game_message_terms.cpp" bodystart="126" bodyend="132" declfile="game_message_terms.h" declline="47" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a655c43bfef0beea90fbe3c0623071930" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>static std::string BattleMessage::GetActionFailureMessage</definition>
+        <argsstring>(std::string_view source, std::string_view target, std::string_view message)</argsstring>
+        <name>GetActionFailureMessage</name>
+        <qualifiedname>BattleMessage::GetActionFailureMessage</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="134" column="20" bodyfile="game_message_terms.cpp" bodystart="134" bodyend="145"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a1412ff7cd36a05e2bb05d91621a29d3f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetPhysicalFailureMessage</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler &amp;target)</argsstring>
+        <name>GetPhysicalFailureMessage</name>
+        <qualifiedname>BattleMessage::GetPhysicalFailureMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="147" column="13" bodyfile="game_message_terms.cpp" bodystart="147" bodyend="149" declfile="game_message_terms.h" declline="49" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1ac5a5745d9b586699dd364c343d26cc2e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetSkillFailureMessage</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler &amp;target, const lcf::rpg::Skill &amp;skill)</argsstring>
+        <name>GetSkillFailureMessage</name>
+        <qualifiedname>BattleMessage::GetSkillFailureMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="151" column="13" bodyfile="game_message_terms.cpp" bodystart="151" bodyend="170" declfile="game_message_terms.h" declline="51" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a7ccc1a9320ad5ef9e183377955b30eff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetUndamagedMessage</definition>
+        <argsstring>(const Game_Battler &amp;target)</argsstring>
+        <name>GetUndamagedMessage</name>
+        <qualifiedname>BattleMessage::GetUndamagedMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="172" column="13" bodyfile="game_message_terms.cpp" bodystart="172" bodyend="188" declfile="game_message_terms.h" declline="53" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1ab797c0bbedc0dcc6f50d45173eb3d80f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetCriticalHitMessage</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler &amp;target)</argsstring>
+        <name>GetCriticalHitMessage</name>
+        <qualifiedname>BattleMessage::GetCriticalHitMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="190" column="13" bodyfile="game_message_terms.cpp" bodystart="190" bodyend="205" declfile="game_message_terms.h" declline="55" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1ad93878f6a43cbaf22d05eebfe77b8cbc" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>static std::string BattleMessage::GetHpSpRecoveredMessage</definition>
+        <argsstring>(const Game_Battler &amp;target, int value, std::string_view points)</argsstring>
+        <name>GetHpSpRecoveredMessage</name>
+        <qualifiedname>BattleMessage::GetHpSpRecoveredMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>points</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="207" column="20" bodyfile="game_message_terms.cpp" bodystart="207" bodyend="230"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1ad0d711ed62ecaab5a7dcb48a9249b85c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetHpRecoveredMessage</definition>
+        <argsstring>(const Game_Battler &amp;target, int value)</argsstring>
+        <name>GetHpRecoveredMessage</name>
+        <qualifiedname>BattleMessage::GetHpRecoveredMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="232" column="13" bodyfile="game_message_terms.cpp" bodystart="232" bodyend="234" declfile="game_message_terms.h" declline="57" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a7be6337554ea10f0b7e5c062e603928f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetSpRecoveredMessage</definition>
+        <argsstring>(const Game_Battler &amp;target, int value)</argsstring>
+        <name>GetSpRecoveredMessage</name>
+        <qualifiedname>BattleMessage::GetSpRecoveredMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="236" column="13" bodyfile="game_message_terms.cpp" bodystart="236" bodyend="238" declfile="game_message_terms.h" declline="59" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a20e605c40c21369a6919807dfff6fcde" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetParameterAbsorbedMessage</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler &amp;target, int value, std::string_view points)</argsstring>
+        <name>GetParameterAbsorbedMessage</name>
+        <qualifiedname>BattleMessage::GetParameterAbsorbedMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>points</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="240" column="13" bodyfile="game_message_terms.cpp" bodystart="240" bodyend="269" declfile="game_message_terms.h" declline="61" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1ac2d2ce2bb6d3a7f7ff27a1fe513c0e44" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetHpAbsorbedMessage</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler &amp;target, int value)</argsstring>
+        <name>GetHpAbsorbedMessage</name>
+        <qualifiedname>BattleMessage::GetHpAbsorbedMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="271" column="13" bodyfile="game_message_terms.cpp" bodystart="271" bodyend="273" declfile="game_message_terms.h" declline="63" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a849ab8daf9ead155ca90edfc27395884" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetSpAbsorbedMessage</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler &amp;target, int value)</argsstring>
+        <name>GetSpAbsorbedMessage</name>
+        <qualifiedname>BattleMessage::GetSpAbsorbedMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="275" column="13" bodyfile="game_message_terms.cpp" bodystart="275" bodyend="277" declfile="game_message_terms.h" declline="65" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a8af00bd185720c02f4c98df9fd469921" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetAtkAbsorbedMessage</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler &amp;target, int value)</argsstring>
+        <name>GetAtkAbsorbedMessage</name>
+        <qualifiedname>BattleMessage::GetAtkAbsorbedMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="279" column="13" bodyfile="game_message_terms.cpp" bodystart="279" bodyend="281" declfile="game_message_terms.h" declline="67" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a4263848d812bbf6e6c3820d65bb61cab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetDefAbsorbedMessage</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler &amp;target, int value)</argsstring>
+        <name>GetDefAbsorbedMessage</name>
+        <qualifiedname>BattleMessage::GetDefAbsorbedMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="283" column="13" bodyfile="game_message_terms.cpp" bodystart="283" bodyend="285" declfile="game_message_terms.h" declline="69" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a49a6f938fa155bd1501fdf23cd883134" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetSpiAbsorbedMessage</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler &amp;target, int value)</argsstring>
+        <name>GetSpiAbsorbedMessage</name>
+        <qualifiedname>BattleMessage::GetSpiAbsorbedMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="287" column="13" bodyfile="game_message_terms.cpp" bodystart="287" bodyend="289" declfile="game_message_terms.h" declline="71" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a9579a149be58c91d723b45e973755857" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetAgiAbsorbedMessage</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler &amp;target, int value)</argsstring>
+        <name>GetAgiAbsorbedMessage</name>
+        <qualifiedname>BattleMessage::GetAgiAbsorbedMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="291" column="13" bodyfile="game_message_terms.cpp" bodystart="291" bodyend="293" declfile="game_message_terms.h" declline="73" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a5832417c275201249aee3e4f91cc4c7b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetDamagedMessage</definition>
+        <argsstring>(const Game_Battler &amp;target, int value)</argsstring>
+        <name>GetDamagedMessage</name>
+        <qualifiedname>BattleMessage::GetDamagedMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="295" column="13" bodyfile="game_message_terms.cpp" bodystart="295" bodyend="320" declfile="game_message_terms.h" declline="75" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1ad57554d5855c7d80758ee23c6aee645d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetParameterChangeMessage</definition>
+        <argsstring>(const Game_Battler &amp;target, int value, std::string_view points)</argsstring>
+        <name>GetParameterChangeMessage</name>
+        <qualifiedname>BattleMessage::GetParameterChangeMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>points</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="322" column="13" bodyfile="game_message_terms.cpp" bodystart="322" bodyend="357" declfile="game_message_terms.h" declline="77" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a63d436c624751d30398a4b246819bc4f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetSpReduceMessage</definition>
+        <argsstring>(const Game_Battler &amp;target, int value)</argsstring>
+        <name>GetSpReduceMessage</name>
+        <qualifiedname>BattleMessage::GetSpReduceMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="359" column="13" bodyfile="game_message_terms.cpp" bodystart="359" bodyend="361" declfile="game_message_terms.h" declline="79" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a468d37b33d51dc8cd89887b9e40bd9d8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetAtkChangeMessage</definition>
+        <argsstring>(const Game_Battler &amp;target, int value)</argsstring>
+        <name>GetAtkChangeMessage</name>
+        <qualifiedname>BattleMessage::GetAtkChangeMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="363" column="13" bodyfile="game_message_terms.cpp" bodystart="363" bodyend="365" declfile="game_message_terms.h" declline="81" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1ae516de318ce0b639d4c63a10eeced24e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetDefChangeMessage</definition>
+        <argsstring>(const Game_Battler &amp;target, int value)</argsstring>
+        <name>GetDefChangeMessage</name>
+        <qualifiedname>BattleMessage::GetDefChangeMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="367" column="13" bodyfile="game_message_terms.cpp" bodystart="367" bodyend="369" declfile="game_message_terms.h" declline="83" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1aaf30d345d9508319905d599e862dab6a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetSpiChangeMessage</definition>
+        <argsstring>(const Game_Battler &amp;target, int value)</argsstring>
+        <name>GetSpiChangeMessage</name>
+        <qualifiedname>BattleMessage::GetSpiChangeMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="371" column="13" bodyfile="game_message_terms.cpp" bodystart="371" bodyend="373" declfile="game_message_terms.h" declline="85" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a0268762ef4a6fedcfbe36c77e66e46a1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetAgiChangeMessage</definition>
+        <argsstring>(const Game_Battler &amp;target, int value)</argsstring>
+        <name>GetAgiChangeMessage</name>
+        <qualifiedname>BattleMessage::GetAgiChangeMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="375" column="13" bodyfile="game_message_terms.cpp" bodystart="375" bodyend="377" declfile="game_message_terms.h" declline="87" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1ac5920f5ae471d2b50f1a11344b55f4c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetAttributeShiftMessage</definition>
+        <argsstring>(const Game_Battler &amp;target, int value, const lcf::rpg::Attribute &amp;attribute)</argsstring>
+        <name>GetAttributeShiftMessage</name>
+        <qualifiedname>BattleMessage::GetAttributeShiftMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Attribute &amp;</type>
+          <declname>attribute</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="379" column="13" bodyfile="game_message_terms.cpp" bodystart="379" bodyend="411" declfile="game_message_terms.h" declline="89" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a7d5c4ae7d5839a02915f5cfa395206b8" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>static std::string BattleMessage::GetBasicStartMessage2k</definition>
+        <argsstring>(const Game_Battler &amp;source, std::string_view term)</argsstring>
+        <name>GetBasicStartMessage2k</name>
+        <qualifiedname>BattleMessage::GetBasicStartMessage2k</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>term</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="413" column="20" bodyfile="game_message_terms.cpp" bodystart="413" bodyend="422"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1aff090e7435df66b38e99d56aed848c03" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetNormalAttackStartMessage2k</definition>
+        <argsstring>(const Game_Battler &amp;source)</argsstring>
+        <name>GetNormalAttackStartMessage2k</name>
+        <qualifiedname>BattleMessage::GetNormalAttackStartMessage2k</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="424" column="13" bodyfile="game_message_terms.cpp" bodystart="424" bodyend="426" declfile="game_message_terms.h" declline="91" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a900d44e1267d99dd9233d90bd76507fe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetDefendStartMessage2k</definition>
+        <argsstring>(const Game_Battler &amp;source)</argsstring>
+        <name>GetDefendStartMessage2k</name>
+        <qualifiedname>BattleMessage::GetDefendStartMessage2k</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="428" column="13" bodyfile="game_message_terms.cpp" bodystart="428" bodyend="430" declfile="game_message_terms.h" declline="93" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1add2fd27e93dec3c8c5bb21cf539b203f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetObserveStartMessage2k</definition>
+        <argsstring>(const Game_Battler &amp;source)</argsstring>
+        <name>GetObserveStartMessage2k</name>
+        <qualifiedname>BattleMessage::GetObserveStartMessage2k</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="432" column="13" bodyfile="game_message_terms.cpp" bodystart="432" bodyend="434" declfile="game_message_terms.h" declline="95" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1aa99bcdaa49b472528bd078de11680ee2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetChargeUpStartMessage2k</definition>
+        <argsstring>(const Game_Battler &amp;source)</argsstring>
+        <name>GetChargeUpStartMessage2k</name>
+        <qualifiedname>BattleMessage::GetChargeUpStartMessage2k</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="436" column="13" bodyfile="game_message_terms.cpp" bodystart="436" bodyend="438" declfile="game_message_terms.h" declline="97" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a1cc3e3f01b2343309784b84b7f4a2745" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetSelfDestructStartMessage2k</definition>
+        <argsstring>(const Game_Battler &amp;source)</argsstring>
+        <name>GetSelfDestructStartMessage2k</name>
+        <qualifiedname>BattleMessage::GetSelfDestructStartMessage2k</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="440" column="13" bodyfile="game_message_terms.cpp" bodystart="440" bodyend="442" declfile="game_message_terms.h" declline="99" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1aa3f3d88fec32c422345666307072d369" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetEscapeStartMessage2k</definition>
+        <argsstring>(const Game_Battler &amp;source)</argsstring>
+        <name>GetEscapeStartMessage2k</name>
+        <qualifiedname>BattleMessage::GetEscapeStartMessage2k</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="444" column="13" bodyfile="game_message_terms.cpp" bodystart="444" bodyend="446" declfile="game_message_terms.h" declline="101" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1ad412e1128028de0b4786f6b65f689b8e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetTransformStartMessage</definition>
+        <argsstring>(const Game_Battler &amp;source, const lcf::rpg::Enemy &amp;new_enemy)</argsstring>
+        <name>GetTransformStartMessage</name>
+        <qualifiedname>BattleMessage::GetTransformStartMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Enemy &amp;</type>
+          <declname>new_enemy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="448" column="13" bodyfile="game_message_terms.cpp" bodystart="448" bodyend="457" declfile="game_message_terms.h" declline="103" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a9e5b85e341466bd70fec34dd1e124318" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>static std::string BattleMessage::GetSkillStartMessageGeneric</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler *target, const lcf::rpg::Skill &amp;skill, std::string_view usage, bool second_message=false)</argsstring>
+        <name>GetSkillStartMessageGeneric</name>
+        <qualifiedname>BattleMessage::GetSkillStartMessageGeneric</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>usage</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>second_message</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="459" column="20" bodyfile="game_message_terms.cpp" bodystart="459" bodyend="476"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1ad510f2e1045de30c4e532b6aa21642bf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetSkillFirstStartMessage2k</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler *target, const lcf::rpg::Skill &amp;skill)</argsstring>
+        <name>GetSkillFirstStartMessage2k</name>
+        <qualifiedname>BattleMessage::GetSkillFirstStartMessage2k</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="478" column="13" bodyfile="game_message_terms.cpp" bodystart="478" bodyend="480" declfile="game_message_terms.h" declline="105" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1accbfac26dd01b630c2ef96e3c1f1c100" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetSkillSecondStartMessage2k</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler *target, const lcf::rpg::Skill &amp;skill)</argsstring>
+        <name>GetSkillSecondStartMessage2k</name>
+        <qualifiedname>BattleMessage::GetSkillSecondStartMessage2k</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="482" column="13" bodyfile="game_message_terms.cpp" bodystart="482" bodyend="484" declfile="game_message_terms.h" declline="107" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a9e6633843c9c5328e112c3583c621097" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetItemStartMessage2k</definition>
+        <argsstring>(const Game_Battler &amp;source, const lcf::rpg::Item &amp;item)</argsstring>
+        <name>GetItemStartMessage2k</name>
+        <qualifiedname>BattleMessage::GetItemStartMessage2k</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Item &amp;</type>
+          <declname>item</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="486" column="13" bodyfile="game_message_terms.cpp" bodystart="486" bodyend="508" declfile="game_message_terms.h" declline="109" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1adc0d73d25bb9a7a967dcc937885ac4f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetDoubleAttackStartMessage2k3</definition>
+        <argsstring>(const Game_Battler &amp;source)</argsstring>
+        <name>GetDoubleAttackStartMessage2k3</name>
+        <qualifiedname>BattleMessage::GetDoubleAttackStartMessage2k3</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="510" column="13" bodyfile="game_message_terms.cpp" bodystart="510" bodyend="519" declfile="game_message_terms.h" declline="111" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1adc8756a9a8965e8fc515f4b8b42e3db3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetSkillStartMessage2k3</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler *target, const lcf::rpg::Skill &amp;skill)</argsstring>
+        <name>GetSkillStartMessage2k3</name>
+        <qualifiedname>BattleMessage::GetSkillStartMessage2k3</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="521" column="13" bodyfile="game_message_terms.cpp" bodystart="521" bodyend="541" declfile="game_message_terms.h" declline="113" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a5168f3b2fad2b3003e4224dcea333f36" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetItemStartMessage2k3</definition>
+        <argsstring>(const Game_Battler &amp;source, const lcf::rpg::Item &amp;item)</argsstring>
+        <name>GetItemStartMessage2k3</name>
+        <qualifiedname>BattleMessage::GetItemStartMessage2k3</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Item &amp;</type>
+          <declname>item</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="543" column="13" bodyfile="game_message_terms.cpp" bodystart="543" bodyend="559" declfile="game_message_terms.h" declline="115" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a7f70794ebdb92285510e1e27a2912768" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetObserveStartMessage2k3</definition>
+        <argsstring>(const Game_Battler &amp;source)</argsstring>
+        <name>GetObserveStartMessage2k3</name>
+        <qualifiedname>BattleMessage::GetObserveStartMessage2k3</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="561" column="13" bodyfile="game_message_terms.cpp" bodystart="561" bodyend="570" declfile="game_message_terms.h" declline="117" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a295dc0fd9addf723beaae2fbc76b6b09" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetDefendStartMessage2k3</definition>
+        <argsstring>(const Game_Battler &amp;source)</argsstring>
+        <name>GetDefendStartMessage2k3</name>
+        <qualifiedname>BattleMessage::GetDefendStartMessage2k3</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="572" column="13" bodyfile="game_message_terms.cpp" bodystart="572" bodyend="581" declfile="game_message_terms.h" declline="119" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a0318ee5d80a667a92059909dd2804624" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetChargeUpStartMessage2k3</definition>
+        <argsstring>(const Game_Battler &amp;source)</argsstring>
+        <name>GetChargeUpStartMessage2k3</name>
+        <qualifiedname>BattleMessage::GetChargeUpStartMessage2k3</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="583" column="13" bodyfile="game_message_terms.cpp" bodystart="583" bodyend="592" declfile="game_message_terms.h" declline="121" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a8eb5af1b2b593a42495f86e31d6ca0f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetSelfDestructStartMessage2k3</definition>
+        <argsstring>(const Game_Battler &amp;source)</argsstring>
+        <name>GetSelfDestructStartMessage2k3</name>
+        <qualifiedname>BattleMessage::GetSelfDestructStartMessage2k3</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="594" column="13" bodyfile="game_message_terms.cpp" bodystart="594" bodyend="603" declfile="game_message_terms.h" declline="123" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_battle_message_1a9b9357b98d670d662b2ac9edc8ee7e6b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string BattleMessage::GetEscapeStartMessage2k3</definition>
+        <argsstring>(const Game_Battler &amp;source)</argsstring>
+        <name>GetEscapeStartMessage2k3</name>
+        <qualifiedname>BattleMessage::GetEscapeStartMessage2k3</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.cpp" line="605" column="13" bodyfile="game_message_terms.cpp" bodystart="605" bodyend="614" declfile="game_message_terms.h" declline="125" declcolumn="13"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_message_terms.cpp" line="89" column="1"/>
+  </compounddef>
+</doxygen>

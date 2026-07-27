@@ -31,3 +31,4 @@ namespace leasy::ui3 {
 
   void update_windows();
 }
+

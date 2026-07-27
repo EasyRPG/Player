@@ -175,3 +175,4 @@ int LibsndfileDecoder::GetTicks() const {
 }
 
 #endif
+

@@ -1,0 +1,584 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_game___interpreter___shared" kind="namespace" language="C++">
+    <compoundname>Game_Interpreter_Shared</compoundname>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_game___interpreter___shared_1a1157ef2dc8f982ea96384f6061c17c48" prot="public" static="no" strong="no">
+        <type>std::int8_t</type>
+        <name>TargetEvalMode</name>
+        <qualifiedname>Game_Interpreter_Shared::TargetEvalMode</qualifiedname>
+        <enumvalue id="namespace_game___interpreter___shared_1a1157ef2dc8f982ea96384f6061c17c48aaa4b373cefc2c8b159247513d28dd3c1" prot="public">
+          <name>eTargetEval_Single</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___interpreter___shared_1a1157ef2dc8f982ea96384f6061c17c48a0dac32da74113d0af25397726284b83e" prot="public">
+          <name>eTargetEval_Range</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___interpreter___shared_1a1157ef2dc8f982ea96384f6061c17c48a86d420d6cd991891b9bfdd8597291919" prot="public">
+          <name>eTargetEval_IndirectSingle</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___interpreter___shared_1a1157ef2dc8f982ea96384f6061c17c48a0961e71626598a8193227e2096bfc294" prot="public">
+          <name>eTargetEval_IndirectRange</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___interpreter___shared_1a1157ef2dc8f982ea96384f6061c17c48a15c08b7be19960bb7de035dbef2b7022" prot="public">
+          <name>eTargetEval_Expression</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="41" column="1" bodyfile="game_interpreter_shared.h" bodystart="41" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_game___interpreter___shared_1a4f84661c287ada7972b7cb41ab73ce46" prot="public" static="no" strong="no">
+        <type>std::int8_t</type>
+        <name>ValueEvalMode</name>
+        <qualifiedname>Game_Interpreter_Shared::ValueEvalMode</qualifiedname>
+        <enumvalue id="namespace_game___interpreter___shared_1a4f84661c287ada7972b7cb41ab73ce46aae4edc9a51ff72c29a7903c8b9abe625" prot="public">
+          <name>eValueEval_Constant</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___interpreter___shared_1a4f84661c287ada7972b7cb41ab73ce46a996e532c568917e8cd7a4f0f3583adef" prot="public">
+          <name>eValueEval_Variable</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___interpreter___shared_1a4f84661c287ada7972b7cb41ab73ce46a77c1f7a2c711233c64844bb2d46530ea" prot="public">
+          <name>eValueEval_VariableIndirect</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___interpreter___shared_1a4f84661c287ada7972b7cb41ab73ce46a5b93ed6d90b58ed346ce3f8b0a9febc2" prot="public">
+          <name>eValueEval_Switch</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___interpreter___shared_1a4f84661c287ada7972b7cb41ab73ce46a5902875e9ca86820b388c8a7328957c1" prot="public">
+          <name>eValueEval_SwitchIndirect</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="52" column="1" bodyfile="game_interpreter_shared.h" bodystart="52" bodyend="58"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespace_game___interpreter___shared_1aa988fbaba0ebd6cdb28a6222e1ef2575" prot="public" static="no">
+        <type>bool lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags::*</type>
+        <definition>using Game_Interpreter_Shared::StateRuntimeFlagRef = bool lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags::*</definition>
+        <argsstring></argsstring>
+        <name>StateRuntimeFlagRef</name>
+        <qualifiedname>Game_Interpreter_Shared::StateRuntimeFlagRef</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="113" column="1" bodyfile="game_interpreter_shared.h" bodystart="113" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_game___interpreter___shared_1acb48273f13ecae7a568d83eda96b554f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>bool</type>
+            <declname>validate_patches</declname>
+            <defname>validate_patches</defname>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_range_indirect</declname>
+            <defname>support_range_indirect</defname>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_expressions</declname>
+            <defname>support_expressions</defname>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_bitmask</declname>
+            <defname>support_bitmask</defname>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_scopes</declname>
+            <defname>support_scopes</defname>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_named</declname>
+            <defname>support_named</defname>
+            <defval>false</defval>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>template bool Game_Interpreter_Shared::DecodeTargetEvaluationMode&lt; false, true, true, true, true, true &gt;</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com, int &amp;id_0, int &amp;id_1, Game_BaseInterpreterContext const &amp;interpreter)</argsstring>
+        <name>DecodeTargetEvaluationMode</name>
+        <qualifiedname>Game_Interpreter_Shared::DecodeTargetEvaluationMode</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>id_0</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>id_1</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___base_interpreter_context" kindref="compound">Game_BaseInterpreterContext</ref> const &amp;</type>
+          <declname>interpreter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="80" column="6" bodyfile="game_interpreter_shared.cpp" bodystart="44" bodyend="107" declfile="game_interpreter_shared.h" declline="80" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___interpreter___shared_1a994ecf0bc586c0b8a5848f36a1da9259" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>bool</type>
+            <declname>validate_patches</declname>
+            <defname>validate_patches</defname>
+            <defval>true</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_indirect_and_switch</declname>
+            <defname>support_indirect_and_switch</defname>
+            <defval>true</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_scopes</declname>
+            <defname>support_scopes</defname>
+            <defval>false</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_named</declname>
+            <defname>support_named</defname>
+            <defval>false</defval>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>template int Game_Interpreter_Shared::ValueOrVariable&lt; true, true, false, false &gt;</definition>
+        <argsstring>(int mode, int val, Game_BaseInterpreterContext const &amp;interpreter)</argsstring>
+        <name>ValueOrVariable</name>
+        <qualifiedname>Game_Interpreter_Shared::ValueOrVariable</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>mode</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>val</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___base_interpreter_context" kindref="compound">Game_BaseInterpreterContext</ref> const &amp;</type>
+          <declname>interpreter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="94" column="5" bodyfile="game_interpreter_shared.cpp" bodystart="110" bodyend="136" declfile="game_interpreter_shared.h" declline="94" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___interpreter___shared_1a1383b3b876ce48ba46cd0860363f0ee3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>bool</type>
+            <declname>validate_patches</declname>
+            <defname>validate_patches</defname>
+            <defval>true</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_indirect_and_switch</declname>
+            <defname>support_indirect_and_switch</defname>
+            <defval>true</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_scopes</declname>
+            <defname>support_scopes</defname>
+            <defval>false</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_named</declname>
+            <defname>support_named</defname>
+            <defval>false</defval>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>template int Game_Interpreter_Shared::ValueOrVariableBitfield&lt; false, true, true, true &gt;</definition>
+        <argsstring>(int mode, int shift, int val, Game_BaseInterpreterContext const &amp;interpreter)</argsstring>
+        <name>ValueOrVariableBitfield</name>
+        <qualifiedname>Game_Interpreter_Shared::ValueOrVariableBitfield</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>mode</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>shift</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>val</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___base_interpreter_context" kindref="compound">Game_BaseInterpreterContext</ref> const &amp;</type>
+          <declname>interpreter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="96" column="5" bodyfile="game_interpreter_shared.cpp" bodystart="139" bodyend="141" declfile="game_interpreter_shared.h" declline="96" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___interpreter___shared_1ab67d3a7bb2774e8651daab77a3954b7b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>bool</type>
+            <declname>validate_patches</declname>
+            <defname>validate_patches</defname>
+            <defval>true</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_indirect_and_switch</declname>
+            <defname>support_indirect_and_switch</defname>
+            <defval>true</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_scopes</declname>
+            <defname>support_scopes</defname>
+            <defval>false</defval>
+          </param>
+          <param>
+            <type>bool</type>
+            <declname>support_named</declname>
+            <defname>support_named</defname>
+            <defval>false</defval>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>template int Game_Interpreter_Shared::ValueOrVariableBitfield&lt; true, true, false, false &gt;</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com, int mode_idx, int shift, int val_idx, Game_BaseInterpreterContext const &amp;interpreter)</argsstring>
+        <name>ValueOrVariableBitfield</name>
+        <qualifiedname>Game_Interpreter_Shared::ValueOrVariableBitfield</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>mode_idx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>shift</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>val_idx</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___base_interpreter_context" kindref="compound">Game_BaseInterpreterContext</ref> const &amp;</type>
+          <declname>interpreter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="99" column="5" bodyfile="game_interpreter_shared.cpp" bodystart="144" bodyend="159" declfile="game_interpreter_shared.h" declline="99" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___interpreter___shared_1afeeffaf95aa1a085df61a708d96c843f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_Interpreter_Shared::CommandStringOrVariable</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com, int mode_idx, int val_idx)</argsstring>
+        <name>CommandStringOrVariable</name>
+        <qualifiedname>Game_Interpreter_Shared::CommandStringOrVariable</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>mode_idx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>val_idx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="101" column="18" bodyfile="game_interpreter_shared.cpp" bodystart="161" bodyend="173" declfile="game_interpreter_shared.h" declline="101" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___interpreter___shared_1af23ea641add69552a2a6b0fbe0d09a08" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_Interpreter_Shared::CommandStringOrVariableBitfield</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com, int mode_idx, int shift, int val_idx)</argsstring>
+        <name>CommandStringOrVariableBitfield</name>
+        <qualifiedname>Game_Interpreter_Shared::CommandStringOrVariableBitfield</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>mode_idx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>shift</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>val_idx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="102" column="18" bodyfile="game_interpreter_shared.cpp" bodystart="175" bodyend="188" declfile="game_interpreter_shared.h" declline="102" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___interpreter___shared_1ad903e65cdf53a3fdd26d91b49616f2f1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Shared::CheckOperator</definition>
+        <argsstring>(int val, int val2, int op)</argsstring>
+        <name>CheckOperator</name>
+        <qualifiedname>Game_Interpreter_Shared::CheckOperator</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>val</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>val2</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="104" column="6" bodyfile="game_interpreter_shared.h" bodystart="121" bodyend="138" declfile="game_interpreter_shared.h" declline="104" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___interpreter___shared_1a88d99222712875cfe76616cf718d4424" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Interpreter_Shared::DecodeInt</definition>
+        <argsstring>(lcf::DBArray&lt; int32_t &gt;::const_iterator &amp;it)</argsstring>
+        <name>DecodeInt</name>
+        <qualifiedname>Game_Interpreter_Shared::DecodeInt</qualifiedname>
+        <param>
+          <type>lcf::DBArray&lt; int32_t &gt;::const_iterator &amp;</type>
+          <declname>it</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="106" column="5" bodyfile="game_interpreter_shared.cpp" bodystart="191" bodyend="203" declfile="game_interpreter_shared.h" declline="106" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___interpreter___shared_1a03f0d7c80fd6159415b81714b1a1dacb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::string</type>
+        <definition>const std::string Game_Interpreter_Shared::DecodeString</definition>
+        <argsstring>(lcf::DBArray&lt; int32_t &gt;::const_iterator &amp;it)</argsstring>
+        <name>DecodeString</name>
+        <qualifiedname>Game_Interpreter_Shared::DecodeString</qualifiedname>
+        <param>
+          <type>lcf::DBArray&lt; int32_t &gt;::const_iterator &amp;</type>
+          <declname>it</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="107" column="19" bodyfile="game_interpreter_shared.cpp" bodystart="205" bodyend="215" declfile="game_interpreter_shared.h" declline="107" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___interpreter___shared_1af8ac26b8c328cec67f3ce3daddd23731" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>lcf::rpg::MoveCommand</type>
+        <definition>lcf::rpg::MoveCommand Game_Interpreter_Shared::DecodeMove</definition>
+        <argsstring>(lcf::DBArray&lt; int32_t &gt;::const_iterator &amp;it)</argsstring>
+        <name>DecodeMove</name>
+        <qualifiedname>Game_Interpreter_Shared::DecodeMove</qualifiedname>
+        <param>
+          <type>lcf::DBArray&lt; int32_t &gt;::const_iterator &amp;</type>
+          <declname>it</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="108" column="23" bodyfile="game_interpreter_shared.cpp" bodystart="217" bodyend="239" declfile="game_interpreter_shared.h" declline="108" declcolumn="23"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___interpreter___shared_1aa835d27101892aa20010b6f0044ce168" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Shared::ManiacCheckContinueLoop</definition>
+        <argsstring>(int val, int val2, int type, int op)</argsstring>
+        <name>ManiacCheckContinueLoop</name>
+        <qualifiedname>Game_Interpreter_Shared::ManiacCheckContinueLoop</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>val</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>val2</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="110" column="6" bodyfile="game_interpreter_shared.h" bodystart="140" bodyend="155" declfile="game_interpreter_shared.h" declline="110" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___interpreter___shared_1a8c31b0f07b4f1b436f878df7c0581134" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::optional&lt; bool &gt;</type>
+        <definition>std::optional&lt; bool &gt; Game_Interpreter_Shared::GetRuntimeFlag</definition>
+        <argsstring>(lcf::rpg::SaveEventExecState const &amp;state, StateRuntimeFlagRef const field_on, StateRuntimeFlagRef const field_off)</argsstring>
+        <name>GetRuntimeFlag</name>
+        <qualifiedname>Game_Interpreter_Shared::GetRuntimeFlag</qualifiedname>
+        <param>
+          <type>lcf::rpg::SaveEventExecState const &amp;</type>
+          <declname>state</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_game___interpreter___shared_1aa988fbaba0ebd6cdb28a6222e1ef2575" kindref="member">StateRuntimeFlagRef</ref> const</type>
+          <declname>field_on</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_game___interpreter___shared_1aa988fbaba0ebd6cdb28a6222e1ef2575" kindref="member">StateRuntimeFlagRef</ref> const</type>
+          <declname>field_off</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="115" column="15" bodyfile="game_interpreter_shared.cpp" bodystart="243" bodyend="245" declfile="game_interpreter_shared.h" declline="115" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___interpreter___shared_1a6fe18b1df8f7ba5b818c627569848d80" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::optional&lt; bool &gt;</type>
+        <definition>std::optional&lt; bool &gt; Game_Interpreter_Shared::GetRuntimeFlag</definition>
+        <argsstring>(lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags const &amp;state_runtime_flags, StateRuntimeFlagRef const field_on, StateRuntimeFlagRef const field_off)</argsstring>
+        <name>GetRuntimeFlag</name>
+        <qualifiedname>Game_Interpreter_Shared::GetRuntimeFlag</qualifiedname>
+        <param>
+          <type>lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags const &amp;</type>
+          <declname>state_runtime_flags</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_game___interpreter___shared_1aa988fbaba0ebd6cdb28a6222e1ef2575" kindref="member">StateRuntimeFlagRef</ref> const</type>
+          <declname>field_on</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_game___interpreter___shared_1aa988fbaba0ebd6cdb28a6222e1ef2575" kindref="member">StateRuntimeFlagRef</ref> const</type>
+          <declname>field_off</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_shared.h" line="117" column="15" bodyfile="game_interpreter_shared.cpp" bodystart="247" bodyend="255" declfile="game_interpreter_shared.h" declline="117" declcolumn="15"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_interpreter_shared.h" line="36" column="1"/>
+  </compounddef>
+</doxygen>

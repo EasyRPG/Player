@@ -1,0 +1,575 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_text" kind="namespace" language="C++">
+    <compoundname>Text</compoundname>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_text_1ace337f3aba6969890e84befaae8d7767" prot="public" static="no" strong="no">
+        <type></type>
+        <name>Alignment</name>
+        <qualifiedname>Text::Alignment</qualifiedname>
+        <enumvalue id="namespace_text_1ace337f3aba6969890e84befaae8d7767a040a1d53457ab65214c336178a36f152" prot="public">
+          <name>AlignLeft</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Align text to the left. </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_text_1ace337f3aba6969890e84befaae8d7767acfad0da6f1ea09a55fbe7efdbbd82ab3" prot="public">
+          <name>AlignCenter</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Align text to the center. </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_text_1ace337f3aba6969890e84befaae8d7767a9f7a4899449646fb9274e29f175d31b1" prot="public">
+          <name>AlignRight</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Align text to the right. </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>TextDraw alignment options. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="text.h" line="35" column="1" bodyfile="text.h" bodystart="35" bodyend="42"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_text_1a392c70557408b8b432074bc27b5e6df8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Text::Draw</definition>
+        <argsstring>(Bitmap &amp;dest, int x, int y, const Font &amp;font, const Bitmap &amp;system, int color, std::string_view text, Text::Alignment align=Text::AlignLeft)</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Text::Draw</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dest</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_font" kindref="compound">Font</ref> &amp;</type>
+          <declname>font</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>system</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>color</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>text</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_text_1ace337f3aba6969890e84befaae8d7767" kindref="member">Text::Alignment</ref></type>
+          <declname>align</declname>
+          <defval><ref refid="namespace_text_1ace337f3aba6969890e84befaae8d7767a040a1d53457ab65214c336178a36f152" kindref="member">Text::AlignLeft</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draws the text onto dest bitmap with given parameters.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the bitmap to render to. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>X offset to render text. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Y offset to render text. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>font</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the font used to render. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>system</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the system graphic to use to render. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which color from the system graphic to use. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>text</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the utf8 / exfont text to render. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>align</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the text alignment to use</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Where to draw the next glyph when continuing drawing. See <ref refid="struct_font_1_1_glyph_ret_1a98ef1a514af135278158595ec6778f94" kindref="member">Font::GlyphRet.advance</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="text.h" line="58" column="7" bodyfile="text.cpp" bodystart="59" bodyend="142" declfile="text.h" declline="58" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_text_1aa791a7e6f993fd34b4f57bc079ea75a7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Text::Draw</definition>
+        <argsstring>(Bitmap &amp;dest, int x, int y, const Font &amp;font, Color color, std::string_view text)</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Text::Draw</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dest</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_font" kindref="compound">Font</ref> &amp;</type>
+          <declname>font</declname>
+        </param>
+        <param>
+          <type><ref refid="class_color" kindref="compound">Color</ref></type>
+          <declname>color</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>text</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draws the text onto dest bitmap with given parameters. Does not draw a shadow.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the bitmap to render to. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>X offset to render text. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Y offset to render text. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>font</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the font used to render. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which color to use. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>text</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the utf8 / exfont text to render.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Where to draw the next glyph when continuing drawing. See <ref refid="struct_font_1_1_glyph_ret_1a98ef1a514af135278158595ec6778f94" kindref="member">Font::GlyphRet.advance</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="text.h" line="72" column="7" bodyfile="text.cpp" bodystart="144" bodyend="183" declfile="text.h" declline="72" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_text_1a7440a91af796d78c8086558ab8f7696e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Text::Draw</definition>
+        <argsstring>(Bitmap &amp;dest, int x, int y, const Font &amp;font, const Bitmap &amp;system, int color, char32_t glyph, bool is_exfont)</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Text::Draw</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dest</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_font" kindref="compound">Font</ref> &amp;</type>
+          <declname>font</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>system</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>color</declname>
+        </param>
+        <param>
+          <type>char32_t</type>
+          <declname>glyph</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>is_exfont</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draws the character onto dest bitmap with given parameters.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the bitmap to render to. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>X offset to render text. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Y offset to render text. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>font</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the font used to render. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>system</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the system graphic to use to render. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which color from the system graphic to use. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the character to render. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>is_exfont</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, treat ch as an exfont character. Otherwise, a utf32 character.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Where to draw the next glyph when continuing drawing. See <ref refid="struct_font_1_1_glyph_ret_1a98ef1a514af135278158595ec6778f94" kindref="member">Font::GlyphRet.advance</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="text.h" line="88" column="7" bodyfile="text.cpp" bodystart="31" bodyend="43" declfile="text.h" declline="88" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_text_1ab1953cf7b1ed16de5c56416f2782d200" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Text::Draw</definition>
+        <argsstring>(Bitmap &amp;dest, int x, int y, const Font &amp;font, Color color, char32_t glyph, bool is_exfont)</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Text::Draw</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dest</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_font" kindref="compound">Font</ref> &amp;</type>
+          <declname>font</declname>
+        </param>
+        <param>
+          <type><ref refid="class_color" kindref="compound">Color</ref></type>
+          <declname>color</declname>
+        </param>
+        <param>
+          <type>char32_t</type>
+          <declname>glyph</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>is_exfont</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draws the character onto dest bitmap with given parameters. Does not draw a shadow.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the bitmap to render to. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>X offset to render text. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Y offset to render text. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>font</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the font used to render. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>color</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which color to use. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the character to render. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>is_exfont</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, treat ch as an exfont character. Otherwise, a utf32 character.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Where to draw the next glyph when continuing drawing. See <ref refid="struct_font_1_1_glyph_ret_1a98ef1a514af135278158595ec6778f94" kindref="member">Font::GlyphRet.advance</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="text.h" line="104" column="7" bodyfile="text.cpp" bodystart="45" bodyend="57" declfile="text.h" declline="104" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_text_1a44a9a92712bc276c7925dfec2a5f4bc0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect Text::GetSize</definition>
+        <argsstring>(const Font &amp;font, std::string_view text)</argsstring>
+        <name>GetSize</name>
+        <qualifiedname>Text::GetSize</qualifiedname>
+        <param>
+          <type>const <ref refid="class_font" kindref="compound">Font</ref> &amp;</type>
+          <declname>font</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>text</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines the size of a bitmap required to render a string. The dimensions of the <ref refid="class_rect" kindref="compound">Rect</ref> describe a bounding box to fit the text. For continuous rendering use the &quot;width&quot; property.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>font</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the font used to render. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>text</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the string to measure.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="class_rect" kindref="compound">Rect</ref> describing the rendered string boundary </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="text.h" line="116" column="6" bodyfile="text.cpp" bodystart="185" bodyend="255" declfile="text.h" declline="116" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_text_1a849d992681f894c7867d7fd8d68025e5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect Text::GetSize</definition>
+        <argsstring>(const Font &amp;font, char32_t glyph, bool is_exfont)</argsstring>
+        <name>GetSize</name>
+        <qualifiedname>Text::GetSize</qualifiedname>
+        <param>
+          <type>const <ref refid="class_font" kindref="compound">Font</ref> &amp;</type>
+          <declname>font</declname>
+        </param>
+        <param>
+          <type>char32_t</type>
+          <declname>glyph</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>is_exfont</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines the size of a bitmap required to render a single character. The dimensions of the <ref refid="class_rect" kindref="compound">Rect</ref> describe a bounding box to fit the character. For continuous rendering use the &quot;width&quot; property.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>font</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the font used to render. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>glyph</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the character to mesaure. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>is_exfont</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, treat ch as an exfont character. Otherwise, a utf32 character.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="class_rect" kindref="compound">Rect</ref> describing the rendered string boundary </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="text.h" line="129" column="6" bodyfile="text.cpp" bodystart="257" bodyend="269" declfile="text.h" declline="129" declcolumn="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="text.h" line="33" column="1"/>
+  </compounddef>
+</doxygen>

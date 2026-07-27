@@ -1,0 +1,662 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lstring_8h" kind="file" language="C++">
+    <compoundname>lstring.h</compoundname>
+    <includes refid="lgc_8h" local="yes">lgc.h</includes>
+    <includes refid="lobject_8h" local="yes">lobject.h</includes>
+    <includes refid="lstate_8h" local="yes">lstate.h</includes>
+    <includedby refid="lapi_8c" local="yes">leasy/lua/lapi.c</includedby>
+    <includedby refid="lcode_8c" local="yes">leasy/lua/lcode.c</includedby>
+    <includedby refid="ldebug_8c" local="yes">leasy/lua/ldebug.c</includedby>
+    <includedby refid="ldo_8c" local="yes">leasy/lua/ldo.c</includedby>
+    <includedby refid="lgc_8c" local="yes">leasy/lua/lgc.c</includedby>
+    <includedby refid="llex_8c" local="yes">leasy/lua/llex.c</includedby>
+    <includedby refid="lobject_8c" local="yes">leasy/lua/lobject.c</includedby>
+    <includedby refid="lparser_8c" local="yes">leasy/lua/lparser.c</includedby>
+    <includedby refid="lstate_8c" local="yes">leasy/lua/lstate.c</includedby>
+    <includedby refid="lstring_8c" local="yes">leasy/lua/lstring.c</includedby>
+    <includedby refid="ltable_8c" local="yes">leasy/lua/ltable.c</includedby>
+    <includedby refid="ltm_8c" local="yes">leasy/lua/ltm.c</includedby>
+    <includedby refid="lundump_8c" local="yes">leasy/lua/lundump.c</includedby>
+    <includedby refid="lvm_8c" local="yes">leasy/lua/lvm.c</includedby>
+    <incdepgraph>
+      <node id="2">
+        <label>lgc.h</label>
+        <link refid="lgc_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>lmem.h</label>
+        <link refid="lmem_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>lobject.h</label>
+        <link refid="lobject_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>lstate.h</label>
+        <link refid="lstate_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lstring.h</label>
+        <link refid="lstring_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>ltm.h</label>
+        <link refid="ltm_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>lzio.h</label>
+        <link refid="lzio_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>limits.h</label>
+      </node>
+      <node id="14">
+        <label>signal.h</label>
+      </node>
+      <node id="5">
+        <label>stdarg.h</label>
+      </node>
+      <node id="3">
+        <label>stddef.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>leasy/lua/lapi.c</label>
+        <link refid="lapi_8c"/>
+      </node>
+      <node id="3">
+        <label>leasy/lua/lcode.c</label>
+        <link refid="lcode_8c"/>
+      </node>
+      <node id="4">
+        <label>leasy/lua/ldebug.c</label>
+        <link refid="ldebug_8c"/>
+      </node>
+      <node id="5">
+        <label>leasy/lua/ldo.c</label>
+        <link refid="ldo_8c"/>
+      </node>
+      <node id="6">
+        <label>leasy/lua/lgc.c</label>
+        <link refid="lgc_8c"/>
+      </node>
+      <node id="7">
+        <label>leasy/lua/llex.c</label>
+        <link refid="llex_8c"/>
+      </node>
+      <node id="8">
+        <label>leasy/lua/lobject.c</label>
+        <link refid="lobject_8c"/>
+      </node>
+      <node id="9">
+        <label>leasy/lua/lparser.c</label>
+        <link refid="lparser_8c"/>
+      </node>
+      <node id="10">
+        <label>leasy/lua/lstate.c</label>
+        <link refid="lstate_8c"/>
+      </node>
+      <node id="11">
+        <label>leasy/lua/lstring.c</label>
+        <link refid="lstring_8c"/>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lstring.h</label>
+        <link refid="lstring_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>leasy/lua/ltable.c</label>
+        <link refid="ltable_8c"/>
+      </node>
+      <node id="13">
+        <label>leasy/lua/ltm.c</label>
+        <link refid="ltm_8c"/>
+      </node>
+      <node id="14">
+        <label>leasy/lua/lundump.c</label>
+        <link refid="lundump_8c"/>
+      </node>
+      <node id="15">
+        <label>leasy/lua/lvm.c</label>
+        <link refid="lvm_8c"/>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lstring_8h_1a36d62c6c0c5a33c2f29cf26ff9137cbf" prot="public" static="no">
+        <name>MEMERRMSG</name>
+        <initializer>&quot;not enough memory&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="19" column="9" bodyfile="leasy/lua/lstring.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lstring_8h_1a54fe4797308d6b24bf84fa0129a155bd" prot="public" static="no">
+        <name>LUAI_MAXSHORTLEN</name>
+        <initializer>40</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="29" column="9" bodyfile="leasy/lua/lstring.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lstring_8h_1a7a3c9cc017a8d7931bc153695611368d" prot="public" static="no">
+        <name>sizestrshr</name>
+        <param><defname>l</defname></param>
+        <initializer>(offsetof(<ref refid="struct_t_string" kindref="compound">TString</ref>, contents) + ((l) + 1) * sizeof(char))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="37" column="9" bodyfile="leasy/lua/lstring.h" bodystart="37" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="define" id="lstring_8h_1a1cd2754b136ed096325a76c6d16a82f5" prot="public" static="no">
+        <name>luaS_newliteral</name>
+        <param><defname>L</defname></param>
+        <param><defname>s</defname></param>
+        <initializer>(<ref refid="lstring_8h_1ac74d26f0461381a4b929b964abd6163b" kindref="member">luaS_newlstr</ref>(L, &quot;&quot; s, \
+(sizeof(s)/sizeof(char))-1))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="41" column="9" bodyfile="leasy/lua/lstring.h" bodystart="41" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="define" id="lstring_8h_1a7b490cd8212260e1cf975f59a16fb745" prot="public" static="no">
+        <name>isreserved</name>
+        <param><defname>s</defname></param>
+        <initializer>(<ref refid="lobject_8h_1a9efb85b4343245b80e24baf9d0b31239" kindref="member">strisshr</ref>(s) &amp;&amp; (s)-&gt;extra &gt; 0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="48" column="9" bodyfile="leasy/lua/lstring.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lstring_8h_1add3806315bf73de7d3138c019ed7c0ce" prot="public" static="no">
+        <name>eqshrstr</name>
+        <param><defname>a</defname></param>
+        <param><defname>b</defname></param>
+        <initializer><ref refid="llimits_8h_1afac1404af62451f8653440ecb6e773fc" kindref="member">check_exp</ref>((a)-&gt;tt == <ref refid="lobject_8h_1a794410ffd7267ef873eb05ac695b1ba6" kindref="member">LUA_VSHRSTR</ref>, (a) == (b))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="54" column="9" bodyfile="leasy/lua/lstring.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="lstring_8h_1af942c55d2b959eea425635c9f2c52564" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> unsigned</type>
+        <definition>LUAI_FUNC unsigned luaS_hashlongstr</definition>
+        <argsstring>(TString *ts)</argsstring>
+        <name>luaS_hashlongstr</name>
+        <param>
+          <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+          <declname>ts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="57" column="20" bodyfile="leasy/lua/lstring.c" bodystart="61" bodyend="69" declfile="leasy/lua/lstring.h" declline="57" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="function" id="lstring_8h_1acf5bcfe2fd31557990f3f001893f3308" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaS_eqstr</definition>
+        <argsstring>(TString *a, TString *b)</argsstring>
+        <name>luaS_eqstr</name>
+        <param>
+          <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="58" column="15" bodyfile="leasy/lua/lstring.c" bodystart="44" bodyend="50" declfile="leasy/lua/lstring.h" declline="58" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="lstring_8h_1a44d549eb0ace165927a896f37330e2cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaS_resize</definition>
+        <argsstring>(lua_State *L, int newsize)</argsstring>
+        <name>luaS_resize</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>newsize</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="59" column="16" bodyfile="leasy/lua/lstring.c" bodystart="95" bodyend="113" declfile="leasy/lua/lstring.h" declline="59" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lstring_8h_1adf6ce45154f1aabbdec670cef4d9a955" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaS_clearcache</definition>
+        <argsstring>(global_State *g)</argsstring>
+        <name>luaS_clearcache</name>
+        <param>
+          <type><ref refid="structglobal___state" kindref="compound">global_State</ref> *</type>
+          <declname>g</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="60" column="16" bodyfile="leasy/lua/lstring.c" bodystart="120" bodyend="127" declfile="leasy/lua/lstring.h" declline="60" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lstring_8h_1a83805363ffda500e327df43007dc0208" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaS_init</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaS_init</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="61" column="16" bodyfile="leasy/lua/lstring.c" bodystart="133" bodyend="146" declfile="leasy/lua/lstring.h" declline="61" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lstring_8h_1a187dea46b6f3964a1eb7446627ef3fdc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaS_remove</definition>
+        <argsstring>(lua_State *L, TString *ts)</argsstring>
+        <name>luaS_remove</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+          <declname>ts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="62" column="16" bodyfile="leasy/lua/lstring.c" bodystart="190" bodyend="197" declfile="leasy/lua/lstring.h" declline="62" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lstring_8h_1a112e6c1aaad5055a1a81c1db5d27b15c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="struct_udata" kindref="compound">Udata</ref> *</type>
+        <definition>LUAI_FUNC Udata * luaS_newudata</definition>
+        <argsstring>(lua_State *L, size_t s, unsigned short nuvalue)</argsstring>
+        <name>luaS_newudata</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>unsigned short</type>
+          <declname>nuvalue</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="63" column="17" bodyfile="leasy/lua/lstring.c" bodystart="286" bodyend="300" declfile="leasy/lua/lstring.h" declline="63" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="lstring_8h_1ac74d26f0461381a4b929b964abd6163b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>LUAI_FUNC TString * luaS_newlstr</definition>
+        <argsstring>(lua_State *L, const char *str, size_t l)</argsstring>
+        <name>luaS_newlstr</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>str</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>l</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="65" column="19" bodyfile="leasy/lua/lstring.c" bodystart="249" bodyend="260" declfile="leasy/lua/lstring.h" declline="65" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="lstring_8h_1ae77b7d12fe0166c57ef2adc96c9dc47c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>LUAI_FUNC TString * luaS_new</definition>
+        <argsstring>(lua_State *L, const char *str)</argsstring>
+        <name>luaS_new</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>str</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="66" column="19" bodyfile="leasy/lua/lstring.c" bodystart="269" bodyend="283" declfile="leasy/lua/lstring.h" declline="66" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="lstring_8h_1a570120ebaa07429b8e05c513513328f2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>LUAI_FUNC TString * luaS_createlngstrobj</definition>
+        <argsstring>(lua_State *L, size_t l)</argsstring>
+        <name>luaS_createlngstrobj</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>l</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="67" column="19" bodyfile="leasy/lua/lstring.c" bodystart="179" bodyend="187" declfile="leasy/lua/lstring.h" declline="67" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="lstring_8h_1a36a35354d201bdb36fbac9c108f2b88c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>LUAI_FUNC TString * luaS_newextlstr</definition>
+        <argsstring>(lua_State *L, const char *s, size_t len, lua_Alloc falloc, void *ud)</argsstring>
+        <name>luaS_newextlstr</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>len</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a2ba24df8972a4a52ebd3517c62e0830d" kindref="member">lua_Alloc</ref></type>
+          <declname>falloc</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>ud</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="68" column="19" bodyfile="leasy/lua/lstring.c" bodystart="318" bodyend="338" declfile="leasy/lua/lstring.h" declline="68" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="lstring_8h_1ab801b06acc94eeebfb81e31f493eb567" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> size_t</type>
+        <definition>LUAI_FUNC size_t luaS_sizelngstr</definition>
+        <argsstring>(size_t len, int kind)</argsstring>
+        <name>luaS_sizelngstr</name>
+        <param>
+          <type>size_t</type>
+          <declname>len</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>kind</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="70" column="18" bodyfile="leasy/lua/lstring.c" bodystart="149" bodyend="161" declfile="leasy/lua/lstring.h" declline="70" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="lstring_8h_1ac824393d32febe5fdfb40acfdf066aa3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>LUAI_FUNC TString * luaS_normstr</definition>
+        <argsstring>(lua_State *L, TString *ts)</argsstring>
+        <name>luaS_normstr</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+          <declname>ts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.h" line="71" column="19" bodyfile="leasy/lua/lstring.c" bodystart="344" bodyend="352" declfile="leasy/lua/lstring.h" declline="71" declcolumn="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lstring.h<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>String<sp/>table<sp/>(keep<sp/>all<sp/>strings<sp/>handled<sp/>by<sp/>Lua)</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>lstring_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lstring_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lgc_8h" kindref="compound">lgc.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lobject_8h" kindref="compound">lobject.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lstate_8h" kindref="compound">lstate.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment">**<sp/>Memory-allocation<sp/>error<sp/>message<sp/>must<sp/>be<sp/>preallocated<sp/>(it<sp/>cannot</highlight></codeline>
+<codeline lineno="17"><highlight class="comment">**<sp/>be<sp/>created<sp/>after<sp/>memory<sp/>is<sp/>exhausted)</highlight></codeline>
+<codeline lineno="18"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19" refid="lstring_8h_1a36d62c6c0c5a33c2f29cf26ff9137cbf" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MEMERRMSG<sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;not<sp/>enough<sp/>memory&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment">**<sp/>Maximum<sp/>length<sp/>for<sp/>short<sp/>strings,<sp/>that<sp/>is,<sp/>strings<sp/>that<sp/>are</highlight></codeline>
+<codeline lineno="24"><highlight class="comment">**<sp/>internalized.<sp/>(Cannot<sp/>be<sp/>smaller<sp/>than<sp/>reserved<sp/>words<sp/>or<sp/>tags<sp/>for</highlight></codeline>
+<codeline lineno="25"><highlight class="comment">**<sp/>metamethods,<sp/>as<sp/>these<sp/>strings<sp/>must<sp/>be<sp/>internalized;</highlight></codeline>
+<codeline lineno="26"><highlight class="comment">**<sp/>#(&quot;function&quot;)<sp/>=<sp/>8,<sp/>#(&quot;__newindex&quot;)<sp/>=<sp/>10.)</highlight></codeline>
+<codeline lineno="27"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(LUAI_MAXSHORTLEN)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="lstring_8h_1a54fe4797308d6b24bf84fa0129a155bd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUAI_MAXSHORTLEN<sp/><sp/><sp/><sp/>40</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="34"><highlight class="comment">**<sp/>Size<sp/>of<sp/>a<sp/>short<sp/>TString:<sp/>Size<sp/>of<sp/>the<sp/>header<sp/>plus<sp/>space<sp/>for<sp/>the<sp/>string</highlight></codeline>
+<codeline lineno="35"><highlight class="comment">**<sp/>itself<sp/>(including<sp/>final<sp/>&apos;\0&apos;).</highlight></codeline>
+<codeline lineno="36"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="lstring_8h_1a7a3c9cc017a8d7931bc153695611368d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>sizestrshr(l)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="38"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>(offsetof(TString,<sp/>contents)<sp/>+<sp/>((l)<sp/>+<sp/>1)<sp/>*<sp/>sizeof(char))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="lstring_8h_1a1cd2754b136ed096325a76c6d16a82f5" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaS_newliteral(L,<sp/>s)<sp/><sp/><sp/>(luaS_newlstr(L,<sp/>&quot;&quot;<sp/>s,<sp/>\</highlight></codeline>
+<codeline lineno="42"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(sizeof(s)/sizeof(char))-1))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="46"><highlight class="comment">**<sp/>test<sp/>whether<sp/>a<sp/>string<sp/>is<sp/>a<sp/>reserved<sp/>word</highlight></codeline>
+<codeline lineno="47"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="lstring_8h_1a7b490cd8212260e1cf975f59a16fb745" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>isreserved(s)<sp/><sp/><sp/>(strisshr(s)<sp/>&amp;&amp;<sp/>(s)-&gt;extra<sp/>&gt;<sp/>0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="52"><highlight class="comment">**<sp/>equality<sp/>for<sp/>short<sp/>strings,<sp/>which<sp/>are<sp/>always<sp/>internalized</highlight></codeline>
+<codeline lineno="53"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54" refid="lstring_8h_1add3806315bf73de7d3138c019ed7c0ce" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>eqshrstr(a,b)<sp/><sp/><sp/>check_exp((a)-&gt;tt<sp/>==<sp/>LUA_VSHRSTR,<sp/>(a)<sp/>==<sp/>(b))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/><ref refid="lstring_8h_1af942c55d2b959eea425635c9f2c52564" kindref="member">luaS_hashlongstr</ref><sp/>(<ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*ts);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lstring_8h_1acf5bcfe2fd31557990f3f001893f3308" kindref="member">luaS_eqstr</ref><sp/>(<ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*a,<sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*b);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lstring_8h_1a44d549eb0ace165927a896f37330e2cd" kindref="member">luaS_resize</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>newsize);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lstring_8h_1adf6ce45154f1aabbdec670cef4d9a955" kindref="member">luaS_clearcache</ref><sp/>(<ref refid="structglobal___state" kindref="compound">global_State</ref><sp/>*g);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lstring_8h_1a83805363ffda500e327df43007dc0208" kindref="member">luaS_init</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lstring_8h_1a187dea46b6f3964a1eb7446627ef3fdc" kindref="member">luaS_remove</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*ts);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="struct_udata" kindref="compound">Udata</ref><sp/>*<ref refid="lstring_8h_1a112e6c1aaad5055a1a81c1db5d27b15c" kindref="member">luaS_newudata</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>s,</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">short</highlight><highlight class="normal"><sp/>nuvalue);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="lstring_8h_1ac74d26f0461381a4b929b964abd6163b" kindref="member">luaS_newlstr</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*str,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>l);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="lstring_8h_1ae77b7d12fe0166c57ef2adc96c9dc47c" kindref="member">luaS_new</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*str);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="lstring_8h_1a570120ebaa07429b8e05c513513328f2" kindref="member">luaS_createlngstrobj</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>l);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="lstring_8h_1a36a35354d201bdb36fbac9c108f2b88c" kindref="member">luaS_newextlstr</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>len,<sp/><ref refid="lua_8h_1a2ba24df8972a4a52ebd3517c62e0830d" kindref="member">lua_Alloc</ref><sp/>falloc,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*ud);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="lstring_8h_1ab801b06acc94eeebfb81e31f493eb567" kindref="member">luaS_sizelngstr</ref><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>len,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>kind);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="lstring_8h_1ac824393d32febe5fdfb40acfdf066aa3" kindref="member">luaS_normstr</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*ts);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lstring.h"/>
+  </compounddef>
+</doxygen>

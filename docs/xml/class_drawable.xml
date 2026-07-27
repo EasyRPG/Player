@@ -1,0 +1,978 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_drawable" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Drawable</compoundname>
+    <derivedcompoundref refid="class_background" prot="public" virt="non-virtual">Background</derivedcompoundref>
+    <derivedcompoundref refid="class_dyn_rpg_text" prot="public" virt="non-virtual">DynRpgText</derivedcompoundref>
+    <derivedcompoundref refid="class_fps_overlay" prot="public" virt="non-virtual">FpsOverlay</derivedcompoundref>
+    <derivedcompoundref refid="class_frame" prot="public" virt="non-virtual">Frame</derivedcompoundref>
+    <derivedcompoundref refid="class_message_overlay" prot="public" virt="non-virtual">MessageOverlay</derivedcompoundref>
+    <derivedcompoundref refid="class_plane" prot="public" virt="non-virtual">Plane</derivedcompoundref>
+    <derivedcompoundref refid="class_screen" prot="public" virt="non-virtual">Screen</derivedcompoundref>
+    <derivedcompoundref refid="class_sprite" prot="public" virt="non-virtual">Sprite</derivedcompoundref>
+    <derivedcompoundref refid="class_tilemap_sub_layer" prot="public" virt="non-virtual">TilemapSubLayer</derivedcompoundref>
+    <derivedcompoundref refid="class_transition" prot="public" virt="non-virtual">Transition</derivedcompoundref>
+    <derivedcompoundref refid="class_weather" prot="public" virt="non-virtual">Weather</derivedcompoundref>
+    <derivedcompoundref refid="class_window" prot="public" virt="non-virtual">Window</derivedcompoundref>
+    <derivedcompoundref refid="classleasy_1_1libs2_1_1_drawable_object" prot="public" virt="non-virtual">leasy::libs2::DrawableObject</derivedcompoundref>
+    <derivedcompoundref refid="classleasy_1_1ui3_1_1_graphical_console" prot="public" virt="non-virtual">leasy::ui3::GraphicalConsole</derivedcompoundref>
+    <includes refid="drawable_8h" local="no">drawable.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" static="no" strong="yes">
+        <type>uint32_t</type>
+        <name>Flags</name>
+        <qualifiedname>Drawable::Flags</qualifiedname>
+        <enumvalue id="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85a6adf97f83acf6453d4a6a4b1070f3754" prot="public">
+          <name>None</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>No flags </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85a4cc6684df7b4a92b1dec6fce3264fac8" prot="public">
+          <name>Global</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>This is a global drawable which will appear in all scenes </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85aa6156ea9d66fef24e87e841fbabf7cca" prot="public">
+          <name>Shared</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>This is a shared drawable which will appear in all scenes that use shared drawables </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85a8bcda43732b0928d269955e0f09ff76f" prot="public">
+          <name>Invisible</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>This flag indicates the drawable should not be drawn </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85a7a1920d61156abc05a60135aefe8bc67" prot="public">
+          <name>Default</name>
+          <initializer>= None</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>The default flag set </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" kindref="member">Flags</ref> with dictate certain attributes of drawables </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="39" column="1" bodyfile="drawable.h" bodystart="39" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" static="no">
+        <type>uint64_t</type>
+        <definition>using Drawable::Z_t = uint64_t</definition>
+        <argsstring></argsstring>
+        <name>Z_t</name>
+        <qualifiedname>Drawable::Z_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="36" column="1" bodyfile="drawable.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_drawable_1aac9485e0753c19d86ef5201372c876bf" prot="private" static="no" mutable="no">
+        <type><ref refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" kindref="member">Z_t</ref></type>
+        <definition>Z_t Drawable::_z</definition>
+        <argsstring></argsstring>
+        <name>_z</name>
+        <qualifiedname>Drawable::_z</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="118" column="5" bodyfile="drawable.h" bodystart="118" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_drawable_1ab5565d0a7b2196acc6b03e7093a5c3b5" prot="private" static="no" mutable="no">
+        <type><ref refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" kindref="member">Flags</ref></type>
+        <definition>Flags Drawable::_flags</definition>
+        <argsstring></argsstring>
+        <name>_flags</name>
+        <qualifiedname>Drawable::_flags</qualifiedname>
+        <initializer>= <ref refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85a7a1920d61156abc05a60135aefe8bc67" kindref="member">Flags::Default</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="119" column="7" bodyfile="drawable.h" bodystart="119" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_drawable_1a20ccd58f28e48284e2e34d7475302685" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Drawable::render_ox</definition>
+        <argsstring></argsstring>
+        <name>render_ox</name>
+        <qualifiedname>Drawable::render_ox</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="120" column="5" bodyfile="drawable.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_drawable_1a1d6a02bb4fc9d41381b320487013f8f5" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Drawable::render_oy</definition>
+        <argsstring></argsstring>
+        <name>render_oy</name>
+        <qualifiedname>Drawable::render_oy</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="121" column="5" bodyfile="drawable.h" bodystart="121" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Drawable::Drawable</definition>
+        <argsstring>(Z_t z, Flags flags=Flags::Default)</argsstring>
+        <name>Drawable</name>
+        <qualifiedname>Drawable::Drawable</qualifiedname>
+        <param>
+          <type><ref refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" kindref="member">Z_t</ref></type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type><ref refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" kindref="member">Flags</ref></type>
+          <declname>flags</declname>
+          <defval><ref refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85a7a1920d61156abc05a60135aefe8bc67" kindref="member">Flags::Default</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="52" column="1" bodyfile="drawable.h" bodystart="140" bodyend="144"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Drawable::Drawable</definition>
+        <argsstring>(const Drawable &amp;)=delete</argsstring>
+        <name>Drawable</name>
+        <qualifiedname>Drawable::Drawable</qualifiedname>
+        <param>
+          <type>const <ref refid="class_drawable" kindref="compound">Drawable</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="54" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_drawable" kindref="compound">Drawable</ref> &amp;</type>
+        <definition>Drawable &amp; Drawable::operator=</definition>
+        <argsstring>(const Drawable &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Drawable::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_drawable" kindref="compound">Drawable</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="55" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>Drawable::~Drawable</definition>
+        <argsstring>()</argsstring>
+        <name>~Drawable</name>
+        <qualifiedname>Drawable::~Drawable</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="57" column="9" bodyfile="drawable.cpp" bodystart="22" bodyend="24"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_1aa8a9b151f40368331f6fd8bbdd20133f" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Drawable::Draw</definition>
+        <argsstring>(Bitmap &amp;dst)=0</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Drawable::Draw</qualifiedname>
+        <reimplementedby refid="class_background_1ab356b0802376f1db2c9dd8210aec0607">Draw</reimplementedby>
+        <reimplementedby refid="class_battle_animation_battle_1ae97ebe6c57993fe31b81b7a4b06d736a">Draw</reimplementedby>
+        <reimplementedby refid="class_battle_animation_battler_1a4944775f2af1aa0a2614d1e2f662be63">Draw</reimplementedby>
+        <reimplementedby refid="class_battle_animation_map_1adb8a8c24632a6e72a3286a34a41d5872">Draw</reimplementedby>
+        <reimplementedby refid="class_dyn_rpg_text_1a3af9ef81e717b499184a833350e206ab">Draw</reimplementedby>
+        <reimplementedby refid="class_fps_overlay_1a8c1a3a528fabcea5e73a506fc727ed5a">Draw</reimplementedby>
+        <reimplementedby refid="class_frame_1aa35b5a087d694d8e868371aa0645f443">Draw</reimplementedby>
+        <reimplementedby refid="classleasy_1_1ui3_1_1_graphical_console_1a2ecc4d75eaa1063560b99b553400893c">Draw</reimplementedby>
+        <reimplementedby refid="class_message_overlay_1a3356464dc481472c100dce4824673c94">Draw</reimplementedby>
+        <reimplementedby refid="class_plane_1ad2772361388afb7fac3e6a68b33804cc">Draw</reimplementedby>
+        <reimplementedby refid="class_screen_1a51448ed08c01970856e9ed17543aeb43">Draw</reimplementedby>
+        <reimplementedby refid="class_sprite_1a0a4a3bd44c2556cbbe47b4480fae2a5b">Draw</reimplementedby>
+        <reimplementedby refid="class_sprite___actor_1a2aeef2f6bd2722c71f09abf9acf4db25">Draw</reimplementedby>
+        <reimplementedby refid="class_sprite___airship_shadow_1a23db0371cd3365e6d4c2271535f17cbe">Draw</reimplementedby>
+        <reimplementedby refid="class_sprite___character_1a38aa5b4bda3b49f9c764b2706a8b1f5b">Draw</reimplementedby>
+        <reimplementedby refid="class_sprite___enemy_1a75e73445a851e236c7868e31ce637a25">Draw</reimplementedby>
+        <reimplementedby refid="class_sprite___picture_1a5f4769e22afa889e3ecea3e663668934">Draw</reimplementedby>
+        <reimplementedby refid="class_sprite___timer_1a27c4a3a0d7170ba0c48e0d2cadf880dd">Draw</reimplementedby>
+        <reimplementedby refid="class_sprite___weapon_1a1317ad37e465680258c8779c26c98278">Draw</reimplementedby>
+        <reimplementedby refid="class_tilemap_sub_layer_1a66bd602d4bce4ac3241413dde3932142">Draw</reimplementedby>
+        <reimplementedby refid="class_transition_1a1529a72ac0e0cae8e2b8f1e2f64feab6">Draw</reimplementedby>
+        <reimplementedby refid="class_weather_1abbb52c8af2197776d78a8f69fc5d0fee">Draw</reimplementedby>
+        <reimplementedby refid="class_window_1ae9b28a38c8c5f9dabb89335da45367d5">Draw</reimplementedby>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="59" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" kindref="member">Z_t</ref></type>
+        <definition>Drawable::Z_t Drawable::GetZ</definition>
+        <argsstring>() const</argsstring>
+        <name>GetZ</name>
+        <qualifiedname>Drawable::GetZ</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="61" column="5" bodyfile="drawable.h" bodystart="146" bodyend="148"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Drawable::SetZ</definition>
+        <argsstring>(Z_t z)</argsstring>
+        <name>SetZ</name>
+        <qualifiedname>Drawable::SetZ</qualifiedname>
+        <param>
+          <type><ref refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" kindref="member">Z_t</ref></type>
+          <declname>z</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="63" column="6" bodyfile="drawable.cpp" bodystart="26" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Drawable::IsGlobal</definition>
+        <argsstring>() const</argsstring>
+        <name>IsGlobal</name>
+        <qualifiedname>Drawable::IsGlobal</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if this drawable should appear in all scenes </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="66" column="6" bodyfile="drawable.h" bodystart="150" bodyend="152"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Drawable::IsShared</definition>
+        <argsstring>() const</argsstring>
+        <name>IsShared</name>
+        <qualifiedname>Drawable::IsShared</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if this drawable should appear in all scenes that use shared drawables </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="69" column="6" bodyfile="drawable.h" bodystart="154" bodyend="156"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Drawable::IsVisible</definition>
+        <argsstring>() const</argsstring>
+        <name>IsVisible</name>
+        <qualifiedname>Drawable::IsVisible</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if the drawable is currently visible </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="72" column="6" bodyfile="drawable.h" bodystart="158" bodyend="160"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Drawable::SetVisible</definition>
+        <argsstring>(bool value)</argsstring>
+        <name>SetVisible</name>
+        <qualifiedname>Drawable::SetVisible</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set if the drawable should be visible</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>whether is visible or not. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="79" column="6" bodyfile="drawable.h" bodystart="162" bodyend="164"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Drawable::GetRenderOx</definition>
+        <argsstring>() const</argsstring>
+        <name>GetRenderOx</name>
+        <qualifiedname>Drawable::GetRenderOx</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>x offset for the rendering </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="82" column="5" bodyfile="drawable.h" bodystart="166" bodyend="168"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Drawable::SetRenderOx</definition>
+        <argsstring>(int offset_x)</argsstring>
+        <name>SetRenderOx</name>
+        <qualifiedname>Drawable::SetRenderOx</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>offset_x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the rendering offset in x direction. Used for custom resolutions. This is not enforced by the <ref refid="class_drawable" kindref="compound">Drawable</ref>. Drawables must honor this value.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>offset_x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x offset </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="91" column="6" bodyfile="drawable.h" bodystart="170" bodyend="172"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Drawable::GetRenderOy</definition>
+        <argsstring>() const</argsstring>
+        <name>GetRenderOy</name>
+        <qualifiedname>Drawable::GetRenderOy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>y offset for the rendering </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="94" column="5" bodyfile="drawable.h" bodystart="174" bodyend="176"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Drawable::SetRenderOy</definition>
+        <argsstring>(int offset_y)</argsstring>
+        <name>SetRenderOy</name>
+        <qualifiedname>Drawable::SetRenderOy</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>offset_y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the rendering offset in y direction. Used for custom resolutions. This is not enforced by the <ref refid="class_drawable" kindref="compound">Drawable</ref>. Drawables must honor this value.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>offset_y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y offset </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="102" column="6" bodyfile="drawable.h" bodystart="178" bodyend="180"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" kindref="member">Z_t</ref></type>
+        <definition>Drawable::Z_t Drawable::GetPriorityForMapLayer</definition>
+        <argsstring>(int which)</argsstring>
+        <name>GetPriorityForMapLayer</name>
+        <qualifiedname>Drawable::GetPriorityForMapLayer</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>which</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Converts a RPG Maker map layer value into a EasyRPG priority value.</para>
+<para><simplesect kind="return"><para><ref refid="drawable_8h_1a61c85b23eaec819f8e89dc0c97d58983" kindref="member">Priority</ref> or 0 when not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="109" column="12" bodyfile="drawable.cpp" bodystart="31" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" kindref="member">Z_t</ref></type>
+        <definition>Drawable::Z_t Drawable::GetPriorityForBattleLayer</definition>
+        <argsstring>(int which)</argsstring>
+        <name>GetPriorityForBattleLayer</name>
+        <qualifiedname>Drawable::GetPriorityForBattleLayer</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>which</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Converts a RPG Maker battle layer value into a EasyRPG priority value.</para>
+<para><simplesect kind="return"><para><ref refid="drawable_8h_1a61c85b23eaec819f8e89dc0c97d58983" kindref="member">Priority</ref> or 0 when not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable.h" line="116" column="12" bodyfile="drawable.cpp" bodystart="72" bodyend="96"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_drawable" kindref="compound">Drawable</ref> virtual </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Background</label>
+        <link refid="class_background"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>BattleAnimation</label>
+        <link refid="class_battle_animation"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>BattleAnimationBattle</label>
+        <link refid="class_battle_animation_battle"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>BattleAnimationBattler</label>
+        <link refid="class_battle_animation_battler"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>BattleAnimationMap</label>
+        <link refid="class_battle_animation_map"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="3">
+        <label>DynRpgText</label>
+        <link refid="class_dyn_rpg_text"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>FpsOverlay</label>
+        <link refid="class_fps_overlay"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Frame</label>
+        <link refid="class_frame"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>MessageOverlay</label>
+        <link refid="class_message_overlay"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Plane</label>
+        <link refid="class_plane"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Screen</label>
+        <link refid="class_screen"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>Sprite</label>
+        <link refid="class_sprite"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>Sprite_Actor</label>
+        <link refid="class_sprite___actor"/>
+        <childnode refid="15" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>Sprite_AirshipShadow</label>
+        <link refid="class_sprite___airship_shadow"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>Sprite_Battler</label>
+        <link refid="class_sprite___battler"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>Sprite_Character</label>
+        <link refid="class_sprite___character"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>Sprite_Enemy</label>
+        <link refid="class_sprite___enemy"/>
+        <childnode refid="15" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>Sprite_Picture</label>
+        <link refid="class_sprite___picture"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>Sprite_Timer</label>
+        <link refid="class_sprite___timer"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>Sprite_Weapon</label>
+        <link refid="class_sprite___weapon"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>TilemapSubLayer</label>
+        <link refid="class_tilemap_sub_layer"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>Transition</label>
+        <link refid="class_transition"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>Weather</label>
+        <link refid="class_weather"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>Window</label>
+        <link refid="class_window"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>Window_About</label>
+        <link refid="class_window___about"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>Window_ActorInfo</label>
+        <link refid="class_window___actor_info"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>Window_ActorSp</label>
+        <link refid="class_window___actor_sp"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>Window_ActorStatus</label>
+        <link refid="class_window___actor_status"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>Window_ActorTarget</label>
+        <link refid="class_window___actor_target"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>Window_Base</label>
+        <link refid="class_window___base"/>
+        <childnode refid="25" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>Window_BattleMessage</label>
+        <link refid="class_window___battle_message"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="59">
+        <label>Window_BattleSkill</label>
+        <link refid="class_window___battle_skill"/>
+        <childnode refid="58" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>Window_BattleStatus</label>
+        <link refid="class_window___battle_status"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>Window_Command</label>
+        <link refid="class_window___command"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>Window_Command_Horizontal</label>
+        <link refid="class_window___command___horizontal"/>
+        <childnode refid="44" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>Window_Equip</label>
+        <link refid="class_window___equip"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>Window_EquipItem</label>
+        <link refid="class_window___equip_item"/>
+        <childnode refid="50" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>Window_EquipStatus</label>
+        <link refid="class_window___equip_status"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>Window_Face</label>
+        <link refid="class_window___face"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>Window_GameList</label>
+        <link refid="class_window___game_list"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>Window_Gold</label>
+        <link refid="class_window___gold"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>Window_Help</label>
+        <link refid="class_window___help"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>Window_ImportProgress</label>
+        <link refid="class_window___import_progress"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="48">
+        <label>Window_InputSettings</label>
+        <link refid="class_window___input_settings"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>Window_Interpreter</label>
+        <link refid="class_window___interpreter"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>Window_Item</label>
+        <link refid="class_window___item"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>Window_Keyboard</label>
+        <link refid="class_window___keyboard"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>Window_MenuStatus</label>
+        <link refid="class_window___menu_status"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>Window_Message</label>
+        <link refid="class_window___message"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>Window_Name</label>
+        <link refid="class_window___name"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="55">
+        <label>Window_NumberInput</label>
+        <link refid="class_window___number_input"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>Window_ParamStatus</label>
+        <link refid="class_window___param_status"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>Window_SaveFile</label>
+        <link refid="class_window___save_file"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>Window_Selectable</label>
+        <link refid="class_window___selectable"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>Window_Settings</label>
+        <link refid="class_window___settings"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="63">
+        <label>Window_Shop</label>
+        <link refid="class_window___shop"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>Window_ShopBuy</label>
+        <link refid="class_window___shop_buy"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="64">
+        <label>Window_ShopNumber</label>
+        <link refid="class_window___shop_number"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="65">
+        <label>Window_ShopParty</label>
+        <link refid="class_window___shop_party"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>Window_ShopSell</label>
+        <link refid="class_window___shop_sell"/>
+        <childnode refid="50" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="66">
+        <label>Window_ShopStatus</label>
+        <link refid="class_window___shop_status"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="58">
+        <label>Window_Skill</label>
+        <link refid="class_window___skill"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="67">
+        <label>Window_SkillStatus</label>
+        <link refid="class_window___skill_status"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="60">
+        <label>Window_StringView</label>
+        <link refid="class_window___string_view"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="68">
+        <label>Window_TargetStatus</label>
+        <link refid="class_window___target_status"/>
+        <childnode refid="26" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="61">
+        <label>Window_Teleport</label>
+        <link refid="class_window___teleport"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="62">
+        <label>Window_VarList</label>
+        <link refid="class_window___var_list"/>
+        <childnode refid="41" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="69">
+        <label>leasy::libs2::DrawableObject</label>
+        <link refid="classleasy_1_1libs2_1_1_drawable_object"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="70">
+        <label>leasy::ui3::GraphicalConsole</label>
+        <link refid="classleasy_1_1ui3_1_1_graphical_console"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="71">
+        <label>leasy::ui3::gui_sink</label>
+        <link refid="classleasy_1_1ui3_1_1gui__sink"/>
+        <childnode refid="70" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="drawable.h" line="34" column="1" bodyfile="drawable.h" bodystart="34" bodyend="122"/>
+    <listofallmembers>
+      <member refid="class_drawable_1ab5565d0a7b2196acc6b03e7093a5c3b5" prot="private" virt="non-virtual"><scope>Drawable</scope><name>_flags</name></member>
+      <member refid="class_drawable_1aac9485e0753c19d86ef5201372c876bf" prot="private" virt="non-virtual"><scope>Drawable</scope><name>_z</name></member>
+      <member refid="class_drawable_1aa8a9b151f40368331f6fd8bbdd20133f" prot="public" virt="pure-virtual"><scope>Drawable</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>Drawable</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>Drawable</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>Drawable</scope><name>Flags</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>Drawable</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>Drawable</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>Drawable</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>Drawable</scope><name>GetRenderOy</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>Drawable</scope><name>GetZ</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>Drawable</scope><name>IsGlobal</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>Drawable</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>Drawable</scope><name>IsVisible</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>Drawable</scope><name>operator=</name></member>
+      <member refid="class_drawable_1a20ccd58f28e48284e2e34d7475302685" prot="private" virt="non-virtual"><scope>Drawable</scope><name>render_ox</name></member>
+      <member refid="class_drawable_1a1d6a02bb4fc9d41381b320487013f8f5" prot="private" virt="non-virtual"><scope>Drawable</scope><name>render_oy</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>Drawable</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>Drawable</scope><name>SetRenderOy</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>Drawable</scope><name>SetVisible</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>Drawable</scope><name>SetZ</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>Drawable</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>Drawable</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

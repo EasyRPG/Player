@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structmidisequencer_1_1midi__message" kind="struct" language="C++" prot="public">
+    <compoundname>midisequencer::midi_message</compoundname>
+    <includes refid="midisequencer_8h" local="no">midisequencer.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structmidisequencer_1_1midi__message_1aa9855b51d379cc96cae762ea865745dd" prot="public" static="no" mutable="no">
+        <type>std::chrono::microseconds</type>
+        <definition>std::chrono::microseconds midisequencer::midi_message::time</definition>
+        <argsstring></argsstring>
+        <name>time</name>
+        <qualifiedname>midisequencer::midi_message::time</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="45" column="35" bodyfile="midisequencer.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisequencer_1_1midi__message_1ad8f411a96134911c640ecb1aca6bb963" prot="public" static="no" mutable="no">
+        <type>uint_least32_t</type>
+        <definition>uint_least32_t midisequencer::midi_message::message</definition>
+        <argsstring></argsstring>
+        <name>message</name>
+        <qualifiedname>midisequencer::midi_message::message</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="46" column="24" bodyfile="midisequencer.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisequencer_1_1midi__message_1a204ca1ca3f0b0f8aee0de703566ae724" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisequencer::midi_message::port</definition>
+        <argsstring></argsstring>
+        <name>port</name>
+        <qualifiedname>midisequencer::midi_message::port</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="47" column="13" bodyfile="midisequencer.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisequencer_1_1midi__message_1a826735074cdb2aa2a8f6e7917a5c92d1" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisequencer::midi_message::track</definition>
+        <argsstring></argsstring>
+        <name>track</name>
+        <qualifiedname>midisequencer::midi_message::track</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="48" column="13" bodyfile="midisequencer.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisequencer_1_1midi__message_1a6ee262fd54a305dc4e28a46e92a4f49c" prot="public" static="no" mutable="no">
+        <type>uint_least32_t</type>
+        <definition>uint_least32_t midisequencer::midi_message::tempo</definition>
+        <argsstring></argsstring>
+        <name>tempo</name>
+        <qualifiedname>midisequencer::midi_message::tempo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="49" column="24" bodyfile="midisequencer.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="midisequencer.h" line="44" column="5" bodyfile="midisequencer.h" bodystart="44" bodyend="50"/>
+    <listofallmembers>
+      <member refid="structmidisequencer_1_1midi__message_1ad8f411a96134911c640ecb1aca6bb963" prot="public" virt="non-virtual"><scope>midisequencer::midi_message</scope><name>message</name></member>
+      <member refid="structmidisequencer_1_1midi__message_1a204ca1ca3f0b0f8aee0de703566ae724" prot="public" virt="non-virtual"><scope>midisequencer::midi_message</scope><name>port</name></member>
+      <member refid="structmidisequencer_1_1midi__message_1a6ee262fd54a305dc4e28a46e92a4f49c" prot="public" virt="non-virtual"><scope>midisequencer::midi_message</scope><name>tempo</name></member>
+      <member refid="structmidisequencer_1_1midi__message_1aa9855b51d379cc96cae762ea865745dd" prot="public" virt="non-virtual"><scope>midisequencer::midi_message</scope><name>time</name></member>
+      <member refid="structmidisequencer_1_1midi__message_1a826735074cdb2aa2a8f6e7917a5c92d1" prot="public" virt="non-virtual"><scope>midisequencer::midi_message</scope><name>track</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,210 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_fd_stream_buf_in" kind="class" language="C++" prot="public">
+    <compoundname>FdStreamBufIn</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::streambuf</basecompoundref>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_fd_stream_buf_in_1afa349f0bb7c41319c172705614e32850" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int FdStreamBufIn::fd</definition>
+        <argsstring></argsstring>
+        <name>fd</name>
+        <qualifiedname>FdStreamBufIn::fd</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/filesystem_saf.cpp" line="134" column="5" bodyfile="platform/android/filesystem_saf.cpp" bodystart="134" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_fd_stream_buf_in_1a0e556bd4f3e84994a9107ddffa03301b" prot="private" static="no" mutable="no">
+        <type>std::array&lt; char, 4096 &gt;</type>
+        <definition>std::array&lt;char, 4096&gt; FdStreamBufIn::buffer</definition>
+        <argsstring></argsstring>
+        <name>buffer</name>
+        <qualifiedname>FdStreamBufIn::buffer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/filesystem_saf.cpp" line="135" column="12" bodyfile="platform/android/filesystem_saf.cpp" bodystart="135" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_fd_stream_buf_in_1a5ba3ce985c7996bec0b6e47cef30488e" prot="private" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* FdStreamBufIn::buffer_start</definition>
+        <argsstring></argsstring>
+        <name>buffer_start</name>
+        <qualifiedname>FdStreamBufIn::buffer_start</qualifiedname>
+        <initializer>= &amp;buffer.front()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/filesystem_saf.cpp" line="136" column="6" bodyfile="platform/android/filesystem_saf.cpp" bodystart="136" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_fd_stream_buf_in_1aad693220ed82e3cc0b86b6bec20c2ba1" prot="private" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* FdStreamBufIn::buffer_end</definition>
+        <argsstring></argsstring>
+        <name>buffer_end</name>
+        <qualifiedname>FdStreamBufIn::buffer_end</qualifiedname>
+        <initializer>= &amp;buffer.back()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/filesystem_saf.cpp" line="137" column="6" bodyfile="platform/android/filesystem_saf.cpp" bodystart="137" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_fd_stream_buf_in_1a6d9461fafb51e6e1fc98274fc70328d8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>FdStreamBufIn::FdStreamBufIn</definition>
+        <argsstring>(int fd, std::array&lt; char, 4096 &gt; buffer, ssize_t bytes_read)</argsstring>
+        <name>FdStreamBufIn</name>
+        <qualifiedname>FdStreamBufIn::FdStreamBufIn</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>fd</declname>
+        </param>
+        <param>
+          <type>std::array&lt; char, 4096 &gt;</type>
+          <declname>buffer</declname>
+        </param>
+        <param>
+          <type>ssize_t</type>
+          <declname>bytes_read</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/filesystem_saf.cpp" line="100" column="1" bodyfile="platform/android/filesystem_saf.cpp" bodystart="100" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="class_fd_stream_buf_in_1aa6ab06640afd38f97bbc2c587ee5c08c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>FdStreamBufIn::~FdStreamBufIn</definition>
+        <argsstring>() override</argsstring>
+        <name>~FdStreamBufIn</name>
+        <qualifiedname>FdStreamBufIn::~FdStreamBufIn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/filesystem_saf.cpp" line="104" column="1" bodyfile="platform/android/filesystem_saf.cpp" bodystart="104" bodyend="106"/>
+      </memberdef>
+      <memberdef kind="function" id="class_fd_stream_buf_in_1a9da36a271ab40903a2d9a5dc613a8ca2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int FdStreamBufIn::underflow</definition>
+        <argsstring>() override</argsstring>
+        <name>underflow</name>
+        <qualifiedname>FdStreamBufIn::underflow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/filesystem_saf.cpp" line="108" column="5" bodyfile="platform/android/filesystem_saf.cpp" bodystart="108" bodyend="118"/>
+      </memberdef>
+      <memberdef kind="function" id="class_fd_stream_buf_in_1a65ae6c17c82c90e0692787a11d62ee85" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::streambuf::pos_type</type>
+        <definition>std::streambuf::pos_type FdStreamBufIn::seekoff</definition>
+        <argsstring>(std::streambuf::off_type offset, std::ios_base::seekdir dir, std::ios_base::openmode mode) override</argsstring>
+        <name>seekoff</name>
+        <qualifiedname>FdStreamBufIn::seekoff</qualifiedname>
+        <param>
+          <type>std::streambuf::off_type</type>
+          <declname>offset</declname>
+        </param>
+        <param>
+          <type>std::ios_base::seekdir</type>
+          <declname>dir</declname>
+        </param>
+        <param>
+          <type>std::ios_base::openmode</type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/filesystem_saf.cpp" line="120" column="26" bodyfile="platform/android/filesystem_saf.cpp" bodystart="120" bodyend="127"/>
+      </memberdef>
+      <memberdef kind="function" id="class_fd_stream_buf_in_1a40509fa95129f723c16d338282763426" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::streambuf::pos_type</type>
+        <definition>std::streambuf::pos_type FdStreamBufIn::seekpos</definition>
+        <argsstring>(std::streambuf::pos_type pos, std::ios_base::openmode mode) override</argsstring>
+        <name>seekpos</name>
+        <qualifiedname>FdStreamBufIn::seekpos</qualifiedname>
+        <param>
+          <type>std::streambuf::pos_type</type>
+          <declname>pos</declname>
+        </param>
+        <param>
+          <type>std::ios_base::openmode</type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/filesystem_saf.cpp" line="129" column="26" bodyfile="platform/android/filesystem_saf.cpp" bodystart="129" bodyend="131"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>FdStreamBufIn</label>
+        <link refid="class_fd_stream_buf_in"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::streambuf</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>FdStreamBufIn</label>
+        <link refid="class_fd_stream_buf_in"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::streambuf</label>
+      </node>
+    </collaborationgraph>
+    <location file="platform/android/filesystem_saf.cpp" line="98" column="1" bodyfile="platform/android/filesystem_saf.cpp" bodystart="98" bodyend="138"/>
+    <listofallmembers>
+      <member refid="class_fd_stream_buf_in_1a0e556bd4f3e84994a9107ddffa03301b" prot="private" virt="non-virtual"><scope>FdStreamBufIn</scope><name>buffer</name></member>
+      <member refid="class_fd_stream_buf_in_1aad693220ed82e3cc0b86b6bec20c2ba1" prot="private" virt="non-virtual"><scope>FdStreamBufIn</scope><name>buffer_end</name></member>
+      <member refid="class_fd_stream_buf_in_1a5ba3ce985c7996bec0b6e47cef30488e" prot="private" virt="non-virtual"><scope>FdStreamBufIn</scope><name>buffer_start</name></member>
+      <member refid="class_fd_stream_buf_in_1afa349f0bb7c41319c172705614e32850" prot="private" virt="non-virtual"><scope>FdStreamBufIn</scope><name>fd</name></member>
+      <member refid="class_fd_stream_buf_in_1a6d9461fafb51e6e1fc98274fc70328d8" prot="public" virt="non-virtual"><scope>FdStreamBufIn</scope><name>FdStreamBufIn</name></member>
+      <member refid="class_fd_stream_buf_in_1a65ae6c17c82c90e0692787a11d62ee85" prot="public" virt="non-virtual"><scope>FdStreamBufIn</scope><name>seekoff</name></member>
+      <member refid="class_fd_stream_buf_in_1a40509fa95129f723c16d338282763426" prot="public" virt="non-virtual"><scope>FdStreamBufIn</scope><name>seekpos</name></member>
+      <member refid="class_fd_stream_buf_in_1a9da36a271ab40903a2d9a5dc613a8ca2" prot="public" virt="non-virtual"><scope>FdStreamBufIn</scope><name>underflow</name></member>
+      <member refid="class_fd_stream_buf_in_1aa6ab06640afd38f97bbc2c587ee5c08c" prot="public" virt="non-virtual"><scope>FdStreamBufIn</scope><name>~FdStreamBufIn</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

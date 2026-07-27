@@ -1,0 +1,1093 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="window_8cpp" kind="file" language="C++">
+    <compoundname>window.cpp</compoundname>
+    <includes local="no">cmath</includes>
+    <includes refid="system_8h" local="yes">system.h</includes>
+    <includes refid="player_8h" local="yes">player.h</includes>
+    <includes refid="rect_8h" local="yes">rect.h</includes>
+    <includes refid="util__macro_8h" local="yes">util_macro.h</includes>
+    <includes refid="window_8h" local="yes">window.h</includes>
+    <includes refid="bitmap_8h" local="yes">bitmap.h</includes>
+    <includes refid="drawable__mgr_8h" local="yes">drawable_mgr.h</includes>
+    <incdepgraph>
+      <node id="39">
+        <label>async_handler.h</label>
+        <link refid="async__handler_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="68">
+        <label>bitmap.h</label>
+        <link refid="bitmap_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="70">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="62">
+        <label>compiler.h</label>
+        <link refid="compiler_8h"/>
+      </node>
+      <node id="48">
+        <label>config_param.h</label>
+        <link refid="config__param_8h"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="80">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="82">
+        <label>drawable_list.h</label>
+        <link refid="drawable__list_8h"/>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+      </node>
+      <node id="81">
+        <label>drawable_mgr.h</label>
+        <link refid="drawable__mgr_8h"/>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>fileext_guesser.h</label>
+        <link refid="fileext__guesser_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>flat_map.h</label>
+        <link refid="flat__map_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>game_clock.h</label>
+        <link refid="game__clock_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>game_config.h</label>
+        <link refid="game__config_8h"/>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>game_config_game.h</label>
+        <link refid="game__config__game_8h"/>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>game_interpreter_shared.h</label>
+        <link refid="game__interpreter__shared_8h"/>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>input_buttons.h</label>
+        <link refid="input__buttons_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+      </node>
+      <node id="55">
+        <label>keys.h</label>
+        <link refid="keys_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>meta.h</label>
+        <link refid="meta_8h"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="78">
+        <label>opacity.h</label>
+        <link refid="opacity_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="71">
+        <label>pixel_format.h</label>
+        <link refid="pixel__format_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="77">
+        <label>pixman_image_ptr.h</label>
+        <link refid="pixman__image__ptr_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>platform/clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>player.h</label>
+        <link refid="player_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+      </node>
+      <node id="76">
+        <label>point.h</label>
+        <link refid="point_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="64">
+        <label>rect.h</label>
+        <link refid="rect_8h"/>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>std_clock.h</label>
+        <link refid="std__clock_8h"/>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="75">
+        <label>text.h</label>
+        <link refid="text_8h"/>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="74">
+        <label>tone.h</label>
+        <link refid="tone_8h"/>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>translation.h</label>
+        <link refid="translation_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="66">
+        <label>util_macro.h</label>
+        <link refid="util__macro_8h"/>
+      </node>
+      <node id="31">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>window.cpp</label>
+        <link refid="window_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+      </node>
+      <node id="67">
+        <label>window.h</label>
+        <link refid="window_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>algorithm</label>
+      </node>
+      <node id="49">
+        <label>array</label>
+      </node>
+      <node id="14">
+        <label>cassert</label>
+      </node>
+      <node id="41">
+        <label>chrono</label>
+      </node>
+      <node id="79">
+        <label>climits</label>
+      </node>
+      <node id="2">
+        <label>cmath</label>
+      </node>
+      <node id="9">
+        <label>cstdint</label>
+      </node>
+      <node id="35">
+        <label>cstdio</label>
+      </node>
+      <node id="72">
+        <label>cstdlib</label>
+      </node>
+      <node id="73">
+        <label>cstring</label>
+      </node>
+      <node id="32">
+        <label>ctime</label>
+      </node>
+      <node id="24">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="25">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="33">
+        <label>functional</label>
+      </node>
+      <node id="53">
+        <label>initializer_list</label>
+      </node>
+      <node id="36">
+        <label>ios</label>
+      </node>
+      <node id="15">
+        <label>istream</label>
+      </node>
+      <node id="23">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="34">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="51">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="28">
+        <label>lcf/inireader.h</label>
+      </node>
+      <node id="58">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="59">
+        <label>lcf/rpg/movecommand.h</label>
+      </node>
+      <node id="61">
+        <label>lcf/rpg/saveeventexecframe.h</label>
+      </node>
+      <node id="60">
+        <label>lcf/rpg/saveeventexecstate.h</label>
+      </node>
+      <node id="20">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="22">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="50">
+        <label>limits</label>
+      </node>
+      <node id="27">
+        <label>map</label>
+      </node>
+      <node id="6">
+        <label>memory</label>
+      </node>
+      <node id="63">
+        <label>optional</label>
+      </node>
+      <node id="16">
+        <label>ostream</label>
+      </node>
+      <node id="69">
+        <label>pixman.h</label>
+      </node>
+      <node id="38">
+        <label>sstream</label>
+      </node>
+      <node id="10">
+        <label>string</label>
+      </node>
+      <node id="44">
+        <label>thread</label>
+      </node>
+      <node id="65">
+        <label>tuple</label>
+      </node>
+      <node id="43">
+        <label>type_traits</label>
+      </node>
+      <node id="11">
+        <label>unordered_map</label>
+      </node>
+      <node id="12">
+        <label>utility</label>
+      </node>
+      <node id="17">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="window_8cpp_1a090e181d740ac15dabd30990aa910333" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int arrow_animation_frames</definition>
+        <argsstring></argsstring>
+        <name>arrow_animation_frames</name>
+        <initializer>= 20</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window.cpp" line="28" column="15" bodyfile="window.cpp" bodystart="28" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cmath&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="system_8h" kindref="compound">system.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="player_8h" kindref="compound">player.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="rect_8h" kindref="compound">rect.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="util__macro_8h" kindref="compound">util_macro.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="window_8h" kindref="compound">window.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="bitmap_8h" kindref="compound">bitmap.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="drawable__mgr_8h" kindref="compound">drawable_mgr.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="window_8cpp_1a090e181d740ac15dabd30990aa910333" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="scene__debug_8cpp_1a090e181d740ac15dabd30990aa910333" kindref="member">arrow_animation_frames</ref><sp/>=<sp/>20;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="class_window_1a370186a3a31940d608a8ed9f0d94659b" refkind="member"><highlight class="normal"><ref refid="class_window_1a370186a3a31940d608a8ed9f0d94659b" kindref="member">Window::Window</ref>(<ref refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" kindref="member">Drawable::Flags</ref><sp/>flags):<sp/><ref refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" kindref="member">Drawable</ref>(<ref refid="drawable_8h_1a61c85b23eaec819f8e89dc0c97d58983a9af80534b2b9c713bdb36b1df9df8f7d" kindref="member">Priority_Window</ref>,<sp/>flags)</highlight></codeline>
+<codeline lineno="31"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_drawable_mgr_1aacd977551017460aac101bd7ab0e7650" kindref="member">DrawableMgr::Register</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="class_window_1a3d95da1b7e47d332042ca263c31458af" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window_1a3d95da1b7e47d332042ca263c31458af" kindref="member">Window::SetOpenAnimation</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>frames)<sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window_1ad981b3a3e8815b7f3f4c6a4e895849d5" kindref="member">closing</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" kindref="member">SetVisible</ref>(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(frames<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>animation_frames<sp/>=<sp/>frames;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>animation_count<sp/>=<sp/>0.0;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>animation_increment<sp/>=<sp/>(<ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>/<sp/>2.0)<sp/>/<sp/>frames;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>animation_frames<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="47"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="class_window_1accefc4c2da52c1fc1defddf7ccb4d445" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window_1accefc4c2da52c1fc1defddf7ccb4d445" kindref="member">Window::SetCloseAnimation</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>frames)<sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(frames<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window_1ad981b3a3e8815b7f3f4c6a4e895849d5" kindref="member">closing</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>animation_frames<sp/>=<sp/>frames;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>animation_count<sp/>=<sp/>(<ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>/<sp/>2.0);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>animation_increment<sp/>=<sp/>-<sp/>animation_count<sp/>/<sp/>frames;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" kindref="member">SetVisible</ref>(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60" refid="class_window_1ae9b28a38c8c5f9dabb89335da45367d5" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window_1ae9b28a38c8c5f9dabb89335da45367d5" kindref="member">Window::Draw</ref>(<ref refid="class_bitmap" kindref="compound">Bitmap</ref>&amp;<sp/>dst)<sp/>{</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>&lt;=<sp/>0<sp/>||<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>&lt;=<sp/>0)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x &lt; -width || x &gt;</ref><sp/>dst.<ref refid="class_bitmap_1a8f6990bace1ee118b4799987ff619ad1" kindref="member">GetWidth</ref>()<sp/>||<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y &lt; -height || y &gt;</ref><sp/>dst.<ref refid="class_bitmap_1a7007912b0cf48167e69900f5bc0e889c" kindref="member">GetHeight</ref>())<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>&gt;<sp/>4<sp/>&amp;&amp;<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>&gt;<sp/>4<sp/>&amp;&amp;<sp/>(<ref refid="class_window_1a5fdc8f9bb6859159ceccc34b69ab4518" kindref="member">back_opacity</ref><sp/>*<sp/><ref refid="class_window_1adb5a945a66fa5707debc8a13fd8e8b1d" kindref="member">opacity</ref><sp/>/<sp/>255<sp/>&gt;<sp/>0))<sp/>{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(background_needs_refresh)<sp/>RefreshBackground();</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(animation_frames<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ianimation_count<sp/>=<sp/>(int)animation_count;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_rect" kindref="compound">Rect</ref><sp/>src_rect(0,<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>/<sp/>2<sp/>-<sp/>ianimation_count,<sp/><ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref>,<sp/>ianimation_count<sp/>*<sp/>2);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref>,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>+<sp/>src_rect.<ref refid="class_rect_1a1e37b6f8a4fb0d68ba22c8fffffab0a4" kindref="member">y</ref>,<sp/>*background,<sp/>src_rect,<sp/><ref refid="class_window_1a5fdc8f9bb6859159ceccc34b69ab4518" kindref="member">back_opacity</ref><sp/>*<sp/><ref refid="class_window_1adb5a945a66fa5707debc8a13fd8e8b1d" kindref="member">opacity</ref><sp/>/<sp/>255);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref>,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref>,<sp/>*background,<sp/>background-&gt;GetRect(),<sp/><ref refid="class_window_1a5fdc8f9bb6859159ceccc34b69ab4518" kindref="member">back_opacity</ref><sp/>*<sp/><ref refid="class_window_1adb5a945a66fa5707debc8a13fd8e8b1d" kindref="member">opacity</ref><sp/>/<sp/>255);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/><ref refid="class_window_1adb5a945a66fa5707debc8a13fd8e8b1d" kindref="member">opacity</ref><sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(frame_needs_refresh)<sp/>RefreshFrame();</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>fopacity<sp/>=<sp/><ref refid="class_window_1ae7f16566d53bd4e9b8d93f3bb2c706cf" kindref="member">frame_opacity</ref><sp/>*<sp/><ref refid="class_window_1adb5a945a66fa5707debc8a13fd8e8b1d" kindref="member">opacity</ref><sp/>/<sp/>255;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(animation_frames<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ianimation_count<sp/>=<sp/>(int)animation_count;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ianimation_count<sp/>&gt;<sp/>8)<sp/>{</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_rect" kindref="compound">Rect</ref><sp/>src_rect(0,<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>/<sp/>2<sp/>-<sp/>ianimation_count,<sp/>8,<sp/>ianimation_count<sp/>*<sp/>2<sp/>-<sp/>16);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(frame_left)<sp/>{</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref>,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>+<sp/>8<sp/>+<sp/>src_rect.<ref refid="class_rect_1a1e37b6f8a4fb0d68ba22c8fffffab0a4" kindref="member">y</ref>,<sp/>*frame_left,<sp/>src_rect,<sp/>fopacity);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(frame_right)<sp/>{</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref><sp/>+<sp/><ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>-<sp/>8,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>+<sp/>8<sp/>+<sp/>src_rect.<ref refid="class_rect_1a1e37b6f8a4fb0d68ba22c8fffffab0a4" kindref="member">y</ref>,<sp/>*frame_right,<sp/>src_rect,<sp/>fopacity);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref>,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>+<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>/<sp/>2<sp/>-<sp/>ianimation_count,<sp/>*frame_up,<sp/>frame_up-&gt;GetRect(),<sp/>fopacity);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref>,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>+<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>/<sp/>2<sp/>+<sp/>ianimation_count<sp/>-<sp/>8,<sp/>*frame_down,<sp/>frame_down-&gt;GetRect(),<sp/>fopacity);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref>,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>+<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>/<sp/>2<sp/>-<sp/>ianimation_count,<sp/>*frame_up,<sp/><ref refid="class_rect" kindref="compound">Rect</ref>(0,<sp/>0,<sp/><ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref>,<sp/>ianimation_count),<sp/>fopacity);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref>,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>+<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>/<sp/>2<sp/>,<sp/>*frame_down,<sp/><ref refid="class_rect" kindref="compound">Rect</ref>(0,<sp/>8<sp/>-<sp/>ianimation_count,<sp/><ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref>,<sp/>ianimation_count),<sp/>fopacity);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref>,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref>,<sp/>*frame_up,<sp/>frame_up-&gt;GetRect(),<sp/>fopacity);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref>,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>+<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>-<sp/>8,<sp/>*frame_down,<sp/>frame_down-&gt;GetRect(),<sp/>fopacity);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(frame_left)<sp/>{</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref>,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>+<sp/>8,<sp/>*frame_left,<sp/>frame_left-&gt;GetRect(),<sp/>fopacity);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(frame_right)<sp/>{</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref><sp/>+<sp/><ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>-<sp/>8,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>+<sp/>8,<sp/>*frame_right,<sp/>frame_right-&gt;GetRect(),<sp/>fopacity);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>&gt;=<sp/>16<sp/>&amp;&amp;<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>&gt;<sp/>16<sp/>&amp;&amp;<sp/><ref refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" kindref="member">cursor_rect</ref>.width<sp/>&gt;<sp/>4<sp/>&amp;&amp;<sp/><ref refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" kindref="member">cursor_rect</ref>.height<sp/>&gt;<sp/>4<sp/>&amp;&amp;<sp/>animation_frames<sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(cursor_needs_refresh)<sp/>RefreshCursor();</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_rect" kindref="compound">Rect</ref><sp/>src_rect(</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>-<ref refid="util__macro_8h_1adf77a48fdc00d2f05c34a228d1e1c237" kindref="member">min</ref>(<ref refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" kindref="member">cursor_rect</ref>.x<sp/>+<sp/><ref refid="class_window_1a7783ccb4806cd474920af47bfb6e34de" kindref="member">border_x</ref>,<sp/>0),</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>-<ref refid="util__macro_8h_1adf77a48fdc00d2f05c34a228d1e1c237" kindref="member">min</ref>(<ref refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" kindref="member">cursor_rect</ref>.y<sp/>+<sp/><ref refid="class_window_1acfcd1e1710f455bc7e300a0e1969a819" kindref="member">border_y</ref>,<sp/>0),</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="util__macro_8h_1adf77a48fdc00d2f05c34a228d1e1c237" kindref="member">min</ref>(<ref refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" kindref="member">cursor_rect</ref>.width,<sp/><ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>-<sp/><ref refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" kindref="member">cursor_rect</ref>.x<sp/>+<sp/><ref refid="class_window_1a7783ccb4806cd474920af47bfb6e34de" kindref="member">border_x</ref>),</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="util__macro_8h_1adf77a48fdc00d2f05c34a228d1e1c237" kindref="member">min</ref>(<ref refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" kindref="member">cursor_rect</ref>.height,<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>-<sp/><ref refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" kindref="member">cursor_rect</ref>.y<sp/>+<sp/><ref refid="class_window_1acfcd1e1710f455bc7e300a0e1969a819" kindref="member">border_y</ref>)</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(cursor_frame<sp/>&lt;=<sp/>10)</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref><sp/>+<sp/><ref refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" kindref="member">cursor_rect</ref>.x<sp/>+<sp/><ref refid="class_window_1a7783ccb4806cd474920af47bfb6e34de" kindref="member">border_x</ref>,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>+<sp/><ref refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" kindref="member">cursor_rect</ref>.y<sp/>+<sp/><ref refid="class_window_1acfcd1e1710f455bc7e300a0e1969a819" kindref="member">border_y</ref>,<sp/>*cursor1,<sp/>src_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref><sp/>+<sp/><ref refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" kindref="member">cursor_rect</ref>.x<sp/>+<sp/><ref refid="class_window_1a7783ccb4806cd474920af47bfb6e34de" kindref="member">border_x</ref>,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>+<sp/><ref refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" kindref="member">cursor_rect</ref>.y<sp/>+<sp/><ref refid="class_window_1acfcd1e1710f455bc7e300a0e1969a819" kindref="member">border_y</ref>,<sp/>*cursor2,<sp/>src_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1aa37669a94405b73515d5bd9b342e07c0" kindref="member">contents</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>&gt;<sp/>2<sp/>*<sp/><ref refid="class_window_1a7783ccb4806cd474920af47bfb6e34de" kindref="member">border_x</ref><sp/>&amp;&amp;<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>&gt;<sp/>2<sp/>*<sp/><ref refid="class_window_1acfcd1e1710f455bc7e300a0e1969a819" kindref="member">border_y</ref><sp/>&amp;&amp;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>-<ref refid="class_window_1a90d08c9529ad8afee5bb2f97a339f2a8" kindref="member">ox</ref><sp/>&lt;<sp/><ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>-<sp/>2<sp/>*<sp/><ref refid="class_window_1a7783ccb4806cd474920af47bfb6e34de" kindref="member">border_x</ref><sp/>&amp;&amp;<sp/>-<ref refid="class_window_1a8dde2b1118eb9b211156c78f95e82037" kindref="member">oy</ref><sp/>&lt;<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>-<sp/>2<sp/>*<sp/><ref refid="class_window_1acfcd1e1710f455bc7e300a0e1969a819" kindref="member">border_y</ref><sp/>&amp;&amp;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window_1afea2c4631cc17e44d91eb26014d1ef85" kindref="member">contents_opacity</ref><sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>animation_frames<sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_rect" kindref="compound">Rect</ref><sp/>src_rect(-<ref refid="util__macro_8h_1adf77a48fdc00d2f05c34a228d1e1c237" kindref="member">min</ref>(-<ref refid="class_window_1a90d08c9529ad8afee5bb2f97a339f2a8" kindref="member">ox</ref>,<sp/>0),<sp/>-<ref refid="util__macro_8h_1adf77a48fdc00d2f05c34a228d1e1c237" kindref="member">min</ref>(-<ref refid="class_window_1a8dde2b1118eb9b211156c78f95e82037" kindref="member">oy</ref>,<sp/>0),</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="util__macro_8h_1adf77a48fdc00d2f05c34a228d1e1c237" kindref="member">min</ref>(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>-<sp/>2<sp/>*<sp/><ref refid="class_window_1a7783ccb4806cd474920af47bfb6e34de" kindref="member">border_x</ref>,<sp/><ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>-<sp/>2<sp/>*<sp/><ref refid="class_window_1a7783ccb4806cd474920af47bfb6e34de" kindref="member">border_x</ref><sp/>+<sp/><ref refid="class_window_1a90d08c9529ad8afee5bb2f97a339f2a8" kindref="member">ox</ref>),</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="util__macro_8h_1adf77a48fdc00d2f05c34a228d1e1c237" kindref="member">min</ref>(<ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>-<sp/>2<sp/>*<sp/><ref refid="class_window_1acfcd1e1710f455bc7e300a0e1969a819" kindref="member">border_y</ref>,<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>-<sp/>2<sp/>*<sp/><ref refid="class_window_1acfcd1e1710f455bc7e300a0e1969a819" kindref="member">border_y</ref><sp/>+<sp/><ref refid="class_window_1a8dde2b1118eb9b211156c78f95e82037" kindref="member">oy</ref>));</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(<ref refid="util__macro_8h_1a3f4ae913e2a7b3479faa6afe7c6948cd" kindref="member">max</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref><sp/>+<sp/><ref refid="class_window_1a7783ccb4806cd474920af47bfb6e34de" kindref="member">border_x</ref>,<sp/><ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref><sp/>+<sp/><ref refid="class_window_1a7783ccb4806cd474920af47bfb6e34de" kindref="member">border_x</ref><sp/>-<sp/><ref refid="class_window_1a90d08c9529ad8afee5bb2f97a339f2a8" kindref="member">ox</ref>),</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="util__macro_8h_1a3f4ae913e2a7b3479faa6afe7c6948cd" kindref="member">max</ref>(<ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>+<sp/><ref refid="class_window_1acfcd1e1710f455bc7e300a0e1969a819" kindref="member">border_y</ref>,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>+<sp/><ref refid="class_window_1acfcd1e1710f455bc7e300a0e1969a819" kindref="member">border_y</ref><sp/>-<sp/><ref refid="class_window_1a8dde2b1118eb9b211156c78f95e82037" kindref="member">oy</ref>),</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="class_window_1aa37669a94405b73515d5bd9b342e07c0" kindref="member">contents</ref>,<sp/>src_rect,<sp/><ref refid="class_window_1afea2c4631cc17e44d91eb26014d1ef85" kindref="member">contents_opacity</ref>);</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>show_arrow<sp/>=<sp/>[&amp;](</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>which)<sp/>{</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!which<sp/>||<sp/>!<ref refid="class_window_1a6840c54e5681e5f4109e6e53d538afff" kindref="member">animate_arrows</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>which;</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(arrow_animation_frame<sp/>&lt;<sp/><ref refid="scene__debug_8cpp_1a090e181d740ac15dabd30990aa910333" kindref="member">arrow_animation_frames</ref>)<sp/>&amp;&amp;<sp/>animation_frames<sp/>&lt;=<sp/>0;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((pause<sp/>&amp;&amp;<sp/>arrow_animation_frame<sp/>&lt;<sp/><ref refid="scene__debug_8cpp_1a090e181d740ac15dabd30990aa910333" kindref="member">arrow_animation_frames</ref><sp/>&amp;&amp;<sp/>animation_frames<sp/>&lt;=<sp/>0)<sp/>||<sp/>show_arrow(<ref refid="class_window_1a1105a74f93c232d0caf4882ce1105d2b" kindref="member">down_arrow</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_rect" kindref="compound">Rect</ref><sp/>src_rect(40,<sp/>16,<sp/>16,<sp/>8);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref><sp/>+<sp/><ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>/<sp/>2<sp/>-<sp/>8,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>+<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>-<sp/>8,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>src_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(show_arrow(<ref refid="class_window_1a97292cce3dc8deccdbd6e553ae26b8e6" kindref="member">up_arrow</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_rect" kindref="compound">Rect</ref><sp/>src_rect(40,<sp/>8,<sp/>16,<sp/>8);</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a676ad73800868f4e8087fe16cea4b921" kindref="member">Blit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref><sp/>+<sp/><ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>/<sp/>2<sp/>-<sp/>8,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref>,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>src_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(show_arrow(<ref refid="class_window_1a3396ddbdbe617dd20d241075b15358e8" kindref="member">right_arrow</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_rect" kindref="compound">Rect</ref><sp/>src_rect(40,<sp/>16,<sp/>16,<sp/>8);</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a7fb844f0717a2eee78af42803e623be4" kindref="member">RotateZoomOpacityBlit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref><sp/>+<sp/><ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>-<sp/>8,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>+<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>/<sp/>2<sp/>-<sp/>8,<sp/>16,<sp/>0,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>src_rect,<sp/>-M_PI<sp/>/<sp/>2,<sp/>1.0,<sp/>1.0,<sp/>255);</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(show_arrow(<ref refid="class_window_1a296f7ddd18340f78bb28ce7afee4127f" kindref="member">left_arrow</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_rect" kindref="compound">Rect</ref><sp/>src_rect(40,<sp/>8,<sp/>16,<sp/>8);</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst.<ref refid="class_bitmap_1a7fb844f0717a2eee78af42803e623be4" kindref="member">RotateZoomOpacityBlit</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref>,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>+<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>/<sp/>2<sp/>-<sp/>8,<sp/>16,<sp/>0,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>src_rect,<sp/>-M_PI<sp/>/<sp/>2,<sp/>1.0,<sp/>1.0,<sp/>255);</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="176"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Window::RefreshBackground()<sp/>{</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/>background_needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/>bitmap<sp/>=<sp/><ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref>,<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref>,<sp/>background_alpha);</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1a9f58857036c9515d1aaaf231e61fbe63" kindref="member">stretch</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bitmap-&gt;StretchBlit(*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/><ref refid="class_rect" kindref="compound">Rect</ref>(0,<sp/>0,<sp/>32,<sp/>32),<sp/>255);</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bitmap-&gt;TiledBlit(Rect(0,<sp/>0,<sp/>32,<sp/>32),<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>bitmap-&gt;GetRect(),<sp/>255);</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/>background<sp/>=<sp/>bitmap;</highlight></codeline>
+<codeline lineno="190"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Window::RefreshFrame()<sp/>{</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/>frame_needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/>up_bitmap<sp/>=<sp/><ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref>,<sp/>8);</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/>down_bitmap<sp/>=<sp/><ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref>,<sp/>8);</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/>up_bitmap-&gt;Clear();</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/>down_bitmap-&gt;Clear();</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/>Rect<sp/>src_rect,<sp/>dst_rect;</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Border<sp/>Up</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/>src_rect<sp/>=<sp/>{<sp/>32<sp/>+<sp/>8,<sp/>0,<sp/>16,<sp/>8<sp/>};</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/>dst_rect<sp/>=<sp/>{<sp/>8,<sp/>0,<sp/><ref refid="util__macro_8h_1a3f4ae913e2a7b3479faa6afe7c6948cd" kindref="member">max</ref>(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>-<sp/>16,<sp/>1),<sp/>8<sp/>};</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/>up_bitmap-&gt;TiledBlit(8,<sp/>0,<sp/>src_rect,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>dst_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Border<sp/>Down</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/>src_rect<sp/>=<sp/>{<sp/>32<sp/>+<sp/>8,<sp/>32<sp/>-<sp/>8,<sp/>16,<sp/>8<sp/>};</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/>dst_rect<sp/>=<sp/>{<sp/>8,<sp/>0,<sp/><ref refid="util__macro_8h_1a3f4ae913e2a7b3479faa6afe7c6948cd" kindref="member">max</ref>(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>-<sp/>16,<sp/>1),<sp/>8<sp/>};</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/>down_bitmap-&gt;TiledBlit(8,<sp/>0,<sp/>src_rect,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>dst_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Upper<sp/>left<sp/>corner</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/>up_bitmap-&gt;Blit(0,<sp/>0,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>Rect(32,<sp/>0,<sp/>8,<sp/>8),<sp/>255);</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Upper<sp/>right<sp/>corner</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/>up_bitmap-&gt;Blit(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>-<sp/>8,<sp/>0,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>Rect(64<sp/>-<sp/>8,<sp/>0,<sp/>8,<sp/>8),<sp/>255);</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Lower<sp/>left<sp/>corner</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/>down_bitmap-&gt;Blit(0,<sp/>0,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>Rect(32,<sp/>32<sp/>-<sp/>8,<sp/>8,<sp/>8),<sp/>255);</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"></highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Lower<sp/>right<sp/>corner</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/>down_bitmap-&gt;Blit(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>-<sp/>8,<sp/>0,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>Rect(64<sp/>-<sp/>8,<sp/>32<sp/>-<sp/>8,<sp/>8,<sp/>8),<sp/>255);</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"></highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/>frame_up<sp/>=<sp/>up_bitmap;</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/>frame_down<sp/>=<sp/>down_bitmap;</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"></highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>&gt;<sp/>16)<sp/>{</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/>left_bitmap<sp/>=<sp/><ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(8,<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>-<sp/>16);</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/>right_bitmap<sp/>=<sp/><ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(8,<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>-<sp/>16);</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Border<sp/>Left</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>src_rect<sp/>=<sp/>{<sp/>32,<sp/>8,<sp/>8,<sp/>16<sp/>};</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst_rect<sp/>=<sp/>{<sp/>0,<sp/>0,<sp/>8,<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>-<sp/>16<sp/>};</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>left_bitmap-&gt;TiledBlit(0,<sp/>8,<sp/>src_rect,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>dst_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Border<sp/>Right</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>src_rect<sp/>=<sp/>{<sp/>64<sp/>-<sp/>8,<sp/>8,<sp/>8,<sp/>16<sp/>};</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst_rect<sp/>=<sp/>{<sp/>0,<sp/>0,<sp/>8,<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>-<sp/>16<sp/>};</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>right_bitmap-&gt;TiledBlit(0,<sp/>8,<sp/>src_rect,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>dst_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"></highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>frame_left<sp/>=<sp/>left_bitmap;</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>frame_right<sp/>=<sp/>right_bitmap;</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>frame_left<sp/>=<sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref>();</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>frame_right<sp/>=<sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref>();</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="248"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"></highlight></codeline>
+<codeline lineno="250"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Window::RefreshCursor()<sp/>{</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor_needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>cw<sp/>=<sp/><ref refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" kindref="member">cursor_rect</ref>.width;</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ch<sp/>=<sp/><ref refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" kindref="member">cursor_rect</ref>.height;</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/>cursor1_bitmap<sp/>=<sp/><ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(cw,<sp/>ch);</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/>cursor2_bitmap<sp/>=<sp/><ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(cw,<sp/>ch);</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"></highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor1_bitmap-&gt;Clear();</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor2_bitmap-&gt;Clear();</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"></highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/>Rect<sp/>dst_rect;</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"></highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Border<sp/>Up</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/>dst_rect<sp/>=<sp/>{<sp/>8,<sp/>0,<sp/>cw<sp/>-<sp/>16,<sp/>8<sp/>};</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor1_bitmap-&gt;TiledBlit(8,<sp/>0,<sp/>Rect(64<sp/>+<sp/>8,<sp/>0,<sp/>16,<sp/>8),<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>dst_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor2_bitmap-&gt;TiledBlit(8,<sp/>0,<sp/>Rect(96<sp/>+<sp/>8,<sp/>0,<sp/>16,<sp/>8),<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>dst_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"></highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Border<sp/>Down</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/>dst_rect<sp/>=<sp/>{<sp/>8,<sp/>ch<sp/>-<sp/>8,<sp/>cw<sp/>-<sp/>16,<sp/>8<sp/>};</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor1_bitmap-&gt;TiledBlit(8,<sp/>0,<sp/>Rect(64<sp/>+<sp/>8,<sp/>32<sp/>-<sp/>8,<sp/>16,<sp/>8),<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>dst_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor2_bitmap-&gt;TiledBlit(8,<sp/>0,<sp/>Rect(96<sp/>+<sp/>8,<sp/>32<sp/>-<sp/>8,<sp/>16,<sp/>8),<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>dst_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"></highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Border<sp/>Left</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/>dst_rect<sp/>=<sp/>{<sp/>0,<sp/>8,<sp/>8,<sp/>ch<sp/>-<sp/>16<sp/>};</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor1_bitmap-&gt;TiledBlit(0,<sp/>8,<sp/>Rect(64,<sp/>8,<sp/>8,<sp/>16),<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>dst_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor2_bitmap-&gt;TiledBlit(0,<sp/>8,<sp/>Rect(96,<sp/>8,<sp/>8,<sp/>16),<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>dst_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"></highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Border<sp/>Right</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/>dst_rect<sp/>=<sp/>{<sp/>cw<sp/>-<sp/>8,<sp/>8,<sp/>8,<sp/>ch<sp/>-<sp/>16<sp/>};</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor1_bitmap-&gt;TiledBlit(0,<sp/>8,<sp/>Rect(96<sp/>-<sp/>8,<sp/>8,<sp/>8,<sp/>16),<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>dst_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor2_bitmap-&gt;TiledBlit(0,<sp/>8,<sp/>Rect(128<sp/>-<sp/>8,<sp/>8,<sp/>8,<sp/>16),<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>dst_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"></highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Upper<sp/>left<sp/>corner</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor1_bitmap-&gt;Blit(0,<sp/>0,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>Rect(64,<sp/>0,<sp/>8,<sp/>8),<sp/>255);</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor2_bitmap-&gt;Blit(0,<sp/>0,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>Rect(96,<sp/>0,<sp/>8,<sp/>8),<sp/>255);</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"></highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Upper<sp/>right<sp/>corner</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor1_bitmap-&gt;Blit(cw<sp/>-<sp/>8,<sp/>0,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>Rect(96<sp/>-<sp/>8,<sp/>0,<sp/>8,<sp/>8),<sp/>255);</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor2_bitmap-&gt;Blit(cw<sp/>-<sp/>8,<sp/>0,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>Rect(128<sp/>-<sp/>8,<sp/>0,<sp/>8,<sp/>8),<sp/>255);</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"></highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Lower<sp/>left<sp/>corner</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor1_bitmap-&gt;Blit(0,<sp/>ch<sp/>-<sp/>8,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>Rect(64,<sp/>32<sp/>-<sp/>8,<sp/>8,<sp/>8),<sp/>255);</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor2_bitmap-&gt;Blit(0,<sp/>ch<sp/>-<sp/>8,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>Rect(96,<sp/>32<sp/>-<sp/>8,<sp/>8,<sp/>8),<sp/>255);</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"></highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Lower<sp/>right<sp/>corner</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor1_bitmap-&gt;Blit(cw<sp/>-<sp/>8,<sp/>ch<sp/>-<sp/>8,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>Rect(96<sp/>-<sp/>8,<sp/>32<sp/>-<sp/>8,<sp/>8,<sp/>8),<sp/>255);</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor2_bitmap-&gt;Blit(cw<sp/>-<sp/>8,<sp/>ch<sp/>-<sp/>8,<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>Rect(128<sp/>-<sp/>8,<sp/>32<sp/>-<sp/>8,<sp/>8,<sp/>8),<sp/>255);</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"></highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Background</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/>dst_rect<sp/>=<sp/>{<sp/>8,<sp/>8,<sp/>cw<sp/>-<sp/>16,<sp/>ch<sp/>-<sp/>16<sp/>};</highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor1_bitmap-&gt;TiledBlit(8,<sp/>8,<sp/>Rect(64<sp/>+<sp/>8,<sp/>8,<sp/>16,<sp/>16),<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>dst_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor2_bitmap-&gt;TiledBlit(8,<sp/>8,<sp/>Rect(96<sp/>+<sp/>8,<sp/>8,<sp/>16,<sp/>16),<sp/>*<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref>,<sp/>dst_rect,<sp/>255);</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"></highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor1<sp/>=<sp/>cursor1_bitmap;</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor2<sp/>=<sp/>cursor2_bitmap;</highlight></codeline>
+<codeline lineno="307"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"></highlight></codeline>
+<codeline lineno="309" refid="class_window_1ab8d28dce3166c70eb5744466460795df" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window_1ab8d28dce3166c70eb5744466460795df" kindref="member">Window::Update</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1a30d9a51374e74ae0a59da6bf9ae77d79" kindref="member">active</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cursor_frame<sp/>+=<sp/>1;</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(cursor_frame<sp/>&gt;<sp/>20)<sp/>cursor_frame<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(pause<sp/>||<sp/><ref refid="class_window_1a6840c54e5681e5f4109e6e53d538afff" kindref="member">animate_arrows</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>arrow_animation_frame<sp/>=<sp/>(arrow_animation_frame<sp/>+<sp/>1)<sp/>%<sp/>(<ref refid="scene__debug_8cpp_1a090e181d740ac15dabd30990aa910333" kindref="member">arrow_animation_frames</ref><sp/>*<sp/>2);</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="317"><highlight class="normal"></highlight></codeline>
+<codeline lineno="318"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(animation_frames<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Open/Close<sp/>Animation</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="320"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>animation_frames<sp/>-=<sp/>1;</highlight></codeline>
+<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>animation_count<sp/>+=<sp/>animation_increment;</highlight></codeline>
+<codeline lineno="322"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1ad981b3a3e8815b7f3f4c6a4e895849d5" kindref="member">closing</ref><sp/>&amp;&amp;<sp/>animation_frames<sp/>&lt;=<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" kindref="member">SetVisible</ref>(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="324"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window_1ad981b3a3e8815b7f3f4c6a4e895849d5" kindref="member">closing</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="325"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="326"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="327"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="328"><highlight class="normal"></highlight></codeline>
+<codeline lineno="329" refid="class_window_1af3ec086d2b5bb619a56cdd9d5f9780f9" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window_1af3ec086d2b5bb619a56cdd9d5f9780f9" kindref="member">Window::SetWindowskin</ref>(<ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>nwindowskin,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>transparent)<sp/>{</highlight></codeline>
+<codeline lineno="330"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref><sp/>==<sp/>nwindowskin)<sp/>{</highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"></highlight></codeline>
+<codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><sp/>background_alpha<sp/>=<sp/>transparent;</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"><sp/><sp/><sp/><sp/>background_needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="336"><highlight class="normal"><sp/><sp/><sp/><sp/>frame_needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor_needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" kindref="member">windowskin</ref><sp/>=<sp/>nwindowskin;</highlight></codeline>
+<codeline lineno="339"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="340"><highlight class="normal"></highlight></codeline>
+<codeline lineno="341" refid="class_window_1aacd4df16a8276284d1d5e98bbc7f8db3" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window_1aacd4df16a8276284d1d5e98bbc7f8db3" kindref="member">Window::SetStretch</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>nstretch)<sp/>{</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1a9f58857036c9515d1aaaf231e61fbe63" kindref="member">stretch</ref><sp/>!=<sp/>nstretch)<sp/>background_needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window_1a9f58857036c9515d1aaaf231e61fbe63" kindref="member">stretch</ref><sp/>=<sp/>nstretch;</highlight></codeline>
+<codeline lineno="344"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"></highlight></codeline>
+<codeline lineno="346" refid="class_window_1a60601365a7ade2022e7c1445ba04ff6c" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window_1a60601365a7ade2022e7c1445ba04ff6c" kindref="member">Window::SetCursorRect</ref>(<ref refid="class_rect" kindref="compound">Rect</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>ncursor_rect)<sp/>{</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" kindref="member">cursor_rect</ref>.width<sp/>!=<sp/>ncursor_rect.<ref refid="class_rect_1a367714e71d566668addb140c7981b5bc" kindref="member">width</ref><sp/>||<sp/><ref refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" kindref="member">cursor_rect</ref>.height<sp/>!=<sp/>ncursor_rect.<ref refid="class_rect_1ad79d7bf12771a81627a672452437011d" kindref="member">height</ref>)<sp/>cursor_needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" kindref="member">cursor_rect</ref><sp/>=<sp/>ncursor_rect;</highlight></codeline>
+<codeline lineno="349"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"></highlight></codeline>
+<codeline lineno="351" refid="class_window_1a31699d268cf2806e2c488532493effbd" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window_1a31699d268cf2806e2c488532493effbd" kindref="member">Window::SetWidth</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nwidth)<sp/>{</highlight></codeline>
+<codeline lineno="352"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>!=<sp/>nwidth)<sp/>{</highlight></codeline>
+<codeline lineno="353"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>background_needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="354"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>frame_needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="355"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="356"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>=<sp/>nwidth;</highlight></codeline>
+<codeline lineno="357"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="358"><highlight class="normal"></highlight></codeline>
+<codeline lineno="359" refid="class_window_1a0941f34765c08c3afc77709dbfcab5ca" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window_1a0941f34765c08c3afc77709dbfcab5ca" kindref="member">Window::SetHeight</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nheight)<sp/>{</highlight></codeline>
+<codeline lineno="360"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>!=<sp/>nheight)<sp/>{</highlight></codeline>
+<codeline lineno="361"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>background_needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="362"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>frame_needs_refresh<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="363"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="364"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>=<sp/>nheight;</highlight></codeline>
+<codeline lineno="365"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="366"><highlight class="normal"></highlight></codeline>
+<codeline lineno="367"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="window.cpp"/>
+  </compounddef>
+</doxygen>

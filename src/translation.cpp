@@ -960,3 +960,4 @@ void Dictionary::FromPo(Dictionary& res, Filesystem_Stream::InputStream& in) {
 		}
 	}
 }
+

@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1ul2_1_1overload" kind="class" language="C++" prot="public">
+    <compoundname>leasy::ul2::overload</compoundname>
+    <includes refid="state_8hpp" local="no">state.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type>typename...</type>
+        <declname>Fs</declname>
+        <defname>Fs</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classleasy_1_1ul2_1_1overload_1af0985659301cf6c0596638df9d34f824" prot="protected" static="no" mutable="no">
+        <type>std::tuple&lt; Fs... &gt;</type>
+        <definition>std::tuple&lt;Fs...&gt; leasy::ul2::overload&lt; Fs &gt;::funcs</definition>
+        <argsstring></argsstring>
+        <name>funcs</name>
+        <qualifiedname>leasy::ul2::overload::funcs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="419" column="16" bodyfile="leasy/ul2/state.hpp" bodystart="419" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1overload_1a2ce5c07f93463631d980fcac9f299ac1" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ul2::overload&lt; Fs &gt;::overload</definition>
+        <argsstring>(Fs... f)</argsstring>
+        <name>overload</name>
+        <qualifiedname>leasy::ul2::overload::overload</qualifiedname>
+        <param>
+          <type>Fs...</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="404" column="14" bodyfile="leasy/ul2/state.hpp" bodystart="404" bodyend="407"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1overload_1a62d454f46dce08edc5ed716eb16481fa" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int leasy::ul2::overload&lt; Fs &gt;::operator()</definition>
+        <argsstring>(lua_State *L) const</argsstring>
+        <name>operator()</name>
+        <qualifiedname>leasy::ul2::overload::operator()</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="409" column="9" bodyfile="leasy/ul2/state.hpp" bodystart="409" bodyend="412"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1overload_1ad4a54633e3441783bde2f83d55f886b0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int leasy::ul2::overload&lt; Fs &gt;::impl</definition>
+        <argsstring>(lua_State *L) const</argsstring>
+        <name>impl</name>
+        <qualifiedname>leasy::ul2::overload::impl</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="414" column="9" bodyfile="leasy/ul2/state.hpp" bodystart="414" bodyend="416"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1overload_1a7626971d0cc2be64a0d4880d2f6bb303" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>std::size_t</type>
+            <declname>I</declname>
+            <defname>I</defname>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>int leasy::ul2::overload&lt; Fs &gt;::call</definition>
+        <argsstring>(lua_State *L) const</argsstring>
+        <name>call</name>
+        <qualifiedname>leasy::ul2::overload::call</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="422" column="9" bodyfile="leasy/ul2/state.hpp" bodystart="422" bodyend="435"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ul2/state.hpp" line="401" column="3" bodyfile="leasy/ul2/state.hpp" bodystart="402" bodyend="436"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1ul2_1_1overload_1a7626971d0cc2be64a0d4880d2f6bb303" prot="protected" virt="non-virtual"><scope>leasy::ul2::overload</scope><name>call</name></member>
+      <member refid="classleasy_1_1ul2_1_1overload_1af0985659301cf6c0596638df9d34f824" prot="protected" virt="non-virtual"><scope>leasy::ul2::overload</scope><name>funcs</name></member>
+      <member refid="classleasy_1_1ul2_1_1overload_1ad4a54633e3441783bde2f83d55f886b0" prot="public" virt="non-virtual"><scope>leasy::ul2::overload</scope><name>impl</name></member>
+      <member refid="classleasy_1_1ul2_1_1overload_1a62d454f46dce08edc5ed716eb16481fa" prot="public" virt="non-virtual"><scope>leasy::ul2::overload</scope><name>operator()</name></member>
+      <member refid="classleasy_1_1ul2_1_1overload_1a2ce5c07f93463631d980fcac9f299ac1" prot="public" virt="non-virtual"><scope>leasy::ul2::overload</scope><name>overload</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

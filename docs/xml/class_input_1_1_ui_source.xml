@@ -1,0 +1,224 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_input_1_1_ui_source" kind="class" language="C++" prot="public">
+    <compoundname>Input::UiSource</compoundname>
+    <basecompoundref refid="class_input_1_1_source" prot="public" virt="non-virtual">Input::Source</basecompoundref>
+    <includes refid="input__source_8h" local="no">input_source.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_input_1_1_ui_source_1a96eb8393721ccfcb3a799083670eb0a6" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Input::UiSource::Update</definition>
+        <argsstring>() override</argsstring>
+        <name>Update</name>
+        <qualifiedname>Input::UiSource::Update</qualifiedname>
+        <reimplements refid="class_input_1_1_source_1ab0c520beeebaf152b22756d440157c52">Update</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called once each logical frame to update pressed_buttons. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="177" column="6" bodyfile="input_source.cpp" bodystart="77" bodyend="79"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_ui_source_1a6b36ae786b0d7dcffab3aee6e55ad27f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Input::UiSource::UpdateSystem</definition>
+        <argsstring>() override</argsstring>
+        <name>UpdateSystem</name>
+        <qualifiedname>Input::UiSource::UpdateSystem</qualifiedname>
+        <reimplements refid="class_input_1_1_source_1a2fc938d54856cc79eb7e8fec7a17ce3d">UpdateSystem</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called once each physical frame when no logical frames occured to update pressed_buttons for system buttons. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="178" column="6" bodyfile="input_source.cpp" bodystart="81" bodyend="83"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_ui_source_1a41d404f825ce6c9e494c63d633a1d3a2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Input::Source::Source</definition>
+        <argsstring>(const Game_ConfigInput &amp;cfg, DirectionMappingArray directions)</argsstring>
+        <name>Source</name>
+        <qualifiedname>Input::UiSource::Source</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_game___config_input" kindref="compound">Game_ConfigInput</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_input_1a094b7fb423e80f346cde45eea8f19375" kindref="member">DirectionMappingArray</ref></type>
+          <declname>directions</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="175" column="1" bodyfile="input_source.h" bodystart="85" bodyend="86"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_input_1_1_ui_source_1a6e39b07fb3caf713bf533e8f3fb67f37" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::UiSource::DoUpdate</definition>
+        <argsstring>(bool system_only)</argsstring>
+        <name>DoUpdate</name>
+        <qualifiedname>Input::UiSource::DoUpdate</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>system_only</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="181" column="6" bodyfile="input_source.cpp" bodystart="53" bodyend="75"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_input_1_1_source" kindref="compound">Source</ref> that maps key presses from the UI to button presses. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Input::Source</label>
+        <link refid="class_input_1_1_source"/>
+      </node>
+      <node id="1">
+        <label>Input::UiSource</label>
+        <link refid="class_input_1_1_ui_source"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="6">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="5">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="9">
+        <label>FlatUniqueMultiMap&lt; Direction::InputDirection, InputButton &gt;</label>
+        <link refid="class_flat_unique_multi_map"/>
+      </node>
+      <node id="8">
+        <label>FlatUniqueMultiMap&lt; InputButton, Keys::InputKey &gt;</label>
+        <link refid="class_flat_unique_multi_map"/>
+      </node>
+      <node id="3">
+        <label>Game_ConfigInput</label>
+        <link refid="struct_game___config_input"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>speed_modifier_a</edgelabel>
+          <edgelabel>speed_modifier_b</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>gamepad_swap_ab_and_xy</edgelabel>
+          <edgelabel>gamepad_swap_analog</edgelabel>
+          <edgelabel>gamepad_swap_dpad_with_buttons</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>buttons</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>Input::AnalogInput</label>
+        <link refid="struct_input_1_1_analog_input"/>
+        <childnode refid="12" relation="usage">
+          <edgelabel>primary</edgelabel>
+          <edgelabel>secondary</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Input::Source</label>
+        <link refid="class_input_1_1_source"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>cfg</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>direction_mappings</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>mouse_pos</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>analog_input</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Input::UiSource</label>
+        <link refid="class_input_1_1_ui_source"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>PointT&lt; float &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="10">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="4">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="input_source.h" line="173" column="1" bodyfile="input_source.h" bodystart="173" bodyend="182"/>
+    <listofallmembers>
+      <member refid="class_input_1_1_source_1a5b289173d39509170fb4943264d7e980" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>AddRecordingData</name></member>
+      <member refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" prot="protected" virt="non-virtual"><scope>Input::UiSource</scope><name>analog_input</name></member>
+      <member refid="class_input_1_1_source_1a7d49f9da22d14d6f3633540da1d1d75d" prot="protected" virt="non-virtual"><scope>Input::UiSource</scope><name>cfg</name></member>
+      <member refid="class_input_1_1_source_1ae5ab013140c27051f874b0ab79b9f305" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>Create</name></member>
+      <member refid="class_input_1_1_source_1aefc8686cceeef0f696ad026c997a7979" prot="protected" virt="non-virtual"><scope>Input::UiSource</scope><name>direction_mappings</name></member>
+      <member refid="class_input_1_1_ui_source_1a6e39b07fb3caf713bf533e8f3fb67f37" prot="private" virt="non-virtual"><scope>Input::UiSource</scope><name>DoUpdate</name></member>
+      <member refid="class_input_1_1_source_1ad4e99d535d4ae4c791498c07b2d0fb33" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>GetAnalogInput</name></member>
+      <member refid="class_input_1_1_source_1a18ecff052f3ca5180ddda3738bf2e034" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>GetButtonMappings</name></member>
+      <member refid="class_input_1_1_source_1a2de1d1dcd5f836efa40af6c828d9fa02" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>GetButtonMappings</name></member>
+      <member refid="class_input_1_1_source_1abe03af834a37175ffb8e3afb692ae2d3" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>GetConfig</name></member>
+      <member refid="class_input_1_1_source_1af29e150d688735d670f044a1032c6457" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>GetConfig</name></member>
+      <member refid="class_input_1_1_source_1a40a04787d3862d8117542da85cb5beeb" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>GetDirectionMappings</name></member>
+      <member refid="class_input_1_1_source_1aaa309312c6a45afb2afbf5e2bb3bc09d" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>GetDirectionMappings</name></member>
+      <member refid="class_input_1_1_source_1af3a7100749aed300dfd467b234d62fd9" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>GetMask</name></member>
+      <member refid="class_input_1_1_source_1acb8933d65b6fc80e7b0731a0303f9011" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>GetMask</name></member>
+      <member refid="class_input_1_1_source_1a58e4cf0eb57fcce2bde4f298e787a764" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>GetMousePosition</name></member>
+      <member refid="class_input_1_1_source_1a0e5e6209e3e596239faf8e67809ea7f1" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>GetPressedButtons</name></member>
+      <member refid="class_input_1_1_source_1a1f29ceeb0b25bdbfdc883adea47ea428" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>GetPressedKeys</name></member>
+      <member refid="class_input_1_1_source_1adc07bfc874e8e9d86896ce66c1e18973" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>GetPressedNonSystemButtons</name></member>
+      <member refid="class_input_1_1_source_1af068911ebcf40e1cdf10d5998bc52dd9" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>InitRecording</name></member>
+      <member refid="class_input_1_1_source_1ae9f40c3ce9baf9d823e8f6a96e8f4ae7" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>IsRecording</name></member>
+      <member refid="class_input_1_1_source_1ae8db377ac12acae2a615d924415189e0" prot="protected" virt="non-virtual"><scope>Input::UiSource</scope><name>keymask</name></member>
+      <member refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" prot="protected" virt="non-virtual"><scope>Input::UiSource</scope><name>keystates</name></member>
+      <member refid="class_input_1_1_source_1aae308b32662d7101d5fec61fa70f4cb1" prot="protected" virt="non-virtual"><scope>Input::UiSource</scope><name>keystates_virtual</name></member>
+      <member refid="class_input_1_1_source_1aa3815c9c3f5b27e8d7a337aa458e3817" prot="protected" virt="non-virtual"><scope>Input::UiSource</scope><name>last_written_frame</name></member>
+      <member refid="class_input_1_1_source_1ad9f701998248a2269f5acce0971796fc" prot="protected" virt="non-virtual"><scope>Input::UiSource</scope><name>mouse_pos</name></member>
+      <member refid="class_input_1_1_source_1acc99a6137cd256dfa0d3b18ccac0c2e4" prot="protected" virt="non-virtual"><scope>Input::UiSource</scope><name>pressed_buttons</name></member>
+      <member refid="class_input_1_1_source_1a8330a3b51f5d9aa49c41e60f0572a050" prot="protected" virt="non-virtual"><scope>Input::UiSource</scope><name>Record</name></member>
+      <member refid="class_input_1_1_source_1a2c381b04768233a026a8daf6b6c9530d" prot="protected" virt="non-virtual"><scope>Input::UiSource</scope><name>record_log</name></member>
+      <member refid="class_input_1_1_source_1a247a838e52667aa5e73847f7390b0361" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>SimulateKeyPress</name></member>
+      <member refid="class_input_1_1_ui_source_1a41d404f825ce6c9e494c63d633a1d3a2" prot="public" virt="non-virtual"><scope>Input::UiSource</scope><name>Source</name></member>
+      <member refid="class_input_1_1_ui_source_1a96eb8393721ccfcb3a799083670eb0a6" prot="public" virt="virtual"><scope>Input::UiSource</scope><name>Update</name></member>
+      <member refid="class_input_1_1_source_1a28ae745813ef5cc169192da88a676f49" prot="protected" virt="non-virtual"><scope>Input::UiSource</scope><name>UpdateGamepad</name></member>
+      <member refid="class_input_1_1_ui_source_1a6b36ae786b0d7dcffab3aee6e55ad27f" prot="public" virt="virtual"><scope>Input::UiSource</scope><name>UpdateSystem</name></member>
+      <member refid="class_input_1_1_source_1a1ed54e82804b5e7c53d899e0146d97ce" prot="protected" virt="non-virtual"><scope>Input::UiSource</scope><name>UpdateTouch</name></member>
+      <member refid="class_input_1_1_source_1a285b6aeee22b9d3951d6bb3c017eefaa" prot="public" virt="virtual"><scope>Input::UiSource</scope><name>~Source</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

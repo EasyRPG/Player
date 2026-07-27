@@ -1,0 +1,484 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_window___equip_item" kind="class" language="C++" prot="public">
+    <compoundname>Window_EquipItem</compoundname>
+    <basecompoundref refid="class_window___item" prot="public" virt="non-virtual">Window_Item</basecompoundref>
+    <includes refid="window__equipitem_8h" local="no">window_equipitem.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_window___equip_item_1a5ae4c98614b4c32d89f6345434da1bcc" prot="public" static="no" strong="no">
+        <type></type>
+        <name>EquipType</name>
+        <qualifiedname>Window_EquipItem::EquipType</qualifiedname>
+        <enumvalue id="class_window___equip_item_1a5ae4c98614b4c32d89f6345434da1bccae7bb294cc9453a85395dc3f48b52f237" prot="public">
+          <name>weapon</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_window___equip_item_1a5ae4c98614b4c32d89f6345434da1bccad1a4a15029c193f161e3c0fe371ebd21" prot="public">
+          <name>shield</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_window___equip_item_1a5ae4c98614b4c32d89f6345434da1bccadfee9ddf90f607034b1ea966d50c82a6" prot="public">
+          <name>armor</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_window___equip_item_1a5ae4c98614b4c32d89f6345434da1bcca6101300ff8fa5f8b254be740f722594e" prot="public">
+          <name>helmet</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_window___equip_item_1a5ae4c98614b4c32d89f6345434da1bccaa354c48007fc1f1beaa7f663a1f3e315" prot="public">
+          <name>other</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Enum containing the different equipment types. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_equipitem.h" line="33" column="1" bodyfile="window_equipitem.h" bodystart="33" bodyend="39"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_window___equip_item_1a2d1999bb4e571b12968337bf9fad0d42" prot="private" static="no" mutable="no">
+        <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+        <definition>const Game_Actor&amp; Window_EquipItem::actor</definition>
+        <argsstring></argsstring>
+        <name>actor</name>
+        <qualifiedname>Window_EquipItem::actor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_equipitem.h" line="65" column="18" bodyfile="window_equipitem.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___equip_item_1a3826d1009f5739939cbce296d6142052" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_EquipItem::equip_type</definition>
+        <argsstring></argsstring>
+        <name>equip_type</name>
+        <qualifiedname>Window_EquipItem::equip_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_equipitem.h" line="66" column="6" bodyfile="window_equipitem.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_window___equip_item_1abcfbfc22dc0b9029d7ce994c4f40cafc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Window_EquipItem::Window_EquipItem</definition>
+        <argsstring>(int ix, int iy, int iwidth, int iheight, const Game_Actor &amp;actor, int equip_type)</argsstring>
+        <name>Window_EquipItem</name>
+        <qualifiedname>Window_EquipItem::Window_EquipItem</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>ix</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iy</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iwidth</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iheight</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>equip_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>actor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>actor whos equipment is displayed. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>equip_type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>type of equipment to show. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_equipitem.h" line="47" column="1" bodyfile="window_equipitem.cpp" bodystart="25" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___equip_item_1a936ea647d25ea3cec10727bfd11634ca" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Window_EquipItem::CheckInclude</definition>
+        <argsstring>(int item_id) override</argsstring>
+        <name>CheckInclude</name>
+        <qualifiedname>Window_EquipItem::CheckInclude</qualifiedname>
+        <reimplements refid="class_window___item_1affad4bee0c53bcc28062912803048538">CheckInclude</reimplements>
+        <param>
+          <type>int</type>
+          <declname>item_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if the item should be in the list based on the type.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>item_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>item to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_equipitem.h" line="55" column="6" bodyfile="window_equipitem.cpp" bodystart="40" bodyend="86"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___equip_item_1a7393a7e61345a2db77bc410990b5cead" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Window_EquipItem::CheckEnable</definition>
+        <argsstring>(int item_id) override</argsstring>
+        <name>CheckEnable</name>
+        <qualifiedname>Window_EquipItem::CheckEnable</qualifiedname>
+        <reimplements refid="class_window___item_1a7f9ff2443a874cfb2ba87bcac5f5ae35">CheckEnable</reimplements>
+        <param>
+          <type>int</type>
+          <declname>item_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Chechs if item should be enabled. Always true.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>item_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>item to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_equipitem.h" line="62" column="6" bodyfile="window_equipitem.cpp" bodystart="88" bodyend="91"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_window___equip_item" kindref="compound">Window_EquipItem</ref> class. Displays the available equipment of a specific type. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="6">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="5">
+        <label>Window</label>
+        <link refid="class_window"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Window_Base</label>
+        <link refid="class_window___base"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Window_EquipItem</label>
+        <link refid="class_window___equip_item"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Window_Item</label>
+        <link refid="class_window___item"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Window_Selectable</label>
+        <link refid="class_window___selectable"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="6">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="7">
+        <label>Rect</label>
+        <link refid="class_rect"/>
+      </node>
+      <node id="5">
+        <label>Window</label>
+        <link refid="class_window"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>cursor_rect</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Window_Base</label>
+        <link refid="class_window___base"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Window_EquipItem</label>
+        <link refid="class_window___equip_item"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Window_Help</label>
+        <link refid="class_window___help"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Window_Item</label>
+        <link refid="class_window___item"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Window_Selectable</label>
+        <link refid="class_window___selectable"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>help_window</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="window_equipitem.h" line="29" column="1" bodyfile="window_equipitem.h" bodystart="29" bodyend="67"/>
+    <listofallmembers>
+      <member refid="class_window_1a30d9a51374e74ae0a59da6bf9ae77d79" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>active</name></member>
+      <member refid="class_window___equip_item_1a2d1999bb4e571b12968337bf9fad0d42" prot="private" virt="non-virtual"><scope>Window_EquipItem</scope><name>actor</name></member>
+      <member refid="class_window_1a6840c54e5681e5f4109e6e53d538afff" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>animate_arrows</name></member>
+      <member refid="class_window___equip_item_1a5ae4c98614b4c32d89f6345434da1bccadfee9ddf90f607034b1ea966d50c82a6" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>armor</name></member>
+      <member refid="class_window___selectable_1a039d27bee45f565c75a819923acf3865" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>arrow_frame</name></member>
+      <member refid="class_window_1a5fdc8f9bb6859159ceccc34b69ab4518" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>back_opacity</name></member>
+      <member refid="class_window_1a7783ccb4806cd474920af47bfb6e34de" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>border_x</name></member>
+      <member refid="class_window_1acfcd1e1710f455bc7e300a0e1969a819" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>border_y</name></member>
+      <member refid="class_window___base_1ab163ecc97ae4663c3af07fa8d2488d7e" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>CancelFace</name></member>
+      <member refid="class_window___equip_item_1a7393a7e61345a2db77bc410990b5cead" prot="public" virt="virtual"><scope>Window_EquipItem</scope><name>CheckEnable</name></member>
+      <member refid="class_window___equip_item_1a936ea647d25ea3cec10727bfd11634ca" prot="public" virt="virtual"><scope>Window_EquipItem</scope><name>CheckInclude</name></member>
+      <member refid="class_window_1ad981b3a3e8815b7f3f4c6a4e895849d5" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>closing</name></member>
+      <member refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>column_max</name></member>
+      <member refid="class_window_1aa37669a94405b73515d5bd9b342e07c0" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>contents</name></member>
+      <member refid="class_window_1afea2c4631cc17e44d91eb26014d1ef85" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>contents_opacity</name></member>
+      <member refid="class_window___selectable_1aecc125d715ca5bcd511c23bb6b897648" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>CreateContents</name></member>
+      <member refid="class_window___base_1aae60c3e20ba6ad791731b1f9b62268df" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>current_frame</name></member>
+      <member refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>cursor_rect</name></member>
+      <member refid="class_window_1a1105a74f93c232d0caf4882ce1105d2b" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>down_arrow</name></member>
+      <member refid="class_window_1ae9b28a38c8c5f9dabb89335da45367d5" prot="public" virt="virtual"><scope>Window_EquipItem</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>Drawable</name></member>
+      <member refid="class_window___base_1a89865ce16d1053880ad635e4cf4ffca4" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawActorClass</name></member>
+      <member refid="class_window___base_1a7ead18f633dbfa23740626c4d310579c" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawActorExp</name></member>
+      <member refid="class_window___base_1a924448d5c6250588b8372e9e4fe7deb9" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawActorFace</name></member>
+      <member refid="class_window___base_1a1412eeb3d9ced66eef6b53fca5838d87" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawActorHp</name></member>
+      <member refid="class_window___base_1ae5564745ecd1b7b2e8094cd2ff4a4d07" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawActorHpValue</name></member>
+      <member refid="class_window___base_1ad05730fa6d45625484c06ed8aa2a2360" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawActorLevel</name></member>
+      <member refid="class_window___base_1a6839752ce8f91032394dfa0216bafc99" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawActorName</name></member>
+      <member refid="class_window___base_1a38f710cfc58ec6163ceed6b90ad5818a" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawActorParameter</name></member>
+      <member refid="class_window___base_1a2386a07c558b5d5d0eb1f446a66e9c6c" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawActorSp</name></member>
+      <member refid="class_window___base_1a5db54a54646082147def28bc6cc95ecb" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawActorSpValue</name></member>
+      <member refid="class_window___base_1a318e9ce402c5d6e4594c377530ff928a" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawActorState</name></member>
+      <member refid="class_window___base_1a4280d1ba36defe563be65bb50c7dfe20" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawActorTitle</name></member>
+      <member refid="class_window___base_1a4924d3b09574a5fce2c625c163098964" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawCurrencyValue</name></member>
+      <member refid="class_window___base_1ae8953dd148fa5bdb8e8cc85adbed74bc" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawEquipmentType</name></member>
+      <member refid="class_window___base_1aef9378bbfb2d0a01c6e4e5e14e70db91" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawFace</name></member>
+      <member refid="class_window___base_1abb4753c1c25848976404a483bcc0061a" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawGauge</name></member>
+      <member refid="class_window___item_1a48a496167573f27c5cfe3bf88f92f430" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawItem</name></member>
+      <member refid="class_window___base_1a6a7cf28705a3033c8f28585000923358" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawItemName</name></member>
+      <member refid="class_window___base_1af2433d82fa056a8a7c6245df02cf2a8c" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>DrawSkillName</name></member>
+      <member refid="class_window___selectable_1a429136ca4c7bba644b7ea71a2e82aca4" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>endless_scrolling</name></member>
+      <member refid="class_window___equip_item_1a3826d1009f5739939cbce296d6142052" prot="private" virt="non-virtual"><scope>Window_EquipItem</scope><name>equip_type</name></member>
+      <member refid="class_window___equip_item_1a5ae4c98614b4c32d89f6345434da1bcc" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>EquipType</name></member>
+      <member refid="class_window___base_1a1e5d623ae231c9e389f20df787b26605" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>face_request_ids</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>Flags</name></member>
+      <member refid="class_window_1a1f1f44b1ffaef1e628bc8e798b72b2a3" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>font</name></member>
+      <member refid="class_window_1ae7f16566d53bd4e9b8d93f3bb2c706cf" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>frame_opacity</name></member>
+      <member refid="class_window_1a893355559f288910e0c7efe5ebf35e12" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetActive</name></member>
+      <member refid="class_window_1a5c12f9d9b4bc434d194f60920829e924" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetAnimateArrows</name></member>
+      <member refid="class_window_1ae9f575b4d9ee0e89c4f72fb1136b939e" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetBackOpacity</name></member>
+      <member refid="class_window_1a33418d5002643de22c01216ac4a68fab" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetBorderX</name></member>
+      <member refid="class_window_1a85d217a09432cba36ec9917cc9c9bab4" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetBorderY</name></member>
+      <member refid="class_window_1a08d183b2c505ef00895b907f692e3f47" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetBottomY</name></member>
+      <member refid="class_window___selectable_1ab8787975859c1af609b10560fb0ee8d5" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetColumnMax</name></member>
+      <member refid="class_window_1ab7cc2352acb3934c40b7ed427c6e838f" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetContents</name></member>
+      <member refid="class_window_1a3a022f1a61ec8451d78ab8576d40e2c6" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetContentsOpacity</name></member>
+      <member refid="class_window_1aff81a34c4f6d0d9d89eec050a761c15a" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetCursorRect</name></member>
+      <member refid="class_window_1a748df6959ed2db74901f9bb695a43f17" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetDownArrow</name></member>
+      <member refid="class_window_1a31ef08e84da75105464631222e8d9b37" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetFont</name></member>
+      <member refid="class_window_1ab886657884794dd41b189c023ff52463" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetFrameOpacity</name></member>
+      <member refid="class_window_1a2196b5ae099037272cc85b223e80bd6d" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetHeight</name></member>
+      <member refid="class_window___selectable_1ac5cba35d9b5e704f93fbfe32b319e55e" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetHelpWindow</name></member>
+      <member refid="class_window___selectable_1af12367a9070a2bdc41c3e1ac40f23186" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetIndex</name></member>
+      <member refid="class_window___item_1a8778a677e46d05a9c84b015cad0c51c7" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetItem</name></member>
+      <member refid="class_window___selectable_1a8f2add0e27d97659ed742e8d82668dae" prot="public" virt="virtual"><scope>Window_EquipItem</scope><name>GetItemRect</name></member>
+      <member refid="class_window_1a706cc6e9c4247963d7516f8544f97136" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetLeftArrow</name></member>
+      <member refid="class_window_1ad01b3475eb063833bcecf776767120ae" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetOpacity</name></member>
+      <member refid="class_window_1ab5213da374f3de1ed749af5ff3147dd1" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetOx</name></member>
+      <member refid="class_window_1abbb96431e08ed99c32a87e654211cb09" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetOy</name></member>
+      <member refid="class_window___selectable_1a2a2720627e3fbc400800e1de5534a685" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetPageItemMax</name></member>
+      <member refid="class_window___selectable_1a7f71a0b8145cf6211abac7cb7472e0dd" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetPageRowMax</name></member>
+      <member refid="class_window_1a3a9441d1da4a9d4eb4ab5110aaf4a6af" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetPause</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetRenderOy</name></member>
+      <member refid="class_window_1a01e1ab6d941d3d78572ee1458e8bcd82" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetRightArrow</name></member>
+      <member refid="class_window_1a0b3f5d1df18939326ea793be41b2b1aa" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetRightX</name></member>
+      <member refid="class_window___selectable_1a249bdfb36eff3e53a8ba01057c31dfa1" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetRowMax</name></member>
+      <member refid="class_window_1a449845fc5eb2daf2187c403d572fc344" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetStretch</name></member>
+      <member refid="class_window___selectable_1ad5eae54b7a337b0aa35871ee22024bdf" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetTopRow</name></member>
+      <member refid="class_window_1ad01a381061f12942dabc5382fb4c3610" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetUpArrow</name></member>
+      <member refid="class_window___base_1ae53debcc40e44c05e05b0abedb2ac783" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetValueFontColor</name></member>
+      <member refid="class_window_1a451bdfeab37afce97712f23f5c2492aa" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetWidth</name></member>
+      <member refid="class_window_1a2af54bbfd2ded9767a4370b5d9acadab" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetWindowskin</name></member>
+      <member refid="class_window_1a06a511c7b2101cb1c6f5d8125a345699" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetX</name></member>
+      <member refid="class_window_1af457e700afc28ddfebfcf92a23a99e6e" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetY</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>GetZ</name></member>
+      <member refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>height</name></member>
+      <member refid="class_window___equip_item_1a5ae4c98614b4c32d89f6345434da1bcca6101300ff8fa5f8b254be740f722594e" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>helmet</name></member>
+      <member refid="class_window___selectable_1a9b0e8113100fc890a6e54204e7d59d1a" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>help_window</name></member>
+      <member refid="class_window_1ad5dc18873173a138672e2f18978c4ef6" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>ID</name></member>
+      <member refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>index</name></member>
+      <member refid="class_window___base_1a53052079af4d1e5566c481da04f6ad3d" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>InitMovement</name></member>
+      <member refid="class_window_1af7fe8b2a199785b8c5540e060223865f" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>IsClosing</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>IsGlobal</name></member>
+      <member refid="class_window___base_1a602dd22533d8d8a2752c085660440a70" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>IsMovementActive</name></member>
+      <member refid="class_window_1a146f85a403fb76749a64fd6af5dec64c" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>IsOpening</name></member>
+      <member refid="class_window_1a7a79f00d39f0c83d2e86b7769e20cae9" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>IsOpeningOrClosing</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>IsShared</name></member>
+      <member refid="class_window_1a19febf0d464ca76f13a07f98c2f265fe" prot="protected" virt="virtual"><scope>Window_EquipItem</scope><name>IsSystemGraphicUpdateAllowed</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>IsVisible</name></member>
+      <member refid="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>item_max</name></member>
+      <member refid="class_window_1a296f7ddd18340f78bb28ce7afee4127f" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>left_arrow</name></member>
+      <member refid="class_window___selectable_1a4042f282e2b3b74896c7e067b679aa17" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>menu_item_height</name></member>
+      <member refid="class_window___base_1abd5f1ac22be605f031f81b9ddfa33817" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>new_position</name></member>
+      <member refid="class_window___base_1a39cdba2fb84fc798d564538c6f4fd580" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>old_position</name></member>
+      <member refid="class_window___base_1ad0e003956ea90e9705702b6dc4261324" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>OnFaceReady</name></member>
+      <member refid="class_window_1adb5a945a66fa5707debc8a13fd8e8b1d" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>opacity</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>operator=</name></member>
+      <member refid="class_window___equip_item_1a5ae4c98614b4c32d89f6345434da1bccaa354c48007fc1f1beaa7f663a1f3e315" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>other</name></member>
+      <member refid="class_window_1a90d08c9529ad8afee5bb2f97a339f2a8" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>ox</name></member>
+      <member refid="class_window_1a8dde2b1118eb9b211156c78f95e82037" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>oy</name></member>
+      <member refid="class_window___item_1a2fe232aed3fd3ae12ee08a9e7e56fa7c" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>Refresh</name></member>
+      <member refid="class_window_1a3396ddbdbe617dd20d241075b15358e8" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>right_arrow</name></member>
+      <member refid="class_window___selectable_1ae0260f6237e92923599d4cc40254f6c8" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>scroll_dir</name></member>
+      <member refid="class_window___selectable_1a75400e1a71780a88c41bd8d89e9c4b3c" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>scroll_progress</name></member>
+      <member refid="class_window_1afe506cb1f96195a7c07c504ad3846df5" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetActive</name></member>
+      <member refid="class_window___item_1a5a86dbde741cbcfb94e6044b499d1bc5" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetActor</name></member>
+      <member refid="class_window_1a13c0012638f137008802abb9797bc7b1" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetAnimateArrows</name></member>
+      <member refid="class_window_1a4b20daad71f636d0cd23cc86a2a2930e" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetBackOpacity</name></member>
+      <member refid="class_window_1adaa5908b1c01ceab63344e4e69b8e2e0" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetBorderX</name></member>
+      <member refid="class_window_1adaf3968702c7a02b6bca586e70642246" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetBorderY</name></member>
+      <member refid="class_window_1accefc4c2da52c1fc1defddf7ccb4d445" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetCloseAnimation</name></member>
+      <member refid="class_window___selectable_1ae39cda16f0198a9bd33983b1cf31b5a8" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetColumnMax</name></member>
+      <member refid="class_window_1ade4932d29b75cdd8f14b474006210505" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetContents</name></member>
+      <member refid="class_window_1a3110b6e41b04b3c3f6fd118187eeba3d" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetContentsOpacity</name></member>
+      <member refid="class_window_1a60601365a7ade2022e7c1445ba04ff6c" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetCursorRect</name></member>
+      <member refid="class_window_1a620068c714ba998fac887fce18b89c38" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetDownArrow</name></member>
+      <member refid="class_window___selectable_1aedc274bcfe73547d2f912c107ba5a32b" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetEndlessScrolling</name></member>
+      <member refid="class_window_1a3c7e82603bb2e26ff111fb2b6a2a7ef9" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetFont</name></member>
+      <member refid="class_window_1a08b70d6821e4f859e2c8292b28076028" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetFrameOpacity</name></member>
+      <member refid="class_window_1a0941f34765c08c3afc77709dbfcab5ca" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetHeight</name></member>
+      <member refid="class_window___selectable_1a106200ec57a53c50468bd77ded0faf36" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetHelpWindow</name></member>
+      <member refid="class_window___selectable_1aaf928ad0ab55c9aaff10ade1d3d0e01b" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetIndex</name></member>
+      <member refid="class_window___selectable_1acab7425fe6681083d35df6d807dce5db" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetItemMax</name></member>
+      <member refid="class_window_1ad72edc704a92811efd71217db95efdb2" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetLeftArrow</name></member>
+      <member refid="class_window___selectable_1a1bd20b1c0832c3ed15ef1422568c67ad" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetMenuItemHeight</name></member>
+      <member refid="class_window_1a256986c2f42bdc56604ceafa771f60a4" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetOpacity</name></member>
+      <member refid="class_window_1a3d95da1b7e47d332042ca263c31458af" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetOpenAnimation</name></member>
+      <member refid="class_window_1aea8bc4e6916566c627c2a3c7d2c2c0a5" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetOx</name></member>
+      <member refid="class_window_1a554315b28175a03de936f5f97cf5e4cd" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetOy</name></member>
+      <member refid="class_window_1ac23bd1bbebfc5f06961fecb26ea5c8fc" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetPause</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetRenderOy</name></member>
+      <member refid="class_window_1a8fd9a81ef3764efa0f467ef689a72d1e" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetRightArrow</name></member>
+      <member refid="class_window___selectable_1aa9a57e76079fbb262feef2ebc7abede1" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetSingleColumnWrapping</name></member>
+      <member refid="class_window_1aacd4df16a8276284d1d5e98bbc7f8db3" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetStretch</name></member>
+      <member refid="class_window___selectable_1a45ae718509f3677b47ca7d1ed18a55ff" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetTopRow</name></member>
+      <member refid="class_window_1ab09359aa2d8084e2dadd5b854e24cff8" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetUpArrow</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetVisible</name></member>
+      <member refid="class_window_1a31699d268cf2806e2c488532493effbd" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetWidth</name></member>
+      <member refid="class_window_1af3ec086d2b5bb619a56cdd9d5f9780f9" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetWindowskin</name></member>
+      <member refid="class_window_1ac3e264eb65626c9acbd383522581ba58" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetX</name></member>
+      <member refid="class_window_1ab08def241a522babd7e8d8a77904488b" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetY</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>SetZ</name></member>
+      <member refid="class_window___equip_item_1a5ae4c98614b4c32d89f6345434da1bccad1a4a15029c193f161e3c0fe371ebd21" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>shield</name></member>
+      <member refid="class_window_1a9f58857036c9515d1aaaf231e61fbe63" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>stretch</name></member>
+      <member refid="class_window___base_1ae56b601a7fef43d20d68bb08be8af46f" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>total_frames</name></member>
+      <member refid="class_window_1a97292cce3dc8deccdbd6e553ae26b8e6" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>up_arrow</name></member>
+      <member refid="class_window___selectable_1aff3576c095aee4a6de7851305389c628" prot="public" virt="virtual"><scope>Window_EquipItem</scope><name>Update</name></member>
+      <member refid="class_window___selectable_1a8412b5d1eb53e98330447d8e238ab5f2" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>UpdateArrows</name></member>
+      <member refid="class_window___selectable_1a57004fa930f77fcfba2442ff45de2f2c" prot="public" virt="virtual"><scope>Window_EquipItem</scope><name>UpdateCursorRect</name></member>
+      <member refid="class_window___item_1aded69e8c523bd146c1c10448d9f666da" prot="public" virt="virtual"><scope>Window_EquipItem</scope><name>UpdateHelp</name></member>
+      <member refid="class_window___selectable_1a8eacf2a319bd83a3c07849e1ad254dd9" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>UpdateHelpFn</name></member>
+      <member refid="class_window___base_1a7085158c5f55f9b74ddb6abfd601ec65" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>UpdateMovement</name></member>
+      <member refid="class_window___equip_item_1a5ae4c98614b4c32d89f6345434da1bccae7bb294cc9453a85395dc3f48b52f237" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>weapon</name></member>
+      <member refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>width</name></member>
+      <member refid="class_window_1a370186a3a31940d608a8ed9f0d94659b" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>Window</name></member>
+      <member refid="class_window___base_1ab4bd342e1f0f125b9c823b0903979648" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>Window_Base</name></member>
+      <member refid="class_window___equip_item_1abcfbfc22dc0b9029d7ce994c4f40cafc" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>Window_EquipItem</name></member>
+      <member refid="class_window___item_1a9042828f04a46568c8cb634fd4818155" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>Window_Item</name></member>
+      <member refid="class_window___selectable_1a432f6e58c02d8f2d6973158af56de9f2" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>Window_Selectable</name></member>
+      <member refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>windowskin</name></member>
+      <member refid="class_window___selectable_1ad9bec229a50e00bc3a5caa5d78127341" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>wrap_limit</name></member>
+      <member refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>x</name></member>
+      <member refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" prot="protected" virt="non-virtual"><scope>Window_EquipItem</scope><name>y</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>Window_EquipItem</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>Window_EquipItem</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

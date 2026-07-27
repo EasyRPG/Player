@@ -1,0 +1,1926 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="flat__map_8h" kind="file" language="C++">
+    <compoundname>flat_map.h</compoundname>
+    <includes local="no">vector</includes>
+    <includes local="no">array</includes>
+    <includes local="no">cassert</includes>
+    <includes local="no">initializer_list</includes>
+    <includes local="no">algorithm</includes>
+    <includes local="no">ostream</includes>
+    <includes local="no">utility</includes>
+    <includedby refid="input__buttons_8h" local="yes">input_buttons.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>flat_map.h</label>
+        <link refid="flat__map_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>algorithm</label>
+      </node>
+      <node id="3">
+        <label>array</label>
+      </node>
+      <node id="4">
+        <label>cassert</label>
+      </node>
+      <node id="5">
+        <label>initializer_list</label>
+      </node>
+      <node id="7">
+        <label>ostream</label>
+      </node>
+      <node id="8">
+        <label>utility</label>
+      </node>
+      <node id="2">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="121">
+        <label>algo.cpp</label>
+        <link refid="algo_8cpp"/>
+      </node>
+      <node id="122">
+        <label>async_handler.cpp</label>
+        <link refid="async__handler_8cpp"/>
+      </node>
+      <node id="123">
+        <label>attribute.cpp</label>
+        <link refid="attribute_8cpp"/>
+      </node>
+      <node id="6">
+        <label>audio.cpp</label>
+        <link refid="audio_8cpp"/>
+      </node>
+      <node id="5">
+        <label>audio.h</label>
+        <link refid="audio_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>audio_decoder_midi.cpp</label>
+        <link refid="audio__decoder__midi_8cpp"/>
+      </node>
+      <node id="9">
+        <label>audio_generic.cpp</label>
+        <link refid="audio__generic_8cpp"/>
+      </node>
+      <node id="8">
+        <label>audio_generic.h</label>
+        <link refid="audio__generic_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>audio_midi.cpp</label>
+        <link refid="audio__midi_8cpp"/>
+      </node>
+      <node id="124">
+        <label>autobattle.cpp</label>
+        <link refid="autobattle_8cpp"/>
+      </node>
+      <node id="125">
+        <label>background.cpp</label>
+        <link refid="background_8cpp"/>
+      </node>
+      <node id="40">
+        <label>baseui.cpp</label>
+        <link refid="baseui_8cpp"/>
+      </node>
+      <node id="39">
+        <label>baseui.h</label>
+        <link refid="baseui_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>battle_animation.cpp</label>
+        <link refid="battle__animation_8cpp"/>
+      </node>
+      <node id="126">
+        <label>cache.cpp</label>
+        <link refid="cache_8cpp"/>
+      </node>
+      <node id="21">
+        <label>decoder_fluidsynth.cpp</label>
+        <link refid="decoder__fluidsynth_8cpp"/>
+      </node>
+      <node id="127">
+        <label>directory_tree.cpp</label>
+        <link refid="directory__tree_8cpp"/>
+      </node>
+      <node id="42">
+        <label>dynrpg_textplugin.cpp</label>
+        <link refid="dynrpg__textplugin_8cpp"/>
+      </node>
+      <node id="128">
+        <label>enemyai.cpp</label>
+        <link refid="enemyai_8cpp"/>
+      </node>
+      <node id="130">
+        <label>exe_reader.cpp</label>
+        <link refid="exe__reader_8cpp"/>
+      </node>
+      <node id="129">
+        <label>exe_reader.h</label>
+        <link refid="exe__reader_8h"/>
+        <childnode refid="130" relation="include">
+        </childnode>
+        <childnode refid="131" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+      </node>
+      <node id="132">
+        <label>feature.cpp</label>
+        <link refid="feature_8cpp"/>
+      </node>
+      <node id="133">
+        <label>filefinder.cpp</label>
+        <link refid="filefinder_8cpp"/>
+      </node>
+      <node id="134">
+        <label>filefinder_rtp.cpp</label>
+        <link refid="filefinder__rtp_8cpp"/>
+      </node>
+      <node id="135">
+        <label>filesystem.cpp</label>
+        <link refid="filesystem_8cpp"/>
+      </node>
+      <node id="1">
+        <label>flat_map.h</label>
+        <link refid="flat__map_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="136">
+        <label>font.cpp</label>
+        <link refid="font_8cpp"/>
+      </node>
+      <node id="77">
+        <label>fps_overlay.cpp</label>
+        <link refid="fps__overlay_8cpp"/>
+      </node>
+      <node id="137">
+        <label>game_actor.cpp</label>
+        <link refid="game__actor_8cpp"/>
+      </node>
+      <node id="138">
+        <label>game_battle.cpp</label>
+        <link refid="game__battle_8cpp"/>
+      </node>
+      <node id="139">
+        <label>game_battlealgorithm.cpp</label>
+        <link refid="game__battlealgorithm_8cpp"/>
+      </node>
+      <node id="140">
+        <label>game_battler.cpp</label>
+        <link refid="game__battler_8cpp"/>
+      </node>
+      <node id="22">
+        <label>game_character.cpp</label>
+        <link refid="game__character_8cpp"/>
+      </node>
+      <node id="3">
+        <label>game_config.cpp</label>
+        <link refid="game__config_8cpp"/>
+      </node>
+      <node id="4">
+        <label>game_config.h</label>
+        <link refid="game__config_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="112" relation="include">
+        </childnode>
+        <childnode refid="113" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="114" relation="include">
+        </childnode>
+        <childnode refid="115" relation="include">
+        </childnode>
+        <childnode refid="116" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="117" relation="include">
+        </childnode>
+        <childnode refid="118" relation="include">
+        </childnode>
+        <childnode refid="119" relation="include">
+        </childnode>
+        <childnode refid="120" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="141">
+        <label>game_config_game.cpp</label>
+        <link refid="game__config__game_8cpp"/>
+      </node>
+      <node id="131">
+        <label>game_destiny.cpp</label>
+        <link refid="game__destiny_8cpp"/>
+      </node>
+      <node id="142">
+        <label>game_dynrpg.cpp</label>
+        <link refid="game__dynrpg_8cpp"/>
+      </node>
+      <node id="143">
+        <label>game_enemy.cpp</label>
+        <link refid="game__enemy_8cpp"/>
+      </node>
+      <node id="144">
+        <label>game_enemy.h</label>
+        <link refid="game__enemy_8h"/>
+        <childnode refid="121" relation="include">
+        </childnode>
+        <childnode refid="123" relation="include">
+        </childnode>
+        <childnode refid="124" relation="include">
+        </childnode>
+        <childnode refid="128" relation="include">
+        </childnode>
+        <childnode refid="139" relation="include">
+        </childnode>
+        <childnode refid="143" relation="include">
+        </childnode>
+        <childnode refid="145" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="150" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="152" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="154" relation="include">
+        </childnode>
+        <childnode refid="155" relation="include">
+        </childnode>
+        <childnode refid="149" relation="include">
+        </childnode>
+      </node>
+      <node id="146">
+        <label>game_enemyparty.cpp</label>
+        <link refid="game__enemyparty_8cpp"/>
+      </node>
+      <node id="145">
+        <label>game_enemyparty.h</label>
+        <link refid="game__enemyparty_8h"/>
+        <childnode refid="124" relation="include">
+        </childnode>
+        <childnode refid="128" relation="include">
+        </childnode>
+        <childnode refid="138" relation="include">
+        </childnode>
+        <childnode refid="139" relation="include">
+        </childnode>
+        <childnode refid="140" relation="include">
+        </childnode>
+        <childnode refid="146" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="147" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="148" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="149" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+      </node>
+      <node id="156">
+        <label>game_event.cpp</label>
+        <link refid="game__event_8cpp"/>
+      </node>
+      <node id="23">
+        <label>game_ineluki.cpp</label>
+        <link refid="game__ineluki_8cpp"/>
+      </node>
+      <node id="24">
+        <label>game_interpreter.cpp</label>
+        <link refid="game__interpreter_8cpp"/>
+      </node>
+      <node id="147">
+        <label>game_interpreter_battle.cpp</label>
+        <link refid="game__interpreter__battle_8cpp"/>
+      </node>
+      <node id="25">
+        <label>game_interpreter_control_variables.cpp</label>
+        <link refid="game__interpreter__control__variables_8cpp"/>
+      </node>
+      <node id="26">
+        <label>game_interpreter_map.cpp</label>
+        <link refid="game__interpreter__map_8cpp"/>
+      </node>
+      <node id="27">
+        <label>game_interpreter_shared.cpp</label>
+        <link refid="game__interpreter__shared_8cpp"/>
+      </node>
+      <node id="47">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="157">
+        <label>game_message.cpp</label>
+        <link refid="game__message_8cpp"/>
+      </node>
+      <node id="158">
+        <label>game_message_terms.cpp</label>
+        <link refid="game__message__terms_8cpp"/>
+      </node>
+      <node id="151">
+        <label>game_party.cpp</label>
+        <link refid="game__party_8cpp"/>
+      </node>
+      <node id="159">
+        <label>game_pictures.cpp</label>
+        <link refid="game__pictures_8cpp"/>
+      </node>
+      <node id="78">
+        <label>game_player.cpp</label>
+        <link refid="game__player_8cpp"/>
+      </node>
+      <node id="79">
+        <label>game_quit.cpp</label>
+        <link refid="game__quit_8cpp"/>
+      </node>
+      <node id="160">
+        <label>game_screen.cpp</label>
+        <link refid="game__screen_8cpp"/>
+      </node>
+      <node id="161">
+        <label>game_screen.h</label>
+        <link refid="game__screen_8h"/>
+        <childnode refid="125" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="138" relation="include">
+        </childnode>
+        <childnode refid="140" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="159" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="160" relation="include">
+        </childnode>
+        <childnode refid="148" relation="include">
+        </childnode>
+        <childnode refid="162" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="163" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="164" relation="include">
+        </childnode>
+        <childnode refid="154" relation="include">
+        </childnode>
+        <childnode refid="155" relation="include">
+        </childnode>
+        <childnode refid="165" relation="include">
+        </childnode>
+        <childnode refid="166" relation="include">
+        </childnode>
+        <childnode refid="149" relation="include">
+        </childnode>
+        <childnode refid="167" relation="include">
+        </childnode>
+        <childnode refid="168" relation="include">
+        </childnode>
+      </node>
+      <node id="169">
+        <label>game_strings.cpp</label>
+        <link refid="game__strings_8cpp"/>
+      </node>
+      <node id="170">
+        <label>game_strings.h</label>
+        <link refid="game__strings_8h"/>
+        <childnode refid="142" relation="include">
+        </childnode>
+        <childnode refid="157" relation="include">
+        </childnode>
+        <childnode refid="169" relation="include">
+        </childnode>
+        <childnode refid="171" relation="include">
+        </childnode>
+        <childnode refid="148" relation="include">
+        </childnode>
+        <childnode refid="172" relation="include">
+        </childnode>
+        <childnode refid="173" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="163" relation="include">
+        </childnode>
+        <childnode refid="111" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>game_system.cpp</label>
+        <link refid="game__system_8cpp"/>
+      </node>
+      <node id="171">
+        <label>game_windows.cpp</label>
+        <link refid="game__windows_8cpp"/>
+      </node>
+      <node id="43">
+        <label>graphics.cpp</label>
+        <link refid="graphics_8cpp"/>
+      </node>
+      <node id="44">
+        <label>input.cpp</label>
+        <link refid="input_8cpp"/>
+      </node>
+      <node id="76">
+        <label>input.h</label>
+        <link refid="input_8h"/>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="107" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+        <childnode refid="110" relation="include">
+        </childnode>
+        <childnode refid="111" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>input_buttons.h</label>
+        <link refid="input__buttons_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="112" relation="include">
+        </childnode>
+        <childnode refid="113" relation="include">
+        </childnode>
+        <childnode refid="114" relation="include">
+        </childnode>
+        <childnode refid="115" relation="include">
+        </childnode>
+        <childnode refid="116" relation="include">
+        </childnode>
+        <childnode refid="117" relation="include">
+        </childnode>
+        <childnode refid="118" relation="include">
+        </childnode>
+        <childnode refid="119" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="112">
+        <label>input_buttons_desktop.cpp</label>
+        <link refid="input__buttons__desktop_8cpp"/>
+      </node>
+      <node id="45">
+        <label>input_source.cpp</label>
+        <link refid="input__source_8cpp"/>
+      </node>
+      <node id="113">
+        <label>input_source.h</label>
+        <link refid="input__source_8h"/>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>leasy/leasy.cpp</label>
+        <link refid="leasy_8cpp"/>
+      </node>
+      <node id="46">
+        <label>leasy/leasy.hpp</label>
+        <link refid="leasy_8hpp"/>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>leasy/ui/window.cpp</label>
+        <link refid="leasy_2ui_2window_8cpp"/>
+      </node>
+      <node id="52">
+        <label>leasy/ui/window.hpp</label>
+        <link refid="window_8hpp"/>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="48">
+        <label>leasy/ui/winstream.hpp</label>
+        <link refid="winstream_8hpp"/>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="148">
+        <label>main_data.cpp</label>
+        <link refid="main__data_8cpp"/>
+      </node>
+      <node id="80">
+        <label>maniac_patch.cpp</label>
+        <link refid="maniac__patch_8cpp"/>
+      </node>
+      <node id="172">
+        <label>maniac_patch.h</label>
+        <link refid="maniac__patch_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>message_overlay.cpp</label>
+        <link refid="message__overlay_8cpp"/>
+      </node>
+      <node id="174">
+        <label>meta.cpp</label>
+        <link refid="meta_8cpp"/>
+      </node>
+      <node id="54">
+        <label>output.cpp</label>
+        <link refid="output_8cpp"/>
+      </node>
+      <node id="173">
+        <label>pending_message.cpp</label>
+        <link refid="pending__message_8cpp"/>
+      </node>
+      <node id="162">
+        <label>plane.cpp</label>
+        <link refid="plane_8cpp"/>
+      </node>
+      <node id="114">
+        <label>platform/3ds/input_buttons.cpp</label>
+        <link refid="3ds_2input__buttons_8cpp"/>
+      </node>
+      <node id="175">
+        <label>platform/3ds/main.cpp</label>
+        <link refid="3ds_2main_8cpp"/>
+      </node>
+      <node id="56">
+        <label>platform/3ds/ui.cpp</label>
+        <link refid="3ds_2ui_8cpp"/>
+      </node>
+      <node id="55">
+        <label>platform/3ds/ui.h</label>
+        <link refid="3ds_2ui_8h"/>
+        <childnode refid="56" relation="include">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp</label>
+        <link refid="org__easyrpg__player__player___easy_rpg_player_activity_8cpp"/>
+      </node>
+      <node id="58">
+        <label>platform/emscripten/interface.cpp</label>
+        <link refid="interface_8cpp"/>
+      </node>
+      <node id="59">
+        <label>platform/emscripten/main.cpp</label>
+        <link refid="emscripten_2main_8cpp"/>
+      </node>
+      <node id="10">
+        <label>platform/libretro/audio.h</label>
+        <link refid="platform_2libretro_2audio_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="115">
+        <label>platform/libretro/input_buttons.cpp</label>
+        <link refid="libretro_2input__buttons_8cpp"/>
+      </node>
+      <node id="12">
+        <label>platform/libretro/midiout_device.cpp</label>
+        <link refid="midiout__device_8cpp"/>
+      </node>
+      <node id="13">
+        <label>platform/libretro/ui.cpp</label>
+        <link refid="libretro_2ui_8cpp"/>
+      </node>
+      <node id="11">
+        <label>platform/libretro/ui.h</label>
+        <link refid="libretro_2ui_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>platform/psvita/audio.h</label>
+        <link refid="platform_2psvita_2audio_8h"/>
+      </node>
+      <node id="116">
+        <label>platform/psvita/input_buttons.cpp</label>
+        <link refid="psvita_2input__buttons_8cpp"/>
+      </node>
+      <node id="176">
+        <label>platform/psvita/main.cpp</label>
+        <link refid="psvita_2main_8cpp"/>
+      </node>
+      <node id="61">
+        <label>platform/psvita/ui.cpp</label>
+        <link refid="psvita_2ui_8cpp"/>
+      </node>
+      <node id="60">
+        <label>platform/psvita/ui.h</label>
+        <link refid="psvita_2ui_8h"/>
+        <childnode refid="61" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>platform/sdl/main.cpp</label>
+        <link refid="sdl_2main_8cpp"/>
+      </node>
+      <node id="15">
+        <label>platform/sdl/sdl2_audio.h</label>
+        <link refid="sdl2__audio_8h"/>
+      </node>
+      <node id="63">
+        <label>platform/sdl/sdl2_ui.cpp</label>
+        <link refid="sdl2__ui_8cpp"/>
+      </node>
+      <node id="62">
+        <label>platform/sdl/sdl2_ui.h</label>
+        <link refid="sdl2__ui_8h"/>
+        <childnode refid="63" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>platform/sdl/sdl3_audio.h</label>
+        <link refid="sdl3__audio_8h"/>
+      </node>
+      <node id="65">
+        <label>platform/sdl/sdl3_ui.cpp</label>
+        <link refid="sdl3__ui_8cpp"/>
+      </node>
+      <node id="64">
+        <label>platform/sdl/sdl3_ui.h</label>
+        <link refid="sdl3__ui_8h"/>
+        <childnode refid="65" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>platform/sdl/sdl_audio.h</label>
+        <link refid="sdl__audio_8h"/>
+      </node>
+      <node id="67">
+        <label>platform/sdl/sdl_ui.cpp</label>
+        <link refid="sdl__ui_8cpp"/>
+      </node>
+      <node id="66">
+        <label>platform/sdl/sdl_ui.h</label>
+        <link refid="sdl__ui_8h"/>
+        <childnode refid="67" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>platform/switch/audio.h</label>
+        <link refid="platform_2switch_2audio_8h"/>
+      </node>
+      <node id="117">
+        <label>platform/switch/input_buttons.cpp</label>
+        <link refid="switch_2input__buttons_8cpp"/>
+      </node>
+      <node id="177">
+        <label>platform/switch/main.cpp</label>
+        <link refid="switch_2main_8cpp"/>
+      </node>
+      <node id="69">
+        <label>platform/switch/ui.cpp</label>
+        <link refid="switch_2ui_8cpp"/>
+      </node>
+      <node id="68">
+        <label>platform/switch/ui.h</label>
+        <link refid="switch_2ui_8h"/>
+        <childnode refid="69" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>platform/wii/audio.h</label>
+        <link refid="platform_2wii_2audio_8h"/>
+      </node>
+      <node id="118">
+        <label>platform/wii/input_buttons.cpp</label>
+        <link refid="wii_2input__buttons_8cpp"/>
+      </node>
+      <node id="70">
+        <label>platform/wii/main.cpp</label>
+        <link refid="wii_2main_8cpp"/>
+      </node>
+      <node id="119">
+        <label>platform/wiiu/input_buttons.cpp</label>
+        <link refid="wiiu_2input__buttons_8cpp"/>
+      </node>
+      <node id="178">
+        <label>platform/wiiu/main.cpp</label>
+        <link refid="wiiu_2main_8cpp"/>
+      </node>
+      <node id="29">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="120">
+        <label>player.h</label>
+        <link refid="player_8h"/>
+        <childnode refid="121" relation="include">
+        </childnode>
+        <childnode refid="122" relation="include">
+        </childnode>
+        <childnode refid="123" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="124" relation="include">
+        </childnode>
+        <childnode refid="125" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="126" relation="include">
+        </childnode>
+        <childnode refid="127" relation="include">
+        </childnode>
+        <childnode refid="128" relation="include">
+        </childnode>
+        <childnode refid="129" relation="include">
+        </childnode>
+        <childnode refid="132" relation="include">
+        </childnode>
+        <childnode refid="133" relation="include">
+        </childnode>
+        <childnode refid="134" relation="include">
+        </childnode>
+        <childnode refid="135" relation="include">
+        </childnode>
+        <childnode refid="136" relation="include">
+        </childnode>
+        <childnode refid="137" relation="include">
+        </childnode>
+        <childnode refid="138" relation="include">
+        </childnode>
+        <childnode refid="139" relation="include">
+        </childnode>
+        <childnode refid="140" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="141" relation="include">
+        </childnode>
+        <childnode refid="142" relation="include">
+        </childnode>
+        <childnode refid="143" relation="include">
+        </childnode>
+        <childnode refid="144" relation="include">
+        </childnode>
+        <childnode refid="156" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="147" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="157" relation="include">
+        </childnode>
+        <childnode refid="158" relation="include">
+        </childnode>
+        <childnode refid="159" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="160" relation="include">
+        </childnode>
+        <childnode refid="161" relation="include">
+        </childnode>
+        <childnode refid="169" relation="include">
+        </childnode>
+        <childnode refid="170" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="171" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="148" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="174" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="173" relation="include">
+        </childnode>
+        <childnode refid="162" relation="include">
+        </childnode>
+        <childnode refid="175" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="176" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="177" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="178" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="179" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="163" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="180" relation="include">
+        </childnode>
+        <childnode refid="154" relation="include">
+        </childnode>
+        <childnode refid="181" relation="include">
+        </childnode>
+        <childnode refid="182" relation="include">
+        </childnode>
+        <childnode refid="155" relation="include">
+        </childnode>
+        <childnode refid="165" relation="include">
+        </childnode>
+        <childnode refid="183" relation="include">
+        </childnode>
+        <childnode refid="166" relation="include">
+        </childnode>
+        <childnode refid="149" relation="include">
+        </childnode>
+        <childnode refid="167" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="168" relation="include">
+        </childnode>
+        <childnode refid="184" relation="include">
+        </childnode>
+        <childnode refid="185" relation="include">
+        </childnode>
+        <childnode refid="186" relation="include">
+        </childnode>
+        <childnode refid="187" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="188" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="189" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="190" relation="include">
+        </childnode>
+        <childnode refid="193" relation="include">
+        </childnode>
+        <childnode refid="194" relation="include">
+        </childnode>
+        <childnode refid="110" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>scene.cpp</label>
+        <link refid="scene_8cpp"/>
+      </node>
+      <node id="81">
+        <label>scene_actortarget.cpp</label>
+        <link refid="scene__actortarget_8cpp"/>
+      </node>
+      <node id="82">
+        <label>scene_battle.cpp</label>
+        <link refid="scene__battle_8cpp"/>
+      </node>
+      <node id="150">
+        <label>scene_battle.h</label>
+        <link refid="scene__battle_8h"/>
+        <childnode refid="147" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="151" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="152" relation="include">
+        </childnode>
+        <childnode refid="153" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="83">
+        <label>scene_battle_rpg2k.cpp</label>
+        <link refid="scene__battle__rpg2k_8cpp"/>
+      </node>
+      <node id="152">
+        <label>scene_battle_rpg2k.h</label>
+        <link refid="scene__battle__rpg2k_8h"/>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+      </node>
+      <node id="84">
+        <label>scene_battle_rpg2k3.cpp</label>
+        <link refid="scene__battle__rpg2k3_8cpp"/>
+      </node>
+      <node id="153">
+        <label>scene_battle_rpg2k3.h</label>
+        <link refid="scene__battle__rpg2k3_8h"/>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+      </node>
+      <node id="71">
+        <label>scene_debug.cpp</label>
+        <link refid="scene__debug_8cpp"/>
+      </node>
+      <node id="31">
+        <label>scene_end.cpp</label>
+        <link refid="scene__end_8cpp"/>
+      </node>
+      <node id="85">
+        <label>scene_equip.cpp</label>
+        <link refid="scene__equip_8cpp"/>
+      </node>
+      <node id="72">
+        <label>scene_file.cpp</label>
+        <link refid="scene__file_8cpp"/>
+      </node>
+      <node id="32">
+        <label>scene_gamebrowser.cpp</label>
+        <link refid="scene__gamebrowser_8cpp"/>
+      </node>
+      <node id="86">
+        <label>scene_gameover.cpp</label>
+        <link refid="scene__gameover_8cpp"/>
+      </node>
+      <node id="87">
+        <label>scene_import.cpp</label>
+        <link refid="scene__import_8cpp"/>
+      </node>
+      <node id="88">
+        <label>scene_item.cpp</label>
+        <link refid="scene__item_8cpp"/>
+      </node>
+      <node id="33">
+        <label>scene_language.cpp</label>
+        <link refid="scene__language_8cpp"/>
+      </node>
+      <node id="98">
+        <label>scene_language.h</label>
+        <link refid="scene__language_8h"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="179">
+        <label>scene_load.cpp</label>
+        <link refid="scene__load_8cpp"/>
+      </node>
+      <node id="89">
+        <label>scene_logo.cpp</label>
+        <link refid="scene__logo_8cpp"/>
+      </node>
+      <node id="34">
+        <label>scene_map.cpp</label>
+        <link refid="scene__map_8cpp"/>
+      </node>
+      <node id="35">
+        <label>scene_menu.cpp</label>
+        <link refid="scene__menu_8cpp"/>
+      </node>
+      <node id="90">
+        <label>scene_name.cpp</label>
+        <link refid="scene__name_8cpp"/>
+      </node>
+      <node id="91">
+        <label>scene_order.cpp</label>
+        <link refid="scene__order_8cpp"/>
+      </node>
+      <node id="163">
+        <label>scene_save.cpp</label>
+        <link refid="scene__save_8cpp"/>
+      </node>
+      <node id="36">
+        <label>scene_settings.cpp</label>
+        <link refid="scene__settings_8cpp"/>
+      </node>
+      <node id="99">
+        <label>scene_settings.h</label>
+        <link refid="scene__settings_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="92">
+        <label>scene_shop.cpp</label>
+        <link refid="scene__shop_8cpp"/>
+      </node>
+      <node id="191">
+        <label>scene_shop.h</label>
+        <link refid="scene__shop_8h"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+      </node>
+      <node id="93">
+        <label>scene_skill.cpp</label>
+        <link refid="scene__skill_8cpp"/>
+      </node>
+      <node id="94">
+        <label>scene_status.cpp</label>
+        <link refid="scene__status_8cpp"/>
+      </node>
+      <node id="95">
+        <label>scene_teleport.cpp</label>
+        <link refid="scene__teleport_8cpp"/>
+      </node>
+      <node id="37">
+        <label>scene_title.cpp</label>
+        <link refid="scene__title_8cpp"/>
+      </node>
+      <node id="164">
+        <label>screen.cpp</label>
+        <link refid="screen_8cpp"/>
+      </node>
+      <node id="180">
+        <label>sprite.cpp</label>
+        <link refid="sprite_8cpp"/>
+      </node>
+      <node id="154">
+        <label>sprite_actor.cpp</label>
+        <link refid="sprite__actor_8cpp"/>
+      </node>
+      <node id="181">
+        <label>sprite_battler.cpp</label>
+        <link refid="sprite__battler_8cpp"/>
+      </node>
+      <node id="182">
+        <label>sprite_character.cpp</label>
+        <link refid="sprite__character_8cpp"/>
+      </node>
+      <node id="155">
+        <label>sprite_enemy.cpp</label>
+        <link refid="sprite__enemy_8cpp"/>
+      </node>
+      <node id="165">
+        <label>sprite_picture.cpp</label>
+        <link refid="sprite__picture_8cpp"/>
+      </node>
+      <node id="183">
+        <label>sprite_timer.cpp</label>
+        <link refid="sprite__timer_8cpp"/>
+      </node>
+      <node id="166">
+        <label>sprite_weapon.cpp</label>
+        <link refid="sprite__weapon_8cpp"/>
+      </node>
+      <node id="149">
+        <label>spriteset_battle.cpp</label>
+        <link refid="spriteset__battle_8cpp"/>
+      </node>
+      <node id="167">
+        <label>spriteset_map.cpp</label>
+        <link refid="spriteset__map_8cpp"/>
+      </node>
+      <node id="73">
+        <label>tilemap_layer.cpp</label>
+        <link refid="tilemap__layer_8cpp"/>
+      </node>
+      <node id="74">
+        <label>transition.cpp</label>
+        <link refid="transition_8cpp"/>
+      </node>
+      <node id="75">
+        <label>translation.cpp</label>
+        <link refid="translation_8cpp"/>
+      </node>
+      <node id="168">
+        <label>weather.cpp</label>
+        <link refid="weather_8cpp"/>
+      </node>
+      <node id="184">
+        <label>window.cpp</label>
+        <link refid="window_8cpp"/>
+      </node>
+      <node id="185">
+        <label>window_actortarget.cpp</label>
+        <link refid="window__actortarget_8cpp"/>
+      </node>
+      <node id="186">
+        <label>window_base.cpp</label>
+        <link refid="window__base_8cpp"/>
+      </node>
+      <node id="187">
+        <label>window_battlemessage.cpp</label>
+        <link refid="window__battlemessage_8cpp"/>
+      </node>
+      <node id="96">
+        <label>window_battlestatus.cpp</label>
+        <link refid="window__battlestatus_8cpp"/>
+      </node>
+      <node id="188">
+        <label>window_equipstatus.cpp</label>
+        <link refid="window__equipstatus_8cpp"/>
+      </node>
+      <node id="100">
+        <label>window_input_settings.cpp</label>
+        <link refid="window__input__settings_8cpp"/>
+      </node>
+      <node id="97">
+        <label>window_input_settings.h</label>
+        <link refid="window__input__settings_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+      </node>
+      <node id="101">
+        <label>window_interpreter.cpp</label>
+        <link refid="window__interpreter_8cpp"/>
+      </node>
+      <node id="102">
+        <label>window_keyboard.cpp</label>
+        <link refid="window__keyboard_8cpp"/>
+      </node>
+      <node id="189">
+        <label>window_menustatus.cpp</label>
+        <link refid="window__menustatus_8cpp"/>
+      </node>
+      <node id="103">
+        <label>window_message.cpp</label>
+        <link refid="window__message_8cpp"/>
+      </node>
+      <node id="104">
+        <label>window_numberinput.cpp</label>
+        <link refid="window__numberinput_8cpp"/>
+      </node>
+      <node id="105">
+        <label>window_savefile.cpp</label>
+        <link refid="window__savefile_8cpp"/>
+      </node>
+      <node id="106">
+        <label>window_selectable.cpp</label>
+        <link refid="window__selectable_8cpp"/>
+      </node>
+      <node id="38">
+        <label>window_settings.cpp</label>
+        <link refid="window__settings_8cpp"/>
+      </node>
+      <node id="107">
+        <label>window_settings.h</label>
+        <link refid="window__settings_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="108">
+        <label>window_shop.cpp</label>
+        <link refid="window__shop_8cpp"/>
+      </node>
+      <node id="192">
+        <label>window_shopbuy.cpp</label>
+        <link refid="window__shopbuy_8cpp"/>
+      </node>
+      <node id="190">
+        <label>window_shopbuy.h</label>
+        <link refid="window__shopbuy_8h"/>
+        <childnode refid="191" relation="include">
+        </childnode>
+        <childnode refid="192" relation="include">
+        </childnode>
+      </node>
+      <node id="109">
+        <label>window_shopnumber.cpp</label>
+        <link refid="window__shopnumber_8cpp"/>
+      </node>
+      <node id="193">
+        <label>window_skill.cpp</label>
+        <link refid="window__skill_8cpp"/>
+      </node>
+      <node id="194">
+        <label>window_skillstatus.cpp</label>
+        <link refid="window__skillstatus_8cpp"/>
+      </node>
+      <node id="110">
+        <label>window_stringview.cpp</label>
+        <link refid="window__stringview_8cpp"/>
+      </node>
+      <node id="111">
+        <label>window_varlist.cpp</label>
+        <link refid="window__varlist_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_flat_unique_multi_map" prot="public">FlatUniqueMultiMap</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="flat__map_8h_1a98f1d506db47d5cb2a216a0246c36af4" prot="public" static="no">
+        <name>EP_FLAT_MAP_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="20" column="9" bodyfile="flat_map.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_FLAT_MAP_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="flat__map_8h_1a98f1d506db47d5cb2a216a0246c36af4" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_FLAT_MAP_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;array&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cassert&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;initializer_list&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;algorithm&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;utility&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>K,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>V&gt;</highlight></codeline>
+<codeline lineno="39" refid="class_flat_unique_multi_map" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_flat_unique_multi_map_1a00e5b40f85d8e33d61cfae3a78d27e89" kindref="member">FlatUniqueMultiMap</ref><sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="41" refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" kindref="member">pair_type</ref><sp/>=<sp/>std::pair&lt;K,V&gt;;</highlight></codeline>
+<codeline lineno="42" refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" kindref="member">first_type</ref><sp/>=<sp/>K;</highlight></codeline>
+<codeline lineno="43" refid="class_flat_unique_multi_map_1ad620e80ee368842f5182296ae0119f42" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_flat_unique_multi_map_1ad620e80ee368842f5182296ae0119f42" kindref="member">second_type</ref><sp/>=<sp/>V;</highlight></codeline>
+<codeline lineno="44" refid="class_flat_unique_multi_map_1a7d1cfdd311d17078fe3b306241bbe9d0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_flat_unique_multi_map_1a7d1cfdd311d17078fe3b306241bbe9d0" kindref="member">container_type</ref><sp/>=<sp/>std::vector&lt;pair_type&gt;;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="class_flat_unique_multi_map_1aa507a7486f4bcc71997fd08ca6b7a2df" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_flat_unique_multi_map_1aa507a7486f4bcc71997fd08ca6b7a2df" kindref="member">iterator</ref><sp/>=<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>container_type::const_iterator;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="class_flat_unique_multi_map_1a00e5b40f85d8e33d61cfae3a78d27e89" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_flat_unique_multi_map_1a00e5b40f85d8e33d61cfae3a78d27e89" kindref="member">FlatUniqueMultiMap</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="class_flat_unique_multi_map_1a0ca6d770d65a89d21a59a68e68b465b9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_flat_unique_multi_map_1a0ca6d770d65a89d21a59a68e68b465b9" kindref="member">FlatUniqueMultiMap</ref>(std::initializer_list&lt;pair_type&gt;<sp/>ilist);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="class_flat_unique_multi_map_1a0216cdb72731b2fdffe697b47e59f903" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_flat_unique_multi_map_1aa507a7486f4bcc71997fd08ca6b7a2df" kindref="member">iterator</ref><sp/><ref refid="class_flat_unique_multi_map_1a0216cdb72731b2fdffe697b47e59f903" kindref="member">LowerBound</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" kindref="member">pair_type</ref>&amp;<sp/>pt)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="class_flat_unique_multi_map_1a77fe9ab233a9bdd400190ec89e5b4b5e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_flat_unique_multi_map_1aa507a7486f4bcc71997fd08ca6b7a2df" kindref="member">iterator</ref><sp/><ref refid="class_flat_unique_multi_map_1a77fe9ab233a9bdd400190ec89e5b4b5e" kindref="member">LowerBound</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" kindref="member">first_type</ref>&amp;<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81" refid="class_flat_unique_multi_map_1abb1766649ad696571465164bbb430566" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1abb1766649ad696571465164bbb430566" kindref="member">Has</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" kindref="member">pair_type</ref>&amp;<sp/>pt)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88" refid="class_flat_unique_multi_map_1ad1782dd469332e1627d86d422c9b5039" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1ad1782dd469332e1627d86d422c9b5039" kindref="member">Has</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" kindref="member">first_type</ref>&amp;<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="class_flat_unique_multi_map_1ad5530c22387b43823518a9e294946d3e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1ad5530c22387b43823518a9e294946d3e" kindref="member">Count</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" kindref="member">first_type</ref>&amp;<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102" refid="class_flat_unique_multi_map_1aac9a35a746c1ca59a6763a143512d1b4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1aac9a35a746c1ca59a6763a143512d1b4" kindref="member">Add</ref>(<ref refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" kindref="member">pair_type</ref><sp/>pt);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109" refid="class_flat_unique_multi_map_1aa4fb592161d04ebc44943ff702ed20d4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1aa4fb592161d04ebc44943ff702ed20d4" kindref="member">Remove</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" kindref="member">pair_type</ref>&amp;<sp/>pt);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116" refid="class_flat_unique_multi_map_1aab4262bdf6509b9bfdbb75460e9d6de2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1aab4262bdf6509b9bfdbb75460e9d6de2" kindref="member">RemoveAll</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" kindref="member">first_type</ref>&amp;<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>);</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueIter&gt;</highlight></codeline>
+<codeline lineno="125" refid="class_flat_unique_multi_map_1a3190341ad2698bc9fb658baa170a5cbc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a3190341ad2698bc9fb658baa170a5cbc" kindref="member">ReplaceAll</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" kindref="member">first_type</ref>&amp;<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/>ValueIter<sp/>values_begin,<sp/>ValueIter<sp/>values_end);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128" refid="class_flat_unique_multi_map_1acf66b1198429e8097f86aeecf7d8295f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_flat_unique_multi_map_1aa507a7486f4bcc71997fd08ca6b7a2df" kindref="member">iterator</ref><sp/><ref refid="class_flat_unique_multi_map_1acf66b1198429e8097f86aeecf7d8295f" kindref="member">begin</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>mappings.begin();<sp/>}</highlight></codeline>
+<codeline lineno="130" refid="class_flat_unique_multi_map_1a8cc26951970fb7a41e81eefc29d974f5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_flat_unique_multi_map_1aa507a7486f4bcc71997fd08ca6b7a2df" kindref="member">iterator</ref><sp/><ref refid="class_flat_unique_multi_map_1a8cc26951970fb7a41e81eefc29d974f5" kindref="member">end</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>mappings.end();<sp/>}</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133" refid="class_flat_unique_multi_map_1aa4ec5ff864ac079b7947b2eff3dfd0de" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1aa4ec5ff864ac079b7947b2eff3dfd0de" kindref="member">size</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>mappings.size();<sp/>}</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136" refid="class_flat_unique_multi_map_1a5e58321d8fe6733c9f82a13d92e65a96" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a5e58321d8fe6733c9f82a13d92e65a96" kindref="member">empty</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>mappings.empty();<sp/>}</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_flat_unique_multi_map_1a7d1cfdd311d17078fe3b306241bbe9d0" kindref="member">container_type</ref><sp/>mappings;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>K,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>V&gt;</highlight></codeline>
+<codeline lineno="142" refid="class_flat_unique_multi_map_1a0ca6d770d65a89d21a59a68e68b465b9" refkind="member"><highlight class="normal"><ref refid="class_flat_unique_multi_map_1a00e5b40f85d8e33d61cfae3a78d27e89" kindref="member">FlatUniqueMultiMap&lt;K,V&gt;::FlatUniqueMultiMap</ref>(std::initializer_list&lt;pair_type&gt;<sp/>ilist)<sp/>:<sp/>mappings{ilist}</highlight></codeline>
+<codeline lineno="143"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>std::sort(mappings.begin(),<sp/>mappings.end());</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>iter<sp/>=<sp/>std::unique(mappings.begin(),<sp/>mappings.end());</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/>mappings.erase(iter,<sp/>mappings.end());</highlight></codeline>
+<codeline lineno="147"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>K,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>V&gt;</highlight></codeline>
+<codeline lineno="150" refid="class_flat_unique_multi_map_1a0216cdb72731b2fdffe697b47e59f903" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1aa507a7486f4bcc71997fd08ca6b7a2df" kindref="member">FlatUniqueMultiMap&lt;K,V&gt;::iterator</ref><sp/><ref refid="class_flat_unique_multi_map_1a0216cdb72731b2fdffe697b47e59f903" kindref="member">FlatUniqueMultiMap&lt;K, V&gt;::LowerBound</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" kindref="member">pair_type</ref>&amp;<sp/>pt)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::lower_bound(mappings.begin(),<sp/>mappings.end(),<sp/>pt);</highlight></codeline>
+<codeline lineno="152"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>K,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>V&gt;</highlight></codeline>
+<codeline lineno="155" refid="class_flat_unique_multi_map_1a77fe9ab233a9bdd400190ec89e5b4b5e" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1aa507a7486f4bcc71997fd08ca6b7a2df" kindref="member">FlatUniqueMultiMap&lt;K,V&gt;::iterator</ref><sp/><ref refid="class_flat_unique_multi_map_1a0216cdb72731b2fdffe697b47e59f903" kindref="member">FlatUniqueMultiMap&lt;K, V&gt;::LowerBound</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" kindref="member">first_type</ref>&amp;<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::lower_bound(mappings.begin(),<sp/>mappings.end(),<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/>[](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>l,<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>r)<sp/>{<sp/>return<sp/>l.first<sp/>&lt;<sp/>r;<sp/>});</highlight></codeline>
+<codeline lineno="157"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>K,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>V&gt;</highlight></codeline>
+<codeline lineno="160" refid="class_flat_unique_multi_map_1abb1766649ad696571465164bbb430566" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1abb1766649ad696571465164bbb430566" kindref="member">FlatUniqueMultiMap&lt;K, V&gt;::Has</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" kindref="member">pair_type</ref>&amp;<sp/>pt)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>iter<sp/>=<sp/><ref refid="class_flat_unique_multi_map_1a0216cdb72731b2fdffe697b47e59f903" kindref="member">LowerBound</ref>(pt);</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>iter<sp/>!=<sp/>mappings.end()<sp/>&amp;&amp;<sp/>*iter<sp/>==<sp/>pt;</highlight></codeline>
+<codeline lineno="163"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>K,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>V&gt;</highlight></codeline>
+<codeline lineno="166" refid="class_flat_unique_multi_map_1ad1782dd469332e1627d86d422c9b5039" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1abb1766649ad696571465164bbb430566" kindref="member">FlatUniqueMultiMap&lt;K, V&gt;::Has</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" kindref="member">first_type</ref>&amp;<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>iter<sp/>=<sp/><ref refid="class_flat_unique_multi_map_1a0216cdb72731b2fdffe697b47e59f903" kindref="member">LowerBound</ref>(<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>);</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>iter<sp/>!=<sp/>mappings.end()<sp/>&amp;&amp;<sp/>iter-&gt;first<sp/>==<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>;</highlight></codeline>
+<codeline lineno="169"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>K,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>V&gt;</highlight></codeline>
+<codeline lineno="172" refid="class_flat_unique_multi_map_1ad5530c22387b43823518a9e294946d3e" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1ad5530c22387b43823518a9e294946d3e" kindref="member">FlatUniqueMultiMap&lt;K, V&gt;::Count</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" kindref="member">first_type</ref>&amp;<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>iter<sp/>=<sp/><ref refid="class_flat_unique_multi_map_1a0216cdb72731b2fdffe697b47e59f903" kindref="member">LowerBound</ref>(<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>);</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>start_iter<sp/>=<sp/>iter;</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(iter<sp/>!=<sp/>mappings.end()<sp/>&amp;&amp;<sp/>iter-&gt;first<sp/>==<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(iter<sp/>!=<sp/>mappings.end()<sp/>&amp;&amp;<sp/>iter-&gt;first<sp/>==<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>++iter;</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::distance(start_iter,<sp/>iter);</highlight></codeline>
+<codeline lineno="184"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>K,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>V&gt;</highlight></codeline>
+<codeline lineno="187" refid="class_flat_unique_multi_map_1aac9a35a746c1ca59a6763a143512d1b4" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1aac9a35a746c1ca59a6763a143512d1b4" kindref="member">FlatUniqueMultiMap&lt;K,V&gt;::Add</ref>(<ref refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" kindref="member">pair_type</ref><sp/>pt)<sp/>{</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>iter<sp/>=<sp/><ref refid="class_flat_unique_multi_map_1a0216cdb72731b2fdffe697b47e59f903" kindref="member">LowerBound</ref>(pt);</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(iter<sp/>!=<sp/>mappings.end()<sp/>&amp;&amp;<sp/>*iter<sp/>==<sp/>pt)<sp/>{</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/>mappings.insert(iter,<sp/>std::move(pt));</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="194"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>K,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>V&gt;</highlight></codeline>
+<codeline lineno="197" refid="class_flat_unique_multi_map_1aa4fb592161d04ebc44943ff702ed20d4" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1aa4fb592161d04ebc44943ff702ed20d4" kindref="member">FlatUniqueMultiMap&lt;K,V&gt;::Remove</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" kindref="member">pair_type</ref>&amp;<sp/>pt)<sp/>{</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>iter<sp/>=<sp/><ref refid="class_flat_unique_multi_map_1a0216cdb72731b2fdffe697b47e59f903" kindref="member">LowerBound</ref>(pt);</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(iter<sp/>!=<sp/>mappings.end()<sp/>&amp;&amp;<sp/>*iter<sp/>==<sp/>pt)<sp/>{</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mappings.erase(iter);</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="204"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>K,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>V&gt;</highlight></codeline>
+<codeline lineno="207" refid="class_flat_unique_multi_map_1aab4262bdf6509b9bfdbb75460e9d6de2" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1aab4262bdf6509b9bfdbb75460e9d6de2" kindref="member">FlatUniqueMultiMap&lt;K,V&gt;::RemoveAll</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" kindref="member">first_type</ref>&amp;<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>pos<sp/>=<sp/>std::distance(mappings.cbegin(),<sp/><ref refid="class_flat_unique_multi_map_1a0216cdb72731b2fdffe697b47e59f903" kindref="member">LowerBound</ref>(<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>));</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a8cc26951970fb7a41e81eefc29d974f5" kindref="member">end</ref><sp/>=<sp/>mappings.end();</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>iter<sp/>=<sp/>std::remove_if(mappings.begin()<sp/>+<sp/>pos,<sp/><ref refid="class_flat_unique_multi_map_1a8cc26951970fb7a41e81eefc29d974f5" kindref="member">end</ref>,<sp/>[&amp;<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>pt)<sp/>{<sp/>return<sp/>pt.first<sp/>==<sp/>key;<sp/>});</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>ret<sp/>=<sp/>std::distance(iter,<sp/><ref refid="class_flat_unique_multi_map_1a8cc26951970fb7a41e81eefc29d974f5" kindref="member">end</ref>);</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/>mappings.erase(iter,<sp/><ref refid="class_flat_unique_multi_map_1a8cc26951970fb7a41e81eefc29d974f5" kindref="member">end</ref>);</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ret;</highlight></codeline>
+<codeline lineno="214"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>K,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>V&gt;</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ValueIter&gt;</highlight></codeline>
+<codeline lineno="218" refid="class_flat_unique_multi_map_1a3190341ad2698bc9fb658baa170a5cbc" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a3190341ad2698bc9fb658baa170a5cbc" kindref="member">FlatUniqueMultiMap&lt;K,V&gt;::ReplaceAll</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" kindref="member">first_type</ref>&amp;<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ValueIter<sp/>values_begin,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ValueIter<sp/>values_end)<sp/>{</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="class_flat_unique_multi_map_1a8cc26951970fb7a41e81eefc29d974f5" kindref="member">end</ref><sp/>=<sp/>mappings.end();</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>key_start<sp/>=<sp/>std::distance(mappings.cbegin(),<sp/><ref refid="class_flat_unique_multi_map_1a0216cdb72731b2fdffe697b47e59f903" kindref="member">LowerBound</ref>(<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>));</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"></highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>iter<sp/>=<sp/>mappings.begin()<sp/>+<sp/>key_start;</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>values_iter<sp/>=<sp/>values_begin;</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"></highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Replace<sp/>existing<sp/>mappings<sp/>with<sp/>new<sp/>ones<sp/>in-place</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(iter<sp/>!=<sp/><ref refid="class_flat_unique_multi_map_1a8cc26951970fb7a41e81eefc29d974f5" kindref="member">end</ref><sp/>&amp;&amp;<sp/>values_iter<sp/>!=<sp/>values_end<sp/>&amp;&amp;<sp/>iter-&gt;first<sp/>==<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(iter++)-&gt;second<sp/>=<sp/>*(values_iter++);</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(values_iter<sp/>!=<sp/>values_end)<sp/>{</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>We<sp/>ran<sp/>out<sp/>of<sp/>space<sp/>and<sp/>there<sp/>are<sp/>still<sp/>more<sp/>values<sp/>to<sp/>add.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>num_additional_values<sp/>=<sp/>std::distance(values_iter,<sp/>values_end);</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>iter_pos<sp/>=<sp/>std::distance(mappings.begin(),<sp/>iter);</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>end_pos<sp/>=<sp/>mappings.size();</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mappings.resize(mappings.size()<sp/>+<sp/>num_additional_values);</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iter<sp/>=<sp/>mappings.begin()<sp/>+<sp/>iter_pos;</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>prev_end<sp/>=<sp/>mappings.begin()<sp/>+<sp/>end_pos;</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_flat_unique_multi_map_1a8cc26951970fb7a41e81eefc29d974f5" kindref="member">end</ref><sp/>=<sp/>mappings.end();</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"></highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Shift<sp/>all<sp/>array<sp/>contents<sp/>to<sp/>make<sp/>room,<sp/>then<sp/>replace<sp/>the<sp/>new<sp/>values.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::move_backward(iter,<sp/>prev_end,<sp/><ref refid="class_flat_unique_multi_map_1a8cc26951970fb7a41e81eefc29d974f5" kindref="member">end</ref>);</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(values_iter<sp/>!=<sp/>values_end)<sp/>{</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*(iter++)<sp/>=<sp/>{<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/>*(values_iter++)<sp/>};</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>new<sp/>keyset<sp/>was<sp/>smaller<sp/>(or<sp/>exact<sp/>same<sp/>size),<sp/>remove<sp/>the<sp/>extra<sp/>ones</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>iter<sp/>=<sp/>std::remove_if(iter,<sp/><ref refid="class_flat_unique_multi_map_1a8cc26951970fb7a41e81eefc29d974f5" kindref="member">end</ref>,<sp/>[&amp;](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>pt)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>pt.first<sp/>==<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>;<sp/>});</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mappings.erase(iter,<sp/><ref refid="class_flat_unique_multi_map_1a8cc26951970fb7a41e81eefc29d974f5" kindref="member">end</ref>);</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"></highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Sort<sp/>the<sp/>new<sp/>keyset</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/>iter<sp/>=<sp/>mappings.begin()<sp/>+<sp/>key_start;</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>key_end<sp/>=<sp/>iter<sp/>+<sp/>std::distance(values_begin,<sp/>values_end);</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/>std::sort(iter,<sp/>key_end);</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Rare<sp/>case<sp/>-<sp/>if<sp/>the<sp/>user<sp/>passed<sp/>in<sp/>duplicates<sp/>we<sp/>need<sp/>to<sp/>remove<sp/>them.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/>iter<sp/>=<sp/>std::unique(iter,<sp/>key_end);</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/>mappings.erase(iter,<sp/>key_end);</highlight></codeline>
+<codeline lineno="259"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="262"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="flat_map.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___config_audio" kind="struct" language="C++" prot="public">
+    <compoundname>Game_ConfigAudio</compoundname>
+    <includes refid="game__config_8h" local="no">game_config.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___config_audio_1a49f21f922dc30aa89ec8cc53e87b3151" prot="public" static="no" mutable="no">
+        <type><ref refid="class_range_config_param" kindref="compound">RangeConfigParam</ref>&lt; int &gt;</type>
+        <definition>RangeConfigParam&lt;int&gt; Game_ConfigAudio::music_volume</definition>
+        <argsstring></argsstring>
+        <name>music_volume</name>
+        <qualifiedname>Game_ConfigAudio::music_volume</qualifiedname>
+        <initializer>{ &quot;BGM Volume&quot;, &quot;Volume of the background music&quot;, &quot;Audio&quot;, &quot;MusicVolume&quot;, 100, 0, 100 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="149" column="18" bodyfile="game_config.h" bodystart="149" bodyend="149"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_audio_1ada7b7e74ca80175860c640b05efed25b" prot="public" static="no" mutable="no">
+        <type><ref refid="class_range_config_param" kindref="compound">RangeConfigParam</ref>&lt; int &gt;</type>
+        <definition>RangeConfigParam&lt;int&gt; Game_ConfigAudio::sound_volume</definition>
+        <argsstring></argsstring>
+        <name>sound_volume</name>
+        <qualifiedname>Game_ConfigAudio::sound_volume</qualifiedname>
+        <initializer>{ &quot;SFX Volume&quot;, &quot;Volume of the sound effects&quot;, &quot;Audio&quot;, &quot;SoundVolume&quot;, 100, 0, 100 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="150" column="18" bodyfile="game_config.h" bodystart="150" bodyend="150"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_audio_1a2393c8ae5818882912fa335d94237301" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigAudio::fluidsynth_midi</definition>
+        <argsstring></argsstring>
+        <name>fluidsynth_midi</name>
+        <qualifiedname>Game_ConfigAudio::fluidsynth_midi</qualifiedname>
+        <initializer>{ <ref refid="game__config_8h_1acecfd2ff5807c74538b9258765040b39" kindref="member">EP_FLUID_NAME</ref> &quot; (SF2)&quot;, &quot;Play MIDI using SF2 soundfonts&quot;, &quot;Audio&quot;, &quot;Fluidsynth&quot;, true }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="151" column="17" bodyfile="game_config.h" bodystart="151" bodyend="151"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_audio_1abaddcd5b2855b920e6720c1b339b75e1" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigAudio::wildmidi_midi</definition>
+        <argsstring></argsstring>
+        <name>wildmidi_midi</name>
+        <qualifiedname>Game_ConfigAudio::wildmidi_midi</qualifiedname>
+        <initializer>{ &quot;WildMidi (GUS)&quot;, &quot;Play MIDI using GUS patches&quot;, &quot;Audio&quot;, &quot;WildMidi&quot;, true }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="152" column="17" bodyfile="game_config.h" bodystart="152" bodyend="152"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_audio_1ac19f9a3c8b6b47ed0dcf238d6fcef09f" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigAudio::native_midi</definition>
+        <argsstring></argsstring>
+        <name>native_midi</name>
+        <qualifiedname>Game_ConfigAudio::native_midi</qualifiedname>
+        <initializer>{ &quot;Native MIDI&quot;, &quot;Play MIDI through the operating system &quot;, &quot;Audio&quot;, &quot;NativeMidi&quot;, true }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="153" column="17" bodyfile="game_config.h" bodystart="153" bodyend="153"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_audio_1a979d839abe0c3842f4f1c86262d4a58d" prot="public" static="no" mutable="no">
+        <type><ref refid="class_locked_config_param" kindref="compound">LockedConfigParam</ref>&lt; std::string &gt;</type>
+        <definition>LockedConfigParam&lt;std::string&gt; Game_ConfigAudio::fmmidi_midi</definition>
+        <argsstring></argsstring>
+        <name>fmmidi_midi</name>
+        <qualifiedname>Game_ConfigAudio::fmmidi_midi</qualifiedname>
+        <initializer>{ &quot;FmMidi&quot;, &quot;Play MIDI using the built-in MIDI synthesizer&quot;, &quot;[Always ON]&quot; }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="154" column="19" bodyfile="game_config.h" bodystart="154" bodyend="154"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_audio_1a7b8025f9e92080961090920ce1a3c20c" prot="public" static="no" mutable="no">
+        <type><ref refid="class_path_config_param" kindref="compound">PathConfigParam</ref></type>
+        <definition>PathConfigParam Game_ConfigAudio::soundfont</definition>
+        <argsstring></argsstring>
+        <name>soundfont</name>
+        <qualifiedname>Game_ConfigAudio::soundfont</qualifiedname>
+        <initializer>{ &quot;Soundfont&quot;, &quot;Soundfont to use for &quot; EP_FLUID_NAME, &quot;Audio&quot;, &quot;Soundfont&quot;, &quot;&quot; }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="155" column="17" bodyfile="game_config.h" bodystart="155" bodyend="155"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_game___config_audio_1ad42c29e5c71d4cb06fe601c595842696" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_ConfigAudio::Hide</definition>
+        <argsstring>()</argsstring>
+        <name>Hide</name>
+        <qualifiedname>Game_ConfigAudio::Hide</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="157" column="6" bodyfile="game_config.cpp" bodystart="89" bodyend="92"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="4">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>ConfigParam&lt; std::string &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="3">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="8">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="1">
+        <label>Game_ConfigAudio</label>
+        <link refid="struct_game___config_audio"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>music_volume</edgelabel>
+          <edgelabel>sound_volume</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>fluidsynth_midi</edgelabel>
+          <edgelabel>native_midi</edgelabel>
+          <edgelabel>wildmidi_midi</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>fmmidi_midi</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>soundfont</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>LockedConfigParam&lt; std::string &gt;</label>
+        <link refid="class_locked_config_param"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>PathConfigParam</label>
+        <link refid="class_path_config_param"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>StringConfigParam</label>
+        <link refid="class_config_param"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="game_config.h" line="148" column="1" bodyfile="game_config.h" bodystart="148" bodyend="158"/>
+    <listofallmembers>
+      <member refid="struct_game___config_audio_1a2393c8ae5818882912fa335d94237301" prot="public" virt="non-virtual"><scope>Game_ConfigAudio</scope><name>fluidsynth_midi</name></member>
+      <member refid="struct_game___config_audio_1a979d839abe0c3842f4f1c86262d4a58d" prot="public" virt="non-virtual"><scope>Game_ConfigAudio</scope><name>fmmidi_midi</name></member>
+      <member refid="struct_game___config_audio_1ad42c29e5c71d4cb06fe601c595842696" prot="public" virt="non-virtual"><scope>Game_ConfigAudio</scope><name>Hide</name></member>
+      <member refid="struct_game___config_audio_1a49f21f922dc30aa89ec8cc53e87b3151" prot="public" virt="non-virtual"><scope>Game_ConfigAudio</scope><name>music_volume</name></member>
+      <member refid="struct_game___config_audio_1ac19f9a3c8b6b47ed0dcf238d6fcef09f" prot="public" virt="non-virtual"><scope>Game_ConfigAudio</scope><name>native_midi</name></member>
+      <member refid="struct_game___config_audio_1ada7b7e74ca80175860c640b05efed25b" prot="public" virt="non-virtual"><scope>Game_ConfigAudio</scope><name>sound_volume</name></member>
+      <member refid="struct_game___config_audio_1a7b8025f9e92080961090920ce1a3c20c" prot="public" virt="non-virtual"><scope>Game_ConfigAudio</scope><name>soundfont</name></member>
+      <member refid="struct_game___config_audio_1abaddcd5b2855b920e6720c1b339b75e1" prot="public" virt="non-virtual"><scope>Game_ConfigAudio</scope><name>wildmidi_midi</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

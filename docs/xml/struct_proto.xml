@@ -1,0 +1,406 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_proto" kind="struct" language="C++" prot="public">
+    <compoundname>Proto</compoundname>
+    <includes refid="lobject_8h" local="no">lobject.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_proto_1a5b0bf6a93e383f0a873573b9c99dfb95" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>Proto::CommonHeader</definition>
+        <argsstring></argsstring>
+        <name>CommonHeader</name>
+        <qualifiedname>Proto::CommonHeader</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="603" column="3" bodyfile="leasy/lua/lobject.h" bodystart="603" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a3f106f177af6c68ffd8b042713266b98" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte Proto::numparams</definition>
+        <argsstring></argsstring>
+        <name>numparams</name>
+        <qualifiedname>Proto::numparams</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="604" column="11" bodyfile="leasy/lua/lobject.h" bodystart="604" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a16d8b2f349f89bdeabda995cf96c1fb0" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte Proto::flag</definition>
+        <argsstring></argsstring>
+        <name>flag</name>
+        <qualifiedname>Proto::flag</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="605" column="11" bodyfile="leasy/lua/lobject.h" bodystart="605" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a9c9ed4e9d996233f75cdf56b912e4803" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte Proto::maxstacksize</definition>
+        <argsstring></argsstring>
+        <name>maxstacksize</name>
+        <qualifiedname>Proto::maxstacksize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="606" column="11" bodyfile="leasy/lua/lobject.h" bodystart="606" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a6ecec897497ba7d94df6ef69289ef5c0" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Proto::sizeupvalues</definition>
+        <argsstring></argsstring>
+        <name>sizeupvalues</name>
+        <qualifiedname>Proto::sizeupvalues</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="607" column="7" bodyfile="leasy/lua/lobject.h" bodystart="607" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a5bd719e0486168f6ecd4b01bf41a7444" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Proto::sizek</definition>
+        <argsstring></argsstring>
+        <name>sizek</name>
+        <qualifiedname>Proto::sizek</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="608" column="7" bodyfile="leasy/lua/lobject.h" bodystart="608" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a43e4d3849b5859112d93bdc2534a7cc0" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Proto::sizecode</definition>
+        <argsstring></argsstring>
+        <name>sizecode</name>
+        <qualifiedname>Proto::sizecode</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="609" column="7" bodyfile="leasy/lua/lobject.h" bodystart="609" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a65303ae1d815313f3358a578113fcc6e" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Proto::sizelineinfo</definition>
+        <argsstring></argsstring>
+        <name>sizelineinfo</name>
+        <qualifiedname>Proto::sizelineinfo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="610" column="7" bodyfile="leasy/lua/lobject.h" bodystart="610" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a73ddad1a18b7c46be46ec32aa2a08632" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Proto::sizep</definition>
+        <argsstring></argsstring>
+        <name>sizep</name>
+        <qualifiedname>Proto::sizep</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="611" column="7" bodyfile="leasy/lua/lobject.h" bodystart="611" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1ac2ab37e941e8866687f44f7b2f4b95a9" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Proto::sizelocvars</definition>
+        <argsstring></argsstring>
+        <name>sizelocvars</name>
+        <qualifiedname>Proto::sizelocvars</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="612" column="7" bodyfile="leasy/lua/lobject.h" bodystart="612" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a48c289d2c5198fb3bb997196943e9902" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Proto::sizeabslineinfo</definition>
+        <argsstring></argsstring>
+        <name>sizeabslineinfo</name>
+        <qualifiedname>Proto::sizeabslineinfo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="613" column="7" bodyfile="leasy/lua/lobject.h" bodystart="613" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a62cf1c61b70bfaa4f1fb839b7398160b" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Proto::linedefined</definition>
+        <argsstring></argsstring>
+        <name>linedefined</name>
+        <qualifiedname>Proto::linedefined</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="614" column="7" bodyfile="leasy/lua/lobject.h" bodystart="614" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a9ef7fae1b22b11f5a145cfee8150059c" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Proto::lastlinedefined</definition>
+        <argsstring></argsstring>
+        <name>lastlinedefined</name>
+        <qualifiedname>Proto::lastlinedefined</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="615" column="7" bodyfile="leasy/lua/lobject.h" bodystart="615" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1ae292fb0c0558679704933824ce96eac2" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+        <definition>TValue* Proto::k</definition>
+        <argsstring></argsstring>
+        <name>k</name>
+        <qualifiedname>Proto::k</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="616" column="10" bodyfile="leasy/lua/lobject.h" bodystart="616" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a53b66e4e4ac4b612a41b67a0ace9b6a5" prot="public" static="no" mutable="no">
+        <type><ref refid="lobject_8h_1aa81d2e7f7263ef29946852d4966a192e" kindref="member">Instruction</ref> *</type>
+        <definition>Instruction* Proto::code</definition>
+        <argsstring></argsstring>
+        <name>code</name>
+        <qualifiedname>Proto::code</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="617" column="15" bodyfile="leasy/lua/lobject.h" bodystart="617" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a54dc8e2e8973007794fa0ab0e4a71461" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="struct_proto" kindref="compound">Proto</ref> **</type>
+        <definition>struct Proto** Proto::p</definition>
+        <argsstring></argsstring>
+        <name>p</name>
+        <qualifiedname>Proto::p</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="618" column="14" bodyfile="leasy/lua/lobject.h" bodystart="618" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a028070514796b4accbd99c59e6b83930" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_upvaldesc" kindref="compound">Upvaldesc</ref> *</type>
+        <definition>Upvaldesc* Proto::upvalues</definition>
+        <argsstring></argsstring>
+        <name>upvalues</name>
+        <qualifiedname>Proto::upvalues</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="619" column="13" bodyfile="leasy/lua/lobject.h" bodystart="619" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a4d8b6a245668e28870027f70a98cce98" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1aab58a246c9e0a85c4c2ed0fd8d6724bb" kindref="member">ls_byte</ref> *</type>
+        <definition>ls_byte* Proto::lineinfo</definition>
+        <argsstring></argsstring>
+        <name>lineinfo</name>
+        <qualifiedname>Proto::lineinfo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="620" column="11" bodyfile="leasy/lua/lobject.h" bodystart="620" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a012268f6cdec514d296b50356decff4e" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_abs_line_info" kindref="compound">AbsLineInfo</ref> *</type>
+        <definition>AbsLineInfo* Proto::abslineinfo</definition>
+        <argsstring></argsstring>
+        <name>abslineinfo</name>
+        <qualifiedname>Proto::abslineinfo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="621" column="15" bodyfile="leasy/lua/lobject.h" bodystart="621" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a41d627972548e1a6aaf358480ed46f69" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_loc_var" kindref="compound">LocVar</ref> *</type>
+        <definition>LocVar* Proto::locvars</definition>
+        <argsstring></argsstring>
+        <name>locvars</name>
+        <qualifiedname>Proto::locvars</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="622" column="10" bodyfile="leasy/lua/lobject.h" bodystart="622" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a92b6ec319e7aa1ee8b8ff7807353ad96" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>TString* Proto::source</definition>
+        <argsstring></argsstring>
+        <name>source</name>
+        <qualifiedname>Proto::source</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="623" column="12" bodyfile="leasy/lua/lobject.h" bodystart="623" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_proto_1a7991ec396b493a42b5c7f38b4e162959" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* Proto::gclist</definition>
+        <argsstring></argsstring>
+        <name>gclist</name>
+        <qualifiedname>Proto::gclist</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="624" column="12" bodyfile="leasy/lua/lobject.h" bodystart="624" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="5">
+        <label>AbsLineInfo</label>
+        <link refid="struct_abs_line_info"/>
+      </node>
+      <node id="7">
+        <label>GCObject</label>
+        <link refid="struct_g_c_object"/>
+      </node>
+      <node id="6">
+        <label>LocVar</label>
+        <link refid="struct_loc_var"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>varname</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Proto</label>
+        <link refid="struct_proto"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>k</edgelabel>
+        </childnode>
+        <childnode refid="1" relation="usage">
+          <edgelabel>p</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>upvalues</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>abslineinfo</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>locvars</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>source</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>gclist</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>TValue</label>
+        <link refid="struct_t_value"/>
+      </node>
+      <node id="3">
+        <label>Upvaldesc</label>
+        <link refid="struct_upvaldesc"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>name</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lobject.h" line="602" column="1" bodyfile="leasy/lua/lobject.h" bodystart="602" bodyend="625"/>
+    <listofallmembers>
+      <member refid="struct_proto_1a012268f6cdec514d296b50356decff4e" prot="public" virt="non-virtual"><scope>Proto</scope><name>abslineinfo</name></member>
+      <member refid="struct_proto_1a53b66e4e4ac4b612a41b67a0ace9b6a5" prot="public" virt="non-virtual"><scope>Proto</scope><name>code</name></member>
+      <member refid="struct_proto_1a5b0bf6a93e383f0a873573b9c99dfb95" prot="public" virt="non-virtual"><scope>Proto</scope><name>CommonHeader</name></member>
+      <member refid="struct_proto_1a16d8b2f349f89bdeabda995cf96c1fb0" prot="public" virt="non-virtual"><scope>Proto</scope><name>flag</name></member>
+      <member refid="struct_proto_1a7991ec396b493a42b5c7f38b4e162959" prot="public" virt="non-virtual"><scope>Proto</scope><name>gclist</name></member>
+      <member refid="struct_proto_1ae292fb0c0558679704933824ce96eac2" prot="public" virt="non-virtual"><scope>Proto</scope><name>k</name></member>
+      <member refid="struct_proto_1a9ef7fae1b22b11f5a145cfee8150059c" prot="public" virt="non-virtual"><scope>Proto</scope><name>lastlinedefined</name></member>
+      <member refid="struct_proto_1a62cf1c61b70bfaa4f1fb839b7398160b" prot="public" virt="non-virtual"><scope>Proto</scope><name>linedefined</name></member>
+      <member refid="struct_proto_1a4d8b6a245668e28870027f70a98cce98" prot="public" virt="non-virtual"><scope>Proto</scope><name>lineinfo</name></member>
+      <member refid="struct_proto_1a41d627972548e1a6aaf358480ed46f69" prot="public" virt="non-virtual"><scope>Proto</scope><name>locvars</name></member>
+      <member refid="struct_proto_1a9c9ed4e9d996233f75cdf56b912e4803" prot="public" virt="non-virtual"><scope>Proto</scope><name>maxstacksize</name></member>
+      <member refid="struct_proto_1a3f106f177af6c68ffd8b042713266b98" prot="public" virt="non-virtual"><scope>Proto</scope><name>numparams</name></member>
+      <member refid="struct_proto_1a54dc8e2e8973007794fa0ab0e4a71461" prot="public" virt="non-virtual"><scope>Proto</scope><name>p</name></member>
+      <member refid="struct_proto_1a48c289d2c5198fb3bb997196943e9902" prot="public" virt="non-virtual"><scope>Proto</scope><name>sizeabslineinfo</name></member>
+      <member refid="struct_proto_1a43e4d3849b5859112d93bdc2534a7cc0" prot="public" virt="non-virtual"><scope>Proto</scope><name>sizecode</name></member>
+      <member refid="struct_proto_1a5bd719e0486168f6ecd4b01bf41a7444" prot="public" virt="non-virtual"><scope>Proto</scope><name>sizek</name></member>
+      <member refid="struct_proto_1a65303ae1d815313f3358a578113fcc6e" prot="public" virt="non-virtual"><scope>Proto</scope><name>sizelineinfo</name></member>
+      <member refid="struct_proto_1ac2ab37e941e8866687f44f7b2f4b95a9" prot="public" virt="non-virtual"><scope>Proto</scope><name>sizelocvars</name></member>
+      <member refid="struct_proto_1a73ddad1a18b7c46be46ec32aa2a08632" prot="public" virt="non-virtual"><scope>Proto</scope><name>sizep</name></member>
+      <member refid="struct_proto_1a6ecec897497ba7d94df6ef69289ef5c0" prot="public" virt="non-virtual"><scope>Proto</scope><name>sizeupvalues</name></member>
+      <member refid="struct_proto_1a92b6ec319e7aa1ee8b8ff7807353ad96" prot="public" virt="non-virtual"><scope>Proto</scope><name>source</name></member>
+      <member refid="struct_proto_1a028070514796b4accbd99c59e6b83930" prot="public" virt="non-virtual"><scope>Proto</scope><name>upvalues</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

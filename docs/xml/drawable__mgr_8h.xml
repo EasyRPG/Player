@@ -1,0 +1,264 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="drawable__mgr_8h" kind="file" language="C++">
+    <compoundname>drawable_mgr.h</compoundname>
+    <includes refid="drawable_8h" local="yes">drawable.h</includes>
+    <includes refid="drawable__list_8h" local="yes">drawable_list.h</includes>
+    <includes local="no">cassert</includes>
+    <includedby refid="background_8cpp" local="yes">background.cpp</includedby>
+    <includedby refid="battle__animation_8cpp" local="yes">battle_animation.cpp</includedby>
+    <includedby refid="drawable_8cpp" local="yes">drawable.cpp</includedby>
+    <includedby refid="drawable__list_8cpp" local="yes">drawable_list.cpp</includedby>
+    <includedby refid="drawable__mgr_8cpp" local="yes">drawable_mgr.cpp</includedby>
+    <includedby refid="dynrpg__textplugin_8cpp" local="yes">dynrpg_textplugin.cpp</includedby>
+    <includedby refid="fps__overlay_8cpp" local="yes">fps_overlay.cpp</includedby>
+    <includedby refid="frame_8cpp" local="yes">frame.cpp</includedby>
+    <includedby refid="game__pictures_8cpp" local="yes">game_pictures.cpp</includedby>
+    <includedby refid="graphics_8cpp" local="yes">graphics.cpp</includedby>
+    <includedby refid="message__overlay_8cpp" local="yes">message_overlay.cpp</includedby>
+    <includedby refid="plane_8cpp" local="yes">plane.cpp</includedby>
+    <includedby refid="screen_8cpp" local="yes">screen.cpp</includedby>
+    <includedby refid="sprite_8cpp" local="yes">sprite.cpp</includedby>
+    <includedby refid="tilemap__layer_8cpp" local="yes">tilemap_layer.cpp</includedby>
+    <includedby refid="transition_8cpp" local="yes">transition.cpp</includedby>
+    <includedby refid="weather_8cpp" local="yes">weather.cpp</includedby>
+    <includedby refid="window_8cpp" local="yes">window.cpp</includedby>
+    <incdepgraph>
+      <node id="2">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>drawable_list.h</label>
+        <link refid="drawable__list_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>drawable_mgr.h</label>
+        <link refid="drawable__mgr_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>cassert</label>
+      </node>
+      <node id="3">
+        <label>cstdint</label>
+      </node>
+      <node id="7">
+        <label>limits</label>
+      </node>
+      <node id="4">
+        <label>memory</label>
+      </node>
+      <node id="6">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>background.cpp</label>
+        <link refid="background_8cpp"/>
+      </node>
+      <node id="3">
+        <label>battle_animation.cpp</label>
+        <link refid="battle__animation_8cpp"/>
+      </node>
+      <node id="4">
+        <label>drawable.cpp</label>
+        <link refid="drawable_8cpp"/>
+      </node>
+      <node id="5">
+        <label>drawable_list.cpp</label>
+        <link refid="drawable__list_8cpp"/>
+      </node>
+      <node id="6">
+        <label>drawable_mgr.cpp</label>
+        <link refid="drawable__mgr_8cpp"/>
+      </node>
+      <node id="1">
+        <label>drawable_mgr.h</label>
+        <link refid="drawable__mgr_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>dynrpg_textplugin.cpp</label>
+        <link refid="dynrpg__textplugin_8cpp"/>
+      </node>
+      <node id="8">
+        <label>fps_overlay.cpp</label>
+        <link refid="fps__overlay_8cpp"/>
+      </node>
+      <node id="9">
+        <label>frame.cpp</label>
+        <link refid="frame_8cpp"/>
+      </node>
+      <node id="10">
+        <label>game_pictures.cpp</label>
+        <link refid="game__pictures_8cpp"/>
+      </node>
+      <node id="11">
+        <label>graphics.cpp</label>
+        <link refid="graphics_8cpp"/>
+      </node>
+      <node id="12">
+        <label>message_overlay.cpp</label>
+        <link refid="message__overlay_8cpp"/>
+      </node>
+      <node id="13">
+        <label>plane.cpp</label>
+        <link refid="plane_8cpp"/>
+      </node>
+      <node id="14">
+        <label>screen.cpp</label>
+        <link refid="screen_8cpp"/>
+      </node>
+      <node id="15">
+        <label>sprite.cpp</label>
+        <link refid="sprite_8cpp"/>
+      </node>
+      <node id="16">
+        <label>tilemap_layer.cpp</label>
+        <link refid="tilemap__layer_8cpp"/>
+      </node>
+      <node id="17">
+        <label>transition.cpp</label>
+        <link refid="transition_8cpp"/>
+      </node>
+      <node id="18">
+        <label>weather.cpp</label>
+        <link refid="weather_8cpp"/>
+      </node>
+      <node id="19">
+        <label>window.cpp</label>
+        <link refid="window_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="struct_drawable_mgr" prot="public">DrawableMgr</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="drawable__mgr_8h_1a757a67f27ba4ca4c9f99d8e1e9e7aa4a" prot="public" static="no">
+        <name>EP_DRAWABLE_MGR_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="drawable_mgr.h" line="20" column="9" bodyfile="drawable_mgr.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_DRAWABLE_MGR_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="drawable__mgr_8h_1a757a67f27ba4ca4c9f99d8e1e9e7aa4a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_DRAWABLE_MGR_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="drawable_8h" kindref="compound">drawable.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="drawable__list_8h" kindref="compound">drawable_list.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cassert&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="struct_drawable_mgr" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_drawable_mgr" kindref="compound">DrawableMgr</ref><sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_drawable_list" kindref="compound">DrawableList</ref>&amp;<sp/><ref refid="struct_drawable_mgr_1ab5fae85c3deefdf2c2eab079dfe2a1cc" kindref="member">GetLocalList</ref>();</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_drawable_list" kindref="compound">DrawableList</ref>*<sp/><ref refid="struct_drawable_mgr_1abb0734a4a4e411b6e888f4efc39e977f" kindref="member">GetLocalListPtr</ref>();</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_drawable_mgr_1a86a8887c9183961d17d2e0b88241e7a0" kindref="member">SetLocalList</ref>(<ref refid="class_drawable_list" kindref="compound">DrawableList</ref>*<sp/>list);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_drawable_mgr_1aacd977551017460aac101bd7ab0e7650" kindref="member">Register</ref>(<ref refid="class_drawable" kindref="compound">Drawable</ref>*<sp/>drawable);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_drawable_mgr_1af79350e03e5eb4a19d7f3112dcb9f948" kindref="member">Remove</ref>(<ref refid="class_drawable" kindref="compound">Drawable</ref>*<sp/>drawable);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_drawable_mgr_1abf4b34ef7c68e3a9fbeb3a4775601271" kindref="member">OnUpdateZ</ref>(<ref refid="class_drawable" kindref="compound">Drawable</ref>*<sp/>drawable);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_drawable_list" kindref="compound">DrawableList</ref>*<sp/>_local;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="struct_drawable_mgr_1ab5fae85c3deefdf2c2eab079dfe2a1cc" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_drawable_list" kindref="compound">DrawableList</ref>&amp;<sp/><ref refid="struct_drawable_mgr_1ab5fae85c3deefdf2c2eab079dfe2a1cc" kindref="member">DrawableMgr::GetLocalList</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>local<sp/>=<sp/><ref refid="struct_drawable_mgr_1abb0734a4a4e411b6e888f4efc39e977f" kindref="member">GetLocalListPtr</ref>();</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(local<sp/>!=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*local;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47" refid="struct_drawable_mgr_1abb0734a4a4e411b6e888f4efc39e977f" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_drawable_list" kindref="compound">DrawableList</ref>*<sp/><ref refid="struct_drawable_mgr_1abb0734a4a4e411b6e888f4efc39e977f" kindref="member">DrawableMgr::GetLocalListPtr</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_local;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="struct_drawable_mgr_1abf4b34ef7c68e3a9fbeb3a4775601271" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_drawable_mgr_1abf4b34ef7c68e3a9fbeb3a4775601271" kindref="member">DrawableMgr::OnUpdateZ</ref>(<ref refid="class_drawable" kindref="compound">Drawable</ref>*<sp/></highlight><highlight class="comment">/*<sp/>drawable<sp/>*/</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_drawable_mgr_1ab5fae85c3deefdf2c2eab079dfe2a1cc" kindref="member">GetLocalList</ref>().<ref refid="class_drawable_list_1a681090e65b9568cb2d416c46e804cdb1" kindref="member">SetDirty</ref>();</highlight></codeline>
+<codeline lineno="53"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="drawable_mgr.h"/>
+  </compounddef>
+</doxygen>

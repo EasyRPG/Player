@@ -1,0 +1,225 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_sdl2_audio" kind="class" language="C++" prot="public">
+    <compoundname>Sdl2Audio</compoundname>
+    <basecompoundref refid="class_generic_audio" prot="public" virt="non-virtual">GenericAudio</basecompoundref>
+    <includes refid="sdl2__audio_8h" local="no">sdl2_audio.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_sdl2_audio_1ac7b9e24cadd37c9bc86374bc2426d4de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Sdl2Audio::Sdl2Audio</definition>
+        <argsstring>(const Game_ConfigAudio &amp;cfg)</argsstring>
+        <name>Sdl2Audio</name>
+        <qualifiedname>Sdl2Audio::Sdl2Audio</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_game___config_audio" kindref="compound">Game_ConfigAudio</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl2_audio.h" line="25" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl2_audio_1a533ee5e3fee28191b346cadeec4ba2eb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Sdl2Audio::~Sdl2Audio</definition>
+        <argsstring>()</argsstring>
+        <name>~Sdl2Audio</name>
+        <qualifiedname>Sdl2Audio::~Sdl2Audio</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl2_audio.h" line="26" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl2_audio_1a7e31d7522a5c2416bae56114ba00b2ed" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Sdl2Audio::LockMutex</definition>
+        <argsstring>() const override</argsstring>
+        <name>LockMutex</name>
+        <qualifiedname>Sdl2Audio::LockMutex</qualifiedname>
+        <reimplements refid="class_generic_audio_1a0cb990638b146a4d0509a4e33a319573">LockMutex</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl2_audio.h" line="28" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl2_audio_1a00e6a616dc61aac1788065ba140a2629" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Sdl2Audio::UnlockMutex</definition>
+        <argsstring>() const override</argsstring>
+        <name>UnlockMutex</name>
+        <qualifiedname>Sdl2Audio::UnlockMutex</qualifiedname>
+        <reimplements refid="class_generic_audio_1a1dbb363b9f41368f526dda244bca3db7">UnlockMutex</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl2_audio.h" line="29" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>AudioInterface</label>
+        <link refid="struct_audio_interface"/>
+      </node>
+      <node id="2">
+        <label>GenericAudio</label>
+        <link refid="class_generic_audio"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Sdl2Audio</label>
+        <link refid="class_sdl2_audio"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>AudioInterface</label>
+        <link refid="struct_audio_interface"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>cfg</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>ConfigParam&lt; std::string &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="6">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="11">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="4">
+        <label>Game_ConfigAudio</label>
+        <link refid="struct_game___config_audio"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>music_volume</edgelabel>
+          <edgelabel>sound_volume</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>fluidsynth_midi</edgelabel>
+          <edgelabel>native_midi</edgelabel>
+          <edgelabel>wildmidi_midi</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>fmmidi_midi</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>soundfont</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>GenericAudio</label>
+        <link refid="class_generic_audio"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>LockedConfigParam&lt; std::string &gt;</label>
+        <link refid="class_locked_config_param"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>PathConfigParam</label>
+        <link refid="class_path_config_param"/>
+        <childnode refid="13" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Sdl2Audio</label>
+        <link refid="class_sdl2_audio"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>StringConfigParam</label>
+        <link refid="class_config_param"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="platform/sdl/sdl2_audio.h" line="23" column="1" bodyfile="platform/sdl/sdl2_audio.h" bodystart="23" bodyend="30"/>
+    <listofallmembers>
+      <member refid="struct_audio_interface_1a9c45557ddc2a1429df7be8d75a473011" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>AudioInterface</name></member>
+      <member refid="class_generic_audio_1a5404efb2ca94e2a555bef5ff9b7eb711" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>BGM_Fade</name></member>
+      <member refid="struct_audio_interface_1af908cc5d16f32e883bff0ae7a75a9750" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>BGM_GetGlobalVolume</name></member>
+      <member refid="class_generic_audio_1a73eb869bbd9c695ac5eea3fbbb0c4f92" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>BGM_GetTicks</name></member>
+      <member refid="class_generic_audio_1ab1c2acac9ced84c1b49f7a593e2609fe" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>BGM_GetType</name></member>
+      <member refid="class_generic_audio_1a7fe0d4ca60290ffe99bfe902b171329a" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>BGM_IsPlaying</name></member>
+      <member refid="class_generic_audio_1a70225e3b8ff763deafb3ff0f5243d55c" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>BGM_Pause</name></member>
+      <member refid="class_generic_audio_1a7471e2dc5bfd8e17d049480ca2dd7f08" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>BGM_Pitch</name></member>
+      <member refid="class_generic_audio_1a2a2889eeaa1a8e80cebfd22be3ae76fa" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>BGM_Play</name></member>
+      <member refid="class_generic_audio_1abe966fdf07800473f9982ee98564ccb9" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>BGM_PlayedOnce</name></member>
+      <member refid="class_generic_audio_1a9dfa494f083e2b943540cadb2422a71c" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>BGM_Resume</name></member>
+      <member refid="struct_audio_interface_1adb5e46889f939439998026d257052f07" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>BGM_SetGlobalVolume</name></member>
+      <member refid="class_generic_audio_1a2e2e98b9ee7597f402e1b03055bcaeac" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>BGM_Stop</name></member>
+      <member refid="class_generic_audio_1a10d6c7b81ff97b3d6e68328add3daede" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>BGM_Volume</name></member>
+      <member refid="struct_audio_interface_1ad751ed86af60ced4f37d7091b91f823b" prot="protected" virt="non-virtual"><scope>Sdl2Audio</scope><name>cfg</name></member>
+      <member refid="class_generic_audio_1a50f30239601cb6d043f6c3a8a5e08392" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>CreateAndGetMidiOut</name></member>
+      <member refid="class_generic_audio_1ad7831f5204ab62c382236a7287c30b18" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>Decode</name></member>
+      <member refid="class_generic_audio_1a93d06f293c9c5dd7ff4b703a2ca4f894" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>GenericAudio</name></member>
+      <member refid="struct_audio_interface_1adee5375400b4ca5766688d41f0556128" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>GetConfig</name></member>
+      <member refid="struct_audio_interface_1acd8cb626f3ab05de21f5f2bf4f6f8705" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>GetFluidsynthEnabled</name></member>
+      <member refid="struct_audio_interface_1a2110824b87384e8d25305c5994b9388e" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>GetFluidsynthSoundfont</name></member>
+      <member refid="struct_audio_interface_1a9505d2347489b105f34e8e9d8a1bc0a6" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>GetNativeMidiEnabled</name></member>
+      <member refid="struct_audio_interface_1a276c5e6104212f238ad196e38bd8616a" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>GetWildMidiEnabled</name></member>
+      <member refid="class_sdl2_audio_1a7e31d7522a5c2416bae56114ba00b2ed" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>LockMutex</name></member>
+      <member refid="class_sdl2_audio_1ac7b9e24cadd37c9bc86374bc2426d4de" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>Sdl2Audio</name></member>
+      <member refid="struct_audio_interface_1af76756316f54120859688ddd465d6d63" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>SE_GetGlobalVolume</name></member>
+      <member refid="class_generic_audio_1aa677e348ca35a8a937c1e0c5ce085a03" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>SE_Play</name></member>
+      <member refid="struct_audio_interface_1addcdf36521311bc0fcf761c78c8870fd" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>SE_SetGlobalVolume</name></member>
+      <member refid="class_generic_audio_1a3847443f9d8ac36a8a6535443b111ba2" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>SE_Stop</name></member>
+      <member refid="struct_audio_interface_1ad2bd03f936f089f7812450b7d204be0b" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>SetFluidsynthEnabled</name></member>
+      <member refid="struct_audio_interface_1a2856838fa110c28901e72df2a8dd3466" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>SetFluidsynthSoundfont</name></member>
+      <member refid="class_generic_audio_1ab9c9633ca14dd33de233a317b5affb9b" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>SetFormat</name></member>
+      <member refid="struct_audio_interface_1a840f26eedce549fb677874e0c767cdb7" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>SetNativeMidiEnabled</name></member>
+      <member refid="struct_audio_interface_1a9b02af54c27102366a662fa4e4b52849" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>SetWildMidiEnabled</name></member>
+      <member refid="class_sdl2_audio_1a00e6a616dc61aac1788065ba140a2629" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>UnlockMutex</name></member>
+      <member refid="class_generic_audio_1a767eea8aedf16a45bf1a2c59d8bb5e2a" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>Update</name></member>
+      <member refid="class_generic_audio_1a0e8fba9fa4ef631d77a46109809167fb" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>vGetConfig</name></member>
+      <member refid="struct_audio_interface_1ac4ff9429ec5962d3985d182ec9b3d088" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>~AudioInterface</name></member>
+      <member refid="class_generic_audio_1a0eacbbcd895e3d0eebf97b6c797432b6" prot="public" virt="virtual"><scope>Sdl2Audio</scope><name>~GenericAudio</name></member>
+      <member refid="class_sdl2_audio_1a533ee5e3fee28191b346cadeec4ba2eb" prot="public" virt="non-virtual"><scope>Sdl2Audio</scope><name>~Sdl2Audio</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

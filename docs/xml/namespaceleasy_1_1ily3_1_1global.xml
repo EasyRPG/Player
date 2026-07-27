@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1ily3_1_1global" kind="namespace" language="C++">
+    <compoundname>leasy::ily3::global</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceleasy_1_1ily3_1_1global_1a38a489664fcd8c5bfdd4fe1895a52669" prot="public" static="no" mutable="no">
+        <type><ref refid="classleasy_1_1ul2_1_1lstate" kindref="compound">ul2::lstate</ref></type>
+        <definition>ul2::lstate leasy::ily3::global::state</definition>
+        <argsstring></argsstring>
+        <name>state</name>
+        <qualifiedname>leasy::ily3::global::state</qualifiedname>
+        <initializer>                  = ([](void) -&gt; <ref refid="classleasy_1_1ul2_1_1lstate" kindref="compound">ul2::lstate</ref> {
+  return <ref refid="classleasy_1_1ul2_1_1lstate" kindref="compound">ul2::lstate</ref>(true);
+})()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/ily3.cpp" line="30" column="17" bodyfile="leasy/ily3/ily3.cpp" bodystart="30" bodyend="-1" declfile="leasy/ily3/libsys.cpp" declline="33" declcolumn="24"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ily3/boot.cpp" line="38" column="3"/>
+  </compounddef>
+</doxygen>

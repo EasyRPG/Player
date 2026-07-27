@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ily3_1_1efs_1_1app__fs__ctx" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ily3::efs::app_fs_ctx</compoundname>
+    <includes refid="easyfs_8hpp" local="no">easyfs.hpp</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structleasy_1_1ily3_1_1efs_1_1app__fs__ctx_1aeb6d3d3adf459fbf09ff186477d53b84" prot="public" static="no" mutable="no">
+        <type>fs::path</type>
+        <definition>fs::path leasy::ily3::efs::app_fs_ctx::bootdir</definition>
+        <argsstring></argsstring>
+        <name>bootdir</name>
+        <qualifiedname>leasy::ily3::efs::app_fs_ctx::bootdir</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/easyfs.hpp" line="33" column="10" bodyfile="leasy/ily3/easyfs.hpp" bodystart="33" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ily3/easyfs.hpp" line="32" column="1" bodyfile="leasy/ily3/easyfs.hpp" bodystart="32" bodyend="35"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ily3_1_1efs_1_1app__fs__ctx_1aeb6d3d3adf459fbf09ff186477d53b84" prot="public" virt="non-virtual"><scope>leasy::ily3::efs::app_fs_ctx</scope><name>bootdir</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

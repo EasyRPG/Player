@@ -1338,3 +1338,4 @@ bool Sdl2Ui::OpenURL(std::string_view url) {
 
 	return true;
 }
+

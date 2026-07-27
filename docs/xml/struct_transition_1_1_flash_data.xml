@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_transition_1_1_flash_data" kind="struct" language="C++" prot="private">
+    <compoundname>Transition::FlashData</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_transition_1_1_flash_data_1a4064d8b912b65cf90e9559dad7954805" prot="public" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t Transition::FlashData::red</definition>
+        <argsstring></argsstring>
+        <name>red</name>
+        <qualifiedname>Transition::FlashData::red</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="138" column="9" bodyfile="transition.h" bodystart="138" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_transition_1_1_flash_data_1a32c546c0363a003526e2dfb35e315df0" prot="public" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t Transition::FlashData::blue</definition>
+        <argsstring></argsstring>
+        <name>blue</name>
+        <qualifiedname>Transition::FlashData::blue</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="139" column="9" bodyfile="transition.h" bodystart="139" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_transition_1_1_flash_data_1a75c6fdb19b54e1a74eef1643ffdde7ce" prot="public" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t Transition::FlashData::green</definition>
+        <argsstring></argsstring>
+        <name>green</name>
+        <qualifiedname>Transition::FlashData::green</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="140" column="9" bodyfile="transition.h" bodystart="140" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_transition_1_1_flash_data_1a8e4a90848d69539ea2805248e349f5b8" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Transition::FlashData::current_level</definition>
+        <argsstring></argsstring>
+        <name>current_level</name>
+        <qualifiedname>Transition::FlashData::current_level</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="141" column="8" bodyfile="transition.h" bodystart="141" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_transition_1_1_flash_data_1af3123e49694e17bcc0e307c632e065dd" prot="public" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t Transition::FlashData::time_left</definition>
+        <argsstring></argsstring>
+        <name>time_left</name>
+        <qualifiedname>Transition::FlashData::time_left</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="142" column="9" bodyfile="transition.h" bodystart="142" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="transition.h" line="137" column="1" bodyfile="transition.h" bodystart="137" bodyend="143"/>
+    <listofallmembers>
+      <member refid="struct_transition_1_1_flash_data_1a32c546c0363a003526e2dfb35e315df0" prot="public" virt="non-virtual"><scope>Transition::FlashData</scope><name>blue</name></member>
+      <member refid="struct_transition_1_1_flash_data_1a8e4a90848d69539ea2805248e349f5b8" prot="public" virt="non-virtual"><scope>Transition::FlashData</scope><name>current_level</name></member>
+      <member refid="struct_transition_1_1_flash_data_1a75c6fdb19b54e1a74eef1643ffdde7ce" prot="public" virt="non-virtual"><scope>Transition::FlashData</scope><name>green</name></member>
+      <member refid="struct_transition_1_1_flash_data_1a4064d8b912b65cf90e9559dad7954805" prot="public" virt="non-virtual"><scope>Transition::FlashData</scope><name>red</name></member>
+      <member refid="struct_transition_1_1_flash_data_1af3123e49694e17bcc0e307c632e065dd" prot="public" virt="non-virtual"><scope>Transition::FlashData</scope><name>time_left</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

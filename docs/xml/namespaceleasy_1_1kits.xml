@@ -1,0 +1,418 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1kits" kind="namespace" language="C++">
+    <compoundname>leasy::kits</compoundname>
+    <innerclass refid="structleasy_1_1kits_1_1preload__result" prot="public">leasy::kits::preload_result</innerclass>
+    <innerclass refid="classleasy_1_1kits_1_1variant" prot="public">leasy::kits::variant</innerclass>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespaceleasy_1_1kits_1ac70015a6869edd945154e8069b718af9" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::remove_reference_t&lt; std::remove_cv_t&lt; T &gt; &gt;</type>
+        <definition>using leasy::kits::ptr_t = std::remove_reference_t&lt;std::remove_cv_t&lt;T&gt;&gt;</definition>
+        <argsstring></argsstring>
+        <name>ptr_t</name>
+        <qualifiedname>leasy::kits::ptr_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/utils.hpp" line="7" column="3" bodyfile="leasy/kits/utils.hpp" bodystart="7" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceleasy_1_1kits_1a4194dde0511e481dc341ab16524db7f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Fn</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="structleasy_1_1kits_1_1preload__result" kindref="compound">preload_result</ref></type>
+        <definition>preload_result leasy::kits::preload</definition>
+        <argsstring>(const Fn &amp;fn)</argsstring>
+        <name>preload</name>
+        <qualifiedname>leasy::kits::preload</qualifiedname>
+        <param>
+          <type>const Fn &amp;</type>
+          <declname>fn</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/preload.hpp" line="31" column="18" bodyfile="leasy/kits/preload.hpp" bodystart="31" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1kits_1a258495dc502eb4c389f78439bd97868d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="classleasy_1_1metadata_1_1_type_info" kindref="compound">metadata::TypeInfo</ref> &gt;</type>
+        <definition>std::vector&lt; metadata::TypeInfo &gt; leasy::kits::extract_types</definition>
+        <argsstring>(const std::vector&lt; std::any &gt; &amp;objects)</argsstring>
+        <name>extract_types</name>
+        <qualifiedname>leasy::kits::extract_types</qualifiedname>
+        <param>
+          <type>const std::vector&lt; std::any &gt; &amp;</type>
+          <declname>objects</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/rtt.hpp" line="33" column="22" bodyfile="leasy/kits/rtt.hpp" bodystart="33" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1kits_1a01192718bbf977c28386c146d2cd6a83" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::pair&lt; bool, std::string &gt;</type>
+        <definition>std::pair&lt; bool, std::string &gt; leasy::kits::is_callable_with</definition>
+        <argsstring>(const std::vector&lt; metadata::TypeInfo &gt; &amp;types, const std::vector&lt; std::any &gt; &amp;args)</argsstring>
+        <name>is_callable_with</name>
+        <qualifiedname>leasy::kits::is_callable_with</qualifiedname>
+        <param>
+          <type>const std::vector&lt; <ref refid="classleasy_1_1metadata_1_1_type_info" kindref="compound">metadata::TypeInfo</ref> &gt; &amp;</type>
+          <declname>types</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; std::any &gt; &amp;</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/rtt.hpp" line="44" column="20" bodyfile="leasy/kits/rtt.hpp" bodystart="44" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1kits_1a7b2aae3d8ff49e14c78cfeecc73bb39d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Tuple</type>
+          </param>
+          <param>
+            <type>std::size_t...</type>
+            <declname>Is</declname>
+            <defname>Is</defname>
+          </param>
+        </templateparamlist>
+        <type>std::vector&lt; <ref refid="classleasy_1_1metadata_1_1_type_info" kindref="compound">metadata::TypeInfo</ref> &gt;</type>
+        <definition>std::vector&lt; metadata::TypeInfo &gt; leasy::kits::tuple_types_impl</definition>
+        <argsstring>(std::index_sequence&lt; Is... &gt;)</argsstring>
+        <name>tuple_types_impl</name>
+        <qualifiedname>leasy::kits::tuple_types_impl</qualifiedname>
+        <param>
+          <type>std::index_sequence&lt; Is... &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/rtt.hpp" line="59" column="3" bodyfile="leasy/kits/rtt.hpp" bodystart="59" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1kits_1a97997e31c8930668962044d3277edb78" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Tuple</type>
+          </param>
+        </templateparamlist>
+        <type>std::vector&lt; <ref refid="classleasy_1_1metadata_1_1_type_info" kindref="compound">metadata::TypeInfo</ref> &gt;</type>
+        <definition>std::vector&lt; metadata::TypeInfo &gt; leasy::kits::tuple_types</definition>
+        <argsstring>()</argsstring>
+        <name>tuple_types</name>
+        <qualifiedname>leasy::kits::tuple_types</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/rtt.hpp" line="67" column="15" bodyfile="leasy/kits/rtt.hpp" bodystart="67" bodyend="72"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1kits_1ac342f88d38356c4b83aad707fbab9160" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Range</type>
+          </param>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto leasy::kits::select</definition>
+        <argsstring>(const Range &amp;range, F &amp;&amp;func)</argsstring>
+        <name>select</name>
+        <qualifiedname>leasy::kits::select</qualifiedname>
+        <param>
+          <type>const Range &amp;</type>
+          <declname>range</declname>
+        </param>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>func</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/select.hpp" line="8" column="8" bodyfile="leasy/kits/select.hpp" bodystart="8" bodyend="19"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1kits_1a3b51b1e529e688a2e0b796a22742fc46" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Range</type>
+          </param>
+          <param>
+            <type>typename Pred</type>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto leasy::kits::where</definition>
+        <argsstring>(const Range &amp;range, Pred &amp;&amp;pred)</argsstring>
+        <name>where</name>
+        <qualifiedname>leasy::kits::where</qualifiedname>
+        <param>
+          <type>const Range &amp;</type>
+          <declname>range</declname>
+        </param>
+        <param>
+          <type>Pred &amp;&amp;</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/select.hpp" line="22" column="8" bodyfile="leasy/kits/select.hpp" bodystart="22" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1kits_1adac78e1031df5b9c8b226bbce5f19246" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Range</type>
+          </param>
+          <param>
+            <type>typename Pred</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool leasy::kits::any</definition>
+        <argsstring>(const Range &amp;range, Pred &amp;&amp;pred)</argsstring>
+        <name>any</name>
+        <qualifiedname>leasy::kits::any</qualifiedname>
+        <param>
+          <type>const Range &amp;</type>
+          <declname>range</declname>
+        </param>
+        <param>
+          <type>Pred &amp;&amp;</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/select.hpp" line="37" column="8" bodyfile="leasy/kits/select.hpp" bodystart="37" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1kits_1ae0a8b25871154f53ac3c69f5a7665f7a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Range</type>
+          </param>
+          <param>
+            <type>typename Pred</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool leasy::kits::all</definition>
+        <argsstring>(const Range &amp;range, Pred &amp;&amp;pred)</argsstring>
+        <name>all</name>
+        <qualifiedname>leasy::kits::all</qualifiedname>
+        <param>
+          <type>const Range &amp;</type>
+          <declname>range</declname>
+        </param>
+        <param>
+          <type>Pred &amp;&amp;</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/select.hpp" line="48" column="8" bodyfile="leasy/kits/select.hpp" bodystart="48" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1kits_1ab6eeff31a8434c0c2d15609bd247a1ff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Range</type>
+          </param>
+          <param>
+            <type>typename Pred</type>
+          </param>
+        </templateparamlist>
+        <type>const typename Range::value_type *</type>
+        <definition>const typename Range::value_type * leasy::kits::first</definition>
+        <argsstring>(const Range &amp;range, Pred &amp;&amp;pred)</argsstring>
+        <name>first</name>
+        <qualifiedname>leasy::kits::first</qualifiedname>
+        <param>
+          <type>const Range &amp;</type>
+          <declname>range</declname>
+        </param>
+        <param>
+          <type>Pred &amp;&amp;</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/select.hpp" line="59" column="8" bodyfile="leasy/kits/select.hpp" bodystart="59" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1kits_1ac073b732e1ab38cb688134327301d6cc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Range</type>
+          </param>
+          <param>
+            <type>typename Pred</type>
+          </param>
+        </templateparamlist>
+        <type>std::size_t</type>
+        <definition>std::size_t leasy::kits::count</definition>
+        <argsstring>(const Range &amp;range, Pred &amp;&amp;pred)</argsstring>
+        <name>count</name>
+        <qualifiedname>leasy::kits::count</qualifiedname>
+        <param>
+          <type>const Range &amp;</type>
+          <declname>range</declname>
+        </param>
+        <param>
+          <type>Pred &amp;&amp;</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/select.hpp" line="71" column="15" bodyfile="leasy/kits/select.hpp" bodystart="71" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1kits_1ac1964ef6adecf85bd3029b1a482218cf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Range</type>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto leasy::kits::sum</definition>
+        <argsstring>(const Range &amp;range)</argsstring>
+        <name>sum</name>
+        <qualifiedname>leasy::kits::sum</qualifiedname>
+        <param>
+          <type>const Range &amp;</type>
+          <declname>range</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/select.hpp" line="84" column="8" bodyfile="leasy/kits/select.hpp" bodystart="84" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1kits_1a63846a437e2bbc1a5f377e529d779002" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Range</type>
+          </param>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto leasy::kits::sum</definition>
+        <argsstring>(const Range &amp;range, F &amp;&amp;func)</argsstring>
+        <name>sum</name>
+        <qualifiedname>leasy::kits::sum</qualifiedname>
+        <param>
+          <type>const Range &amp;</type>
+          <declname>range</declname>
+        </param>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>func</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/select.hpp" line="97" column="8" bodyfile="leasy/kits/select.hpp" bodystart="97" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1kits_1a8fa53b86c2c6b19b2407f403620f407c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string leasy::kits::replace</definition>
+        <argsstring>(std::string str, const std::string &amp;from, const std::string &amp;to)</argsstring>
+        <name>replace</name>
+        <qualifiedname>leasy::kits::replace</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>str</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>from</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>to</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/strings.hpp" line="28" column="22" bodyfile="leasy/kits/strings.hpp" bodystart="28" bodyend="38"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para><ulink url="mailto:0xEF9087A@wys-prog.https">0xEF9087A@wys-prog.https</ulink>://github.com/wys-prog/leasy</para>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para>0xEF9087A </para>
+    </detaileddescription>
+    <location file="leasy/kits/preload.hpp" line="27" column="1"/>
+  </compounddef>
+</doxygen>

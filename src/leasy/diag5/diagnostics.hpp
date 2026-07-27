@@ -47,3 +47,4 @@ namespace leasy::diag5 {
 
 #define dumpvout(X) leasy::io.Debug.writeln(here, " <dump> @", #X, ": ", X)
 #define dumpvasp(X) #X, X
+

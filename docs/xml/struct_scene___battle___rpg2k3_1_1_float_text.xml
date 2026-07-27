@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_scene___battle___rpg2k3_1_1_float_text" kind="struct" language="C++" prot="protected">
+    <compoundname>Scene_Battle_Rpg2k3::FloatText</compoundname>
+    <includes refid="scene__battle__rpg2k3_8h" local="no">scene_battle_rpg2k3.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_scene___battle___rpg2k3_1_1_float_text_1a1f3d10373de2219fcf83beaf791c0348" prot="public" static="no" mutable="no">
+        <type>std::shared_ptr&lt; <ref refid="class_sprite" kindref="compound">Sprite</ref> &gt;</type>
+        <definition>std::shared_ptr&lt;Sprite&gt; Scene_Battle_Rpg2k3::FloatText::sprite</definition>
+        <argsstring></argsstring>
+        <name>sprite</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::FloatText::sprite</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="223" column="17" bodyfile="scene_battle_rpg2k3.h" bodystart="223" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_scene___battle___rpg2k3_1_1_float_text_1ae38e90daf863d422071c6cbdeeeef174" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Battle_Rpg2k3::FloatText::remaining_time</definition>
+        <argsstring></argsstring>
+        <name>remaining_time</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::FloatText::remaining_time</qualifiedname>
+        <initializer>= 30</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="224" column="5" bodyfile="scene_battle_rpg2k3.h" bodystart="224" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="scene_battle_rpg2k3.h" line="222" column="1" bodyfile="scene_battle_rpg2k3.h" bodystart="222" bodyend="225"/>
+    <listofallmembers>
+      <member refid="struct_scene___battle___rpg2k3_1_1_float_text_1ae38e90daf863d422071c6cbdeeeef174" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3::FloatText</scope><name>remaining_time</name></member>
+      <member refid="struct_scene___battle___rpg2k3_1_1_float_text_1a1f3d10373de2219fcf83beaf791c0348" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3::FloatText</scope><name>sprite</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

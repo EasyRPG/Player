@@ -485,3 +485,4 @@ inline void Game_Party::ResetTurns() {
 
 
 #endif
+

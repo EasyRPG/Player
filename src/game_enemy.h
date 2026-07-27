@@ -429,3 +429,4 @@ inline bool Game_Enemy::HasStrongDefense() const {
 }
 
 #endif
+

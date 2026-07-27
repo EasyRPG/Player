@@ -1,0 +1,412 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_state" kind="namespace" language="C++">
+    <compoundname>State</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_state_1a5804601f3ad631cc0d4693dabe5f7bbe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool State::Add</definition>
+        <argsstring>(int state_id, StateVec &amp;states, const PermanentStates &amp;ps, bool allow_battle_states)</argsstring>
+        <name>Add</name>
+        <qualifiedname>State::Add</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>state_id</declname>
+        </param>
+        <param>
+          <type><ref refid="state_8h_1a4594016047f8af9012b0ca8d03d9e5dd" kindref="member">StateVec</ref> &amp;</type>
+          <declname>states</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_permanent_states" kindref="compound">PermanentStates</ref> &amp;</type>
+          <declname>ps</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>allow_battle_states</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adds a state to states if possible</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>state_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>database state ID. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>vector</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>of states </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ps</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>permanent states that can never be removed </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>allow_battle_states</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>allow adding of battle only states </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether state was added. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="state.cpp" line="26" column="6" bodyfile="state.cpp" bodystart="26" bodyend="61" declfile="state.h" declline="60" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_state_1a95498f78aeaad862532e6ec59cf63924" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool State::Remove</definition>
+        <argsstring>(int state_id, StateVec &amp;states, const PermanentStates &amp;ps)</argsstring>
+        <name>Remove</name>
+        <qualifiedname>State::Remove</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>state_id</declname>
+        </param>
+        <param>
+          <type><ref refid="state_8h_1a4594016047f8af9012b0ca8d03d9e5dd" kindref="member">StateVec</ref> &amp;</type>
+          <declname>states</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_permanent_states" kindref="compound">PermanentStates</ref> &amp;</type>
+          <declname>ps</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Removes a state from states if possible</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>state_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>database state ID. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>vector</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>of states </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ps</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>permanent states that can never be removed </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether state was removed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="state.cpp" line="63" column="6" bodyfile="state.cpp" bodystart="63" bodyend="86" declfile="state.h" declline="70" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_state_1a914da95cc7101584bb6a18204f2209b0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool State::RemoveAllBattle</definition>
+        <argsstring>(StateVec &amp;states, const PermanentStates &amp;ps)</argsstring>
+        <name>RemoveAllBattle</name>
+        <qualifiedname>State::RemoveAllBattle</qualifiedname>
+        <param>
+          <type><ref refid="state_8h_1a4594016047f8af9012b0ca8d03d9e5dd" kindref="member">StateVec</ref> &amp;</type>
+          <declname>states</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_permanent_states" kindref="compound">PermanentStates</ref> &amp;</type>
+          <declname>ps</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Removes all states which end after battle.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>vector</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>of states </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ps</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>permanent states that can never be removed </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether any state was removed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="state.cpp" line="88" column="6" bodyfile="state.cpp" bodystart="88" bodyend="105" declfile="state.h" declline="79" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_state_1a70a0201ffdef4d717ca8f1558a55118f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool State::RemoveAll</definition>
+        <argsstring>(StateVec &amp;states, const PermanentStates &amp;ps)</argsstring>
+        <name>RemoveAll</name>
+        <qualifiedname>State::RemoveAll</qualifiedname>
+        <param>
+          <type><ref refid="state_8h_1a4594016047f8af9012b0ca8d03d9e5dd" kindref="member">StateVec</ref> &amp;</type>
+          <declname>states</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_permanent_states" kindref="compound">PermanentStates</ref> &amp;</type>
+          <declname>ps</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Removes all states.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>vector</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>of states </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ps</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>permanent states that can never be removed </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>wheter any state was removed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="state.cpp" line="107" column="6" bodyfile="state.cpp" bodystart="107" bodyend="116" declfile="state.h" declline="88" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_state_1aabb3031513ba7358aa527c494e1324ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>lcf::rpg::State::Restriction</type>
+        <definition>lcf::rpg::State::Restriction State::GetSignificantRestriction</definition>
+        <argsstring>(const StateVec &amp;states)</argsstring>
+        <name>GetSignificantRestriction</name>
+        <qualifiedname>State::GetSignificantRestriction</qualifiedname>
+        <param>
+          <type>const <ref refid="state_8h_1a4594016047f8af9012b0ca8d03d9e5dd" kindref="member">StateVec</ref> &amp;</type>
+          <declname>states</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks all states and returns the highest priority restriction that different to normal or normal if that is the only restriction.</para>
+<para><simplesect kind="return"><para>Highest priority non-normal restriction or normal if not restricted </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="state.cpp" line="118" column="30" bodyfile="state.cpp" bodystart="118" bodyend="157" declfile="state.h" declline="96" declcolumn="30"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_state_1a87f1a9b7ca0d3bd6396cd1a862248ff3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const lcf::rpg::State *</type>
+        <definition>const lcf::rpg::State * State::GetSignificantState</definition>
+        <argsstring>(const StateVec &amp;states)</argsstring>
+        <name>GetSignificantState</name>
+        <qualifiedname>State::GetSignificantState</qualifiedname>
+        <param>
+          <type>const <ref refid="state_8h_1a4594016047f8af9012b0ca8d03d9e5dd" kindref="member">StateVec</ref> &amp;</type>
+          <declname>states</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets current battler state with highest priority.</para>
+<para><simplesect kind="return"><para>the highest priority state affecting the battler. Returns nullptr if no states. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="state.cpp" line="158" column="23" bodyfile="state.cpp" bodystart="158" bodyend="188" declfile="state.h" declline="104" declcolumn="23"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_state_1ad97a3cec0fff2a3320c886c6e7898c1b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int State::GetStateRate</definition>
+        <argsstring>(int state_id, int rate)</argsstring>
+        <name>GetStateRate</name>
+        <qualifiedname>State::GetStateRate</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>state_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>rate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the state probability by rate (A-E).</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>state_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="namespace_state" kindref="compound">State</ref> to test </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="namespace_state" kindref="compound">State</ref> rate to get </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>state rate (probability) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="state.cpp" line="190" column="5" bodyfile="state.cpp" bodystart="190" bodyend="215" declfile="state.h" declline="113" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_state_1ab97bc55132e9cc3383b8321ff295fb7c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::vector&lt; lcf::rpg::State * &gt;</type>
+        <definition>const std::vector&lt; lcf::rpg::State * &gt; State::GetObjects</definition>
+        <argsstring>(const StateVec &amp;states)</argsstring>
+        <name>GetObjects</name>
+        <qualifiedname>State::GetObjects</qualifiedname>
+        <param>
+          <type>const <ref refid="state_8h_1a4594016047f8af9012b0ca8d03d9e5dd" kindref="member">StateVec</ref> &amp;</type>
+          <declname>states</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return vector with state objects.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>vector</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>of states </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>vector which contains the given states as state objects </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="state.cpp" line="217" column="19" bodyfile="state.cpp" bodystart="217" bodyend="226" declfile="state.h" declline="121" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_state_1aa3ff7eaaee651db8c34ddeba3072c68a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::vector&lt; lcf::rpg::State * &gt;</type>
+        <definition>const std::vector&lt; lcf::rpg::State * &gt; State::SortedByPriority</definition>
+        <argsstring>(const std::vector&lt; lcf::rpg::State * &gt; &amp;states)</argsstring>
+        <name>SortedByPriority</name>
+        <qualifiedname>State::SortedByPriority</qualifiedname>
+        <param>
+          <type>const std::vector&lt; lcf::rpg::State * &gt; &amp;</type>
+          <declname>states</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return vector with state objects which are sorted by priority.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>vector</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>of state objects </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>vector which contains the given state objects sorted by priority </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="state.cpp" line="228" column="19" bodyfile="state.cpp" bodystart="228" bodyend="234" declfile="state.h" declline="129" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_state_1aee9023d3133eef27566d97f2c9fb93bf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool State::Has</definition>
+        <argsstring>(int state_id, const StateVec &amp;states)</argsstring>
+        <name>Has</name>
+        <qualifiedname>State::Has</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>state_id</declname>
+        </param>
+        <param>
+          <type>const <ref refid="state_8h_1a4594016047f8af9012b0ca8d03d9e5dd" kindref="member">StateVec</ref> &amp;</type>
+          <declname>states</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>state_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>database state ID. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>vector</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>of states </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether states has the state. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="state.h" line="49" column="6" bodyfile="state.h" bodystart="133" bodyend="135" declfile="state.h" declline="49" declcolumn="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="state.cpp" line="24" column="1"/>
+  </compounddef>
+</doxygen>

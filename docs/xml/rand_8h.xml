@@ -1,0 +1,430 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="rand_8h" kind="file" language="C++">
+    <compoundname>rand.h</compoundname>
+    <includes local="no">cstdint</includes>
+    <includes local="no">functional</includes>
+    <includes local="no">string</includes>
+    <includes local="no">sstream</includes>
+    <includes local="no">vector</includes>
+    <includes local="no">random</includes>
+    <includes refid="system_8h" local="yes">system.h</includes>
+    <includes refid="string__view_8h" local="yes">string_view.h</includes>
+    <includes refid="span_8h" local="yes">span.h</includes>
+    <includedby refid="algo_8cpp" local="yes">algo.cpp</includedby>
+    <includedby refid="async__handler_8cpp" local="yes">async_handler.cpp</includedby>
+    <includedby refid="autobattle_8cpp" local="yes">autobattle.cpp</includedby>
+    <includedby refid="enemyai_8cpp" local="yes">enemyai.cpp</includedby>
+    <includedby refid="game__actor_8cpp" local="yes">game_actor.cpp</includedby>
+    <includedby refid="game__battle_8cpp" local="yes">game_battle.cpp</includedby>
+    <includedby refid="game__battlealgorithm_8cpp" local="yes">game_battlealgorithm.cpp</includedby>
+    <includedby refid="game__battler_8cpp" local="yes">game_battler.cpp</includedby>
+    <includedby refid="game__character_8cpp" local="yes">game_character.cpp</includedby>
+    <includedby refid="game__enemy_8cpp" local="yes">game_enemy.cpp</includedby>
+    <includedby refid="game__enemyparty_8cpp" local="yes">game_enemyparty.cpp</includedby>
+    <includedby refid="game__event_8cpp" local="yes">game_event.cpp</includedby>
+    <includedby refid="game__interpreter_8cpp" local="yes">game_interpreter.cpp</includedby>
+    <includedby refid="game__interpreter__control__variables_8cpp" local="yes">game_interpreter_control_variables.cpp</includedby>
+    <includedby refid="game__interpreter__shared_8cpp" local="yes">game_interpreter_shared.cpp</includedby>
+    <includedby refid="game__map_8cpp" local="yes">game_map.cpp</includedby>
+    <includedby refid="game__party__base_8cpp" local="yes">game_party_base.cpp</includedby>
+    <includedby refid="game__player_8cpp" local="yes">game_player.cpp</includedby>
+    <includedby refid="game__screen_8cpp" local="yes">game_screen.cpp</includedby>
+    <includedby refid="game__variables_8cpp" local="yes">game_variables.cpp</includedby>
+    <includedby refid="player_8cpp" local="yes">player.cpp</includedby>
+    <includedby refid="rand_8cpp" local="yes">rand.cpp</includedby>
+    <includedby refid="scene__battle_8cpp" local="yes">scene_battle.cpp</includedby>
+    <includedby refid="scene__battle__rpg2k_8cpp" local="yes">scene_battle_rpg2k.cpp</includedby>
+    <includedby refid="scene__logo_8cpp" local="yes">scene_logo.cpp</includedby>
+    <includedby refid="transition_8cpp" local="yes">transition.cpp</includedby>
+    <includedby refid="weather_8cpp" local="yes">weather.cpp</includedby>
+    <incdepgraph>
+      <node id="10">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="1">
+        <label>rand.h</label>
+        <link refid="rand_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>cstdint</label>
+      </node>
+      <node id="15">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="16">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="3">
+        <label>functional</label>
+      </node>
+      <node id="14">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="18">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="13">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="11">
+        <label>memory</label>
+      </node>
+      <node id="7">
+        <label>random</label>
+      </node>
+      <node id="5">
+        <label>sstream</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="6">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>algo.cpp</label>
+        <link refid="algo_8cpp"/>
+      </node>
+      <node id="3">
+        <label>async_handler.cpp</label>
+        <link refid="async__handler_8cpp"/>
+      </node>
+      <node id="4">
+        <label>autobattle.cpp</label>
+        <link refid="autobattle_8cpp"/>
+      </node>
+      <node id="5">
+        <label>enemyai.cpp</label>
+        <link refid="enemyai_8cpp"/>
+      </node>
+      <node id="6">
+        <label>game_actor.cpp</label>
+        <link refid="game__actor_8cpp"/>
+      </node>
+      <node id="7">
+        <label>game_battle.cpp</label>
+        <link refid="game__battle_8cpp"/>
+      </node>
+      <node id="8">
+        <label>game_battlealgorithm.cpp</label>
+        <link refid="game__battlealgorithm_8cpp"/>
+      </node>
+      <node id="9">
+        <label>game_battler.cpp</label>
+        <link refid="game__battler_8cpp"/>
+      </node>
+      <node id="10">
+        <label>game_character.cpp</label>
+        <link refid="game__character_8cpp"/>
+      </node>
+      <node id="11">
+        <label>game_enemy.cpp</label>
+        <link refid="game__enemy_8cpp"/>
+      </node>
+      <node id="12">
+        <label>game_enemyparty.cpp</label>
+        <link refid="game__enemyparty_8cpp"/>
+      </node>
+      <node id="13">
+        <label>game_event.cpp</label>
+        <link refid="game__event_8cpp"/>
+      </node>
+      <node id="14">
+        <label>game_interpreter.cpp</label>
+        <link refid="game__interpreter_8cpp"/>
+      </node>
+      <node id="15">
+        <label>game_interpreter_control_variables.cpp</label>
+        <link refid="game__interpreter__control__variables_8cpp"/>
+      </node>
+      <node id="16">
+        <label>game_interpreter_shared.cpp</label>
+        <link refid="game__interpreter__shared_8cpp"/>
+      </node>
+      <node id="17">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="18">
+        <label>game_party_base.cpp</label>
+        <link refid="game__party__base_8cpp"/>
+      </node>
+      <node id="19">
+        <label>game_player.cpp</label>
+        <link refid="game__player_8cpp"/>
+      </node>
+      <node id="20">
+        <label>game_screen.cpp</label>
+        <link refid="game__screen_8cpp"/>
+      </node>
+      <node id="21">
+        <label>game_variables.cpp</label>
+        <link refid="game__variables_8cpp"/>
+      </node>
+      <node id="22">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="23">
+        <label>rand.cpp</label>
+        <link refid="rand_8cpp"/>
+      </node>
+      <node id="1">
+        <label>rand.h</label>
+        <link refid="rand_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>scene_battle.cpp</label>
+        <link refid="scene__battle_8cpp"/>
+      </node>
+      <node id="25">
+        <label>scene_battle_rpg2k.cpp</label>
+        <link refid="scene__battle__rpg2k_8cpp"/>
+      </node>
+      <node id="26">
+        <label>scene_logo.cpp</label>
+        <link refid="scene__logo_8cpp"/>
+      </node>
+      <node id="27">
+        <label>transition.cpp</label>
+        <link refid="transition_8cpp"/>
+      </node>
+      <node id="28">
+        <label>weather.cpp</label>
+        <link refid="weather_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_rand_1_1_lock_guard" prot="public">Rand::LockGuard</innerclass>
+    <innernamespace refid="namespace_rand">Rand</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="rand_8h_1a5496cb71d9cddadf1f3f1694027008d6" prot="public" static="no">
+        <name>EP_RANDOM_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="20" column="9" bodyfile="rand.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_RANDOM_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="rand_8h_1a5496cb71d9cddadf1f3f1694027008d6" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_RANDOM_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstdint&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;functional&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;sstream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;random&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="system_8h" kindref="compound">system.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="string__view_8h" kindref="compound">string_view.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="span_8h" kindref="compound">span.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="namespace_rand" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_rand" kindref="compound">Rand</ref><sp/>{</highlight></codeline>
+<codeline lineno="36" refid="namespace_rand_1a422ce889f95d08869cf54b185baa95b8" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="namespace_rand_1a422ce889f95d08869cf54b185baa95b8" kindref="member">RNG</ref><sp/>=<sp/>std::mt19937;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal">int32_t<sp/><ref refid="namespace_rand_1a1c0fe37f0d80509213973f2b5765931f" kindref="member">GetRandomNumber</ref>(int32_t<sp/>from,<sp/>int32_t<sp/>to);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><ref refid="namespace_rand_1a422ce889f95d08869cf54b185baa95b8" kindref="member">RNG</ref>&amp;<sp/><ref refid="namespace_rand_1adde7e33a40cb28170efe6b79e6dbfff2" kindref="member">GetRNG</ref>();</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1abea06593507b0e10f011083bacb688e9" kindref="member">ChanceOf</ref>(int32_t<sp/>n,<sp/>int32_t<sp/>m);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1acb944e57feeca8e16ce711831cc2c69f" kindref="member">PercentChance</ref>(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>rate);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1acb944e57feeca8e16ce711831cc2c69f" kindref="member">PercentChance</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>rate);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1acb944e57feeca8e16ce711831cc2c69f" kindref="member">PercentChance</ref>(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>rate);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1a86018b4e911dc4e87b4d948349b5f128" kindref="member">SeedRandomNumberGenerator</ref>(int32_t<sp/>seed);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1a875500296e4f62559db26b8ab621df7b" kindref="member">LockRandom</ref>(int32_t<sp/>lock_value);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1a79daa8470a49c5c13d808ba21c4355ae" kindref="member">UnlockRandom</ref>();</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal">std::pair&lt;bool,int32_t&gt;<sp/><ref refid="namespace_rand_1a72a9ec88fad246a78991d0ddcd1f3804" kindref="member">GetRandomLocked</ref>();</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109" refid="class_rand_1_1_lock_guard" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_rand_1_1_lock_guard_1a5271dfd0dfe88715ae382a584003be85" kindref="member">LockGuard</ref><sp/>{</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_rand_1_1_lock_guard_1a5271dfd0dfe88715ae382a584003be85" kindref="member">LockGuard</ref>(int32_t<sp/>lock_value,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>locked<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118" refid="class_rand_1_1_lock_guard_1adfa0237122fe80cd9a2477d48c4ed50b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_rand_1_1_lock_guard_1adfa0237122fe80cd9a2477d48c4ed50b" kindref="member">LockGuard</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_rand_1_1_lock_guard_1a5271dfd0dfe88715ae382a584003be85" kindref="member">LockGuard</ref>&amp;)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="119" refid="class_rand_1_1_lock_guard_1a65c9b239e6199d9c45e7c7e29a7b0b32" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_rand_1_1_lock_guard_1a5271dfd0dfe88715ae382a584003be85" kindref="member">LockGuard</ref>&amp;<sp/><ref refid="class_rand_1_1_lock_guard_1a65c9b239e6199d9c45e7c7e29a7b0b32" kindref="member">operator=</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_rand_1_1_lock_guard_1a5271dfd0dfe88715ae382a584003be85" kindref="member">LockGuard</ref>&amp;)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_rand_1_1_lock_guard_1a5271dfd0dfe88715ae382a584003be85" kindref="member">LockGuard</ref>(<ref refid="class_rand_1_1_lock_guard_1a5271dfd0dfe88715ae382a584003be85" kindref="member">LockGuard</ref>&amp;&amp;<sp/>o)<sp/></highlight><highlight class="keyword">noexcept</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="123" refid="class_rand_1_1_lock_guard_1a69d1201fa1af40811821f6312350433b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_rand_1_1_lock_guard_1a5271dfd0dfe88715ae382a584003be85" kindref="member">LockGuard</ref>&amp;<sp/><ref refid="class_rand_1_1_lock_guard_1a69d1201fa1af40811821f6312350433b" kindref="member">operator=</ref>(<ref refid="class_rand_1_1_lock_guard_1a5271dfd0dfe88715ae382a584003be85" kindref="member">LockGuard</ref>&amp;&amp;)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_rand_1_1_lock_guard_1aae39c372a734c49e158bd440947be04c" kindref="member">~LockGuard</ref>();</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_rand_1_1_lock_guard_1a8a7fff3c16d13ffcc6a5cafdbbdc5b06" kindref="member">Release</ref>()<sp/>noexcept;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_rand_1_1_lock_guard_1af73739fbb447788f8b5d6297d8ec705c" kindref="member">Dismiss</ref>();</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_rand_1_1_lock_guard_1aed620bacbed4ef1ad601834f771e7ace" kindref="member">Enabled</ref>()<sp/>const;</highlight></codeline>
+<codeline lineno="136"><highlight class="normal">private:</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>int32_t<sp/>_prev_lock_value<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_prev_locked<sp/>=<sp/>false;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_active<sp/>=<sp/>false;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142" refid="namespace_rand_1a1f2375dc8445bf30e76f02324aecc2fc" refkind="member"><highlight class="normal">inline<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1acb944e57feeca8e16ce711831cc2c69f" kindref="member">PercentChance</ref>(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal"><sp/>rate)<sp/>{</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1acb944e57feeca8e16ce711831cc2c69f" kindref="member">PercentChance</ref>(</highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(rate));</highlight></codeline>
+<codeline lineno="144"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146" refid="class_rand_1_1_lock_guard_1a629ed4a535905b614182460b527a10b2" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_rand_1_1_lock_guard_1a5271dfd0dfe88715ae382a584003be85" kindref="member">LockGuard::LockGuard</ref>(<ref refid="class_rand_1_1_lock_guard_1a5271dfd0dfe88715ae382a584003be85" kindref="member">LockGuard</ref>&amp;&amp;<sp/>o)<sp/></highlight><highlight class="keyword">noexcept</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/>std::swap(_prev_lock_value,<sp/>o._prev_lock_value);</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>std::swap(_prev_locked,<sp/>o._prev_locked);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/>std::swap(_active,<sp/>o._active);</highlight></codeline>
+<codeline lineno="150"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight></codeline>
+<codeline lineno="152" refid="class_rand_1_1_lock_guard_1aae39c372a734c49e158bd440947be04c" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_rand_1_1_lock_guard_1aae39c372a734c49e158bd440947be04c" kindref="member">LockGuard::~LockGuard</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_rand_1_1_lock_guard_1a8a7fff3c16d13ffcc6a5cafdbbdc5b06" kindref="member">Release</ref>();</highlight></codeline>
+<codeline lineno="154"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156" refid="class_rand_1_1_lock_guard_1af73739fbb447788f8b5d6297d8ec705c" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_rand_1_1_lock_guard_1af73739fbb447788f8b5d6297d8ec705c" kindref="member">LockGuard::Dismiss</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/>_active<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="158"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160" refid="class_rand_1_1_lock_guard_1aed620bacbed4ef1ad601834f771e7ace" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_rand_1_1_lock_guard_1aed620bacbed4ef1ad601834f771e7ace" kindref="member">LockGuard::Enabled</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_active;</highlight></codeline>
+<codeline lineno="162"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Rand</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="rand.h"/>
+  </compounddef>
+</doxygen>

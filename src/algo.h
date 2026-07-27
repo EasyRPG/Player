@@ -272,3 +272,4 @@ int GetNumberOfAttacks(int actor_id, const lcf::rpg::Item& weapon);
 
 
 #endif
+

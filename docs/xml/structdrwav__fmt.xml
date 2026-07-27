@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdrwav__fmt" kind="struct" language="C++" prot="public">
+    <compoundname>drwav_fmt</compoundname>
+    <includes refid="dr__wav_8h" local="no">dr_wav.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdrwav__fmt_1a4e2484decd3b42c4c5d4076ce6696d33" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_fmt::formatTag</definition>
+        <argsstring></argsstring>
+        <name>formatTag</name>
+        <qualifiedname>drwav_fmt::formatTag</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="345" column="18" bodyfile="external/dr_wav.h" bodystart="345" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__fmt_1ad46fd117a99f918729ab46775c046c37" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_fmt::channels</definition>
+        <argsstring></argsstring>
+        <name>channels</name>
+        <qualifiedname>drwav_fmt::channels</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="348" column="18" bodyfile="external/dr_wav.h" bodystart="348" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__fmt_1ab20daecbfedf948d9ed2c34737d0d726" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_fmt::sampleRate</definition>
+        <argsstring></argsstring>
+        <name>sampleRate</name>
+        <qualifiedname>drwav_fmt::sampleRate</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="351" column="18" bodyfile="external/dr_wav.h" bodystart="351" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__fmt_1a5b7224cb537694f3319a0ebe88cea8f0" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_fmt::avgBytesPerSec</definition>
+        <argsstring></argsstring>
+        <name>avgBytesPerSec</name>
+        <qualifiedname>drwav_fmt::avgBytesPerSec</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="354" column="18" bodyfile="external/dr_wav.h" bodystart="354" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__fmt_1acecf247591929bbcab48edf897b336eb" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_fmt::blockAlign</definition>
+        <argsstring></argsstring>
+        <name>blockAlign</name>
+        <qualifiedname>drwav_fmt::blockAlign</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="357" column="18" bodyfile="external/dr_wav.h" bodystart="357" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__fmt_1a0bf44f53e540dd652cf6f336446f6d42" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_fmt::bitsPerSample</definition>
+        <argsstring></argsstring>
+        <name>bitsPerSample</name>
+        <qualifiedname>drwav_fmt::bitsPerSample</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="360" column="18" bodyfile="external/dr_wav.h" bodystart="360" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__fmt_1af0ae487d3090123258fe0a13cc9273fc" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_fmt::extendedSize</definition>
+        <argsstring></argsstring>
+        <name>extendedSize</name>
+        <qualifiedname>drwav_fmt::extendedSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="363" column="18" bodyfile="external/dr_wav.h" bodystart="363" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__fmt_1ae0c5f88e67ed34396dfa9eb91191d768" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_fmt::validBitsPerSample</definition>
+        <argsstring></argsstring>
+        <name>validBitsPerSample</name>
+        <qualifiedname>drwav_fmt::validBitsPerSample</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="370" column="18" bodyfile="external/dr_wav.h" bodystart="370" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__fmt_1a5d57cd67b6b8143eea7693eb05e034b6" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_fmt::channelMask</definition>
+        <argsstring></argsstring>
+        <name>channelMask</name>
+        <qualifiedname>drwav_fmt::channelMask</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="373" column="18" bodyfile="external/dr_wav.h" bodystart="373" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__fmt_1ad48c7509db1a73f709e9d4cbd6bddac8" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ae433204b3e47bded80161f89f5d52895" kindref="member">drwav_uint8</ref></type>
+        <definition>drwav_uint8 drwav_fmt::subFormat[16]</definition>
+        <argsstring>[16]</argsstring>
+        <name>subFormat</name>
+        <qualifiedname>drwav_fmt::subFormat</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="376" column="17" bodyfile="external/dr_wav.h" bodystart="376" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="external/dr_wav.h" line="339" column="1" bodyfile="external/dr_wav.h" bodystart="340" bodyend="377"/>
+    <listofallmembers>
+      <member refid="structdrwav__fmt_1a5b7224cb537694f3319a0ebe88cea8f0" prot="public" virt="non-virtual"><scope>drwav_fmt</scope><name>avgBytesPerSec</name></member>
+      <member refid="structdrwav__fmt_1a0bf44f53e540dd652cf6f336446f6d42" prot="public" virt="non-virtual"><scope>drwav_fmt</scope><name>bitsPerSample</name></member>
+      <member refid="structdrwav__fmt_1acecf247591929bbcab48edf897b336eb" prot="public" virt="non-virtual"><scope>drwav_fmt</scope><name>blockAlign</name></member>
+      <member refid="structdrwav__fmt_1a5d57cd67b6b8143eea7693eb05e034b6" prot="public" virt="non-virtual"><scope>drwav_fmt</scope><name>channelMask</name></member>
+      <member refid="structdrwav__fmt_1ad46fd117a99f918729ab46775c046c37" prot="public" virt="non-virtual"><scope>drwav_fmt</scope><name>channels</name></member>
+      <member refid="structdrwav__fmt_1af0ae487d3090123258fe0a13cc9273fc" prot="public" virt="non-virtual"><scope>drwav_fmt</scope><name>extendedSize</name></member>
+      <member refid="structdrwav__fmt_1a4e2484decd3b42c4c5d4076ce6696d33" prot="public" virt="non-virtual"><scope>drwav_fmt</scope><name>formatTag</name></member>
+      <member refid="structdrwav__fmt_1ab20daecbfedf948d9ed2c34737d0d726" prot="public" virt="non-virtual"><scope>drwav_fmt</scope><name>sampleRate</name></member>
+      <member refid="structdrwav__fmt_1ad48c7509db1a73f709e9d4cbd6bddac8" prot="public" virt="non-virtual"><scope>drwav_fmt</scope><name>subFormat</name></member>
+      <member refid="structdrwav__fmt_1ae0c5f88e67ed34396dfa9eb91191d768" prot="public" virt="non-virtual"><scope>drwav_fmt</scope><name>validBitsPerSample</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

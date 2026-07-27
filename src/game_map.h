@@ -929,3 +929,4 @@ inline bool Game_Map::Caching::MapCache::GetNeedRefresh(int var_id) {
 }
 
 #endif
+

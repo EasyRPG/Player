@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1metadata_1_1function__base__t" kind="class" language="C++" prot="public">
+    <compoundname>leasy::metadata::function_base_t</compoundname>
+    <basecompoundref refid="classleasy_1_1metadata_1_1_data" prot="public" virt="non-virtual">leasy::metadata::Data</basecompoundref>
+    <derivedcompoundref refid="classleasy_1_1metadata_1_1_native_callable" prot="public" virt="non-virtual">leasy::metadata::NativeCallable</derivedcompoundref>
+    <derivedcompoundref refid="classleasy_1_1metadata_1_1function" prot="public" virt="non-virtual">leasy::metadata::function</derivedcompoundref>
+    <derivedcompoundref refid="classleasy_1_1metadata_1_1overload__set" prot="public" virt="non-virtual">leasy::metadata::overload_set</derivedcompoundref>
+    <includes refid="function_8hpp" local="no">function.hpp</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classleasy_1_1metadata_1_1function__base__t_1aac3a26cb956eea1305b511a642e9e42f" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string leasy::metadata::function_base_t::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>leasy::metadata::function_base_t::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="46" column="17" bodyfile="leasy/metadata/function.hpp" bodystart="46" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1function__base__t_1a4191d0d015a76b420d98064b10f24eab" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::pair&lt; bool, std::string &gt;</type>
+        <definition>virtual std::pair&lt; bool, std::string &gt; leasy::metadata::function_base_t::is_callable</definition>
+        <argsstring>(const std::vector&lt; std::any &gt; &amp;) const</argsstring>
+        <name>is_callable</name>
+        <qualifiedname>leasy::metadata::function_base_t::is_callable</qualifiedname>
+        <reimplementedby refid="classleasy_1_1metadata_1_1function_1ad3a139faae9b63cafebfff198b0e8396">is_callable</reimplementedby>
+        <reimplementedby refid="classleasy_1_1metadata_1_1_native_callable_1a9f4cd493a41ae20bd602c1d98b7a146b">is_callable</reimplementedby>
+        <reimplementedby refid="classleasy_1_1metadata_1_1overload__set_1aa585d2af9a8850688ed81576d6f4d4aa">is_callable</reimplementedby>
+        <param>
+          <type>const std::vector&lt; std::any &gt; &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="48" column="30" bodyfile="leasy/metadata/function.hpp" bodystart="48" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1function__base__t_1a1f415e9591840be8beac967f9131cbd2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::any</type>
+        <definition>virtual std::any leasy::metadata::function_base_t::call</definition>
+        <argsstring>(const std::vector&lt; std::any &gt; &amp;) const</argsstring>
+        <name>call</name>
+        <qualifiedname>leasy::metadata::function_base_t::call</qualifiedname>
+        <reimplementedby refid="classleasy_1_1metadata_1_1function_1aa57e8a4e1b99246a272de1ba748002fd">call</reimplementedby>
+        <reimplementedby refid="classleasy_1_1metadata_1_1_native_callable_1a01691cff423e7e4cd3e814b512bbb4fa">call</reimplementedby>
+        <reimplementedby refid="classleasy_1_1metadata_1_1overload__set_1aa6ac61e066d67ae4590196857dd0cb87">call</reimplementedby>
+        <param>
+          <type>const std::vector&lt; std::any &gt; &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="52" column="29" bodyfile="leasy/metadata/function.hpp" bodystart="52" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1function__base__t_1a42715055f5630b60e8c830f95de3a388" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::function&lt; int(<ref refid="structlua___state" kindref="compound">lua_State</ref> *)&gt;</type>
+        <definition>virtual std::function&lt; int(lua_State *)&gt; leasy::metadata::function_base_t::lua</definition>
+        <argsstring>() const</argsstring>
+        <name>lua</name>
+        <qualifiedname>leasy::metadata::function_base_t::lua</qualifiedname>
+        <reimplementedby refid="classleasy_1_1metadata_1_1function_1aa08bfd7fd00d9264908d956cdf7ac03c">lua</reimplementedby>
+        <reimplementedby refid="classleasy_1_1metadata_1_1_native_callable_1ac0086dcab51dda06010379fe58208a0f">lua</reimplementedby>
+        <reimplementedby refid="classleasy_1_1metadata_1_1overload__set_1ab484801734a3bd45551ef8cb05e4be9f">lua</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="56" column="34" bodyfile="leasy/metadata/function.hpp" bodystart="56" bodyend="62"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>leasy::metadata::Data</label>
+        <link refid="classleasy_1_1metadata_1_1_data"/>
+      </node>
+      <node id="3">
+        <label>leasy::metadata::NativeCallable</label>
+        <link refid="classleasy_1_1metadata_1_1_native_callable"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>leasy::metadata::function</label>
+        <link refid="classleasy_1_1metadata_1_1function"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy::metadata::function_base_t</label>
+        <link refid="classleasy_1_1metadata_1_1function__base__t"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>leasy::metadata::overload_set</label>
+        <link refid="classleasy_1_1metadata_1_1overload__set"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>leasy::metadata::Data</label>
+        <link refid="classleasy_1_1metadata_1_1_data"/>
+      </node>
+      <node id="1">
+        <label>leasy::metadata::function_base_t</label>
+        <link refid="classleasy_1_1metadata_1_1function__base__t"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/metadata/function.hpp" line="44" column="3" bodyfile="leasy/metadata/function.hpp" bodystart="44" bodyend="63"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1metadata_1_1_data_1a8776e154751bda5ca9d54b684c2c5699" prot="public" virt="virtual"><scope>leasy::metadata::function_base_t</scope><name>bind</name></member>
+      <member refid="classleasy_1_1metadata_1_1function__base__t_1a1f415e9591840be8beac967f9131cbd2" prot="public" virt="virtual"><scope>leasy::metadata::function_base_t</scope><name>call</name></member>
+      <member refid="classleasy_1_1metadata_1_1_data_1aa147e2dbf84c5b9edc0874e0492c8a5e" prot="public" virt="virtual"><scope>leasy::metadata::function_base_t</scope><name>dump</name></member>
+      <member refid="classleasy_1_1metadata_1_1function__base__t_1a4191d0d015a76b420d98064b10f24eab" prot="public" virt="virtual"><scope>leasy::metadata::function_base_t</scope><name>is_callable</name></member>
+      <member refid="classleasy_1_1metadata_1_1function__base__t_1a42715055f5630b60e8c830f95de3a388" prot="public" virt="virtual"><scope>leasy::metadata::function_base_t</scope><name>lua</name></member>
+      <member refid="classleasy_1_1metadata_1_1function__base__t_1aac3a26cb956eea1305b511a642e9e42f" prot="public" virt="non-virtual"><scope>leasy::metadata::function_base_t</scope><name>name</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

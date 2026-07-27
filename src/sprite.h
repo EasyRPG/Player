@@ -302,3 +302,4 @@ inline void Sprite::SetFlashEffect(const Color &color) {
 }
 
 #endif
+

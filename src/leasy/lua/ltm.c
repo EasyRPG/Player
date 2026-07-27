@@ -362,3 +362,4 @@ void luaT_getvarargs (lua_State *L, CallInfo *ci, StkId where, int wanted,
     setnilvalue(s2v(where + i));
 }
 
+

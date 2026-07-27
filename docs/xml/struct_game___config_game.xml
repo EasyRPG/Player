@@ -1,0 +1,433 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___config_game" kind="struct" language="C++" prot="public">
+    <compoundname>Game_ConfigGame</compoundname>
+    <includes refid="game__config__game_8h" local="no">game_config_game.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___config_game_1aa0bcc417eb0d6a4262ad893df9770dc6" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigGame::new_game</definition>
+        <argsstring></argsstring>
+        <name>new_game</name>
+        <qualifiedname>Game_ConfigGame::new_game</qualifiedname>
+        <initializer>{ &quot;Start new game&quot;, &quot;Skips the title screen and starts a new game directly&quot;, &quot;Game&quot;, &quot;NewGame&quot;, false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="39" column="17" bodyfile="game_config_game.h" bodystart="39" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_game_1a24cd38adf3a44b2abdcb0ed10dfddfc5" prot="public" static="no" mutable="no">
+        <type><ref refid="config__param_8h_1ac508820ef5654cf916f7e0901ce5ca11" kindref="member">StringConfigParam</ref></type>
+        <definition>StringConfigParam Game_ConfigGame::engine_str</definition>
+        <argsstring></argsstring>
+        <name>engine_str</name>
+        <qualifiedname>Game_ConfigGame::engine_str</qualifiedname>
+        <initializer>{ &quot;Engine&quot;, &quot;&quot;, &quot;Game&quot;, &quot;Engine&quot;, std::string() }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="40" column="19" bodyfile="game_config_game.h" bodystart="40" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_game_1ac66b9e817c40f84555c21bd1695c0b6d" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigGame::fake_resolution</definition>
+        <argsstring></argsstring>
+        <name>fake_resolution</name>
+        <qualifiedname>Game_ConfigGame::fake_resolution</qualifiedname>
+        <initializer>{ &quot;Fake Metrics&quot;, &quot;Makes games run on higher resolutions (with some success)&quot;, &quot;Game&quot;, &quot;FakeResolution&quot;, false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="41" column="17" bodyfile="game_config_game.h" bodystart="41" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_game_1a1a797cf708afe747e7306ebc90b9e987" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigGame::patch_easyrpg</definition>
+        <argsstring></argsstring>
+        <name>patch_easyrpg</name>
+        <qualifiedname>Game_ConfigGame::patch_easyrpg</qualifiedname>
+        <initializer>{ &quot;EasyRPG&quot;, &quot;EasyRPG Engine Extensions&quot;, &quot;Patch&quot;, &quot;EasyRPG&quot;, false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="42" column="17" bodyfile="game_config_game.h" bodystart="42" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_game_1a7c5047b22eb8dede9bb92ef5589a158b" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigGame::patch_destiny</definition>
+        <argsstring></argsstring>
+        <name>patch_destiny</name>
+        <qualifiedname>Game_ConfigGame::patch_destiny</qualifiedname>
+        <initializer>{ &quot;Destiny Patch&quot;, &quot;&quot;, &quot;Patch&quot;, &quot;Destiny&quot;, false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="43" column="17" bodyfile="game_config_game.h" bodystart="43" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_game_1a9347a5d707f5f5484e034a75d34805c2" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigGame::patch_dynrpg</definition>
+        <argsstring></argsstring>
+        <name>patch_dynrpg</name>
+        <qualifiedname>Game_ConfigGame::patch_dynrpg</qualifiedname>
+        <initializer>{ &quot;DynRPG&quot;, &quot;&quot;, &quot;Patch&quot;, &quot;DynRPG&quot;, false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="44" column="17" bodyfile="game_config_game.h" bodystart="44" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_game_1afe4f1b21f1d0c76e7be77c85c07c6d37" prot="public" static="no" mutable="no">
+        <type><ref refid="class_config_param" kindref="compound">ConfigParam</ref>&lt; int &gt;</type>
+        <definition>ConfigParam&lt;int&gt; Game_ConfigGame::patch_maniac</definition>
+        <argsstring></argsstring>
+        <name>patch_maniac</name>
+        <qualifiedname>Game_ConfigGame::patch_maniac</qualifiedname>
+        <initializer>{ &quot;Maniac Patch&quot;, &quot;&quot;, &quot;Patch&quot;, &quot;Maniac&quot;, 0 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="45" column="13" bodyfile="game_config_game.h" bodystart="45" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_game_1a9e389be627e699bbaa28e09d37b86816" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigGame::patch_common_this_event</definition>
+        <argsstring></argsstring>
+        <name>patch_common_this_event</name>
+        <qualifiedname>Game_ConfigGame::patch_common_this_event</qualifiedname>
+        <initializer>{ &quot;Common This Event&quot;, &quot;Support \&quot;This Event\&quot; in Common Events&quot;, &quot;Patch&quot;, &quot;CommonThisEvent&quot;, false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="46" column="17" bodyfile="game_config_game.h" bodystart="46" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_game_1afa37e247fb2abb74462a99afab50658a" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigGame::patch_unlock_pics</definition>
+        <argsstring></argsstring>
+        <name>patch_unlock_pics</name>
+        <qualifiedname>Game_ConfigGame::patch_unlock_pics</qualifiedname>
+        <initializer>{ &quot;Unlock Pictures&quot;, &quot;Allow picture commands while a message is shown&quot;, &quot;Patch&quot;, &quot;PicUnlock&quot;, false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="47" column="17" bodyfile="game_config_game.h" bodystart="47" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_game_1a6ac80e5044e284d294672c6925cc6398" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigGame::patch_key_patch</definition>
+        <argsstring></argsstring>
+        <name>patch_key_patch</name>
+        <qualifiedname>Game_ConfigGame::patch_key_patch</qualifiedname>
+        <initializer>{ &quot;Ineluki Key Patch&quot;, &quot;Support \&quot;Ineluki Key Patch\&quot;&quot;, &quot;Patch&quot;, &quot;KeyPatch&quot;, false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="48" column="17" bodyfile="game_config_game.h" bodystart="48" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_game_1a402568fb62af3b71bed0961810d7409c" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigGame::patch_rpg2k3_commands</definition>
+        <argsstring></argsstring>
+        <name>patch_rpg2k3_commands</name>
+        <qualifiedname>Game_ConfigGame::patch_rpg2k3_commands</qualifiedname>
+        <initializer>{ &quot;RPG2k3 Event Commands&quot;, &quot;Enable support for RPG2k3 event commands&quot;, &quot;Patch&quot;, &quot;RPG2k3Commands&quot;, false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="49" column="17" bodyfile="game_config_game.h" bodystart="49" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_game_1a0011d576b6b55e87261b7b9cf32da7c8" prot="public" static="no" mutable="no">
+        <type><ref refid="class_config_param" kindref="compound">ConfigParam</ref>&lt; int &gt;</type>
+        <definition>ConfigParam&lt;int&gt; Game_ConfigGame::patch_anti_lag_switch</definition>
+        <argsstring></argsstring>
+        <name>patch_anti_lag_switch</name>
+        <qualifiedname>Game_ConfigGame::patch_anti_lag_switch</qualifiedname>
+        <initializer>{ &quot;Anti-Lag Switch&quot;, &quot;Disable event page refreshes when switch is set&quot;, &quot;Patch&quot;, &quot;AntiLagSwitch&quot;, 0 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="50" column="13" bodyfile="game_config_game.h" bodystart="50" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_game_1a97268e4a4dafebbb05171c3a0c7dff28" prot="public" static="no" mutable="no">
+        <type><ref refid="class_config_param" kindref="compound">ConfigParam</ref>&lt; int &gt;</type>
+        <definition>ConfigParam&lt;int&gt; Game_ConfigGame::patch_direct_menu</definition>
+        <argsstring></argsstring>
+        <name>patch_direct_menu</name>
+        <qualifiedname>Game_ConfigGame::patch_direct_menu</qualifiedname>
+        <initializer>{ &quot;Direct Menu&quot;, &quot; Allows direct access to subscreens of the default menu&quot;, &quot;Patch&quot;, &quot;DirectMenu&quot;, 0 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="51" column="13" bodyfile="game_config_game.h" bodystart="51" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_game_1a3b9b3c14e3a39aa5617a413683539c53" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigGame::patch_support</definition>
+        <argsstring></argsstring>
+        <name>patch_support</name>
+        <qualifiedname>Game_ConfigGame::patch_support</qualifiedname>
+        <initializer>{ &quot;Support patches&quot;, &quot;When OFF all patch support is disabled&quot;, &quot;&quot;, &quot;&quot;, true }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="54" column="17" bodyfile="game_config_game.h" bodystart="54" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_game_1ae70c515619002c99fb19a013e19c5cb1" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_ConfigGame::patch_override</definition>
+        <argsstring></argsstring>
+        <name>patch_override</name>
+        <qualifiedname>Game_ConfigGame::patch_override</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="57" column="6" bodyfile="game_config_game.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_game_1a5e6977ccde98ba48d1f9b6ad08a201b9" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_ConfigGame::engine</definition>
+        <argsstring></argsstring>
+        <name>engine</name>
+        <qualifiedname>Game_ConfigGame::engine</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="59" column="5" bodyfile="game_config_game.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="struct_game___config_game_1af38260fb7ad33548c92cf3a89a4301a4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_game___config_game" kindref="compound">Game_ConfigGame</ref></type>
+        <definition>Game_ConfigGame Game_ConfigGame::Create</definition>
+        <argsstring>(CmdlineParser &amp;cp)</argsstring>
+        <name>Create</name>
+        <qualifiedname>Game_ConfigGame::Create</qualifiedname>
+        <param>
+          <type><ref refid="class_cmdline_parser" kindref="compound">CmdlineParser</ref> &amp;</type>
+          <declname>cp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Create a game config from the config file in the game directory, then loads command line arguments. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="64" column="24" bodyfile="game_config_game.cpp" bodystart="27" bodyend="61"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_game___config_game_1a89ae5f5258193681798a5df41610e90c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_ConfigGame::LoadFromStream</definition>
+        <argsstring>(Filesystem_Stream::InputStream &amp;is)</argsstring>
+        <name>LoadFromStream</name>
+        <qualifiedname>Game_ConfigGame::LoadFromStream</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref> &amp;</type>
+          <declname>is</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Load configuration values from a stream;</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>is</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>stream to read from. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="post"><para>values of this are updated with values found in the stream. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="72" column="6" bodyfile="game_config_game.cpp" bodystart="185" bodyend="232"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_game___config_game_1a07524b48dfc35285c4bc0d98128f5f3d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_ConfigGame::LoadFromArgs</definition>
+        <argsstring>(CmdlineParser &amp;cp)</argsstring>
+        <name>LoadFromArgs</name>
+        <qualifiedname>Game_ConfigGame::LoadFromArgs</qualifiedname>
+        <param>
+          <type><ref refid="class_cmdline_parser" kindref="compound">CmdlineParser</ref> &amp;</type>
+          <declname>cp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Load configuration values from a command line arguments.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>cp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the command line parser to use. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="post"><para>values of this are updated with values found in command line args. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="80" column="6" bodyfile="game_config_game.cpp" bodystart="63" bodyend="183"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_game___config_game_1abbc37e7736709c33b596df9991e0b12e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_ConfigGame::PrintActivePatches</definition>
+        <argsstring>()</argsstring>
+        <name>PrintActivePatches</name>
+        <qualifiedname>Game_ConfigGame::PrintActivePatches</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Outputs a list of active patches </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config_game.h" line="83" column="6" bodyfile="game_config_game.cpp" bodystart="234" bodyend="275"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>ConfigParam&lt; int &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>ConfigParam&lt; std::string &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="7">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="5">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="1">
+        <label>Game_ConfigGame</label>
+        <link refid="struct_game___config_game"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>fake_resolution</edgelabel>
+          <edgelabel>new_game</edgelabel>
+          <edgelabel>patch_common_this_event</edgelabel>
+          <edgelabel>patch_destiny</edgelabel>
+          <edgelabel>patch_dynrpg</edgelabel>
+          <edgelabel>patch_easyrpg</edgelabel>
+          <edgelabel>patch_key_patch</edgelabel>
+          <edgelabel>patch_rpg2k3_commands</edgelabel>
+          <edgelabel>patch_support</edgelabel>
+          <edgelabel>patch_unlock_pics</edgelabel>
+          <edgelabel>  ...</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>engine_str</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>patch_anti_lag_switch</edgelabel>
+          <edgelabel>patch_direct_menu</edgelabel>
+          <edgelabel>patch_maniac</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="game_config_game.h" line="36" column="1" bodyfile="game_config_game.h" bodystart="36" bodyend="84"/>
+    <listofallmembers>
+      <member refid="struct_game___config_game_1af38260fb7ad33548c92cf3a89a4301a4" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>Create</name></member>
+      <member refid="struct_game___config_game_1a5e6977ccde98ba48d1f9b6ad08a201b9" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>engine</name></member>
+      <member refid="struct_game___config_game_1a24cd38adf3a44b2abdcb0ed10dfddfc5" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>engine_str</name></member>
+      <member refid="struct_game___config_game_1ac66b9e817c40f84555c21bd1695c0b6d" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>fake_resolution</name></member>
+      <member refid="struct_game___config_game_1a07524b48dfc35285c4bc0d98128f5f3d" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>LoadFromArgs</name></member>
+      <member refid="struct_game___config_game_1a89ae5f5258193681798a5df41610e90c" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>LoadFromStream</name></member>
+      <member refid="struct_game___config_game_1aa0bcc417eb0d6a4262ad893df9770dc6" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>new_game</name></member>
+      <member refid="struct_game___config_game_1a0011d576b6b55e87261b7b9cf32da7c8" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>patch_anti_lag_switch</name></member>
+      <member refid="struct_game___config_game_1a9e389be627e699bbaa28e09d37b86816" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>patch_common_this_event</name></member>
+      <member refid="struct_game___config_game_1a7c5047b22eb8dede9bb92ef5589a158b" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>patch_destiny</name></member>
+      <member refid="struct_game___config_game_1a97268e4a4dafebbb05171c3a0c7dff28" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>patch_direct_menu</name></member>
+      <member refid="struct_game___config_game_1a9347a5d707f5f5484e034a75d34805c2" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>patch_dynrpg</name></member>
+      <member refid="struct_game___config_game_1a1a797cf708afe747e7306ebc90b9e987" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>patch_easyrpg</name></member>
+      <member refid="struct_game___config_game_1a6ac80e5044e284d294672c6925cc6398" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>patch_key_patch</name></member>
+      <member refid="struct_game___config_game_1afe4f1b21f1d0c76e7be77c85c07c6d37" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>patch_maniac</name></member>
+      <member refid="struct_game___config_game_1ae70c515619002c99fb19a013e19c5cb1" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>patch_override</name></member>
+      <member refid="struct_game___config_game_1a402568fb62af3b71bed0961810d7409c" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>patch_rpg2k3_commands</name></member>
+      <member refid="struct_game___config_game_1a3b9b3c14e3a39aa5617a413683539c53" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>patch_support</name></member>
+      <member refid="struct_game___config_game_1afa37e247fb2abb74462a99afab50658a" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>patch_unlock_pics</name></member>
+      <member refid="struct_game___config_game_1abbc37e7736709c33b596df9991e0b12e" prot="public" virt="non-virtual"><scope>Game_ConfigGame</scope><name>PrintActivePatches</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

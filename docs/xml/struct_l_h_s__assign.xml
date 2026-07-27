@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_l_h_s__assign" kind="struct" language="C++" prot="public">
+    <compoundname>LHS_assign</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_l_h_s__assign_1a05171fa435f605ea11a19b4a4f9532af" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="struct_l_h_s__assign" kindref="compound">LHS_assign</ref> *</type>
+        <definition>struct LHS_assign* LHS_assign::prev</definition>
+        <argsstring></argsstring>
+        <name>prev</name>
+        <qualifiedname>LHS_assign::prev</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.c" line="1434" column="19" bodyfile="leasy/lua/lparser.c" bodystart="1434" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_l_h_s__assign_1a7754c9ff563c4159cabc2488e05cfecc" prot="public" static="no" mutable="no">
+        <type><ref refid="structexpdesc" kindref="compound">expdesc</ref></type>
+        <definition>expdesc LHS_assign::v</definition>
+        <argsstring></argsstring>
+        <name>v</name>
+        <qualifiedname>LHS_assign::v</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.c" line="1435" column="11" bodyfile="leasy/lua/lparser.c" bodystart="1435" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>LHS_assign</label>
+        <link refid="struct_l_h_s__assign"/>
+        <childnode refid="1" relation="usage">
+          <edgelabel>prev</edgelabel>
+        </childnode>
+        <childnode refid="2" relation="usage">
+          <edgelabel>v</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>expdesc</label>
+        <link refid="structexpdesc"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>strval</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lparser.c" line="1433" column="1" bodyfile="leasy/lua/lparser.c" bodystart="1433" bodyend="1436"/>
+    <listofallmembers>
+      <member refid="struct_l_h_s__assign_1a05171fa435f605ea11a19b4a4f9532af" prot="public" virt="non-virtual"><scope>LHS_assign</scope><name>prev</name></member>
+      <member refid="struct_l_h_s__assign_1a7754c9ff563c4159cabc2488e05cfecc" prot="public" virt="non-virtual"><scope>LHS_assign</scope><name>v</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

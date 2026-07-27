@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdrwav__smpl" kind="struct" language="C++" prot="public">
+    <compoundname>drwav_smpl</compoundname>
+    <includes refid="dr__wav_8h" local="no">dr_wav.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdrwav__smpl_1a006d9496c4c58bb32bca2cebd9f87868" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_smpl::manufacturerId</definition>
+        <argsstring></argsstring>
+        <name>manufacturerId</name>
+        <qualifiedname>drwav_smpl::manufacturerId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="574" column="18" bodyfile="external/dr_wav.h" bodystart="574" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__smpl_1abf6951440189b235b728682da011c0ce" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_smpl::productId</definition>
+        <argsstring></argsstring>
+        <name>productId</name>
+        <qualifiedname>drwav_smpl::productId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="575" column="18" bodyfile="external/dr_wav.h" bodystart="575" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__smpl_1a13c2401b6ca749127d12aa0e4e12efc0" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_smpl::samplePeriodNanoseconds</definition>
+        <argsstring></argsstring>
+        <name>samplePeriodNanoseconds</name>
+        <qualifiedname>drwav_smpl::samplePeriodNanoseconds</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="578" column="18" bodyfile="external/dr_wav.h" bodystart="578" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__smpl_1af4d6a2adf7be1ec39ab34d5ff3dfbb6e" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_smpl::midiUnityNote</definition>
+        <argsstring></argsstring>
+        <name>midiUnityNote</name>
+        <qualifiedname>drwav_smpl::midiUnityNote</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="581" column="18" bodyfile="external/dr_wav.h" bodystart="581" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__smpl_1a5544a723488dc8366aca3a88550f6934" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_smpl::midiPitchFraction</definition>
+        <argsstring></argsstring>
+        <name>midiPitchFraction</name>
+        <qualifiedname>drwav_smpl::midiPitchFraction</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="584" column="18" bodyfile="external/dr_wav.h" bodystart="584" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__smpl_1a984cf30eedef739a3eec02c5e5506096" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_smpl::smpteFormat</definition>
+        <argsstring></argsstring>
+        <name>smpteFormat</name>
+        <qualifiedname>drwav_smpl::smpteFormat</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="587" column="18" bodyfile="external/dr_wav.h" bodystart="587" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__smpl_1a6291fe764ee12e0bcfc34295f2f68b1c" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_smpl::smpteOffset</definition>
+        <argsstring></argsstring>
+        <name>smpteOffset</name>
+        <qualifiedname>drwav_smpl::smpteOffset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="588" column="18" bodyfile="external/dr_wav.h" bodystart="588" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__smpl_1aa1f1aeebf89de9bee58d176b2c486bc0" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_smpl::sampleLoopCount</definition>
+        <argsstring></argsstring>
+        <name>sampleLoopCount</name>
+        <qualifiedname>drwav_smpl::sampleLoopCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="591" column="18" bodyfile="external/dr_wav.h" bodystart="591" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__smpl_1aba8e1e4fe1c6630088d9cebb792424c7" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_smpl::samplerSpecificDataSizeInBytes</definition>
+        <argsstring></argsstring>
+        <name>samplerSpecificDataSizeInBytes</name>
+        <qualifiedname>drwav_smpl::samplerSpecificDataSizeInBytes</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="594" column="18" bodyfile="external/dr_wav.h" bodystart="594" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__smpl_1ae78f19cc3db3bf99bf7fe3e0afbb4f29" prot="public" static="no" mutable="no">
+        <type><ref refid="structdrwav__smpl__loop" kindref="compound">drwav_smpl_loop</ref> *</type>
+        <definition>drwav_smpl_loop* drwav_smpl::pLoops</definition>
+        <argsstring></argsstring>
+        <name>pLoops</name>
+        <qualifiedname>drwav_smpl::pLoops</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="596" column="21" bodyfile="external/dr_wav.h" bodystart="596" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__smpl_1a881137f7e9ba58dafa7a27dc953ae980" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ae433204b3e47bded80161f89f5d52895" kindref="member">drwav_uint8</ref> *</type>
+        <definition>drwav_uint8* drwav_smpl::pSamplerSpecificData</definition>
+        <argsstring></argsstring>
+        <name>pSamplerSpecificData</name>
+        <qualifiedname>drwav_smpl::pSamplerSpecificData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="597" column="17" bodyfile="external/dr_wav.h" bodystart="597" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>drwav_smpl</label>
+        <link refid="structdrwav__smpl"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>pLoops</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>drwav_smpl_loop</label>
+        <link refid="structdrwav__smpl__loop"/>
+      </node>
+    </collaborationgraph>
+    <location file="external/dr_wav.h" line="571" column="1" bodyfile="external/dr_wav.h" bodystart="572" bodyend="598"/>
+    <listofallmembers>
+      <member refid="structdrwav__smpl_1a006d9496c4c58bb32bca2cebd9f87868" prot="public" virt="non-virtual"><scope>drwav_smpl</scope><name>manufacturerId</name></member>
+      <member refid="structdrwav__smpl_1a5544a723488dc8366aca3a88550f6934" prot="public" virt="non-virtual"><scope>drwav_smpl</scope><name>midiPitchFraction</name></member>
+      <member refid="structdrwav__smpl_1af4d6a2adf7be1ec39ab34d5ff3dfbb6e" prot="public" virt="non-virtual"><scope>drwav_smpl</scope><name>midiUnityNote</name></member>
+      <member refid="structdrwav__smpl_1ae78f19cc3db3bf99bf7fe3e0afbb4f29" prot="public" virt="non-virtual"><scope>drwav_smpl</scope><name>pLoops</name></member>
+      <member refid="structdrwav__smpl_1abf6951440189b235b728682da011c0ce" prot="public" virt="non-virtual"><scope>drwav_smpl</scope><name>productId</name></member>
+      <member refid="structdrwav__smpl_1a881137f7e9ba58dafa7a27dc953ae980" prot="public" virt="non-virtual"><scope>drwav_smpl</scope><name>pSamplerSpecificData</name></member>
+      <member refid="structdrwav__smpl_1aa1f1aeebf89de9bee58d176b2c486bc0" prot="public" virt="non-virtual"><scope>drwav_smpl</scope><name>sampleLoopCount</name></member>
+      <member refid="structdrwav__smpl_1a13c2401b6ca749127d12aa0e4e12efc0" prot="public" virt="non-virtual"><scope>drwav_smpl</scope><name>samplePeriodNanoseconds</name></member>
+      <member refid="structdrwav__smpl_1aba8e1e4fe1c6630088d9cebb792424c7" prot="public" virt="non-virtual"><scope>drwav_smpl</scope><name>samplerSpecificDataSizeInBytes</name></member>
+      <member refid="structdrwav__smpl_1a984cf30eedef739a3eec02c5e5506096" prot="public" virt="non-virtual"><scope>drwav_smpl</scope><name>smpteFormat</name></member>
+      <member refid="structdrwav__smpl_1a6291fe764ee12e0bcfc34295f2f68b1c" prot="public" virt="non-virtual"><scope>drwav_smpl</scope><name>smpteOffset</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

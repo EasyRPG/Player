@@ -1,0 +1,1049 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___strings" kind="class" language="C++" prot="public">
+    <compoundname>Game_Strings</compoundname>
+    <includes refid="game__strings_8h" local="no">game_strings.h</includes>
+    <innerclass refid="struct_game___strings_1_1_str___params" prot="public">Game_Strings::Str_Params</innerclass>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aa" prot="public" static="no" strong="no">
+        <type>std::int8_t</type>
+        <name>StringEvalMode</name>
+        <qualifiedname>Game_Strings::StringEvalMode</qualifiedname>
+        <enumvalue id="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aaa80e30b69c4d654637cddf7018054afbe" prot="public">
+          <name>eStringEval_Text</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aaa18abdad0e519a2dbdcee50d0090025b3" prot="public">
+          <name>eStringEval_Direct</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aaa6af60a62cf7ff02e312fcf82a077552f" prot="public">
+          <name>eStringEval_Indirect</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="63" column="1" bodyfile="game_strings.h" bodystart="63" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_game___strings_1a4329cc6ceaa8d9482762533234bd81a5" prot="public" static="no">
+        <type>std::unordered_map&lt; int, std::string &gt;</type>
+        <definition>using Game_Strings::Strings_t = std::unordered_map&lt;int, std::string&gt;</definition>
+        <argsstring></argsstring>
+        <name>Strings_t</name>
+        <qualifiedname>Game_Strings::Strings_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="51" column="1" bodyfile="game_strings.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_game___strings_1ad86102bf95ad47074deb7e39fba96de9" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Game_Strings::max_warnings</definition>
+        <argsstring></argsstring>
+        <name>max_warnings</name>
+        <qualifiedname>Game_Strings::max_warnings</qualifiedname>
+        <initializer>= 10</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="54" column="22" bodyfile="game_strings.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___strings_1a24d3039fd3804b0d631b10ab4b111e85" prot="private" static="no" mutable="no">
+        <type><ref refid="class_game___strings_1a4329cc6ceaa8d9482762533234bd81a5" kindref="member">Strings_t</ref></type>
+        <definition>Strings_t Game_Strings::_strings</definition>
+        <argsstring></argsstring>
+        <name>_strings</name>
+        <qualifiedname>Game_Strings::_strings</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="117" column="11" bodyfile="game_strings.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___strings_1a32bf13817f282c6c3b6472fe9ccf6cd4" prot="private" static="no" mutable="yes">
+        <type>int</type>
+        <definition>int Game_Strings::_warnings</definition>
+        <argsstring></argsstring>
+        <name>_warnings</name>
+        <qualifiedname>Game_Strings::_warnings</qualifiedname>
+        <initializer>= <ref refid="class_game___strings_1ad86102bf95ad47074deb7e39fba96de9" kindref="member">max_warnings</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="118" column="13" bodyfile="game_strings.h" bodystart="118" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___strings_1a06ceead90ea8e50c188e76b7af35077a" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Strings::_size</definition>
+        <argsstring></argsstring>
+        <name>_size</name>
+        <qualifiedname>Game_Strings::_size</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="119" column="5" bodyfile="game_strings.h" bodystart="119" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="friend">
+      <memberdef kind="friend" id="class_game___strings_1ae60e888f01e861f90c85fcb73dca975f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>class</type>
+        <definition>friend class Scene_Debug</definition>
+        <argsstring></argsstring>
+        <name>Scene_Debug</name>
+        <qualifiedname>Game_Strings::Scene_Debug</qualifiedname>
+        <param>
+          <type><ref refid="class_scene___debug" kindref="compound">Scene_Debug</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="124" column="14" bodyfile="game_strings.h" bodystart="124" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="friend" id="class_game___strings_1ae0af4286df416c2f98ec9191e4c62b5d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>class</type>
+        <definition>friend class Window_VarList</definition>
+        <argsstring></argsstring>
+        <name>Window_VarList</name>
+        <qualifiedname>Game_Strings::Window_VarList</qualifiedname>
+        <param>
+          <type><ref refid="class_window___var_list" kindref="compound">Window_VarList</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="125" column="14" bodyfile="game_strings.h" bodystart="125" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___strings_1ac03f21d802b8f0864c46683f308c274b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Strings::Game_Strings</definition>
+        <argsstring>()=default</argsstring>
+        <name>Game_Strings</name>
+        <qualifiedname>Game_Strings::Game_Strings</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="69" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a2f38e3c4c8823900a4ec5b5611a14f75" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Strings::SetData</definition>
+        <argsstring>(Strings_t s)</argsstring>
+        <name>SetData</name>
+        <qualifiedname>Game_Strings::SetData</qualifiedname>
+        <param>
+          <type><ref refid="class_game___strings_1a4329cc6ceaa8d9482762533234bd81a5" kindref="member">Strings_t</ref></type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="71" column="6" bodyfile="game_strings.h" bodystart="157" bodyend="164"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a2ea96a10d8305997932201b98b85ebd1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Strings::SetData</definition>
+        <argsstring>(const std::vector&lt; lcf::DBString &gt; &amp;s)</argsstring>
+        <name>SetData</name>
+        <qualifiedname>Game_Strings::SetData</qualifiedname>
+        <param>
+          <type>const std::vector&lt; lcf::DBString &gt; &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="72" column="6" bodyfile="game_strings.h" bodystart="166" bodyend="180"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a0ab1a7ccdac87b840c0f6a034865e591" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="class_game___strings_1a4329cc6ceaa8d9482762533234bd81a5" kindref="member">Strings_t</ref> &amp;</type>
+        <definition>const Game_Strings::Strings_t &amp; Game_Strings::GetData</definition>
+        <argsstring>() const</argsstring>
+        <name>GetData</name>
+        <qualifiedname>Game_Strings::GetData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="73" column="17" bodyfile="game_strings.h" bodystart="182" bodyend="184"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a427cee6bdbaec04fb46eb93362b5a23f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; lcf::DBString &gt;</type>
+        <definition>std::vector&lt; lcf::DBString &gt; Game_Strings::GetLcfData</definition>
+        <argsstring>() const</argsstring>
+        <name>GetLcfData</name>
+        <qualifiedname>Game_Strings::GetLcfData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="74" column="13" bodyfile="game_strings.h" bodystart="186" bodyend="198"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a0c736e121f4483d618933187b2ad4385" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_Strings::Get</definition>
+        <argsstring>(int id) const</argsstring>
+        <name>Get</name>
+        <qualifiedname>Game_Strings::Get</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="76" column="18" bodyfile="game_strings.h" bodystart="204" bodyend="213"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1ad903a732f178870bacfdac95de334cae" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_Strings::GetIndirect</definition>
+        <argsstring>(int id, const Game_Variables &amp;variables) const</argsstring>
+        <name>GetIndirect</name>
+        <qualifiedname>Game_Strings::GetIndirect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___variables" kindref="compound">Game_Variables</ref> &amp;</type>
+          <declname>variables</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="77" column="18" bodyfile="game_strings.h" bodystart="215" bodyend="218"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a8f778d81feec969f048153c18a72b3a7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_Strings::GetWithMode</definition>
+        <argsstring>(std::string_view str_data, int mode, int arg, const Game_Variables &amp;variables) const</argsstring>
+        <name>GetWithMode</name>
+        <qualifiedname>Game_Strings::GetWithMode</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>str_data</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>mode</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___variables" kindref="compound">Game_Variables</ref> &amp;</type>
+          <declname>variables</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="78" column="18" bodyfile="game_strings.h" bodystart="220" bodyend="229"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a17f82ef47dc69fcb8ffcf35b4102a7e4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Game_Strings::GetWithModeAndPos</definition>
+        <argsstring>(std::string_view str_data, int mode, int arg, int &amp;pos, const Game_Variables &amp;variables)</argsstring>
+        <name>GetWithModeAndPos</name>
+        <qualifiedname>Game_Strings::GetWithModeAndPos</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>str_data</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>mode</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>pos</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___variables" kindref="compound">Game_Variables</ref> &amp;</type>
+          <declname>variables</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="79" column="13" bodyfile="game_strings.h" bodystart="231" bodyend="251"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a9550f2405857ff04e25c86fda6b83b5d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Strings::GetSizeWithLimit</definition>
+        <argsstring>()</argsstring>
+        <name>GetSizeWithLimit</name>
+        <qualifiedname>Game_Strings::GetSizeWithLimit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="81" column="5" bodyfile="game_strings.cpp" bodystart="515" bodyend="526"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a0c59ef26e0c3249aad84d447534480bc" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_Strings::GetName</definition>
+        <argsstring>(int id) const</argsstring>
+        <name>GetName</name>
+        <qualifiedname>Game_Strings::GetName</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="82" column="18" bodyfile="game_strings.cpp" bodystart="528" bodyend="536"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1ab9a38c73466233e8dde526cf30b59a8c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_Strings::Asg</definition>
+        <argsstring>(Str_Params params, std::string_view string)</argsstring>
+        <name>Asg</name>
+        <qualifiedname>Game_Strings::Asg</qualifiedname>
+        <param>
+          <type><ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref></type>
+          <declname>params</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>string</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="88" column="18" bodyfile="game_strings.cpp" bodystart="60" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1ac7b0851e7f1ba7480baae0eff6328023" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_Strings::Cat</definition>
+        <argsstring>(Str_Params params, std::string_view string)</argsstring>
+        <name>Cat</name>
+        <qualifiedname>Game_Strings::Cat</qualifiedname>
+        <param>
+          <type><ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref></type>
+          <declname>params</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>string</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="89" column="18" bodyfile="game_strings.cpp" bodystart="65" bodyend="77"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1ad89fe70b96bb9abd5caccdf8c3191340" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Strings::ToNum</definition>
+        <argsstring>(Str_Params params, int var_id, Game_Variables &amp;variables)</argsstring>
+        <name>ToNum</name>
+        <qualifiedname>Game_Strings::ToNum</qualifiedname>
+        <param>
+          <type><ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref></type>
+          <declname>params</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables" kindref="compound">Game_Variables</ref> &amp;</type>
+          <declname>variables</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="90" column="5" bodyfile="game_strings.cpp" bodystart="79" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a9bc176c4bd26343868313d30d289117f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Strings::GetLen</definition>
+        <argsstring>(Str_Params params, int var_id, Game_Variables &amp;variables) const</argsstring>
+        <name>GetLen</name>
+        <qualifiedname>Game_Strings::GetLen</qualifiedname>
+        <param>
+          <type><ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref></type>
+          <declname>params</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables" kindref="compound">Game_Variables</ref> &amp;</type>
+          <declname>variables</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="91" column="5" bodyfile="game_strings.cpp" bodystart="102" bodyend="113"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1ab00e40f63195ac651578956561e106ae" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Strings::InStr</definition>
+        <argsstring>(Str_Params params, std::string search, int var_id, int begin, Game_Variables &amp;variables) const</argsstring>
+        <name>InStr</name>
+        <qualifiedname>Game_Strings::InStr</qualifiedname>
+        <param>
+          <type><ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref></type>
+          <declname>params</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>search</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>begin</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables" kindref="compound">Game_Variables</ref> &amp;</type>
+          <declname>variables</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="92" column="5" bodyfile="game_strings.cpp" bodystart="115" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a215ba66b2a8433504a744ba267b57c72" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Strings::Split</definition>
+        <argsstring>(Str_Params params, const std::string &amp;delimiter, int string_out_id, int var_id, Game_Variables &amp;variables)</argsstring>
+        <name>Split</name>
+        <qualifiedname>Game_Strings::Split</qualifiedname>
+        <param>
+          <type><ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref></type>
+          <declname>params</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>delimiter</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>string_out_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables" kindref="compound">Game_Variables</ref> &amp;</type>
+          <declname>variables</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="93" column="5" bodyfile="game_strings.cpp" bodystart="135" bodyend="191"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a1ebca7a26f21f614465b0b953fb72ace" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Strings::ToFile</definition>
+        <argsstring>(Str_Params params, std::string filename, int encoding)</argsstring>
+        <name>ToFile</name>
+        <qualifiedname>Game_Strings::ToFile</qualifiedname>
+        <param>
+          <type><ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref></type>
+          <declname>params</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>encoding</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="95" column="6" bodyfile="game_strings.cpp" bodystart="223" bodyend="267"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a508ccff93e75eee3dcb34424c870f642" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_Strings::PopLine</definition>
+        <argsstring>(Str_Params params, int offset, int string_out_id)</argsstring>
+        <name>PopLine</name>
+        <qualifiedname>Game_Strings::PopLine</qualifiedname>
+        <param>
+          <type><ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref></type>
+          <declname>params</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>offset</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>string_out_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="96" column="18" bodyfile="game_strings.cpp" bodystart="269" bodyend="293"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a8224c867a03706cf792ba0d25697a72b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_Strings::ExMatch</definition>
+        <argsstring>(Str_Params params, std::string expr, int var_id, int begin, int string_out_id, Game_Variables &amp;variables)</argsstring>
+        <name>ExMatch</name>
+        <qualifiedname>Game_Strings::ExMatch</qualifiedname>
+        <param>
+          <type><ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref></type>
+          <declname>params</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>expr</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>begin</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>string_out_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables" kindref="compound">Game_Variables</ref> &amp;</type>
+          <declname>variables</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="97" column="18" bodyfile="game_strings.cpp" bodystart="295" bodyend="328"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a6837bc356d7a9963dde86c29b5714737" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_game___strings_1a4329cc6ceaa8d9482762533234bd81a5" kindref="member">Strings_t</ref> &amp;</type>
+        <definition>const Game_Strings::Strings_t &amp; Game_Strings::RangeOp</definition>
+        <argsstring>(Str_Params params, int string_id_1, std::string string, int op, int args[], Game_Variables &amp;variables)</argsstring>
+        <name>RangeOp</name>
+        <qualifiedname>Game_Strings::RangeOp</qualifiedname>
+        <param>
+          <type><ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref></type>
+          <declname>params</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>string_id_1</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>string</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>args</declname>
+          <array>[]</array>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables" kindref="compound">Game_Variables</ref> &amp;</type>
+          <declname>variables</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="99" column="17" bodyfile="game_strings.cpp" bodystart="330" bodyend="362"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_game___strings_1a048e0a86c9a4721237d4331321a263d9" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Game_Strings::FromFile</definition>
+        <argsstring>(std::string_view filename, int encoding, bool &amp;do_yield)</argsstring>
+        <name>FromFile</name>
+        <qualifiedname>Game_Strings::FromFile</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>encoding</declname>
+        </param>
+        <param>
+          <type>bool &amp;</type>
+          <declname>do_yield</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="94" column="20" bodyfile="game_strings.cpp" bodystart="193" bodyend="221"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a49b7cc845e63051dcef232dcfad0c084" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Game_Strings::PrependMin</definition>
+        <argsstring>(std::string_view string, int min_size, char c)</argsstring>
+        <name>PrependMin</name>
+        <qualifiedname>Game_Strings::PrependMin</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>string</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>min_size</declname>
+        </param>
+        <param>
+          <type>char</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="101" column="20" bodyfile="game_strings.cpp" bodystart="364" bodyend="380"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a95903a8e07676fa4895b0c6e1255098e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Game_Strings::Extract</definition>
+        <argsstring>(std::string_view string, bool as_hex)</argsstring>
+        <name>Extract</name>
+        <qualifiedname>Game_Strings::Extract</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>string</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>as_hex</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="102" column="20" bodyfile="game_strings.cpp" bodystart="382" bodyend="392"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a9e4bb6611d8496acb243c74c6e600a4a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Game_Strings::Substring</definition>
+        <argsstring>(std::string_view source, int begin, int length)</argsstring>
+        <name>Substring</name>
+        <qualifiedname>Game_Strings::Substring</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>begin</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>length</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="103" column="20" bodyfile="game_strings.cpp" bodystart="394" bodyend="415"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a162b6ce16cd5fbfbcc47518d88c2088a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Game_Strings::Insert</definition>
+        <argsstring>(std::string_view source, std::string_view what, int where)</argsstring>
+        <name>Insert</name>
+        <qualifiedname>Game_Strings::Insert</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>what</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>where</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="104" column="20" bodyfile="game_strings.cpp" bodystart="417" bodyend="427"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a9c57a56488388cbd31c16d610ece79a4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Game_Strings::Erase</definition>
+        <argsstring>(std::string_view source, int begin, int length)</argsstring>
+        <name>Erase</name>
+        <qualifiedname>Game_Strings::Erase</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>begin</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>length</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="105" column="20" bodyfile="game_strings.cpp" bodystart="429" bodyend="455"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a6a07c0787ee9fefd98ed2778861d1ccf" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Game_Strings::RegExReplace</definition>
+        <argsstring>(std::string_view str, std::string_view search, std::string_view replace, std::regex_constants::match_flag_type flags=std::regex_constants::match_default)</argsstring>
+        <name>RegExReplace</name>
+        <qualifiedname>Game_Strings::RegExReplace</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>str</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>search</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>replace</declname>
+        </param>
+        <param>
+          <type>std::regex_constants::match_flag_type</type>
+          <declname>flags</declname>
+          <defval>std::regex_constants::match_default</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="106" column="20" bodyfile="game_strings.cpp" bodystart="457" bodyend="469"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1ab83096da17049e81b18d67875998b2ef" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Strings::AdjustIndex</definition>
+        <argsstring>(std::string_view str, int index)</argsstring>
+        <name>AdjustIndex</name>
+        <qualifiedname>Game_Strings::AdjustIndex</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>str</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="107" column="12" bodyfile="game_strings.cpp" bodystart="471" bodyend="477"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a2934be2b60aa391e7c13b3870d66a751" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::optional&lt; std::string &gt;</type>
+        <definition>std::optional&lt; std::string &gt; Game_Strings::ManiacsCommandInserter</definition>
+        <argsstring>(char ch, const char **iter, const char *end, uint32_t escape_char)</argsstring>
+        <name>ManiacsCommandInserter</name>
+        <qualifiedname>Game_Strings::ManiacsCommandInserter</qualifiedname>
+        <param>
+          <type>char</type>
+          <declname>ch</declname>
+        </param>
+        <param>
+          <type>const char **</type>
+          <declname>iter</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>end</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>escape_char</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="109" column="22" bodyfile="game_strings.cpp" bodystart="479" bodyend="498"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a3f30ab13cf4daa046b5c98b1330816ce" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::optional&lt; std::string &gt;</type>
+        <definition>std::optional&lt; std::string &gt; Game_Strings::ManiacsCommandInserterHex</definition>
+        <argsstring>(char ch, const char **iter, const char *end, uint32_t escape_char)</argsstring>
+        <name>ManiacsCommandInserterHex</name>
+        <qualifiedname>Game_Strings::ManiacsCommandInserterHex</qualifiedname>
+        <param>
+          <type>char</type>
+          <declname>ch</declname>
+        </param>
+        <param>
+          <type>const char **</type>
+          <declname>iter</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>end</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>escape_char</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="110" column="22" bodyfile="game_strings.cpp" bodystart="500" bodyend="513"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_game___strings_1a1a18e04853912131b566dffcc710752d" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Strings::Set</definition>
+        <argsstring>(Str_Params params, std::string_view string)</argsstring>
+        <name>Set</name>
+        <qualifiedname>Game_Strings::Set</qualifiedname>
+        <param>
+          <type><ref refid="struct_game___strings_1_1_str___params" kindref="compound">Str_Params</ref></type>
+          <declname>params</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>string</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="113" column="6" bodyfile="game_strings.h" bodystart="128" bodyend="155"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1a7441c12e6e9bf38c5194f662d30187fe" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Strings::ShouldWarn</definition>
+        <argsstring>(int id) const</argsstring>
+        <name>ShouldWarn</name>
+        <qualifiedname>Game_Strings::ShouldWarn</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="114" column="6" bodyfile="game_strings.h" bodystart="200" bodyend="202"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___strings_1aa35e4f1ca6a9e7bad65c8ecd39efb9a2" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Strings::WarnGet</definition>
+        <argsstring>(int id) const</argsstring>
+        <name>WarnGet</name>
+        <qualifiedname>Game_Strings::WarnGet</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_strings.h" line="115" column="6" bodyfile="game_strings.cpp" bodystart="36" bodyend="39"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_game___strings" kindref="compound">Game_Strings</ref> class. For all operations codepoints are used (instead of bytes). This way operations that use the length or the index work almost like in Maniac Patch. And using codepoints is better anyway because this is a single character. With bytes you have the risk to &quot;chop&quot; a character in half.</para>
+<para>Where simple to implement UTF8 is used directly. In other cases the code does a roundtrip through UTF32. </para>
+    </detaileddescription>
+    <location file="game_strings.h" line="49" column="1" bodyfile="game_strings.h" bodystart="49" bodyend="126"/>
+    <listofallmembers>
+      <member refid="class_game___strings_1a06ceead90ea8e50c188e76b7af35077a" prot="private" virt="non-virtual"><scope>Game_Strings</scope><name>_size</name></member>
+      <member refid="class_game___strings_1a24d3039fd3804b0d631b10ab4b111e85" prot="private" virt="non-virtual"><scope>Game_Strings</scope><name>_strings</name></member>
+      <member refid="class_game___strings_1a32bf13817f282c6c3b6472fe9ccf6cd4" prot="private" virt="non-virtual"><scope>Game_Strings</scope><name>_warnings</name></member>
+      <member refid="class_game___strings_1ab83096da17049e81b18d67875998b2ef" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>AdjustIndex</name></member>
+      <member refid="class_game___strings_1ab9a38c73466233e8dde526cf30b59a8c" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>Asg</name></member>
+      <member refid="class_game___strings_1ac7b0851e7f1ba7480baae0eff6328023" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>Cat</name></member>
+      <member refid="class_game___strings_1a9c57a56488388cbd31c16d610ece79a4" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>Erase</name></member>
+      <member refid="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aaa18abdad0e519a2dbdcee50d0090025b3" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>eStringEval_Direct</name></member>
+      <member refid="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aaa6af60a62cf7ff02e312fcf82a077552f" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>eStringEval_Indirect</name></member>
+      <member refid="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aaa80e30b69c4d654637cddf7018054afbe" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>eStringEval_Text</name></member>
+      <member refid="class_game___strings_1a8224c867a03706cf792ba0d25697a72b" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>ExMatch</name></member>
+      <member refid="class_game___strings_1a95903a8e07676fa4895b0c6e1255098e" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>Extract</name></member>
+      <member refid="class_game___strings_1a048e0a86c9a4721237d4331321a263d9" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>FromFile</name></member>
+      <member refid="class_game___strings_1ac03f21d802b8f0864c46683f308c274b" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>Game_Strings</name></member>
+      <member refid="class_game___strings_1a0c736e121f4483d618933187b2ad4385" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>Get</name></member>
+      <member refid="class_game___strings_1a0ab1a7ccdac87b840c0f6a034865e591" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>GetData</name></member>
+      <member refid="class_game___strings_1ad903a732f178870bacfdac95de334cae" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>GetIndirect</name></member>
+      <member refid="class_game___strings_1a427cee6bdbaec04fb46eb93362b5a23f" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>GetLcfData</name></member>
+      <member refid="class_game___strings_1a9bc176c4bd26343868313d30d289117f" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>GetLen</name></member>
+      <member refid="class_game___strings_1a0c59ef26e0c3249aad84d447534480bc" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>GetName</name></member>
+      <member refid="class_game___strings_1a9550f2405857ff04e25c86fda6b83b5d" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>GetSizeWithLimit</name></member>
+      <member refid="class_game___strings_1a8f778d81feec969f048153c18a72b3a7" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>GetWithMode</name></member>
+      <member refid="class_game___strings_1a17f82ef47dc69fcb8ffcf35b4102a7e4" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>GetWithModeAndPos</name></member>
+      <member refid="class_game___strings_1a162b6ce16cd5fbfbcc47518d88c2088a" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>Insert</name></member>
+      <member refid="class_game___strings_1ab00e40f63195ac651578956561e106ae" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>InStr</name></member>
+      <member refid="class_game___strings_1a2934be2b60aa391e7c13b3870d66a751" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>ManiacsCommandInserter</name></member>
+      <member refid="class_game___strings_1a3f30ab13cf4daa046b5c98b1330816ce" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>ManiacsCommandInserterHex</name></member>
+      <member refid="class_game___strings_1ad86102bf95ad47074deb7e39fba96de9" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>max_warnings</name></member>
+      <member refid="class_game___strings_1a508ccff93e75eee3dcb34424c870f642" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>PopLine</name></member>
+      <member refid="class_game___strings_1a49b7cc845e63051dcef232dcfad0c084" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>PrependMin</name></member>
+      <member refid="class_game___strings_1a6837bc356d7a9963dde86c29b5714737" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>RangeOp</name></member>
+      <member refid="class_game___strings_1a6a07c0787ee9fefd98ed2778861d1ccf" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>RegExReplace</name></member>
+      <member refid="class_game___strings_1ae60e888f01e861f90c85fcb73dca975f" prot="private" virt="non-virtual"><scope>Game_Strings</scope><name>Scene_Debug</name></member>
+      <member refid="class_game___strings_1a1a18e04853912131b566dffcc710752d" prot="private" virt="non-virtual"><scope>Game_Strings</scope><name>Set</name></member>
+      <member refid="class_game___strings_1a2f38e3c4c8823900a4ec5b5611a14f75" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>SetData</name></member>
+      <member refid="class_game___strings_1a2ea96a10d8305997932201b98b85ebd1" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>SetData</name></member>
+      <member refid="class_game___strings_1a7441c12e6e9bf38c5194f662d30187fe" prot="private" virt="non-virtual"><scope>Game_Strings</scope><name>ShouldWarn</name></member>
+      <member refid="class_game___strings_1a215ba66b2a8433504a744ba267b57c72" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>Split</name></member>
+      <member refid="class_game___strings_1a4155317c4b297f4df9e8c8a8f129b4aa" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>StringEvalMode</name></member>
+      <member refid="class_game___strings_1a4329cc6ceaa8d9482762533234bd81a5" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>Strings_t</name></member>
+      <member refid="class_game___strings_1a9e4bb6611d8496acb243c74c6e600a4a" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>Substring</name></member>
+      <member refid="class_game___strings_1a1ebca7a26f21f614465b0b953fb72ace" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>ToFile</name></member>
+      <member refid="class_game___strings_1ad89fe70b96bb9abd5caccdf8c3191340" prot="public" virt="non-virtual"><scope>Game_Strings</scope><name>ToNum</name></member>
+      <member refid="class_game___strings_1aa35e4f1ca6a9e7bad65c8ecd39efb9a2" prot="private" virt="non-virtual"><scope>Game_Strings</scope><name>WarnGet</name></member>
+      <member refid="class_game___strings_1ae0af4286df416c2f98ec9191e4c62b5d" prot="private" virt="non-virtual"><scope>Game_Strings</scope><name>Window_VarList</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

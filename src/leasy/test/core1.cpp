@@ -24,3 +24,4 @@
 leasy::tests::Test1 foo() {
   return {};
 }
+

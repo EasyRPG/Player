@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_entry" kind="class" language="C++" prot="public">
+    <compoundname>Entry</compoundname>
+    <includes refid="translation_8h" local="no">translation.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_entry_1a05cf29adbdc865dd64552383d0d4d91f" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Entry::original</definition>
+        <argsstring></argsstring>
+        <name>original</name>
+        <qualifiedname>Entry::original</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="83" column="13" bodyfile="translation.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_entry_1a73b0d75a8a7e7e5afe94b5973753bb7b" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Entry::translation</definition>
+        <argsstring></argsstring>
+        <name>translation</name>
+        <qualifiedname>Entry::translation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="84" column="13" bodyfile="translation.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_entry_1a7a999ba14e719d102c0374b0a42d4351" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Entry::context</definition>
+        <argsstring></argsstring>
+        <name>context</name>
+        <qualifiedname>Entry::context</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="85" column="13" bodyfile="translation.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>An entry in the dictionary </para>
+    </detaileddescription>
+    <location file="translation.h" line="81" column="1" bodyfile="translation.h" bodystart="81" bodyend="86"/>
+    <listofallmembers>
+      <member refid="class_entry_1a7a999ba14e719d102c0374b0a42d4351" prot="public" virt="non-virtual"><scope>Entry</scope><name>context</name></member>
+      <member refid="class_entry_1a05cf29adbdc865dd64552383d0d4d91f" prot="public" virt="non-virtual"><scope>Entry</scope><name>original</name></member>
+      <member refid="class_entry_1a73b0d75a8a7e7e5afe94b5973753bb7b" prot="public" virt="non-virtual"><scope>Entry</scope><name>translation</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

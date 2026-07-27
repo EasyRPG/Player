@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_audio_se_data" kind="class" language="C++" prot="public">
+    <compoundname>AudioSeData</compoundname>
+    <includes refid="audio__secache_8h" local="no">audio_secache.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_audio_se_data_1acd3299eb770332be9cc44b0cb632ffa7" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; uint8_t &gt;</type>
+        <definition>std::vector&lt;uint8_t&gt; AudioSeData::buffer</definition>
+        <argsstring></argsstring>
+        <name>buffer</name>
+        <qualifiedname>AudioSeData::buffer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_secache.h" line="39" column="13" bodyfile="audio_secache.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_se_data_1ad910a8425cb03854b3620b9a57f11015" prot="public" static="no" mutable="no">
+        <type><ref refid="class_game___clock_1a7da5a97294e9d1b3dddb617d90eea63e" kindref="member">Game_Clock::time_point</ref></type>
+        <definition>Game_Clock::time_point AudioSeData::last_access</definition>
+        <argsstring></argsstring>
+        <name>last_access</name>
+        <qualifiedname>AudioSeData::last_access</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_secache.h" line="40" column="24" bodyfile="audio_secache.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_se_data_1a3f031eb75c55f7da24dab8b059bac127" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int AudioSeData::frequency</definition>
+        <argsstring></argsstring>
+        <name>frequency</name>
+        <qualifiedname>AudioSeData::frequency</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_secache.h" line="41" column="5" bodyfile="audio_secache.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_se_data_1ab3f7cd2f3eead6506f326a2c668137b1" prot="public" static="no" mutable="no">
+        <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">AudioDecoder::Format</ref></type>
+        <definition>AudioDecoder::Format AudioSeData::format</definition>
+        <argsstring></argsstring>
+        <name>format</name>
+        <qualifiedname>AudioSeData::format</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_secache.h" line="42" column="22" bodyfile="audio_secache.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_se_data_1ab52d95b765ebeaf9edd98e9464c78552" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int AudioSeData::channels</definition>
+        <argsstring></argsstring>
+        <name>channels</name>
+        <qualifiedname>AudioSeData::channels</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_secache.h" line="43" column="5" bodyfile="audio_secache.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_audio_se_data" kindref="compound">AudioSeData</ref> contains the decoded sample of <ref refid="class_audio_se_cache" kindref="compound">AudioSeCache</ref>. </para>
+    </detaileddescription>
+    <location file="audio_secache.h" line="37" column="1" bodyfile="audio_secache.h" bodystart="37" bodyend="44"/>
+    <listofallmembers>
+      <member refid="class_audio_se_data_1acd3299eb770332be9cc44b0cb632ffa7" prot="public" virt="non-virtual"><scope>AudioSeData</scope><name>buffer</name></member>
+      <member refid="class_audio_se_data_1ab52d95b765ebeaf9edd98e9464c78552" prot="public" virt="non-virtual"><scope>AudioSeData</scope><name>channels</name></member>
+      <member refid="class_audio_se_data_1ab3f7cd2f3eead6506f326a2c668137b1" prot="public" virt="non-virtual"><scope>AudioSeData</scope><name>format</name></member>
+      <member refid="class_audio_se_data_1a3f031eb75c55f7da24dab8b059bac127" prot="public" virt="non-virtual"><scope>AudioSeData</scope><name>frequency</name></member>
+      <member refid="class_audio_se_data_1ad910a8425cb03854b3620b9a57f11015" prot="public" virt="non-virtual"><scope>AudioSeData</scope><name>last_access</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1iky7_1_1mmchunk" kind="class" language="C++" prot="public">
+    <compoundname>leasy::iky7::mmchunk</compoundname>
+    <includes refid="mem_8hpp" local="no">mem.hpp</includes>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classleasy_1_1iky7_1_1mmchunk_1a652c84612e64b73e3df1982e9338ff9e" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::vector&lt; std::shared_ptr&lt; T &gt; &gt; &amp;</type>
+        <definition>std::vector&lt; std::shared_ptr&lt; T &gt; &gt; &amp; leasy::iky7::mmchunk::gel</definition>
+        <argsstring>()</argsstring>
+        <name>gel</name>
+        <qualifiedname>leasy::iky7::mmchunk::gel</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/iky7/mem.hpp" line="33" column="17" bodyfile="leasy/iky7/mem.hpp" bodystart="33" bodyend="36"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1iky7_1_1mmchunk_1aa0c393d980c734449599f2e6e8c10d63" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::shared_ptr&lt; T &gt;</type>
+        <definition>std::shared_ptr&lt; T &gt; leasy::iky7::mmchunk::pin</definition>
+        <argsstring>(const std::shared_ptr&lt; T &gt; &amp;p)</argsstring>
+        <name>pin</name>
+        <qualifiedname>leasy::iky7::mmchunk::pin</qualifiedname>
+        <param>
+          <type>const std::shared_ptr&lt; T &gt; &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/iky7/mem.hpp" line="40" column="28" bodyfile="leasy/iky7/mem.hpp" bodystart="40" bodyend="43"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/iky7/mem.hpp" line="30" column="3" bodyfile="leasy/iky7/mem.hpp" bodystart="30" bodyend="44"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1iky7_1_1mmchunk_1a652c84612e64b73e3df1982e9338ff9e" prot="private" virt="non-virtual"><scope>leasy::iky7::mmchunk</scope><name>gel</name></member>
+      <member refid="classleasy_1_1iky7_1_1mmchunk_1aa0c393d980c734449599f2e6e8c10d63" prot="public" virt="non-virtual"><scope>leasy::iky7::mmchunk</scope><name>pin</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

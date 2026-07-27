@@ -1,0 +1,249 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_rand_1_1_lock_guard" kind="class" language="C++" prot="public">
+    <compoundname>Rand::LockGuard</compoundname>
+    <includes refid="rand_8h" local="no">rand.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_rand_1_1_lock_guard_1afcce8e87bbf525036396279fe4bbacbd" prot="private" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t Rand::LockGuard::_prev_lock_value</definition>
+        <argsstring></argsstring>
+        <name>_prev_lock_value</name>
+        <qualifiedname>Rand::LockGuard::_prev_lock_value</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="137" column="9" bodyfile="rand.h" bodystart="137" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_rand_1_1_lock_guard_1a03ebb3144fb26bbe5f6bfde19ce2073d" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Rand::LockGuard::_prev_locked</definition>
+        <argsstring></argsstring>
+        <name>_prev_locked</name>
+        <qualifiedname>Rand::LockGuard::_prev_locked</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="138" column="6" bodyfile="rand.h" bodystart="138" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_rand_1_1_lock_guard_1a01670f767ef443268b6582fe4fb2c38e" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Rand::LockGuard::_active</definition>
+        <argsstring></argsstring>
+        <name>_active</name>
+        <qualifiedname>Rand::LockGuard::_active</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="139" column="6" bodyfile="rand.h" bodystart="139" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_rand_1_1_lock_guard_1a5271dfd0dfe88715ae382a584003be85" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Rand::LockGuard::LockGuard</definition>
+        <argsstring>(int32_t lock_value, bool locked=true)</argsstring>
+        <name>LockGuard</name>
+        <qualifiedname>Rand::LockGuard::LockGuard</qualifiedname>
+        <param>
+          <type>int32_t</type>
+          <declname>lock_value</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>locked</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Store current state and set locked state <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>lock_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The rng value to fix to </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>locked</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to fix or reset </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="116" column="1" bodyfile="rand.cpp" bodystart="113" bodyend="124"/>
+      </memberdef>
+      <memberdef kind="function" id="class_rand_1_1_lock_guard_1adfa0237122fe80cd9a2477d48c4ed50b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Rand::LockGuard::LockGuard</definition>
+        <argsstring>(const LockGuard &amp;)=delete</argsstring>
+        <name>LockGuard</name>
+        <qualifiedname>Rand::LockGuard::LockGuard</qualifiedname>
+        <param>
+          <type>const LockGuard &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="118" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_rand_1_1_lock_guard_1a65c9b239e6199d9c45e7c7e29a7b0b32" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_rand_1_1_lock_guard_1a5271dfd0dfe88715ae382a584003be85" kindref="member">LockGuard</ref> &amp;</type>
+        <definition>LockGuard &amp; Rand::LockGuard::operator=</definition>
+        <argsstring>(const LockGuard &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Rand::LockGuard::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_rand_1_1_lock_guard_1a5271dfd0dfe88715ae382a584003be85" kindref="member">LockGuard</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="119" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="class_rand_1_1_lock_guard_1a629ed4a535905b614182460b527a10b2" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>Rand::LockGuard::LockGuard</definition>
+        <argsstring>(LockGuard &amp;&amp;o) noexcept</argsstring>
+        <name>LockGuard</name>
+        <qualifiedname>Rand::LockGuard::LockGuard</qualifiedname>
+        <param>
+          <type>LockGuard &amp;&amp;</type>
+          <declname>o</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Move other <ref refid="class_rand_1_1_lock_guard" kindref="compound">LockGuard</ref> to this </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="122" column="1" bodyfile="rand.h" bodystart="146" bodyend="150"/>
+      </memberdef>
+      <memberdef kind="function" id="class_rand_1_1_lock_guard_1a69d1201fa1af40811821f6312350433b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_rand_1_1_lock_guard_1a5271dfd0dfe88715ae382a584003be85" kindref="member">LockGuard</ref> &amp;</type>
+        <definition>LockGuard &amp; Rand::LockGuard::operator=</definition>
+        <argsstring>(LockGuard &amp;&amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Rand::LockGuard::operator=</qualifiedname>
+        <param>
+          <type><ref refid="class_rand_1_1_lock_guard_1a5271dfd0dfe88715ae382a584003be85" kindref="member">LockGuard</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="123" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="class_rand_1_1_lock_guard_1aae39c372a734c49e158bd440947be04c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Rand::LockGuard::~LockGuard</definition>
+        <argsstring>()</argsstring>
+        <name>~LockGuard</name>
+        <qualifiedname>Rand::LockGuard::~LockGuard</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calls <ref refid="class_rand_1_1_lock_guard_1a8a7fff3c16d13ffcc6a5cafdbbdc5b06" kindref="member">Release()</ref> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="126" column="1" bodyfile="rand.h" bodystart="152" bodyend="154"/>
+      </memberdef>
+      <memberdef kind="function" id="class_rand_1_1_lock_guard_1a8a7fff3c16d13ffcc6a5cafdbbdc5b06" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Rand::LockGuard::Release</definition>
+        <argsstring>() noexcept</argsstring>
+        <name>Release</name>
+        <qualifiedname>Rand::LockGuard::Release</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>If <ref refid="class_rand_1_1_lock_guard_1aed620bacbed4ef1ad601834f771e7ace" kindref="member">Enabled()</ref>, returns the rng locked state to what it was </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="129" column="6" bodyfile="rand.cpp" bodystart="126" bodyend="135"/>
+      </memberdef>
+      <memberdef kind="function" id="class_rand_1_1_lock_guard_1af73739fbb447788f8b5d6297d8ec705c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Rand::LockGuard::Dismiss</definition>
+        <argsstring>()</argsstring>
+        <name>Dismiss</name>
+        <qualifiedname>Rand::LockGuard::Dismiss</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Disables the <ref refid="class_rand_1_1_lock_guard" kindref="compound">LockGuard</ref> leaving the rng state as is </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="132" column="6" bodyfile="rand.h" bodystart="156" bodyend="158"/>
+      </memberdef>
+      <memberdef kind="function" id="class_rand_1_1_lock_guard_1aed620bacbed4ef1ad601834f771e7ace" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Rand::LockGuard::Enabled</definition>
+        <argsstring>() const</argsstring>
+        <name>Enabled</name>
+        <qualifiedname>Rand::LockGuard::Enabled</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>whether the guard is enabled and will release on destruction </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rand.h" line="135" column="6" bodyfile="rand.h" bodystart="160" bodyend="162"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>An RAII guard which fixes the rng while active and resets on destruction </para>
+    </detaileddescription>
+    <location file="rand.h" line="109" column="1" bodyfile="rand.h" bodystart="109" bodyend="140"/>
+    <listofallmembers>
+      <member refid="class_rand_1_1_lock_guard_1a01670f767ef443268b6582fe4fb2c38e" prot="private" virt="non-virtual"><scope>Rand::LockGuard</scope><name>_active</name></member>
+      <member refid="class_rand_1_1_lock_guard_1afcce8e87bbf525036396279fe4bbacbd" prot="private" virt="non-virtual"><scope>Rand::LockGuard</scope><name>_prev_lock_value</name></member>
+      <member refid="class_rand_1_1_lock_guard_1a03ebb3144fb26bbe5f6bfde19ce2073d" prot="private" virt="non-virtual"><scope>Rand::LockGuard</scope><name>_prev_locked</name></member>
+      <member refid="class_rand_1_1_lock_guard_1af73739fbb447788f8b5d6297d8ec705c" prot="public" virt="non-virtual"><scope>Rand::LockGuard</scope><name>Dismiss</name></member>
+      <member refid="class_rand_1_1_lock_guard_1aed620bacbed4ef1ad601834f771e7ace" prot="public" virt="non-virtual"><scope>Rand::LockGuard</scope><name>Enabled</name></member>
+      <member refid="class_rand_1_1_lock_guard_1a5271dfd0dfe88715ae382a584003be85" prot="public" virt="non-virtual"><scope>Rand::LockGuard</scope><name>LockGuard</name></member>
+      <member refid="class_rand_1_1_lock_guard_1adfa0237122fe80cd9a2477d48c4ed50b" prot="public" virt="non-virtual"><scope>Rand::LockGuard</scope><name>LockGuard</name></member>
+      <member refid="class_rand_1_1_lock_guard_1a629ed4a535905b614182460b527a10b2" prot="public" virt="non-virtual"><scope>Rand::LockGuard</scope><name>LockGuard</name></member>
+      <member refid="class_rand_1_1_lock_guard_1a65c9b239e6199d9c45e7c7e29a7b0b32" prot="public" virt="non-virtual"><scope>Rand::LockGuard</scope><name>operator=</name></member>
+      <member refid="class_rand_1_1_lock_guard_1a69d1201fa1af40811821f6312350433b" prot="public" virt="non-virtual"><scope>Rand::LockGuard</scope><name>operator=</name></member>
+      <member refid="class_rand_1_1_lock_guard_1a8a7fff3c16d13ffcc6a5cafdbbdc5b06" prot="public" virt="non-virtual"><scope>Rand::LockGuard</scope><name>Release</name></member>
+      <member refid="class_rand_1_1_lock_guard_1aae39c372a734c49e158bd440947be04c" prot="public" virt="non-virtual"><scope>Rand::LockGuard</scope><name>~LockGuard</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

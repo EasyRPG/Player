@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_load_s" kind="struct" language="C++" prot="public">
+    <compoundname>LoadS</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_load_s_1a44ca6c7d2df4008707bdc388106a597f" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* LoadS::s</definition>
+        <argsstring></argsstring>
+        <name>s</name>
+        <qualifiedname>LoadS::s</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.c" line="852" column="14" bodyfile="leasy/lua/lauxlib.c" bodystart="852" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_load_s_1a40a688d5486de2f680cf56297af57b80" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t LoadS::size</definition>
+        <argsstring></argsstring>
+        <name>size</name>
+        <qualifiedname>LoadS::size</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.c" line="853" column="10" bodyfile="leasy/lua/lauxlib.c" bodystart="853" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/lua/lauxlib.c" line="851" column="1" bodyfile="leasy/lua/lauxlib.c" bodystart="851" bodyend="854"/>
+    <listofallmembers>
+      <member refid="struct_load_s_1a44ca6c7d2df4008707bdc388106a597f" prot="public" virt="non-virtual"><scope>LoadS</scope><name>s</name></member>
+      <member refid="struct_load_s_1a40a688d5486de2f680cf56297af57b80" prot="public" virt="non-virtual"><scope>LoadS</scope><name>size</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

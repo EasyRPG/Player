@@ -249,3 +249,4 @@ inline std::string Game_Strings::GetWithModeAndPos(std::string_view str_data, in
 			return ret;
 	}
 }
+

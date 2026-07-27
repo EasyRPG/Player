@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="cvref_8hpp" kind="file" language="C++">
+    <compoundname>cvref.hpp</compoundname>
+    <includes local="no">type_traits</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/kits/cvref.hpp</label>
+        <link refid="cvref_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>type_traits</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceleasy">leasy</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1compat">leasy::compat</innernamespace>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="cvref_8hpp_1a0145b6a2065b471f88b59d95dd1ee578" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespaceleasy_1_1compat_1a58c455b84015209f4203cdb7d5de2e72" kindref="member">leasy::compat::remove_cvref_t</ref>&lt; T &gt;</type>
+        <definition>using remove_cvref_t = leasy::compat::remove_cvref_t&lt;T&gt;</definition>
+        <argsstring></argsstring>
+        <name>remove_cvref_t</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/cvref.hpp" line="35" column="3" bodyfile="leasy/kits/cvref.hpp" bodystart="35" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;type_traits&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="namespaceleasy_1_1compat" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1compat" kindref="compound">leasy::compat</ref><sp/>{<sp/></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="30" refid="namespaceleasy_1_1compat_1a58c455b84015209f4203cdb7d5de2e72" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1compat_1a58c455b84015209f4203cdb7d5de2e72" kindref="member">remove_cvref_t</ref><sp/>=<sp/>std::remove_cv_t&lt;std::remove_reference_t&lt;T&gt;&gt;;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>__cplusplus<sp/>&lt;<sp/>202002L</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="35" refid="cvref_8hpp_1a0145b6a2065b471f88b59d95dd1ee578" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="cvref_8hpp_1a0145b6a2065b471f88b59d95dd1ee578" kindref="member">remove_cvref_t</ref><sp/>=<sp/><ref refid="namespaceleasy_1_1compat_1a58c455b84015209f4203cdb7d5de2e72" kindref="member">leasy::compat::remove_cvref_t&lt;T&gt;</ref>;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/>#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="cvref_8hpp_1a0145b6a2065b471f88b59d95dd1ee578" kindref="member">remove_cvref_t</ref><sp/>=<sp/>std::remove_cvref_t&lt;T&gt;;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight></codeline>
+    </programlisting>
+    <location file="leasy/kits/cvref.hpp"/>
+  </compounddef>
+</doxygen>

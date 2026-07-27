@@ -321,3 +321,4 @@ void Output::DebugStr(std::string const& msg) {
 	}
 	WriteLog(LogLevel::Debug, msg, Color(128, 128, 128, 255));
 }
+

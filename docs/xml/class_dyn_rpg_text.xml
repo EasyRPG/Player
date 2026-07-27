@@ -1,0 +1,493 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_dyn_rpg_text" kind="class" language="C++" prot="public">
+    <compoundname>DynRpgText</compoundname>
+    <basecompoundref refid="class_drawable" prot="public" virt="non-virtual">Drawable</basecompoundref>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_dyn_rpg_text_1ac790c022285939c0938c6bbb3b955424" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt;std::string&gt; DynRpgText::texts</definition>
+        <argsstring></argsstring>
+        <name>texts</name>
+        <qualifiedname>DynRpgText::texts</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="253" column="13" bodyfile="dynrpg_textplugin.cpp" bodystart="253" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dyn_rpg_text_1a548d2965993c79a57e75ab4285c52201" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef DynRpgText::bitmap</definition>
+        <argsstring></argsstring>
+        <name>bitmap</name>
+        <qualifiedname>DynRpgText::bitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="254" column="11" bodyfile="dynrpg_textplugin.cpp" bodystart="254" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dyn_rpg_text_1aab1bc763e6fc6c32bc16776ad72fe2a1" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int DynRpgText::pic_id</definition>
+        <argsstring></argsstring>
+        <name>pic_id</name>
+        <qualifiedname>DynRpgText::pic_id</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="255" column="5" bodyfile="dynrpg_textplugin.cpp" bodystart="255" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dyn_rpg_text_1a7cf4a5c04abe2e9d5e12308ddd437bf3" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int DynRpgText::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <qualifiedname>DynRpgText::x</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="256" column="5" bodyfile="dynrpg_textplugin.cpp" bodystart="256" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dyn_rpg_text_1a88d26b2a3be93ce35e77de0250d14148" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int DynRpgText::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <qualifiedname>DynRpgText::y</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="257" column="5" bodyfile="dynrpg_textplugin.cpp" bodystart="257" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dyn_rpg_text_1a125ae707af0520514da00149eb0c9884" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int DynRpgText::color</definition>
+        <argsstring></argsstring>
+        <name>color</name>
+        <qualifiedname>DynRpgText::color</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="258" column="5" bodyfile="dynrpg_textplugin.cpp" bodystart="258" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_dyn_rpg_text_1afe2ed155d74ad1b9e4eefe0da58e5107" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool DynRpgText::fixed</definition>
+        <argsstring></argsstring>
+        <name>fixed</name>
+        <qualifiedname>DynRpgText::fixed</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="259" column="6" bodyfile="dynrpg_textplugin.cpp" bodystart="259" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_dyn_rpg_text_1aeeeb11986abe3ac96b196bdce0017ed5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>DynRpgText::DynRpgText</definition>
+        <argsstring>(int pic_id, int x, int y, const std::string &amp;text)</argsstring>
+        <name>DynRpgText</name>
+        <qualifiedname>DynRpgText::DynRpgText</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>pic_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>text</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="44" column="1" bodyfile="dynrpg_textplugin.cpp" bodystart="44" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_text_1a1de0cc1048722d2f0473258b8a9987a0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>DynRpgText::DynRpgText</definition>
+        <argsstring>(int pic_id, int x, int y, const std::vector&lt; std::string &gt; &amp;text)</argsstring>
+        <name>DynRpgText</name>
+        <qualifiedname>DynRpgText::DynRpgText</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>pic_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; std::string &gt; &amp;</type>
+          <declname>text</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="50" column="1" bodyfile="dynrpg_textplugin.cpp" bodystart="50" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_text_1a22c1039bc4ef82569bd1be8fbed4800d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void DynRpgText::AddLine</definition>
+        <argsstring>(const std::string &amp;text)</argsstring>
+        <name>AddLine</name>
+        <qualifiedname>DynRpgText::AddLine</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>text</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="58" column="6" bodyfile="dynrpg_textplugin.cpp" bodystart="58" bodyend="62"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_text_1a2dca29655897c5610b3381877f45b006" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void DynRpgText::AddText</definition>
+        <argsstring>(const std::string &amp;text)</argsstring>
+        <name>AddText</name>
+        <qualifiedname>DynRpgText::AddText</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>text</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="64" column="6" bodyfile="dynrpg_textplugin.cpp" bodystart="64" bodyend="72"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_text_1ab94d653156db2f265301b1439a658b2b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void DynRpgText::ClearText</definition>
+        <argsstring>()</argsstring>
+        <name>ClearText</name>
+        <qualifiedname>DynRpgText::ClearText</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="74" column="6" bodyfile="dynrpg_textplugin.cpp" bodystart="74" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_text_1aec824ab4689bb7ee91b125de479b8af0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void DynRpgText::SetPosition</definition>
+        <argsstring>(int new_x, int new_y)</argsstring>
+        <name>SetPosition</name>
+        <qualifiedname>DynRpgText::SetPosition</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>new_x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>new_y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="80" column="6" bodyfile="dynrpg_textplugin.cpp" bodystart="80" bodyend="83"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_text_1a001fc902d72879693dfef22e10d7cab3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void DynRpgText::SetColor</definition>
+        <argsstring>(int new_color)</argsstring>
+        <name>SetColor</name>
+        <qualifiedname>DynRpgText::SetColor</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>new_color</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="85" column="6" bodyfile="dynrpg_textplugin.cpp" bodystart="85" bodyend="89"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_text_1a179ec5f4cebdca8e09bcef1be319960c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void DynRpgText::SetPictureId</definition>
+        <argsstring>(int new_pic_id)</argsstring>
+        <name>SetPictureId</name>
+        <qualifiedname>DynRpgText::SetPictureId</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>new_pic_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="91" column="6" bodyfile="dynrpg_textplugin.cpp" bodystart="91" bodyend="104"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_text_1a9d10b41eb5b1e0ea406eb1227ca49f9a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void DynRpgText::SetFixed</definition>
+        <argsstring>(bool fixed)</argsstring>
+        <name>SetFixed</name>
+        <qualifiedname>DynRpgText::SetFixed</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>fixed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="106" column="6" bodyfile="dynrpg_textplugin.cpp" bodystart="106" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_text_1a3af9ef81e717b499184a833350e206ab" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void DynRpgText::Draw</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>Draw</name>
+        <qualifiedname>DynRpgText::Draw</qualifiedname>
+        <reimplements refid="class_drawable_1aa8a9b151f40368331f6fd8bbdd20133f">Draw</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="110" column="6" bodyfile="dynrpg_textplugin.cpp" bodystart="110" bodyend="130"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_text_1a17a68ade0bc14a9c82ca28af5b8af978" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void DynRpgText::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>DynRpgText::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="132" column="6" bodyfile="dynrpg_textplugin.cpp" bodystart="132" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_text_1a367f21d95e22fb710842aee1b7e51f3c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; uint8_t &gt;</type>
+        <definition>std::vector&lt; uint8_t &gt; DynRpgText::Save</definition>
+        <argsstring>(const std::string &amp;id)</argsstring>
+        <name>Save</name>
+        <qualifiedname>DynRpgText::Save</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="138" column="13" bodyfile="dynrpg_textplugin.cpp" bodystart="138" bodyend="164"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_dyn_rpg_text_1a0ae2c93612dd97b22e5b0b2c12440110" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_dyn_rpg_text" kindref="compound">DynRpgText</ref> *</type>
+        <definition>static DynRpgText * DynRpgText::GetTextHandle</definition>
+        <argsstring>(const std::string &amp;id, bool silent=false)</argsstring>
+        <name>GetTextHandle</name>
+        <qualifiedname>DynRpgText::GetTextHandle</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>silent</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="166" column="19" bodyfile="dynrpg_textplugin.cpp" bodystart="166" bodyend="180"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_text_1a37ae864c14465edbd975bab24e2a2a96" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::optional&lt; std::string &gt;</type>
+        <definition>static std::optional&lt; std::string &gt; DynRpgText::CommandCodeInserter</definition>
+        <argsstring>(char ch, const char **iter, const char *end, uint32_t escape_char)</argsstring>
+        <name>CommandCodeInserter</name>
+        <qualifiedname>DynRpgText::CommandCodeInserter</qualifiedname>
+        <param>
+          <type>char</type>
+          <declname>ch</declname>
+        </param>
+        <param>
+          <type>const char **</type>
+          <declname>iter</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>end</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>escape_char</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="182" column="22" bodyfile="dynrpg_textplugin.cpp" bodystart="182" bodyend="218"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_dyn_rpg_text_1a783ad607a9ada7bece0d3ff81eb4bf56" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void DynRpgText::Refresh</definition>
+        <argsstring>()</argsstring>
+        <name>Refresh</name>
+        <qualifiedname>DynRpgText::Refresh</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.cpp" line="221" column="6" bodyfile="dynrpg_textplugin.cpp" bodystart="221" bodyend="251"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>DynRpgText</label>
+        <link refid="class_dyn_rpg_text"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>DynRpgText</label>
+        <link refid="class_dyn_rpg_text"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="dynrpg_textplugin.cpp" line="42" column="1" bodyfile="dynrpg_textplugin.cpp" bodystart="42" bodyend="260"/>
+    <listofallmembers>
+      <member refid="class_dyn_rpg_text_1a22c1039bc4ef82569bd1be8fbed4800d" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>AddLine</name></member>
+      <member refid="class_dyn_rpg_text_1a2dca29655897c5610b3381877f45b006" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>AddText</name></member>
+      <member refid="class_dyn_rpg_text_1a548d2965993c79a57e75ab4285c52201" prot="private" virt="non-virtual"><scope>DynRpgText</scope><name>bitmap</name></member>
+      <member refid="class_dyn_rpg_text_1ab94d653156db2f265301b1439a658b2b" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>ClearText</name></member>
+      <member refid="class_dyn_rpg_text_1a125ae707af0520514da00149eb0c9884" prot="private" virt="non-virtual"><scope>DynRpgText</scope><name>color</name></member>
+      <member refid="class_dyn_rpg_text_1a37ae864c14465edbd975bab24e2a2a96" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>CommandCodeInserter</name></member>
+      <member refid="class_dyn_rpg_text_1a3af9ef81e717b499184a833350e206ab" prot="public" virt="virtual"><scope>DynRpgText</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>Drawable</name></member>
+      <member refid="class_dyn_rpg_text_1aeeeb11986abe3ac96b196bdce0017ed5" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>DynRpgText</name></member>
+      <member refid="class_dyn_rpg_text_1a1de0cc1048722d2f0473258b8a9987a0" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>DynRpgText</name></member>
+      <member refid="class_dyn_rpg_text_1afe2ed155d74ad1b9e4eefe0da58e5107" prot="private" virt="non-virtual"><scope>DynRpgText</scope><name>fixed</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>Flags</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>GetRenderOy</name></member>
+      <member refid="class_dyn_rpg_text_1a0ae2c93612dd97b22e5b0b2c12440110" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>GetTextHandle</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>GetZ</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>IsGlobal</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>IsVisible</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>operator=</name></member>
+      <member refid="class_dyn_rpg_text_1aab1bc763e6fc6c32bc16776ad72fe2a1" prot="private" virt="non-virtual"><scope>DynRpgText</scope><name>pic_id</name></member>
+      <member refid="class_dyn_rpg_text_1a783ad607a9ada7bece0d3ff81eb4bf56" prot="private" virt="non-virtual"><scope>DynRpgText</scope><name>Refresh</name></member>
+      <member refid="class_dyn_rpg_text_1a367f21d95e22fb710842aee1b7e51f3c" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>Save</name></member>
+      <member refid="class_dyn_rpg_text_1a001fc902d72879693dfef22e10d7cab3" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>SetColor</name></member>
+      <member refid="class_dyn_rpg_text_1a9d10b41eb5b1e0ea406eb1227ca49f9a" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>SetFixed</name></member>
+      <member refid="class_dyn_rpg_text_1a179ec5f4cebdca8e09bcef1be319960c" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>SetPictureId</name></member>
+      <member refid="class_dyn_rpg_text_1aec824ab4689bb7ee91b125de479b8af0" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>SetPosition</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>SetRenderOy</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>SetVisible</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>SetZ</name></member>
+      <member refid="class_dyn_rpg_text_1ac790c022285939c0938c6bbb3b955424" prot="private" virt="non-virtual"><scope>DynRpgText</scope><name>texts</name></member>
+      <member refid="class_dyn_rpg_text_1a17a68ade0bc14a9c82ca28af5b8af978" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>Update</name></member>
+      <member refid="class_dyn_rpg_text_1a7cf4a5c04abe2e9d5e12308ddd437bf3" prot="private" virt="non-virtual"><scope>DynRpgText</scope><name>x</name></member>
+      <member refid="class_dyn_rpg_text_1a88d26b2a3be93ce35e77de0250d14148" prot="private" virt="non-virtual"><scope>DynRpgText</scope><name>y</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>DynRpgText</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>DynRpgText</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

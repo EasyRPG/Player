@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_84fc5dba3506812825191c0c043e3c97" kind="dir">
+    <compoundname>generated</compoundname>
+    <innerfile refid="bitmapfont__rmg2000_8h">bitmapfont_rmg2000.h</innerfile>
+    <innerfile refid="bitmapfont__ttyp0_8h">bitmapfont_ttyp0.h</innerfile>
+    <innerfile refid="bitmapfont__wqy_8h">bitmapfont_wqy.h</innerfile>
+    <innerfile refid="logo_8h">logo.h</innerfile>
+    <innerfile refid="logo2_8h">logo2.h</innerfile>
+    <innerfile refid="shinonome__gothic_8h">shinonome_gothic.h</innerfile>
+    <innerfile refid="shinonome__mincho_8h">shinonome_mincho.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="generated/"/>
+  </compounddef>
+</doxygen>

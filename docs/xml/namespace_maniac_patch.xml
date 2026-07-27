@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_maniac_patch" kind="namespace" language="C++">
+    <compoundname>ManiacPatch</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_maniac_patch_1a8630b72475a8623b14a1ca45a20dc47d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int32_t</type>
+        <definition>int32_t ManiacPatch::ParseExpression</definition>
+        <argsstring>(Span&lt; const int32_t &gt; op_codes, const Game_BaseInterpreterContext &amp;interpreter)</argsstring>
+        <name>ParseExpression</name>
+        <qualifiedname>ManiacPatch::ParseExpression</qualifiedname>
+        <param>
+          <type>Span&lt; const int32_t &gt;</type>
+          <declname>op_codes</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___base_interpreter_context" kindref="compound">Game_BaseInterpreterContext</ref> &amp;</type>
+          <declname>interpreter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="maniac_patch.h" line="33" column="9" bodyfile="maniac_patch.cpp" bodystart="561" bodyend="572" declfile="maniac_patch.h" declline="33" declcolumn="9"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_maniac_patch_1a85a2d32cc081c62d44d9d67e4b947b35" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; int32_t &gt;</type>
+        <definition>std::vector&lt; int32_t &gt; ManiacPatch::ParseExpressions</definition>
+        <argsstring>(Span&lt; const int32_t &gt; op_codes, const Game_BaseInterpreterContext &amp;interpreter)</argsstring>
+        <name>ParseExpressions</name>
+        <qualifiedname>ManiacPatch::ParseExpressions</qualifiedname>
+        <param>
+          <type>Span&lt; const int32_t &gt;</type>
+          <declname>op_codes</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___base_interpreter_context" kindref="compound">Game_BaseInterpreterContext</ref> &amp;</type>
+          <declname>interpreter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="maniac_patch.h" line="34" column="13" bodyfile="maniac_patch.cpp" bodystart="574" bodyend="601" declfile="maniac_patch.h" declline="34" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_maniac_patch_1a52e5c55d452be0f9ed99f1dbadd0cf22" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::array&lt; bool, 50 &gt;</type>
+        <definition>std::array&lt; bool, 50 &gt; ManiacPatch::GetKeyRange</definition>
+        <argsstring>()</argsstring>
+        <name>GetKeyRange</name>
+        <qualifiedname>ManiacPatch::GetKeyRange</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="maniac_patch.h" line="37" column="12" bodyfile="maniac_patch.cpp" bodystart="603" bodyend="682" declfile="maniac_patch.h" declline="37" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_maniac_patch_1a0cc1319f66b7e697355563eb8ee99808" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ManiacPatch::GetKeyState</definition>
+        <argsstring>(uint32_t key_id)</argsstring>
+        <name>GetKeyState</name>
+        <qualifiedname>ManiacPatch::GetKeyState</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>key_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="maniac_patch.h" line="39" column="6" bodyfile="maniac_patch.cpp" bodystart="684" bodyend="795" declfile="maniac_patch.h" declline="39" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_maniac_patch_1a42c044849aeb551eda0d52b754114e20" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ManiacPatch::CheckString</definition>
+        <argsstring>(std::string_view str_l, std::string_view str_r, int op, bool ignore_case)</argsstring>
+        <name>CheckString</name>
+        <qualifiedname>ManiacPatch::CheckString</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>str_l</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>str_r</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>ignore_case</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="maniac_patch.h" line="41" column="6" bodyfile="maniac_patch.cpp" bodystart="797" bodyend="820" declfile="maniac_patch.h" declline="41" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_maniac_patch_1a81cacb322d8f23b55277158f42c6e0f6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view ManiacPatch::GetLcfName</definition>
+        <argsstring>(int data_type, int id, bool is_dynamic)</argsstring>
+        <name>GetLcfName</name>
+        <qualifiedname>ManiacPatch::GetLcfName</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>data_type</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>is_dynamic</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="maniac_patch.h" line="43" column="18" bodyfile="maniac_patch.cpp" bodystart="822" bodyend="894" declfile="maniac_patch.h" declline="43" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_maniac_patch_1aeec819861de2326bee20026fe31e9f40" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view ManiacPatch::GetLcfDescription</definition>
+        <argsstring>(int data_type, int id, bool is_dynamic)</argsstring>
+        <name>GetLcfDescription</name>
+        <qualifiedname>ManiacPatch::GetLcfDescription</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>data_type</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>is_dynamic</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="maniac_patch.h" line="44" column="18" bodyfile="maniac_patch.cpp" bodystart="896" bodyend="943" declfile="maniac_patch.h" declline="44" declcolumn="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="maniac_patch.h" line="32" column="1"/>
+  </compounddef>
+</doxygen>

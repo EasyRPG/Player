@@ -1,0 +1,314 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lopcodes_8c" kind="file" language="C++">
+    <compoundname>lopcodes.c</compoundname>
+    <includes refid="lprefix_8h" local="yes">lprefix.h</includes>
+    <includes refid="lopcodes_8h" local="yes">lopcodes.h</includes>
+    <incdepgraph>
+      <node id="4">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>lobject.h</label>
+        <link refid="lobject_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lopcodes.c</label>
+        <link refid="lopcodes_8c"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>lopcodes.h</label>
+        <link refid="lopcodes_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>lprefix.h</label>
+        <link refid="lprefix_8h"/>
+      </node>
+      <node id="7">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>limits.h</label>
+      </node>
+      <node id="8">
+        <label>stdarg.h</label>
+      </node>
+      <node id="6">
+        <label>stddef.h</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lopcodes_8c_1a8e1491fc511f54244be48bb655fc4fff" prot="public" static="no">
+        <name>lopcodes_c</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lopcodes.c" line="7" column="9" bodyfile="leasy/lua/lopcodes.c" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lopcodes_8c_1abf0b3947b59218777a8e928a10be205b" prot="public" static="no">
+        <name>LUA_CORE</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lopcodes.c" line="8" column="9" bodyfile="leasy/lua/lopcodes.c" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" prot="public" static="no">
+        <name>opmode</name>
+        <param><defname>mm</defname></param>
+        <param><defname>ot</defname></param>
+        <param><defname>it</defname></param>
+        <param><defname>t</defname></param>
+        <param><defname>a</defname></param>
+        <param><defname>m</defname></param>
+        <initializer>(((mm) &lt;&lt; 7) | ((ot) &lt;&lt; 6) | ((it) &lt;&lt; 5) | ((t) &lt;&lt; 4) | ((a) &lt;&lt; 3) | (m))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lopcodes.c" line="16" column="9" bodyfile="leasy/lua/lopcodes.c" bodystart="16" bodyend="17"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="lopcodes_8c_1a248069754c0d1d3d8c92d4581836be73" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1affa3a74c87c69373c262fdbdc7f97837" kindref="member">LUAI_DDEF</ref> const <ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>LUAI_DDEF const lu_byte luaP_opmodes[NUM_OPCODES]</definition>
+        <argsstring>[NUM_OPCODES]</argsstring>
+        <name>luaP_opmodes</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lopcodes.c" line="22" column="25" bodyfile="leasy/lua/lopcodes.c" bodystart="22" bodyend="109"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="lopcodes_8c_1a547f56c693537c7fbbd7e68facb67367" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int luaP_isOT</definition>
+        <argsstring>(Instruction i)</argsstring>
+        <name>luaP_isOT</name>
+        <param>
+          <type><ref refid="lobject_8h_1aa81d2e7f7263ef29946852d4966a192e" kindref="member">Instruction</ref></type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lopcodes.c" line="117" column="5" bodyfile="leasy/lua/lopcodes.c" bodystart="117" bodyend="124"/>
+      </memberdef>
+      <memberdef kind="function" id="lopcodes_8c_1ae3513c9fab10fdf9ebe3fd4d6896b6a0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int luaP_isIT</definition>
+        <argsstring>(Instruction i)</argsstring>
+        <name>luaP_isIT</name>
+        <param>
+          <type><ref refid="lobject_8h_1aa81d2e7f7263ef29946852d4966a192e" kindref="member">Instruction</ref></type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lopcodes.c" line="131" column="5" bodyfile="leasy/lua/lopcodes.c" bodystart="131" bodyend="139"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lopcodes.c<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Opcodes<sp/>for<sp/>Lua<sp/>virtual<sp/>machine</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="lopcodes_8c_1a8e1491fc511f54244be48bb655fc4fff" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lopcodes_c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="lopcodes_8c_1abf0b3947b59218777a8e928a10be205b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_CORE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lprefix_8h" kindref="compound">lprefix.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lopcodes_8h" kindref="compound">lopcodes.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16" refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>opmode(mm,ot,it,t,a,m)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="17"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>(((mm)<sp/>&lt;&lt;<sp/>7)<sp/>|<sp/>((ot)<sp/>&lt;&lt;<sp/>6)<sp/>|<sp/>((it)<sp/>&lt;&lt;<sp/>5)<sp/>|<sp/>((t)<sp/>&lt;&lt;<sp/>4)<sp/>|<sp/>((a)<sp/>&lt;&lt;<sp/>3)<sp/>|<sp/>(m))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>ORDER<sp/>OP<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22" refid="lopcodes_8c_1a248069754c0d1d3d8c92d4581836be73" refkind="member"><highlight class="normal"><ref refid="llimits_8h_1affa3a74c87c69373c262fdbdc7f97837" kindref="member">LUAI_DDEF</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="lopcodes_8c_1a248069754c0d1d3d8c92d4581836be73" kindref="member">luaP_opmodes</ref>[<ref refid="lopcodes_8h_1a1fb469ba81540d3314cfbe37c675ba20" kindref="member">NUM_OPCODES</ref>]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="comment">/*<sp/><sp/><sp/><sp/><sp/><sp/><sp/>MM<sp/>OT<sp/>IT<sp/>T<sp/><sp/>A<sp/><sp/>mode<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>opcode<sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_MOVE<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5db94456d16691b254a6b2fc7b473e55" kindref="member">iAsBx</ref>)<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_LOADI<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5db94456d16691b254a6b2fc7b473e55" kindref="member">iAsBx</ref>)<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_LOADF<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afae162f330f7a1e7581cdbbb4af60dc8ea" kindref="member">iABx</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_LOADK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afae162f330f7a1e7581cdbbb4af60dc8ea" kindref="member">iABx</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_LOADKX<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_LOADFALSE<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_LFALSESKIP<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_LOADTRUE<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_LOADNIL<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_GETUPVAL<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_SETUPVAL<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_GETTABUP<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_GETTABLE<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_GETI<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_GETFIELD<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_SETTABUP<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_SETTABLE<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_SETI<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_SETFIELD<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa352a37e1587e07a2056bbd86af8ff7f0" kindref="member">ivABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_NEWTABLE<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_SELF<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_ADDI<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_ADDK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_SUBK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_MULK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_MODK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_POWK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_DIVK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_IDIVK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_BANDK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_BORK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_BXORK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_SHLI<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_SHRI<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_ADD<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_SUB<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_MUL<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_MOD<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_POW<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_DIV<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_IDIV<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_BAND<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_BOR<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_BXOR<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_SHL<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_SHR<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(1,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_MMBIN<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(1,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_MMBINI<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(1,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_MMBINK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_UNM<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_BNOT<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_NOT<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_LEN<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_CONCAT<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_CLOSE<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_TBC<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa8c4168189c62aed69b9160daeb20f20e" kindref="member">isJ</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_JMP<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>1,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_EQ<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>1,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_LT<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>1,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_LE<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>1,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_EQK<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>1,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_EQI<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>1,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_LTI<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>1,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_LEI<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>1,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_GTI<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>1,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_GEI<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>1,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_TEST<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>1,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_TESTSET<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>1,<sp/>1,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_CALL<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>1,<sp/>1,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_TAILCALL<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>1,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_RETURN<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_RETURN0<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_RETURN1<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afae162f330f7a1e7581cdbbb4af60dc8ea" kindref="member">iABx</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_FORLOOP<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afae162f330f7a1e7581cdbbb4af60dc8ea" kindref="member">iABx</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_FORPREP<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afae162f330f7a1e7581cdbbb4af60dc8ea" kindref="member">iABx</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_TFORPREP<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_TFORCALL<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afae162f330f7a1e7581cdbbb4af60dc8ea" kindref="member">iABx</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_TFORLOOP<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>1,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa352a37e1587e07a2056bbd86af8ff7f0" kindref="member">ivABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_SETLIST<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afae162f330f7a1e7581cdbbb4af60dc8ea" kindref="member">iABx</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_CLOSURE<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>1,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_VARARG<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_GETVARG<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afae162f330f7a1e7581cdbbb4af60dc8ea" kindref="member">iABx</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_ERRNNIL<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>1,<sp/>0,<sp/>1,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa5032b5bab05a3312f6236ad8a6053cf3" kindref="member">iABC</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_VARARGPREP<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/>,<ref refid="lopcodes_8c_1a55f7a6110b36e7c0958f22fa82cd3c45" kindref="member">opmode</ref>(0,<sp/>0,<sp/>0,<sp/>0,<sp/>0,<sp/><ref refid="lopcodes_8h_1a56752d1aeb4bd4940e632396072d68afa453db051897b5faf2716653c2aa5a2e2" kindref="member">iAx</ref>)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>OP_EXTRAARG<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="114"><highlight class="comment">**<sp/>Check<sp/>whether<sp/>instruction<sp/>sets<sp/>top<sp/>for<sp/>next<sp/>instruction,<sp/>that<sp/>is,</highlight></codeline>
+<codeline lineno="115"><highlight class="comment">**<sp/>it<sp/>results<sp/>in<sp/>multiple<sp/>values.</highlight></codeline>
+<codeline lineno="116"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117" refid="lopcodes_8c_1a547f56c693537c7fbbd7e68facb67367" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lopcodes_8c_1a547f56c693537c7fbbd7e68facb67367" kindref="member">luaP_isOT</ref><sp/>(<ref refid="lobject_8h_1aa81d2e7f7263ef29946852d4966a192e" kindref="member">Instruction</ref><sp/>i)<sp/>{</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><ref refid="lopcodes_8h_1abeb7dfb0e9e2b3114e240a405d046ea7" kindref="member">OpCode</ref><sp/>op<sp/>=<sp/><ref refid="lopcodes_8h_1aaa146179c3677b790c5681dcd82f0acc" kindref="member">GET_OPCODE</ref>(i);</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(op)<sp/>{</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lopcodes_8h_1abeb7dfb0e9e2b3114e240a405d046ea7aff2c07ebfd82aa22cc247e9855a16069" kindref="member">OP_TAILCALL</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lopcodes_8h_1a0d5c4bc6c8c7a22a6591c65a93d9c908" kindref="member">testOTMode</ref>(op)<sp/>&amp;&amp;<sp/><ref refid="lopcodes_8h_1af96cb84f2685fda7f36d3d099dba6a44" kindref="member">GETARG_C</ref>(i)<sp/>==<sp/>0;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="124"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="128"><highlight class="comment">**<sp/>Check<sp/>whether<sp/>instruction<sp/>uses<sp/>top<sp/>from<sp/>previous<sp/>instruction,<sp/>that<sp/>is,</highlight></codeline>
+<codeline lineno="129"><highlight class="comment">**<sp/>it<sp/>accepts<sp/>multiple<sp/>results.</highlight></codeline>
+<codeline lineno="130"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131" refid="lopcodes_8c_1ae3513c9fab10fdf9ebe3fd4d6896b6a0" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lopcodes_8c_1ae3513c9fab10fdf9ebe3fd4d6896b6a0" kindref="member">luaP_isIT</ref><sp/>(<ref refid="lobject_8h_1aa81d2e7f7263ef29946852d4966a192e" kindref="member">Instruction</ref><sp/>i)<sp/>{</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><ref refid="lopcodes_8h_1abeb7dfb0e9e2b3114e240a405d046ea7" kindref="member">OpCode</ref><sp/>op<sp/>=<sp/><ref refid="lopcodes_8h_1aaa146179c3677b790c5681dcd82f0acc" kindref="member">GET_OPCODE</ref>(i);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(op)<sp/>{</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lopcodes_8h_1abeb7dfb0e9e2b3114e240a405d046ea7a01618d8295953fd4ab2ef721b2051718" kindref="member">OP_SETLIST</ref>:</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lopcodes_8h_1ac5afff4b1215ce8a72b400c40834241b" kindref="member">testITMode</ref>(<ref refid="lopcodes_8h_1aaa146179c3677b790c5681dcd82f0acc" kindref="member">GET_OPCODE</ref>(i))<sp/>&amp;&amp;<sp/><ref refid="lopcodes_8h_1a848820755e9cb58f470b7a5298a4b3f6" kindref="member">GETARG_vB</ref>(i)<sp/>==<sp/>0;</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lopcodes_8h_1ac5afff4b1215ce8a72b400c40834241b" kindref="member">testITMode</ref>(<ref refid="lopcodes_8h_1aaa146179c3677b790c5681dcd82f0acc" kindref="member">GET_OPCODE</ref>(i))<sp/>&amp;&amp;<sp/><ref refid="lopcodes_8h_1a7a343159ef7669a438c2097b839b2b13" kindref="member">GETARG_B</ref>(i)<sp/>==<sp/>0;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="139"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lopcodes.c"/>
+  </compounddef>
+</doxygen>

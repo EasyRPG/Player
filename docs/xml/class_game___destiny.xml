@@ -1,0 +1,460 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___destiny" kind="class" language="C++" prot="public">
+    <compoundname>Game_Destiny</compoundname>
+    <includes refid="game__destiny_8h" local="no">game_destiny.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___destiny_1af908a731098eb8842af8a3ce81441ab8" prot="private" static="no" mutable="no">
+        <type><ref refid="class_destiny_1_1_main_functions_1_1_interpreter" kindref="compound">Destiny::MainFunctions::Interpreter</ref></type>
+        <definition>Destiny::MainFunctions::Interpreter Game_Destiny::_interpreter</definition>
+        <argsstring></argsstring>
+        <name>_interpreter</name>
+        <qualifiedname>Game_Destiny::_interpreter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="446" column="37" bodyfile="game_destiny.h" bodystart="446" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___destiny_1a6332daf4ff676e672a936e97eb5d900b" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; Game_Destiny::_dwords</definition>
+        <argsstring></argsstring>
+        <name>_dwords</name>
+        <qualifiedname>Game_Destiny::_dwords</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="449" column="13" bodyfile="game_destiny.h" bodystart="449" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___destiny_1abf586d89495f76ede2d96bbbbfd23b5f" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt;double&gt; Game_Destiny::_floats</definition>
+        <argsstring></argsstring>
+        <name>_floats</name>
+        <qualifiedname>Game_Destiny::_floats</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="450" column="13" bodyfile="game_destiny.h" bodystart="450" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___destiny_1aa50cdd1c67b998a588222c2ef19f7af8" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt;std::string&gt; Game_Destiny::_strings</definition>
+        <argsstring></argsstring>
+        <name>_strings</name>
+        <qualifiedname>Game_Destiny::_strings</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="451" column="13" bodyfile="game_destiny.h" bodystart="451" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___destiny_1abcc7fa414703efe66af0839cd02ae2fc" prot="private" static="no" mutable="no">
+        <type><ref refid="struct_destiny_1_1_version" kindref="compound">Destiny::Version</ref></type>
+        <definition>Destiny::Version Game_Destiny::_dllVersion</definition>
+        <argsstring></argsstring>
+        <name>_dllVersion</name>
+        <qualifiedname>Game_Destiny::_dllVersion</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="454" column="18" bodyfile="game_destiny.h" bodystart="454" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___destiny_1a2682cfea8d8b0e1b8379e251ff93f1d5" prot="private" static="no" mutable="no">
+        <type><ref refid="struct_destiny_1_1_version" kindref="compound">Destiny::Version</ref></type>
+        <definition>Destiny::Version Game_Destiny::_gameVersion</definition>
+        <argsstring></argsstring>
+        <name>_gameVersion</name>
+        <qualifiedname>Game_Destiny::_gameVersion</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="455" column="18" bodyfile="game_destiny.h" bodystart="455" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___destiny_1ac002e5bf3060f137a5e23f6f768955df" prot="private" static="no" mutable="no">
+        <type><ref refid="namespace_destiny_1af2ffc09ae3a91df3dd32776e4fd0e293" kindref="member">Destiny::Language</ref></type>
+        <definition>Destiny::Language Game_Destiny::_language</definition>
+        <argsstring></argsstring>
+        <name>_language</name>
+        <qualifiedname>Game_Destiny::_language</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="456" column="19" bodyfile="game_destiny.h" bodystart="456" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___destiny_1a11dae1c377f49dfc8884183f92677b57" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t Game_Destiny::_extra</definition>
+        <argsstring></argsstring>
+        <name>_extra</name>
+        <qualifiedname>Game_Destiny::_extra</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="457" column="10" bodyfile="game_destiny.h" bodystart="457" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___destiny_1adbeb785722bdb7f6aba3282b8d43073a" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t Game_Destiny::_trueColor</definition>
+        <argsstring></argsstring>
+        <name>_trueColor</name>
+        <qualifiedname>Game_Destiny::_trueColor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="460" column="10" bodyfile="game_destiny.h" bodystart="460" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___destiny_1a7cec66ceda7104657856107f6befa6b6" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Destiny::_decimalComma</definition>
+        <argsstring></argsstring>
+        <name>_decimalComma</name>
+        <qualifiedname>Game_Destiny::_decimalComma</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="461" column="6" bodyfile="game_destiny.h" bodystart="461" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___destiny_1af757ff563e9dd402a50ecc240d7cc19d" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Destiny::_rm2k3</definition>
+        <argsstring></argsstring>
+        <name>_rm2k3</name>
+        <qualifiedname>Game_Destiny::_rm2k3</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="462" column="6" bodyfile="game_destiny.h" bodystart="462" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___destiny_1a779e2e89961a73b81f3d70b7149d38c5" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Destiny::_protect</definition>
+        <argsstring></argsstring>
+        <name>_protect</name>
+        <qualifiedname>Game_Destiny::_protect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="463" column="6" bodyfile="game_destiny.h" bodystart="463" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___destiny_1a3bb018ceb9b2026fbe7243e96ad13772" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Destiny::Game_Destiny</definition>
+        <argsstring>()</argsstring>
+        <name>Game_Destiny</name>
+        <qualifiedname>Game_Destiny::Game_Destiny</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="380" column="1" bodyfile="game_destiny.cpp" bodystart="88" bodyend="98"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___destiny_1ad17f50f042a7deb89fcfba50d5c51159" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Destiny::~Game_Destiny</definition>
+        <argsstring>()</argsstring>
+        <name>~Game_Destiny</name>
+        <qualifiedname>Game_Destiny::~Game_Destiny</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="381" column="1" bodyfile="game_destiny.cpp" bodystart="100" bodyend="103"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___destiny_1a14e28a913a64243eaa86a629ad7bbdfa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Destiny::Load</definition>
+        <argsstring>()</argsstring>
+        <name>Load</name>
+        <qualifiedname>Game_Destiny::Load</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Load the <ref refid="namespace_destiny" kindref="compound">Destiny</ref> Patch.</para>
+<para><simplesect kind="return"><para></para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="391" column="6" bodyfile="game_destiny.cpp" bodystart="39" bodyend="86"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___destiny_1acbc3cf5f83bee3f896da818c3baf1e22" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Destiny::Initialize</definition>
+        <argsstring>(uint32_t dllVersion, uint32_t language, uint32_t gameVersion, uint32_t extra, uint32_t dwordSize, uint32_t floatSize, uint32_t stringSize)</argsstring>
+        <name>Initialize</name>
+        <qualifiedname>Game_Destiny::Initialize</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>dllVersion</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>language</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>gameVersion</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>extra</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>dwordSize</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>floatSize</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>stringSize</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initialize and apply the patch to the game interpreter</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dllVersion</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Destiny.dll version </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>language</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The DLL language. Usually for displaying errors and for decimal format. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>gameVersion</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The RPG_RT version </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>extra</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Extra flags </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dwordSize</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Length of dowrd container </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>floatSize</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Length of float container </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stringSize</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Length of string container </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="404" column="6" bodyfile="game_destiny.cpp" bodystart="105" bodyend="142"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___destiny_1a1cd3bfeedea19801456684b1b87103fd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Destiny::Terminate</definition>
+        <argsstring>()</argsstring>
+        <name>Terminate</name>
+        <qualifiedname>Game_Destiny::Terminate</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Clear <ref refid="namespace_destiny" kindref="compound">Destiny</ref> patch before close.</para>
+<para><simplesect kind="return"><para></para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="419" column="6" bodyfile="game_destiny.cpp" bodystart="144" bodyend="152"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___destiny_1a43461b6557222d066940e24e5cc28098" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Destiny::Main</definition>
+        <argsstring>(lcf::rpg::SaveEventExecFrame &amp;frame)</argsstring>
+        <name>Main</name>
+        <qualifiedname>Game_Destiny::Main</qualifiedname>
+        <param>
+          <type>lcf::rpg::SaveEventExecFrame &amp;</type>
+          <declname>frame</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Call the <ref refid="namespace_destiny" kindref="compound">Destiny</ref> <ref refid="class_interpreter" kindref="compound">Interpreter</ref> and run the received code.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>frame</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The event script data. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether evaluation is successful. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="427" column="6" bodyfile="game_destiny.cpp" bodystart="154" bodyend="183"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___destiny_1ae2eaefb7d9507533bef3d1bed79326d4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_destiny_1_1_main_functions_1_1_interpreter" kindref="compound">Destiny::MainFunctions::Interpreter</ref> &amp;</type>
+        <definition>Destiny::MainFunctions::Interpreter &amp; Game_Destiny::Interpreter</definition>
+        <argsstring>()</argsstring>
+        <name>Interpreter</name>
+        <qualifiedname>Game_Destiny::Interpreter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieves the <ref refid="namespace_destiny" kindref="compound">Destiny</ref> interpreter.</para>
+<para><simplesect kind="return"><para>The <ref refid="namespace_destiny" kindref="compound">Destiny</ref> interpreter. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="437" column="44" bodyfile="game_destiny.h" bodystart="437" bodyend="440"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_game___destiny_1acb86bfce7420ace64768c367e4c809af" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Destiny::EvaluateExtraFlags</definition>
+        <argsstring>()</argsstring>
+        <name>EvaluateExtraFlags</name>
+        <qualifiedname>Game_Destiny::EvaluateExtraFlags</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Evaluate the extra flags.</para>
+<para><simplesect kind="return"><para></para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="472" column="6" bodyfile="game_destiny.cpp" bodystart="185" bodyend="189"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___destiny_1a42ad90ac630bc3afa9f1b6d68ffe310e" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Destiny::CheckVersionInfo</definition>
+        <argsstring>()</argsstring>
+        <name>CheckVersionInfo</name>
+        <qualifiedname>Game_Destiny::CheckVersionInfo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Check the version information.</para>
+<para><simplesect kind="return"><para></para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="479" column="6" bodyfile="game_destiny.cpp" bodystart="191" bodyend="203"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>The <ref refid="namespace_destiny" kindref="compound">Destiny</ref> Patch class. </para>
+    </detaileddescription>
+    <location file="game_destiny.h" line="376" column="1" bodyfile="game_destiny.h" bodystart="377" bodyend="480"/>
+    <listofallmembers>
+      <member refid="class_game___destiny_1a7cec66ceda7104657856107f6befa6b6" prot="private" virt="non-virtual"><scope>Game_Destiny</scope><name>_decimalComma</name></member>
+      <member refid="class_game___destiny_1abcc7fa414703efe66af0839cd02ae2fc" prot="private" virt="non-virtual"><scope>Game_Destiny</scope><name>_dllVersion</name></member>
+      <member refid="class_game___destiny_1a6332daf4ff676e672a936e97eb5d900b" prot="private" virt="non-virtual"><scope>Game_Destiny</scope><name>_dwords</name></member>
+      <member refid="class_game___destiny_1a11dae1c377f49dfc8884183f92677b57" prot="private" virt="non-virtual"><scope>Game_Destiny</scope><name>_extra</name></member>
+      <member refid="class_game___destiny_1abf586d89495f76ede2d96bbbbfd23b5f" prot="private" virt="non-virtual"><scope>Game_Destiny</scope><name>_floats</name></member>
+      <member refid="class_game___destiny_1a2682cfea8d8b0e1b8379e251ff93f1d5" prot="private" virt="non-virtual"><scope>Game_Destiny</scope><name>_gameVersion</name></member>
+      <member refid="class_game___destiny_1af908a731098eb8842af8a3ce81441ab8" prot="private" virt="non-virtual"><scope>Game_Destiny</scope><name>_interpreter</name></member>
+      <member refid="class_game___destiny_1ac002e5bf3060f137a5e23f6f768955df" prot="private" virt="non-virtual"><scope>Game_Destiny</scope><name>_language</name></member>
+      <member refid="class_game___destiny_1a779e2e89961a73b81f3d70b7149d38c5" prot="private" virt="non-virtual"><scope>Game_Destiny</scope><name>_protect</name></member>
+      <member refid="class_game___destiny_1af757ff563e9dd402a50ecc240d7cc19d" prot="private" virt="non-virtual"><scope>Game_Destiny</scope><name>_rm2k3</name></member>
+      <member refid="class_game___destiny_1aa50cdd1c67b998a588222c2ef19f7af8" prot="private" virt="non-virtual"><scope>Game_Destiny</scope><name>_strings</name></member>
+      <member refid="class_game___destiny_1adbeb785722bdb7f6aba3282b8d43073a" prot="private" virt="non-virtual"><scope>Game_Destiny</scope><name>_trueColor</name></member>
+      <member refid="class_game___destiny_1a42ad90ac630bc3afa9f1b6d68ffe310e" prot="private" virt="non-virtual"><scope>Game_Destiny</scope><name>CheckVersionInfo</name></member>
+      <member refid="class_game___destiny_1acb86bfce7420ace64768c367e4c809af" prot="private" virt="non-virtual"><scope>Game_Destiny</scope><name>EvaluateExtraFlags</name></member>
+      <member refid="class_game___destiny_1a3bb018ceb9b2026fbe7243e96ad13772" prot="public" virt="non-virtual"><scope>Game_Destiny</scope><name>Game_Destiny</name></member>
+      <member refid="class_game___destiny_1acbc3cf5f83bee3f896da818c3baf1e22" prot="public" virt="non-virtual"><scope>Game_Destiny</scope><name>Initialize</name></member>
+      <member refid="class_game___destiny_1ae2eaefb7d9507533bef3d1bed79326d4" prot="public" virt="non-virtual"><scope>Game_Destiny</scope><name>Interpreter</name></member>
+      <member refid="class_game___destiny_1a14e28a913a64243eaa86a629ad7bbdfa" prot="public" virt="non-virtual"><scope>Game_Destiny</scope><name>Load</name></member>
+      <member refid="class_game___destiny_1a43461b6557222d066940e24e5cc28098" prot="public" virt="non-virtual"><scope>Game_Destiny</scope><name>Main</name></member>
+      <member refid="class_game___destiny_1a1cd3bfeedea19801456684b1b87103fd" prot="public" virt="non-virtual"><scope>Game_Destiny</scope><name>Terminate</name></member>
+      <member refid="class_game___destiny_1ad17f50f042a7deb89fcfba50d5c51159" prot="public" virt="non-virtual"><scope>Game_Destiny</scope><name>~Game_Destiny</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

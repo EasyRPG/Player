@@ -1,0 +1,263 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1metadata_1_1_n_space" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::metadata::NSpace</compoundname>
+    <basecompoundref refid="classleasy_1_1metadata_1_1_data" prot="public" virt="non-virtual">leasy::metadata::Data</basecompoundref>
+    <includes refid="namespace_8hpp" local="no">namespace.hpp</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structleasy_1_1metadata_1_1_n_space_1a37992872d3357ecc5ecc1ffcac3eeb33" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string leasy::metadata::NSpace::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>leasy::metadata::NSpace::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/namespace.hpp" line="16" column="17" bodyfile="leasy/metadata/namespace.hpp" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1metadata_1_1_n_space_1ab77a92e066a0bfc7bf9a97ddbea93db1" prot="public" static="no" mutable="no">
+        <type>std::unordered_map&lt; std::string, <ref refid="classleasy_1_1metadata_1_1_native_callable" kindref="compound">NativeCallable</ref> &gt;</type>
+        <definition>std::unordered_map&lt;std::string, NativeCallable&gt; leasy::metadata::NSpace::functions</definition>
+        <argsstring></argsstring>
+        <name>functions</name>
+        <qualifiedname>leasy::metadata::NSpace::functions</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/namespace.hpp" line="18" column="24" bodyfile="leasy/metadata/namespace.hpp" bodystart="18" bodyend="18"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1metadata_1_1_n_space_1abffa9b297e4bd2077ffec8635a80f5ba" prot="public" static="no" mutable="no">
+        <type>std::unordered_map&lt; std::string, <ref refid="structleasy_1_1metadata_1_1_native_class" kindref="compound">NativeClass</ref> &gt;</type>
+        <definition>std::unordered_map&lt;std::string, NativeClass&gt; leasy::metadata::NSpace::classes</definition>
+        <argsstring></argsstring>
+        <name>classes</name>
+        <qualifiedname>leasy::metadata::NSpace::classes</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/namespace.hpp" line="19" column="24" bodyfile="leasy/metadata/namespace.hpp" bodystart="19" bodyend="19"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1metadata_1_1_n_space_1ab002f840390a1dffec64f084088ab680" prot="public" static="no" mutable="no">
+        <type>std::unordered_map&lt; std::string, <ref refid="structleasy_1_1metadata_1_1_n_space_1a4dfd4d76f3ccf1840c8a96d4f50ebd37" kindref="member">NSpace</ref> &gt;</type>
+        <definition>std::unordered_map&lt;std::string, NSpace&gt; leasy::metadata::NSpace::namespaces</definition>
+        <argsstring></argsstring>
+        <name>namespaces</name>
+        <qualifiedname>leasy::metadata::NSpace::namespaces</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/namespace.hpp" line="20" column="24" bodyfile="leasy/metadata/namespace.hpp" bodystart="20" bodyend="20"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structleasy_1_1metadata_1_1_n_space_1a4dfd4d76f3ccf1840c8a96d4f50ebd37" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::metadata::NSpace::NSpace</definition>
+        <argsstring>()</argsstring>
+        <name>NSpace</name>
+        <qualifiedname>leasy::metadata::NSpace::NSpace</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/namespace.hpp" line="22" column="12" bodyfile="leasy/metadata/namespace.hpp" bodystart="22" bodyend="22"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1metadata_1_1_n_space_1a58e7e3eb34769b4ab011d67cbb72476e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::metadata::NSpace::NSpace</definition>
+        <argsstring>(const std::string &amp;_name)</argsstring>
+        <name>NSpace</name>
+        <qualifiedname>leasy::metadata::NSpace::NSpace</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>_name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/namespace.hpp" line="24" column="12" bodyfile="leasy/metadata/namespace.hpp" bodystart="24" bodyend="25"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1metadata_1_1_n_space_1abd0614ea01c00446d1eb07b51936c790" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Fs</declname>
+            <defname>Fs</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="structleasy_1_1metadata_1_1_n_space_1a4dfd4d76f3ccf1840c8a96d4f50ebd37" kindref="member">NSpace</ref> &amp;</type>
+        <definition>NSpace &amp; leasy::metadata::NSpace::function</definition>
+        <argsstring>(const std::string &amp;name, Fs &amp;&amp;... fn)</argsstring>
+        <name>function</name>
+        <qualifiedname>leasy::metadata::NSpace::function</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>Fs &amp;&amp;...</type>
+          <declname>fn</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/namespace.hpp" line="28" column="19" bodyfile="leasy/metadata/namespace.hpp" bodystart="28" bodyend="32"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1metadata_1_1_n_space_1af38c63c1e45c70a0ee4427ecbc5044c3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structleasy_1_1metadata_1_1_n_space_1a4dfd4d76f3ccf1840c8a96d4f50ebd37" kindref="member">NSpace</ref> &amp;</type>
+        <definition>NSpace &amp; leasy::metadata::NSpace::add</definition>
+        <argsstring>(const NativeClass &amp;klass)</argsstring>
+        <name>add</name>
+        <qualifiedname>leasy::metadata::NSpace::add</qualifiedname>
+        <param>
+          <type>const <ref refid="structleasy_1_1metadata_1_1_native_class" kindref="compound">NativeClass</ref> &amp;</type>
+          <declname>klass</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/namespace.hpp" line="34" column="19" bodyfile="leasy/metadata/namespace.hpp" bodystart="34" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1metadata_1_1_n_space_1ae5f6211eb7d07149abc61c9c77b8d747" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structleasy_1_1metadata_1_1_n_space_1a4dfd4d76f3ccf1840c8a96d4f50ebd37" kindref="member">NSpace</ref> &amp;</type>
+        <definition>NSpace &amp; leasy::metadata::NSpace::add</definition>
+        <argsstring>(const NSpace &amp;ns)</argsstring>
+        <name>add</name>
+        <qualifiedname>leasy::metadata::NSpace::add</qualifiedname>
+        <param>
+          <type>const <ref refid="structleasy_1_1metadata_1_1_n_space_1a4dfd4d76f3ccf1840c8a96d4f50ebd37" kindref="member">NSpace</ref> &amp;</type>
+          <declname>ns</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/namespace.hpp" line="41" column="19" bodyfile="leasy/metadata/namespace.hpp" bodystart="41" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1metadata_1_1_n_space_1a62a291a3aa355352660e5c5fe0c575db" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structleasy_1_1metadata_1_1_n_space_1a4dfd4d76f3ccf1840c8a96d4f50ebd37" kindref="member">NSpace</ref> &amp;</type>
+        <definition>NSpace &amp; leasy::metadata::NSpace::sub</definition>
+        <argsstring>(const std::string &amp;name)</argsstring>
+        <name>sub</name>
+        <qualifiedname>leasy::metadata::NSpace::sub</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/namespace.hpp" line="48" column="19" bodyfile="leasy/metadata/namespace.hpp" bodystart="48" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1metadata_1_1_n_space_1a8883015a572e81058c4d1760b6b8b41c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref></type>
+        <definition>Object leasy::metadata::NSpace::dump</definition>
+        <argsstring>() const override</argsstring>
+        <name>dump</name>
+        <qualifiedname>leasy::metadata::NSpace::dump</qualifiedname>
+        <reimplements refid="classleasy_1_1metadata_1_1_data_1aa147e2dbf84c5b9edc0874e0492c8a5e">dump</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/namespace.hpp" line="57" column="19" bodyfile="leasy/metadata/namespace.hpp" bodystart="57" bodyend="82"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1metadata_1_1_n_space_1a34eff97d58e1513f798d0aec2d98ff3b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void leasy::metadata::NSpace::bind</definition>
+        <argsstring>(ul2::lstate &amp;state) const override</argsstring>
+        <name>bind</name>
+        <qualifiedname>leasy::metadata::NSpace::bind</qualifiedname>
+        <reimplements refid="classleasy_1_1metadata_1_1_data_1a8776e154751bda5ca9d54b684c2c5699">bind</reimplements>
+        <param>
+          <type><ref refid="classleasy_1_1ul2_1_1lstate" kindref="compound">ul2::lstate</ref> &amp;</type>
+          <declname>state</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/namespace.hpp" line="84" column="17" bodyfile="leasy/metadata/namespace.hpp" bodystart="84" bodyend="110"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>leasy::metadata::Data</label>
+        <link refid="classleasy_1_1metadata_1_1_data"/>
+      </node>
+      <node id="1">
+        <label>leasy::metadata::NSpace</label>
+        <link refid="structleasy_1_1metadata_1_1_n_space"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>leasy::metadata::Data</label>
+        <link refid="classleasy_1_1metadata_1_1_data"/>
+      </node>
+      <node id="1">
+        <label>leasy::metadata::NSpace</label>
+        <link refid="structleasy_1_1metadata_1_1_n_space"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/metadata/namespace.hpp" line="15" column="3" bodyfile="leasy/metadata/namespace.hpp" bodystart="15" bodyend="111"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1metadata_1_1_n_space_1af38c63c1e45c70a0ee4427ecbc5044c3" prot="public" virt="non-virtual"><scope>leasy::metadata::NSpace</scope><name>add</name></member>
+      <member refid="structleasy_1_1metadata_1_1_n_space_1ae5f6211eb7d07149abc61c9c77b8d747" prot="public" virt="non-virtual"><scope>leasy::metadata::NSpace</scope><name>add</name></member>
+      <member refid="structleasy_1_1metadata_1_1_n_space_1a34eff97d58e1513f798d0aec2d98ff3b" prot="public" virt="virtual"><scope>leasy::metadata::NSpace</scope><name>bind</name></member>
+      <member refid="structleasy_1_1metadata_1_1_n_space_1abffa9b297e4bd2077ffec8635a80f5ba" prot="public" virt="non-virtual"><scope>leasy::metadata::NSpace</scope><name>classes</name></member>
+      <member refid="structleasy_1_1metadata_1_1_n_space_1a8883015a572e81058c4d1760b6b8b41c" prot="public" virt="virtual"><scope>leasy::metadata::NSpace</scope><name>dump</name></member>
+      <member refid="structleasy_1_1metadata_1_1_n_space_1abd0614ea01c00446d1eb07b51936c790" prot="public" virt="non-virtual"><scope>leasy::metadata::NSpace</scope><name>function</name></member>
+      <member refid="structleasy_1_1metadata_1_1_n_space_1ab77a92e066a0bfc7bf9a97ddbea93db1" prot="public" virt="non-virtual"><scope>leasy::metadata::NSpace</scope><name>functions</name></member>
+      <member refid="structleasy_1_1metadata_1_1_n_space_1a37992872d3357ecc5ecc1ffcac3eeb33" prot="public" virt="non-virtual"><scope>leasy::metadata::NSpace</scope><name>name</name></member>
+      <member refid="structleasy_1_1metadata_1_1_n_space_1ab002f840390a1dffec64f084088ab680" prot="public" virt="non-virtual"><scope>leasy::metadata::NSpace</scope><name>namespaces</name></member>
+      <member refid="structleasy_1_1metadata_1_1_n_space_1a4dfd4d76f3ccf1840c8a96d4f50ebd37" prot="public" virt="non-virtual"><scope>leasy::metadata::NSpace</scope><name>NSpace</name></member>
+      <member refid="structleasy_1_1metadata_1_1_n_space_1a58e7e3eb34769b4ab011d67cbb72476e" prot="public" virt="non-virtual"><scope>leasy::metadata::NSpace</scope><name>NSpace</name></member>
+      <member refid="structleasy_1_1metadata_1_1_n_space_1a62a291a3aa355352660e5c5fe0c575db" prot="public" virt="non-virtual"><scope>leasy::metadata::NSpace</scope><name>sub</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

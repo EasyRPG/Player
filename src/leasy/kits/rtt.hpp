@@ -53,11 +53,6 @@ namespace leasy::kits {
     
     return {true, "success"};
   }
-  
-//  template<typename... Ts>
-//  std::vector<metadata::TypeInfo> tuple_types() {
-//    return { metadata::TypeInfo::from<Ts>()... };
-//  }
 
   template<typename Tuple, std::size_t... Is>
   std::vector<metadata::TypeInfo>
@@ -76,3 +71,4 @@ namespace leasy::kits {
     );
   }
 }
+

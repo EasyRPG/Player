@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___map_1_1_parallax_1_1_params" kind="struct" language="C++" prot="public">
+    <compoundname>Game_Map::Parallax::Params</compoundname>
+    <includes refid="game__map_8h" local="no">game_map.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___map_1_1_parallax_1_1_params_1a5fc581dae59a3dbd53360fe56dd9bddc" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Game_Map::Parallax::Params::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>Game_Map::Parallax::Params::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="759" column="13" bodyfile="game_map.h" bodystart="759" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___map_1_1_parallax_1_1_params_1a4ff356219b11f262993b3dccec75db83" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Map::Parallax::Params::scroll_horz</definition>
+        <argsstring></argsstring>
+        <name>scroll_horz</name>
+        <qualifiedname>Game_Map::Parallax::Params::scroll_horz</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="760" column="6" bodyfile="game_map.h" bodystart="760" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___map_1_1_parallax_1_1_params_1abfd07a638a588743a57be46fd1bb492a" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Map::Parallax::Params::scroll_horz_auto</definition>
+        <argsstring></argsstring>
+        <name>scroll_horz_auto</name>
+        <qualifiedname>Game_Map::Parallax::Params::scroll_horz_auto</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="761" column="6" bodyfile="game_map.h" bodystart="761" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___map_1_1_parallax_1_1_params_1acb83d9c5c0e02e0471d585a63a38fc93" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Map::Parallax::Params::scroll_horz_speed</definition>
+        <argsstring></argsstring>
+        <name>scroll_horz_speed</name>
+        <qualifiedname>Game_Map::Parallax::Params::scroll_horz_speed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="762" column="5" bodyfile="game_map.h" bodystart="762" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___map_1_1_parallax_1_1_params_1a14871b9006c3663165b218563e572887" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Map::Parallax::Params::scroll_vert</definition>
+        <argsstring></argsstring>
+        <name>scroll_vert</name>
+        <qualifiedname>Game_Map::Parallax::Params::scroll_vert</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="763" column="6" bodyfile="game_map.h" bodystart="763" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___map_1_1_parallax_1_1_params_1a5a3d2d9c9ebe7e664cd588047ba14b60" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Map::Parallax::Params::scroll_vert_auto</definition>
+        <argsstring></argsstring>
+        <name>scroll_vert_auto</name>
+        <qualifiedname>Game_Map::Parallax::Params::scroll_vert_auto</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="764" column="6" bodyfile="game_map.h" bodystart="764" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___map_1_1_parallax_1_1_params_1afc7ebe560b799a7f076f76cb8dec5196" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Map::Parallax::Params::scroll_vert_speed</definition>
+        <argsstring></argsstring>
+        <name>scroll_vert_speed</name>
+        <qualifiedname>Game_Map::Parallax::Params::scroll_vert_speed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="765" column="5" bodyfile="game_map.h" bodystart="765" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_map.h" line="758" column="1" bodyfile="game_map.h" bodystart="758" bodyend="766"/>
+    <listofallmembers>
+      <member refid="struct_game___map_1_1_parallax_1_1_params_1a5fc581dae59a3dbd53360fe56dd9bddc" prot="public" virt="non-virtual"><scope>Game_Map::Parallax::Params</scope><name>name</name></member>
+      <member refid="struct_game___map_1_1_parallax_1_1_params_1a4ff356219b11f262993b3dccec75db83" prot="public" virt="non-virtual"><scope>Game_Map::Parallax::Params</scope><name>scroll_horz</name></member>
+      <member refid="struct_game___map_1_1_parallax_1_1_params_1abfd07a638a588743a57be46fd1bb492a" prot="public" virt="non-virtual"><scope>Game_Map::Parallax::Params</scope><name>scroll_horz_auto</name></member>
+      <member refid="struct_game___map_1_1_parallax_1_1_params_1acb83d9c5c0e02e0471d585a63a38fc93" prot="public" virt="non-virtual"><scope>Game_Map::Parallax::Params</scope><name>scroll_horz_speed</name></member>
+      <member refid="struct_game___map_1_1_parallax_1_1_params_1a14871b9006c3663165b218563e572887" prot="public" virt="non-virtual"><scope>Game_Map::Parallax::Params</scope><name>scroll_vert</name></member>
+      <member refid="struct_game___map_1_1_parallax_1_1_params_1a5a3d2d9c9ebe7e664cd588047ba14b60" prot="public" virt="non-virtual"><scope>Game_Map::Parallax::Params</scope><name>scroll_vert_auto</name></member>
+      <member refid="struct_game___map_1_1_parallax_1_1_params_1afc7ebe560b799a7f076f76cb8dec5196" prot="public" virt="non-virtual"><scope>Game_Map::Parallax::Params</scope><name>scroll_vert_speed</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

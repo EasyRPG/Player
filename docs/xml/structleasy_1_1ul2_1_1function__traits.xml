@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ul2_1_1function__traits" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ul2::function_traits</compoundname>
+    <includes refid="function__traits_8hpp" local="no">function_traits.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ul2/function_traits.hpp" line="69" column="3" bodyfile="leasy/ul2/function_traits.hpp" bodystart="70" bodyend="70"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

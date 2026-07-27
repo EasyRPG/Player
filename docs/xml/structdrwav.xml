@@ -1,0 +1,659 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdrwav" kind="struct" language="C++" prot="public">
+    <compoundname>drwav</compoundname>
+    <includes refid="dr__wav_8h" local="no">dr_wav.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdrwav_1ab08d1b37037df5b2af88cc549d93b550" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1af6936eb29cda3efef3190c60f59116c8" kindref="member">drwav_read_proc</ref></type>
+        <definition>drwav_read_proc drwav::onRead</definition>
+        <argsstring></argsstring>
+        <name>onRead</name>
+        <qualifiedname>drwav::onRead</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="841" column="21" bodyfile="external/dr_wav.h" bodystart="841" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a1ca22d7ee1b573fe1d758e131f486e60" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1abded69a687507b6572db8ce854891350" kindref="member">drwav_write_proc</ref></type>
+        <definition>drwav_write_proc drwav::onWrite</definition>
+        <argsstring></argsstring>
+        <name>onWrite</name>
+        <qualifiedname>drwav::onWrite</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="844" column="22" bodyfile="external/dr_wav.h" bodystart="844" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a71fa3abce7f96f79ba2e791fb97ed256" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a38fb9d5d047556e6681dccb8ae82a154" kindref="member">drwav_seek_proc</ref></type>
+        <definition>drwav_seek_proc drwav::onSeek</definition>
+        <argsstring></argsstring>
+        <name>onSeek</name>
+        <qualifiedname>drwav::onSeek</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="847" column="21" bodyfile="external/dr_wav.h" bodystart="847" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a99247627375ce8b99dbd26eb4540a10a" prot="public" static="no" mutable="no">
+        <type>void *</type>
+        <definition>void* drwav::pUserData</definition>
+        <argsstring></argsstring>
+        <name>pUserData</name>
+        <qualifiedname>drwav::pUserData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="850" column="10" bodyfile="external/dr_wav.h" bodystart="850" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a6c29e2b12103ca5e7dae69367993d83e" prot="public" static="no" mutable="no">
+        <type><ref refid="structdrwav__allocation__callbacks" kindref="compound">drwav_allocation_callbacks</ref></type>
+        <definition>drwav_allocation_callbacks drwav::allocationCallbacks</definition>
+        <argsstring></argsstring>
+        <name>allocationCallbacks</name>
+        <qualifiedname>drwav::allocationCallbacks</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="853" column="32" bodyfile="external/dr_wav.h" bodystart="853" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a287fdd02d1fd755e827609b857141cbe" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a0d6b4071cf04dc3fb0d37bbd030c3993" kindref="member">drwav_container</ref></type>
+        <definition>drwav_container drwav::container</definition>
+        <argsstring></argsstring>
+        <name>container</name>
+        <qualifiedname>drwav::container</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="857" column="21" bodyfile="external/dr_wav.h" bodystart="857" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a85813f6f6280c2b79abff00aa332e78a" prot="public" static="no" mutable="no">
+        <type><ref refid="structdrwav__fmt" kindref="compound">drwav_fmt</ref></type>
+        <definition>drwav_fmt drwav::fmt</definition>
+        <argsstring></argsstring>
+        <name>fmt</name>
+        <qualifiedname>drwav::fmt</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="861" column="15" bodyfile="external/dr_wav.h" bodystart="861" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a6f3a893019f8b2b0bcc1939d48ae2da5" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav::sampleRate</definition>
+        <argsstring></argsstring>
+        <name>sampleRate</name>
+        <qualifiedname>drwav::sampleRate</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="864" column="18" bodyfile="external/dr_wav.h" bodystart="864" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a62c845e3c6f6309850c42cd64ea6616e" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav::channels</definition>
+        <argsstring></argsstring>
+        <name>channels</name>
+        <qualifiedname>drwav::channels</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="867" column="18" bodyfile="external/dr_wav.h" bodystart="867" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1ab712d32dcc6b9c132ae43caf00827ea8" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav::bitsPerSample</definition>
+        <argsstring></argsstring>
+        <name>bitsPerSample</name>
+        <qualifiedname>drwav::bitsPerSample</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="870" column="18" bodyfile="external/dr_wav.h" bodystart="870" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a842f721c6cd25a490163640b5e27e67e" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav::translatedFormatTag</definition>
+        <argsstring></argsstring>
+        <name>translatedFormatTag</name>
+        <qualifiedname>drwav::translatedFormatTag</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="873" column="18" bodyfile="external/dr_wav.h" bodystart="873" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1ac8e8a1d641a939c0509bdb8a66756305" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ad25b608525a9683bf6eb2f7cb21dd783" kindref="member">drwav_uint64</ref></type>
+        <definition>drwav_uint64 drwav::totalPCMFrameCount</definition>
+        <argsstring></argsstring>
+        <name>totalPCMFrameCount</name>
+        <qualifiedname>drwav::totalPCMFrameCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="876" column="18" bodyfile="external/dr_wav.h" bodystart="876" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a9b86f18b7e61119b7cb1508b1fa7ad81" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ad25b608525a9683bf6eb2f7cb21dd783" kindref="member">drwav_uint64</ref></type>
+        <definition>drwav_uint64 drwav::dataChunkDataSize</definition>
+        <argsstring></argsstring>
+        <name>dataChunkDataSize</name>
+        <qualifiedname>drwav::dataChunkDataSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="880" column="18" bodyfile="external/dr_wav.h" bodystart="880" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1ac072363918628b9c86f785ef6d88989c" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ad25b608525a9683bf6eb2f7cb21dd783" kindref="member">drwav_uint64</ref></type>
+        <definition>drwav_uint64 drwav::dataChunkDataPos</definition>
+        <argsstring></argsstring>
+        <name>dataChunkDataPos</name>
+        <qualifiedname>drwav::dataChunkDataPos</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="883" column="18" bodyfile="external/dr_wav.h" bodystart="883" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1adbaabf47d5befd4198937bb6232fe2ad" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ad25b608525a9683bf6eb2f7cb21dd783" kindref="member">drwav_uint64</ref></type>
+        <definition>drwav_uint64 drwav::bytesRemaining</definition>
+        <argsstring></argsstring>
+        <name>bytesRemaining</name>
+        <qualifiedname>drwav::bytesRemaining</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="886" column="18" bodyfile="external/dr_wav.h" bodystart="886" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a3866a071b60c035058de38d58ad2b01b" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ad25b608525a9683bf6eb2f7cb21dd783" kindref="member">drwav_uint64</ref></type>
+        <definition>drwav_uint64 drwav::readCursorInPCMFrames</definition>
+        <argsstring></argsstring>
+        <name>readCursorInPCMFrames</name>
+        <qualifiedname>drwav::readCursorInPCMFrames</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="889" column="18" bodyfile="external/dr_wav.h" bodystart="889" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a18f4fc049e3c11a30675289d74058522" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ad25b608525a9683bf6eb2f7cb21dd783" kindref="member">drwav_uint64</ref></type>
+        <definition>drwav_uint64 drwav::dataChunkDataSizeTargetWrite</definition>
+        <argsstring></argsstring>
+        <name>dataChunkDataSizeTargetWrite</name>
+        <qualifiedname>drwav::dataChunkDataSizeTargetWrite</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="896" column="18" bodyfile="external/dr_wav.h" bodystart="896" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a6e048af649de76096464bef56315f190" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a3fba84bb8a4fd85639b88c686bd699e9" kindref="member">drwav_bool32</ref></type>
+        <definition>drwav_bool32 drwav::isSequentialWrite</definition>
+        <argsstring></argsstring>
+        <name>isSequentialWrite</name>
+        <qualifiedname>drwav::isSequentialWrite</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="899" column="18" bodyfile="external/dr_wav.h" bodystart="899" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1ac8f60493b4a1c71eadc50e18ada05d08" prot="public" static="no" mutable="no">
+        <type><ref refid="structdrwav__metadata" kindref="compound">drwav_metadata</ref> *</type>
+        <definition>drwav_metadata* drwav::pMetadata</definition>
+        <argsstring></argsstring>
+        <name>pMetadata</name>
+        <qualifiedname>drwav::pMetadata</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="903" column="20" bodyfile="external/dr_wav.h" bodystart="903" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a02e305d2faf0689d360b1e4667612c74" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav::metadataCount</definition>
+        <argsstring></argsstring>
+        <name>metadataCount</name>
+        <qualifiedname>drwav::metadataCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="904" column="18" bodyfile="external/dr_wav.h" bodystart="904" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a6bffd178879c0016be00a08b124fa976" prot="public" static="no" mutable="no">
+        <type><ref refid="structdrwav____memory__stream" kindref="compound">drwav__memory_stream</ref></type>
+        <definition>drwav__memory_stream drwav::memoryStream</definition>
+        <argsstring></argsstring>
+        <name>memoryStream</name>
+        <qualifiedname>drwav::memoryStream</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="908" column="26" bodyfile="external/dr_wav.h" bodystart="908" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a6cf469b4270d486b8940be5e2cc2f961" prot="public" static="no" mutable="no">
+        <type><ref refid="structdrwav____memory__stream__write" kindref="compound">drwav__memory_stream_write</ref></type>
+        <definition>drwav__memory_stream_write drwav::memoryStreamWrite</definition>
+        <argsstring></argsstring>
+        <name>memoryStreamWrite</name>
+        <qualifiedname>drwav::memoryStreamWrite</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="909" column="32" bodyfile="external/dr_wav.h" bodystart="909" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1aaf8734451359d42f35c98914dea4f8a2" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav::bytesRemainingInBlock</definition>
+        <argsstring></argsstring>
+        <name>bytesRemainingInBlock</name>
+        <qualifiedname>drwav::bytesRemainingInBlock</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="915" column="22" bodyfile="external/dr_wav.h" bodystart="915" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a1c314262c91a4b280661684d08755b7f" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav::predictor[2]</definition>
+        <argsstring>[2]</argsstring>
+        <name>predictor</name>
+        <qualifiedname>drwav::predictor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="916" column="22" bodyfile="external/dr_wav.h" bodystart="916" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a6b37897e3c7d52d65627b5c85bfbc2e5" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a6b7e22340c29c334edaa7d890713750b" kindref="member">drwav_int32</ref></type>
+        <definition>drwav_int32 drwav::delta[2]</definition>
+        <argsstring>[2]</argsstring>
+        <name>delta</name>
+        <qualifiedname>drwav::delta</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="917" column="22" bodyfile="external/dr_wav.h" bodystart="917" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a3ab5767ef46a09685497798c77876f8a" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a6b7e22340c29c334edaa7d890713750b" kindref="member">drwav_int32</ref></type>
+        <definition>drwav_int32 drwav::cachedFrames[16]</definition>
+        <argsstring>[4]</argsstring>
+        <name>cachedFrames</name>
+        <qualifiedname>drwav::cachedFrames</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="918" column="22" bodyfile="external/dr_wav.h" bodystart="918" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1acc07f63f1ea4b09b69c62daa9fecd02c" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav::cachedFrameCount</definition>
+        <argsstring></argsstring>
+        <name>cachedFrameCount</name>
+        <qualifiedname>drwav::cachedFrameCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="919" column="22" bodyfile="external/dr_wav.h" bodystart="919" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a28f4b24c5af28cd483499960d23118c3" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a6b7e22340c29c334edaa7d890713750b" kindref="member">drwav_int32</ref></type>
+        <definition>drwav_int32 drwav::prevFrames[2][2]</definition>
+        <argsstring>[2][2]</argsstring>
+        <name>prevFrames</name>
+        <qualifiedname>drwav::prevFrames</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="920" column="22" bodyfile="external/dr_wav.h" bodystart="920" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1af8792badbcc980c167d62a0590096f42" prot="public" static="no" mutable="no">
+        <type>struct drwav::@371041135151245366271020172126271356237337056241</type>
+        <definition>struct drwav::@371041135151245366271020172126271356237337056241 drwav::msadpcm</definition>
+        <argsstring></argsstring>
+        <name>msadpcm</name>
+        <qualifiedname>drwav::msadpcm</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="921" column="13"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a16946777d127311a7fb794aa040d125f" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a6b7e22340c29c334edaa7d890713750b" kindref="member">drwav_int32</ref></type>
+        <definition>drwav_int32 drwav::predictor[2]</definition>
+        <argsstring>[2]</argsstring>
+        <name>predictor</name>
+        <qualifiedname>drwav::predictor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="927" column="22" bodyfile="external/dr_wav.h" bodystart="927" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a491db831247a149690a5d994f7933a99" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a6b7e22340c29c334edaa7d890713750b" kindref="member">drwav_int32</ref></type>
+        <definition>drwav_int32 drwav::stepIndex[2]</definition>
+        <argsstring>[2]</argsstring>
+        <name>stepIndex</name>
+        <qualifiedname>drwav::stepIndex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="928" column="22" bodyfile="external/dr_wav.h" bodystart="928" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1af114945129934d5d9baeeff321a376c4" prot="public" static="no" mutable="no">
+        <type>struct drwav::@015216153374362262056027107212130317266250110024</type>
+        <definition>struct drwav::@015216153374362262056027107212130317266250110024 drwav::ima</definition>
+        <argsstring></argsstring>
+        <name>ima</name>
+        <qualifiedname>drwav::ima</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="931" column="9"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1ab8e9e5e7d356edf4de8dbcf5a343a201" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a041e9e1ee21cd25f007de7baf285d9fd" kindref="member">drwav_bool8</ref></type>
+        <definition>drwav_bool8 drwav::isLE</definition>
+        <argsstring></argsstring>
+        <name>isLE</name>
+        <qualifiedname>drwav::isLE</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="936" column="21" bodyfile="external/dr_wav.h" bodystart="936" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a80fd76b9c3c8db98a6f9676ab4192fa2" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a041e9e1ee21cd25f007de7baf285d9fd" kindref="member">drwav_bool8</ref></type>
+        <definition>drwav_bool8 drwav::isUnsigned</definition>
+        <argsstring></argsstring>
+        <name>isUnsigned</name>
+        <qualifiedname>drwav::isUnsigned</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="937" column="21" bodyfile="external/dr_wav.h" bodystart="937" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav_1a715b454c80160d3796fa1da49fb4c421" prot="public" static="no" mutable="no">
+        <type>struct drwav::@366360344135133047324005325306315035207260055137</type>
+        <definition>struct drwav::@366360344135133047324005325306315035207260055137 drwav::aiff</definition>
+        <argsstring></argsstring>
+        <name>aiff</name>
+        <qualifiedname>drwav::aiff</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="938" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>drwav</label>
+        <link refid="structdrwav"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>allocationCallbacks</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>fmt</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>pMetadata</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>memoryStream</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>memoryStreamWrite</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>drwav__memory_stream</label>
+        <link refid="structdrwav____memory__stream"/>
+      </node>
+      <node id="17">
+        <label>drwav__memory_stream_write</label>
+        <link refid="structdrwav____memory__stream__write"/>
+      </node>
+      <node id="9">
+        <label>drwav_acid</label>
+        <link refid="structdrwav__acid"/>
+      </node>
+      <node id="2">
+        <label>drwav_allocation_callbacks</label>
+        <link refid="structdrwav__allocation__callbacks"/>
+      </node>
+      <node id="11">
+        <label>drwav_bext</label>
+        <link refid="structdrwav__bext"/>
+      </node>
+      <node id="5">
+        <label>drwav_cue</label>
+        <link refid="structdrwav__cue"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>pCuePoints</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>drwav_cue_point</label>
+        <link refid="structdrwav__cue__point"/>
+      </node>
+      <node id="3">
+        <label>drwav_fmt</label>
+        <link refid="structdrwav__fmt"/>
+      </node>
+      <node id="10">
+        <label>drwav_inst</label>
+        <link refid="structdrwav__inst"/>
+      </node>
+      <node id="14">
+        <label>drwav_list_info_text</label>
+        <link refid="structdrwav__list__info__text"/>
+      </node>
+      <node id="12">
+        <label>drwav_list_label_or_note</label>
+        <link refid="structdrwav__list__label__or__note"/>
+      </node>
+      <node id="13">
+        <label>drwav_list_labelled_cue_region</label>
+        <link refid="structdrwav__list__labelled__cue__region"/>
+      </node>
+      <node id="4">
+        <label>drwav_metadata</label>
+        <link refid="structdrwav__metadata"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>cue</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>smpl</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>acid</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>inst</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>bext</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>labelOrNote</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>labelledCueRegion</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>infoText</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>unknown</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>drwav_smpl</label>
+        <link refid="structdrwav__smpl"/>
+        <childnode refid="8" relation="usage">
+          <edgelabel>pLoops</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>drwav_smpl_loop</label>
+        <link refid="structdrwav__smpl__loop"/>
+      </node>
+      <node id="15">
+        <label>drwav_unknown_metadata</label>
+        <link refid="structdrwav__unknown__metadata"/>
+      </node>
+    </collaborationgraph>
+    <location file="external/dr_wav.h" line="838" column="1" bodyfile="external/dr_wav.h" bodystart="839" bodyend="939"/>
+    <listofallmembers>
+      <member refid="structdrwav_1a715b454c80160d3796fa1da49fb4c421" prot="public" virt="non-virtual"><scope>drwav</scope><name>aiff</name></member>
+      <member refid="structdrwav_1a6c29e2b12103ca5e7dae69367993d83e" prot="public" virt="non-virtual"><scope>drwav</scope><name>allocationCallbacks</name></member>
+      <member refid="structdrwav_1ab712d32dcc6b9c132ae43caf00827ea8" prot="public" virt="non-virtual"><scope>drwav</scope><name>bitsPerSample</name></member>
+      <member refid="structdrwav_1adbaabf47d5befd4198937bb6232fe2ad" prot="public" virt="non-virtual"><scope>drwav</scope><name>bytesRemaining</name></member>
+      <member refid="structdrwav_1aaf8734451359d42f35c98914dea4f8a2" prot="public" virt="non-virtual"><scope>drwav</scope><name>bytesRemainingInBlock</name></member>
+      <member refid="structdrwav_1acc07f63f1ea4b09b69c62daa9fecd02c" prot="public" virt="non-virtual"><scope>drwav</scope><name>cachedFrameCount</name></member>
+      <member refid="structdrwav_1a3ab5767ef46a09685497798c77876f8a" prot="public" virt="non-virtual"><scope>drwav</scope><name>cachedFrames</name></member>
+      <member refid="structdrwav_1a62c845e3c6f6309850c42cd64ea6616e" prot="public" virt="non-virtual"><scope>drwav</scope><name>channels</name></member>
+      <member refid="structdrwav_1a287fdd02d1fd755e827609b857141cbe" prot="public" virt="non-virtual"><scope>drwav</scope><name>container</name></member>
+      <member refid="structdrwav_1ac072363918628b9c86f785ef6d88989c" prot="public" virt="non-virtual"><scope>drwav</scope><name>dataChunkDataPos</name></member>
+      <member refid="structdrwav_1a9b86f18b7e61119b7cb1508b1fa7ad81" prot="public" virt="non-virtual"><scope>drwav</scope><name>dataChunkDataSize</name></member>
+      <member refid="structdrwav_1a18f4fc049e3c11a30675289d74058522" prot="public" virt="non-virtual"><scope>drwav</scope><name>dataChunkDataSizeTargetWrite</name></member>
+      <member refid="structdrwav_1a6b37897e3c7d52d65627b5c85bfbc2e5" prot="public" virt="non-virtual"><scope>drwav</scope><name>delta</name></member>
+      <member refid="structdrwav_1a85813f6f6280c2b79abff00aa332e78a" prot="public" virt="non-virtual"><scope>drwav</scope><name>fmt</name></member>
+      <member refid="structdrwav_1af114945129934d5d9baeeff321a376c4" prot="public" virt="non-virtual"><scope>drwav</scope><name>ima</name></member>
+      <member refid="structdrwav_1ab8e9e5e7d356edf4de8dbcf5a343a201" prot="public" virt="non-virtual"><scope>drwav</scope><name>isLE</name></member>
+      <member refid="structdrwav_1a6e048af649de76096464bef56315f190" prot="public" virt="non-virtual"><scope>drwav</scope><name>isSequentialWrite</name></member>
+      <member refid="structdrwav_1a80fd76b9c3c8db98a6f9676ab4192fa2" prot="public" virt="non-virtual"><scope>drwav</scope><name>isUnsigned</name></member>
+      <member refid="structdrwav_1a6bffd178879c0016be00a08b124fa976" prot="public" virt="non-virtual"><scope>drwav</scope><name>memoryStream</name></member>
+      <member refid="structdrwav_1a6cf469b4270d486b8940be5e2cc2f961" prot="public" virt="non-virtual"><scope>drwav</scope><name>memoryStreamWrite</name></member>
+      <member refid="structdrwav_1a02e305d2faf0689d360b1e4667612c74" prot="public" virt="non-virtual"><scope>drwav</scope><name>metadataCount</name></member>
+      <member refid="structdrwav_1af8792badbcc980c167d62a0590096f42" prot="public" virt="non-virtual"><scope>drwav</scope><name>msadpcm</name></member>
+      <member refid="structdrwav_1ab08d1b37037df5b2af88cc549d93b550" prot="public" virt="non-virtual"><scope>drwav</scope><name>onRead</name></member>
+      <member refid="structdrwav_1a71fa3abce7f96f79ba2e791fb97ed256" prot="public" virt="non-virtual"><scope>drwav</scope><name>onSeek</name></member>
+      <member refid="structdrwav_1a1ca22d7ee1b573fe1d758e131f486e60" prot="public" virt="non-virtual"><scope>drwav</scope><name>onWrite</name></member>
+      <member refid="structdrwav_1ac8f60493b4a1c71eadc50e18ada05d08" prot="public" virt="non-virtual"><scope>drwav</scope><name>pMetadata</name></member>
+      <member refid="structdrwav_1a1c314262c91a4b280661684d08755b7f" prot="public" virt="non-virtual"><scope>drwav</scope><name>predictor</name></member>
+      <member refid="structdrwav_1a16946777d127311a7fb794aa040d125f" prot="public" virt="non-virtual"><scope>drwav</scope><name>predictor</name></member>
+      <member refid="structdrwav_1a28f4b24c5af28cd483499960d23118c3" prot="public" virt="non-virtual"><scope>drwav</scope><name>prevFrames</name></member>
+      <member refid="structdrwav_1a99247627375ce8b99dbd26eb4540a10a" prot="public" virt="non-virtual"><scope>drwav</scope><name>pUserData</name></member>
+      <member refid="structdrwav_1a3866a071b60c035058de38d58ad2b01b" prot="public" virt="non-virtual"><scope>drwav</scope><name>readCursorInPCMFrames</name></member>
+      <member refid="structdrwav_1a6f3a893019f8b2b0bcc1939d48ae2da5" prot="public" virt="non-virtual"><scope>drwav</scope><name>sampleRate</name></member>
+      <member refid="structdrwav_1a491db831247a149690a5d994f7933a99" prot="public" virt="non-virtual"><scope>drwav</scope><name>stepIndex</name></member>
+      <member refid="structdrwav_1ac8e8a1d641a939c0509bdb8a66756305" prot="public" virt="non-virtual"><scope>drwav</scope><name>totalPCMFrameCount</name></member>
+      <member refid="structdrwav_1a842f721c6cd25a490163640b5e27e67e" prot="public" virt="non-virtual"><scope>drwav</scope><name>translatedFormatTag</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

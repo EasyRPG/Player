@@ -1176,3 +1176,4 @@ inline int Game_Actor::GetActorAi() const {
 }
 
 #endif
+

@@ -21,3 +21,4 @@ INLINE_SOURCES         = YES
 SEARCHENGINE           = YES
 WARN_IF_UNDOCUMENTED   = NO
 PROJECT_LOGO           = resources/logo.png
+GENERATE_XML           = YES

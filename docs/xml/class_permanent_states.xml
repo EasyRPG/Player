@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_permanent_states" kind="class" language="C++" prot="public">
+    <compoundname>PermanentStates</compoundname>
+    <includes refid="state_8h" local="no">state.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_permanent_states_1a9fad9b88e4d074a27e0fe9b40ba3ad68" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; bool &gt;</type>
+        <definition>std::vector&lt;bool&gt; PermanentStates::states</definition>
+        <argsstring></argsstring>
+        <name>states</name>
+        <qualifiedname>PermanentStates::states</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="state.h" line="38" column="13" bodyfile="state.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_permanent_states_1a59dc9d6d2688f138ffe4f4620a3ed681" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void PermanentStates::Add</definition>
+        <argsstring>(int state_id)</argsstring>
+        <name>Add</name>
+        <qualifiedname>PermanentStates::Add</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>state_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="state.h" line="33" column="6" bodyfile="state.h" bodystart="138" bodyend="143"/>
+      </memberdef>
+      <memberdef kind="function" id="class_permanent_states_1ab3b48e6d76e364272f8397629e496e8f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void PermanentStates::Remove</definition>
+        <argsstring>(int state_id)</argsstring>
+        <name>Remove</name>
+        <qualifiedname>PermanentStates::Remove</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>state_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="state.h" line="34" column="6" bodyfile="state.h" bodystart="145" bodyend="149"/>
+      </memberdef>
+      <memberdef kind="function" id="class_permanent_states_1a1e59edf966bd37398bc1347d6873da86" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void PermanentStates::Clear</definition>
+        <argsstring>()</argsstring>
+        <name>Clear</name>
+        <qualifiedname>PermanentStates::Clear</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="state.h" line="35" column="6" bodyfile="state.h" bodystart="151" bodyend="153"/>
+      </memberdef>
+      <memberdef kind="function" id="class_permanent_states_1a40a6fb6120f2ddb76a2241428d7dfa2e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PermanentStates::Has</definition>
+        <argsstring>(int state_id) const</argsstring>
+        <name>Has</name>
+        <qualifiedname>PermanentStates::Has</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>state_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="state.h" line="36" column="6" bodyfile="state.h" bodystart="155" bodyend="157"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="state.h" line="31" column="1" bodyfile="state.h" bodystart="31" bodyend="39"/>
+    <listofallmembers>
+      <member refid="class_permanent_states_1a59dc9d6d2688f138ffe4f4620a3ed681" prot="public" virt="non-virtual"><scope>PermanentStates</scope><name>Add</name></member>
+      <member refid="class_permanent_states_1a1e59edf966bd37398bc1347d6873da86" prot="public" virt="non-virtual"><scope>PermanentStates</scope><name>Clear</name></member>
+      <member refid="class_permanent_states_1a40a6fb6120f2ddb76a2241428d7dfa2e" prot="public" virt="non-virtual"><scope>PermanentStates</scope><name>Has</name></member>
+      <member refid="class_permanent_states_1ab3b48e6d76e364272f8397629e496e8f" prot="public" virt="non-virtual"><scope>PermanentStates</scope><name>Remove</name></member>
+      <member refid="class_permanent_states_1a9fad9b88e4d074a27e0fe9b40ba3ad68" prot="private" virt="non-virtual"><scope>PermanentStates</scope><name>states</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_emscripten___interface" kind="class" language="C++" prot="public">
+    <compoundname>Emscripten_Interface</compoundname>
+    <includes refid="interface_8h" local="no">interface.h</includes>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_emscripten___interface_1a8d5e109a475360feb799a084bb9bfd89" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Emscripten_Interface::DownloadSavegame</definition>
+        <argsstring>(int slot)</argsstring>
+        <name>DownloadSavegame</name>
+        <qualifiedname>Emscripten_Interface::DownloadSavegame</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>slot</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/interface.h" line="25" column="13" bodyfile="platform/emscripten/interface.cpp" bodystart="38" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="class_emscripten___interface_1ac1aaf347d6854dc8401860739496daf5" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Emscripten_Interface::UploadSavegame</definition>
+        <argsstring>(int slot)</argsstring>
+        <name>UploadSavegame</name>
+        <qualifiedname>Emscripten_Interface::UploadSavegame</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>slot</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/interface.h" line="26" column="13" bodyfile="platform/emscripten/interface.cpp" bodystart="53" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="class_emscripten___interface_1a0d972d9a294c3eba00b6c3be44aa8c23" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Emscripten_Interface::UploadSoundfont</definition>
+        <argsstring>()</argsstring>
+        <name>UploadSoundfont</name>
+        <qualifiedname>Emscripten_Interface::UploadSoundfont</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/interface.h" line="27" column="17" bodyfile="platform/emscripten/interface.cpp" bodystart="59" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="class_emscripten___interface_1a740d37a4656be3884b5b1ac7c679f9cb" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Emscripten_Interface::UploadFont</definition>
+        <argsstring>()</argsstring>
+        <name>UploadFont</name>
+        <qualifiedname>Emscripten_Interface::UploadFont</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/interface.h" line="28" column="17" bodyfile="platform/emscripten/interface.cpp" bodystart="65" bodyend="69"/>
+      </memberdef>
+      <memberdef kind="function" id="class_emscripten___interface_1a1d8454c6e803d091c1fbd6bca4ef6d6e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Emscripten_Interface::RefreshScene</definition>
+        <argsstring>()</argsstring>
+        <name>RefreshScene</name>
+        <qualifiedname>Emscripten_Interface::RefreshScene</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/interface.h" line="29" column="17" bodyfile="platform/emscripten/interface.cpp" bodystart="71" bodyend="73"/>
+      </memberdef>
+      <memberdef kind="function" id="class_emscripten___interface_1af86e55a3141ca0eb3f692a13162ae6a4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Emscripten_Interface::TakeScreenshot</definition>
+        <argsstring>(bool is_auto_screenshot=false)</argsstring>
+        <name>TakeScreenshot</name>
+        <qualifiedname>Emscripten_Interface::TakeScreenshot</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>is_auto_screenshot</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/interface.h" line="30" column="13" bodyfile="platform/emscripten/interface.cpp" bodystart="75" bodyend="89"/>
+      </memberdef>
+      <memberdef kind="function" id="class_emscripten___interface_1a4b52f9d918cf4056acbf0c5d40815c66" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Emscripten_Interface::Reset</definition>
+        <argsstring>()</argsstring>
+        <name>Reset</name>
+        <qualifiedname>Emscripten_Interface::Reset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/interface.h" line="31" column="13" bodyfile="platform/emscripten/interface.cpp" bodystart="34" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="class_emscripten___interface_1ac9a3ec7e2eac8fb9e314f3ed10e2fcab" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Emscripten_Interface::ResetCanvas</definition>
+        <argsstring>()</argsstring>
+        <name>ResetCanvas</name>
+        <qualifiedname>Emscripten_Interface::ResetCanvas</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/emscripten/interface.h" line="32" column="13" bodyfile="platform/emscripten/interface.cpp" bodystart="168" bodyend="172"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/emscripten/interface.h" line="23" column="1" bodyfile="platform/emscripten/interface.h" bodystart="23" bodyend="33"/>
+    <listofallmembers>
+      <member refid="class_emscripten___interface_1a8d5e109a475360feb799a084bb9bfd89" prot="public" virt="non-virtual"><scope>Emscripten_Interface</scope><name>DownloadSavegame</name></member>
+      <member refid="class_emscripten___interface_1a1d8454c6e803d091c1fbd6bca4ef6d6e" prot="public" virt="non-virtual"><scope>Emscripten_Interface</scope><name>RefreshScene</name></member>
+      <member refid="class_emscripten___interface_1a4b52f9d918cf4056acbf0c5d40815c66" prot="public" virt="non-virtual"><scope>Emscripten_Interface</scope><name>Reset</name></member>
+      <member refid="class_emscripten___interface_1ac9a3ec7e2eac8fb9e314f3ed10e2fcab" prot="public" virt="non-virtual"><scope>Emscripten_Interface</scope><name>ResetCanvas</name></member>
+      <member refid="class_emscripten___interface_1af86e55a3141ca0eb3f692a13162ae6a4" prot="public" virt="non-virtual"><scope>Emscripten_Interface</scope><name>TakeScreenshot</name></member>
+      <member refid="class_emscripten___interface_1a740d37a4656be3884b5b1ac7c679f9cb" prot="public" virt="non-virtual"><scope>Emscripten_Interface</scope><name>UploadFont</name></member>
+      <member refid="class_emscripten___interface_1ac1aaf347d6854dc8401860739496daf5" prot="public" virt="non-virtual"><scope>Emscripten_Interface</scope><name>UploadSavegame</name></member>
+      <member refid="class_emscripten___interface_1a0d972d9a294c3eba00b6c3be44aa8c23" prot="public" virt="non-virtual"><scope>Emscripten_Interface</scope><name>UploadSoundfont</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

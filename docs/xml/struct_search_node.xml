@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_search_node" kind="struct" language="C++" prot="public">
+    <compoundname>SearchNode</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_search_node_1a4c96285b723f70249d53044f104caf4e" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int SearchNode::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <qualifiedname>SearchNode::x</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.cpp" line="806" column="5" bodyfile="game_character.cpp" bodystart="806" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_search_node_1a14d546df53cdd1694948e835d96b8e13" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int SearchNode::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <qualifiedname>SearchNode::y</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.cpp" line="807" column="5" bodyfile="game_character.cpp" bodystart="807" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_search_node_1ad5c982b430039ead12c233a8df394e09" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int SearchNode::cost</definition>
+        <argsstring></argsstring>
+        <name>cost</name>
+        <qualifiedname>SearchNode::cost</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.cpp" line="808" column="5" bodyfile="game_character.cpp" bodystart="808" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_search_node_1afa91692bd4b420405f4dfc20e887ce7b" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int SearchNode::direction</definition>
+        <argsstring></argsstring>
+        <name>direction</name>
+        <qualifiedname>SearchNode::direction</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.cpp" line="809" column="5" bodyfile="game_character.cpp" bodystart="809" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_search_node_1a18953699250e32e074d9380527958549" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int SearchNode::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <qualifiedname>SearchNode::id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.cpp" line="811" column="5" bodyfile="game_character.cpp" bodystart="811" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_search_node_1a9a579982077dafbc71e3775d4f848167" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int SearchNode::parent_id</definition>
+        <argsstring></argsstring>
+        <name>parent_id</name>
+        <qualifiedname>SearchNode::parent_id</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.cpp" line="812" column="5" bodyfile="game_character.cpp" bodystart="812" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_search_node_1ad80c9a40b60d8d2f95060b679e07f705" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int SearchNode::parent_x</definition>
+        <argsstring></argsstring>
+        <name>parent_x</name>
+        <qualifiedname>SearchNode::parent_x</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.cpp" line="813" column="5" bodyfile="game_character.cpp" bodystart="813" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_search_node_1aa82bc22acc42e36ead22c24447f25b64" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int SearchNode::parent_y</definition>
+        <argsstring></argsstring>
+        <name>parent_y</name>
+        <qualifiedname>SearchNode::parent_y</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.cpp" line="814" column="5" bodyfile="game_character.cpp" bodystart="814" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="friend">
+      <memberdef kind="friend" id="struct_search_node_1a2a6e8fee1d3536c4f109a90de373ccea" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool operator==</definition>
+        <argsstring>(const SearchNode &amp;n1, const SearchNode &amp;n2)</argsstring>
+        <name>operator==</name>
+        <qualifiedname>SearchNode::operator==</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_search_node" kindref="compound">SearchNode</ref> &amp;</type>
+          <declname>n1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_search_node" kindref="compound">SearchNode</ref> &amp;</type>
+          <declname>n2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.cpp" line="816" column="13" bodyfile="game_character.cpp" bodystart="816" bodyend="819"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_search_node_1a0caf8bd01379a94db76a771fc2b7ebd5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool SearchNode::operator()</definition>
+        <argsstring>(SearchNode const &amp;a, SearchNode const &amp;b)</argsstring>
+        <name>operator()</name>
+        <qualifiedname>SearchNode::operator()</qualifiedname>
+        <param>
+          <type><ref refid="struct_search_node" kindref="compound">SearchNode</ref> const &amp;</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_search_node" kindref="compound">SearchNode</ref> const &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_character.cpp" line="821" column="6" bodyfile="game_character.cpp" bodystart="821" bodyend="824"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_character.cpp" line="805" column="1" bodyfile="game_character.cpp" bodystart="805" bodyend="825"/>
+    <listofallmembers>
+      <member refid="struct_search_node_1ad5c982b430039ead12c233a8df394e09" prot="public" virt="non-virtual"><scope>SearchNode</scope><name>cost</name></member>
+      <member refid="struct_search_node_1afa91692bd4b420405f4dfc20e887ce7b" prot="public" virt="non-virtual"><scope>SearchNode</scope><name>direction</name></member>
+      <member refid="struct_search_node_1a18953699250e32e074d9380527958549" prot="public" virt="non-virtual"><scope>SearchNode</scope><name>id</name></member>
+      <member refid="struct_search_node_1a0caf8bd01379a94db76a771fc2b7ebd5" prot="public" virt="non-virtual"><scope>SearchNode</scope><name>operator()</name></member>
+      <member refid="struct_search_node_1a2a6e8fee1d3536c4f109a90de373ccea" prot="public" virt="non-virtual"><scope>SearchNode</scope><name>operator==</name></member>
+      <member refid="struct_search_node_1a9a579982077dafbc71e3775d4f848167" prot="public" virt="non-virtual"><scope>SearchNode</scope><name>parent_id</name></member>
+      <member refid="struct_search_node_1ad80c9a40b60d8d2f95060b679e07f705" prot="public" virt="non-virtual"><scope>SearchNode</scope><name>parent_x</name></member>
+      <member refid="struct_search_node_1aa82bc22acc42e36ead22c24447f25b64" prot="public" virt="non-virtual"><scope>SearchNode</scope><name>parent_y</name></member>
+      <member refid="struct_search_node_1a4c96285b723f70249d53044f104caf4e" prot="public" virt="non-virtual"><scope>SearchNode</scope><name>x</name></member>
+      <member refid="struct_search_node_1a14d546df53cdd1694948e835d96b8e13" prot="public" virt="non-virtual"><scope>SearchNode</scope><name>y</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

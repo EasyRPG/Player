@@ -1,0 +1,2737 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_scene___battle___rpg2k3" kind="class" language="C++" prot="public">
+    <compoundname>Scene_Battle_Rpg2k3</compoundname>
+    <basecompoundref refid="class_scene___battle" prot="public" virt="non-virtual">Scene_Battle</basecompoundref>
+    <includes refid="scene__battle__rpg2k3_8h" local="no">scene_battle_rpg2k3.h</includes>
+    <innerclass refid="struct_scene___battle___rpg2k3_1_1_float_text" prot="protected">Scene_Battle_Rpg2k3::FloatText</innerclass>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>SceneActionReturn</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::SceneActionReturn</qualifiedname>
+        <enumvalue id="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9a2db0ec3771ec326705edb0f4cb07a1a4" prot="public">
+          <name>eWaitTillNextFrame</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Return from <ref refid="class_scene_1a71a71b4f7752b853ff8032b0941a9d8d" kindref="member">Update()</ref> and wait until the next frame </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9a1b0b550593ae273a38b3ab827ff83025" prot="public">
+          <name>eContinueThisFrame</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Continue processing this frame, unless <ref refid="class_scene___battle___rpg2k3_1a7656745f3aedd5dbcbec1e2286988dc0" kindref="member">CheckWait()</ref> etc.. requires us to block </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The return value from a scene action state machine callback </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="39" column="1" bodyfile="scene_battle_rpg2k3.h" bodystart="39" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="enum" id="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>BattleActionReturn</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::BattleActionReturn</qualifiedname>
+        <enumvalue id="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953a3234684b884abcd480a33ceb1573354c" prot="public">
+          <name>eContinue</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>The battle action is not yet finished but we can try again this frame </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953a36db84b578ba3a3bb2d72f6a8504dbfe" prot="public">
+          <name>eWait</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>The battle action is not yet finished and we need to wait for another frame </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953aa3407aaa3c024bffb7f22b326dfbba1b" prot="public">
+          <name>eFinished</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>The battle action is finished </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The return value from a battle action state machine callback </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="47" column="1" bodyfile="scene_battle_rpg2k3.h" bodystart="47" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="enum" id="class_scene___battle___rpg2k3_1acd4c072b321782396d57956c0691bc20" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>EventTriggerType</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::EventTriggerType</qualifiedname>
+        <enumvalue id="class_scene___battle___rpg2k3_1acd4c072b321782396d57956c0691bc20a35df5dab14cbb58a5611aa704da3148f" prot="public">
+          <name>eBeforeBattleAction</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1acd4c072b321782396d57956c0691bc20a43b8f04e7b3cf5f3347581ef227df217" prot="public">
+          <name>eAfterBattleAction</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1acd4c072b321782396d57956c0691bc20a205a605c9a22391af5e09fa60fe30678" prot="public">
+          <name>eAll</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="56" column="1" bodyfile="scene_battle_rpg2k3.h" bodystart="56" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="enum" id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16" prot="public" static="no" strong="no">
+        <type></type>
+        <name>BattleActionState</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::BattleActionState</qualifiedname>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ab7e3a7ad795da19198daac221b9fe092" prot="public">
+          <name>BattleActionState_Begin</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a09635c9f990784566c522381f844b1b3" prot="public">
+          <name>BattleActionState_PreEvents</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16acc862e6239ca8affda23470c065e54e9" prot="public">
+          <name>BattleActionState_Conditions</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16aaae229a8b55ef2b2523a2ae84bf063fe" prot="public">
+          <name>BattleActionState_Notify</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a86847e3d3e8a2aedff280778d7d4bac5" prot="public">
+          <name>BattleActionState_Combo</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a27e22608508efd7dc34248e882222324" prot="public">
+          <name>BattleActionState_StartAlgo</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ad033179f22fb3931a6f9d84868469379" prot="public">
+          <name>BattleActionState_CBAInit</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16af53a601545f2a8d3177260c83b87c8f7" prot="public">
+          <name>BattleActionState_CBAMove</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ac35c153e441ed26142af8c6f9e0da440" prot="public">
+          <name>BattleActionState_StartAnimation</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a91062de47952b59f0fea627a0d7a3631" prot="public">
+          <name>BattleActionState_CBARangedWeaponInit</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a44a9292b4ad37148b8fc39e7f5e59e6c" prot="public">
+          <name>BattleActionState_CBARangedWeaponMove</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a3ed664208a522156e2e03bf91497a528" prot="public">
+          <name>BattleActionState_Animation</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ae470612826b553880b10298c5b4852e0" prot="public">
+          <name>BattleActionState_AnimationReflect</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ae4d4d8803b4fad764c494c54c100411b" prot="public">
+          <name>BattleActionState_FinishPose</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a8b4e2d740e8e64a3d7982a81d765f324" prot="public">
+          <name>BattleActionState_Execute</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ae69104cfdd4c4690292fe5fb9f8b3408" prot="public">
+          <name>BattleActionState_SwitchEvents</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a65a09e53fee30f9e6feb1a9a12e196ff" prot="public">
+          <name>BattleActionState_Apply</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16aae29fe55f4ef3d0c94321fe995de7a31" prot="public">
+          <name>BattleActionState_PostAction</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a892366001f971127f7d818c87aac7fd9" prot="public">
+          <name>BattleActionState_PostEvents</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a49e2c5786d0ab9849f8629853b2198fb" prot="public">
+          <name>BattleActionState_Finished</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="62" column="1" bodyfile="scene_battle_rpg2k3.h" bodystart="62" bodyend="83"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-type">
+      <memberdef kind="enum" id="class_scene___battle___rpg2k3_1ae6d4146d7b632488cc0bb320796ea2a1" prot="protected" static="no" strong="yes">
+        <type></type>
+        <name>FloatTextType</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::FloatTextType</qualifiedname>
+        <enumvalue id="class_scene___battle___rpg2k3_1ae6d4146d7b632488cc0bb320796ea2a1ab9f24e83531326204197015b2f43a93f" prot="protected">
+          <name>Damage</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1ae6d4146d7b632488cc0bb320796ea2a1af357105e6becc3076a3da9b43465051a" prot="protected">
+          <name>Heal</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle___rpg2k3_1ae6d4146d7b632488cc0bb320796ea2a1ae7ddb7cd777b59610b220bcfa80bd95f" prot="protected">
+          <name>Miss</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="127" column="1" bodyfile="scene_battle_rpg2k3.h" bodystart="127" bodyend="131"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1a1c63f94f3e670d3124414d1dc7fe7886" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_sprite" kindref="compound">Sprite</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Sprite&gt; Scene_Battle_Rpg2k3::ally_cursor</definition>
+        <argsstring></argsstring>
+        <name>ally_cursor</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ally_cursor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="220" column="17" bodyfile="scene_battle_rpg2k3.h" bodystart="220" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1a2186dffcb3306d9c7cd742290d72c77e" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_sprite" kindref="compound">Sprite</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Sprite&gt; Scene_Battle_Rpg2k3::enemy_cursor</definition>
+        <argsstring></argsstring>
+        <name>enemy_cursor</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::enemy_cursor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="220" column="29" bodyfile="scene_battle_rpg2k3.h" bodystart="220" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1a03505cec718697a558caecd3e02d0ae4" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="struct_scene___battle___rpg2k3_1_1_float_text" kindref="compound">FloatText</ref> &gt;</type>
+        <definition>std::vector&lt;FloatText&gt; Scene_Battle_Rpg2k3::floating_texts</definition>
+        <argsstring></argsstring>
+        <name>floating_texts</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::floating_texts</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="227" column="13" bodyfile="scene_battle_rpg2k3.h" bodystart="227" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1a8a765b276eae9533d93ce6665677b131" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Battle_Rpg2k3::battle_action_wait</definition>
+        <argsstring></argsstring>
+        <name>battle_action_wait</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::battle_action_wait</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="228" column="5" bodyfile="scene_battle_rpg2k3.h" bodystart="228" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1a907c7f93c90c683a921064834bf360a9" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Battle_Rpg2k3::battle_action_min_wait</definition>
+        <argsstring></argsstring>
+        <name>battle_action_min_wait</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::battle_action_min_wait</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="229" column="5" bodyfile="scene_battle_rpg2k3.h" bodystart="229" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1aa749daf39efc262b906e4c0605130019" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Battle_Rpg2k3::scene_action_substate</definition>
+        <argsstring></argsstring>
+        <name>scene_action_substate</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::scene_action_substate</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="230" column="5" bodyfile="scene_battle_rpg2k3.h" bodystart="230" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1aafa1ba93bed21182996f0719360bbfda" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Battle_Rpg2k3::battle_action_state</definition>
+        <argsstring></argsstring>
+        <name>battle_action_state</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::battle_action_state</qualifiedname>
+        <initializer>= <ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ab7e3a7ad795da19198daac221b9fe092" kindref="member">BattleActionState_Begin</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="231" column="5" bodyfile="scene_battle_rpg2k3.h" bodystart="231" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1abfd14fc85f1b68990162b415df928576" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Battle_Rpg2k3::battle_end_timer</definition>
+        <argsstring></argsstring>
+        <name>battle_end_timer</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::battle_end_timer</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="232" column="5" bodyfile="scene_battle_rpg2k3.h" bodystart="232" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1a080f74631bc53bba906a012ca3a9710d" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___actor_sp" kindref="compound">Window_ActorSp</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_ActorSp&gt; Scene_Battle_Rpg2k3::sp_window</definition>
+        <argsstring></argsstring>
+        <name>sp_window</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::sp_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="234" column="17" bodyfile="scene_battle_rpg2k3.h" bodystart="234" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1a23c42fd8813594b42105f0e38e95c3a7" prot="protected" static="no" mutable="no">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding Scene_Battle_Rpg2k3::request_id</definition>
+        <argsstring></argsstring>
+        <name>request_id</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::request_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="237" column="20" bodyfile="scene_battle_rpg2k3.h" bodystart="237" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1a1827978333055ae431091ec668a4c71a" prot="protected" static="no" mutable="no">
+        <type>std::shared_ptr&lt; <ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> &gt;</type>
+        <definition>std::shared_ptr&lt;Game_BattleAlgorithm::AlgorithmBase&gt; Scene_Battle_Rpg2k3::pending_battle_action</definition>
+        <argsstring></argsstring>
+        <name>pending_battle_action</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::pending_battle_action</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="238" column="17" bodyfile="scene_battle_rpg2k3.h" bodystart="238" bodyend="238"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1ab073978f6d63ae5459272d309d664496" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Battle_Rpg2k3::first_strike</definition>
+        <argsstring></argsstring>
+        <name>first_strike</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::first_strike</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="239" column="6" bodyfile="scene_battle_rpg2k3.h" bodystart="239" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1aca54e0958831d3519941460c1afb9505" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Battle_Rpg2k3::running_away</definition>
+        <argsstring></argsstring>
+        <name>running_away</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::running_away</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="240" column="6" bodyfile="scene_battle_rpg2k3.h" bodystart="240" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1a4bbc3f8b48f8188a4f8fd2bee6d50e64" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Battle_Rpg2k3::resume_from_debug_scene</definition>
+        <argsstring></argsstring>
+        <name>resume_from_debug_scene</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::resume_from_debug_scene</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="241" column="6" bodyfile="scene_battle_rpg2k3.h" bodystart="241" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1a7f2cb869a561fa487385033fa63fb791" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Battle_Rpg2k3::auto_battle</definition>
+        <argsstring></argsstring>
+        <name>auto_battle</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::auto_battle</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="242" column="6" bodyfile="scene_battle_rpg2k3.h" bodystart="242" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1ae92dc5f5a9451bea7b68713bf3a84827" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+        <definition>Game_BattleAlgorithm::AlgorithmBase* Scene_Battle_Rpg2k3::cba_action</definition>
+        <argsstring></argsstring>
+        <name>cba_action</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::cba_action</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="248" column="37" bodyfile="scene_battle_rpg2k3.h" bodystart="248" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1ad3c79d575f6009c94e15a655cb8b3ba9" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Battle_Rpg2k3::cba_direction_back</definition>
+        <argsstring></argsstring>
+        <name>cba_direction_back</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::cba_direction_back</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="249" column="6" bodyfile="scene_battle_rpg2k3.h" bodystart="249" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1a86a4dfd87c178a51e009af9aa11b23bb" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Battle_Rpg2k3::cba_move_frame</definition>
+        <argsstring></argsstring>
+        <name>cba_move_frame</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::cba_move_frame</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="250" column="5" bodyfile="scene_battle_rpg2k3.h" bodystart="250" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1add8ab56d9b0d6a0f1314f0ae094a11f4" prot="protected" static="no" mutable="no">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Scene_Battle_Rpg2k3::cba_start_pos</definition>
+        <argsstring></argsstring>
+        <name>cba_start_pos</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::cba_start_pos</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="251" column="7" bodyfile="scene_battle_rpg2k3.h" bodystart="251" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1aeb26d4eb8f67cb9a8dbef13eecab96fc" prot="protected" static="no" mutable="no">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Scene_Battle_Rpg2k3::cba_end_pos</definition>
+        <argsstring></argsstring>
+        <name>cba_end_pos</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::cba_end_pos</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="252" column="7" bodyfile="scene_battle_rpg2k3.h" bodystart="252" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1a2dfafe1e5b2b32bfa4c8dc88006c4a69" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; std::pair&lt; <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;, std::unique_ptr&lt; <ref refid="class_sprite___weapon" kindref="compound">Sprite_Weapon</ref> &gt; &gt; &gt;</type>
+        <definition>std::vector&lt;std::pair&lt;Game_Battler&amp;, std::unique_ptr&lt;Sprite_Weapon&gt; &gt; &gt; Scene_Battle_Rpg2k3::cba_ranged</definition>
+        <argsstring></argsstring>
+        <name>cba_ranged</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::cba_ranged</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="254" column="13" bodyfile="scene_battle_rpg2k3.h" bodystart="254" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1a651ddb39e0e48b731a483cc68a53848a" prot="protected" static="no" mutable="no">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Scene_Battle_Rpg2k3::cba_ranged_center</definition>
+        <argsstring></argsstring>
+        <name>cba_ranged_center</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::cba_ranged_center</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="255" column="7" bodyfile="scene_battle_rpg2k3.h" bodystart="255" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1a4be9b2c956822d8f958f5e6afb114ec4" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Battle_Rpg2k3::cba_ranged_weapon_move_frame</definition>
+        <argsstring></argsstring>
+        <name>cba_ranged_weapon_move_frame</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::cba_ranged_weapon_move_frame</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="256" column="5" bodyfile="scene_battle_rpg2k3.h" bodystart="256" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1a4ee1e6aadd47beac72a585a10cfe0094" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Battle_Rpg2k3::cba_num_ranged_weapon_move_frames</definition>
+        <argsstring></argsstring>
+        <name>cba_num_ranged_weapon_move_frames</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::cba_num_ranged_weapon_move_frames</qualifiedname>
+        <initializer>= 60</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="257" column="5" bodyfile="scene_battle_rpg2k3.h" bodystart="257" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle___rpg2k3_1a6b076cb7f90bc98221ec50546e373f87" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; Scene_Battle_Rpg2k3::atb_order</definition>
+        <argsstring></argsstring>
+        <name>atb_order</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::atb_order</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="263" column="13" bodyfile="scene_battle_rpg2k3.h" bodystart="263" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a41fb4743a9cc0ad7704733c0a26d4958" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3</definition>
+        <argsstring>(const BattleArgs &amp;args)</argsstring>
+        <name>Scene_Battle_Rpg2k3</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_battle_args" kindref="compound">BattleArgs</ref> &amp;</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="86" column="10" bodyfile="scene_battle_rpg2k3.cpp" bodystart="56" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ae2961ddbce624953186217f0f5d4c54c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Scene_Battle_Rpg2k3::~Scene_Battle_Rpg2k3</definition>
+        <argsstring>() override</argsstring>
+        <name>~Scene_Battle_Rpg2k3</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::~Scene_Battle_Rpg2k3</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="87" column="1" bodyfile="scene_battle_rpg2k3.cpp" bodystart="168" bodyend="169"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ab7be015e7f7bce13a8d807f357b4c2e5" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::Start</definition>
+        <argsstring>() override</argsstring>
+        <name>Start</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::Start</qualifiedname>
+        <reimplements refid="class_scene___battle_1ad3109198d84edde7a31ab39a402e1351">Start</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Start processing. This function is executed while the screen is faded out. All objects needed for the scene should be created here. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="89" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="62" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a613a751c86b60d8bc946d1c6a1aafae9" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::vUpdate</definition>
+        <argsstring>() override</argsstring>
+        <name>vUpdate</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::vUpdate</qualifiedname>
+        <reimplements refid="class_scene_1a8111b81e59b90b6711e9a39a507a32eb">vUpdate</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called every frame from Update. The scene should redraw all elements. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="90" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="954" bodyend="992"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a7174b0fd8228534b79a57db924daff91" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::OnPartyChanged</definition>
+        <argsstring>(Game_Actor *actor, bool add) override</argsstring>
+        <name>OnPartyChanged</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::OnPartyChanged</qualifiedname>
+        <reimplements refid="class_scene_1a05be417a18748b38a3cd18566edd6d2d">OnPartyChanged</reimplements>
+        <param>
+          <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> *</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>add</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="91" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2908" bodyend="2922"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a554583ac1275a5bc6b0da3c2ea1453ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::OnEventHpChanged</definition>
+        <argsstring>(Game_Battler *battler, int hp) override</argsstring>
+        <name>OnEventHpChanged</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::OnEventHpChanged</qualifiedname>
+        <reimplements refid="class_scene_1a7388cece257333bb2c98a202135adf51">OnEventHpChanged</reimplements>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>battler</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>hp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="92" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2924" bodyend="2932"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a2ba7a14610ce292104513e5e4ae06aea" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::Start2</definition>
+        <argsstring>()</argsstring>
+        <name>Start2</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::Start2</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="95" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="73" bodyend="80"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a8165c42fe6d136dd86f58054c0b03179" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::InitAtbGauge</definition>
+        <argsstring>(Game_Battler &amp;battler, int preempt_atb, int ambush_atb)</argsstring>
+        <name>InitAtbGauge</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::InitAtbGauge</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>battler</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>preempt_atb</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>ambush_atb</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="96" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="171" bodyend="193"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a26e59b8262ace767c0fcdfc647cd95cc" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::InitBattleCondition</definition>
+        <argsstring>(lcf::rpg::System::BattleCondition condition)</argsstring>
+        <name>InitBattleCondition</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::InitBattleCondition</qualifiedname>
+        <param>
+          <type>lcf::rpg::System::BattleCondition</type>
+          <declname>condition</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="97" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="82" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ac61f04b146c5eafcff23b407f6e77924" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::InitEnemies</definition>
+        <argsstring>()</argsstring>
+        <name>InitEnemies</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::InitEnemies</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="98" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="104" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ac3c87905820c9efaba51803d94327080" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::InitActors</definition>
+        <argsstring>()</argsstring>
+        <name>InitActors</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::InitActors</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="99" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="133" bodyend="166"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a1f0bd568a36fbfbe66a282d7928edb89" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::InitAtbGauges</definition>
+        <argsstring>()</argsstring>
+        <name>InitAtbGauges</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::InitAtbGauges</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="100" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="195" bodyend="202"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ac6e88644b6795674a7c0ba2687960454" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::UpdateEnemiesDirection</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateEnemiesDirection</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::UpdateEnemiesDirection</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="102" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="214" bodyend="238"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a70378691c11ff58269545923f5c69303" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::UpdateActorsDirection</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateActorsDirection</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::UpdateActorsDirection</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="103" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="240" bodyend="261"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ab219bee2d977ac321d6b177b9f5e049d" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle_Rpg2k3::IsAtbAccumulating</definition>
+        <argsstring>() const</argsstring>
+        <name>IsAtbAccumulating</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::IsAtbAccumulating</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="105" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="804" bodyend="825"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ad238bb96b86db2312d5f9e3217a382e2" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle_Rpg2k3::IsBattleActionPending</definition>
+        <argsstring>() const</argsstring>
+        <name>IsBattleActionPending</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::IsBattleActionPending</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="106" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="906" bodyend="908"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ac7c52825487ba9ba3a6d65c0eddaec9c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::CreateEnemyActions</definition>
+        <argsstring>()</argsstring>
+        <name>CreateEnemyActions</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::CreateEnemyActions</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="107" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="827" bodyend="845"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ae087450509fd23bc4b14ff725aeb7169" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::CreateActorAutoActions</definition>
+        <argsstring>()</argsstring>
+        <name>CreateActorAutoActions</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::CreateActorAutoActions</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="108" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="847" bodyend="889"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a9e9b4c33630919feb0c8ed29d71fb860" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle_Rpg2k3::UpdateAtb</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateAtb</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::UpdateAtb</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="109" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="891" bodyend="904"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a5d4f726909f9f8ba9b80967ac6d758df" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::UpdateAnimations</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateAnimations</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::UpdateAnimations</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="110" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="394" bodyend="501"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ab5ec668f5889df8e6b8e43a412fb112e" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle_Rpg2k3::UpdateBattleState</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateBattleState</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::UpdateBattleState</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="111" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="910" bodyend="952"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a7ad867ba5d8d14b739e8fd07fb6c1b13" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::OnSystem2Ready</definition>
+        <argsstring>(FileRequestResult *result)</argsstring>
+        <name>OnSystem2Ready</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::OnSystem2Ready</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="113" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="272" bodyend="276"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1aba236dcfa37c599da4a3e94941848218" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::SetupSystem2Graphics</definition>
+        <argsstring>()</argsstring>
+        <name>SetupSystem2Graphics</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::SetupSystem2Graphics</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="114" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="278" bodyend="291"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a0d295ee51cbb4559a7e6442f9ee1cdb3" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::CreateUi</definition>
+        <argsstring>() override</argsstring>
+        <name>CreateUi</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::CreateUi</qualifiedname>
+        <reimplements refid="class_scene___battle_1adf615d26ea8bf22cc0f516818087645d">CreateUi</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="115" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="293" bodyend="361"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1aadf009440e80f8818be8e26820f9fc59" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::CreateEnemySprites</definition>
+        <argsstring>()</argsstring>
+        <name>CreateEnemySprites</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::CreateEnemySprites</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="116" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="363" bodyend="367"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ade37fde21c1902d1c9ebbd1e16bbdb9d" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::CreateActorSprites</definition>
+        <argsstring>()</argsstring>
+        <name>CreateActorSprites</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::CreateActorSprites</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="117" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="369" bodyend="374"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a009da28a9482323c4b7d06e727cd3f50" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::ResetAllBattlerZ</definition>
+        <argsstring>()</argsstring>
+        <name>ResetAllBattlerZ</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ResetAllBattlerZ</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="118" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="376" bodyend="392"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a24d78c88683824505a77b1a489499f38" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::CreateBattleTargetWindow</definition>
+        <argsstring>()</argsstring>
+        <name>CreateBattleTargetWindow</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::CreateBattleTargetWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="120" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="559" bodyend="578"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a408070777da16de3e26372aa9ad939a5" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::CreateBattleStatusWindow</definition>
+        <argsstring>()</argsstring>
+        <name>CreateBattleStatusWindow</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::CreateBattleStatusWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="121" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="589" bodyend="613"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a0659ec5f9cbbdc16bd7e07422f4aefa5" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::CreateBattleCommandWindow</definition>
+        <argsstring>()</argsstring>
+        <name>CreateBattleCommandWindow</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::CreateBattleCommandWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="122" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="643" bodyend="675"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a9020c31a24bc3ae9dffa3024d478a60c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::RefreshTargetWindow</definition>
+        <argsstring>()</argsstring>
+        <name>RefreshTargetWindow</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::RefreshTargetWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="123" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="580" bodyend="587"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ae84cad934da78b66f53bb8f22b90eb68" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::RefreshCommandWindow</definition>
+        <argsstring>(const Game_Actor *actor)</argsstring>
+        <name>RefreshCommandWindow</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::RefreshCommandWindow</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> *</type>
+          <declname>actor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="124" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="677" bodyend="682"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a084ea4b2f99302ee898db0dcb416b320" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::SetActiveActor</definition>
+        <argsstring>(int idx)</argsstring>
+        <name>SetActiveActor</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::SetActiveActor</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>idx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="125" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="684" bodyend="692"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1affb7b5da6a2dc48713a0b74c047166e4" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::DrawFloatText</definition>
+        <argsstring>(int x, int y, int color, std::string_view text, Game_Battler *battler, FloatTextType type)</argsstring>
+        <name>DrawFloatText</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::DrawFloatText</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>color</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>text</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>battler</declname>
+        </param>
+        <param>
+          <type><ref refid="class_scene___battle___rpg2k3_1ae6d4146d7b632488cc0bb320796ea2a1" kindref="member">FloatTextType</ref></type>
+          <declname>type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="132" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="503" bodyend="540"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a4d11dddb4aaf912527486f74004a56e9" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle_Rpg2k3::IsTransparent</definition>
+        <argsstring>() const</argsstring>
+        <name>IsTransparent</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::IsTransparent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="134" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="542" bodyend="544"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a306a026dc5169efed60e181ecdbb0e75" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::SetState</definition>
+        <argsstring>(Scene_Battle::State new_state) override</argsstring>
+        <name>SetState</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::SetState</qualifiedname>
+        <reimplements refid="class_scene___battle_1aa9a5de5f31881ea8dc39c72e11c594fa">SetState</reimplements>
+        <param>
+          <type><ref refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5" kindref="member">Scene_Battle::State</ref></type>
+          <declname>new_state</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="137" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="738" bodyend="754"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a54b7a732633a3b08daff594397203bb1" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::FaceTarget</definition>
+        <argsstring>(Game_Actor &amp;source, const Game_Battler &amp;target)</argsstring>
+        <name>FaceTarget</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::FaceTarget</qualifiedname>
+        <param>
+          <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="139" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="263" bodyend="270"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ac43a24cd759fcf497dfa780c43f72f65" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::CommandSelected</definition>
+        <argsstring>()</argsstring>
+        <name>CommandSelected</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::CommandSelected</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="141" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1addfcde9012af0fcd1c76d3eb203636a5" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::AttackSelected</definition>
+        <argsstring>() override</argsstring>
+        <name>AttackSelected</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::AttackSelected</qualifiedname>
+        <reimplements refid="class_scene___battle_1a5cfc83c6459ef3ab4868cb2e899e6246">AttackSelected</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="142" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2774" bodyend="2778"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1acf71738db704bdfce6823ab50e40b1b0" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::SubskillSelected</definition>
+        <argsstring>(int command)</argsstring>
+        <name>SubskillSelected</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::SubskillSelected</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>command</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="143" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2780" bodyend="2800"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a401b1244911c25d8073a4236f585978e" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::SpecialSelected</definition>
+        <argsstring>()</argsstring>
+        <name>SpecialSelected</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::SpecialSelected</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="144" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2802" bodyend="2808"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a8e466f3814f4e64440ac917afb3ca5cc" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::EscapeSelected</definition>
+        <argsstring>()</argsstring>
+        <name>EscapeSelected</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::EscapeSelected</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="145" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2810" bodyend="2818"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1acac8d2fa405b7c11c326bfb00515206a" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::RowSelected</definition>
+        <argsstring>()</argsstring>
+        <name>RowSelected</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::RowSelected</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="146" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2820" bodyend="2842"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a3e7d5ab97e260926134baaa10a319b39" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::ActionSelectedCallback</definition>
+        <argsstring>(Game_Battler *for_battler) override</argsstring>
+        <name>ActionSelectedCallback</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ActionSelectedCallback</qualifiedname>
+        <reimplements refid="class_scene___battle_1aeff9ee6eff1e2679f2bc62096a63704e">ActionSelectedCallback</reimplements>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>for_battler</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Executed when selection an action (normal, skill, item, ...) and (if needed) choosing an attack target was finished.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>for_battler</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Battler whose action was selected. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="148" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2844" bodyend="2863"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1aea03ccb37b0efcd2e8427a56313a01e8" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::ShowNotification</definition>
+        <argsstring>(std::string text)</argsstring>
+        <name>ShowNotification</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ShowNotification</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>text</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="150" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2865" bodyend="2871"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ad19ff0884f5cd9d3ed75c3c36dddc1ff" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::EndNotification</definition>
+        <argsstring>()</argsstring>
+        <name>EndNotification</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::EndNotification</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="151" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2873" bodyend="2875"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ac9875e50743a4dd73e0e7c68c405a6bc" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle_Rpg2k3::IsEscapeAllowed</definition>
+        <argsstring>() const =delete</argsstring>
+        <name>IsEscapeAllowed</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::IsEscapeAllowed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="153" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1addb45a0f8aa8b04b1232e4695d180a04" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle_Rpg2k3::IsEscapeAllowedFromOptionWindow</definition>
+        <argsstring>() const</argsstring>
+        <name>IsEscapeAllowedFromOptionWindow</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::IsEscapeAllowedFromOptionWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="154" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2761" bodyend="2766"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ae3fbbf9c2babf106b1ed7243afa9380b" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle_Rpg2k3::IsEscapeAllowedFromActorCommand</definition>
+        <argsstring>() const</argsstring>
+        <name>IsEscapeAllowedFromActorCommand</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::IsEscapeAllowedFromActorCommand</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="155" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2768" bodyend="2772"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ada297f1a6609560a834f573bfc951f2c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle_Rpg2k3::CheckAnimFlip</definition>
+        <argsstring>(Game_Battler *battler)</argsstring>
+        <name>CheckAnimFlip</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::CheckAnimFlip</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>battler</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="157" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2877" bodyend="2882"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a807724d01238959c8674b620da285fe4" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::SetWait</definition>
+        <argsstring>(int min_wait, int max_wait)</argsstring>
+        <name>SetWait</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::SetWait</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>min_wait</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>max_wait</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="159" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2884" bodyend="2887"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a7656745f3aedd5dbcbec1e2286988dc0" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle_Rpg2k3::CheckWait</definition>
+        <argsstring>()</argsstring>
+        <name>CheckWait</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::CheckWait</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="160" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2889" bodyend="2906"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a82c18ed5d229702cbd22eef4ef45ab32" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::ResetWindows</definition>
+        <argsstring>(bool make_invisible)</argsstring>
+        <name>ResetWindows</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ResetWindows</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>make_invisible</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="162" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="694" bodyend="718"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a2394ca0afca89cfe8eabaecd9135a431" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::MoveCommandWindows</definition>
+        <argsstring>(int x, int frames)</argsstring>
+        <name>MoveCommandWindows</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::MoveCommandWindows</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>frames</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="163" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="720" bodyend="736"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a3285ca4ca9644e49c6680a12c680bc12" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::SetSceneActionSubState</definition>
+        <argsstring>(int substate)</argsstring>
+        <name>SetSceneActionSubState</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::SetSceneActionSubState</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>substate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="165" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="760" bodyend="762"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1abb6017d99526be4328a04b620bf427fa" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::ReturnToMainBattleState</definition>
+        <argsstring>()</argsstring>
+        <name>ReturnToMainBattleState</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ReturnToMainBattleState</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="166" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="756" bodyend="758"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ab5086ba0b385f284d8d06725034d3bc0" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneAction</definition>
+        <argsstring>()</argsstring>
+        <name>ProcessSceneAction</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessSceneAction</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="169" column="19" bodyfile="scene_battle_rpg2k3.cpp" bodystart="1063" bodyend="1115"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1aab390c13e22310433b48ec219b5a7981" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionStart</definition>
+        <argsstring>()</argsstring>
+        <name>ProcessSceneActionStart</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessSceneActionStart</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="172" column="19" bodyfile="scene_battle_rpg2k3.cpp" bodystart="1117" bodyend="1170"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a4787ae793b387d44e6bbbce34d43303d" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionFightAutoEscape</definition>
+        <argsstring>()</argsstring>
+        <name>ProcessSceneActionFightAutoEscape</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessSceneActionFightAutoEscape</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="173" column="19" bodyfile="scene_battle_rpg2k3.cpp" bodystart="1172" bodyend="1264"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a9c754b731e6048720d175dec0c953e21" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionActor</definition>
+        <argsstring>()</argsstring>
+        <name>ProcessSceneActionActor</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessSceneActionActor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="174" column="19" bodyfile="scene_battle_rpg2k3.cpp" bodystart="1266" bodyend="1377"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a54e62174bafb58b9dadf545fcefaa84c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAutoBattle</definition>
+        <argsstring>()</argsstring>
+        <name>ProcessSceneActionAutoBattle</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessSceneActionAutoBattle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="175" column="19" bodyfile="scene_battle_rpg2k3.cpp" bodystart="1379" bodyend="1417"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1aa6bb943481b6851ded7f876ec0c4554e" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionCommand</definition>
+        <argsstring>()</argsstring>
+        <name>ProcessSceneActionCommand</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessSceneActionCommand</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="176" column="19" bodyfile="scene_battle_rpg2k3.cpp" bodystart="1419" bodyend="1503"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ae84f7b95721119b73f6e69e56978d62d" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionItem</definition>
+        <argsstring>()</argsstring>
+        <name>ProcessSceneActionItem</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessSceneActionItem</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="177" column="19" bodyfile="scene_battle_rpg2k3.cpp" bodystart="1505" bodyend="1542"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ab4268266bbe1ac2ea3fda679c79255c0" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionSkill</definition>
+        <argsstring>()</argsstring>
+        <name>ProcessSceneActionSkill</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessSceneActionSkill</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="178" column="19" bodyfile="scene_battle_rpg2k3.cpp" bodystart="1544" bodyend="1591"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a4b8b27886b956d336d70be24c71069e5" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionEnemyTarget</definition>
+        <argsstring>()</argsstring>
+        <name>ProcessSceneActionEnemyTarget</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessSceneActionEnemyTarget</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="179" column="19" bodyfile="scene_battle_rpg2k3.cpp" bodystart="1593" bodyend="1645"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a1c4ba770c7524d44fcf18ed7f9822ec0" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionAllyTarget</definition>
+        <argsstring>()</argsstring>
+        <name>ProcessSceneActionAllyTarget</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessSceneActionAllyTarget</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="180" column="19" bodyfile="scene_battle_rpg2k3.cpp" bodystart="1647" bodyend="1690"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a76a1c521a5a0713dbd92c5d8c5df2f93" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionBattle</definition>
+        <argsstring>()</argsstring>
+        <name>ProcessSceneActionBattle</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessSceneActionBattle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="181" column="19" bodyfile="scene_battle_rpg2k3.cpp" bodystart="1692" bodyend="1769"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a5918e9bb1558e45fabaa22cd34569079" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionVictory</definition>
+        <argsstring>()</argsstring>
+        <name>ProcessSceneActionVictory</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessSceneActionVictory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="182" column="19" bodyfile="scene_battle_rpg2k3.cpp" bodystart="1771" bodyend="1898"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ab15b0c499793c4f91601801bedafa3f9" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionDefeat</definition>
+        <argsstring>()</argsstring>
+        <name>ProcessSceneActionDefeat</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessSceneActionDefeat</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="183" column="19" bodyfile="scene_battle_rpg2k3.cpp" bodystart="1900" bodyend="1958"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a5bb4aed8b45d110720ab87e53397a1ee" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::SceneActionReturn Scene_Battle_Rpg2k3::ProcessSceneActionEscape</definition>
+        <argsstring>()</argsstring>
+        <name>ProcessSceneActionEscape</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessSceneActionEscape</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="184" column="19" bodyfile="scene_battle_rpg2k3.cpp" bodystart="1960" bodyend="2000"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a6a45215a8721456645428014507656a6" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::NextTurn</definition>
+        <argsstring>(Game_Battler *battler)</argsstring>
+        <name>NextTurn</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::NextTurn</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>battler</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="186" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="994" bodyend="998"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a82179fefe0bcb5c6e55dd8d578221629" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle_Rpg2k3::CheckBattleEndAndScheduleEvents</definition>
+        <argsstring>(EventTriggerType tt, Game_Battler *source)</argsstring>
+        <name>CheckBattleEndAndScheduleEvents</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::CheckBattleEndAndScheduleEvents</qualifiedname>
+        <param>
+          <type><ref refid="class_scene___battle___rpg2k3_1acd4c072b321782396d57956c0691bc20" kindref="member">EventTriggerType</ref></type>
+          <declname>tt</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="187" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="1019" bodyend="1061"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ad21e5e72e3d9d1ea276571ce8ec20af3" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle_Rpg2k3::CheckBattleEndConditions</definition>
+        <argsstring>()</argsstring>
+        <name>CheckBattleEndConditions</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::CheckBattleEndConditions</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="188" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="1000" bodyend="1016"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ad4d37c7edcf99bea6fb493854791fa0b" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::SetBattleActionState</definition>
+        <argsstring>(BattleActionState state)</argsstring>
+        <name>SetBattleActionState</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::SetBattleActionState</qualifiedname>
+        <param>
+          <type><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16" kindref="member">BattleActionState</ref></type>
+          <declname>state</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="190" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2018" bodyend="2020"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1aefbc4a1bc73f63318fd4b3ff5e4411ad" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleAction</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleAction</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleAction</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Battle Action Driver </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="193" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2022" bodyend="2113"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a867db6775ddcff04465e26c450a8bf94" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionBegin</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionBegin</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionBegin</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Battle Action <ref refid="namespace_state" kindref="compound">State</ref> Machine callbacks </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="196" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2115" bodyend="2156"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ab22f38a7137440c71eda6422d3f70f78" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionPreEvents</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionPreEvents</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionPreEvents</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="197" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2159" bodyend="2208"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1aae436866fbdc2adeebc9479e4286b5b8" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionConditions</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionConditions</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionConditions</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="198" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2210" bodyend="2241"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a3ab1efe1183caff762bfe7e364e1f254" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionNotify</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionNotify</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionNotify</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="199" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2243" bodyend="2256"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a88bfd426617f1b95716f8d08df4e697a" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCombo</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionCombo</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionCombo</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="200" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2258" bodyend="2278"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a0229bf3aed586cb37c8f6106487e521c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionStartAlgo</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionStartAlgo</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionStartAlgo</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="201" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2280" bodyend="2312"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a980b3d5ed1ee8ef1cf2428818b3a4183" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCBAInit</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionCBAInit</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionCBAInit</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="202" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2314" bodyend="2319"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a4cab8c092c831c96d5e850589beb7b83" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCBAMove</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionCBAMove</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionCBAMove</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="203" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2321" bodyend="2332"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a9a49083d0ce5cea8b64574688d49d11c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionStartAnimation</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionStartAnimation</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionStartAnimation</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="204" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2334" bodyend="2389"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a09e3ae807d88656cbe23704aebaf6832" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCBARangedWeaponInit</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionCBARangedWeaponInit</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionCBARangedWeaponInit</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="205" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2391" bodyend="2454"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a2b23bb14c44109b3aa5c9097b56713b0" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionCBARangedWeaponMove</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionCBARangedWeaponMove</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionCBARangedWeaponMove</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="206" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2456" bodyend="2490"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a121b5d60d48be474c38790be6605277c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionAnimation</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionAnimation</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionAnimation</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="207" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2492" bodyend="2511"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a5b63b41fcbbf5f60c85621d0ec4b3d51" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionAnimationReflect</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionAnimationReflect</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionAnimationReflect</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="208" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2513" bodyend="2521"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a848b3fd2ae0061e3b371cdb6bac19e42" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionFinishPose</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionFinishPose</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionFinishPose</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="209" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2523" bodyend="2534"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a58e955195c407302e568331a27432a43" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionExecute</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionExecute</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionExecute</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="210" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2536" bodyend="2564"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ae2c1851da772110cffb79e3b72a14d92" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionSwitchEvents</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionSwitchEvents</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionSwitchEvents</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="211" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2566" bodyend="2574"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a118aa407f854aac5dc099f1da24a8153" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionApply</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionApply</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionApply</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="212" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2576" bodyend="2726"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a8a56d80fa22aec2687a6b939bf31f498" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionPostAction</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionPostAction</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionPostAction</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="213" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2728" bodyend="2742"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a7bbf9babf8a9843e441e4882e5344ee2" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionPostEvents</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionPostEvents</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionPostEvents</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="214" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2744" bodyend="2752"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a51717983b82a719f7e1f8842f90e1a50" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref></type>
+        <definition>Scene_Battle_Rpg2k3::BattleActionReturn Scene_Battle_Rpg2k3::ProcessBattleActionFinished</definition>
+        <argsstring>(Game_BattleAlgorithm::AlgorithmBase *action)</argsstring>
+        <name>ProcessBattleActionFinished</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::ProcessBattleActionFinished</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref> *</type>
+          <declname>action</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="215" column="20" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2754" bodyend="2759"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1aae54735ed44859f8ac88af77969b0229" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt; std::string &gt; Scene_Battle_Rpg2k3::GetBattleCommandNames</definition>
+        <argsstring>(const Game_Actor *actor)</argsstring>
+        <name>GetBattleCommandNames</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::GetBattleCommandNames</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> *</type>
+          <declname>actor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="217" column="13" bodyfile="scene_battle_rpg2k3.cpp" bodystart="615" bodyend="627"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1ac76a7f9630922ba109292e476cb6762d" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::SetBattleCommandsDisable</definition>
+        <argsstring>(Window_Command &amp;window, const Game_Actor *actor)</argsstring>
+        <name>SetBattleCommandsDisable</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::SetBattleCommandsDisable</qualifiedname>
+        <param>
+          <type><ref refid="class_window___command" kindref="compound">Window_Command</ref> &amp;</type>
+          <declname>window</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> *</type>
+          <declname>actor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="218" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="629" bodyend="641"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1aeeb20ec903dc6e93aacf7acb4c520bcd" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::RecreateSpWindow</definition>
+        <argsstring>(Game_Battler *battler)</argsstring>
+        <name>RecreateSpWindow</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::RecreateSpWindow</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>battler</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="235" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2934" bodyend="2949"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1aad8954e90e8f297c71d2f3b855cec5e1" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::CBAInit</definition>
+        <argsstring>()</argsstring>
+        <name>CBAInit</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::CBAInit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="245" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2951" bodyend="2985"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1af5b9c774ab124ee72ff0ac10b8b13893" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::CBAMove</definition>
+        <argsstring>()</argsstring>
+        <name>CBAMove</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::CBAMove</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="246" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="2987" bodyend="3031"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a8397d61a70edae1df7b751b9e6a40ef2" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle_Rpg2k3::UpdateReadyActors</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateReadyActors</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::UpdateReadyActors</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="260" column="6" bodyfile="scene_battle_rpg2k3.cpp" bodystart="768" bodyend="788"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle___rpg2k3_1a22ba0862090de2c4ec3966522e1e943e" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Scene_Battle_Rpg2k3::GetNextReadyActor</definition>
+        <argsstring>()</argsstring>
+        <name>GetNextReadyActor</name>
+        <qualifiedname>Scene_Battle_Rpg2k3::GetNextReadyActor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="261" column="5" bodyfile="scene_battle_rpg2k3.cpp" bodystart="790" bodyend="801"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_scene___battle" kindref="compound">Scene_Battle</ref> class. Manages the battles. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="2">
+        <label>Scene_Battle</label>
+        <link refid="class_scene___battle"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Scene_Battle_Rpg2k3</label>
+        <link refid="class_scene___battle___rpg2k3"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="4">
+        <label>Game_Actor</label>
+        <link refid="class_game___actor"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>Game_BattleAlgorithm::AlgorithmBase</label>
+        <link refid="class_game___battle_algorithm_1_1_algorithm_base"/>
+      </node>
+      <node id="5">
+        <label>Game_Battler</label>
+        <link refid="class_game___battler"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>shake</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>flash</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Game_Battler::FlashData</label>
+        <link refid="struct_game___battler_1_1_flash_data"/>
+      </node>
+      <node id="7">
+        <label>Game_Battler::ShakeData</label>
+        <link refid="struct_game___battler_1_1_shake_data"/>
+      </node>
+      <node id="6">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="3">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="2">
+        <label>Scene_Battle</label>
+        <link refid="class_scene___battle"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>active_actor</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Scene_Battle_Rpg2k3</label>
+        <link refid="class_scene___battle___rpg2k3"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>cba_action</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>cba_end_pos</edgelabel>
+          <edgelabel>cba_ranged_center</edgelabel>
+          <edgelabel>cba_start_pos</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="scene_battle_rpg2k3.h" line="36" column="1" bodyfile="scene_battle_rpg2k3.h" bodystart="36" bodyend="264"/>
+    <listofallmembers>
+      <member refid="class_scene___battle___rpg2k3_1a3e7d5ab97e260926134baaa10a319b39" prot="protected" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ActionSelectedCallback</name></member>
+      <member refid="class_scene___battle_1a6034f315e7d6a4ad608a4ca06e05f2a5" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>active_actor</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea525fafbc764da0de39c27dea3ffeb3d0" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ActorTarget</name></member>
+      <member refid="class_scene___battle_1a995e418e64233b14b0794c967a22eb18" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>allow_escape</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a1c63f94f3e670d3124414d1dc7fe7886" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ally_cursor</name></member>
+      <member refid="class_scene___battle_1a8f008f2f148ec0358c8e7f5121e24d70" prot="protected" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>AllySelected</name></member>
+      <member refid="class_scene___battle_1ad4258a56b625dc5e973901d190dacb68" prot="protected" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>AssignSkill</name></member>
+      <member refid="class_scene_1a6091a98761b264c35a150bc28ee4a505" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>async_continuation</name></member>
+      <member refid="class_scene_1a30c5c46dd99e4825df2d69518748c8ac" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>AsyncContinuation</name></member>
+      <member refid="class_scene_1a40aec0ae8ed38526531911eea247398b" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>AsyncNext</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a6b076cb7f90bc98221ec50546e373f87" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>atb_order</name></member>
+      <member refid="class_scene___battle___rpg2k3_1addfcde9012af0fcd1c76d3eb203636a5" prot="protected" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>AttackSelected</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a7f2cb869a561fa487385033fa63fb791" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>auto_battle</name></member>
+      <member refid="class_scene___battle_1ab8623a206a9a09cb8ad237835316047daee1fb351443aa721767f653638a65e89" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>AutoBattle</name></member>
+      <member refid="class_scene___battle_1accc61bbe53486a70ec438a161024c56d" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>autobattle_algos</name></member>
+      <member refid="class_scene___battle_1ab8623a206a9a09cb8ad237835316047da5b1fb6c55f02f9330c88893d2bd6397a" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Battle</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a907c7f93c90c683a921064834bf360a9" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>battle_action_min_wait</name></member>
+      <member refid="class_scene___battle___rpg2k3_1aafa1ba93bed21182996f0719360bbfda" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>battle_action_state</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a8a765b276eae9533d93ce6665677b131" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>battle_action_wait</name></member>
+      <member refid="class_scene___battle_1af1dcfafc8510441df31b6f2ee45e5e34" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>battle_actions</name></member>
+      <member refid="class_scene___battle___rpg2k3_1abfd14fc85f1b68990162b415df928576" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>battle_end_timer</name></member>
+      <member refid="class_scene___battle_1ab348504618d105fc1a675a555c4905bb" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>battle_options</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionReturn</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a3ed664208a522156e2e03bf91497a528" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_Animation</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ae470612826b553880b10298c5b4852e0" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_AnimationReflect</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a65a09e53fee30f9e6feb1a9a12e196ff" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_Apply</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ab7e3a7ad795da19198daac221b9fe092" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_Begin</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ad033179f22fb3931a6f9d84868469379" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_CBAInit</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16af53a601545f2a8d3177260c83b87c8f7" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_CBAMove</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a91062de47952b59f0fea627a0d7a3631" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_CBARangedWeaponInit</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a44a9292b4ad37148b8fc39e7f5e59e6c" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_CBARangedWeaponMove</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a86847e3d3e8a2aedff280778d7d4bac5" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_Combo</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16acc862e6239ca8affda23470c065e54e9" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_Conditions</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a8b4e2d740e8e64a3d7982a81d765f324" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_Execute</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a49e2c5786d0ab9849f8629853b2198fb" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_Finished</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ae4d4d8803b4fad764c494c54c100411b" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_FinishPose</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16aaae229a8b55ef2b2523a2ae84bf063fe" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_Notify</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16aae29fe55f4ef3d0c94321fe995de7a31" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_PostAction</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a892366001f971127f7d818c87aac7fd9" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_PostEvents</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a09635c9f990784566c522381f844b1b3" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_PreEvents</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a27e22608508efd7dc34248e882222324" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_StartAlgo</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ac35c153e441ed26142af8c6f9e0da440" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_StartAnimation</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ae69104cfdd4c4690292fe5fb9f8b3408" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleActionState_SwitchEvents</name></member>
+      <member refid="class_scene___battle_1ab8623a206a9a09cb8ad237835316047d" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>BattleOptionType</name></member>
+      <member refid="class_scene___battle_1ac92a7c9d9d17a884e7e4d827e4b4251d" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CallDebug</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ae92dc5f5a9451bea7b68713bf3a84827" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>cba_action</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ad3c79d575f6009c94e15a655cb8b3ba9" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>cba_direction_back</name></member>
+      <member refid="class_scene___battle___rpg2k3_1aeb26d4eb8f67cb9a8dbef13eecab96fc" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>cba_end_pos</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a86a4dfd87c178a51e009af9aa11b23bb" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>cba_move_frame</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a4ee1e6aadd47beac72a585a10cfe0094" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>cba_num_ranged_weapon_move_frames</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a2dfafe1e5b2b32bfa4c8dc88006c4a69" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>cba_ranged</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a651ddb39e0e48b731a483cc68a53848a" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>cba_ranged_center</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a4be9b2c956822d8f958f5e6afb114ec4" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>cba_ranged_weapon_move_frame</name></member>
+      <member refid="class_scene___battle___rpg2k3_1add8ab56d9b0d6a0f1314f0ae094a11f4" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>cba_start_pos</name></member>
+      <member refid="class_scene___battle___rpg2k3_1aad8954e90e8f297c71d2f3b855cec5e1" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CBAInit</name></member>
+      <member refid="class_scene___battle___rpg2k3_1af5b9c774ab124ee72ff0ac10b8b13893" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CBAMove</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ada297f1a6609560a834f573bfc951f2c" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CheckAnimFlip</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a82179fefe0bcb5c6e55dd8d578221629" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CheckBattleEndAndScheduleEvents</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ad21e5e72e3d9d1ea276571ce8ec20af3" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CheckBattleEndConditions</name></member>
+      <member refid="class_scene_1a91e354ab86259cd3bc94c094036280da" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CheckSceneExit</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a7656745f3aedd5dbcbec1e2286988dc0" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CheckWait</name></member>
+      <member refid="class_scene___battle_1a32a1001af7e41e4959b8e6b3a2a3f14b" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>command_window</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ac43a24cd759fcf497dfa780c43f72f65" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CommandSelected</name></member>
+      <member refid="class_scene___battle_1a3f6340780eb98bf49c3a8ea45618ecb1" prot="public" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Continue</name></member>
+      <member refid="class_scene___battle_1af37748c4972843f57c1318b720c4a46e" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Create</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ae087450509fd23bc4b14ff725aeb7169" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CreateActorAutoActions</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ade37fde21c1902d1c9ebbd1e16bbdb9d" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CreateActorSprites</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a0659ec5f9cbbdc16bd7e07422f4aefa5" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CreateBattleCommandWindow</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a408070777da16de3e26372aa9ad939a5" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CreateBattleStatusWindow</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a24d78c88683824505a77b1a489499f38" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CreateBattleTargetWindow</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ac7c52825487ba9ba3a6d65c0eddaec9c" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CreateEnemyActions</name></member>
+      <member refid="class_scene___battle___rpg2k3_1aadf009440e80f8818be8e26820f9fc59" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CreateEnemySprites</name></member>
+      <member refid="class_scene___battle_1a0a87ad1d03f7b55cf9f7f4bc6e79250f" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CreateOptions</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a0d295ee51cbb4559a7e6442f9ee1cdb3" prot="protected" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>CreateUi</name></member>
+      <member refid="class_scene___battle_1a6764cea5d91e484b265d6a871a4df3cd" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>cycle</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea418b00b4c130e675ac7512610ed3f473" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Debug</name></member>
+      <member refid="class_scene___battle_1a89da69d03b49b7e7b5fe0b636c4e0855" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>default_autobattle_algo</name></member>
+      <member refid="class_scene___battle_1a67c2b2f8880f956995b09a9a7a542791" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>default_enemyai_algo</name></member>
+      <member refid="class_scene___battle_1a588428d371f0893dc87356fe98f7530f" prot="protected" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>DefendSelected</name></member>
+      <member refid="class_scene___battle_1aa950a9644abbd4e903352b1fafbf4f97" prot="public" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>DrawBackground</name></member>
+      <member refid="class_scene___battle___rpg2k3_1affb7b5da6a2dc48713a0b74c047166e4" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>DrawFloatText</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaee9d4a8ee40ca6e8310597315e07b978" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>End</name></member>
+      <member refid="class_scene___battle_1ac448cca6895659ddbbc811f43d3c5d05" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>EndBattle</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ad19ff0884f5cd9d3ed75c3c36dddc1ff" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>EndNotification</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a2186dffcb3306d9c7cd742290d72c77e" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>enemy_cursor</name></member>
+      <member refid="class_scene___battle_1a0b02f9aabb6841bc109a520f0e7fdbe1" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>enemyai_algos</name></member>
+      <member refid="class_scene___battle_1a7defa27149a0cd18d53ab2da7356ba54" prot="protected" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>EnemySelected</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea302637f5f0048f4433949f10fc6c8f58" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Equip</name></member>
+      <member refid="class_scene___battle_1ab8623a206a9a09cb8ad237835316047dac4d3cf29d315f1c9181068d27d6c9fa2" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Escape</name></member>
+      <member refid="class_scene___battle_1a90eb41c853960d9e2e3ea251774ba1b4" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>escape_chance</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a8e466f3814f4e64440ac917afb3ca5cc" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>EscapeSelected</name></member>
+      <member refid="class_scene___battle___rpg2k3_1acd4c072b321782396d57956c0691bc20" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>EventTriggerType</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a54b7a732633a3b08daff594397203bb1" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>FaceTarget</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea85a7c5a46a3ca806d41de80e68da80e1" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>File</name></member>
+      <member refid="class_scene_1aa8b96a758c0f1ea4cf28808089ff7123" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Find</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ab073978f6d63ae5459272d309d664496" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>first_strike</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a03505cec718697a558caecd3e02d0ae4" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>floating_texts</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ae6d4146d7b632488cc0bb320796ea2a1" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>FloatTextType</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea895a9b137f215eee5613d6a546275f5b" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>GameBrowser</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ead885a8fd6d0f378a99ee56a676029bca" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Gameover</name></member>
+      <member refid="class_scene___battle___rpg2k3_1aae54735ed44859f8ac88af77969b0229" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>GetBattleCommandNames</name></member>
+      <member refid="class_scene_1ad837b22dff59e9c21f31204d958a24d7" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>GetDrawableList</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a22ba0862090de2c4ec3966522e1e943e" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>GetNextReadyActor</name></member>
+      <member refid="class_scene_1ab9edda06ab170512d308c0c9fb38056b" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>GetRequestedSceneType</name></member>
+      <member refid="class_scene_1a203eba321fedc8a26c8802f4b9a84e01" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>HasDelayFrames</name></member>
+      <member refid="class_scene_1a1acd1e4345dfecb30c7c35f6d3e8130b" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>HasRequestedScene</name></member>
+      <member refid="class_scene___battle_1aaa87d8889fab0fc133c66b2300fd9cc2" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>help_window</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ac3c87905820c9efaba51803d94327080" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>InitActors</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a8165c42fe6d136dd86f58054c0b03179" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>InitAtbGauge</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a1f0bd568a36fbfbe66a282d7928edb89" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>InitAtbGauges</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a26e59b8262ace767c0fcdfc647cd95cc" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>InitBattleCondition</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ac61f04b146c5eafcff23b407f6e77924" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>InitEnemies</name></member>
+      <member refid="class_scene___battle_1a8627279b0395d62c26c9960ed89a22d6" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>InitEscapeChance</name></member>
+      <member refid="class_scene_1ac348fc3b0beb12093144a1f03d81449d" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>instance</name></member>
+      <member refid="class_scene_1a5a8c37138fc3a2dda1e0e077b472ab7b" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>IsAsyncPending</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ab219bee2d977ac321d6b177b9f5e049d" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>IsAtbAccumulating</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ad238bb96b86db2312d5f9e3217a382e2" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>IsBattleActionPending</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ac9875e50743a4dd73e0e7c68c405a6bc" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>IsEscapeAllowed</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ae3fbbf9c2babf106b1ed7243afa9380b" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>IsEscapeAllowedFromActorCommand</name></member>
+      <member refid="class_scene___battle___rpg2k3_1addb45a0f8aa8b04b1232e4695d180a04" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>IsEscapeAllowedFromOptionWindow</name></member>
+      <member refid="class_scene_1a0e0d605d080b286e73a07587d72dfe70" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>IsInitialized</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a4d11dddb4aaf912527486f74004a56e9" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>IsTransparent</name></member>
+      <member refid="class_scene___battle_1ae3232ebf3b9bb0bd6e6cd84227f95ea1" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>IsWindowMoving</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea70390d274c6e9c167ac095faaa160c7c" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Item</name></member>
+      <member refid="class_scene___battle_1ad294471dca830b6b94cb6f81dfd2704a" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>item_window</name></member>
+      <member refid="class_scene___battle_1ab1c5afd8ffb0c2d6eb4e1a71889bb6d2" prot="protected" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ItemSelected</name></member>
+      <member refid="class_scene_1a119de9e0876281a6eee15c7d15618d87" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>kReturnTitleDelayFrames</name></member>
+      <member refid="class_scene_1a563850d0f01381b76420c22ac335a103" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>kStartGameDelayFrames</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea16a3c57786ccf0d21f72a774d43957ab" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>LanguageMenu</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eac3db6576c8c7dc6e5d007d989f5022ea" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Load</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea4615e1aa6a92b7860d342a6aaf642611" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Logo</name></member>
+      <member refid="class_scene___battle_1ab8623a206a9a09cb8ad237835316047daa240b6407db0b1cb71e2a6b86679cad4" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Lose</name></member>
+      <member refid="class_scene_1ae7f0f916c29e55b282dfe4ae522d2096" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>MainFunction</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eae39f3115e47e2cc1a161ab73db4819a6" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Map</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea2412b59539890965aeb61a22141a781b" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Menu</name></member>
+      <member refid="class_scene___battle_1a68c1836194e0be5a50b7dbe47a600d58" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>message_window</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a2394ca0afca89cfe8eabaecd9135a431" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>MoveCommandWindows</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea05b82d049724f3ca8838b9800e8f3f3e" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Name</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a6a45215a8721456645428014507656a6" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>NextTurn</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea352ebbd390cdf4d31336a52af54fca32" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Null</name></member>
+      <member refid="class_scene_1a71555af047b54446dfc4fd2b0e6f78bd" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>old_instances</name></member>
+      <member refid="class_scene___battle_1ae909aa531ca830d4a49a467576527232" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>on_battle_end</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a554583ac1275a5bc6b0da3c2ea1453ed" prot="public" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>OnEventHpChanged</name></member>
+      <member refid="class_scene_1a80c10e8f0c10921300be168e67ddf3ed" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>OnFinishAsync</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a7174b0fd8228534b79a57db924daff91" prot="public" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>OnPartyChanged</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a7ad867ba5d8d14b739e8fd07fb6c1b13" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>OnSystem2Ready</name></member>
+      <member refid="class_scene_1ac6fa936fd2dc55f41889400d36d855e6" prot="public" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>OnTranslationChanged</name></member>
+      <member refid="class_scene___battle_1aae6c264571b28701b207bd0c951bdb49" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>options_window</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea26ab4613edf5d94d74a5e1ad4ec37fa3" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Order</name></member>
+      <member refid="class_scene_1a29b08fddcde74b786ec01129847454ba" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Peek</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a1827978333055ae431091ec668a4c71a" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>pending_battle_action</name></member>
+      <member refid="class_scene_1a713d07a297477318624fada11415f5e3" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Pop</name></member>
+      <member refid="class_scene_1ac657b33df6c856847d87aa976ae9a9eb" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>PopUntil</name></member>
+      <member refid="class_scene___battle_1aaf7d79e67b57a60866c36fbf89df9902" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>PrepareBattleAction</name></member>
+      <member refid="class_scene___battle_1a101c3428860570da5fa1c7f8b37e4819" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>previous_state</name></member>
+      <member refid="class_scene___battle___rpg2k3_1aefbc4a1bc73f63318fd4b3ff5e4411ad" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleAction</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a121b5d60d48be474c38790be6605277c" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionAnimation</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a5b63b41fcbbf5f60c85621d0ec4b3d51" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionAnimationReflect</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a118aa407f854aac5dc099f1da24a8153" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionApply</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a867db6775ddcff04465e26c450a8bf94" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionBegin</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a980b3d5ed1ee8ef1cf2428818b3a4183" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionCBAInit</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a4cab8c092c831c96d5e850589beb7b83" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionCBAMove</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a09e3ae807d88656cbe23704aebaf6832" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionCBARangedWeaponInit</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a2b23bb14c44109b3aa5c9097b56713b0" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionCBARangedWeaponMove</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a88bfd426617f1b95716f8d08df4e697a" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionCombo</name></member>
+      <member refid="class_scene___battle___rpg2k3_1aae436866fbdc2adeebc9479e4286b5b8" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionConditions</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a58e955195c407302e568331a27432a43" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionExecute</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a51717983b82a719f7e1f8842f90e1a50" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionFinished</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a848b3fd2ae0061e3b371cdb6bac19e42" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionFinishPose</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a3ab1efe1183caff762bfe7e364e1f254" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionNotify</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a8a56d80fa22aec2687a6b939bf31f498" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionPostAction</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a7bbf9babf8a9843e441e4882e5344ee2" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionPostEvents</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ab22f38a7137440c71eda6422d3f70f78" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionPreEvents</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a0229bf3aed586cb37c8f6106487e521c" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionStartAlgo</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a9a49083d0ce5cea8b64574688d49d11c" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionStartAnimation</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ae2c1851da772110cffb79e3b72a14d92" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessBattleActionSwitchEvents</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ab5086ba0b385f284d8d06725034d3bc0" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessSceneAction</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a9c754b731e6048720d175dec0c953e21" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessSceneActionActor</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a1c4ba770c7524d44fcf18ed7f9822ec0" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessSceneActionAllyTarget</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a54e62174bafb58b9dadf545fcefaa84c" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessSceneActionAutoBattle</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a76a1c521a5a0713dbd92c5d8c5df2f93" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessSceneActionBattle</name></member>
+      <member refid="class_scene___battle___rpg2k3_1aa6bb943481b6851ded7f876ec0c4554e" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessSceneActionCommand</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ab15b0c499793c4f91601801bedafa3f9" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessSceneActionDefeat</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a4b8b27886b956d336d70be24c71069e5" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessSceneActionEnemyTarget</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a5bb4aed8b45d110720ab87e53397a1ee" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessSceneActionEscape</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a4787ae793b387d44e6bbbce34d43303d" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessSceneActionFightAutoEscape</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ae84f7b95721119b73f6e69e56978d62d" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessSceneActionItem</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ab4268266bbe1ac2ea3fda679c79255c0" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessSceneActionSkill</name></member>
+      <member refid="class_scene___battle___rpg2k3_1aab390c13e22310433b48ec219b5a7981" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessSceneActionStart</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a5918e9bb1558e45fabaa22cd34569079" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ProcessSceneActionVictory</name></member>
+      <member refid="class_scene_1a61c10b38185eac9925da70d7fb915890" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Push</name></member>
+      <member refid="class_scene_1afb9e8385131d0524f0d9afa946096709" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>PushTitleScene</name></member>
+      <member refid="class_scene___battle___rpg2k3_1aeeb20ec903dc6e93aacf7acb4c520bcd" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>RecreateSpWindow</name></member>
+      <member refid="class_scene_1a5ecd59170e0a54d6216ccebd76702dd6" prot="public" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Refresh</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ae84cad934da78b66f53bb8f22b90eb68" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>RefreshCommandWindow</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a9020c31a24bc3ae9dffa3024d478a60c" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>RefreshTargetWindow</name></member>
+      <member refid="class_scene___battle_1af17a023bc48a89e652846bafac16da2a" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>RemoveCurrentAction</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a23c42fd8813594b42105f0e38e95c3a7" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>request_id</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a009da28a9482323c4b7d06e727cd3f50" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ResetAllBattlerZ</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a82c18ed5d229702cbd22eef4ef45ab32" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ResetWindows</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a4bbc3f8b48f8188a4f8fd2bee6d50e64" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>resume_from_debug_scene</name></member>
+      <member refid="class_scene___battle___rpg2k3_1abb6017d99526be4328a04b620bf427fa" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ReturnToMainBattleState</name></member>
+      <member refid="class_scene_1a902f2993901187b05d8e42188b7e8156" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ReturnToTitleScene</name></member>
+      <member refid="class_scene___battle___rpg2k3_1acac8d2fa405b7c11c326bfb00515206a" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>RowSelected</name></member>
+      <member refid="class_scene_1a495973012445184e00a31dd31e217b7e" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>rpgRtSceneFromSceneType</name></member>
+      <member refid="class_scene___battle___rpg2k3_1aca54e0958831d3519941460c1afb9505" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>running_away</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc195dbdbaa61f7b6b3ecb3236592d17" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Save</name></member>
+      <member refid="class_scene_1ad10176d75a9cc0da56626f682d083507" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Scene</name></member>
+      <member refid="class_scene___battle___rpg2k3_1aa749daf39efc262b906e4c0605130019" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>scene_action_substate</name></member>
+      <member refid="class_scene___battle_1a632c347b5ac88c194d3d9f9a9364870b" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Scene_Battle</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a41fb4743a9cc0ad7704733c0a26d4958" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Scene_Battle_Rpg2k3</name></member>
+      <member refid="class_scene_1a300d6b1274f226a1e69a552858414ba3" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>scene_names</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>SceneActionReturn</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea7484d8e1128440652139839089e85604" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>SceneMax</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09e" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>SceneType</name></member>
+      <member refid="class_scene___battle_1a8866faed25f156108018a9a74de33635" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>SelectionFlash</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a084ea4b2f99302ee898db0dcb416b320" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>SetActiveActor</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ad4d37c7edcf99bea6fb493854791fa0b" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>SetBattleActionState</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ac76a7f9630922ba109292e476cb6762d" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>SetBattleCommandsDisable</name></member>
+      <member refid="class_scene_1a40c9e3ffb2917b1e3880e2ff5733b1b6" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>SetDelayFrames</name></member>
+      <member refid="class_scene_1a9f641fa0061cebf4294009cb1d860cbe" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>SetRequestedScene</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a3285ca4ca9644e49c6680a12c680bc12" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>SetSceneActionSubState</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a306a026dc5169efed60e181ecdbb0e75" prot="protected" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>SetState</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc93e55e9b1ff9b798d1fb0ee22abab0" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Settings</name></member>
+      <member refid="class_scene___battle___rpg2k3_1aba236dcfa37c599da4a3e94941848218" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>SetupSystem2Graphics</name></member>
+      <member refid="class_scene_1a287b3a8a6fdaa0eb6e9b43ae7c774c8b" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>SetUseSharedDrawables</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a807724d01238959c8674b620da285fe4" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>SetWait</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea40484f6fb0aae90d36b27e9f7abfee9c" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Shop</name></member>
+      <member refid="class_scene___battle___rpg2k3_1aea03ccb37b0efcd2e8427a56313a01e8" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>ShowNotification</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafd156984a4436ea28706dc0c7873c8fc" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Skill</name></member>
+      <member refid="class_scene___battle_1a3ad63ae3c34d7167e50f2d0aec24b5f8" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>skill_window</name></member>
+      <member refid="class_scene___battle_1a580a88c15812f1bff7ff3859f3e97390" prot="protected" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>SkillSelected</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a080f74631bc53bba906a012ca3a9710d" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>sp_window</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a401b1244911c25d8073a4236f585978e" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>SpecialSelected</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ab7be015e7f7bce13a8d807f357b4c2e5" prot="public" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Start</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a2ba7a14610ce292104513e5e4ae06aea" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Start2</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>State</name></member>
+      <member refid="class_scene___battle_1ab65527778a347272b9c7130c0a6921f3" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>state</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a363e5c2d395ed3194e114a1b879d99ce" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>State_AutoBattle</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5ab869723f5f46a51b64eb53526ff299e1" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>State_Battle</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a3729141d1901f23014d33019e937ee00" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>State_Defeat</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5aa89b37be99c5780fb1300fe29b0fe0af" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>State_Escape</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a248ba41a360c5111c3e3a9525d806a39" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>State_SelectActor</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a501d32fa43c8d0637cb4f96bd458bd9f" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>State_SelectAllyTarget</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a84128f9a60548c2fca1413a8fa417606" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>State_SelectCommand</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5abc2501797be72514cf5da569e3c9be36" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>State_SelectEnemyTarget</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5ae4c084ebaa6ab28327cd15dd52ec67f1" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>State_SelectItem</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a1ee9b20bbf996b5ea7a31e1d826427c9" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>State_SelectOption</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a24670a1c95760faf7743fd0e72c0cb16" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>State_SelectSkill</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a044fada406a79efc73bf4ac391a96b8b" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>State_Start</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a23cd0be2ed3f14966c0b61729920dbe8" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>State_Victory</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eabe141c1b0922ac825b014da56774c2dc" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Status</name></member>
+      <member refid="class_scene___battle_1a7c947b36335228bb737cb9ae5ab8dbae" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>status_window</name></member>
+      <member refid="class_scene___battle___rpg2k3_1acf71738db704bdfce6823ab50e40b1b0" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>SubskillSelected</name></member>
+      <member refid="class_scene_1ac6413c7a3e405e57e415bec3c3096f26" prot="public" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Suspend</name></member>
+      <member refid="class_scene_1a2ac1629e5d081accb6b3d2682c8aac18" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>TakeRequestedScene</name></member>
+      <member refid="class_scene___battle_1a3b4f9ef17ced6fe92899350482cd21cb" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>target_window</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eadce8e1c84d0a06f5a005b24a6e602424" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Teleport</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaf3446103059a7e7c2333b8e0f81377d0" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Title</name></member>
+      <member refid="class_scene_1a1e97664b3509e2eb64b1aa621634703c" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>TransferDrawablesFrom</name></member>
+      <member refid="class_scene___battle_1a5c0b8a56af356311fd37a1b561609a43" prot="public" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>TransitionIn</name></member>
+      <member refid="class_scene___battle_1a8641b0949d9865e767e1d28120799f10" prot="public" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>TransitionOut</name></member>
+      <member refid="class_scene___battle_1a1d3bf957bae9af472b87573efecc4f69" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>troop_id</name></member>
+      <member refid="class_scene___battle_1a5d220eb5bdb132930b888c1d3670a98e" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>TryEscape</name></member>
+      <member refid="class_scene_1a8320189e28f3918a4f0200aedb97ccb5" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>type</name></member>
+      <member refid="class_scene_1a71a71b4f7752b853ff8032b0941a9d8d" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Update</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a70378691c11ff58269545923f5c69303" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>UpdateActorsDirection</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a5d4f726909f9f8ba9b80967ac6d758df" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>UpdateAnimations</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a9e9b4c33630919feb0c8ed29d71fb860" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>UpdateAtb</name></member>
+      <member refid="class_scene___battle_1a85023dd1a511af0ccb32026a83cc28d9" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>UpdateBattlers</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ab5ec668f5889df8e6b8e43a412fb112e" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>UpdateBattleState</name></member>
+      <member refid="class_scene_1a85503cbb64a2f88b227d926768ed0100" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>UpdateDelayFrames</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ac6e88644b6795674a7c0ba2687960454" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>UpdateEnemiesDirection</name></member>
+      <member refid="class_scene___battle_1a2513a84eed2531684affacc849911255" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>UpdateEvents</name></member>
+      <member refid="class_scene___battle_1a6579be9b151e47b0f2185ed9eff9dc21" prot="public" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>UpdateGraphics</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a8397d61a70edae1df7b751b9e6a40ef2" prot="protected" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>UpdateReadyActors</name></member>
+      <member refid="class_scene___battle_1a2fc5c6d2bea57e4a5afa0086aed43130" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>UpdateScreen</name></member>
+      <member refid="class_scene___battle_1ab07d2f96a69310d30c5146bfdec1d399" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>UpdateTimers</name></member>
+      <member refid="class_scene___battle_1a098bc232535ab6244866d96e01996a0d" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>UpdateUi</name></member>
+      <member refid="class_scene_1ac41adc09c7fed6609df594bf5bcdc1c5" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>UsesSharedDrawables</name></member>
+      <member refid="class_scene___battle___rpg2k3_1a613a751c86b60d8bc946d1c6a1aafae9" prot="public" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>vUpdate</name></member>
+      <member refid="class_scene___battle_1ab8623a206a9a09cb8ad237835316047da8f0b0274befa4ba82c7ff51d7f7abe60" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>Win</name></member>
+      <member refid="class_scene_1aa0a5be58e2ee2d1fdafc5fb46b5e661e" prot="public" virt="virtual"><scope>Scene_Battle_Rpg2k3</scope><name>~Scene</name></member>
+      <member refid="class_scene___battle_1a6ed9d672d4efbb0f7918ac23096bd05f" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>~Scene_Battle</name></member>
+      <member refid="class_scene___battle___rpg2k3_1ae2961ddbce624953186217f0f5d4c54c" prot="public" virt="non-virtual"><scope>Scene_Battle_Rpg2k3</scope><name>~Scene_Battle_Rpg2k3</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,404 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1ul2" kind="namespace" language="C++">
+    <compoundname>leasy::ul2</compoundname>
+    <innerclass refid="structleasy_1_1ul2_1_1any__function" prot="public">leasy::ul2::any_function</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1function__holder" prot="public">leasy::ul2::function_holder</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1function__traits" prot="public">leasy::ul2::function_traits</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_6_08_07_args_8_8_8_08_4" prot="public">leasy::ul2::function_traits&lt; R(&amp;)(Args...)&gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_5_08_07_args_8_8_8_08_4" prot="public">leasy::ul2::function_traits&lt; R(*)(Args...)&gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4" prot="public">leasy::ul2::function_traits&lt; R(Args...)&gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_c_1_1_5_08_07_args_8_8_8_08_01const_01_4" prot="public">leasy::ul2::function_traits&lt; R(C::*)(Args...) const &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_c_1_1_5_08_07_args_8_8_8_08_4" prot="public">leasy::ul2::function_traits&lt; R(C::*)(Args...)&gt;</innerclass>
+    <innerclass refid="classleasy_1_1ul2_1_1function__wrapper" prot="public">leasy::ul2::function_wrapper</innerclass>
+    <innerclass refid="classleasy_1_1ul2_1_1lstate" prot="public">leasy::ul2::lstate</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__arg__info" prot="public">leasy::ul2::lua_arg_info</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack" prot="public">leasy::ul2::lua_stack</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01bool_01_4" prot="public">leasy::ul2::lua_stack&lt; bool &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01const_01char_01_5_01_4" prot="public">leasy::ul2::lua_stack&lt; const char * &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4" prot="public">leasy::ul2::lua_stack&lt; leasy::kits::variant&lt; Ts... &gt; &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1string_01_4" prot="public">leasy::ul2::lua_stack&lt; std::string &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1unordered__map_3_01_k_00_01_v_01_4_01_4" prot="public">leasy::ul2::lua_stack&lt; std::unordered_map&lt; K, V &gt; &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1vector_3_01_t_01_4_01_4" prot="public">leasy::ul2::lua_stack&lt; std::vector&lt; T &gt; &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01_9std_1_1is__arithmetic__vdb488ff22805e7f759d132e2271e9e6f" prot="public">leasy::ul2::lua_stack&lt; T, std::enable_if_t&lt; !std::is_arithmetic_v&lt; T &gt; &amp;&amp;!std::is_same_v&lt; T, std::string &gt; &amp;&amp;!std::is_same_v&lt; T, const char * &gt; &gt; &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__floating__point__v_3_01_t_01_4_01_4_01_4" prot="public">leasy::ul2::lua_stack&lt; T, std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt; &gt; &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__integral__v_3_06172c95ee22f9d9bf9dbe317b6bd8715" prot="public">leasy::ul2::lua_stack&lt; T, std::enable_if_t&lt; std::is_integral_v&lt; T &gt; &amp;&amp;!std::is_same_v&lt; T, bool &gt; &gt; &gt;</innerclass>
+    <innerclass refid="classleasy_1_1ul2_1_1overload" prot="public">leasy::ul2::overload</innerclass>
+    <innerclass refid="classleasy_1_1ul2_1_1ulexception2" prot="public">leasy::ul2::ulexception2</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1userdata__holder" prot="public">leasy::ul2::userdata_holder</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1userdata__holder_3_01_t_00_01std_1_1enable__if__t_3_01typings2_1_1is__complete__v_3_01_t_01_4_01_4_01_4" prot="public">leasy::ul2::userdata_holder&lt; T, std::enable_if_t&lt; typings2::is_complete_v&lt; T &gt; &gt; &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1userdata__holder_3_01_t_00_01std_1_1enable__if__t_3_9typings2_1_1is__comple78baed4a32c6a3218677f77bf330edf" prot="public">leasy::ul2::userdata_holder&lt; T, std::enable_if_t&lt;!typings2::is_complete_v&lt; T &gt;||std::is_abstract_v&lt; T &gt; &gt; &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1variant__loader" prot="public">leasy::ul2::variant_loader</innerclass>
+    <innernamespace refid="namespaceleasy_1_1ul2_1_1detail">leasy::ul2::detail</innernamespace>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>lua_kind</name>
+        <qualifiedname>leasy::ul2::lua_kind</qualifiedname>
+        <enumvalue id="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57a84e2c64f38f78ba3ea5c905ab5a2da27" prot="public">
+          <name>boolean</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57ab1bc248a7ff2b2e95569f56de68615df" prot="public">
+          <name>number</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57ab45cffe084dd3d20d928bee85e7b0f21" prot="public">
+          <name>string</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57a08fd04da1b9c3e4c1c9ab1fe42494a35" prot="public">
+          <name>userdata</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/any_function.hpp" line="39" column="1" bodyfile="leasy/ul2/any_function.hpp" bodystart="39" bodyend="44"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespaceleasy_1_1ul2_1afd2efb5003dfc4faf94cfe7e782f789f" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::remove_cv_t&lt; std::remove_reference_t&lt; T &gt; &gt;</type>
+        <definition>using leasy::ul2::remove_cvref_t = std::remove_cv_t&lt;std::remove_reference_t&lt;T&gt;&gt;</definition>
+        <argsstring></argsstring>
+        <name>remove_cvref_t</name>
+        <qualifiedname>leasy::ul2::remove_cvref_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/types.hpp" line="29" column="3" bodyfile="leasy/ul2/types.hpp" bodystart="29" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceleasy_1_1ul2_1a36de3838006c0f20395c3e636a788900" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Callable</type>
+          </param>
+          <param>
+            <type>typename R</type>
+          </param>
+          <param>
+            <type>typename Tuple</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>I</declname>
+            <defname>I</defname>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>int leasy::ul2::invoke</definition>
+        <argsstring>(Callable &amp;&amp;f, lua_State *L, std::index_sequence&lt; I... &gt;)</argsstring>
+        <name>invoke</name>
+        <qualifiedname>leasy::ul2::invoke</qualifiedname>
+        <param>
+          <type>Callable &amp;&amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>std::index_sequence&lt; I... &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/dispatcher.hpp" line="40" column="7" bodyfile="leasy/ul2/dispatcher.hpp" bodystart="40" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ul2_1a508583e76d8810000c653e3ea27c149a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>auto</type>
+            <declname>F</declname>
+            <defname>F</defname>
+          </param>
+          <param>
+            <type>typename R</type>
+          </param>
+          <param>
+            <type>typename Tuple</type>
+          </param>
+          <param>
+            <type>std::size_t...</type>
+            <declname>I</declname>
+            <defname>I</defname>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>int leasy::ul2::call_impl</definition>
+        <argsstring>(lua_State *L, std::index_sequence&lt; I... &gt;)</argsstring>
+        <name>call_impl</name>
+        <qualifiedname>leasy::ul2::call_impl</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>std::index_sequence&lt; I... &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/dispatcher.hpp" line="53" column="7" bodyfile="leasy/ul2/dispatcher.hpp" bodystart="53" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ul2_1a5437e31c346933b9635ba9d13d4bb2a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>auto</type>
+            <declname>F</declname>
+            <defname>F</defname>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>int leasy::ul2::dispatch</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>dispatch</name>
+        <qualifiedname>leasy::ul2::dispatch</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/dispatcher.hpp" line="66" column="7" bodyfile="leasy/ul2/dispatcher.hpp" bodystart="66" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ul2_1ab7963859e32181f6ed027dfbf9e587ce" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>typename <ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">function_traits</ref>&lt; std::decay_t&lt; F &gt; &gt;::functional</type>
+        <definition>typename function_traits&lt; std::decay_t&lt; F &gt; &gt;::functional leasy::ul2::wrap</definition>
+        <argsstring>(F &amp;&amp;f)</argsstring>
+        <name>wrap</name>
+        <qualifiedname>leasy::ul2::wrap</qualifiedname>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_traits.hpp" line="73" column="18" bodyfile="leasy/ul2/function_traits.hpp" bodystart="73" bodyend="79"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ul2_1a0e8bcc6f65a348936983bb0054566417" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>std::shared_ptr&lt; <ref refid="structleasy_1_1ul2_1_1any__function" kindref="compound">any_function</ref> &gt;</type>
+        <definition>std::shared_ptr&lt; any_function &gt; leasy::ul2::make_function</definition>
+        <argsstring>(F &amp;&amp;fn)</argsstring>
+        <name>make_function</name>
+        <qualifiedname>leasy::ul2::make_function</qualifiedname>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>fn</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_wrapper.hpp" line="134" column="24" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="134" bodyend="137"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ul2_1a185622abe4c8a88d927a42fd93a82ca2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool leasy::ul2::accepts</definition>
+        <argsstring>(lua_State *L, int index)</argsstring>
+        <name>accepts</name>
+        <qualifiedname>leasy::ul2::accepts</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/lua_stack.hpp" line="399" column="6" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="399" bodyend="419"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ul2_1a31ade0bfd8a65adf1d5238798712996c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Tuple</type>
+          </param>
+          <param>
+            <type>std::size_t...</type>
+            <declname>I</declname>
+            <defname>I</defname>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool leasy::ul2::matches_impl</definition>
+        <argsstring>(lua_State *L, std::index_sequence&lt; I... &gt;)</argsstring>
+        <name>matches_impl</name>
+        <qualifiedname>leasy::ul2::matches_impl</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>std::index_sequence&lt; I... &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/lua_stack.hpp" line="422" column="6" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="422" bodyend="430"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ul2_1a7c27ff9d6a160ac1491fcd8fbbefb290" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool leasy::ul2::matches</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>matches</name>
+        <qualifiedname>leasy::ul2::matches</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/lua_stack.hpp" line="433" column="6" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="433" bodyend="444"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ul2_1ae4aa907ab1e0be5cd82939bbe2f54678" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int leasy::ul2::function_dispatch</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>function_dispatch</name>
+        <qualifiedname>leasy::ul2::function_dispatch</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="42" column="14" bodyfile="leasy/ul2/state.hpp" bodystart="42" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ul2_1ada3180e29b330f9cb6eb75a1b851622c" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int leasy::ul2::function_gc</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>function_gc</name>
+        <qualifiedname>leasy::ul2::function_gc</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="50" column="14" bodyfile="leasy/ul2/state.hpp" bodystart="50" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ul2_1aea526f0284dcdd410e3c5dac9e5ba05c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Fs</declname>
+            <defname>Fs</defname>
+          </param>
+        </templateparamlist>
+        <type>std::function&lt; int(<ref refid="structlua___state" kindref="compound">lua_State</ref> *)&gt;</type>
+        <definition>std::function&lt; int(lua_State *)&gt; leasy::ul2::make_overload</definition>
+        <argsstring>(Fs... f)</argsstring>
+        <name>make_overload</name>
+        <qualifiedname>leasy::ul2::make_overload</qualifiedname>
+        <param>
+          <type>Fs...</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="439" column="24" bodyfile="leasy/ul2/state.hpp" bodystart="439" bodyend="444"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para>0xEF9087A </para>
+    </detaileddescription>
+    <location file="leasy/ul2/any_function.hpp" line="34" column="1"/>
+  </compounddef>
+</doxygen>

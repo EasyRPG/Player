@@ -1,0 +1,314 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_scene___save" kind="class" language="C++" prot="public">
+    <compoundname>Scene_Save</compoundname>
+    <basecompoundref refid="class_scene___file" prot="public" virt="non-virtual">Scene_File</basecompoundref>
+    <includes refid="scene__save_8h" local="no">scene_save.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_scene___save_1a388d66730bf0170f6992ec2c9db5f38a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Scene_Save::Scene_Save</definition>
+        <argsstring>()</argsstring>
+        <name>Scene_Save</name>
+        <qualifiedname>Scene_Save::Scene_Save</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_save.h" line="36" column="1" bodyfile="scene_save.cpp" bodystart="48" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___save_1a7a12f308b134298cbb2d08af046b6eba" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Save::Start</definition>
+        <argsstring>() override</argsstring>
+        <name>Start</name>
+        <qualifiedname>Scene_Save::Start</qualifiedname>
+        <reimplements refid="class_scene___file_1aae13cb2fac33520d33e11cd43e25a3fa">Start</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Start processing. This function is executed while the screen is faded out. All objects needed for the scene should be created here. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_save.h" line="38" column="6" bodyfile="scene_save.cpp" bodystart="53" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___save_1ab8c9dfba0bf7f1a8f3a06a63cf1010e7" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Save::Action</definition>
+        <argsstring>(int index) override</argsstring>
+        <name>Action</name>
+        <qualifiedname>Scene_Save::Action</qualifiedname>
+        <reimplements refid="class_scene___file_1a0be4cc681a722de034551f45e54e129a">Action</reimplements>
+        <param>
+          <type>int</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_save.h" line="40" column="6" bodyfile="scene_save.cpp" bodystart="62" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___save_1a41882848efe5b71e4cbf44bad2731f27" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Scene_Save::IsSlotValid</definition>
+        <argsstring>(int index) override</argsstring>
+        <name>IsSlotValid</name>
+        <qualifiedname>Scene_Save::IsSlotValid</qualifiedname>
+        <reimplements refid="class_scene___file_1a157a61568de4ed982d6333daccba277f">IsSlotValid</reimplements>
+        <param>
+          <type>int</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_save.h" line="41" column="6" bodyfile="scene_save.cpp" bodystart="166" bodyend="168"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_scene___save_1a96b34d3478e5283fa4134bad384dee66" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Scene_Save::GetSaveFilename</definition>
+        <argsstring>(const FilesystemView &amp;tree, int slot_id)</argsstring>
+        <name>GetSaveFilename</name>
+        <qualifiedname>Scene_Save::GetSaveFilename</qualifiedname>
+        <param>
+          <type>const <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> &amp;</type>
+          <declname>tree</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>slot_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_save.h" line="43" column="20" bodyfile="scene_save.cpp" bodystart="68" bodyend="77"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___save_1ad6bbc627b12f46c2e217209f715f25c4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Save::Save</definition>
+        <argsstring>(const FilesystemView &amp;tree, int slot_id, bool prepare_save=true)</argsstring>
+        <name>Save</name>
+        <qualifiedname>Scene_Save::Save</qualifiedname>
+        <param>
+          <type>const <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> &amp;</type>
+          <declname>tree</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>slot_id</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>prepare_save</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_save.h" line="44" column="13" bodyfile="scene_save.cpp" bodystart="79" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___save_1a1c725d3744a0464b35982a43f46c0fc1" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Save::Save</definition>
+        <argsstring>(std::ostream &amp;os, int slot_id, bool prepare_save=true)</argsstring>
+        <name>Save</name>
+        <qualifiedname>Scene_Save::Save</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>os</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>slot_id</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>prepare_save</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_save.h" line="45" column="13" bodyfile="scene_save.cpp" bodystart="93" bodyend="164"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_scene___item" kindref="compound">Scene_Item</ref> class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="2">
+        <label>Scene_File</label>
+        <link refid="class_scene___file"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Scene_Save</label>
+        <link refid="class_scene___save"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="4">
+        <label>FilesystemView</label>
+        <link refid="class_filesystem_view"/>
+      </node>
+      <node id="3">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="2">
+        <label>Scene_File</label>
+        <link refid="class_scene___file"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>fs</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Scene_Save</label>
+        <link refid="class_scene___save"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="scene_save.h" line="30" column="1" bodyfile="scene_save.h" bodystart="30" bodyend="46"/>
+    <listofallmembers>
+      <member refid="class_scene___save_1ab8c9dfba0bf7f1a8f3a06a63cf1010e7" prot="public" virt="virtual"><scope>Scene_Save</scope><name>Action</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea525fafbc764da0de39c27dea3ffeb3d0" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>ActorTarget</name></member>
+      <member refid="class_scene___file_1aa1b8119d2a04e04b430e1677f16bbe72" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>arrow_frame</name></member>
+      <member refid="class_scene_1a6091a98761b264c35a150bc28ee4a505" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>async_continuation</name></member>
+      <member refid="class_scene_1a30c5c46dd99e4825df2d69518748c8ac" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>AsyncContinuation</name></member>
+      <member refid="class_scene_1a40aec0ae8ed38526531911eea247398b" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>AsyncNext</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea705f705b65bac2369f3cb10f5e89453a" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Battle</name></member>
+      <member refid="class_scene___file_1a0976f34cf63105f42e45bde2368ca043" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>border_bottom</name></member>
+      <member refid="class_scene___file_1a5c91847f51b6a4aaf3205d9f1bb231c7" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>border_top</name></member>
+      <member refid="class_scene_1a91e354ab86259cd3bc94c094036280da" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>CheckSceneExit</name></member>
+      <member refid="class_scene_1ac612b681d0de7c100f580b4bc446887b" prot="public" virt="virtual"><scope>Scene_Save</scope><name>Continue</name></member>
+      <member refid="class_scene___file_1aa57be8dc39a0842d751749b42a15b919" prot="protected" virt="virtual"><scope>Scene_Save</scope><name>CreateHelpWindow</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea418b00b4c130e675ac7512610ed3f473" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Debug</name></member>
+      <member refid="class_scene___file_1a53f2a892e2ac5930b341a792b2de5c1f" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>down_arrow</name></member>
+      <member refid="class_scene_1a1fcc0d5308270cc967966da917957bdf" prot="public" virt="virtual"><scope>Scene_Save</scope><name>DrawBackground</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaee9d4a8ee40ca6e8310597315e07b978" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>End</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea302637f5f0048f4433949f10fc6c8f58" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Equip</name></member>
+      <member refid="class_scene___file_1a59c8ff9cf73d52c0512f3377416f2b90" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>extra_commands_window</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea85a7c5a46a3ca806d41de80e68da80e1" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>File</name></member>
+      <member refid="class_scene___file_1acdba8958f4053fd828a96e8689aa1585" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>file_windows</name></member>
+      <member refid="class_scene_1aa8b96a758c0f1ea4cf28808089ff7123" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Find</name></member>
+      <member refid="class_scene___file_1a8c91f8e2d3e0b989b27f6233dee23dc0" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>fs</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea895a9b137f215eee5613d6a546275f5b" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>GameBrowser</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ead885a8fd6d0f378a99ee56a676029bca" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Gameover</name></member>
+      <member refid="class_scene_1ad837b22dff59e9c21f31204d958a24d7" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>GetDrawableList</name></member>
+      <member refid="class_scene_1ab9edda06ab170512d308c0c9fb38056b" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>GetRequestedSceneType</name></member>
+      <member refid="class_scene___save_1a96b34d3478e5283fa4134bad384dee66" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>GetSaveFilename</name></member>
+      <member refid="class_scene___file_1a23ce102ce23c76c1a7e4e10036d38f41" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>HandleExtraCommandsWindow</name></member>
+      <member refid="class_scene_1a203eba321fedc8a26c8802f4b9a84e01" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>HasDelayFrames</name></member>
+      <member refid="class_scene_1a1acd1e4345dfecb30c7c35f6d3e8130b" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>HasRequestedScene</name></member>
+      <member refid="class_scene___file_1aeffa5ada057c0ecf68d6f1e3e90e8afa" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>help_window</name></member>
+      <member refid="class_scene___file_1a90c1129d6ee91341ec94f421a82095a3" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>index</name></member>
+      <member refid="class_scene_1ac348fc3b0beb12093144a1f03d81449d" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>instance</name></member>
+      <member refid="class_scene_1a5a8c37138fc3a2dda1e0e077b472ab7b" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>IsAsyncPending</name></member>
+      <member refid="class_scene_1a0e0d605d080b286e73a07587d72dfe70" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>IsInitialized</name></member>
+      <member refid="class_scene___save_1a41882848efe5b71e4cbf44bad2731f27" prot="public" virt="virtual"><scope>Scene_Save</scope><name>IsSlotValid</name></member>
+      <member refid="class_scene___file_1a877707bbe79bffb0bc1a1bcc0ae9af40" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>IsWindowMoving</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea70390d274c6e9c167ac095faaa160c7c" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Item</name></member>
+      <member refid="class_scene_1a119de9e0876281a6eee15c7d15618d87" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>kReturnTitleDelayFrames</name></member>
+      <member refid="class_scene_1a563850d0f01381b76420c22ac335a103" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>kStartGameDelayFrames</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea16a3c57786ccf0d21f72a774d43957ab" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>LanguageMenu</name></member>
+      <member refid="class_scene___file_1a1e2ac62dea0abad1c4f936f59b952fa7" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>latest_slot</name></member>
+      <member refid="class_scene___file_1ab3453f6e570e75368971c54c9db76140" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>latest_time</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eac3db6576c8c7dc6e5d007d989f5022ea" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Load</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea4615e1aa6a92b7860d342a6aaf642611" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Logo</name></member>
+      <member refid="class_scene_1ae7f0f916c29e55b282dfe4ae522d2096" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>MainFunction</name></member>
+      <member refid="class_scene___file_1aab0fc7ee575682be8cbda8959f7ac860" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>MakeArrowSprite</name></member>
+      <member refid="class_scene___file_1a2f26fab1f7e490b2cf5d700f5d2eb927" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>MakeBorderSprite</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eae39f3115e47e2cc1a161ab73db4819a6" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Map</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea2412b59539890965aeb61a22141a781b" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Menu</name></member>
+      <member refid="class_scene___file_1af1bd6c59ced05a6294eafe7b6565c2df" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>message</name></member>
+      <member refid="class_scene___file_1a1208a1f2295508e8f124529ecb123f36" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>MoveFileWindows</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea05b82d049724f3ca8838b9800e8f3f3e" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Name</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea352ebbd390cdf4d31336a52af54fca32" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Null</name></member>
+      <member refid="class_scene_1a71555af047b54446dfc4fd2b0e6f78bd" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>old_instances</name></member>
+      <member refid="class_scene_1a7388cece257333bb2c98a202135adf51" prot="public" virt="virtual"><scope>Scene_Save</scope><name>OnEventHpChanged</name></member>
+      <member refid="class_scene_1a80c10e8f0c10921300be168e67ddf3ed" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>OnFinishAsync</name></member>
+      <member refid="class_scene_1a05be417a18748b38a3cd18566edd6d2d" prot="public" virt="virtual"><scope>Scene_Save</scope><name>OnPartyChanged</name></member>
+      <member refid="class_scene_1ac6fa936fd2dc55f41889400d36d855e6" prot="public" virt="virtual"><scope>Scene_Save</scope><name>OnTranslationChanged</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea26ab4613edf5d94d74a5e1ad4ec37fa3" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Order</name></member>
+      <member refid="class_scene_1a29b08fddcde74b786ec01129847454ba" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Peek</name></member>
+      <member refid="class_scene_1a713d07a297477318624fada11415f5e3" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Pop</name></member>
+      <member refid="class_scene___file_1aa9832faf950e535dfee51f4c8d4138bc" prot="protected" virt="virtual"><scope>Scene_Save</scope><name>PopulatePartyFaces</name></member>
+      <member refid="class_scene___file_1a23ce49f99b82c258bbd5078654bf0e85" prot="protected" virt="virtual"><scope>Scene_Save</scope><name>PopulateSaveWindow</name></member>
+      <member refid="class_scene_1ac657b33df6c856847d87aa976ae9a9eb" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>PopUntil</name></member>
+      <member refid="class_scene_1a61c10b38185eac9925da70d7fb915890" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Push</name></member>
+      <member refid="class_scene_1afb9e8385131d0524f0d9afa946096709" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>PushTitleScene</name></member>
+      <member refid="class_scene___file_1abebb0fc131e4b84f4fb5c20d6fcb4fab" prot="public" virt="virtual"><scope>Scene_Save</scope><name>Refresh</name></member>
+      <member refid="class_scene___file_1ab9f8da48df1c0127947caf5687ccf8d7" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>RefreshWindows</name></member>
+      <member refid="class_scene_1a902f2993901187b05d8e42188b7e8156" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>ReturnToTitleScene</name></member>
+      <member refid="class_scene_1a495973012445184e00a31dd31e217b7e" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>rpgRtSceneFromSceneType</name></member>
+      <member refid="class_scene___save_1ad6bbc627b12f46c2e217209f715f25c4" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Save</name></member>
+      <member refid="class_scene___save_1a1c725d3744a0464b35982a43f46c0fc1" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Save</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc195dbdbaa61f7b6b3ecb3236592d17" prot="public" virt="non-virtual" ambiguityscope="Scene_File::"><scope>Scene_Save</scope><name>Save</name></member>
+      <member refid="class_scene_1ad10176d75a9cc0da56626f682d083507" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Scene</name></member>
+      <member refid="class_scene___file_1a8d054f950a345ea23baa43eed0cb3955" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Scene_File</name></member>
+      <member refid="class_scene_1a300d6b1274f226a1e69a552858414ba3" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>scene_names</name></member>
+      <member refid="class_scene___save_1a388d66730bf0170f6992ec2c9db5f38a" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Scene_Save</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea7484d8e1128440652139839089e85604" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>SceneMax</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09e" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>SceneType</name></member>
+      <member refid="class_scene_1a40c9e3ffb2917b1e3880e2ff5733b1b6" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>SetDelayFrames</name></member>
+      <member refid="class_scene_1a9f641fa0061cebf4294009cb1d860cbe" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>SetRequestedScene</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc93e55e9b1ff9b798d1fb0ee22abab0" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Settings</name></member>
+      <member refid="class_scene_1a287b3a8a6fdaa0eb6e9b43ae7c774c8b" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>SetUseSharedDrawables</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea40484f6fb0aae90d36b27e9f7abfee9c" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Shop</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafd156984a4436ea28706dc0c7873c8fc" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Skill</name></member>
+      <member refid="class_scene___save_1a7a12f308b134298cbb2d08af046b6eba" prot="public" virt="virtual"><scope>Scene_Save</scope><name>Start</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eabe141c1b0922ac825b014da56774c2dc" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Status</name></member>
+      <member refid="class_scene_1ac6413c7a3e405e57e415bec3c3096f26" prot="public" virt="virtual"><scope>Scene_Save</scope><name>Suspend</name></member>
+      <member refid="class_scene_1a2ac1629e5d081accb6b3d2682c8aac18" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>TakeRequestedScene</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eadce8e1c84d0a06f5a005b24a6e602424" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Teleport</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaf3446103059a7e7c2333b8e0f81377d0" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Title</name></member>
+      <member refid="class_scene___file_1a1c33a90f221700f3121118f58179931e" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>top_index</name></member>
+      <member refid="class_scene_1a1e97664b3509e2eb64b1aa621634703c" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>TransferDrawablesFrom</name></member>
+      <member refid="class_scene_1a4a594aefe6bd86e17042acf7c76eb0e6" prot="public" virt="virtual"><scope>Scene_Save</scope><name>TransitionIn</name></member>
+      <member refid="class_scene_1a64d36508ee1971f89c7d5e8513d777b1" prot="public" virt="virtual"><scope>Scene_Save</scope><name>TransitionOut</name></member>
+      <member refid="class_scene_1a8320189e28f3918a4f0200aedb97ccb5" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>type</name></member>
+      <member refid="class_scene___file_1a842e28488a55d75973b9b4e0a84af7c5" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>up_arrow</name></member>
+      <member refid="class_scene_1a71a71b4f7752b853ff8032b0941a9d8d" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>Update</name></member>
+      <member refid="class_scene___file_1a4c6fa3566532d10dd97e917431b148b9" prot="protected" virt="non-virtual"><scope>Scene_Save</scope><name>UpdateArrows</name></member>
+      <member refid="class_scene_1a85503cbb64a2f88b227d926768ed0100" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>UpdateDelayFrames</name></member>
+      <member refid="class_scene_1affa07b015ecebcf18cc0d652ab9a2fd4" prot="public" virt="virtual"><scope>Scene_Save</scope><name>UpdateGraphics</name></member>
+      <member refid="class_scene___file_1a9f3aa876580ad9f4cba8eda452a37aa7" prot="protected" virt="virtual"><scope>Scene_Save</scope><name>UpdateLatestTimestamp</name></member>
+      <member refid="class_scene_1ac41adc09c7fed6609df594bf5bcdc1c5" prot="public" virt="non-virtual"><scope>Scene_Save</scope><name>UsesSharedDrawables</name></member>
+      <member refid="class_scene___file_1a2a6e8f0a9a7cc45d69a35280c5ebba66" prot="public" virt="virtual"><scope>Scene_Save</scope><name>vUpdate</name></member>
+      <member refid="class_scene_1aa0a5be58e2ee2d1fdafc5fb46b5e661e" prot="public" virt="virtual"><scope>Scene_Save</scope><name>~Scene</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

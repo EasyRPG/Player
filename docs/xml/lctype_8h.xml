@@ -1,0 +1,371 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lctype_8h" kind="file" language="C++">
+    <compoundname>lctype.h</compoundname>
+    <includes refid="lua_8h" local="yes">lua.h</includes>
+    <includes local="no">limits.h</includes>
+    <includes refid="llimits_8h" local="yes">llimits.h</includes>
+    <includedby refid="lctype_8c" local="yes">leasy/lua/lctype.c</includedby>
+    <includedby refid="llex_8c" local="yes">leasy/lua/llex.c</includedby>
+    <includedby refid="lobject_8c" local="yes">leasy/lua/lobject.c</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/lua/lctype.h</label>
+        <link refid="lctype_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>limits.h</label>
+      </node>
+      <node id="3">
+        <label>stdarg.h</label>
+      </node>
+      <node id="4">
+        <label>stddef.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>leasy/lua/lctype.c</label>
+        <link refid="lctype_8c"/>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lctype.h</label>
+        <link refid="lctype_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>leasy/lua/llex.c</label>
+        <link refid="llex_8c"/>
+      </node>
+      <node id="4">
+        <label>leasy/lua/lobject.c</label>
+        <link refid="lobject_8c"/>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lctype_8h_1a7d15b705d59378d3c5ab7a722473bf8d" prot="public" static="no">
+        <name>LUA_USE_CTYPE</name>
+        <initializer>0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.h" line="23" column="9" bodyfile="leasy/lua/lctype.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lctype_8h_1a091fbd82b59441d4a091c0312c0a0e35" prot="public" static="no">
+        <name>ALPHABIT</name>
+        <initializer>0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.h" line="39" column="9" bodyfile="leasy/lua/lctype.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lctype_8h_1a089c6406273b00564db9bd9d43945a25" prot="public" static="no">
+        <name>DIGITBIT</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.h" line="40" column="9" bodyfile="leasy/lua/lctype.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lctype_8h_1a708b2cd4d3f7f7126e5f795097ab1592" prot="public" static="no">
+        <name>PRINTBIT</name>
+        <initializer>2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.h" line="41" column="9" bodyfile="leasy/lua/lctype.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lctype_8h_1a6fe589191c9eb50677a9dcdcbc47891e" prot="public" static="no">
+        <name>SPACEBIT</name>
+        <initializer>3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.h" line="42" column="9" bodyfile="leasy/lua/lctype.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lctype_8h_1a326c899e67809dd5626560011d3dd09c" prot="public" static="no">
+        <name>XDIGITBIT</name>
+        <initializer>4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.h" line="43" column="9" bodyfile="leasy/lua/lctype.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lctype_8h_1a7d3df71e2854f50a0da793b08732e197" prot="public" static="no">
+        <name>MASK</name>
+        <param><defname>B</defname></param>
+        <initializer>(1 &lt;&lt; (B))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.h" line="46" column="9" bodyfile="leasy/lua/lctype.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lctype_8h_1ac933a1d6fac0b2e206836c4b8089482d" prot="public" static="no">
+        <name>testprop</name>
+        <param><defname>c</defname></param>
+        <param><defname>p</defname></param>
+        <initializer>(<ref refid="lctype_8c_1a0fb53cca0a77a27211713000fc8f66b2" kindref="member">luai_ctype_</ref>[(c)+1] &amp; (p))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.h" line="52" column="9" bodyfile="leasy/lua/lctype.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lctype_8h_1a7132e9f6daf30b344b74f51d64eadf7d" prot="public" static="no">
+        <name>lislalpha</name>
+        <param><defname>c</defname></param>
+        <initializer><ref refid="lctype_8h_1ac933a1d6fac0b2e206836c4b8089482d" kindref="member">testprop</ref>(c, <ref refid="lctype_8h_1a7d3df71e2854f50a0da793b08732e197" kindref="member">MASK</ref>(<ref refid="lctype_8h_1a091fbd82b59441d4a091c0312c0a0e35" kindref="member">ALPHABIT</ref>))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.h" line="57" column="9" bodyfile="leasy/lua/lctype.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lctype_8h_1a9c0dc6a934853b8ab5e7d65a3ca8abcd" prot="public" static="no">
+        <name>lislalnum</name>
+        <param><defname>c</defname></param>
+        <initializer><ref refid="lctype_8h_1ac933a1d6fac0b2e206836c4b8089482d" kindref="member">testprop</ref>(c, (<ref refid="lctype_8h_1a7d3df71e2854f50a0da793b08732e197" kindref="member">MASK</ref>(<ref refid="lctype_8h_1a091fbd82b59441d4a091c0312c0a0e35" kindref="member">ALPHABIT</ref>) | <ref refid="lctype_8h_1a7d3df71e2854f50a0da793b08732e197" kindref="member">MASK</ref>(<ref refid="lctype_8h_1a089c6406273b00564db9bd9d43945a25" kindref="member">DIGITBIT</ref>)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.h" line="58" column="9" bodyfile="leasy/lua/lctype.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lctype_8h_1aee1d27a5eac398ec2c9c8b80281041e6" prot="public" static="no">
+        <name>lisdigit</name>
+        <param><defname>c</defname></param>
+        <initializer><ref refid="lctype_8h_1ac933a1d6fac0b2e206836c4b8089482d" kindref="member">testprop</ref>(c, <ref refid="lctype_8h_1a7d3df71e2854f50a0da793b08732e197" kindref="member">MASK</ref>(<ref refid="lctype_8h_1a089c6406273b00564db9bd9d43945a25" kindref="member">DIGITBIT</ref>))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.h" line="59" column="9" bodyfile="leasy/lua/lctype.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lctype_8h_1a768801f115261ae5ad51fdf6e54904e2" prot="public" static="no">
+        <name>lisspace</name>
+        <param><defname>c</defname></param>
+        <initializer><ref refid="lctype_8h_1ac933a1d6fac0b2e206836c4b8089482d" kindref="member">testprop</ref>(c, <ref refid="lctype_8h_1a7d3df71e2854f50a0da793b08732e197" kindref="member">MASK</ref>(<ref refid="lctype_8h_1a6fe589191c9eb50677a9dcdcbc47891e" kindref="member">SPACEBIT</ref>))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.h" line="60" column="9" bodyfile="leasy/lua/lctype.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lctype_8h_1a68562616d451f440d5c8e4e3d345c573" prot="public" static="no">
+        <name>lisprint</name>
+        <param><defname>c</defname></param>
+        <initializer><ref refid="lctype_8h_1ac933a1d6fac0b2e206836c4b8089482d" kindref="member">testprop</ref>(c, <ref refid="lctype_8h_1a7d3df71e2854f50a0da793b08732e197" kindref="member">MASK</ref>(<ref refid="lctype_8h_1a708b2cd4d3f7f7126e5f795097ab1592" kindref="member">PRINTBIT</ref>))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.h" line="61" column="9" bodyfile="leasy/lua/lctype.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lctype_8h_1a72e55b66d80325fb20cbc098d3448996" prot="public" static="no">
+        <name>lisxdigit</name>
+        <param><defname>c</defname></param>
+        <initializer><ref refid="lctype_8h_1ac933a1d6fac0b2e206836c4b8089482d" kindref="member">testprop</ref>(c, <ref refid="lctype_8h_1a7d3df71e2854f50a0da793b08732e197" kindref="member">MASK</ref>(<ref refid="lctype_8h_1a326c899e67809dd5626560011d3dd09c" kindref="member">XDIGITBIT</ref>))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.h" line="62" column="9" bodyfile="leasy/lua/lctype.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lctype_8h_1a951ea98d03894d36dd2efed11ec9d973" prot="public" static="no">
+        <name>ltolower</name>
+        <param><defname>c</defname></param>
+        <initializer><ref refid="llimits_8h_1afac1404af62451f8653440ecb6e773fc" kindref="member">check_exp</ref>((&apos;A&apos; &lt;= (c) &amp;&amp; (c) &lt;= &apos;Z&apos;) || (c) == ((c) | (&apos;A&apos; ^ &apos;a&apos;)),  \
+          (c) | (&apos;A&apos; ^ &apos;a&apos;))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lctype.h" line="71" column="9" bodyfile="leasy/lua/lctype.h" bodystart="71" bodyend="73"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lctype.h<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>&apos;ctype&apos;<sp/>functions<sp/>for<sp/>Lua</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>lctype_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lctype_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lua_8h" kindref="compound">lua.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment">**<sp/>WARNING:<sp/>the<sp/>functions<sp/>defined<sp/>here<sp/>do<sp/>not<sp/>necessarily<sp/>correspond</highlight></codeline>
+<codeline lineno="15"><highlight class="comment">**<sp/>to<sp/>the<sp/>similar<sp/>functions<sp/>in<sp/>the<sp/>standard<sp/>C<sp/>ctype.h.<sp/>They<sp/>are</highlight></codeline>
+<codeline lineno="16"><highlight class="comment">**<sp/>optimized<sp/>for<sp/>the<sp/>specific<sp/>needs<sp/>of<sp/>Lua.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(LUA_USE_CTYPE)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>&apos;A&apos;<sp/>==<sp/>65<sp/>&amp;&amp;<sp/>&apos;0&apos;<sp/>==<sp/>48</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>ASCII<sp/>case:<sp/>can<sp/>use<sp/>its<sp/>own<sp/>tables;<sp/>faster<sp/>and<sp/>fixed<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23" refid="lctype_8h_1a7d15b705d59378d3c5ab7a722473bf8d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_USE_CTYPE<sp/><sp/><sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>must<sp/>use<sp/>standard<sp/>C<sp/>ctype<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_USE_CTYPE<sp/><sp/><sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!LUA_USE_CTYPE<sp/><sp/></highlight><highlight class="comment">/*<sp/>{<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;limits.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="llimits_8h" kindref="compound">llimits.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="lctype_8h_1a091fbd82b59441d4a091c0312c0a0e35" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ALPHABIT<sp/><sp/><sp/><sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="lctype_8h_1a089c6406273b00564db9bd9d43945a25" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>DIGITBIT<sp/><sp/><sp/><sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="lctype_8h_1a708b2cd4d3f7f7126e5f795097ab1592" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PRINTBIT<sp/><sp/><sp/><sp/>2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="lctype_8h_1a6fe589191c9eb50677a9dcdcbc47891e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>SPACEBIT<sp/><sp/><sp/><sp/>3</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="lctype_8h_1a326c899e67809dd5626560011d3dd09c" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>XDIGITBIT<sp/><sp/><sp/>4</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="lctype_8h_1a7d3df71e2854f50a0da793b08732e197" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>MASK(B)<sp/><sp/><sp/><sp/><sp/>(1<sp/>&lt;&lt;<sp/>(B))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="50"><highlight class="comment">**<sp/>add<sp/>1<sp/>to<sp/>char<sp/>to<sp/>allow<sp/>index<sp/>-1<sp/>(EOZ)</highlight></codeline>
+<codeline lineno="51"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52" refid="lctype_8h_1ac933a1d6fac0b2e206836c4b8089482d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>testprop(c,p)<sp/><sp/><sp/>(luai_ctype_[(c)+1]<sp/>&amp;<sp/>(p))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="55"><highlight class="comment">**<sp/>&apos;lalpha&apos;<sp/>(Lua<sp/>alphabetic)<sp/>and<sp/>&apos;lalnum&apos;<sp/>(Lua<sp/>alphanumeric)<sp/>both<sp/>include<sp/>&apos;_&apos;</highlight></codeline>
+<codeline lineno="56"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57" refid="lctype_8h_1a7132e9f6daf30b344b74f51d64eadf7d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lislalpha(c)<sp/><sp/><sp/><sp/>testprop(c,<sp/>MASK(ALPHABIT))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="lctype_8h_1a9c0dc6a934853b8ab5e7d65a3ca8abcd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lislalnum(c)<sp/><sp/><sp/><sp/>testprop(c,<sp/>(MASK(ALPHABIT)<sp/>|<sp/>MASK(DIGITBIT)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="lctype_8h_1aee1d27a5eac398ec2c9c8b80281041e6" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lisdigit(c)<sp/>testprop(c,<sp/>MASK(DIGITBIT))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60" refid="lctype_8h_1a768801f115261ae5ad51fdf6e54904e2" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lisspace(c)<sp/>testprop(c,<sp/>MASK(SPACEBIT))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61" refid="lctype_8h_1a68562616d451f440d5c8e4e3d345c573" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lisprint(c)<sp/>testprop(c,<sp/>MASK(PRINTBIT))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="lctype_8h_1a72e55b66d80325fb20cbc098d3448996" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lisxdigit(c)<sp/><sp/><sp/><sp/>testprop(c,<sp/>MASK(XDIGITBIT))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="66"><highlight class="comment">**<sp/>In<sp/>ASCII,<sp/>this<sp/>&apos;ltolower&apos;<sp/>is<sp/>correct<sp/>for<sp/>alphabetic<sp/>characters<sp/>and</highlight></codeline>
+<codeline lineno="67"><highlight class="comment">**<sp/>for<sp/>&apos;.&apos;.<sp/>That<sp/>is<sp/>enough<sp/>for<sp/>Lua<sp/>needs.<sp/>(&apos;check_exp&apos;<sp/>ensures<sp/>that</highlight></codeline>
+<codeline lineno="68"><highlight class="comment">**<sp/>the<sp/>character<sp/>either<sp/>is<sp/>an<sp/>upper-case<sp/>letter<sp/>or<sp/>is<sp/>unchanged<sp/>by</highlight></codeline>
+<codeline lineno="69"><highlight class="comment">**<sp/>the<sp/>transformation,<sp/>which<sp/>holds<sp/>for<sp/>lower-case<sp/>letters<sp/>and<sp/>&apos;.&apos;.)</highlight></codeline>
+<codeline lineno="70"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71" refid="lctype_8h_1a951ea98d03894d36dd2efed11ec9d973" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ltolower(c)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="72"><highlight class="preprocessor"><sp/><sp/>check_exp((&apos;A&apos;<sp/>&lt;=<sp/>(c)<sp/>&amp;&amp;<sp/>(c)<sp/>&lt;=<sp/>&apos;Z&apos;)<sp/>||<sp/>(c)<sp/>==<sp/>((c)<sp/>|<sp/>(&apos;A&apos;<sp/>^<sp/>&apos;a&apos;)),<sp/><sp/>\</highlight></codeline>
+<codeline lineno="73"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(c)<sp/>|<sp/>(&apos;A&apos;<sp/>^<sp/>&apos;a&apos;))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>one<sp/>entry<sp/>for<sp/>each<sp/>character<sp/>and<sp/>for<sp/>-1<sp/>(EOZ)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><ref refid="llimits_8h_1a3f2cdf96bb04b9d2a9a318a126f99182" kindref="member">LUAI_DDEC</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="lctype_8c_1a0fb53cca0a77a27211713000fc8f66b2" kindref="member">luai_ctype_</ref>[UCHAR_MAX<sp/>+<sp/>2];)</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal">#</highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>}{<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="83"><highlight class="comment">**<sp/>use<sp/>standard<sp/>C<sp/>ctypes</highlight></codeline>
+<codeline lineno="84"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal">#include<sp/>&lt;ctype.h&gt;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal">#define<sp/><ref refid="lctype_8h_1a7132e9f6daf30b344b74f51d64eadf7d" kindref="member">lislalpha</ref>(c)<sp/><sp/><sp/><sp/>(isalpha(c)<sp/>||<sp/>(c)<sp/>==<sp/></highlight><highlight class="charliteral">&apos;_&apos;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lislalnum(c)<sp/><sp/><sp/><sp/>(isalnum(c)<sp/>||<sp/>(c)<sp/>==<sp/>&apos;_&apos;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lisdigit(c)<sp/>(isdigit(c))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lisspace(c)<sp/>(isspace(c))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lisprint(c)<sp/>(isprint(c))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lisxdigit(c)<sp/><sp/><sp/><sp/>(isxdigit(c))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ltolower(c)<sp/>(tolower(c))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>}<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lctype.h"/>
+  </compounddef>
+</doxygen>

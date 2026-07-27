@@ -269,3 +269,4 @@ inline const lcf::rpg::SaveScreen& Game_Screen::GetSaveData() const {
 }
 
 #endif
+

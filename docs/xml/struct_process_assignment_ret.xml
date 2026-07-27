@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_process_assignment_ret" kind="struct" language="C++" prot="public">
+    <compoundname>ProcessAssignmentRet</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_process_assignment_ret_1a545b3ce536b71e5afd0acae07ed543f3" prot="public" static="no" mutable="no">
+        <type>Op</type>
+        <definition>Op ProcessAssignmentRet::op</definition>
+        <argsstring></argsstring>
+        <name>op</name>
+        <qualifiedname>ProcessAssignmentRet::op</qualifiedname>
+        <initializer>= Op::Null</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="maniac_patch.cpp" line="123" column="4" bodyfile="maniac_patch.cpp" bodystart="123" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_process_assignment_ret_1a1017561e042a5280a00f3b91df90d46e" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ProcessAssignmentRet::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <qualifiedname>ProcessAssignmentRet::id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="maniac_patch.cpp" line="124" column="5" bodyfile="maniac_patch.cpp" bodystart="124" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_process_assignment_ret_1aae02e0b120f6223aabf885da9af746a8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int ProcessAssignmentRet::fetch</definition>
+        <argsstring>() const</argsstring>
+        <name>fetch</name>
+        <qualifiedname>ProcessAssignmentRet::fetch</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="maniac_patch.cpp" line="126" column="5" bodyfile="maniac_patch.cpp" bodystart="126" bodyend="143"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_process_assignment_ret_1ad644c3d22a79b8229ebb02e07218725f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int ProcessAssignmentRet::assign</definition>
+        <argsstring>(int value) const</argsstring>
+        <name>assign</name>
+        <qualifiedname>ProcessAssignmentRet::assign</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="maniac_patch.cpp" line="145" column="5" bodyfile="maniac_patch.cpp" bodystart="145" bodyend="172"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="maniac_patch.cpp" line="122" column="1" bodyfile="maniac_patch.cpp" bodystart="122" bodyend="173"/>
+    <listofallmembers>
+      <member refid="struct_process_assignment_ret_1ad644c3d22a79b8229ebb02e07218725f" prot="public" virt="non-virtual"><scope>ProcessAssignmentRet</scope><name>assign</name></member>
+      <member refid="struct_process_assignment_ret_1aae02e0b120f6223aabf885da9af746a8" prot="public" virt="non-virtual"><scope>ProcessAssignmentRet</scope><name>fetch</name></member>
+      <member refid="struct_process_assignment_ret_1a1017561e042a5280a00f3b91df90d46e" prot="public" virt="non-virtual"><scope>ProcessAssignmentRet</scope><name>id</name></member>
+      <member refid="struct_process_assignment_ret_1a545b3ce536b71e5afd0acae07ed543f3" prot="public" virt="non-virtual"><scope>ProcessAssignmentRet</scope><name>op</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

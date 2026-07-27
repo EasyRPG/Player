@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_scene___title_1_1_command_indices" kind="struct" language="C++" prot="private">
+    <compoundname>Scene_Title::CommandIndices</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_scene___title_1_1_command_indices_1aadbf4579f8722370fc69e619c47df787" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Title::CommandIndices::new_game</definition>
+        <argsstring></argsstring>
+        <name>new_game</name>
+        <qualifiedname>Scene_Title::CommandIndices::new_game</qualifiedname>
+        <initializer>=  0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="146" column="5" bodyfile="scene_title.h" bodystart="146" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_scene___title_1_1_command_indices_1a1bab2685490994ff7d9ccd5b100c32f0" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Title::CommandIndices::continue_game</definition>
+        <argsstring></argsstring>
+        <name>continue_game</name>
+        <qualifiedname>Scene_Title::CommandIndices::continue_game</qualifiedname>
+        <initializer>=  1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="147" column="5" bodyfile="scene_title.h" bodystart="147" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_scene___title_1_1_command_indices_1a2fa7d50a0749da8053db56a042f84043" prot="public" static="no" mutable="no">
+        <type>int int</type>
+        <definition>int int Scene_Title::CommandIndices::settings</definition>
+        <argsstring></argsstring>
+        <name>settings</name>
+        <qualifiedname>Scene_Title::CommandIndices::settings</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="149" column="5" bodyfile="scene_title.h" bodystart="149" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_scene___title_1_1_command_indices_1a57b7542a2dbe5972969b6adbfd1f7ec3" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Title::CommandIndices::translate</definition>
+        <argsstring></argsstring>
+        <name>translate</name>
+        <qualifiedname>Scene_Title::CommandIndices::translate</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="150" column="5" bodyfile="scene_title.h" bodystart="150" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_scene___title_1_1_command_indices_1ae800416edebd140e3a0e7385335c392c" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Title::CommandIndices::exit</definition>
+        <argsstring></argsstring>
+        <name>exit</name>
+        <qualifiedname>Scene_Title::CommandIndices::exit</qualifiedname>
+        <initializer>=  2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_title.h" line="151" column="5" bodyfile="scene_title.h" bodystart="151" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Offsets for each selection, in case &quot;Import&quot; or &quot;Translate&quot; is enabled. Listed in the order they may appear; exit_index will always be last, and import appears before translate, if it exists. Stored in a struct for easy resetting, as <ref refid="class_scene___title" kindref="compound">Scene_Title</ref> can be reused. </para>
+    </detaileddescription>
+    <location file="scene_title.h" line="145" column="1" bodyfile="scene_title.h" bodystart="145" bodyend="152"/>
+    <listofallmembers>
+      <member refid="struct_scene___title_1_1_command_indices_1a1bab2685490994ff7d9ccd5b100c32f0" prot="public" virt="non-virtual"><scope>Scene_Title::CommandIndices</scope><name>continue_game</name></member>
+      <member refid="struct_scene___title_1_1_command_indices_1ae800416edebd140e3a0e7385335c392c" prot="public" virt="non-virtual"><scope>Scene_Title::CommandIndices</scope><name>exit</name></member>
+      <member refid="struct_scene___title_1_1_command_indices_1aadbf4579f8722370fc69e619c47df787" prot="public" virt="non-virtual"><scope>Scene_Title::CommandIndices</scope><name>new_game</name></member>
+      <member refid="struct_scene___title_1_1_command_indices_1a2fa7d50a0749da8053db56a042f84043" prot="public" virt="non-virtual"><scope>Scene_Title::CommandIndices</scope><name>settings</name></member>
+      <member refid="struct_scene___title_1_1_command_indices_1a57b7542a2dbe5972969b6adbfd1f7ec3" prot="public" virt="non-virtual"><scope>Scene_Title::CommandIndices</scope><name>translate</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

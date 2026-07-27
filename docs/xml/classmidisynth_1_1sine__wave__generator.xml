@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classmidisynth_1_1sine__wave__generator" kind="class" language="C++" prot="public">
+    <compoundname>midisynth::sine_wave_generator</compoundname>
+    <includes refid="midisynth_8h" local="no">midisynth.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classmidisynth_1_1sine__wave__generator_1a40407d7018b4159c8cc639e24872419a" prot="private" static="no" mutable="no">
+        <type>uint_least32_t</type>
+        <definition>uint_least32_t midisynth::sine_wave_generator::position</definition>
+        <argsstring></argsstring>
+        <name>position</name>
+        <qualifiedname>midisynth::sine_wave_generator::position</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="267" column="24" bodyfile="midisynth.h" bodystart="267" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1sine__wave__generator_1ae737a8be6d0c04feb05161a8766b3c0f" prot="private" static="no" mutable="no">
+        <type>uint_least32_t</type>
+        <definition>uint_least32_t midisynth::sine_wave_generator::step</definition>
+        <argsstring></argsstring>
+        <name>step</name>
+        <qualifiedname>midisynth::sine_wave_generator::step</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="268" column="24" bodyfile="midisynth.h" bodystart="268" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classmidisynth_1_1sine__wave__generator_1a41fffe314a808ddf2029f01e4342f1b2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>midisynth::sine_wave_generator::sine_wave_generator</definition>
+        <argsstring>()</argsstring>
+        <name>sine_wave_generator</name>
+        <qualifiedname>midisynth::sine_wave_generator::sine_wave_generator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="260" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1sine__wave__generator_1a85f65771766490e594896407972bf906" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>midisynth::sine_wave_generator::sine_wave_generator</definition>
+        <argsstring>(float cycle)</argsstring>
+        <name>sine_wave_generator</name>
+        <qualifiedname>midisynth::sine_wave_generator::sine_wave_generator</qualifiedname>
+        <param>
+          <type>float</type>
+          <declname>cycle</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="261" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1sine__wave__generator_1ae340106a60734d414994c926f641805f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::sine_wave_generator::set_cycle</definition>
+        <argsstring>(float cycle)</argsstring>
+        <name>set_cycle</name>
+        <qualifiedname>midisynth::sine_wave_generator::set_cycle</qualifiedname>
+        <param>
+          <type>float</type>
+          <declname>cycle</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="262" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1sine__wave__generator_1ac06e527a9894600571be8862c5414b21" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::sine_wave_generator::add_modulation</definition>
+        <argsstring>(int_least32_t x)</argsstring>
+        <name>add_modulation</name>
+        <qualifiedname>midisynth::sine_wave_generator::add_modulation</qualifiedname>
+        <param>
+          <type>int_least32_t</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="263" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1sine__wave__generator_1af91d63cf97f18c193adaffe5f375bfa9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::sine_wave_generator::get_next</definition>
+        <argsstring>()</argsstring>
+        <name>get_next</name>
+        <qualifiedname>midisynth::sine_wave_generator::get_next</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="264" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1sine__wave__generator_1a971107bc6fa940379016825b4db7aaa0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::sine_wave_generator::get_next</definition>
+        <argsstring>(int_least32_t modulation)</argsstring>
+        <name>get_next</name>
+        <qualifiedname>midisynth::sine_wave_generator::get_next</qualifiedname>
+        <param>
+          <type>int_least32_t</type>
+          <declname>modulation</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="265" column="13"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="midisynth.h" line="258" column="5" bodyfile="midisynth.h" bodystart="258" bodyend="269"/>
+    <listofallmembers>
+      <member refid="classmidisynth_1_1sine__wave__generator_1ac06e527a9894600571be8862c5414b21" prot="public" virt="non-virtual"><scope>midisynth::sine_wave_generator</scope><name>add_modulation</name></member>
+      <member refid="classmidisynth_1_1sine__wave__generator_1af91d63cf97f18c193adaffe5f375bfa9" prot="public" virt="non-virtual"><scope>midisynth::sine_wave_generator</scope><name>get_next</name></member>
+      <member refid="classmidisynth_1_1sine__wave__generator_1a971107bc6fa940379016825b4db7aaa0" prot="public" virt="non-virtual"><scope>midisynth::sine_wave_generator</scope><name>get_next</name></member>
+      <member refid="classmidisynth_1_1sine__wave__generator_1a40407d7018b4159c8cc639e24872419a" prot="private" virt="non-virtual"><scope>midisynth::sine_wave_generator</scope><name>position</name></member>
+      <member refid="classmidisynth_1_1sine__wave__generator_1ae340106a60734d414994c926f641805f" prot="public" virt="non-virtual"><scope>midisynth::sine_wave_generator</scope><name>set_cycle</name></member>
+      <member refid="classmidisynth_1_1sine__wave__generator_1a41fffe314a808ddf2029f01e4342f1b2" prot="public" virt="non-virtual"><scope>midisynth::sine_wave_generator</scope><name>sine_wave_generator</name></member>
+      <member refid="classmidisynth_1_1sine__wave__generator_1a85f65771766490e594896407972bf906" prot="public" virt="non-virtual"><scope>midisynth::sine_wave_generator</scope><name>sine_wave_generator</name></member>
+      <member refid="classmidisynth_1_1sine__wave__generator_1ae737a8be6d0c04feb05161a8766b3c0f" prot="private" virt="non-virtual"><scope>midisynth::sine_wave_generator</scope><name>step</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -480,3 +480,4 @@ int AudioDecoderMidi::MidiTempoData::GetSamples(std::chrono::microseconds mtime_
 	int ticks_since_last = static_cast<int>(ticks_per_us * delta.count());
 	return samples + static_cast<int>(ticks_since_last * samples_per_tick);
 }
+

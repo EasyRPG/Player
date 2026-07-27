@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structalpha__traits" kind="struct" language="C++" prot="public">
+    <compoundname>alpha_traits</compoundname>
+    <includes refid="pixel__format_8h" local="no">pixel_format.h</includes>
+    <templateparamlist>
+      <param>
+        <type>class TPF</type>
+      </param>
+      <param>
+        <type>bool</type>
+        <declname>aligned</declname>
+        <defname>aligned</defname>
+      </param>
+      <param>
+        <type>bool</type>
+        <declname>dynamic_alpha</declname>
+        <defname>dynamic_alpha</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>alpha_type</declname>
+        <defname>alpha_type</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="structalpha__traits_1a6954bbc95e1d28483d8597b6021a5c74" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>static uint8_t alpha_traits&lt; TPF, aligned, dynamic_alpha, alpha_type &gt;::get_alpha</definition>
+        <argsstring>(const TPF *pf, const uint8_t *p)</argsstring>
+        <name>get_alpha</name>
+        <qualifiedname>alpha_traits::get_alpha</qualifiedname>
+        <param>
+          <type>const TPF *</type>
+          <declname>pf</declname>
+        </param>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="332" column="23" bodyfile="pixel_format.h" bodystart="332" bodyend="336"/>
+      </memberdef>
+      <memberdef kind="function" id="structalpha__traits_1a81acd549b48c7f15b6327997b331667d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void alpha_traits&lt; TPF, aligned, dynamic_alpha, alpha_type &gt;::set_alpha</definition>
+        <argsstring>(const TPF *pf, uint8_t *p, uint8_t alpha)</argsstring>
+        <name>set_alpha</name>
+        <qualifiedname>alpha_traits::set_alpha</qualifiedname>
+        <param>
+          <type>const TPF *</type>
+          <declname>pf</declname>
+        </param>
+        <param>
+          <type>uint8_t *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>alpha</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="337" column="20" bodyfile="pixel_format.h" bodystart="337" bodyend="341"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pixel_format.h" line="331" column="1" bodyfile="pixel_format.h" bodystart="331" bodyend="342"/>
+    <listofallmembers>
+      <member refid="structalpha__traits_1a6954bbc95e1d28483d8597b6021a5c74" prot="public" virt="non-virtual"><scope>alpha_traits</scope><name>get_alpha</name></member>
+      <member refid="structalpha__traits_1a81acd549b48c7f15b6327997b331667d" prot="public" virt="non-virtual"><scope>alpha_traits</scope><name>set_alpha</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

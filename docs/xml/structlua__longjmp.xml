@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structlua__longjmp" kind="struct" language="C++" prot="public">
+    <compoundname>lua_longjmp</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structlua__longjmp_1aaad0b53cd52f1242bb179452c399dac0" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="structlua__longjmp" kindref="compound">lua_longjmp</ref> *</type>
+        <definition>struct lua_longjmp* lua_longjmp::previous</definition>
+        <argsstring></argsstring>
+        <name>previous</name>
+        <qualifiedname>lua_longjmp::previous</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.c" line="62" column="20" bodyfile="leasy/lua/ldo.c" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua__longjmp_1a8bec07bdf18d21abc918dc6e3916d749" prot="public" static="no" mutable="no">
+        <type>jmp_buf</type>
+        <definition>jmp_buf lua_longjmp::b</definition>
+        <argsstring></argsstring>
+        <name>b</name>
+        <qualifiedname>lua_longjmp::b</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.c" line="63" column="11" bodyfile="leasy/lua/ldo.c" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua__longjmp_1afc64b89b7c20f68e261449924c3b10c1" prot="public" static="no" mutable="no">
+        <type>volatile <ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref></type>
+        <definition>volatile TStatus lua_longjmp::status</definition>
+        <argsstring></argsstring>
+        <name>status</name>
+        <qualifiedname>lua_longjmp::status</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ldo.c" line="64" column="20" bodyfile="leasy/lua/ldo.c" bodystart="64" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>lua_longjmp</label>
+        <link refid="structlua__longjmp"/>
+        <childnode refid="1" relation="usage">
+          <edgelabel>previous</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/ldo.c" line="61" column="1" bodyfile="leasy/lua/ldo.c" bodystart="61" bodyend="65"/>
+    <listofallmembers>
+      <member refid="structlua__longjmp_1a8bec07bdf18d21abc918dc6e3916d749" prot="public" virt="non-virtual"><scope>lua_longjmp</scope><name>b</name></member>
+      <member refid="structlua__longjmp_1aaad0b53cd52f1242bb179452c399dac0" prot="public" virt="non-virtual"><scope>lua_longjmp</scope><name>previous</name></member>
+      <member refid="structlua__longjmp_1afc64b89b7c20f68e261449924c3b10c1" prot="public" virt="non-virtual"><scope>lua_longjmp</scope><name>status</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

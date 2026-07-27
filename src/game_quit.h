@@ -40,3 +40,4 @@ inline bool Game_Quit::ShouldQuit() const {
 }
 
 #endif
+

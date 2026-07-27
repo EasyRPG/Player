@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1metadata_1_1builtin" kind="namespace" language="C++">
+    <compoundname>leasy::metadata::builtin</compoundname>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespaceleasy_1_1metadata_1_1builtin_1af927b7af441c0fa7ed145ff555497063" prot="public" static="no">
+        <type>bool(*</type>
+        <definition>typedef bool(* leasy::metadata::builtin::IsRowAdjusted_OV1) (lcf::rpg::SaveActor::RowType row, lcf::rpg::System::BattleCondition cond, bool offense)</definition>
+        <argsstring>)(lcf::rpg::SaveActor::RowType row, lcf::rpg::System::BattleCondition cond, bool offense)</argsstring>
+        <name>IsRowAdjusted_OV1</name>
+        <qualifiedname>leasy::metadata::builtin::IsRowAdjusted_OV1</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="354" column="9" bodyfile="algo.cpp" bodystart="354" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespaceleasy_1_1metadata_1_1builtin_1afd631803f69b88c4830a9b2e5ba9261d" prot="public" static="no">
+        <type>bool(*</type>
+        <definition>typedef bool(* leasy::metadata::builtin::IsRowAdjusted_OV2) (const Game_Battler &amp;battler, lcf::rpg::System::BattleCondition cond, bool offense, bool allow_enemy)</definition>
+        <argsstring>)(const Game_Battler &amp;battler, lcf::rpg::System::BattleCondition cond, bool offense, bool allow_enemy)</argsstring>
+        <name>IsRowAdjusted_OV2</name>
+        <qualifiedname>leasy::metadata::builtin::IsRowAdjusted_OV2</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="355" column="11" bodyfile="algo.cpp" bodystart="355" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceleasy_1_1metadata_1_1builtin_1a68d6927d82705f6aed8ec9efc4ba9f50" prot="public" static="no" mutable="no">
+        <type>auto</type>
+        <definition>auto leasy::metadata::builtin::foooo</definition>
+        <argsstring></argsstring>
+        <name>foooo</name>
+        <qualifiedname>leasy::metadata::builtin::foooo</qualifiedname>
+        <initializer>       = ([]() -&gt; bool {
+    auto algo = <ref refid="namespaceleasy_1_1metadata_1adb1723ec288a7a9ff8efc2038c96a048" kindref="member">EasyRPG</ref>().sub(&quot;Algo&quot;)
+    .<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(&quot;IsRowAdjusted&quot;, (<ref refid="namespaceleasy_1_1metadata_1_1builtin_1af927b7af441c0fa7ed145ff555497063" kindref="member">IsRowAdjusted_OV1</ref>)<ref refid="namespace_algo_1a7d551848877a4ab37254c51c7007984e" kindref="member">Algo::IsRowAdjusted</ref>, (<ref refid="namespaceleasy_1_1metadata_1_1builtin_1afd631803f69b88c4830a9b2e5ba9261d" kindref="member">IsRowAdjusted_OV2</ref>)<ref refid="namespace_algo_1a7d551848877a4ab37254c51c7007984e" kindref="member">Algo::IsRowAdjusted</ref>)
+    .<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(&quot;VarianceAdjustEffect&quot;, <ref refid="namespace_algo_1a9107512f1e8fb47737369aad99ca75bb" kindref="member">Algo::VarianceAdjustEffect</ref>)
+    .<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(&quot;CalcNormalAttackToHit&quot;, <ref refid="namespace_algo_1a8d35a06c65058399dfc00991f008ead3" kindref="member">Algo::CalcNormalAttackToHit</ref>)
+    .<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(&quot;CalcSkillToHit&quot;, <ref refid="namespace_algo_1a20a91270cefd9cbc513b8506ad6319ee" kindref="member">Algo::CalcSkillToHit</ref>)
+    .<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(&quot;CalcCriticalHitChance&quot;, <ref refid="namespace_algo_1ab67c5269af43207db8390348e3a23457" kindref="member">Algo::CalcCriticalHitChance</ref>)
+    .<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(&quot;AdjustDamageForDefend&quot;, <ref refid="namespace_algo_1a1eed647865cbbd603f19dce881627d32" kindref="member">Algo::AdjustDamageForDefend</ref>)
+    .<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(&quot;CalcNormalAttackEffect&quot;, <ref refid="namespace_algo_1a08850b1850959032ed1004bec615979b" kindref="member">Algo::CalcNormalAttackEffect</ref>)
+    .<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(&quot;CalcSkillEffect&quot;, <ref refid="namespace_algo_1a7e199ac5516798acc758b27fbfab2c30" kindref="member">Algo::CalcSkillEffect</ref>)
+    .<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(&quot;CalcSelfDestructEffect&quot;, <ref refid="namespace_algo_1a41467d6a739c9c0bd0cdb26ad6effe6e" kindref="member">Algo::CalcSelfDestructEffect</ref>)
+    .<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(&quot;CalcSkillCost&quot;, <ref refid="namespace_algo_1a490e9b8058df0f592847da75bb33ae3d" kindref="member">Algo::CalcSkillCost</ref>)
+    .<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(&quot;CalcSkillHpCost&quot;, <ref refid="namespace_algo_1ab3267bbe86fdc1faa92c6ef033ed7d99" kindref="member">Algo::CalcSkillHpCost</ref>)
+    .<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(&quot;IsSkillUsable&quot;, <ref refid="namespace_algo_1a214826572362f723b3d821c45f6fcd5c" kindref="member">Algo::IsSkillUsable</ref>)
+    .<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(&quot;IsNormalOrSubskill&quot;, <ref refid="namespace_algo_1a54c6aa2e1a3540d61ba9a172599f75af" kindref="member">Algo::IsNormalOrSubskill</ref>)
+    .<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(&quot;SkillTargetsEnemies&quot;, <ref refid="namespace_algo_1a5895dc00ae63fc798bae221ec7fb6e28" kindref="member">Algo::SkillTargetsEnemies</ref>)
+    .<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(&quot;SkillTargetsAllies&quot;, <ref refid="namespace_algo_1a3e98b972fa5dbde2ac31832000fe1066" kindref="member">Algo::SkillTargetsAllies</ref>)
+    .<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(&quot;SkillTargetsOne&quot;, <ref refid="namespace_algo_1a0b3fa785119e3ff1404efb5a5a1e5a31" kindref="member">Algo::SkillTargetsOne</ref>)
+    .<ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref>(&quot;GetNumberOfAttacks&quot;, <ref refid="namespace_algo_1a3c160b41abda6e973e9ab6f16ac21263" kindref="member">Algo::GetNumberOfAttacks</ref>);
+    return false;
+}())</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="357" column="6" bodyfile="algo.cpp" bodystart="357" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="algo.cpp" line="353" column="1"/>
+  </compounddef>
+</doxygen>

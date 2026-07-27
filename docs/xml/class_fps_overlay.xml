@@ -1,0 +1,337 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_fps_overlay" kind="class" language="C++" prot="public">
+    <compoundname>FpsOverlay</compoundname>
+    <basecompoundref refid="class_drawable" prot="public" virt="non-virtual">Drawable</basecompoundref>
+    <includes refid="fps__overlay_8h" local="no">fps_overlay.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_fps_overlay_1aaac2769b926b0b03f5a755d100e23ef2" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef FpsOverlay::fps_bitmap</definition>
+        <argsstring></argsstring>
+        <name>fps_bitmap</name>
+        <qualifiedname>FpsOverlay::fps_bitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fps_overlay.h" line="63" column="11" bodyfile="fps_overlay.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_fps_overlay_1a87978fcf945cf3a36700a75bd56706de" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef FpsOverlay::speedup_bitmap</definition>
+        <argsstring></argsstring>
+        <name>speedup_bitmap</name>
+        <qualifiedname>FpsOverlay::speedup_bitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fps_overlay.h" line="64" column="11" bodyfile="fps_overlay.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_fps_overlay_1aa5b39064e4911ca44da3dad5e9379186" prot="private" static="no" mutable="no">
+        <type><ref refid="class_game___clock_1a7da5a97294e9d1b3dddb617d90eea63e" kindref="member">Game_Clock::time_point</ref></type>
+        <definition>Game_Clock::time_point FpsOverlay::last_refresh_time</definition>
+        <argsstring></argsstring>
+        <name>last_refresh_time</name>
+        <qualifiedname>FpsOverlay::last_refresh_time</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fps_overlay.h" line="65" column="24" bodyfile="fps_overlay.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_fps_overlay_1aa802a0c6a5d7d5dff28c0356f6004d4f" prot="private" static="no" mutable="no">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect FpsOverlay::fps_rect</definition>
+        <argsstring></argsstring>
+        <name>fps_rect</name>
+        <qualifiedname>FpsOverlay::fps_rect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_rect" kindref="compound">Rect</ref> to draw on screen </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fps_overlay.h" line="68" column="6" bodyfile="fps_overlay.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_fps_overlay_1a2b5ff813e170bc793db3a2c5001ddfdd" prot="private" static="no" mutable="no">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect FpsOverlay::speedup_rect</definition>
+        <argsstring></argsstring>
+        <name>speedup_rect</name>
+        <qualifiedname>FpsOverlay::speedup_rect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fps_overlay.h" line="69" column="6" bodyfile="fps_overlay.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_fps_overlay_1a3bd39cbaba378921eabafb9d311e2532" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string FpsOverlay::text</definition>
+        <argsstring></argsstring>
+        <name>text</name>
+        <qualifiedname>FpsOverlay::text</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fps_overlay.h" line="71" column="13" bodyfile="fps_overlay.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_fps_overlay_1aabc0351f55143691ef6fe5fb7660f11d" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int FpsOverlay::last_speed_mod</definition>
+        <argsstring></argsstring>
+        <name>last_speed_mod</name>
+        <qualifiedname>FpsOverlay::last_speed_mod</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fps_overlay.h" line="73" column="5" bodyfile="fps_overlay.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_fps_overlay_1aa0b21ffee72c9d89b7451cf6ca68d9bd" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool FpsOverlay::speedup_dirty</definition>
+        <argsstring></argsstring>
+        <name>speedup_dirty</name>
+        <qualifiedname>FpsOverlay::speedup_dirty</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fps_overlay.h" line="74" column="6" bodyfile="fps_overlay.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_fps_overlay_1adda3ec6c797c492aa2d234cabf012800" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool FpsOverlay::fps_dirty</definition>
+        <argsstring></argsstring>
+        <name>fps_dirty</name>
+        <qualifiedname>FpsOverlay::fps_dirty</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fps_overlay.h" line="75" column="6" bodyfile="fps_overlay.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_fps_overlay_1a1a112116e98655d1ceefd260bf7025b7" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool FpsOverlay::draw_fps</definition>
+        <argsstring></argsstring>
+        <name>draw_fps</name>
+        <qualifiedname>FpsOverlay::draw_fps</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fps_overlay.h" line="76" column="6" bodyfile="fps_overlay.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_fps_overlay_1a82f5a3658ae8c17d7498527c4af6163c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>FpsOverlay::FpsOverlay</definition>
+        <argsstring>()</argsstring>
+        <name>FpsOverlay</name>
+        <qualifiedname>FpsOverlay::FpsOverlay</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fps_overlay.h" line="35" column="1" bodyfile="fps_overlay.cpp" bodystart="32" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="class_fps_overlay_1a8c1a3a528fabcea5e73a506fc727ed5a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void FpsOverlay::Draw</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>Draw</name>
+        <qualifiedname>FpsOverlay::Draw</qualifiedname>
+        <reimplements refid="class_drawable_1aa8a9b151f40368331f6fd8bbdd20133f">Draw</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fps_overlay.h" line="37" column="6" bodyfile="fps_overlay.cpp" bodystart="65" bodyend="110"/>
+      </memberdef>
+      <memberdef kind="function" id="class_fps_overlay_1a8b9ad6adf120189d6486780263337618" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FpsOverlay::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>FpsOverlay::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Update the fps overlay.</para>
+<para><simplesect kind="return"><para>true if the fps string was changed </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fps_overlay.h" line="44" column="6" bodyfile="fps_overlay.cpp" bodystart="46" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="class_fps_overlay_1a70b01d2ff98a1d5058d4b050c8f1bf8f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string FpsOverlay::GetFpsString</definition>
+        <argsstring>() const</argsstring>
+        <name>GetFpsString</name>
+        <qualifiedname>FpsOverlay::GetFpsString</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Formats a string containing FPS.</para>
+<para><simplesect kind="return"><para>fps string </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fps_overlay.h" line="51" column="13" bodyfile="fps_overlay.h" bodystart="79" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="class_fps_overlay_1a39378c17db23ec330178286569474db8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void FpsOverlay::SetDrawFps</definition>
+        <argsstring>(bool value)</argsstring>
+        <name>SetDrawFps</name>
+        <qualifiedname>FpsOverlay::SetDrawFps</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set whether we will render the fps.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>true if we want to draw to screen </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fps_overlay.h" line="58" column="6" bodyfile="fps_overlay.h" bodystart="83" bodyend="85"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_fps_overlay_1adc0be66a9ebbfec6fbc6fdb56bd547f4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void FpsOverlay::UpdateText</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateText</name>
+        <qualifiedname>FpsOverlay::UpdateText</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fps_overlay.h" line="61" column="6" bodyfile="fps_overlay.cpp" bodystart="40" bodyend="44"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_fps_overlay" kindref="compound">FpsOverlay</ref> class. Shows current FPS and the speedup indicator. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>FpsOverlay</label>
+        <link refid="class_fps_overlay"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>FpsOverlay</label>
+        <link refid="class_fps_overlay"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="fps_overlay.h" line="33" column="1" bodyfile="fps_overlay.h" bodystart="33" bodyend="77"/>
+    <listofallmembers>
+      <member refid="class_fps_overlay_1a8c1a3a528fabcea5e73a506fc727ed5a" prot="public" virt="virtual"><scope>FpsOverlay</scope><name>Draw</name></member>
+      <member refid="class_fps_overlay_1a1a112116e98655d1ceefd260bf7025b7" prot="private" virt="non-virtual"><scope>FpsOverlay</scope><name>draw_fps</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>Flags</name></member>
+      <member refid="class_fps_overlay_1aaac2769b926b0b03f5a755d100e23ef2" prot="private" virt="non-virtual"><scope>FpsOverlay</scope><name>fps_bitmap</name></member>
+      <member refid="class_fps_overlay_1adda3ec6c797c492aa2d234cabf012800" prot="private" virt="non-virtual"><scope>FpsOverlay</scope><name>fps_dirty</name></member>
+      <member refid="class_fps_overlay_1aa802a0c6a5d7d5dff28c0356f6004d4f" prot="private" virt="non-virtual"><scope>FpsOverlay</scope><name>fps_rect</name></member>
+      <member refid="class_fps_overlay_1a82f5a3658ae8c17d7498527c4af6163c" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>FpsOverlay</name></member>
+      <member refid="class_fps_overlay_1a70b01d2ff98a1d5058d4b050c8f1bf8f" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>GetFpsString</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>GetRenderOy</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>GetZ</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>IsGlobal</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>IsVisible</name></member>
+      <member refid="class_fps_overlay_1aa5b39064e4911ca44da3dad5e9379186" prot="private" virt="non-virtual"><scope>FpsOverlay</scope><name>last_refresh_time</name></member>
+      <member refid="class_fps_overlay_1aabc0351f55143691ef6fe5fb7660f11d" prot="private" virt="non-virtual"><scope>FpsOverlay</scope><name>last_speed_mod</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>operator=</name></member>
+      <member refid="class_fps_overlay_1a39378c17db23ec330178286569474db8" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>SetDrawFps</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>SetRenderOy</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>SetVisible</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>SetZ</name></member>
+      <member refid="class_fps_overlay_1a87978fcf945cf3a36700a75bd56706de" prot="private" virt="non-virtual"><scope>FpsOverlay</scope><name>speedup_bitmap</name></member>
+      <member refid="class_fps_overlay_1aa0b21ffee72c9d89b7451cf6ca68d9bd" prot="private" virt="non-virtual"><scope>FpsOverlay</scope><name>speedup_dirty</name></member>
+      <member refid="class_fps_overlay_1a2b5ff813e170bc793db3a2c5001ddfdd" prot="private" virt="non-virtual"><scope>FpsOverlay</scope><name>speedup_rect</name></member>
+      <member refid="class_fps_overlay_1a3bd39cbaba378921eabafb9d311e2532" prot="private" virt="non-virtual"><scope>FpsOverlay</scope><name>text</name></member>
+      <member refid="class_fps_overlay_1a8b9ad6adf120189d6486780263337618" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>Update</name></member>
+      <member refid="class_fps_overlay_1adc0be66a9ebbfec6fbc6fdb56bd547f4" prot="private" virt="non-virtual"><scope>FpsOverlay</scope><name>UpdateText</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>FpsOverlay</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>FpsOverlay</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

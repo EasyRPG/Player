@@ -774,3 +774,4 @@ void Game_Config::WriteToStream(Filesystem_Stream::OutputStream& os) const {
 
 	os << "\n";
 }
+

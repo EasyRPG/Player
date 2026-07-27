@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1ios_1_1console__sink" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>leasy::ios::console_sink</compoundname>
+    <basecompoundref refid="classleasy_1_1ios_1_1sink" prot="public" virt="non-virtual">leasy::ios::sink</basecompoundref>
+    <includes refid="lio_8hpp" local="no">lio.hpp</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1console__sink_1a86784a4b9faa78fd70e741ab918caeae" prot="private" static="no" mutable="no">
+        <type>std::ostream &amp;</type>
+        <definition>std::ostream&amp; leasy::ios::console_sink::os_</definition>
+        <argsstring></argsstring>
+        <name>os_</name>
+        <qualifiedname>leasy::ios::console_sink::os_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="128" column="16" bodyfile="leasy/lio.hpp" bodystart="128" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1console__sink_1aba2fb75e175fe91eca5128c8dbedc99e" prot="private" static="no" mutable="no">
+        <type>std::mutex</type>
+        <definition>std::mutex leasy::ios::console_sink::mutex_</definition>
+        <argsstring></argsstring>
+        <name>mutex_</name>
+        <qualifiedname>leasy::ios::console_sink::mutex_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="129" column="17" bodyfile="leasy/lio.hpp" bodystart="129" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1ios_1_1console__sink_1ad3b50070f394e320ea50dec20d7eb565" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ios::console_sink::console_sink</definition>
+        <argsstring>(std::ostream &amp;os=std::cout)</argsstring>
+        <name>console_sink</name>
+        <qualifiedname>leasy::ios::console_sink::console_sink</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>os</declname>
+          <defval>std::cout</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="114" column="19" bodyfile="leasy/lio.hpp" bodystart="114" bodyend="115"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1console__sink_1af0e27ee0f25a1b9b2bae2fc40ec01b6b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void leasy::ios::console_sink::write</definition>
+        <argsstring>(std::string_view text) override</argsstring>
+        <name>write</name>
+        <qualifiedname>leasy::ios::console_sink::write</qualifiedname>
+        <reimplements refid="classleasy_1_1ios_1_1sink_1a5597dbb38a1a6ffb3934ddb15967cfdc">write</reimplements>
+        <param>
+          <type>std::string_view</type>
+          <declname>text</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="117" column="15" bodyfile="leasy/lio.hpp" bodystart="117" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1console__sink_1ad6e86dea1d132e7ca018bc019b0d801a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void leasy::ios::console_sink::flush</definition>
+        <argsstring>() override</argsstring>
+        <name>flush</name>
+        <qualifiedname>leasy::ios::console_sink::flush</qualifiedname>
+        <reimplements refid="classleasy_1_1ios_1_1sink_1ae158492e47f69628c38be69ca0ebb65c">flush</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="122" column="15" bodyfile="leasy/lio.hpp" bodystart="122" bodyend="125"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>leasy::ios::console_sink</label>
+        <link refid="classleasy_1_1ios_1_1console__sink"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>leasy::ios::sink</label>
+        <link refid="classleasy_1_1ios_1_1sink"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>leasy::ios::console_sink</label>
+        <link refid="classleasy_1_1ios_1_1console__sink"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>leasy::ios::sink</label>
+        <link refid="classleasy_1_1ios_1_1sink"/>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lio.hpp" line="112" column="1" bodyfile="leasy/lio.hpp" bodystart="112" bodyend="130"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1ios_1_1console__sink_1ad3b50070f394e320ea50dec20d7eb565" prot="public" virt="non-virtual"><scope>leasy::ios::console_sink</scope><name>console_sink</name></member>
+      <member refid="classleasy_1_1ios_1_1console__sink_1ad6e86dea1d132e7ca018bc019b0d801a" prot="public" virt="virtual"><scope>leasy::ios::console_sink</scope><name>flush</name></member>
+      <member refid="classleasy_1_1ios_1_1console__sink_1aba2fb75e175fe91eca5128c8dbedc99e" prot="private" virt="non-virtual"><scope>leasy::ios::console_sink</scope><name>mutex_</name></member>
+      <member refid="classleasy_1_1ios_1_1console__sink_1a86784a4b9faa78fd70e741ab918caeae" prot="private" virt="non-virtual"><scope>leasy::ios::console_sink</scope><name>os_</name></member>
+      <member refid="classleasy_1_1ios_1_1console__sink_1af0e27ee0f25a1b9b2bae2fc40ec01b6b" prot="public" virt="virtual"><scope>leasy::ios::console_sink</scope><name>write</name></member>
+      <member refid="classleasy_1_1ios_1_1sink_1ac31aa5569f268dd0466ccd98d478a727" prot="public" virt="virtual"><scope>leasy::ios::console_sink</scope><name>~sink</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

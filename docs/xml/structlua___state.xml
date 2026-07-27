@@ -1,0 +1,581 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structlua___state" kind="struct" language="C++" prot="public">
+    <compoundname>lua_State</compoundname>
+    <includes refid="lstate_8h" local="no">lstate.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structlua___state_1ad5311df12c1bfa3c4e11b7a1dbecaeda" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>lua_State::CommonHeader</definition>
+        <argsstring></argsstring>
+        <name>CommonHeader</name>
+        <qualifiedname>lua_State::CommonHeader</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="286" column="3" bodyfile="leasy/lua/lstate.h" bodystart="286" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1ac2903d4a712ca1c2d114f541636490f5" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte lua_State::allowhook</definition>
+        <argsstring></argsstring>
+        <name>allowhook</name>
+        <qualifiedname>lua_State::allowhook</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="287" column="11" bodyfile="leasy/lua/lstate.h" bodystart="287" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1a2003a038d8a507b4a3d7180d4712fe50" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1a6ea6ddb9c44a1569a72dffa564edd0ae" kindref="member">TStatus</ref></type>
+        <definition>TStatus lua_State::status</definition>
+        <argsstring></argsstring>
+        <name>status</name>
+        <qualifiedname>lua_State::status</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="288" column="11" bodyfile="leasy/lua/lstate.h" bodystart="288" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1a1312e4b6f80531820b4765080a33fbfe" prot="public" static="no" mutable="no">
+        <type><ref refid="union_stk_id_rel" kindref="compound">StkIdRel</ref></type>
+        <definition>StkIdRel lua_State::top</definition>
+        <argsstring></argsstring>
+        <name>top</name>
+        <qualifiedname>lua_State::top</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="289" column="12" bodyfile="leasy/lua/lstate.h" bodystart="289" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1a5e52aec2ed9950737dd97ca4dc920c6d" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="structglobal___state" kindref="compound">global_State</ref> *</type>
+        <definition>struct global_State* lua_State::l_G</definition>
+        <argsstring></argsstring>
+        <name>l_G</name>
+        <qualifiedname>lua_State::l_G</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="290" column="21" bodyfile="leasy/lua/lstate.h" bodystart="290" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1a7fbb5727050853f411ad64b4be9ab5c8" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_call_info" kindref="compound">CallInfo</ref> *</type>
+        <definition>CallInfo* lua_State::ci</definition>
+        <argsstring></argsstring>
+        <name>ci</name>
+        <qualifiedname>lua_State::ci</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="291" column="12" bodyfile="leasy/lua/lstate.h" bodystart="291" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1aa1066a873c21da51aa79ceb237e0f695" prot="public" static="no" mutable="no">
+        <type><ref refid="union_stk_id_rel" kindref="compound">StkIdRel</ref></type>
+        <definition>StkIdRel lua_State::stack_last</definition>
+        <argsstring></argsstring>
+        <name>stack_last</name>
+        <qualifiedname>lua_State::stack_last</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="292" column="12" bodyfile="leasy/lua/lstate.h" bodystart="292" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1a775b09c37c4d784e9f9c621634d5522b" prot="public" static="no" mutable="no">
+        <type><ref refid="union_stk_id_rel" kindref="compound">StkIdRel</ref></type>
+        <definition>StkIdRel lua_State::stack</definition>
+        <argsstring></argsstring>
+        <name>stack</name>
+        <qualifiedname>lua_State::stack</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="293" column="12" bodyfile="leasy/lua/lstate.h" bodystart="293" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1aa1f4a24dc6645e10ba8d6f2713e446bc" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_up_val" kindref="compound">UpVal</ref> *</type>
+        <definition>UpVal* lua_State::openupval</definition>
+        <argsstring></argsstring>
+        <name>openupval</name>
+        <qualifiedname>lua_State::openupval</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="294" column="9" bodyfile="leasy/lua/lstate.h" bodystart="294" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1ac681fa46e5bac21b87c8d01a97113af9" prot="public" static="no" mutable="no">
+        <type><ref refid="union_stk_id_rel" kindref="compound">StkIdRel</ref></type>
+        <definition>StkIdRel lua_State::tbclist</definition>
+        <argsstring></argsstring>
+        <name>tbclist</name>
+        <qualifiedname>lua_State::tbclist</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="295" column="12" bodyfile="leasy/lua/lstate.h" bodystart="295" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1a0d446661e92287c8409076c970771217" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* lua_State::gclist</definition>
+        <argsstring></argsstring>
+        <name>gclist</name>
+        <qualifiedname>lua_State::gclist</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="296" column="12" bodyfile="leasy/lua/lstate.h" bodystart="296" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1ae1da80ba9fa9d9adad4deb8ae5b42ba0" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+        <definition>struct lua_State* lua_State::twups</definition>
+        <argsstring></argsstring>
+        <name>twups</name>
+        <qualifiedname>lua_State::twups</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="297" column="18" bodyfile="leasy/lua/lstate.h" bodystart="297" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1ae4bbd2199ffd804fe64142c3d5ecb249" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="structlua__longjmp" kindref="compound">lua_longjmp</ref> *</type>
+        <definition>struct lua_longjmp* lua_State::errorJmp</definition>
+        <argsstring></argsstring>
+        <name>errorJmp</name>
+        <qualifiedname>lua_State::errorJmp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="298" column="20" bodyfile="leasy/lua/lstate.h" bodystart="298" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1a8c707493c7e45c7e0467381f5a80175d" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_call_info" kindref="compound">CallInfo</ref></type>
+        <definition>CallInfo lua_State::base_ci</definition>
+        <argsstring></argsstring>
+        <name>base_ci</name>
+        <qualifiedname>lua_State::base_ci</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="299" column="12" bodyfile="leasy/lua/lstate.h" bodystart="299" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1ad4c84ca6425b0073ab2d83f05a05e788" prot="public" static="no" mutable="no">
+        <type>volatile <ref refid="lua_8h_1aa00de66eff087aef1fdd44f5b3bb9a0b" kindref="member">lua_Hook</ref></type>
+        <definition>volatile lua_Hook lua_State::hook</definition>
+        <argsstring></argsstring>
+        <name>hook</name>
+        <qualifiedname>lua_State::hook</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="300" column="21" bodyfile="leasy/lua/lstate.h" bodystart="300" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1a09de3a7c6d3bcb6c2b0d26a81bb8d44b" prot="public" static="no" mutable="no">
+        <type>ptrdiff_t</type>
+        <definition>ptrdiff_t lua_State::errfunc</definition>
+        <argsstring></argsstring>
+        <name>errfunc</name>
+        <qualifiedname>lua_State::errfunc</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="301" column="13" bodyfile="leasy/lua/lstate.h" bodystart="301" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1a9c4a565a35bed2d76dd84d9fb628853b" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" kindref="member">l_uint32</ref></type>
+        <definition>l_uint32 lua_State::nCcalls</definition>
+        <argsstring></argsstring>
+        <name>nCcalls</name>
+        <qualifiedname>lua_State::nCcalls</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="302" column="12" bodyfile="leasy/lua/lstate.h" bodystart="302" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1adfbafe57a78fbff8df33ba008315fb92" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int lua_State::oldpc</definition>
+        <argsstring></argsstring>
+        <name>oldpc</name>
+        <qualifiedname>lua_State::oldpc</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="303" column="7" bodyfile="leasy/lua/lstate.h" bodystart="303" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1a05dc175b2cf3769c2b362e6a9e29540e" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int lua_State::nci</definition>
+        <argsstring></argsstring>
+        <name>nci</name>
+        <qualifiedname>lua_State::nci</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="304" column="7" bodyfile="leasy/lua/lstate.h" bodystart="304" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1a5d760c922e94390cd270ebb4ca4bc848" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int lua_State::basehookcount</definition>
+        <argsstring></argsstring>
+        <name>basehookcount</name>
+        <qualifiedname>lua_State::basehookcount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="305" column="7" bodyfile="leasy/lua/lstate.h" bodystart="305" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1a8824aded162dcdb9d3a142a90819e372" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int lua_State::hookcount</definition>
+        <argsstring></argsstring>
+        <name>hookcount</name>
+        <qualifiedname>lua_State::hookcount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="306" column="7" bodyfile="leasy/lua/lstate.h" bodystart="306" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1a4f5ccabdfc6b9eb66eb5534c85270f2b" prot="public" static="no" mutable="no">
+        <type>volatile <ref refid="lstate_8h_1a671695c87339f30600d0f0f27a2cd2f0" kindref="member">l_signalT</ref></type>
+        <definition>volatile l_signalT lua_State::hookmask</definition>
+        <argsstring></argsstring>
+        <name>hookmask</name>
+        <qualifiedname>lua_State::hookmask</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="307" column="22" bodyfile="leasy/lua/lstate.h" bodystart="307" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1a3ec9bceb8da79881bdd9715d7e7da34d" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int lua_State::ftransfer</definition>
+        <argsstring></argsstring>
+        <name>ftransfer</name>
+        <qualifiedname>lua_State::ftransfer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="309" column="9" bodyfile="leasy/lua/lstate.h" bodystart="309" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1af5a5b577120fa80442479a02e7afe343" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int lua_State::ntransfer</definition>
+        <argsstring></argsstring>
+        <name>ntransfer</name>
+        <qualifiedname>lua_State::ntransfer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="310" column="9" bodyfile="leasy/lua/lstate.h" bodystart="310" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___state_1a5159b9a8eb5846dd16c92711cbf08e03" prot="public" static="no" mutable="no">
+        <type>struct lua_State::@374044307336135153173332210332036104146053075337</type>
+        <definition>struct lua_State::@374044307336135153173332210332036104146053075337 lua_State::transferinfo</definition>
+        <argsstring></argsstring>
+        <name>transferinfo</name>
+        <qualifiedname>lua_State::transferinfo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="311" column="16"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="14">
+        <label>CallInfo</label>
+        <link refid="struct_call_info"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>func</edgelabel>
+          <edgelabel>top</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>next</edgelabel>
+          <edgelabel>previous</edgelabel>
+        </childnode>
+        <childnode refid="1" relation="usage">
+          <edgelabel>k</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>GCObject</label>
+        <link refid="struct_g_c_object"/>
+      </node>
+      <node id="13">
+        <label>LX</label>
+        <link refid="struct_l_x"/>
+        <childnode refid="1" relation="usage">
+          <edgelabel>l</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>Node</label>
+        <link refid="union_node"/>
+        <childnode refid="12" relation="usage">
+          <edgelabel>u</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>i_val</edgelabel>
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Node::NodeKey</label>
+        <link refid="struct_node_1_1_node_key"/>
+        <childnode refid="10" relation="usage">
+          <edgelabel>key_val</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>StackValue</label>
+        <link refid="union_stack_value"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>val</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>StkIdRel</label>
+        <link refid="union_stk_id_rel"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>p</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>TValue</label>
+        <link refid="struct_t_value"/>
+      </node>
+      <node id="9">
+        <label>Table</label>
+        <link refid="struct_table"/>
+        <childnode refid="10" relation="usage">
+          <edgelabel>array</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>node</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>metatable</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>gclist</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>UpVal</label>
+        <link refid="struct_up_val"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>p</edgelabel>
+          <edgelabel>value</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>next</edgelabel>
+          <edgelabel>previous</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>Value</label>
+        <link refid="union_value"/>
+        <childnode refid="8" relation="usage">
+          <edgelabel>gc</edgelabel>
+        </childnode>
+        <childnode refid="1" relation="usage">
+          <edgelabel>f</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>global_State</label>
+        <link refid="structglobal___state"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>strt</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>l_registry</edgelabel>
+          <edgelabel>nilvalue</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>allgc</edgelabel>
+          <edgelabel>allweak</edgelabel>
+          <edgelabel>ephemeron</edgelabel>
+          <edgelabel>finobj</edgelabel>
+          <edgelabel>finobjold1</edgelabel>
+          <edgelabel>finobjrold</edgelabel>
+          <edgelabel>finobjsur</edgelabel>
+          <edgelabel>firstold1</edgelabel>
+          <edgelabel>fixedgc</edgelabel>
+          <edgelabel>gray</edgelabel>
+          <edgelabel>  ...</edgelabel>
+        </childnode>
+        <childnode refid="1" relation="usage">
+          <edgelabel>panic</edgelabel>
+          <edgelabel>twups</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>memerrmsg</edgelabel>
+          <edgelabel>strcache</edgelabel>
+          <edgelabel>tmname</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>mt</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>mainth</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>lua_State</label>
+        <link refid="structlua___state"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>stack</edgelabel>
+          <edgelabel>stack_last</edgelabel>
+          <edgelabel>tbclist</edgelabel>
+          <edgelabel>top</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>l_G</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>base_ci</edgelabel>
+          <edgelabel>ci</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>openupval</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>gclist</edgelabel>
+        </childnode>
+        <childnode refid="1" relation="usage">
+          <edgelabel>twups</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>errorJmp</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>lua_longjmp</label>
+        <link refid="structlua__longjmp"/>
+        <childnode refid="16" relation="usage">
+          <edgelabel>previous</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>stringtable</label>
+        <link refid="structstringtable"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>hash</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lstate.h" line="285" column="1" bodyfile="leasy/lua/lstate.h" bodystart="285" bodyend="312"/>
+    <listofallmembers>
+      <member refid="structlua___state_1ac2903d4a712ca1c2d114f541636490f5" prot="public" virt="non-virtual"><scope>lua_State</scope><name>allowhook</name></member>
+      <member refid="structlua___state_1a8c707493c7e45c7e0467381f5a80175d" prot="public" virt="non-virtual"><scope>lua_State</scope><name>base_ci</name></member>
+      <member refid="structlua___state_1a5d760c922e94390cd270ebb4ca4bc848" prot="public" virt="non-virtual"><scope>lua_State</scope><name>basehookcount</name></member>
+      <member refid="structlua___state_1a7fbb5727050853f411ad64b4be9ab5c8" prot="public" virt="non-virtual"><scope>lua_State</scope><name>ci</name></member>
+      <member refid="structlua___state_1ad5311df12c1bfa3c4e11b7a1dbecaeda" prot="public" virt="non-virtual"><scope>lua_State</scope><name>CommonHeader</name></member>
+      <member refid="structlua___state_1a09de3a7c6d3bcb6c2b0d26a81bb8d44b" prot="public" virt="non-virtual"><scope>lua_State</scope><name>errfunc</name></member>
+      <member refid="structlua___state_1ae4bbd2199ffd804fe64142c3d5ecb249" prot="public" virt="non-virtual"><scope>lua_State</scope><name>errorJmp</name></member>
+      <member refid="structlua___state_1a3ec9bceb8da79881bdd9715d7e7da34d" prot="public" virt="non-virtual"><scope>lua_State</scope><name>ftransfer</name></member>
+      <member refid="structlua___state_1a0d446661e92287c8409076c970771217" prot="public" virt="non-virtual"><scope>lua_State</scope><name>gclist</name></member>
+      <member refid="structlua___state_1ad4c84ca6425b0073ab2d83f05a05e788" prot="public" virt="non-virtual"><scope>lua_State</scope><name>hook</name></member>
+      <member refid="structlua___state_1a8824aded162dcdb9d3a142a90819e372" prot="public" virt="non-virtual"><scope>lua_State</scope><name>hookcount</name></member>
+      <member refid="structlua___state_1a4f5ccabdfc6b9eb66eb5534c85270f2b" prot="public" virt="non-virtual"><scope>lua_State</scope><name>hookmask</name></member>
+      <member refid="structlua___state_1a5e52aec2ed9950737dd97ca4dc920c6d" prot="public" virt="non-virtual"><scope>lua_State</scope><name>l_G</name></member>
+      <member refid="structlua___state_1a9c4a565a35bed2d76dd84d9fb628853b" prot="public" virt="non-virtual"><scope>lua_State</scope><name>nCcalls</name></member>
+      <member refid="structlua___state_1a05dc175b2cf3769c2b362e6a9e29540e" prot="public" virt="non-virtual"><scope>lua_State</scope><name>nci</name></member>
+      <member refid="structlua___state_1af5a5b577120fa80442479a02e7afe343" prot="public" virt="non-virtual"><scope>lua_State</scope><name>ntransfer</name></member>
+      <member refid="structlua___state_1adfbafe57a78fbff8df33ba008315fb92" prot="public" virt="non-virtual"><scope>lua_State</scope><name>oldpc</name></member>
+      <member refid="structlua___state_1aa1f4a24dc6645e10ba8d6f2713e446bc" prot="public" virt="non-virtual"><scope>lua_State</scope><name>openupval</name></member>
+      <member refid="structlua___state_1a775b09c37c4d784e9f9c621634d5522b" prot="public" virt="non-virtual"><scope>lua_State</scope><name>stack</name></member>
+      <member refid="structlua___state_1aa1066a873c21da51aa79ceb237e0f695" prot="public" virt="non-virtual"><scope>lua_State</scope><name>stack_last</name></member>
+      <member refid="structlua___state_1a2003a038d8a507b4a3d7180d4712fe50" prot="public" virt="non-virtual"><scope>lua_State</scope><name>status</name></member>
+      <member refid="structlua___state_1ac681fa46e5bac21b87c8d01a97113af9" prot="public" virt="non-virtual"><scope>lua_State</scope><name>tbclist</name></member>
+      <member refid="structlua___state_1a1312e4b6f80531820b4765080a33fbfe" prot="public" virt="non-virtual"><scope>lua_State</scope><name>top</name></member>
+      <member refid="structlua___state_1a5159b9a8eb5846dd16c92711cbf08e03" prot="public" virt="non-virtual"><scope>lua_State</scope><name>transferinfo</name></member>
+      <member refid="structlua___state_1ae1da80ba9fa9d9adad4deb8ae5b42ba0" prot="public" virt="non-virtual"><scope>lua_State</scope><name>twups</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,1309 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="window__keyboard_8cpp" kind="file" language="C++">
+    <compoundname>window_keyboard.cpp</compoundname>
+    <includes local="no">string</includes>
+    <includes local="no">algorithm</includes>
+    <includes refid="window__keyboard_8h" local="yes">window_keyboard.h</includes>
+    <includes refid="game__system_8h" local="yes">game_system.h</includes>
+    <includes refid="input_8h" local="yes">input.h</includes>
+    <includes refid="bitmap_8h" local="yes">bitmap.h</includes>
+    <includes refid="font_8h" local="yes">font.h</includes>
+    <incdepgraph>
+      <node id="60">
+        <label>async_handler.h</label>
+        <link refid="async__handler_8h"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="88">
+        <label>async_op.h</label>
+        <link refid="async__op_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>bitmap.h</label>
+        <link refid="bitmap_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="101">
+        <label>config_param.h</label>
+        <link refid="config__param_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="107" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="90">
+        <label>drawable_list.h</label>
+        <link refid="drawable__list_8h"/>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+      </node>
+      <node id="102">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>flash.h</label>
+        <link refid="flash_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="96">
+        <label>flat_map.h</label>
+        <link refid="flat__map_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+      </node>
+      <node id="113">
+        <label>font.h</label>
+        <link refid="font_8h"/>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="114" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>game_actor.h</label>
+        <link refid="game__actor_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>game_battler.h</label>
+        <link refid="game__battler_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+      </node>
+      <node id="108">
+        <label>game_clock.h</label>
+        <link refid="game__clock_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+        <childnode refid="110" relation="include">
+        </childnode>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="100">
+        <label>game_config.h</label>
+        <link refid="game__config_8h"/>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="84">
+        <label>game_system.h</label>
+        <link refid="game__system_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="91">
+        <label>input.h</label>
+        <link refid="input_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+      </node>
+      <node id="93">
+        <label>input_buttons.h</label>
+        <link refid="input__buttons_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+      </node>
+      <node id="98">
+        <label>input_source.h</label>
+        <link refid="input__source_8h"/>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="97">
+        <label>keys.h</label>
+        <link refid="keys_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+      </node>
+      <node id="64">
+        <label>lcf/data.h</label>
+        <link refid="data_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+      </node>
+      <node id="63">
+        <label>main_data.h</label>
+        <link refid="main__data_8h"/>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>opacity.h</label>
+        <link refid="opacity_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="22">
+        <label>pixel_format.h</label>
+        <link refid="pixel__format_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>pixman_image_ptr.h</label>
+        <link refid="pixman__image__ptr_8h"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="110">
+        <label>platform/clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="109" relation="include">
+        </childnode>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="111" relation="include">
+        </childnode>
+        <childnode refid="112" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>point.h</label>
+        <link refid="point_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>rect.h</label>
+        <link refid="rect_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="87">
+        <label>scene.h</label>
+        <link refid="scene_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="59">
+        <label>sprite.h</label>
+        <link refid="sprite_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="62">
+        <label>sprite_actor.h</label>
+        <link refid="sprite__actor_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+      </node>
+      <node id="58">
+        <label>sprite_battler.h</label>
+        <link refid="sprite__battler_8h"/>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+      </node>
+      <node id="61">
+        <label>sprite_weapon.h</label>
+        <link refid="sprite__weapon_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>state.h</label>
+        <link refid="state_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+      </node>
+      <node id="112">
+        <label>std_clock.h</label>
+        <link refid="std__clock_8h"/>
+        <childnode refid="109" relation="include">
+        </childnode>
+        <childnode refid="111" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>text.h</label>
+        <link refid="text_8h"/>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>tone.h</label>
+        <link refid="tone_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="86">
+        <label>transition.h</label>
+        <link refid="transition_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>window.h</label>
+        <link refid="window_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>window_base.h</label>
+        <link refid="window__base_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>window_keyboard.cpp</label>
+        <link refid="window__keyboard_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="113" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>window_keyboard.h</label>
+        <link refid="window__keyboard_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>algorithm</label>
+      </node>
+      <node id="6">
+        <label>array</label>
+      </node>
+      <node id="92">
+        <label>bitset</label>
+      </node>
+      <node id="16">
+        <label>cassert</label>
+      </node>
+      <node id="109">
+        <label>chrono</label>
+      </node>
+      <node id="40">
+        <label>climits</label>
+      </node>
+      <node id="13">
+        <label>cstdint</label>
+      </node>
+      <node id="103">
+        <label>cstdio</label>
+      </node>
+      <node id="23">
+        <label>cstdlib</label>
+      </node>
+      <node id="24">
+        <label>cstring</label>
+      </node>
+      <node id="26">
+        <label>ctime</label>
+      </node>
+      <node id="31">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="32">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="99">
+        <label>fstream</label>
+      </node>
+      <node id="27">
+        <label>functional</label>
+      </node>
+      <node id="94">
+        <label>initializer_list</label>
+      </node>
+      <node id="104">
+        <label>ios</label>
+      </node>
+      <node id="42">
+        <label>istream</label>
+      </node>
+      <node id="55">
+        <label>lcf/dbbitarray.h</label>
+      </node>
+      <node id="30">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="95">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="107">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="105">
+        <label>lcf/inireader.h</label>
+      </node>
+      <node id="50">
+        <label>lcf/rpg/actor.h</label>
+      </node>
+      <node id="71">
+        <label>lcf/rpg/animation.h</label>
+      </node>
+      <node id="69">
+        <label>lcf/rpg/attribute.h</label>
+      </node>
+      <node id="77">
+        <label>lcf/rpg/battlecommand.h</label>
+      </node>
+      <node id="78">
+        <label>lcf/rpg/battleranimation.h</label>
+      </node>
+      <node id="72">
+        <label>lcf/rpg/chipset.h</label>
+      </node>
+      <node id="76">
+        <label>lcf/rpg/class.h</label>
+      </node>
+      <node id="75">
+        <label>lcf/rpg/commonevent.h</label>
+      </node>
+      <node id="83">
+        <label>lcf/rpg/database.h</label>
+      </node>
+      <node id="67">
+        <label>lcf/rpg/enemy.h</label>
+      </node>
+      <node id="81">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="48">
+        <label>lcf/rpg/fwd.h</label>
+      </node>
+      <node id="66">
+        <label>lcf/rpg/item.h</label>
+      </node>
+      <node id="51">
+        <label>lcf/rpg/learning.h</label>
+      </node>
+      <node id="80">
+        <label>lcf/rpg/music.h</label>
+      </node>
+      <node id="49">
+        <label>lcf/rpg/saveactor.h</label>
+      </node>
+      <node id="85">
+        <label>lcf/rpg/savesystem.h</label>
+      </node>
+      <node id="65">
+        <label>lcf/rpg/skill.h</label>
+      </node>
+      <node id="79">
+        <label>lcf/rpg/sound.h</label>
+      </node>
+      <node id="54">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="74">
+        <label>lcf/rpg/system.h</label>
+      </node>
+      <node id="73">
+        <label>lcf/rpg/terms.h</label>
+      </node>
+      <node id="70">
+        <label>lcf/rpg/terrain.h</label>
+      </node>
+      <node id="82">
+        <label>lcf/rpg/treemap.h</label>
+      </node>
+      <node id="68">
+        <label>lcf/rpg/troop.h</label>
+      </node>
+      <node id="114">
+        <label>lcf/scope_guard.h</label>
+      </node>
+      <node id="34">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="29">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="53">
+        <label>limits</label>
+      </node>
+      <node id="14">
+        <label>map</label>
+      </node>
+      <node id="11">
+        <label>memory</label>
+      </node>
+      <node id="20">
+        <label>ostream</label>
+      </node>
+      <node id="17">
+        <label>pixman.h</label>
+      </node>
+      <node id="2">
+        <label>string</label>
+      </node>
+      <node id="111">
+        <label>thread</label>
+      </node>
+      <node id="19">
+        <label>tuple</label>
+      </node>
+      <node id="106">
+        <label>type_traits</label>
+      </node>
+      <node id="44">
+        <label>unordered_map</label>
+      </node>
+      <node id="89">
+        <label>utility</label>
+      </node>
+      <node id="15">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;algorithm&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="window__keyboard_8h" kindref="compound">window_keyboard.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__system_8h" kindref="compound">game_system.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="input_8h" kindref="compound">input.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="bitmap_8h" kindref="compound">bitmap.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="font_8h" kindref="compound">font.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1ae67e728f413c2caedc179fb9703b9d10" kindref="member">Window_Keyboard::DONE</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&lt;Done&gt;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1a9768136c5985b5e6c673b5d6c1968a37" kindref="member">Window_Keyboard::SPACE</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;SPACE&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1a59b7a990f4eb31fd2c6d5c2eff9a4a22" kindref="member">Window_Keyboard::NEXT_PAGE</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&lt;Page&gt;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1afada37b41f16635e23a1444cf0a51613" kindref="member">Window_Keyboard::DONE_JP</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&lt;決定&gt;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1a7b932cfafc8509ea08115984c8f2528a" kindref="member">Window_Keyboard::DONE_RU</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&lt;OK&gt;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1af6012f53679264b20342f3320465dcd9" kindref="member">Window_Keyboard::DONE_KO</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&lt;결정&gt;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1a2f05a7caf078654c6a2ec19c3f25cea1" kindref="member">Window_Keyboard::DONE_ZH_CN</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&lt;确定&gt;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1a084a0441589184706a6cbed4d5556ab9" kindref="member">Window_Keyboard::DONE_ZH_TW</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;&lt;確定&gt;&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>Hiragana<sp/>&lt;-&gt;<sp/>Katakana;<sp/>Hangul<sp/>1<sp/>&lt;-&gt;<sp/>Hangul<sp/>2;<sp/>Simp.<sp/>Chinese<sp/>1<sp/>&lt;-&gt;<sp/>Simp.<sp/>Chinese<sp/>2;</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>Trad.<sp/>Chinese<sp/>1<sp/>&lt;-&gt;<sp/>Trad.<sp/>Chinese<sp/>2;<sp/>Rus.Cyrillic<sp/>&lt;-&gt;<sp/>Rus.Latin;<sp/>letter<sp/>&lt;-&gt;<sp/>symbol</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><ref refid="struct_keyboard___layout" kindref="compound">Keyboard_Layout</ref><sp/><ref refid="class_window___keyboard_1adc5d98934b97b9092f69ae9b5fa2796d" kindref="member">Window_Keyboard::layouts</ref>[<ref refid="class_window___keyboard_1a8b3cb5e722f04167a90f999e6f3be867a8a505c47a9a764bd6fcd85cc6283fac2" kindref="member">Window_Keyboard::MODE_END</ref>]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;&lt;かな&gt;&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="comment">//<sp/>Hiragana</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;あ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;い&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;う&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;え&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;お&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;が&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぎ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぐ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;げ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ご&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;か&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;き&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;く&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;け&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;こ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ざ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;じ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ず&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぜ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぞ&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;さ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;し&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;す&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;せ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;そ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;だ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぢ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;づ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;で&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ど&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;た&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ち&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;つ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;て&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;と&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ば&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;び&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぶ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;べ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぼ&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;な&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;に&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぬ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ね&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;の&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぱ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぴ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぷ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぺ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぽ&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;は&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ひ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ふ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;へ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ほ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぁ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぃ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぅ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぇ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ぉ&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;ま&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;み&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;む&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;め&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;も&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;っ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ゃ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ゅ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ょ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ゎ&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;や&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ゆ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;よ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;わ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ん&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ー&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;～&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;・&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;＝&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;☆&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;ら&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;り&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;る&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;れ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ろ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ヴ&quot;</highlight><highlight class="normal">,<sp/>NEXT_PAGE,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>DONE}</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;&lt;カナ&gt;&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="comment">//<sp/>Katakana</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;ア&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;イ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ウ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;エ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;オ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ガ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ギ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;グ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ゲ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ゴ&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;カ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;キ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ク&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ケ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;コ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ザ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ジ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ズ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ゼ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ゾ&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;サ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;シ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ス&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;セ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ソ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ダ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ヂ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ヅ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;デ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ド&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;タ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;チ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ツ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;テ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ト&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;バ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ビ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ブ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ベ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ボ&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;ナ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ニ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ヌ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ネ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ノ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;パ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ピ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;プ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ペ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ポ&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;ハ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ヒ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;フ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ヘ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ホ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ァ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ィ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ゥ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ェ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ォ&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;マ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ミ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ム&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;メ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;モ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ッ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ャ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ュ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ョ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ヮ&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;ヤ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ユ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ヨ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ワ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ン&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ー&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;～&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;・&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;＝&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;☆&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;ラ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;リ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ル&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;レ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ロ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ヴ&quot;</highlight><highlight class="normal">,<sp/>NEXT_PAGE,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>DONE}</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;&lt;앞P&gt;&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="comment">//<sp/>Hangul<sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;가&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;갸&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;거&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;겨&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;고&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;교&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;구&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;계&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;그&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;기&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;나&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;냐&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;너&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;녀&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;노&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;뇨&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;누&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;뉴&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;느&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;녹&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;다&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;댜&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;더&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;뎌&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;도&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;됴&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;두&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;듀&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;드&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;디&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;라&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;랴&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;러&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;려&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;로&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;료&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;루&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;류&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;르&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;리&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;마&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;먀&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;머&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;며&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;모&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;묘&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;무&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;물&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;므&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;미&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;바&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;뱌&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;버&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;벼&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;보&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;뵤&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;부&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;뷰&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;비&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;밤&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;사&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;색&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;서&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;세&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;소&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;쇼&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;수&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;슈&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;신&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;심&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;아&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;야&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;어&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;여&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;오&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;요&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;우&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;유&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;으&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;이&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;〜&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;·&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;.&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;☆&quot;</highlight><highlight class="normal">,<sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a5c9f8e2646dac6d820168a3d62284c8b" kindref="member">SPACE</ref>,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>NEXT_PAGE,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>DONE}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;&lt;뒤P&gt;&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="comment">//<sp/>Hangul<sp/>2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;자&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;쟈&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;저&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;져&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;조&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;죠&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;주&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;쥬&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;즈&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;지&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;차&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;챠&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;처&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;쳐&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;초&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;쵸&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;추&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;츄&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;츠&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;치&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;카&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;캬&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;커&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;켜&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;코&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;쿄&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;쿠&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;큐&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;크&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;키&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;타&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;탸&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;터&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;텨&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;토&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;툐&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;투&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;튜&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;트&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;티&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;파&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;퍄&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;퍼&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;펴&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;포&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;표&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;푸&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;퓨&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;프&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;피&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;하&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;햐&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;허&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;혀&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;호&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;효&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;후&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;휴&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;흐&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;해&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;1&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;2&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;3&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;4&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;5&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;6&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;7&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;8&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;9&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;0&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;진&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;녘&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;의&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;민&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;예&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;건&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;현&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;운&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;걔&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;임&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;영&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;은&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;성&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;준&quot;</highlight><highlight class="normal">,<sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a5c9f8e2646dac6d820168a3d62284c8b" kindref="member">SPACE</ref>,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>NEXT_PAGE,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>DONE}</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;&lt;翻页&gt;&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="comment">//<sp/>Simp.<sp/>Chinese<sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;阿&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;艾&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;安&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;奥&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;巴&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;拜&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;班&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;邦&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;贝&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;本&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;比&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;宾&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;波&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;伯&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;布&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;查&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;达&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;丹&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;当&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;道&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;德&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;登&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;迪&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;蒂&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;丁&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;度&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;杜&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;顿&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;多&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;厄&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;尔&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;恩&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;法&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;凡&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;菲&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;费&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;芬&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;佛&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;弗&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;夫&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;盖&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;格&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;戈&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;冈&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;古&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;哈&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;海&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;汉&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;豪&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;赫&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;华&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;霍&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;基&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;吉&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;加&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;杰&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;捷&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;金&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;卡&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;凯&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;科&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;克&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;肯&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;拉&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;莱&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;兰&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;朗&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;劳&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;勒&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;雷&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;里&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;利&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;立&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;丽&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;莉&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;林&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;琳&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;留&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;隆&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;鲁&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;路&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;伦&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;罗&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;洛&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;律&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>NEXT_PAGE,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>DONE}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;&lt;前页&gt;&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="comment">//<sp/>Simp.<sp/>Chinese<sp/>2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;玛&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;迈&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;曼&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;梅&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;美&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;门&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;米&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;密&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;明&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;缪&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;摩&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;莫&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;姆&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;穆&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;那&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;娜&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;纳&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;奈&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;南&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;尼&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;宁&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;纽&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;奴&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;诺&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;欧&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;帕&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;派&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;佩&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;皮&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;普&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;奇&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;琪&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;琼&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;丘&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;萨&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;撒&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;赛&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;桑&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;瑟&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;森&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;沙&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;山&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;珊&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;史&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;世&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;斯&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;丝&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;司&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;苏&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;所&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;索&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;塔&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;泰&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;坦&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;汤&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;特&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;提&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;汀&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;统&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;瓦&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;威&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;维&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;韦&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;卫&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;温&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;沃&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;乌&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;西&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;希&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;夏&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;辛&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;修&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;休&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;雅&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;亚&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;林&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;琳&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;留&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;隆&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;鲁&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;伊&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;英&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;尤&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;则&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;扎&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>NEXT_PAGE,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>DONE}</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;&lt;翻頁&gt;&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="comment">//<sp/>Trad.<sp/>Chinese<sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;泉&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;聲&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;咽&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;危&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;石&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;日&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;色&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;冷&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;青&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;松&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;薄&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;暮&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;空&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;潭&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;曲&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;安&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;禪&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;制&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;毒&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;龍&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;海&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;內&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;存&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;知&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;己&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;天&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;涯&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;若&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;比&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;鄰&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;滿&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;階&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;芳&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;草&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;綠&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;一&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;片&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;杏&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;花&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;香&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;恨&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;無&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;千&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;日&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;酒&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;空&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;斷&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;九&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;迴&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;腸&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;當&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;路&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;誰&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;相&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;假&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;知&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;音&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;世&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;所&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;稀&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;只&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;應&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;守&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;寂&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;寞&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;還&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;掩&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;故&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;園&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;扉&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;坐&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;觀&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;垂&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;釣&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;者&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;－&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;～&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;’&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;＝&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;☆&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;徒&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;有&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;羨&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;魚&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;情&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;的&quot;</highlight><highlight class="normal">,<sp/>NEXT_PAGE,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>DONE}</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;&lt;前頁&gt;&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="comment">//<sp/>Trad.<sp/>Chinese<sp/>2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;幾&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;行&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;歸&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;塞&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;盡&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;念&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;爾&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;獨&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;何&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;之&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;暮&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;雨&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;相&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;呼&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;失&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;寒&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;塘&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;欲&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;下&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;遲&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;霞&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;光&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;連&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;碧&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;彩&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;湖&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;岸&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;水&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;連&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;灘&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;天&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;地&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;丹&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;青&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;繪&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;人&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;間&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;錦&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;秀&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;看&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;返&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;景&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;入&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;深&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;林&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;復&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;照&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;青&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;苔&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;上&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;中&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;歲&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;頗&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;好&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;道&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;晚&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;家&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;南&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;山&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;睡&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;興&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;來&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;每&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;獨&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;往&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;勝&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;事&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;空&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;自&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;知&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;遙&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;夜&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;泛&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;清&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;瑟&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;－&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;～&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;’&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;＝&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;☆&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;西&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;風&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;生&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;翠&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;蘿&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;的&quot;</highlight><highlight class="normal">,<sp/>NEXT_PAGE,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>DONE}</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;&lt;Абвг&gt;&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="comment">//<sp/>Cp1251<sp/>Russian<sp/>Cyrillic<sp/>(+<sp/>Bel.<sp/>and<sp/>Ukr.<sp/>letters<sp/>in<sp/>the<sp/>last<sp/>row)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;А&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Б&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;В&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Г&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Д&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;а&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;б&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;в&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;г&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;д&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;Е&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Ё&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Ж&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;З&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;И&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;е&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ё&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ж&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;з&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;и&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;Й&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;К&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Л&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;М&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Н&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;й&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;к&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;л&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;м&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;н&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;О&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;П&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Р&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;С&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Т&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;о&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;п&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;р&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;с&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;т&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;У&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Ф&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Х&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Ц&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Ч&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;у&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ф&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;х&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ц&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ч&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;Ш&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Щ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Ъ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Ы&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Ь&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ш&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;щ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ъ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ы&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ь&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;Э&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Ю&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Я&quot;</highlight><highlight class="normal">,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;э&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ю&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;я&quot;</highlight><highlight class="normal">,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;Ґ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Є&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;І&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Ї&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Ў&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ґ&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;є&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;і&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ї&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ў&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;ʼ&quot;</highlight><highlight class="normal">,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>NEXT_PAGE,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>DONE}</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;&lt;Abcd&gt;&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="comment">//<sp/>Letter</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;A&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;B&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;D&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;E&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;a&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;b&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;c&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;d&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;e&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;F&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;G&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;H&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;I&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;J&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;f&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;g&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;h&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;i&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;j&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;K&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;L&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;M&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;N&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;O&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;k&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;l&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;m&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;n&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;o&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;P&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Q&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;R&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;S&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;T&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;p&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;q&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;r&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;s&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;t&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;U&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;V&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;W&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;X&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Y&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;u&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;v&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;w&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;x&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;y&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;Z&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/></highlight><highlight class="stringliteral">&quot;z&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;0&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;1&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;2&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;3&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;4&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;5&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;6&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;7&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;8&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;9&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a5c9f8e2646dac6d820168a3d62284c8b" kindref="member">SPACE</ref>},</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/>NEXT_PAGE,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>DONE}</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;&lt;$A$B&gt;&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="comment">//<sp/>Symbol</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;$A&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$B&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$C&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$D&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$E&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$a&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$b&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$c&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$d&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$e&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;$F&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$G&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$H&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$I&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$J&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$f&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$g&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$h&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$i&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$j&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;$K&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$L&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$M&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$N&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$O&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$k&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$l&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$m&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$n&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$o&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;$P&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$Q&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$R&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$S&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$T&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$p&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$q&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$r&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$s&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$t&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;$U&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$V&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$W&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$X&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$Y&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$u&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$v&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$w&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$x&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;$y&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight><highlight class="stringliteral">&quot;$Z&quot;</highlight><highlight class="normal">,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/></highlight><highlight class="stringliteral">&quot;$z&quot;</highlight><highlight class="normal">},</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{},</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{},</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/><sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>,<sp/>NEXT_PAGE,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>DONE}</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="197"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight></codeline>
+<codeline lineno="199" refid="class_window___keyboard_1aabd3503c3daf1951a428bf3f702627bb" refkind="member"><highlight class="normal"><ref refid="class_window___keyboard_1aabd3503c3daf1951a428bf3f702627bb" kindref="member">Window_Keyboard::Window_Keyboard</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iwidth,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iheight,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>ndone_text)</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="class_window___base_1ab4bd342e1f0f125b9c823b0903979648" kindref="member">Window_Base</ref>(ix,<sp/>iy,<sp/>iwidth,<sp/>iheight)</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/><ref refid="class_window___keyboard_1aae32c94ca5f8038364249eb420aafa5b" kindref="member">done_text</ref>(ndone_text)</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/><ref refid="class_window___keyboard_1a6e5988bc8059d1faaf7f1c6eb9045eb0" kindref="member">play_cursor</ref>(false)</highlight></codeline>
+<codeline lineno="203"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1afe07e7a2f01bf99c6b6f28c1de65ef4d" kindref="member">row</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window_1ade4932d29b75cdd8f14b474006210505" kindref="member">SetContents</ref>(<ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>-<sp/>16,<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>-<sp/>16));</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1a0157b8d51360a642afa7c26d64772efc" kindref="member">row_spacing</ref><sp/>=<sp/>16;</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1a5908339afa48dda32676e9ab6577e0bc" kindref="member">col_spacing</ref><sp/>=<sp/>(<ref refid="class_window_1aa37669a94405b73515d5bd9b342e07c0" kindref="member">contents</ref>-&gt;GetWidth()<sp/>-<sp/>2<sp/>*<sp/><ref refid="class_window___keyboard_1a0edab96413b4034e521d268171c0ba38" kindref="member">border_x</ref>)<sp/>/<sp/><ref refid="class_window___keyboard_1a1b55b38397c56cfdb3d4b5442621d7ed" kindref="member">col_max</ref>;</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"></highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1a8abe9aa0f1650d4d41bd0b06ff4f9ff5" kindref="member">mode</ref><sp/>=<sp/><ref refid="class_window___keyboard_1a8b3cb5e722f04167a90f999e6f3be867a64f6a86718dcfb67e919a8dfcc77aee0" kindref="member">Letter</ref>;</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1a77b7fd6e92d0b0d3b5870fc390f2dd60" kindref="member">next_mode</ref><sp/>=<sp/><ref refid="class_window___keyboard_1a8b3cb5e722f04167a90f999e6f3be867a7bd788ce099b17f526761cf91cbd5333" kindref="member">Symbol</ref>;</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1aa9847717cc782016a53185d8db7cde72" kindref="member">Refresh</ref>();</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1a70d1c2baf1f8ab010700a1f6c045c5c4" kindref="member">UpdateCursorRect</ref>();</highlight></codeline>
+<codeline lineno="217"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight></codeline>
+<codeline lineno="219" refid="class_window___keyboard_1a4f6ba21985ae37b7cfd2ce435e9ff265" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1a4f6ba21985ae37b7cfd2ce435e9ff265" kindref="member">Window_Keyboard::SetMode</ref>(<ref refid="class_window___keyboard_1a8b3cb5e722f04167a90f999e6f3be867" kindref="member">Window_Keyboard::Mode</ref><sp/>nmode,<sp/><ref refid="class_window___keyboard_1a8b3cb5e722f04167a90f999e6f3be867" kindref="member">Window_Keyboard::Mode</ref><sp/>nnext_mode)<sp/>{</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1a8abe9aa0f1650d4d41bd0b06ff4f9ff5" kindref="member">mode</ref><sp/>=<sp/>nmode;</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1a77b7fd6e92d0b0d3b5870fc390f2dd60" kindref="member">next_mode</ref><sp/>=<sp/>nnext_mode;</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1aa9847717cc782016a53185d8db7cde72" kindref="member">Refresh</ref>();</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1a70d1c2baf1f8ab010700a1f6c045c5c4" kindref="member">UpdateCursorRect</ref>();</highlight></codeline>
+<codeline lineno="224"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"></highlight></codeline>
+<codeline lineno="226" refid="class_window___keyboard_1a99711944f27267495d08f394b8b92205" refkind="member"><highlight class="normal">std::string<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/><ref refid="class_window___keyboard_1a99711944f27267495d08f394b8b92205" kindref="member">Window_Keyboard::GetKey</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1afe07e7a2f01bf99c6b6f28c1de65ef4d" kindref="member">row</ref>,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>str<sp/>=<sp/><ref refid="class_window___keyboard_1adc5d98934b97b9092f69ae9b5fa2796d" kindref="member">layouts</ref>[<ref refid="class_window___keyboard_1a8abe9aa0f1650d4d41bd0b06ff4f9ff5" kindref="member">mode</ref>].items[<ref refid="class_window___keyboard_1afe07e7a2f01bf99c6b6f28c1de65ef4d" kindref="member">row</ref>][<ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref>];</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(str<sp/>==<sp/><ref refid="class_window___keyboard_1a59b7a990f4eb31fd2c6d5c2eff9a4a22" kindref="member">NEXT_PAGE</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1adc5d98934b97b9092f69ae9b5fa2796d" kindref="member">layouts</ref>[<ref refid="class_window___keyboard_1a77b7fd6e92d0b0d3b5870fc390f2dd60" kindref="member">next_mode</ref>].key_text;</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(str<sp/>==<sp/><ref refid="class_window___keyboard_1ae67e728f413c2caedc179fb9703b9d10" kindref="member">DONE</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1aae32c94ca5f8038364249eb420aafa5b" kindref="member">done_text</ref>;</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>str;</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="237"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"></highlight></codeline>
+<codeline lineno="239" refid="class_window___keyboard_1ad75d0aee8eac5f79f69c87bdcf12da71" refkind="member"><highlight class="normal">std::string<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/><ref refid="class_window___keyboard_1ad75d0aee8eac5f79f69c87bdcf12da71" kindref="member">Window_Keyboard::GetSelected</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1adc5d98934b97b9092f69ae9b5fa2796d" kindref="member">layouts</ref>[<ref refid="class_window___keyboard_1a8abe9aa0f1650d4d41bd0b06ff4f9ff5" kindref="member">mode</ref>].items[<ref refid="class_window___keyboard_1afe07e7a2f01bf99c6b6f28c1de65ef4d" kindref="member">row</ref>][<ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref>];</highlight></codeline>
+<codeline lineno="241"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"></highlight></codeline>
+<codeline lineno="243" refid="class_window___keyboard_1a0d8ed99a1db4702c678465a5dc1be626" refkind="member"><highlight class="normal"><ref refid="class_rect" kindref="compound">Rect</ref><sp/><ref refid="class_window___keyboard_1a0d8ed99a1db4702c678465a5dc1be626" kindref="member">Window_Keyboard::GetItemRect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1afe07e7a2f01bf99c6b6f28c1de65ef4d" kindref="member">row</ref>,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_rect" kindref="compound">Rect</ref>(<ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref><sp/>*<sp/><ref refid="class_window___keyboard_1a5908339afa48dda32676e9ab6577e0bc" kindref="member">col_spacing</ref><sp/>+<sp/><ref refid="class_window___keyboard_1a0edab96413b4034e521d268171c0ba38" kindref="member">border_x</ref>,</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1afe07e7a2f01bf99c6b6f28c1de65ef4d" kindref="member">row</ref><sp/>*<sp/><ref refid="class_window___keyboard_1a0157b8d51360a642afa7c26d64772efc" kindref="member">row_spacing</ref><sp/>+<sp/><ref refid="class_window___keyboard_1ac8f7c5b6ba93d2666eb0c349d3de0d07" kindref="member">border_y</ref>,</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_text_1a44a9a92712bc276c7925dfec2a5f4bc0" kindref="member">Text::GetSize</ref>(*<ref refid="class_font_1a0c0af671fc4de3e9ba8b758869080142" kindref="member">Font::Default</ref>(),<sp/><ref refid="class_window___keyboard_1a99711944f27267495d08f394b8b92205" kindref="member">GetKey</ref>(<ref refid="class_window___keyboard_1afe07e7a2f01bf99c6b6f28c1de65ef4d" kindref="member">row</ref>,<sp/><ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref>)).<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>+<sp/>8,</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1a0157b8d51360a642afa7c26d64772efc" kindref="member">row_spacing</ref>);</highlight></codeline>
+<codeline lineno="248"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"></highlight></codeline>
+<codeline lineno="250" refid="class_window___keyboard_1a70d1c2baf1f8ab010700a1f6c045c5c4" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1a70d1c2baf1f8ab010700a1f6c045c5c4" kindref="member">Window_Keyboard::UpdateCursorRect</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_rect" kindref="compound">Rect</ref><sp/>r<sp/>=<sp/><ref refid="class_window___keyboard_1a0d8ed99a1db4702c678465a5dc1be626" kindref="member">GetItemRect</ref>(<ref refid="class_window___keyboard_1afe07e7a2f01bf99c6b6f28c1de65ef4d" kindref="member">row</ref>,<sp/><ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref>);</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/>r.<ref refid="class_rect_1a1e37b6f8a4fb0d68ba22c8fffffab0a4" kindref="member">y</ref><sp/>-=<sp/>2;</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window_1a60601365a7ade2022e7c1445ba04ff6c" kindref="member">SetCursorRect</ref>(r);</highlight></codeline>
+<codeline lineno="254"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight></codeline>
+<codeline lineno="256" refid="class_window___keyboard_1aa9847717cc782016a53185d8db7cde72" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1aa9847717cc782016a53185d8db7cde72" kindref="member">Window_Keyboard::Refresh</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window_1aa37669a94405b73515d5bd9b342e07c0" kindref="member">contents</ref>-&gt;Clear();</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"></highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>j<sp/>=<sp/>0;<sp/>j<sp/>&lt;<sp/><ref refid="class_window___keyboard_1a38db2df954286211f718ec9cf6db79c0" kindref="member">row_max</ref>;<sp/>j++)<sp/>{</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/><ref refid="class_window___keyboard_1a1b55b38397c56cfdb3d4b5442621d7ed" kindref="member">col_max</ref>;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_rect" kindref="compound">Rect</ref><sp/>r<sp/>=<sp/><ref refid="class_window___keyboard_1a0d8ed99a1db4702c678465a5dc1be626" kindref="member">GetItemRect</ref>(j,<sp/>i);</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window_1aa37669a94405b73515d5bd9b342e07c0" kindref="member">contents</ref>-&gt;TextDraw(r.<ref refid="class_rect_1a64d1ef14e429e1816539de4c54361e55" kindref="member">x</ref><sp/>+<sp/>4,<sp/>r.<ref refid="class_rect_1a1e37b6f8a4fb0d68ba22c8fffffab0a4" kindref="member">y</ref>,<sp/><ref refid="class_font_1a300007dc1b65d906cf32066494d5cb8faab221bb13421493c5b0745d87ebc58e9" kindref="member">Font::ColorDefault</ref>,<sp/><ref refid="class_window___keyboard_1a99711944f27267495d08f394b8b92205" kindref="member">GetKey</ref>(j,<sp/>i));</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="265"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"></highlight></codeline>
+<codeline lineno="267" refid="class_window___keyboard_1a067bae53c97ceab64f78aff9f9dfdef4" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___keyboard_1a067bae53c97ceab64f78aff9f9dfdef4" kindref="member">Window_Keyboard::Update</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___base_1acaae99eb154cc5e203c2fc87af953725" kindref="member">Window_Base::Update</ref>();</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"></highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>move<sp/>left<sp/>on<sp/>wide<sp/>fields</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>skip_dir<sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"></highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1a30d9a51374e74ae0a59da6bf9ae77d79" kindref="member">active</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1aaeb9666738f2c5e2f66e55a72e3cde4d" kindref="member">Input::IsRepeated</ref>(<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a9d978af135e87844101fc99e300c8f58" kindref="member">Input::DOWN</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1a6e5988bc8059d1faaf7f1c6eb9045eb0" kindref="member">play_cursor</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1afe07e7a2f01bf99c6b6f28c1de65ef4d" kindref="member">row</ref><sp/>=<sp/>(<ref refid="class_window___keyboard_1afe07e7a2f01bf99c6b6f28c1de65ef4d" kindref="member">row</ref><sp/>+<sp/>1)<sp/>%<sp/><ref refid="class_window___keyboard_1a38db2df954286211f718ec9cf6db79c0" kindref="member">row_max</ref>;</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1aaeb9666738f2c5e2f66e55a72e3cde4d" kindref="member">Input::IsRepeated</ref>(<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a9ec921f299e4319707dfe2060dea69cf" kindref="member">Input::UP</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1a6e5988bc8059d1faaf7f1c6eb9045eb0" kindref="member">play_cursor</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1afe07e7a2f01bf99c6b6f28c1de65ef4d" kindref="member">row</ref><sp/>=<sp/>(<ref refid="class_window___keyboard_1afe07e7a2f01bf99c6b6f28c1de65ef4d" kindref="member">row</ref><sp/>+<sp/><ref refid="class_window___keyboard_1a38db2df954286211f718ec9cf6db79c0" kindref="member">row_max</ref><sp/>-<sp/>1)<sp/>%<sp/><ref refid="class_window___keyboard_1a38db2df954286211f718ec9cf6db79c0" kindref="member">row_max</ref>;</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1aaeb9666738f2c5e2f66e55a72e3cde4d" kindref="member">Input::IsRepeated</ref>(<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7ad1462d708a410892b3b73461bf9c566a" kindref="member">Input::RIGHT</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1a6e5988bc8059d1faaf7f1c6eb9045eb0" kindref="member">play_cursor</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref><sp/>=<sp/>(<ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref><sp/>+<sp/>1)<sp/>%<sp/><ref refid="class_window___keyboard_1a1b55b38397c56cfdb3d4b5442621d7ed" kindref="member">col_max</ref>;</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>skip_dir<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1aaeb9666738f2c5e2f66e55a72e3cde4d" kindref="member">Input::IsRepeated</ref>(<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7ad44f3c96cfa9c446730f72f31c40c6a0" kindref="member">Input::LEFT</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1a6e5988bc8059d1faaf7f1c6eb9045eb0" kindref="member">play_cursor</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref><sp/>=<sp/>(<ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref><sp/>+<sp/><ref refid="class_window___keyboard_1a1b55b38397c56cfdb3d4b5442621d7ed" kindref="member">col_max</ref><sp/>-<sp/>1)<sp/>%<sp/><ref refid="class_window___keyboard_1a1b55b38397c56cfdb3d4b5442621d7ed" kindref="member">col_max</ref>;</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"></highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Special<sp/>handling<sp/>for<sp/>wide<sp/>fields</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref><sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>page<sp/>switch<sp/>and<sp/>done<sp/>are<sp/>always<sp/>in<sp/>the<sp/>bottom<sp/>right<sp/>corner</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((<ref refid="class_window___keyboard_1afe07e7a2f01bf99c6b6f28c1de65ef4d" kindref="member">row</ref><sp/>==<sp/><ref refid="class_window___keyboard_1a38db2df954286211f718ec9cf6db79c0" kindref="member">row_max</ref><sp/>-<sp/>1<sp/>&amp;&amp;<sp/>(<ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref><sp/>==<sp/><ref refid="class_window___keyboard_1a1b55b38397c56cfdb3d4b5442621d7ed" kindref="member">col_max</ref><sp/>-<sp/>3<sp/>||<sp/><ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref><sp/>==<sp/><ref refid="class_window___keyboard_1a1b55b38397c56cfdb3d4b5442621d7ed" kindref="member">col_max</ref><sp/>-<sp/>1))</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>||<sp/><ref refid="class_window___keyboard_1a99711944f27267495d08f394b8b92205" kindref="member">GetKey</ref>(<ref refid="class_window___keyboard_1afe07e7a2f01bf99c6b6f28c1de65ef4d" kindref="member">row</ref>,<sp/><ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref><sp/>-<sp/>1)<sp/>==<sp/><ref refid="class_window___keyboard_1a9768136c5985b5e6c673b5d6c1968a37" kindref="member">SPACE</ref>)</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref><sp/>=<sp/>std::min(<ref refid="class_window___keyboard_1abb77fd906a5c391c0f8bfb8c2a4c905e" kindref="member">col</ref><sp/>+<sp/>skip_dir,<sp/><ref refid="class_window___keyboard_1a1b55b38397c56cfdb3d4b5442621d7ed" kindref="member">col_max</ref><sp/>-<sp/>1);</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"></highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Skip<sp/>empty<sp/>cells</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window___keyboard_1ad75d0aee8eac5f79f69c87bdcf12da71" kindref="member">GetSelected</ref>().empty())<sp/>{</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1a067bae53c97ceab64f78aff9f9dfdef4" kindref="member">Update</ref>();</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"></highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window___keyboard_1a6e5988bc8059d1faaf7f1c6eb9045eb0" kindref="member">play_cursor</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;SePlay(<ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;GetSystemSE(<ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;SFX_Cursor));</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1a6e5988bc8059d1faaf7f1c6eb9045eb0" kindref="member">play_cursor</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___keyboard_1a70d1c2baf1f8ab010700a1f6c045c5c4" kindref="member">UpdateCursorRect</ref>();</highlight></codeline>
+<codeline lineno="312"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="window_keyboard.cpp"/>
+  </compounddef>
+</doxygen>

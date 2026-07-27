@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdrwav__acid" kind="struct" language="C++" prot="public">
+    <compoundname>drwav_acid</compoundname>
+    <includes refid="dr__wav_8h" local="no">dr_wav.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdrwav__acid_1a306235ae8d2081ebb1aec290117d6d7b" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_acid::flags</definition>
+        <argsstring></argsstring>
+        <name>flags</name>
+        <qualifiedname>drwav_acid::flags</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="667" column="18" bodyfile="external/dr_wav.h" bodystart="667" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__acid_1a291d25ffacabf1e0502bffea7b4af061" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_acid::midiUnityNote</definition>
+        <argsstring></argsstring>
+        <name>midiUnityNote</name>
+        <qualifiedname>drwav_acid::midiUnityNote</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="670" column="18" bodyfile="external/dr_wav.h" bodystart="670" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__acid_1a2571cb8a12666885b0a2adcb41dc6004" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_acid::reserved1</definition>
+        <argsstring></argsstring>
+        <name>reserved1</name>
+        <qualifiedname>drwav_acid::reserved1</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="673" column="18" bodyfile="external/dr_wav.h" bodystart="673" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__acid_1a946308431dfed663f722643d639a7a5d" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float drwav_acid::reserved2</definition>
+        <argsstring></argsstring>
+        <name>reserved2</name>
+        <qualifiedname>drwav_acid::reserved2</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="674" column="11" bodyfile="external/dr_wav.h" bodystart="674" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__acid_1a4f1bfbc6f8f2062d4526ae105f18001f" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_acid::numBeats</definition>
+        <argsstring></argsstring>
+        <name>numBeats</name>
+        <qualifiedname>drwav_acid::numBeats</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="677" column="18" bodyfile="external/dr_wav.h" bodystart="677" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__acid_1ae216bf268fc316852865dfddc0e5b703" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_acid::meterDenominator</definition>
+        <argsstring></argsstring>
+        <name>meterDenominator</name>
+        <qualifiedname>drwav_acid::meterDenominator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="680" column="18" bodyfile="external/dr_wav.h" bodystart="680" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__acid_1a7fdbb52829428a2070083064de73598e" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_acid::meterNumerator</definition>
+        <argsstring></argsstring>
+        <name>meterNumerator</name>
+        <qualifiedname>drwav_acid::meterNumerator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="681" column="18" bodyfile="external/dr_wav.h" bodystart="681" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__acid_1a3215b61e6df19d224c02756f6a977f4f" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float drwav_acid::tempo</definition>
+        <argsstring></argsstring>
+        <name>tempo</name>
+        <qualifiedname>drwav_acid::tempo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="684" column="11" bodyfile="external/dr_wav.h" bodystart="684" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="external/dr_wav.h" line="664" column="1" bodyfile="external/dr_wav.h" bodystart="665" bodyend="685"/>
+    <listofallmembers>
+      <member refid="structdrwav__acid_1a306235ae8d2081ebb1aec290117d6d7b" prot="public" virt="non-virtual"><scope>drwav_acid</scope><name>flags</name></member>
+      <member refid="structdrwav__acid_1ae216bf268fc316852865dfddc0e5b703" prot="public" virt="non-virtual"><scope>drwav_acid</scope><name>meterDenominator</name></member>
+      <member refid="structdrwav__acid_1a7fdbb52829428a2070083064de73598e" prot="public" virt="non-virtual"><scope>drwav_acid</scope><name>meterNumerator</name></member>
+      <member refid="structdrwav__acid_1a291d25ffacabf1e0502bffea7b4af061" prot="public" virt="non-virtual"><scope>drwav_acid</scope><name>midiUnityNote</name></member>
+      <member refid="structdrwav__acid_1a4f1bfbc6f8f2062d4526ae105f18001f" prot="public" virt="non-virtual"><scope>drwav_acid</scope><name>numBeats</name></member>
+      <member refid="structdrwav__acid_1a2571cb8a12666885b0a2adcb41dc6004" prot="public" virt="non-virtual"><scope>drwav_acid</scope><name>reserved1</name></member>
+      <member refid="structdrwav__acid_1a946308431dfed663f722643d639a7a5d" prot="public" virt="non-virtual"><scope>drwav_acid</scope><name>reserved2</name></member>
+      <member refid="structdrwav__acid_1a3215b61e6df19d224c02756f6a977f4f" prot="public" virt="non-virtual"><scope>drwav_acid</scope><name>tempo</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

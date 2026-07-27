@@ -1,0 +1,290 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_battle_animation_battle" kind="class" language="C++" prot="public">
+    <compoundname>BattleAnimationBattle</compoundname>
+    <basecompoundref refid="class_battle_animation" prot="public" virt="non-virtual">BattleAnimation</basecompoundref>
+    <includes refid="battle__animation_8h" local="no">battle_animation.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_battle_animation_battle_1af140719103845fffcf3a9fdacc55489e" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> * &gt;</type>
+        <definition>std::vector&lt;Game_Battler*&gt; BattleAnimationBattle::battlers</definition>
+        <argsstring></argsstring>
+        <name>battlers</name>
+        <qualifiedname>BattleAnimationBattle::battlers</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="132" column="13" bodyfile="battle_animation.h" bodystart="132" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_battle_animation_battle_1a02c53232c8f6d4bec2414bbadf8c9452" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BattleAnimationBattle::BattleAnimationBattle</definition>
+        <argsstring>(const lcf::rpg::Animation &amp;anim, std::vector&lt; Game_Battler * &gt; battlers, bool only_sound=false, int cutoff_frame=-1, bool set_invert=false)</argsstring>
+        <name>BattleAnimationBattle</name>
+        <qualifiedname>BattleAnimationBattle::BattleAnimationBattle</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Animation &amp;</type>
+          <declname>anim</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> * &gt;</type>
+          <declname>battlers</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>only_sound</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cutoff_frame</declname>
+          <defval>-1</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>set_invert</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="127" column="1" bodyfile="battle_animation.cpp" bodystart="291" bodyend="295"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_battle_1ae97ebe6c57993fe31b81b7a4b06d736a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BattleAnimationBattle::Draw</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>Draw</name>
+        <qualifiedname>BattleAnimationBattle::Draw</qualifiedname>
+        <reimplements refid="class_drawable_1aa8a9b151f40368331f6fd8bbdd20133f">Draw</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="128" column="6" bodyfile="battle_animation.cpp" bodystart="297" bodyend="317"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_battle_animation_battle_1ab67969422de12bf8b9719e73c041762c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BattleAnimationBattle::FlashTargets</definition>
+        <argsstring>(int r, int g, int b, int p) override</argsstring>
+        <name>FlashTargets</name>
+        <qualifiedname>BattleAnimationBattle::FlashTargets</qualifiedname>
+        <reimplements refid="class_battle_animation_1a4af3c1c8e2b58f57c15ce4dd931ce083">FlashTargets</reimplements>
+        <param>
+          <type>int</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="130" column="6" bodyfile="battle_animation.cpp" bodystart="318" bodyend="322"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_battle_1a7f78e72f4f96dce095f07e81422d30aa" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BattleAnimationBattle::ShakeTargets</definition>
+        <argsstring>(int str, int spd, int time) override</argsstring>
+        <name>ShakeTargets</name>
+        <qualifiedname>BattleAnimationBattle::ShakeTargets</qualifiedname>
+        <reimplements refid="class_battle_animation_1a9c69718e20a5e4ba692d3d7afa99d394">ShakeTargets</reimplements>
+        <param>
+          <type>int</type>
+          <declname>str</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>spd</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>time</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="131" column="6" bodyfile="battle_animation.cpp" bodystart="324" bodyend="328"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>BattleAnimation</label>
+        <link refid="class_battle_animation"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>BattleAnimationBattle</label>
+        <link refid="class_battle_animation_battle"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="3">
+        <label>Sprite</label>
+        <link refid="class_sprite"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>BattleAnimation</label>
+        <link refid="class_battle_animation"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>BattleAnimationBattle</label>
+        <link refid="class_battle_animation_battle"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="3">
+        <label>Sprite</label>
+        <link refid="class_sprite"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="battle_animation.h" line="125" column="1" bodyfile="battle_animation.h" bodystart="125" bodyend="133"/>
+    <listofallmembers>
+      <member refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" prot="protected" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>animation</name></member>
+      <member refid="class_battle_animation_1a965b86b1aa70f7b87867c61298a39f4b" prot="protected" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>BattleAnimation</name></member>
+      <member refid="class_battle_animation_battle_1a02c53232c8f6d4bec2414bbadf8c9452" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>BattleAnimationBattle</name></member>
+      <member refid="class_battle_animation_battle_1af140719103845fffcf3a9fdacc55489e" prot="protected" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>battlers</name></member>
+      <member refid="class_battle_animation_battle_1ae97ebe6c57993fe31b81b7a4b06d736a" prot="public" virt="virtual"><scope>BattleAnimationBattle</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>Drawable</name></member>
+      <member refid="class_battle_animation_1a519790fc37d667776815911e013589f2" prot="protected" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>DrawAt</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>Flags</name></member>
+      <member refid="class_battle_animation_battle_1ab67969422de12bf8b9719e73c041762c" prot="protected" virt="virtual"><scope>BattleAnimationBattle</scope><name>FlashTargets</name></member>
+      <member refid="class_battle_animation_1acce5d9ed3e850f9deb262e050312cec0" prot="protected" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>frame</name></member>
+      <member refid="class_sprite_1ade47ec9b2fc6b79921a978ac85508eb4" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetAngle</name></member>
+      <member refid="class_battle_animation_1a807bc1f8a658b9aa177b113c9ffbd1d2" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetAnimationCellHeight</name></member>
+      <member refid="class_battle_animation_1a46137c451fe594bbadba7cc9203a7809" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetAnimationCellWidth</name></member>
+      <member refid="class_sprite_1a8692649cce1320c23d7216207805b990" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetBitmap</name></member>
+      <member refid="class_sprite_1aa34fbb968bfb9441bca6a7be8a1e9629" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetBitmap</name></member>
+      <member refid="class_sprite_1a699b7b199c7e2ea838878d9058401911" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetBlendColor</name></member>
+      <member refid="class_sprite_1ae5eb51cb5b55c057cbcafe69d13929a6" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetBlendType</name></member>
+      <member refid="class_sprite_1a9a5a480bc86ea9712a94303a53082da3" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetBushDepth</name></member>
+      <member refid="class_sprite_1a120a7dccaeea0d7fd7bac4f87b4b9d00" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetFlipX</name></member>
+      <member refid="class_sprite_1a7217243249b11d9046369cd3f0141adb" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetFlipY</name></member>
+      <member refid="class_battle_animation_1a9e591b8cc396c2a64f8ee5b5c3432e8b" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetFrame</name></member>
+      <member refid="class_battle_animation_1a29821fb2a6c09bc7978ba6f495aeb5a1" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetFrames</name></member>
+      <member refid="class_sprite_1ab10bdecf4bf20472b53a3102315180c2" prot="public" virt="virtual"><scope>BattleAnimationBattle</scope><name>GetHeight</name></member>
+      <member refid="class_sprite_1ae6b8f3dd521db97853b3f2719e298db5" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetOpacity</name></member>
+      <member refid="class_sprite_1aa5c54c0b59a4f4247157e8446d588645" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetOx</name></member>
+      <member refid="class_sprite_1a8acf5af95db9d7f29958277c2625b8c7" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetOy</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_battle_animation_1a7a9e2cd68529ddbefeade09fdcfc31ca" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetRealFrame</name></member>
+      <member refid="class_battle_animation_1ae4bb9615843f26a2fe1678478b0e8b48" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetRealFrames</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetRenderOy</name></member>
+      <member refid="class_sprite_1ac50818cd2774516c70f2583d54845f98" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetSrcRect</name></member>
+      <member refid="class_sprite_1af315f162b8f1d0374d2bb4788f15eb59" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetTone</name></member>
+      <member refid="class_sprite_1add7a9fa3823099c15d04bd98764c00b8" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetWaverDepth</name></member>
+      <member refid="class_sprite_1a5781eeeb12fd97b447809efd0f14afea" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetWaverPhase</name></member>
+      <member refid="class_sprite_1a190fdb389450b2a425d3b7256b10b041" prot="public" virt="virtual"><scope>BattleAnimationBattle</scope><name>GetWidth</name></member>
+      <member refid="class_sprite_1aa87fb1678e6d814923b390085c8b47ca" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetX</name></member>
+      <member refid="class_sprite_1af3bb2ded3b6d29905c717031e8e873e4" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetY</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetZ</name></member>
+      <member refid="class_sprite_1afdc1630a767fef01cb29f81983a25825" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetZoomX</name></member>
+      <member refid="class_sprite_1a7fc9c4d33c7fade504f93a86c34a2b66" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>GetZoomY</name></member>
+      <member refid="class_battle_animation_1a36b7ca7c32723570212381dd40cf220f" prot="protected" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>invert</name></member>
+      <member refid="class_battle_animation_1ac795090c6ee8442903eec3e9ec961aec" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>IsDone</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>IsGlobal</name></member>
+      <member refid="class_battle_animation_1a9b06b35b9872adbd7bd382e6e85caeb0" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>IsOnlySound</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>IsVisible</name></member>
+      <member refid="class_battle_animation_1a065f8f241f897526c8d4a7b1551c0475" prot="protected" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>num_frames</name></member>
+      <member refid="class_battle_animation_1a3e28e58e04c5eae2287d4b6163af708b" prot="protected" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>OnBattle2SpriteReady</name></member>
+      <member refid="class_battle_animation_1a21d1269c5279ec4ffda9ca1e47c754f4" prot="protected" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>OnBattleSpriteReady</name></member>
+      <member refid="class_battle_animation_1a4fbf55edc415246a02541fdeeab08612" prot="protected" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>only_sound</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>operator=</name></member>
+      <member refid="class_battle_animation_1a9adf84fdc69160f511c16ecfcd814a23" prot="protected" virt="virtual"><scope>BattleAnimationBattle</scope><name>ProcessAnimationFlash</name></member>
+      <member refid="class_battle_animation_1a20a80c0e92534632094b03c84ab94f13" prot="protected" virt="virtual"><scope>BattleAnimationBattle</scope><name>ProcessAnimationTiming</name></member>
+      <member refid="class_battle_animation_1aa9727836097bb50a0b65c8b693159d16" prot="protected" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>request_id</name></member>
+      <member refid="class_battle_animation_1aaa54fffc4357ce65277bc545ea853e5c" prot="protected" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>screen_flash_timing</name></member>
+      <member refid="class_sprite_1ab2ac97d71f9af168477ff5114e895021" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetAngle</name></member>
+      <member refid="class_sprite_1a0b1f8eb93adbfffb165acb30699ddd78" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetBitmap</name></member>
+      <member refid="class_sprite_1a5a80440fb552919c24e3320544554a62" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetBlendColor</name></member>
+      <member refid="class_sprite_1a662cbae14d3628d670b865157b247df1" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetBlendType</name></member>
+      <member refid="class_sprite_1a48f4b1522175b8aab5e7f2d6b11a9425" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetBushDepth</name></member>
+      <member refid="class_sprite_1a88b06fec2499b21fb21445269cbee15f" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetFlashEffect</name></member>
+      <member refid="class_sprite_1a85222d16191092db3e0d731f8a78d4a8" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetFlipX</name></member>
+      <member refid="class_sprite_1a909b9d49b660fa592b0b753f602dddef" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetFlipY</name></member>
+      <member refid="class_battle_animation_1a7216ccfe6f66cb2448c1c6e9d6269f9a" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetFrame</name></member>
+      <member refid="class_battle_animation_1ac0df1e2470a7364bdc05f7b0cf27895d" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetInvert</name></member>
+      <member refid="class_sprite_1a00ec8dcc661ae5acea3c013dc12c07f0" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetOpacity</name></member>
+      <member refid="class_sprite_1ae2504fad70205dd8064392da7ceb4f71" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetOx</name></member>
+      <member refid="class_sprite_1a0e189abc78607a4a6e011d6e394a43d7" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetOy</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetRenderOy</name></member>
+      <member refid="class_sprite_1ae0a9b0248ce543551c1486c824b2949c" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetSpriteRect</name></member>
+      <member refid="class_sprite_1a890398eafe1a9135d7baa939842a798a" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetSrcRect</name></member>
+      <member refid="class_sprite_1a89865e8080e634db19ab6409efc0ef2c" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetTone</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetVisible</name></member>
+      <member refid="class_sprite_1a505321681169327d559b7f59146fdec9" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetWaverDepth</name></member>
+      <member refid="class_sprite_1a85f701cd0eb6033b471f84bb24f192b8" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetWaverPhase</name></member>
+      <member refid="class_sprite_1a57277e7b2c107f36f587c46e99f7a48f" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetX</name></member>
+      <member refid="class_sprite_1a0012676d8951dbf2342de94acc18eecd" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetY</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetZ</name></member>
+      <member refid="class_sprite_1a3e7151dfb8645a3fbb71395625af985c" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetZoomX</name></member>
+      <member refid="class_sprite_1aad6019d133e5abac3323d671af4ed06b" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>SetZoomY</name></member>
+      <member refid="class_battle_animation_battle_1a7f78e72f4f96dce095f07e81422d30aa" prot="protected" virt="virtual"><scope>BattleAnimationBattle</scope><name>ShakeTargets</name></member>
+      <member refid="class_sprite_1aa3a20244c338653f65beaa26d6189581" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>Sprite</name></member>
+      <member refid="class_battle_animation_1ad63e43a253972b91c122da841a0d8c47" prot="protected" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>target_flash_timing</name></member>
+      <member refid="class_battle_animation_1ad1065b9da7c0947a87647aaec82dfc3f" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>Update</name></member>
+      <member refid="class_battle_animation_1a4baaa539b44ac01fa720ae03d7525a62" prot="protected" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>UpdateFlashGeneric</name></member>
+      <member refid="class_battle_animation_1a460072ba858ace5c0bb81ce3a5cbc780" prot="protected" virt="virtual"><scope>BattleAnimationBattle</scope><name>UpdateScreenFlash</name></member>
+      <member refid="class_battle_animation_1ac597c5fb50f7cae29c7ea65eeccc69bc" prot="protected" virt="virtual"><scope>BattleAnimationBattle</scope><name>UpdateTargetFlash</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>BattleAnimationBattle</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>BattleAnimationBattle</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

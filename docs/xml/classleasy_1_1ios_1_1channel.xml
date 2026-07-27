@@ -1,0 +1,359 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1ios_1_1channel" kind="class" language="C++" prot="public">
+    <compoundname>leasy::ios::channel</compoundname>
+    <includes refid="lio_8hpp" local="no">lio.hpp</includes>
+    <sectiondef kind="friend">
+      <memberdef kind="friend" id="classleasy_1_1ios_1_1channel_1a40e00d718a0ac645b4b9ffdb55666fe1" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>class</type>
+        <definition>friend class attachment</definition>
+        <argsstring></argsstring>
+        <name>attachment</name>
+        <qualifiedname>leasy::ios::channel::attachment</qualifiedname>
+        <param>
+          <type>attachment</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="287" column="16" bodyfile="leasy/lio.hpp" bodystart="287" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1channel_1aefa905f050fdbc01748893610f166611" prot="private" static="no" mutable="yes">
+        <type>std::mutex</type>
+        <definition>std::mutex leasy::ios::channel::mutex_</definition>
+        <argsstring></argsstring>
+        <name>mutex_</name>
+        <qualifiedname>leasy::ios::channel::mutex_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="353" column="39" bodyfile="leasy/lio.hpp" bodystart="353" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1channel_1a5e186b387f9c1ed9860662bf5e9cc7af" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::weak_ptr&lt; <ref refid="classleasy_1_1ios_1_1sink" kindref="compound">sink</ref> &gt; &gt;</type>
+        <definition>std::vector&lt;std::weak_ptr&lt;sink&gt; &gt; leasy::ios::channel::outputs_</definition>
+        <argsstring></argsstring>
+        <name>outputs_</name>
+        <qualifiedname>leasy::ios::channel::outputs_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="354" column="18" bodyfile="leasy/lio.hpp" bodystart="354" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1channel_1a8eb7a30e69ad6ac64967e7bce78fdd8f" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool leasy::ios::channel::enabled_</definition>
+        <argsstring></argsstring>
+        <name>enabled_</name>
+        <qualifiedname>leasy::ios::channel::enabled_</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="355" column="39" bodyfile="leasy/lio.hpp" bodystart="355" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1channel_1a1c6c62c16b4ec47aac7d45feb2cf5214" prot="private" static="no" mutable="no">
+        <type><ref refid="structleasy_1_1ios_1_1format__options" kindref="compound">format_options</ref></type>
+        <definition>format_options leasy::ios::channel::format_</definition>
+        <argsstring></argsstring>
+        <name>format_</name>
+        <qualifiedname>leasy::ios::channel::format_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="356" column="39" bodyfile="leasy/lio.hpp" bodystart="356" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1ios_1_1channel_1a9761ba82edf11d12197e08102a784f9f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ios::channel::channel</definition>
+        <argsstring>()=default</argsstring>
+        <name>channel</name>
+        <qualifiedname>leasy::ios::channel::channel</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="227" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1channel_1a164652e27f26fef66fc5b5ae9e2c0daa" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void leasy::ios::channel::write</definition>
+        <argsstring>(Args &amp;&amp;... args)</argsstring>
+        <name>write</name>
+        <qualifiedname>leasy::ios::channel::write</qualifiedname>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="230" column="15" bodyfile="leasy/lio.hpp" bodystart="230" bodyend="236"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1channel_1aeddeb76d651cabbb2a00b10b22a9d186" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void leasy::ios::channel::writeln</definition>
+        <argsstring>(Args &amp;&amp;... args)</argsstring>
+        <name>writeln</name>
+        <qualifiedname>leasy::ios::channel::writeln</qualifiedname>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="239" column="15" bodyfile="leasy/lio.hpp" bodystart="239" bodyend="246"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1channel_1a87c237c04d3878f95fd085e8c2bea127" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classleasy_1_1ios_1_1channel_1a40e00d718a0ac645b4b9ffdb55666fe1" kindref="member">attachment</ref></type>
+        <definition>attachment leasy::ios::channel::attach</definition>
+        <argsstring>(std::shared_ptr&lt; sink &gt; output)</argsstring>
+        <name>attach</name>
+        <qualifiedname>leasy::ios::channel::attach</qualifiedname>
+        <param>
+          <type>std::shared_ptr&lt; <ref refid="classleasy_1_1ios_1_1sink" kindref="compound">sink</ref> &gt;</type>
+          <declname>output</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="248" column="21" bodyfile="leasy/lio.hpp" bodystart="248" bodyend="254"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1channel_1afed8100cc867254ca789074d75ada3d3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ios::channel::clear_outputs</definition>
+        <argsstring>()</argsstring>
+        <name>clear_outputs</name>
+        <qualifiedname>leasy::ios::channel::clear_outputs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="256" column="15" bodyfile="leasy/lio.hpp" bodystart="256" bodyend="259"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1channel_1ad1a06ee92277b6da0f1dae84253e9c05" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classleasy_1_1ios_1_1channel_1a9761ba82edf11d12197e08102a784f9f" kindref="member">channel</ref> &amp;</type>
+        <definition>channel &amp; leasy::ios::channel::enabled</definition>
+        <argsstring>(bool value)</argsstring>
+        <name>enabled</name>
+        <qualifiedname>leasy::ios::channel::enabled</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="261" column="18" bodyfile="leasy/lio.hpp" bodystart="261" bodyend="264"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1channel_1ae7889a95cdfa5e4bdd47df5995066579" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classleasy_1_1ios_1_1channel_1a9761ba82edf11d12197e08102a784f9f" kindref="member">channel</ref> &amp;</type>
+        <definition>channel &amp; leasy::ios::channel::timestamp</definition>
+        <argsstring>(bool value)</argsstring>
+        <name>timestamp</name>
+        <qualifiedname>leasy::ios::channel::timestamp</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="266" column="18" bodyfile="leasy/lio.hpp" bodystart="266" bodyend="269"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1channel_1abcda04225ac7f5cfb31bc8e94128efa7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classleasy_1_1ios_1_1channel_1a9761ba82edf11d12197e08102a784f9f" kindref="member">channel</ref> &amp;</type>
+        <definition>channel &amp; leasy::ios::channel::thread_id</definition>
+        <argsstring>(bool value)</argsstring>
+        <name>thread_id</name>
+        <qualifiedname>leasy::ios::channel::thread_id</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="271" column="18" bodyfile="leasy/lio.hpp" bodystart="271" bodyend="274"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1channel_1a0edbd4392c285b3537cbf68434f67ec5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classleasy_1_1ios_1_1channel_1a9761ba82edf11d12197e08102a784f9f" kindref="member">channel</ref> &amp;</type>
+        <definition>channel &amp; leasy::ios::channel::prefix</definition>
+        <argsstring>(std::string value)</argsstring>
+        <name>prefix</name>
+        <qualifiedname>leasy::ios::channel::prefix</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="276" column="18" bodyfile="leasy/lio.hpp" bodystart="276" bodyend="279"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1channel_1af3d8fff1f1b4eb4de303c91393c4ed4e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classleasy_1_1ios_1_1channel_1a9761ba82edf11d12197e08102a784f9f" kindref="member">channel</ref> &amp;</type>
+        <definition>channel &amp; leasy::ios::channel::color</definition>
+        <argsstring>(std::string value)</argsstring>
+        <name>color</name>
+        <qualifiedname>leasy::ios::channel::color</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="281" column="18" bodyfile="leasy/lio.hpp" bodystart="281" bodyend="284"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classleasy_1_1ios_1_1channel_1a1119d35850d434d4cc0228d89c8c28ce" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ios::channel::detach</definition>
+        <argsstring>(const std::shared_ptr&lt; sink &gt; &amp;target)</argsstring>
+        <name>detach</name>
+        <qualifiedname>leasy::ios::channel::detach</qualifiedname>
+        <param>
+          <type>const std::shared_ptr&lt; <ref refid="classleasy_1_1ios_1_1sink" kindref="compound">sink</ref> &gt; &amp;</type>
+          <declname>target</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="289" column="15" bodyfile="leasy/lio.hpp" bodystart="289" bodyend="298"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1channel_1ad5258de0df25d0a1624e5f932e31a39b" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ios::channel::dispatch</definition>
+        <argsstring>(const std::string &amp;text, bool flush=false)</argsstring>
+        <name>dispatch</name>
+        <qualifiedname>leasy::ios::channel::dispatch</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>text</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>flush</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="300" column="15" bodyfile="leasy/lio.hpp" bodystart="300" bodyend="319"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1channel_1a7fcfcd585ea56287546968bc953fb027" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string leasy::ios::channel::format</definition>
+        <argsstring>(const std::string &amp;text) const</argsstring>
+        <name>format</name>
+        <qualifiedname>leasy::ios::channel::format</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>text</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="321" column="22" bodyfile="leasy/lio.hpp" bodystart="321" bodyend="351"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/lio.hpp" line="225" column="1" bodyfile="leasy/lio.hpp" bodystart="225" bodyend="357"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1ios_1_1channel_1a87c237c04d3878f95fd085e8c2bea127" prot="public" virt="non-virtual"><scope>leasy::ios::channel</scope><name>attach</name></member>
+      <member refid="classleasy_1_1ios_1_1channel_1a40e00d718a0ac645b4b9ffdb55666fe1" prot="private" virt="non-virtual"><scope>leasy::ios::channel</scope><name>attachment</name></member>
+      <member refid="classleasy_1_1ios_1_1channel_1a9761ba82edf11d12197e08102a784f9f" prot="public" virt="non-virtual"><scope>leasy::ios::channel</scope><name>channel</name></member>
+      <member refid="classleasy_1_1ios_1_1channel_1afed8100cc867254ca789074d75ada3d3" prot="public" virt="non-virtual"><scope>leasy::ios::channel</scope><name>clear_outputs</name></member>
+      <member refid="classleasy_1_1ios_1_1channel_1af3d8fff1f1b4eb4de303c91393c4ed4e" prot="public" virt="non-virtual"><scope>leasy::ios::channel</scope><name>color</name></member>
+      <member refid="classleasy_1_1ios_1_1channel_1a1119d35850d434d4cc0228d89c8c28ce" prot="private" virt="non-virtual"><scope>leasy::ios::channel</scope><name>detach</name></member>
+      <member refid="classleasy_1_1ios_1_1channel_1ad5258de0df25d0a1624e5f932e31a39b" prot="private" virt="non-virtual"><scope>leasy::ios::channel</scope><name>dispatch</name></member>
+      <member refid="classleasy_1_1ios_1_1channel_1ad1a06ee92277b6da0f1dae84253e9c05" prot="public" virt="non-virtual"><scope>leasy::ios::channel</scope><name>enabled</name></member>
+      <member refid="classleasy_1_1ios_1_1channel_1a8eb7a30e69ad6ac64967e7bce78fdd8f" prot="private" virt="non-virtual"><scope>leasy::ios::channel</scope><name>enabled_</name></member>
+      <member refid="classleasy_1_1ios_1_1channel_1a7fcfcd585ea56287546968bc953fb027" prot="private" virt="non-virtual"><scope>leasy::ios::channel</scope><name>format</name></member>
+      <member refid="classleasy_1_1ios_1_1channel_1a1c6c62c16b4ec47aac7d45feb2cf5214" prot="private" virt="non-virtual"><scope>leasy::ios::channel</scope><name>format_</name></member>
+      <member refid="classleasy_1_1ios_1_1channel_1aefa905f050fdbc01748893610f166611" prot="private" virt="non-virtual"><scope>leasy::ios::channel</scope><name>mutex_</name></member>
+      <member refid="classleasy_1_1ios_1_1channel_1a5e186b387f9c1ed9860662bf5e9cc7af" prot="private" virt="non-virtual"><scope>leasy::ios::channel</scope><name>outputs_</name></member>
+      <member refid="classleasy_1_1ios_1_1channel_1a0edbd4392c285b3537cbf68434f67ec5" prot="public" virt="non-virtual"><scope>leasy::ios::channel</scope><name>prefix</name></member>
+      <member refid="classleasy_1_1ios_1_1channel_1abcda04225ac7f5cfb31bc8e94128efa7" prot="public" virt="non-virtual"><scope>leasy::ios::channel</scope><name>thread_id</name></member>
+      <member refid="classleasy_1_1ios_1_1channel_1ae7889a95cdfa5e4bdd47df5995066579" prot="public" virt="non-virtual"><scope>leasy::ios::channel</scope><name>timestamp</name></member>
+      <member refid="classleasy_1_1ios_1_1channel_1a164652e27f26fef66fc5b5ae9e2c0daa" prot="public" virt="non-virtual"><scope>leasy::ios::channel</scope><name>write</name></member>
+      <member refid="classleasy_1_1ios_1_1channel_1aeddeb76d651cabbb2a00b10b22a9d186" prot="public" virt="non-virtual"><scope>leasy::ios::channel</scope><name>writeln</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_r_t_p_1_1_rtp_hit_info" kind="struct" language="C++" prot="public">
+    <compoundname>RTP::RtpHitInfo</compoundname>
+    <includes refid="rtp_8h" local="no">rtp.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_r_t_p_1_1_rtp_hit_info_1a182d1b1e9a9cca5119653877c21814dc" prot="public" static="no" mutable="no">
+        <type><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0a" kindref="member">RTP::Type</ref></type>
+        <definition>RTP::Type RTP::RtpHitInfo::type</definition>
+        <argsstring></argsstring>
+        <name>type</name>
+        <qualifiedname>RTP::RtpHitInfo::type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.h" line="72" column="11" bodyfile="rtp.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_r_t_p_1_1_rtp_hit_info_1a5ba6576b694f4fa9f71ba9dd54e1baa8" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string RTP::RtpHitInfo::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>RTP::RtpHitInfo::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.h" line="73" column="13" bodyfile="rtp.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_r_t_p_1_1_rtp_hit_info_1ac44244a0434a4ec516eba3f3f6afd53f" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int RTP::RtpHitInfo::version</definition>
+        <argsstring></argsstring>
+        <name>version</name>
+        <qualifiedname>RTP::RtpHitInfo::version</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.h" line="74" column="5" bodyfile="rtp.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_r_t_p_1_1_rtp_hit_info_1a304ae8ab37c777149025792203461b4d" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int RTP::RtpHitInfo::hits</definition>
+        <argsstring></argsstring>
+        <name>hits</name>
+        <qualifiedname>RTP::RtpHitInfo::hits</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.h" line="75" column="5" bodyfile="rtp.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_r_t_p_1_1_rtp_hit_info_1a66e6c8c66913419ae11b6fd1f3ca1288" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int RTP::RtpHitInfo::max</definition>
+        <argsstring></argsstring>
+        <name>max</name>
+        <qualifiedname>RTP::RtpHitInfo::max</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.h" line="76" column="5" bodyfile="rtp.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_r_t_p_1_1_rtp_hit_info_1af3b53a7c6b0e2f9933f234f1f8a98e43" prot="public" static="no" mutable="no">
+        <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+        <definition>FilesystemView RTP::RtpHitInfo::tree</definition>
+        <argsstring></argsstring>
+        <name>tree</name>
+        <qualifiedname>RTP::RtpHitInfo::tree</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.h" line="77" column="16" bodyfile="rtp.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>FilesystemView</label>
+        <link refid="class_filesystem_view"/>
+      </node>
+      <node id="1">
+        <label>RTP::RtpHitInfo</label>
+        <link refid="struct_r_t_p_1_1_rtp_hit_info"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>tree</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="rtp.h" line="71" column="1" bodyfile="rtp.h" bodystart="71" bodyend="78"/>
+    <listofallmembers>
+      <member refid="struct_r_t_p_1_1_rtp_hit_info_1a304ae8ab37c777149025792203461b4d" prot="public" virt="non-virtual"><scope>RTP::RtpHitInfo</scope><name>hits</name></member>
+      <member refid="struct_r_t_p_1_1_rtp_hit_info_1a66e6c8c66913419ae11b6fd1f3ca1288" prot="public" virt="non-virtual"><scope>RTP::RtpHitInfo</scope><name>max</name></member>
+      <member refid="struct_r_t_p_1_1_rtp_hit_info_1a5ba6576b694f4fa9f71ba9dd54e1baa8" prot="public" virt="non-virtual"><scope>RTP::RtpHitInfo</scope><name>name</name></member>
+      <member refid="struct_r_t_p_1_1_rtp_hit_info_1af3b53a7c6b0e2f9933f234f1f8a98e43" prot="public" virt="non-virtual"><scope>RTP::RtpHitInfo</scope><name>tree</name></member>
+      <member refid="struct_r_t_p_1_1_rtp_hit_info_1a182d1b1e9a9cca5119653877c21814dc" prot="public" virt="non-virtual"><scope>RTP::RtpHitInfo</scope><name>type</name></member>
+      <member refid="struct_r_t_p_1_1_rtp_hit_info_1ac44244a0434a4ec516eba3f3f6afd53f" prot="public" virt="non-virtual"><scope>RTP::RtpHitInfo</scope><name>version</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

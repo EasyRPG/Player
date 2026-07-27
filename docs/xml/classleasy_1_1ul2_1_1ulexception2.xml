@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1ul2_1_1ulexception2" kind="class" language="C++" prot="public">
+    <compoundname>leasy::ul2::ulexception2</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::exception</basecompoundref>
+    <includes refid="ulexception2_8hpp" local="no">ulexception2.hpp</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classleasy_1_1ul2_1_1ulexception2_1a87b5b3c4608a6189bf988b84c474530c" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string leasy::ul2::ulexception2::_what</definition>
+        <argsstring></argsstring>
+        <name>_what</name>
+        <qualifiedname>leasy::ul2::ulexception2::_what</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/ulexception2.hpp" line="34" column="17" bodyfile="leasy/ul2/ulexception2.hpp" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1ul2_1_1ulexception2_1a877651e861d80c810e4c092d2a35d937" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string leasy::ul2::ulexception2::_from</definition>
+        <argsstring></argsstring>
+        <name>_from</name>
+        <qualifiedname>leasy::ul2::ulexception2::_from</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/ulexception2.hpp" line="35" column="17" bodyfile="leasy/ul2/ulexception2.hpp" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1ul2_1_1ulexception2_1af00a34fd7c8263925f2f930634476215" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string leasy::ul2::ulexception2::_whut</definition>
+        <argsstring></argsstring>
+        <name>_whut</name>
+        <qualifiedname>leasy::ul2::ulexception2::_whut</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/ulexception2.hpp" line="36" column="17" bodyfile="leasy/ul2/ulexception2.hpp" bodystart="36" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1ulexception2_1ad52600aeef089b859f1687fe294c95d3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ul2::ulexception2::ulexception2</definition>
+        <argsstring>(const std::string &amp;F, const std::string &amp;W)</argsstring>
+        <name>ulexception2</name>
+        <qualifiedname>leasy::ul2::ulexception2::ulexception2</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>W</declname>
+        </param>
+        <briefdescription>
+<para>Builds an exception. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the thrower </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>W</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the message </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/ulexception2.hpp" line="43" column="5" bodyfile="leasy/ul2/ulexception2.cpp" bodystart="29" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1ulexception2_1a5e10ebb6d1402ddb6e3fdc0d9d4839b6" prot="public" static="no" const="yes" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type>const char *</type>
+        <definition>const char * leasy::ul2::ulexception2::what</definition>
+        <argsstring>() const noexcept override</argsstring>
+        <name>what</name>
+        <qualifiedname>leasy::ul2::ulexception2::what</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/ulexception2.hpp" line="44" column="16" bodyfile="leasy/ul2/ulexception2.cpp" bodystart="35" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1ulexception2_1ad0bac1bf32d2a1fea75a87aa81c0e5f8" prot="public" static="no" const="yes" explicit="no" inline="no" noexcept="yes" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string leasy::ul2::ulexception2::whut</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>whut</name>
+        <qualifiedname>leasy::ul2::ulexception2::whut</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/ulexception2.hpp" line="45" column="25" bodyfile="leasy/ul2/ulexception2.cpp" bodystart="39" bodyend="41"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents an internal error in <ref refid="namespaceleasy_1_1ul2" kindref="compound">ul2</ref> systems. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>leasy::ul2::ulexception2</label>
+        <link refid="classleasy_1_1ul2_1_1ulexception2"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::exception</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>leasy::ul2::ulexception2</label>
+        <link refid="classleasy_1_1ul2_1_1ulexception2"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::exception</label>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/ul2/ulexception2.hpp" line="32" column="3" bodyfile="leasy/ul2/ulexception2.hpp" bodystart="32" bodyend="46"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1ul2_1_1ulexception2_1a877651e861d80c810e4c092d2a35d937" prot="private" virt="non-virtual"><scope>leasy::ul2::ulexception2</scope><name>_from</name></member>
+      <member refid="classleasy_1_1ul2_1_1ulexception2_1a87b5b3c4608a6189bf988b84c474530c" prot="private" virt="non-virtual"><scope>leasy::ul2::ulexception2</scope><name>_what</name></member>
+      <member refid="classleasy_1_1ul2_1_1ulexception2_1af00a34fd7c8263925f2f930634476215" prot="private" virt="non-virtual"><scope>leasy::ul2::ulexception2</scope><name>_whut</name></member>
+      <member refid="classleasy_1_1ul2_1_1ulexception2_1ad52600aeef089b859f1687fe294c95d3" prot="public" virt="non-virtual"><scope>leasy::ul2::ulexception2</scope><name>ulexception2</name></member>
+      <member refid="classleasy_1_1ul2_1_1ulexception2_1a5e10ebb6d1402ddb6e3fdc0d9d4839b6" prot="public" virt="non-virtual"><scope>leasy::ul2::ulexception2</scope><name>what</name></member>
+      <member refid="classleasy_1_1ul2_1_1ulexception2_1ad0bac1bf32d2a1fea75a87aa81c0e5f8" prot="public" virt="virtual"><scope>leasy::ul2::ulexception2</scope><name>whut</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

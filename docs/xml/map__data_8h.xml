@@ -1,0 +1,796 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="map__data_8h" kind="file" language="C++">
+    <compoundname>map_data.h</compoundname>
+    <includedby refid="game__map_8cpp" local="yes">game_map.cpp</includedby>
+    <includedby refid="spriteset__map_8cpp" local="yes">spriteset_map.cpp</includedby>
+    <includedby refid="tilemap__layer_8cpp" local="yes">tilemap_layer.cpp</includedby>
+    <invincdepgraph>
+      <node id="2">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="1">
+        <label>map_data.h</label>
+        <link refid="map__data_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>spriteset_map.cpp</label>
+        <link refid="spriteset__map_8cpp"/>
+      </node>
+      <node id="4">
+        <label>tilemap_layer.cpp</label>
+        <link refid="tilemap__layer_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespace_passable">Passable</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="map__data_8h_1a570069f780f383354eb41162e4ead2e7" prot="public" static="no">
+        <name>EP_MAP_DATA_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="20" column="9" bodyfile="map_data.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="map__data_8h_1a246fb643e00832f069594010a7faf6e7" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_A</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_A</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="23" column="22" bodyfile="map_data.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a14b798ff57063f7e8b5dde06c10ef43e" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_A_TILES</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_A_TILES</name>
+        <initializer>= 2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="24" column="22" bodyfile="map_data.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a8644e6e1dd84f7ef67b70d1bb9b39e2b" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_A_STRIDE</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_A_STRIDE</name>
+        <initializer>= 1000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="25" column="22" bodyfile="map_data.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1af3a6ae28076b275bd5c703e2be77cc29" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_A_INDEX</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_A_INDEX</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="26" column="22" bodyfile="map_data.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1aed88d4ef6b363e02ebe876aadac9fbae" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_A_END</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_A_END</name>
+        <initializer>= BLOCK_A + BLOCK_A_TILES * BLOCK_A_STRIDE</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="27" column="22" bodyfile="map_data.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a20e363d0bd4162c2397efd277d902157" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_B</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_B</name>
+        <initializer>= 2000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="29" column="22" bodyfile="map_data.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a77dff30d13cb31ca47bbe5377bb4c478" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_B_TILES</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_B_TILES</name>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="30" column="22" bodyfile="map_data.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1ac279d1cfa326757aebda324037c25079" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_B_STRIDE</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_B_STRIDE</name>
+        <initializer>= 1000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="31" column="22" bodyfile="map_data.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a05f16cdedd949f27e0ea7d35472f269f" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_B_INDEX</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_B_INDEX</name>
+        <initializer>= 2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="32" column="22" bodyfile="map_data.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1afb3542497df3642172bd5d9d390c4c4a" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_B_END</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_B_END</name>
+        <initializer>= BLOCK_B + BLOCK_B_TILES * BLOCK_B_STRIDE</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="33" column="22" bodyfile="map_data.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1af631a0d0c5c7ef108d6df899d22bd142" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_C</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_C</name>
+        <initializer>= 3000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="35" column="22" bodyfile="map_data.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1aeb5c8a1ae189681626b7d9785595dd43" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_C_TILES</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_C_TILES</name>
+        <initializer>= 3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="36" column="22" bodyfile="map_data.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a69d6687093e5db2bc4c8ea3208e283e6" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_C_STRIDE</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_C_STRIDE</name>
+        <initializer>= 50</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="37" column="22" bodyfile="map_data.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a1c99d43800c08b21a7d6092c3e5c2a0c" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_C_INDEX</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_C_INDEX</name>
+        <initializer>= 3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="38" column="22" bodyfile="map_data.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a9fae729d91825708793058196b8ea730" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_C_END</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_C_END</name>
+        <initializer>= BLOCK_C + BLOCK_C_TILES * BLOCK_C_STRIDE</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="39" column="22" bodyfile="map_data.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1aecd64556e8e6c619eaff311535beeec9" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_D</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_D</name>
+        <initializer>= 4000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="41" column="22" bodyfile="map_data.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1af516bc9509f4be7ed2f1b3d52e29b3ed" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_D_TILES</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_D_TILES</name>
+        <initializer>= 12</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="42" column="22" bodyfile="map_data.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1ab4dda45d1c6e8a1fbe7480234bd31ddf" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_D_STRIDE</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_D_STRIDE</name>
+        <initializer>= 50</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="43" column="22" bodyfile="map_data.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1af3e969316912f4731446e80b2318479d" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_D_INDEX</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_D_INDEX</name>
+        <initializer>= 6</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="44" column="22" bodyfile="map_data.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1abcae433dabe77de85a7655c526f0dee9" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_D_END</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_D_END</name>
+        <initializer>= BLOCK_D + BLOCK_D_TILES * BLOCK_D_STRIDE</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="45" column="22" bodyfile="map_data.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a389dd5fd8de6973e9bb55f50a798caa8" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_E</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_E</name>
+        <initializer>= 5000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="47" column="22" bodyfile="map_data.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a177eb1ddac1e26c3b9d1dd5122e5b99a" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_E_TILES</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_E_TILES</name>
+        <initializer>= 144</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="48" column="22" bodyfile="map_data.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1ad188b1c0f7a7543d86b9d6d83323553b" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_E_STRIDE</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_E_STRIDE</name>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="49" column="22" bodyfile="map_data.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1ae346e473e79c2c663d683f0b8b79acf4" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_E_INDEX</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_E_INDEX</name>
+        <initializer>= 18</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="50" column="22" bodyfile="map_data.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a81f0e84cdb2e7b9aa9b466575d04059e" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_E_END</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_E_END</name>
+        <initializer>= BLOCK_E + BLOCK_E_TILES * BLOCK_E_STRIDE</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="51" column="22" bodyfile="map_data.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a1d1cceb9714f34042bac1f090bca29a9" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_F</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_F</name>
+        <initializer>= 10000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="53" column="22" bodyfile="map_data.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a14465b81fa824105cac6dc3461b43503" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_F_TILES</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_F_TILES</name>
+        <initializer>= 144</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="54" column="22" bodyfile="map_data.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a44725bc7bb913dabc3a8697c5f0fb706" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_F_STRIDE</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_F_STRIDE</name>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="55" column="22" bodyfile="map_data.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1ab56e1b18d9350cfc9e9be915d1dd9a3e" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_F_INDEX</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_F_INDEX</name>
+        <initializer>= 162</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="56" column="22" bodyfile="map_data.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a961361d9883cbbc04dfc0839c7d7fed4" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int BLOCK_F_END</definition>
+        <argsstring></argsstring>
+        <name>BLOCK_F_END</name>
+        <initializer>= BLOCK_F + BLOCK_F_TILES * BLOCK_F_STRIDE</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="57" column="22" bodyfile="map_data.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1ac7814f38d6719e8cf981aff461c86f06" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int NUM_LOWER_TILES</definition>
+        <argsstring></argsstring>
+        <name>NUM_LOWER_TILES</name>
+        <initializer>= BLOCK_F_INDEX</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="59" column="22" bodyfile="map_data.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1add61efedc885fa990e1dc2f2a5b1ad7c" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int NUM_UPPER_TILES</definition>
+        <argsstring></argsstring>
+        <name>NUM_UPPER_TILES</name>
+        <initializer>= BLOCK_F_TILES</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="60" column="22" bodyfile="map_data.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a332e465a0016f933df99b8e6621cfdfb" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int NUM_TILES</definition>
+        <argsstring></argsstring>
+        <name>NUM_TILES</name>
+        <initializer>= NUM_LOWER_TILES + NUM_UPPER_TILES</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="61" column="22" bodyfile="map_data.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1aba0f2e14ee0e4aca51906bcfe933d030" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t NEIGHBOR_NW</definition>
+        <argsstring></argsstring>
+        <name>NEIGHBOR_NW</name>
+        <initializer>= 0x80</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="64" column="26" bodyfile="map_data.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a51e4435bea3447c7eff9ca5068a658c3" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t NEIGHBOR_N</definition>
+        <argsstring></argsstring>
+        <name>NEIGHBOR_N</name>
+        <initializer>= 0x40</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="65" column="26" bodyfile="map_data.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a447dfcdbb02e396d0ce3590e1e440b27" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t NEIGHBOR_NE</definition>
+        <argsstring></argsstring>
+        <name>NEIGHBOR_NE</name>
+        <initializer>= 0x20</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="66" column="26" bodyfile="map_data.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a734f88eeea614e3817b07c22fd93b310" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t NEIGHBOR_W</definition>
+        <argsstring></argsstring>
+        <name>NEIGHBOR_W</name>
+        <initializer>= 0x10</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="67" column="26" bodyfile="map_data.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1aa982d1250fcd2d995c6edf47c9dc2851" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t NEIGHBOR_E</definition>
+        <argsstring></argsstring>
+        <name>NEIGHBOR_E</name>
+        <initializer>= 0x08</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="68" column="26" bodyfile="map_data.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a2bb01023e5a9fd59550f50f702b91d53" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t NEIGHBOR_SW</definition>
+        <argsstring></argsstring>
+        <name>NEIGHBOR_SW</name>
+        <initializer>= 0x04</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="69" column="26" bodyfile="map_data.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a747ee3e3495864844443682b1d2af704" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t NEIGHBOR_S</definition>
+        <argsstring></argsstring>
+        <name>NEIGHBOR_S</name>
+        <initializer>= 0x02</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="70" column="26" bodyfile="map_data.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="map__data_8h_1a77f06dd781801c1985d7c0880e5d0ecc" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t NEIGHBOR_SE</definition>
+        <argsstring></argsstring>
+        <name>NEIGHBOR_SE</name>
+        <initializer>= 0x01</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="71" column="26" bodyfile="map_data.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="map__data_8h_1aa03fa7e532aa820e9dc9b290973faadd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int ChipIdToIndex</definition>
+        <argsstring>(int chip_id)</argsstring>
+        <name>ChipIdToIndex</name>
+        <param>
+          <type>int</type>
+          <declname>chip_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="87" column="12" bodyfile="map_data.h" bodystart="87" bodyend="107"/>
+      </memberdef>
+      <memberdef kind="function" id="map__data_8h_1afeb3f1b0434f5430551841a6f2237d20" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int IndexToChipId</definition>
+        <argsstring>(int index)</argsstring>
+        <name>IndexToChipId</name>
+        <param>
+          <type>int</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="map_data.h" line="109" column="12" bodyfile="map_data.h" bodystart="109" bodyend="129"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_MAP_DATA_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="map__data_8h_1a570069f780f383354eb41162e4ead2e7" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_MAP_DATA_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Tile<sp/>IDs</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_A<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_A_TILES<sp/>=<sp/>2;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_A_STRIDE<sp/>=<sp/>1000;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_A_INDEX<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_A_END<sp/>=<sp/>BLOCK_A<sp/>+<sp/>BLOCK_A_TILES<sp/>*<sp/>BLOCK_A_STRIDE;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_B<sp/>=<sp/>2000;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_B_TILES<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_B_STRIDE<sp/>=<sp/>1000;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_B_INDEX<sp/>=<sp/>2;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_B_END<sp/>=<sp/>BLOCK_B<sp/>+<sp/>BLOCK_B_TILES<sp/>*<sp/>BLOCK_B_STRIDE;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_C<sp/>=<sp/>3000;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_C_TILES<sp/>=<sp/>3;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_C_STRIDE<sp/>=<sp/>50;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_C_INDEX<sp/>=<sp/>3;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_C_END<sp/>=<sp/>BLOCK_C<sp/>+<sp/>BLOCK_C_TILES<sp/>*<sp/>BLOCK_C_STRIDE;</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_D<sp/>=<sp/>4000;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_D_TILES<sp/>=<sp/>12;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_D_STRIDE<sp/>=<sp/>50;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_D_INDEX<sp/>=<sp/>6;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_D_END<sp/>=<sp/>BLOCK_D<sp/>+<sp/>BLOCK_D_TILES<sp/>*<sp/>BLOCK_D_STRIDE;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_E<sp/>=<sp/>5000;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_E_TILES<sp/>=<sp/>144;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_E_STRIDE<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_E_INDEX<sp/>=<sp/>18;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_E_END<sp/>=<sp/>BLOCK_E<sp/>+<sp/>BLOCK_E_TILES<sp/>*<sp/>BLOCK_E_STRIDE;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_F<sp/>=<sp/>10000;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_F_TILES<sp/>=<sp/>144;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_F_STRIDE<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_F_INDEX<sp/>=<sp/>162;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>BLOCK_F_END<sp/>=<sp/>BLOCK_F<sp/>+<sp/>BLOCK_F_TILES<sp/>*<sp/>BLOCK_F_STRIDE;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>NUM_LOWER_TILES<sp/>=<sp/>BLOCK_F_INDEX;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>NUM_UPPER_TILES<sp/>=<sp/>BLOCK_F_TILES;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>NUM_TILES<sp/>=<sp/>NUM_LOWER_TILES<sp/>+<sp/>NUM_UPPER_TILES;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Bit<sp/>positions<sp/>for<sp/>neighbors</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/>NEIGHBOR_NW<sp/>=<sp/>0x80;<sp/></highlight><highlight class="comment">//<sp/>0b10000000</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/>NEIGHBOR_N<sp/><sp/>=<sp/>0x40;<sp/></highlight><highlight class="comment">//<sp/>0b01000000</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/>NEIGHBOR_NE<sp/>=<sp/>0x20;<sp/></highlight><highlight class="comment">//<sp/>0b00100000</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/>NEIGHBOR_W<sp/><sp/>=<sp/>0x10;<sp/></highlight><highlight class="comment">//<sp/>0b00010000</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/>NEIGHBOR_E<sp/><sp/>=<sp/>0x08;<sp/></highlight><highlight class="comment">//<sp/>0b00001000</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/>NEIGHBOR_SW<sp/>=<sp/>0x04;<sp/></highlight><highlight class="comment">//<sp/>0b00000100</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/>NEIGHBOR_S<sp/><sp/>=<sp/>0x02;<sp/></highlight><highlight class="comment">//<sp/>0b00000010</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>uint8_t<sp/>NEIGHBOR_SE<sp/>=<sp/>0x01;<sp/></highlight><highlight class="comment">//<sp/>0b00000001</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75" refid="namespace_passable" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_passable" kindref="compound">Passable</ref><sp/>{</highlight></codeline>
+<codeline lineno="76" refid="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6dec" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="namespace_passable" kindref="compound">Passable</ref><sp/>{</highlight></codeline>
+<codeline lineno="77" refid="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6decada1a42f5efbffa313f9925a32765c22a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6decada1a42f5efbffa313f9925a32765c22a" kindref="member">Down</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x01,</highlight></codeline>
+<codeline lineno="78" refid="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6deca07f9040c8a22e8f43b8149a8ead42098" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6deca07f9040c8a22e8f43b8149a8ead42098" kindref="member">Left</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x02,</highlight></codeline>
+<codeline lineno="79" refid="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6deca102d0be810cb2b76a63add6fd194b2a9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6deca102d0be810cb2b76a63add6fd194b2a9" kindref="member">Right</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x04,</highlight></codeline>
+<codeline lineno="80" refid="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6decac57cb9edfbba4057aa428338832c2774" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6decac57cb9edfbba4057aa428338832c2774" kindref="member">Up</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x08,</highlight></codeline>
+<codeline lineno="81" refid="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6deca3b2f44a508c64d962050c654fdfe00f5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6deca3b2f44a508c64d962050c654fdfe00f5" kindref="member">Above</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x10,</highlight></codeline>
+<codeline lineno="82" refid="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6decaf9504a5f03783937d87cb45590dfb7d8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6decaf9504a5f03783937d87cb45590dfb7d8" kindref="member">Wall</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x20,</highlight></codeline>
+<codeline lineno="83" refid="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6deca3f96ec2d45c13991090f883b70814bfa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_passable_1a3bfc4e05bdaa687b8ed4183f5eaa6deca3f96ec2d45c13991090f883b70814bfa" kindref="member">Counter</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>0x40</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="85"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87" refid="map__data_8h_1aa03fa7e532aa820e9dc9b290973faadd" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="map__data_8h_1aa03fa7e532aa820e9dc9b290973faadd" kindref="member">ChipIdToIndex</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>chip_id)<sp/>{</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(chip_id<sp/>&gt;=<sp/>BLOCK_A<sp/>&amp;&amp;<sp/>chip_id<sp/>&lt;<sp/>BLOCK_A_END)<sp/>{</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>BLOCK_A_INDEX<sp/>+<sp/>(chip_id<sp/>-<sp/>BLOCK_A)<sp/>/<sp/>BLOCK_A_STRIDE;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(chip_id<sp/>&gt;=<sp/>BLOCK_B<sp/>&amp;&amp;<sp/>chip_id<sp/>&lt;<sp/>BLOCK_B_END)<sp/>{</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>BLOCK_B_INDEX<sp/>+<sp/>(chip_id<sp/>-<sp/>BLOCK_B)<sp/>/<sp/>BLOCK_B_STRIDE;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(chip_id<sp/>&gt;=<sp/>BLOCK_C<sp/>&amp;&amp;<sp/>chip_id<sp/>&lt;<sp/>BLOCK_C_END)<sp/>{</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>BLOCK_C_INDEX<sp/>+<sp/>(chip_id<sp/>-<sp/>BLOCK_C)<sp/>/<sp/>BLOCK_C_STRIDE;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(chip_id<sp/>&gt;=<sp/>BLOCK_D<sp/>&amp;&amp;<sp/>chip_id<sp/>&lt;<sp/>BLOCK_D_END)<sp/>{</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>BLOCK_D_INDEX<sp/>+<sp/>(chip_id<sp/>-<sp/>BLOCK_D)<sp/>/<sp/>BLOCK_D_STRIDE;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(chip_id<sp/>&gt;=<sp/>BLOCK_E<sp/>&amp;&amp;<sp/>chip_id<sp/>&lt;<sp/>BLOCK_E_END)<sp/>{</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>BLOCK_E_INDEX<sp/>+<sp/>(chip_id<sp/>-<sp/>BLOCK_E)<sp/>/<sp/>BLOCK_E_STRIDE;</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(chip_id<sp/>&gt;=<sp/>BLOCK_F<sp/>&amp;&amp;<sp/>chip_id<sp/>&lt;<sp/>BLOCK_F_END)<sp/>{</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>BLOCK_F_INDEX<sp/>+<sp/>(chip_id<sp/>-<sp/>BLOCK_F)<sp/>/<sp/>BLOCK_F_STRIDE;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109" refid="map__data_8h_1afeb3f1b0434f5430551841a6f2237d20" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="map__data_8h_1afeb3f1b0434f5430551841a6f2237d20" kindref="member">IndexToChipId</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>index)<sp/>{</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(index<sp/>&gt;=<sp/>BLOCK_A_INDEX<sp/>&amp;&amp;<sp/>index<sp/>&lt;<sp/>BLOCK_B_INDEX)<sp/>{</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>BLOCK_A<sp/>+<sp/>(index<sp/>-<sp/>BLOCK_A_INDEX)<sp/>*<sp/>BLOCK_A_STRIDE;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(index<sp/>&gt;=<sp/>BLOCK_B_INDEX<sp/>&amp;&amp;<sp/>index<sp/>&lt;<sp/>BLOCK_C_INDEX)<sp/>{</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>BLOCK_B<sp/>+<sp/>(index<sp/>-<sp/>BLOCK_B_INDEX)<sp/>*<sp/>BLOCK_B_STRIDE;</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(index<sp/>&gt;=<sp/>BLOCK_C_INDEX<sp/>&amp;&amp;<sp/>index<sp/>&lt;<sp/>BLOCK_D_INDEX)<sp/>{</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>BLOCK_C<sp/>+<sp/>(index<sp/>-<sp/>BLOCK_C_INDEX)<sp/>*<sp/>BLOCK_C_STRIDE;</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(index<sp/>&gt;=<sp/>BLOCK_D_INDEX<sp/>&amp;&amp;<sp/>index<sp/>&lt;<sp/>BLOCK_E_INDEX)<sp/>{</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>BLOCK_D<sp/>+<sp/>(index<sp/>-<sp/>BLOCK_D_INDEX)<sp/>*<sp/>BLOCK_D_STRIDE;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(index<sp/>&gt;=<sp/>BLOCK_E_INDEX<sp/>&amp;&amp;<sp/>index<sp/>&lt;<sp/>BLOCK_F_INDEX)<sp/>{</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>BLOCK_E<sp/>+<sp/>(index<sp/>-<sp/>BLOCK_E_INDEX)<sp/>*<sp/>BLOCK_E_STRIDE;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(index<sp/>&gt;=<sp/>BLOCK_F_INDEX)<sp/>{</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>BLOCK_F<sp/>+<sp/>(index<sp/>-<sp/>BLOCK_F_INDEX)<sp/>*<sp/>BLOCK_F_STRIDE;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="129"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="map_data.h"/>
+  </compounddef>
+</doxygen>

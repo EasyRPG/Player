@@ -1,0 +1,374 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1compat" kind="namespace" language="C++">
+    <compoundname>leasy::compat</compoundname>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespaceleasy_1_1compat_1a58c455b84015209f4203cdb7d5de2e72" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::remove_cv_t&lt; std::remove_reference_t&lt; T &gt; &gt;</type>
+        <definition>using leasy::compat::remove_cvref_t = std::remove_cv_t&lt;std::remove_reference_t&lt;T&gt;&gt;</definition>
+        <argsstring></argsstring>
+        <name>remove_cvref_t</name>
+        <qualifiedname>leasy::compat::remove_cvref_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/cvref.hpp" line="30" column="3" bodyfile="leasy/kits/cvref.hpp" bodystart="30" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceleasy_1_1compat_1af0b1cca2d3b88aa7fc1729e77cd93b8e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Container</type>
+          </param>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>Container::size_type</type>
+        <definition>Container::size_type leasy::compat::erase</definition>
+        <argsstring>(Container &amp;c, const T &amp;value)</argsstring>
+        <name>erase</name>
+        <qualifiedname>leasy::compat::erase</qualifiedname>
+        <param>
+          <type>Container &amp;</type>
+          <declname>c</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/ps7k.hpp" line="39" column="31" bodyfile="leasy/kits/ps7k.hpp" bodystart="39" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1compat_1a0248da5bd137c1f19faa774ea38a9b2f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Container</type>
+          </param>
+          <param>
+            <type>class Pred</type>
+          </param>
+        </templateparamlist>
+        <type>Container::size_type</type>
+        <definition>Container::size_type leasy::compat::erase_if</definition>
+        <argsstring>(Container &amp;c, Pred pred)</argsstring>
+        <name>erase_if</name>
+        <qualifiedname>leasy::compat::erase_if</qualifiedname>
+        <param>
+          <type>Container &amp;</type>
+          <declname>c</declname>
+        </param>
+        <param>
+          <type>Pred</type>
+          <declname>pred</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/ps7k.hpp" line="46" column="31" bodyfile="leasy/kits/ps7k.hpp" bodystart="46" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1compat_1a3fb931d00f2ca3bde2dd2a9967e74200" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Container</type>
+          </param>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool leasy::compat::contains</definition>
+        <argsstring>(const Container &amp;c, const T &amp;value)</argsstring>
+        <name>contains</name>
+        <qualifiedname>leasy::compat::contains</qualifiedname>
+        <param>
+          <type>const Container &amp;</type>
+          <declname>c</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/ps7k.hpp" line="53" column="6" bodyfile="leasy/kits/ps7k.hpp" bodystart="53" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1compat_1acc90a2b1a4c607c37f48bef0cbccf54b" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class E</type>
+          </param>
+        </templateparamlist>
+        <type>std::underlying_type_t&lt; E &gt;</type>
+        <definition>std::underlying_type_t&lt; E &gt; leasy::compat::to_underlying</definition>
+        <argsstring>(E e) noexcept</argsstring>
+        <name>to_underlying</name>
+        <qualifiedname>leasy::compat::to_underlying</qualifiedname>
+        <param>
+          <type>E</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/ps7k.hpp" line="58" column="34" bodyfile="leasy/kits/ps7k.hpp" bodystart="58" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1compat_1ad93275dcc2d37feb03d16b7e91e94751" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool leasy::compat::starts_with</definition>
+        <argsstring>(std::string_view s, std::string_view prefix)</argsstring>
+        <name>starts_with</name>
+        <qualifiedname>leasy::compat::starts_with</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>prefix</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/ps7k.hpp" line="62" column="13" bodyfile="leasy/kits/ps7k.hpp" bodystart="62" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1compat_1aa5a097a9b845a2d2380eef599a5ff4cb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool leasy::compat::ends_with</definition>
+        <argsstring>(std::string_view s, std::string_view suffix)</argsstring>
+        <name>ends_with</name>
+        <qualifiedname>leasy::compat::ends_with</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>suffix</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/ps7k.hpp" line="66" column="13" bodyfile="leasy/kits/ps7k.hpp" bodystart="66" bodyend="69"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1compat_1a2b4cac92d7053972b7650d5d085894e2" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class To</type>
+          </param>
+          <param>
+            <type>class From</type>
+          </param>
+        </templateparamlist>
+        <type>std::enable_if_t&lt; sizeof(To)==sizeof(From) &amp;&amp;std::is_trivially_copyable_v&lt; From &gt; &amp;&amp;std::is_trivially_copyable_v&lt; To &gt;, To &gt;</type>
+        <definition>std::enable_if_t&lt; sizeof(To)==sizeof(From) &amp;&amp;std::is_trivially_copyable_v&lt; From &gt; &amp;&amp;std::is_trivially_copyable_v&lt; To &gt;, To &gt; leasy::compat::bit_cast</definition>
+        <argsstring>(const From &amp;src) noexcept</argsstring>
+        <name>bit_cast</name>
+        <qualifiedname>leasy::compat::bit_cast</qualifiedname>
+        <param>
+          <type>const From &amp;</type>
+          <declname>src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/ps7k.hpp" line="77" column="1" bodyfile="leasy/kits/ps7k.hpp" bodystart="77" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1compat_1a341fa0eec66edacfba67003cd2daed61" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+          <param>
+            <type>class U</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool leasy::compat::cmp_equal</definition>
+        <argsstring>(T t, U u) noexcept</argsstring>
+        <name>cmp_equal</name>
+        <qualifiedname>leasy::compat::cmp_equal</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type>U</type>
+          <declname>u</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/ps7k.hpp" line="84" column="16" bodyfile="leasy/kits/ps7k.hpp" bodystart="84" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1compat_1a960b6774e9dba231df7bb2618e49f0e6" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+          <param>
+            <type>class U</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool leasy::compat::cmp_less</definition>
+        <argsstring>(T t, U u) noexcept</argsstring>
+        <name>cmp_less</name>
+        <qualifiedname>leasy::compat::cmp_less</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type>U</type>
+          <declname>u</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/ps7k.hpp" line="94" column="16" bodyfile="leasy/kits/ps7k.hpp" bodystart="94" bodyend="101"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1compat_1a232d2655feae87e5bc4061ca72e4dc66" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+          <param>
+            <type>class U</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool leasy::compat::cmp_greater</definition>
+        <argsstring>(T t, U u) noexcept</argsstring>
+        <name>cmp_greater</name>
+        <qualifiedname>leasy::compat::cmp_greater</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type>U</type>
+          <declname>u</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/ps7k.hpp" line="104" column="16" bodyfile="leasy/kits/ps7k.hpp" bodystart="104" bodyend="106"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1compat_1a4a6886ea86a4b768ec15264c95b6b213" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+          <param>
+            <type>class U</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool leasy::compat::cmp_less_equal</definition>
+        <argsstring>(T t, U u) noexcept</argsstring>
+        <name>cmp_less_equal</name>
+        <qualifiedname>leasy::compat::cmp_less_equal</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type>U</type>
+          <declname>u</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/ps7k.hpp" line="109" column="16" bodyfile="leasy/kits/ps7k.hpp" bodystart="109" bodyend="111"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1compat_1ade9bca9ee5a857520b643dea61be2157" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+          <param>
+            <type>class U</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool leasy::compat::cmp_greater_equal</definition>
+        <argsstring>(T t, U u) noexcept</argsstring>
+        <name>cmp_greater_equal</name>
+        <qualifiedname>leasy::compat::cmp_greater_equal</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type>U</type>
+          <declname>u</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/ps7k.hpp" line="114" column="16" bodyfile="leasy/kits/ps7k.hpp" bodystart="114" bodyend="116"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para>0xEF9087A </para>
+    </detaileddescription>
+    <location file="leasy/kits/cvref.hpp" line="28" column="1"/>
+  </compounddef>
+</doxygen>

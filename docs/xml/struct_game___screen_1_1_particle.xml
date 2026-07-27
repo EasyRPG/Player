@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___screen_1_1_particle" kind="struct" language="C++" prot="public">
+    <compoundname>Game_Screen::Particle</compoundname>
+    <includes refid="game__screen_8h" local="no">game_screen.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___screen_1_1_particle_1a46fa0b28b4592ebe660b7b33fa34f164" prot="public" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t Game_Screen::Particle::t</definition>
+        <argsstring></argsstring>
+        <name>t</name>
+        <qualifiedname>Game_Screen::Particle::t</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="92" column="9" bodyfile="game_screen.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___screen_1_1_particle_1a361cd5e87d7cca9976d4797ed0dabf8e" prot="public" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t Game_Screen::Particle::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <qualifiedname>Game_Screen::Particle::x</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="93" column="9" bodyfile="game_screen.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___screen_1_1_particle_1a4b74d588529e93e1eade45153c100460" prot="public" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t Game_Screen::Particle::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <qualifiedname>Game_Screen::Particle::y</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="94" column="9" bodyfile="game_screen.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___screen_1_1_particle_1a545184dd8f08ae81640a45fd706e4bd5" prot="public" static="no" mutable="no">
+        <type>int16_t</type>
+        <definition>int16_t Game_Screen::Particle::alpha</definition>
+        <argsstring></argsstring>
+        <name>alpha</name>
+        <qualifiedname>Game_Screen::Particle::alpha</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="97" column="9" bodyfile="game_screen.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___screen_1_1_particle_1ad85d532728ec84ff12c785670ca31f0e" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float Game_Screen::Particle::vx</definition>
+        <argsstring></argsstring>
+        <name>vx</name>
+        <qualifiedname>Game_Screen::Particle::vx</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="98" column="7" bodyfile="game_screen.h" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___screen_1_1_particle_1ab134a5acd990235efb723e123a065783" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float Game_Screen::Particle::vy</definition>
+        <argsstring></argsstring>
+        <name>vy</name>
+        <qualifiedname>Game_Screen::Particle::vy</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="99" column="7" bodyfile="game_screen.h" bodystart="99" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___screen_1_1_particle_1a2f4677ea646e1dc503d7ec6767f450d7" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float Game_Screen::Particle::ax</definition>
+        <argsstring></argsstring>
+        <name>ax</name>
+        <qualifiedname>Game_Screen::Particle::ax</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="100" column="7" bodyfile="game_screen.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___screen_1_1_particle_1ac89a05d205c4fc714b0d22345bf485b2" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float Game_Screen::Particle::ay</definition>
+        <argsstring></argsstring>
+        <name>ay</name>
+        <qualifiedname>Game_Screen::Particle::ay</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_screen.h" line="101" column="7" bodyfile="game_screen.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_screen.h" line="91" column="1" bodyfile="game_screen.h" bodystart="91" bodyend="102"/>
+    <listofallmembers>
+      <member refid="struct_game___screen_1_1_particle_1a545184dd8f08ae81640a45fd706e4bd5" prot="public" virt="non-virtual"><scope>Game_Screen::Particle</scope><name>alpha</name></member>
+      <member refid="struct_game___screen_1_1_particle_1a2f4677ea646e1dc503d7ec6767f450d7" prot="public" virt="non-virtual"><scope>Game_Screen::Particle</scope><name>ax</name></member>
+      <member refid="struct_game___screen_1_1_particle_1ac89a05d205c4fc714b0d22345bf485b2" prot="public" virt="non-virtual"><scope>Game_Screen::Particle</scope><name>ay</name></member>
+      <member refid="struct_game___screen_1_1_particle_1a46fa0b28b4592ebe660b7b33fa34f164" prot="public" virt="non-virtual"><scope>Game_Screen::Particle</scope><name>t</name></member>
+      <member refid="struct_game___screen_1_1_particle_1ad85d532728ec84ff12c785670ca31f0e" prot="public" virt="non-virtual"><scope>Game_Screen::Particle</scope><name>vx</name></member>
+      <member refid="struct_game___screen_1_1_particle_1ab134a5acd990235efb723e123a065783" prot="public" virt="non-virtual"><scope>Game_Screen::Particle</scope><name>vy</name></member>
+      <member refid="struct_game___screen_1_1_particle_1a361cd5e87d7cca9976d4797ed0dabf8e" prot="public" virt="non-virtual"><scope>Game_Screen::Particle</scope><name>x</name></member>
+      <member refid="struct_game___screen_1_1_particle_1a4b74d588529e93e1eade45153c100460" prot="public" virt="non-virtual"><scope>Game_Screen::Particle</scope><name>y</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

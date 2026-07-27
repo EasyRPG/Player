@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1_1_ext_and_size" kind="struct" language="C++" prot="public">
+    <compoundname>FileExtGuesser::RPG2KNonStandardFilenameGuesser::ExtAndSize</compoundname>
+    <includes refid="fileext__guesser_8h" local="no">fileext_guesser.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1_1_ext_and_size_1a501e8f4dcb2aa580085317c9bec8de56" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string FileExtGuesser::RPG2KNonStandardFilenameGuesser::ExtAndSize::fname</definition>
+        <argsstring></argsstring>
+        <name>fname</name>
+        <qualifiedname>FileExtGuesser::RPG2KNonStandardFilenameGuesser::ExtAndSize::fname</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fileext_guesser.h" line="63" column="13" bodyfile="fileext_guesser.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1_1_ext_and_size_1acf5157cd0ebbfbb1aa57abc952a553f9" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string FileExtGuesser::RPG2KNonStandardFilenameGuesser::ExtAndSize::ext</definition>
+        <argsstring></argsstring>
+        <name>ext</name>
+        <qualifiedname>FileExtGuesser::RPG2KNonStandardFilenameGuesser::ExtAndSize::ext</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fileext_guesser.h" line="64" column="13" bodyfile="fileext_guesser.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1_1_ext_and_size_1ac5c7e76d49fda48bb2b4614d05cd2537" prot="public" static="no" mutable="no">
+        <type>int64_t</type>
+        <definition>int64_t FileExtGuesser::RPG2KNonStandardFilenameGuesser::ExtAndSize::sz</definition>
+        <argsstring></argsstring>
+        <name>sz</name>
+        <qualifiedname>FileExtGuesser::RPG2KNonStandardFilenameGuesser::ExtAndSize::sz</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fileext_guesser.h" line="65" column="9" bodyfile="fileext_guesser.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1_1_ext_and_size_1afafa4f5fb0883923fdb4896311e54e4e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>FileExtGuesser::RPG2KNonStandardFilenameGuesser::ExtAndSize::ExtAndSize</definition>
+        <argsstring>(std::string fname=&quot;&quot;, std::string ext=&quot;&quot;, int64_t sz=0)</argsstring>
+        <name>ExtAndSize</name>
+        <qualifiedname>FileExtGuesser::RPG2KNonStandardFilenameGuesser::ExtAndSize::ExtAndSize</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>fname</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>ext</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <param>
+          <type>int64_t</type>
+          <declname>sz</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fileext_guesser.h" line="62" column="1" bodyfile="fileext_guesser.h" bodystart="62" bodyend="62"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="fileext_guesser.h" line="61" column="1" bodyfile="fileext_guesser.h" bodystart="61" bodyend="66"/>
+    <listofallmembers>
+      <member refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1_1_ext_and_size_1acf5157cd0ebbfbb1aa57abc952a553f9" prot="public" virt="non-virtual"><scope>FileExtGuesser::RPG2KNonStandardFilenameGuesser::ExtAndSize</scope><name>ext</name></member>
+      <member refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1_1_ext_and_size_1afafa4f5fb0883923fdb4896311e54e4e" prot="public" virt="non-virtual"><scope>FileExtGuesser::RPG2KNonStandardFilenameGuesser::ExtAndSize</scope><name>ExtAndSize</name></member>
+      <member refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1_1_ext_and_size_1a501e8f4dcb2aa580085317c9bec8de56" prot="public" virt="non-virtual"><scope>FileExtGuesser::RPG2KNonStandardFilenameGuesser::ExtAndSize</scope><name>fname</name></member>
+      <member refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1_1_ext_and_size_1ac5c7e76d49fda48bb2b4614d05cd2537" prot="public" virt="non-virtual"><scope>FileExtGuesser::RPG2KNonStandardFilenameGuesser::ExtAndSize</scope><name>sz</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

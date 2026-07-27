@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_420bb66f080727639bb10fa63eb75338" kind="dir">
+    <compoundname>leasy/iky7</compoundname>
+    <innerfile refid="anyf_8hpp">anyf.hpp</innerfile>
+    <innerfile refid="mem_8cpp">mem.cpp</innerfile>
+    <innerfile refid="mem_8hpp">mem.hpp</innerfile>
+    <innerfile refid="nameof_8hpp">nameof.hpp</innerfile>
+    <innerfile refid="time_8hpp">time.hpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/iky7/"/>
+  </compounddef>
+</doxygen>

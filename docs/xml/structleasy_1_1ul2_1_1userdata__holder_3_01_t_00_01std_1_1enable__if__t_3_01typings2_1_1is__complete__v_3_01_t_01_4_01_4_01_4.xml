@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ul2_1_1userdata__holder_3_01_t_00_01std_1_1enable__if__t_3_01typings2_1_1is__complete__v_3_01_t_01_4_01_4_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ul2::userdata_holder&lt; T, std::enable_if_t&lt; typings2::is_complete_v&lt; T &gt; &gt; &gt;</compoundname>
+    <includes refid="lua__stack_8hpp" local="no">lua_stack.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structleasy_1_1ul2_1_1userdata__holder_3_01_t_00_01std_1_1enable__if__t_3_01typings2_1_1is__complete__v_3_01_t_01_4_01_4_01_4_1a777eebffe532cf9e21dfe7422cc79c57" prot="public" static="no" mutable="no">
+        <type>T</type>
+        <definition>T leasy::ul2::userdata_holder&lt; T, std::enable_if_t&lt; typings2::is_complete_v&lt; T &gt; &gt; &gt;::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>leasy::ul2::userdata_holder&lt; T, std::enable_if_t&lt; typings2::is_complete_v&lt; T &gt; &gt; &gt;::value</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/lua_stack.hpp" line="187" column="5" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="187" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ul2/lua_stack.hpp" line="185" column="1" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="186" bodyend="188"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ul2_1_1userdata__holder_3_01_t_00_01std_1_1enable__if__t_3_01typings2_1_1is__complete__v_3_01_t_01_4_01_4_01_4_1a777eebffe532cf9e21dfe7422cc79c57" prot="public" virt="non-virtual"><scope>leasy::ul2::userdata_holder&lt; T, std::enable_if_t&lt; typings2::is_complete_v&lt; T &gt; &gt; &gt;</scope><name>value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

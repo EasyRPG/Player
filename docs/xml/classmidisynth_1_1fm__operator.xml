@@ -1,0 +1,406 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classmidisynth_1_1fm__operator" kind="class" language="C++" prot="public">
+    <compoundname>midisynth::fm_operator</compoundname>
+    <includes refid="midisynth_8h" local="no">midisynth.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classmidisynth_1_1fm__operator_1a0eaf1baf12c8db7a244c9236c758d449" prot="private" static="no" mutable="no">
+        <type><ref refid="classmidisynth_1_1sine__wave__generator" kindref="compound">sine_wave_generator</ref></type>
+        <definition>sine_wave_generator midisynth::fm_operator::swg</definition>
+        <argsstring></argsstring>
+        <name>swg</name>
+        <qualifiedname>midisynth::fm_operator::swg</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="312" column="29" bodyfile="midisynth.h" bodystart="312" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__operator_1a8451036166091f73cfc43ecd2d1f9f77" prot="private" static="no" mutable="no">
+        <type><ref refid="classmidisynth_1_1envelope__generator" kindref="compound">envelope_generator</ref></type>
+        <definition>envelope_generator midisynth::fm_operator::eg</definition>
+        <argsstring></argsstring>
+        <name>eg</name>
+        <qualifiedname>midisynth::fm_operator::eg</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="313" column="28" bodyfile="midisynth.h" bodystart="313" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__operator_1a180ab6e069648905ded2cb9ff387de20" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float midisynth::fm_operator::ML</definition>
+        <argsstring></argsstring>
+        <name>ML</name>
+        <qualifiedname>midisynth::fm_operator::ML</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="314" column="15" bodyfile="midisynth.h" bodystart="314" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__operator_1a6243516dd6838552aa1bdf994b04b338" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float midisynth::fm_operator::DT</definition>
+        <argsstring></argsstring>
+        <name>DT</name>
+        <qualifiedname>midisynth::fm_operator::DT</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="315" column="15" bodyfile="midisynth.h" bodystart="315" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__operator_1a325c9e125bcecd964eb796332428bad3" prot="private" static="no" mutable="no">
+        <type>int_least32_t</type>
+        <definition>int_least32_t midisynth::fm_operator::ams_factor</definition>
+        <argsstring></argsstring>
+        <name>ams_factor</name>
+        <qualifiedname>midisynth::fm_operator::ams_factor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="316" column="23" bodyfile="midisynth.h" bodystart="316" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__operator_1a20ddc95eb37bfc6d97788cf92c378350" prot="private" static="no" mutable="no">
+        <type>int_least32_t</type>
+        <definition>int_least32_t midisynth::fm_operator::ams_bias</definition>
+        <argsstring></argsstring>
+        <name>ams_bias</name>
+        <qualifiedname>midisynth::fm_operator::ams_bias</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="317" column="23" bodyfile="midisynth.h" bodystart="317" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classmidisynth_1_1fm__operator_1ac4c67dbd9534649b89557ea1241da717" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>midisynth::fm_operator::fm_operator</definition>
+        <argsstring>(int AR, int DR, int SR, int RR, int SL, int TL, int KS, int ML, int DT, int AMS, int key)</argsstring>
+        <name>fm_operator</name>
+        <qualifiedname>midisynth::fm_operator::fm_operator</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>AR</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>DR</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>SR</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>RR</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>SL</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>TL</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>KS</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>ML</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>DT</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>AMS</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="297" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__operator_1a237ade305c39f2f768b07466d045bfe8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::fm_operator::set_freq_rate</definition>
+        <argsstring>(float freq, float rate)</argsstring>
+        <name>set_freq_rate</name>
+        <qualifiedname>midisynth::fm_operator::set_freq_rate</qualifiedname>
+        <param>
+          <type>float</type>
+          <declname>freq</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>rate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="298" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__operator_1a8782d87f42fba054b7af49cffe21913d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::fm_operator::set_hold</definition>
+        <argsstring>(float value)</argsstring>
+        <name>set_hold</name>
+        <qualifiedname>midisynth::fm_operator::set_hold</qualifiedname>
+        <param>
+          <type>float</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="299" column="14" bodyfile="midisynth.h" bodystart="299" bodyend="299"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__operator_1ab4ae98e20116696c67987e5bed200a11" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::fm_operator::set_freeze</definition>
+        <argsstring>(float value)</argsstring>
+        <name>set_freeze</name>
+        <qualifiedname>midisynth::fm_operator::set_freeze</qualifiedname>
+        <param>
+          <type>float</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="300" column="14" bodyfile="midisynth.h" bodystart="300" bodyend="300"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__operator_1ad988a9c27ecac3471f9e52d6bc476cf7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::fm_operator::add_modulation</definition>
+        <argsstring>(int_least32_t x)</argsstring>
+        <name>add_modulation</name>
+        <qualifiedname>midisynth::fm_operator::add_modulation</qualifiedname>
+        <param>
+          <type>int_least32_t</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="301" column="14" bodyfile="midisynth.h" bodystart="301" bodyend="301"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__operator_1a870149939ee9e15688fc81e9f7a9eabd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::fm_operator::key_off</definition>
+        <argsstring>()</argsstring>
+        <name>key_off</name>
+        <qualifiedname>midisynth::fm_operator::key_off</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="302" column="14" bodyfile="midisynth.h" bodystart="302" bodyend="302"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__operator_1a967963c8c9060dd9a52e620f7c597078" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::fm_operator::sound_off</definition>
+        <argsstring>()</argsstring>
+        <name>sound_off</name>
+        <qualifiedname>midisynth::fm_operator::sound_off</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="303" column="14" bodyfile="midisynth.h" bodystart="303" bodyend="303"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__operator_1ad7cbf5ece7af7ae17bd44cd593006828" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool midisynth::fm_operator::is_finished</definition>
+        <argsstring>() const</argsstring>
+        <name>is_finished</name>
+        <qualifiedname>midisynth::fm_operator::is_finished</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="304" column="14" bodyfile="midisynth.h" bodystart="304" bodyend="304"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__operator_1acee94abb8273b5f8ea7456fd6d732dae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::fm_operator::get_next</definition>
+        <argsstring>()</argsstring>
+        <name>get_next</name>
+        <qualifiedname>midisynth::fm_operator::get_next</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="305" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__operator_1a72f83a9012bf88c4306b3707c15a0fac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::fm_operator::get_next</definition>
+        <argsstring>(int modulate)</argsstring>
+        <name>get_next</name>
+        <qualifiedname>midisynth::fm_operator::get_next</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>modulate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="306" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__operator_1a080ffe22ad1316896d9b6deccd77e3a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::fm_operator::get_next</definition>
+        <argsstring>(int lfo, int modulate)</argsstring>
+        <name>get_next</name>
+        <qualifiedname>midisynth::fm_operator::get_next</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>lfo</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>modulate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="307" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__operator_1a013b35f00aab44fcf7c0dccee7766145" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::fm_operator::operator()</definition>
+        <argsstring>()</argsstring>
+        <name>operator()</name>
+        <qualifiedname>midisynth::fm_operator::operator()</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="308" column="20" bodyfile="midisynth.h" bodystart="308" bodyend="308"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__operator_1a70a5304daf223ebd3967a9d15d5748d7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::fm_operator::operator()</definition>
+        <argsstring>(int m)</argsstring>
+        <name>operator()</name>
+        <qualifiedname>midisynth::fm_operator::operator()</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="309" column="20" bodyfile="midisynth.h" bodystart="309" bodyend="309"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__operator_1aca04528a1f2c5b73a19b85bfe2972825" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::fm_operator::operator()</definition>
+        <argsstring>(int lfo, int m)</argsstring>
+        <name>operator()</name>
+        <qualifiedname>midisynth::fm_operator::operator()</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>lfo</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="310" column="20" bodyfile="midisynth.h" bodystart="310" bodyend="310"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="midisynth.h" line="295" column="5" bodyfile="midisynth.h" bodystart="295" bodyend="318"/>
+    <listofallmembers>
+      <member refid="classmidisynth_1_1fm__operator_1ad988a9c27ecac3471f9e52d6bc476cf7" prot="public" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>add_modulation</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1a20ddc95eb37bfc6d97788cf92c378350" prot="private" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>ams_bias</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1a325c9e125bcecd964eb796332428bad3" prot="private" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>ams_factor</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1a6243516dd6838552aa1bdf994b04b338" prot="private" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>DT</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1a8451036166091f73cfc43ecd2d1f9f77" prot="private" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>eg</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1ac4c67dbd9534649b89557ea1241da717" prot="public" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>fm_operator</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1acee94abb8273b5f8ea7456fd6d732dae" prot="public" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>get_next</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1a72f83a9012bf88c4306b3707c15a0fac" prot="public" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>get_next</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1a080ffe22ad1316896d9b6deccd77e3a4" prot="public" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>get_next</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1ad7cbf5ece7af7ae17bd44cd593006828" prot="public" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>is_finished</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1a870149939ee9e15688fc81e9f7a9eabd" prot="public" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>key_off</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1a180ab6e069648905ded2cb9ff387de20" prot="private" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>ML</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1a013b35f00aab44fcf7c0dccee7766145" prot="public" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>operator()</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1a70a5304daf223ebd3967a9d15d5748d7" prot="public" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>operator()</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1aca04528a1f2c5b73a19b85bfe2972825" prot="public" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>operator()</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1ab4ae98e20116696c67987e5bed200a11" prot="public" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>set_freeze</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1a237ade305c39f2f768b07466d045bfe8" prot="public" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>set_freq_rate</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1a8782d87f42fba054b7af49cffe21913d" prot="public" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>set_hold</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1a967963c8c9060dd9a52e620f7c597078" prot="public" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>sound_off</name></member>
+      <member refid="classmidisynth_1_1fm__operator_1a0eaf1baf12c8db7a244c9236c758d449" prot="private" virt="non-virtual"><scope>midisynth::fm_operator</scope><name>swg</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,326 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_plane" kind="class" language="C++" prot="public">
+    <compoundname>Plane</compoundname>
+    <basecompoundref refid="class_drawable" prot="public" virt="non-virtual">Drawable</basecompoundref>
+    <includes refid="plane_8h" local="no">plane.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_plane_1a6617eb62511afe39d121fa79d93c618c" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Plane::bitmap</definition>
+        <argsstring></argsstring>
+        <name>bitmap</name>
+        <qualifiedname>Plane::bitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="plane.h" line="47" column="11" bodyfile="plane.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_plane_1afcf0d338ebf69c173445686ab0c9c2dd" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Plane::tone_bitmap</definition>
+        <argsstring></argsstring>
+        <name>tone_bitmap</name>
+        <qualifiedname>Plane::tone_bitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="plane.h" line="48" column="11" bodyfile="plane.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_plane_1a00334da5686f507a1a2010276d3de14f" prot="private" static="no" mutable="no">
+        <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+        <definition>Tone Plane::tone_effect</definition>
+        <argsstring></argsstring>
+        <name>tone_effect</name>
+        <qualifiedname>Plane::tone_effect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="plane.h" line="50" column="6" bodyfile="plane.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_plane_1a3210ec5a26eeb68d872abba85230f1e0" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Plane::ox</definition>
+        <argsstring></argsstring>
+        <name>ox</name>
+        <qualifiedname>Plane::ox</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="plane.h" line="52" column="5" bodyfile="plane.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_plane_1af76b4a0354af0969b127f43777fccd1c" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Plane::oy</definition>
+        <argsstring></argsstring>
+        <name>oy</name>
+        <qualifiedname>Plane::oy</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="plane.h" line="53" column="5" bodyfile="plane.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_plane_1a596cd5094095fbbdfca0a0092f471d89" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Plane::needs_refresh</definition>
+        <argsstring></argsstring>
+        <name>needs_refresh</name>
+        <qualifiedname>Plane::needs_refresh</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="plane.h" line="54" column="6" bodyfile="plane.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_plane_1acac0d9c003e0ab10d07b146c3566a0c7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Plane::Plane</definition>
+        <argsstring>()</argsstring>
+        <name>Plane</name>
+        <qualifiedname>Plane::Plane</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="plane.h" line="33" column="1" bodyfile="plane.cpp" bodystart="27" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="class_plane_1ad2772361388afb7fac3e6a68b33804cc" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Plane::Draw</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Plane::Draw</qualifiedname>
+        <reimplements refid="class_drawable_1aa8a9b151f40368331f6fd8bbdd20133f">Draw</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="plane.h" line="35" column="6" bodyfile="plane.cpp" bodystart="32" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="function" id="class_plane_1ac56aa3fd9fc21105ff84207ec61bbaa3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref> const &amp;</type>
+        <definition>BitmapRef const  &amp; Plane::GetBitmap</definition>
+        <argsstring>() const</argsstring>
+        <name>GetBitmap</name>
+        <qualifiedname>Plane::GetBitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="plane.h" line="37" column="17" bodyfile="plane.h" bodystart="57" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="class_plane_1ac14c9a2cbf710b0e1d45ccdcb5c95c1a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Plane::SetBitmap</definition>
+        <argsstring>(BitmapRef const &amp;bitmap)</argsstring>
+        <name>SetBitmap</name>
+        <qualifiedname>Plane::SetBitmap</qualifiedname>
+        <param>
+          <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref> const &amp;</type>
+          <declname>bitmap</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="plane.h" line="38" column="6" bodyfile="plane.h" bodystart="61" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="class_plane_1a78b0b1bd124145039b7f389105172e98" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Plane::GetOx</definition>
+        <argsstring>() const</argsstring>
+        <name>GetOx</name>
+        <qualifiedname>Plane::GetOx</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="plane.h" line="39" column="5" bodyfile="plane.h" bodystart="67" bodyend="69"/>
+      </memberdef>
+      <memberdef kind="function" id="class_plane_1ad02246fb0eee74ea2d5d130f57db2d9b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Plane::SetOx</definition>
+        <argsstring>(int ox)</argsstring>
+        <name>SetOx</name>
+        <qualifiedname>Plane::SetOx</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>ox</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="plane.h" line="40" column="6" bodyfile="plane.h" bodystart="71" bodyend="73"/>
+      </memberdef>
+      <memberdef kind="function" id="class_plane_1a92085856057b24124ac64bc6636344a7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Plane::GetOy</definition>
+        <argsstring>() const</argsstring>
+        <name>GetOy</name>
+        <qualifiedname>Plane::GetOy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="plane.h" line="41" column="5" bodyfile="plane.h" bodystart="75" bodyend="77"/>
+      </memberdef>
+      <memberdef kind="function" id="class_plane_1acd1bdac073913dc0679ccba4b34287ef" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Plane::SetOy</definition>
+        <argsstring>(int oy)</argsstring>
+        <name>SetOy</name>
+        <qualifiedname>Plane::SetOy</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>oy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="plane.h" line="42" column="6" bodyfile="plane.h" bodystart="79" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="class_plane_1a92a0ba1da167c1b14946af81c4f2b5d5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+        <definition>Tone Plane::GetTone</definition>
+        <argsstring>() const</argsstring>
+        <name>GetTone</name>
+        <qualifiedname>Plane::GetTone</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="plane.h" line="43" column="6" bodyfile="plane.h" bodystart="83" bodyend="85"/>
+      </memberdef>
+      <memberdef kind="function" id="class_plane_1a8fb41da113775712c07a21fd3b0afad4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Plane::SetTone</definition>
+        <argsstring>(Tone tone)</argsstring>
+        <name>SetTone</name>
+        <qualifiedname>Plane::SetTone</qualifiedname>
+        <param>
+          <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+          <declname>tone</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="plane.h" line="44" column="6" bodyfile="plane.h" bodystart="87" bodyend="92"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_plane" kindref="compound">Plane</ref> class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>Plane</label>
+        <link refid="class_plane"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>Plane</label>
+        <link refid="class_plane"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="plane.h" line="31" column="1" bodyfile="plane.h" bodystart="31" bodyend="55"/>
+    <listofallmembers>
+      <member refid="class_plane_1a6617eb62511afe39d121fa79d93c618c" prot="private" virt="non-virtual"><scope>Plane</scope><name>bitmap</name></member>
+      <member refid="class_plane_1ad2772361388afb7fac3e6a68b33804cc" prot="public" virt="virtual"><scope>Plane</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>Plane</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>Plane</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>Plane</scope><name>Flags</name></member>
+      <member refid="class_plane_1ac56aa3fd9fc21105ff84207ec61bbaa3" prot="public" virt="non-virtual"><scope>Plane</scope><name>GetBitmap</name></member>
+      <member refid="class_plane_1a78b0b1bd124145039b7f389105172e98" prot="public" virt="non-virtual"><scope>Plane</scope><name>GetOx</name></member>
+      <member refid="class_plane_1a92085856057b24124ac64bc6636344a7" prot="public" virt="non-virtual"><scope>Plane</scope><name>GetOy</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>Plane</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>Plane</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>Plane</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>Plane</scope><name>GetRenderOy</name></member>
+      <member refid="class_plane_1a92a0ba1da167c1b14946af81c4f2b5d5" prot="public" virt="non-virtual"><scope>Plane</scope><name>GetTone</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>Plane</scope><name>GetZ</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>Plane</scope><name>IsGlobal</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>Plane</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>Plane</scope><name>IsVisible</name></member>
+      <member refid="class_plane_1a596cd5094095fbbdfca0a0092f471d89" prot="private" virt="non-virtual"><scope>Plane</scope><name>needs_refresh</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>Plane</scope><name>operator=</name></member>
+      <member refid="class_plane_1a3210ec5a26eeb68d872abba85230f1e0" prot="private" virt="non-virtual"><scope>Plane</scope><name>ox</name></member>
+      <member refid="class_plane_1af76b4a0354af0969b127f43777fccd1c" prot="private" virt="non-virtual"><scope>Plane</scope><name>oy</name></member>
+      <member refid="class_plane_1acac0d9c003e0ab10d07b146c3566a0c7" prot="public" virt="non-virtual"><scope>Plane</scope><name>Plane</name></member>
+      <member refid="class_plane_1ac14c9a2cbf710b0e1d45ccdcb5c95c1a" prot="public" virt="non-virtual"><scope>Plane</scope><name>SetBitmap</name></member>
+      <member refid="class_plane_1ad02246fb0eee74ea2d5d130f57db2d9b" prot="public" virt="non-virtual"><scope>Plane</scope><name>SetOx</name></member>
+      <member refid="class_plane_1acd1bdac073913dc0679ccba4b34287ef" prot="public" virt="non-virtual"><scope>Plane</scope><name>SetOy</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>Plane</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>Plane</scope><name>SetRenderOy</name></member>
+      <member refid="class_plane_1a8fb41da113775712c07a21fd3b0afad4" prot="public" virt="non-virtual"><scope>Plane</scope><name>SetTone</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>Plane</scope><name>SetVisible</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>Plane</scope><name>SetZ</name></member>
+      <member refid="class_plane_1afcf0d338ebf69c173445686ab0c9c2dd" prot="private" virt="non-virtual"><scope>Plane</scope><name>tone_bitmap</name></member>
+      <member refid="class_plane_1a00334da5686f507a1a2010276d3de14f" prot="private" virt="non-virtual"><scope>Plane</scope><name>tone_effect</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>Plane</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>Plane</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

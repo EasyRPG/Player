@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdrwav__list__labelled__cue__region" kind="struct" language="C++" prot="public">
+    <compoundname>drwav_list_labelled_cue_region</compoundname>
+    <includes refid="dr__wav_8h" local="no">dr_wav.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdrwav__list__labelled__cue__region_1a65d1a2666cbb4ff5f5f78e36177c82c3" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_list_labelled_cue_region::cuePointId</definition>
+        <argsstring></argsstring>
+        <name>cuePointId</name>
+        <qualifiedname>drwav_list_labelled_cue_region::cuePointId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="770" column="18" bodyfile="external/dr_wav.h" bodystart="770" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__list__labelled__cue__region_1ae9209ae04448a691e0c00007a0b52dd7" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_list_labelled_cue_region::sampleLength</definition>
+        <argsstring></argsstring>
+        <name>sampleLength</name>
+        <qualifiedname>drwav_list_labelled_cue_region::sampleLength</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="773" column="18" bodyfile="external/dr_wav.h" bodystart="773" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__list__labelled__cue__region_1a089fdfaadcd906d6a17ab1e2fbb72cce" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ae433204b3e47bded80161f89f5d52895" kindref="member">drwav_uint8</ref></type>
+        <definition>drwav_uint8 drwav_list_labelled_cue_region::purposeId[4]</definition>
+        <argsstring>[4]</argsstring>
+        <name>purposeId</name>
+        <qualifiedname>drwav_list_labelled_cue_region::purposeId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="776" column="17" bodyfile="external/dr_wav.h" bodystart="776" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__list__labelled__cue__region_1a4f812dd1aa8b99c402a0aa175961f7bc" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_list_labelled_cue_region::country</definition>
+        <argsstring></argsstring>
+        <name>country</name>
+        <qualifiedname>drwav_list_labelled_cue_region::country</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="779" column="18" bodyfile="external/dr_wav.h" bodystart="779" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__list__labelled__cue__region_1a5068dcd0f7fa386553def6785a71c15d" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_list_labelled_cue_region::language</definition>
+        <argsstring></argsstring>
+        <name>language</name>
+        <qualifiedname>drwav_list_labelled_cue_region::language</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="780" column="18" bodyfile="external/dr_wav.h" bodystart="780" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__list__labelled__cue__region_1ae471cec0683b52158843beca119fcbd6" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_list_labelled_cue_region::dialect</definition>
+        <argsstring></argsstring>
+        <name>dialect</name>
+        <qualifiedname>drwav_list_labelled_cue_region::dialect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="781" column="18" bodyfile="external/dr_wav.h" bodystart="781" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__list__labelled__cue__region_1a67520cd7402f00f35af47d7654fef8f6" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_list_labelled_cue_region::codePage</definition>
+        <argsstring></argsstring>
+        <name>codePage</name>
+        <qualifiedname>drwav_list_labelled_cue_region::codePage</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="782" column="18" bodyfile="external/dr_wav.h" bodystart="782" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__list__labelled__cue__region_1a55a4273f4933416a1102af8533ad3d02" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_list_labelled_cue_region::stringLength</definition>
+        <argsstring></argsstring>
+        <name>stringLength</name>
+        <qualifiedname>drwav_list_labelled_cue_region::stringLength</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="785" column="18" bodyfile="external/dr_wav.h" bodystart="785" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__list__labelled__cue__region_1a15b1afb3ccd74ad840796c17ae9e9985" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* drwav_list_labelled_cue_region::pString</definition>
+        <argsstring></argsstring>
+        <name>pString</name>
+        <qualifiedname>drwav_list_labelled_cue_region::pString</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="788" column="10" bodyfile="external/dr_wav.h" bodystart="788" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="external/dr_wav.h" line="767" column="1" bodyfile="external/dr_wav.h" bodystart="768" bodyend="789"/>
+    <listofallmembers>
+      <member refid="structdrwav__list__labelled__cue__region_1a67520cd7402f00f35af47d7654fef8f6" prot="public" virt="non-virtual"><scope>drwav_list_labelled_cue_region</scope><name>codePage</name></member>
+      <member refid="structdrwav__list__labelled__cue__region_1a4f812dd1aa8b99c402a0aa175961f7bc" prot="public" virt="non-virtual"><scope>drwav_list_labelled_cue_region</scope><name>country</name></member>
+      <member refid="structdrwav__list__labelled__cue__region_1a65d1a2666cbb4ff5f5f78e36177c82c3" prot="public" virt="non-virtual"><scope>drwav_list_labelled_cue_region</scope><name>cuePointId</name></member>
+      <member refid="structdrwav__list__labelled__cue__region_1ae471cec0683b52158843beca119fcbd6" prot="public" virt="non-virtual"><scope>drwav_list_labelled_cue_region</scope><name>dialect</name></member>
+      <member refid="structdrwav__list__labelled__cue__region_1a5068dcd0f7fa386553def6785a71c15d" prot="public" virt="non-virtual"><scope>drwav_list_labelled_cue_region</scope><name>language</name></member>
+      <member refid="structdrwav__list__labelled__cue__region_1a15b1afb3ccd74ad840796c17ae9e9985" prot="public" virt="non-virtual"><scope>drwav_list_labelled_cue_region</scope><name>pString</name></member>
+      <member refid="structdrwav__list__labelled__cue__region_1a089fdfaadcd906d6a17ab1e2fbb72cce" prot="public" virt="non-virtual"><scope>drwav_list_labelled_cue_region</scope><name>purposeId</name></member>
+      <member refid="structdrwav__list__labelled__cue__region_1ae9209ae04448a691e0c00007a0b52dd7" prot="public" virt="non-virtual"><scope>drwav_list_labelled_cue_region</scope><name>sampleLength</name></member>
+      <member refid="structdrwav__list__labelled__cue__region_1a55a4273f4933416a1102af8533ad3d02" prot="public" virt="non-virtual"><scope>drwav_list_labelled_cue_region</scope><name>stringLength</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

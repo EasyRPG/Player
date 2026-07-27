@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_tile_opacity" kind="class" language="C++" prot="public">
+    <compoundname>TileOpacity</compoundname>
+    <includes refid="opacity_8h" local="no">opacity.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_tile_opacity_1a22e53ad0fc58ed2777e3e42bb32eca72" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; uint8_t[]&gt;</type>
+        <definition>std::unique_ptr&lt;uint8_t[]&gt; TileOpacity::_p</definition>
+        <argsstring></argsstring>
+        <name>_p</name>
+        <qualifiedname>TileOpacity::_p</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="100" column="17" bodyfile="opacity.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tile_opacity_1a1ea727dd43fe274744347d9a77549ef1" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int TileOpacity::_w</definition>
+        <argsstring></argsstring>
+        <name>_w</name>
+        <qualifiedname>TileOpacity::_w</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="101" column="5" bodyfile="opacity.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tile_opacity_1adc8e433ab3c78829af864196db396579" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int TileOpacity::_h</definition>
+        <argsstring></argsstring>
+        <name>_h</name>
+        <qualifiedname>TileOpacity::_h</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="102" column="5" bodyfile="opacity.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_tile_opacity_1a2e91c762d2311f788173567addd3f4df" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>TileOpacity::TileOpacity</definition>
+        <argsstring>()=default</argsstring>
+        <name>TileOpacity</name>
+        <qualifiedname>TileOpacity::TileOpacity</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initialize with no tiles </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="85" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tile_opacity_1abbcc1710ffa623d11adbe804e4565055" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>TileOpacity::TileOpacity</definition>
+        <argsstring>(int w, int h)</argsstring>
+        <name>TileOpacity</name>
+        <qualifiedname>TileOpacity::TileOpacity</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>w</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>h</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initialize with num_tiles tiles </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="88" column="10" bodyfile="opacity.h" bodystart="105" bodyend="110"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tile_opacity_1a3addcdc08169a2ed95499e03058d8077" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="opacity_8h_1ae32dbd7fc9d6e0307c162debc4857907" kindref="member">ImageOpacity</ref></type>
+        <definition>ImageOpacity TileOpacity::Get</definition>
+        <argsstring>(int x, int y) const</argsstring>
+        <name>Get</name>
+        <qualifiedname>TileOpacity::Get</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get <ref refid="opacity_8h_1ae32dbd7fc9d6e0307c162debc4857907" kindref="member">ImageOpacity</ref> for tile at x, y </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="91" column="14" bodyfile="opacity.h" bodystart="112" bodyend="121"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tile_opacity_1ac95c6a6c0e57300d1f705a33382c372b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void TileOpacity::Set</definition>
+        <argsstring>(int x, int y, ImageOpacity op)</argsstring>
+        <name>Set</name>
+        <qualifiedname>TileOpacity::Set</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type><ref refid="opacity_8h_1ae32dbd7fc9d6e0307c162debc4857907" kindref="member">ImageOpacity</ref></type>
+          <declname>op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set <ref refid="opacity_8h_1ae32dbd7fc9d6e0307c162debc4857907" kindref="member">ImageOpacity</ref> for tile at x, y </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="94" column="6" bodyfile="opacity.h" bodystart="123" bodyend="128"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tile_opacity_1a2c3c1d7e4eaadcdd177b496ac01d925d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool TileOpacity::Empty</definition>
+        <argsstring>() const</argsstring>
+        <name>Empty</name>
+        <qualifiedname>TileOpacity::Empty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if no tile opacities stored </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="97" column="6" bodyfile="opacity.h" bodystart="130" bodyend="132"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Structure used to compactly store <ref refid="opacity_8h_1ae32dbd7fc9d6e0307c162debc4857907" kindref="member">ImageOpacity</ref> values for a tiled bitmap </para>
+    </detaileddescription>
+    <location file="opacity.h" line="82" column="1" bodyfile="opacity.h" bodystart="82" bodyend="103"/>
+    <listofallmembers>
+      <member refid="class_tile_opacity_1adc8e433ab3c78829af864196db396579" prot="private" virt="non-virtual"><scope>TileOpacity</scope><name>_h</name></member>
+      <member refid="class_tile_opacity_1a22e53ad0fc58ed2777e3e42bb32eca72" prot="private" virt="non-virtual"><scope>TileOpacity</scope><name>_p</name></member>
+      <member refid="class_tile_opacity_1a1ea727dd43fe274744347d9a77549ef1" prot="private" virt="non-virtual"><scope>TileOpacity</scope><name>_w</name></member>
+      <member refid="class_tile_opacity_1a2c3c1d7e4eaadcdd177b496ac01d925d" prot="public" virt="non-virtual"><scope>TileOpacity</scope><name>Empty</name></member>
+      <member refid="class_tile_opacity_1a3addcdc08169a2ed95499e03058d8077" prot="public" virt="non-virtual"><scope>TileOpacity</scope><name>Get</name></member>
+      <member refid="class_tile_opacity_1ac95c6a6c0e57300d1f705a33382c372b" prot="public" virt="non-virtual"><scope>TileOpacity</scope><name>Set</name></member>
+      <member refid="class_tile_opacity_1a2e91c762d2311f788173567addd3f4df" prot="public" virt="non-virtual"><scope>TileOpacity</scope><name>TileOpacity</name></member>
+      <member refid="class_tile_opacity_1abbcc1710ffa623d11adbe804e4565055" prot="public" virt="non-virtual"><scope>TileOpacity</scope><name>TileOpacity</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

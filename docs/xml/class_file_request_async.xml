@@ -1,0 +1,548 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_file_request_async" kind="class" language="C++" prot="public">
+    <compoundname>FileRequestAsync</compoundname>
+    <includes refid="async__handler_8h" local="no">async_handler.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_file_request_async_1a9d256ac58c96043be1f660243a650a80" prot="public" static="no" strong="no">
+        <type></type>
+        <name>AsyncState</name>
+        <qualifiedname>FileRequestAsync::AsyncState</qualifiedname>
+        <enumvalue id="class_file_request_async_1a9d256ac58c96043be1f660243a650a80aa5ce4d9f461da8d72de3e3bfa925f322" prot="public">
+          <name>State_WaitForStart</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_file_request_async_1a9d256ac58c96043be1f660243a650a80ac56c92131286b150b401bc4920932e23" prot="public">
+          <name>State_DoneSuccess</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_file_request_async_1a9d256ac58c96043be1f660243a650a80a66f14ac3894a69084e4aa9cf908fb2f8" prot="public">
+          <name>State_DoneFailure</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_file_request_async_1a9d256ac58c96043be1f660243a650a80a00e38eb2b7295dd651515ed094f7e260" prot="public">
+          <name>State_Pending</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="113" column="1" bodyfile="async_handler.h" bodystart="113" bodyend="118"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_file_request_async_1a0371a58269c5602aa28ff20af967db8d" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::pair&lt; <ref refid="async__handler_8h_1a4b8f8b7a7ac98f026c91f5da7fd0bacd" kindref="member">FileRequestBindingWeak</ref>, std::function&lt; void(<ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *)&gt; &gt; &gt;</type>
+        <definition>std::vector&lt;std::pair&lt;FileRequestBindingWeak, std::function&lt;void(FileRequestResult*)&gt; &gt; &gt; FileRequestAsync::listeners</definition>
+        <argsstring></argsstring>
+        <name>listeners</name>
+        <qualifiedname>FileRequestAsync::listeners</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="219" column="13" bodyfile="async_handler.h" bodystart="219" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_file_request_async_1aa53d015a670250195afa748c43eee36e" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string FileRequestAsync::directory</definition>
+        <argsstring></argsstring>
+        <name>directory</name>
+        <qualifiedname>FileRequestAsync::directory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="220" column="13" bodyfile="async_handler.h" bodystart="220" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_file_request_async_1a4e431c7fe0e9f4c4982b97d2b1fdb3f4" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string FileRequestAsync::file</definition>
+        <argsstring></argsstring>
+        <name>file</name>
+        <qualifiedname>FileRequestAsync::file</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="221" column="13" bodyfile="async_handler.h" bodystart="221" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_file_request_async_1a77652fbc48b30a7725cc1558e4d587a2" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string FileRequestAsync::path</definition>
+        <argsstring></argsstring>
+        <name>path</name>
+        <qualifiedname>FileRequestAsync::path</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="222" column="13" bodyfile="async_handler.h" bodystart="222" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_file_request_async_1a35869a0362e686ae72b2093e10d02899" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int FileRequestAsync::state</definition>
+        <argsstring></argsstring>
+        <name>state</name>
+        <qualifiedname>FileRequestAsync::state</qualifiedname>
+        <initializer>= <ref refid="class_file_request_async_1a9d256ac58c96043be1f660243a650a80a66f14ac3894a69084e4aa9cf908fb2f8" kindref="member">State_DoneFailure</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="223" column="5" bodyfile="async_handler.h" bodystart="223" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_file_request_async_1a5ed9f8b9e66425130dabdb0ea677585c" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool FileRequestAsync::important</definition>
+        <argsstring></argsstring>
+        <name>important</name>
+        <qualifiedname>FileRequestAsync::important</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="224" column="6" bodyfile="async_handler.h" bodystart="224" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_file_request_async_1afbb250fbf70d0acfc15eee39716f2b26" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool FileRequestAsync::graphic</definition>
+        <argsstring></argsstring>
+        <name>graphic</name>
+        <qualifiedname>FileRequestAsync::graphic</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="225" column="6" bodyfile="async_handler.h" bodystart="225" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_file_request_async_1abd1e80b9333f94dbf18a8ce91a940dec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>FileRequestAsync::FileRequestAsync</definition>
+        <argsstring>(std::string path, std::string directory, std::string file)</argsstring>
+        <name>FileRequestAsync</name>
+        <qualifiedname>FileRequestAsync::FileRequestAsync</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>directory</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>file</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Don&apos;t use this API directly. Use <ref refid="namespace_async_handler_1a9fda46064b52ed2379e26e9483993fe1" kindref="member">AsyncHandler::RequestFile</ref>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>path to the file </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The async request. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="126" column="1" bodyfile="async_handler.cpp" bodystart="283" bodyend="288"/>
+      </memberdef>
+      <memberdef kind="function" id="class_file_request_async_1a8ace44c2c22e271f08dc8d747ed0055a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FileRequestAsync::IsReady</definition>
+        <argsstring>() const</argsstring>
+        <name>IsReady</name>
+        <qualifiedname>FileRequestAsync::IsReady</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if a request finished.</para>
+<para><simplesect kind="return"><para>True when request suceeded or failed, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="133" column="6" bodyfile="async_handler.h" bodystart="248" bodyend="250"/>
+      </memberdef>
+      <memberdef kind="function" id="class_file_request_async_1aefef764e77da773bb19f0ef33f2a7041" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FileRequestAsync::IsImportantFile</definition>
+        <argsstring>() const</argsstring>
+        <name>IsImportantFile</name>
+        <qualifiedname>FileRequestAsync::IsImportantFile</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>If while has important-flag set. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="138" column="6" bodyfile="async_handler.h" bodystart="252" bodyend="254"/>
+      </memberdef>
+      <memberdef kind="function" id="class_file_request_async_1ab16dd2c74d2091314ec38469cc44ec1d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void FileRequestAsync::SetImportantFile</definition>
+        <argsstring>(bool important)</argsstring>
+        <name>SetImportantFile</name>
+        <qualifiedname>FileRequestAsync::SetImportantFile</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>important</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the important flag. This flag must be set before <ref refid="class_file_request_async_1a51c4a038e3b18ec6d8bd03df2763ad17" kindref="member">Start()</ref> is invoked. When the important flag is set the <ref refid="namespace_player" kindref="compound">Player</ref> update loop will block until the request is finished.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>important</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>value of important flag. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="148" column="6" bodyfile="async_handler.h" bodystart="256" bodyend="258"/>
+      </memberdef>
+      <memberdef kind="function" id="class_file_request_async_1a69eec733f04f0e9e9a69addfe5a1db92" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FileRequestAsync::IsGraphicFile</definition>
+        <argsstring>() const</argsstring>
+        <name>IsGraphicFile</name>
+        <qualifiedname>FileRequestAsync::IsGraphicFile</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>If while has graphic-flag set. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="153" column="6" bodyfile="async_handler.h" bodystart="260" bodyend="262"/>
+      </memberdef>
+      <memberdef kind="function" id="class_file_request_async_1ad58ab06b33fe6e8d42392734fd48bfe5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void FileRequestAsync::SetGraphicFile</definition>
+        <argsstring>(bool graphic)</argsstring>
+        <name>SetGraphicFile</name>
+        <qualifiedname>FileRequestAsync::SetGraphicFile</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>graphic</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the graphic flag. When the graphic flag is set, <ref refid="class_scene___map" kindref="compound">Scene_Map</ref> will block starting any user requested transitions until the request is finished.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>important</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>value of important flag. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="162" column="6" bodyfile="async_handler.cpp" bodystart="290" bodyend="298"/>
+      </memberdef>
+      <memberdef kind="function" id="class_file_request_async_1a51c4a038e3b18ec6d8bd03df2763ad17" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void FileRequestAsync::Start</definition>
+        <argsstring>()</argsstring>
+        <name>Start</name>
+        <qualifiedname>FileRequestAsync::Start</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Starts the async requests. When the request was already started earlier and is pending this call does nothing. When the request is already all binded event handlers are called immediately. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="170" column="6" bodyfile="async_handler.cpp" bodystart="300" bodyend="388"/>
+      </memberdef>
+      <memberdef kind="function" id="class_file_request_async_1ac88c30400f4352e2ed612f3ee7aedbe3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::string &amp;</type>
+        <definition>const std::string &amp; FileRequestAsync::GetPath</definition>
+        <argsstring>() const</argsstring>
+        <name>GetPath</name>
+        <qualifiedname>FileRequestAsync::GetPath</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Path to the requested file. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="175" column="19" bodyfile="async_handler.h" bodystart="264" bodyend="266"/>
+      </memberdef>
+      <memberdef kind="function" id="class_file_request_async_1a042f21382c31aaccc80a6ec1b0697169" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding FileRequestAsync::Bind</definition>
+        <argsstring>(void(T::*func)(FileRequestResult *, Args...), T *that, Args... args)</argsstring>
+        <name>Bind</name>
+        <qualifiedname>FileRequestAsync::Bind</qualifiedname>
+        <param>
+          <type>void(T::*)(<ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *, Args...)</type>
+          <declname>func</declname>
+        </param>
+        <param>
+          <type>T *</type>
+          <declname>that</declname>
+        </param>
+        <param>
+          <type>Args...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Binds a member function as request-finished event handler. The event handler is only invoked once (one-shot). The caller must hold a reference to the returned object, otherwise the handler is unbound.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>member function. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>that</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>instance of object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>args</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arguments passed to func. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>request binding reference. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="189" column="20" bodyfile="async_handler.h" bodystart="243" bodyend="246"/>
+      </memberdef>
+      <memberdef kind="function" id="class_file_request_async_1a6c0a47b7f42968e0161502cc998d003c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding FileRequestAsync::Bind</definition>
+        <argsstring>(std::function&lt; void(FileRequestResult *)&gt; func)</argsstring>
+        <name>Bind</name>
+        <qualifiedname>FileRequestAsync::Bind</qualifiedname>
+        <param>
+          <type>std::function&lt; void(<ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *)&gt;</type>
+          <declname>func</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Binds a function as request-finished event handler. The event handler is only invoked once (one-shot). The caller must hold a reference to the returned object, otherwise the handler is unbound.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>function. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>request binding reference. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="200" column="20" bodyfile="async_handler.cpp" bodystart="408" bodyend="414"/>
+      </memberdef>
+      <memberdef kind="function" id="class_file_request_async_1a7987524c8dfb66c0a4bed7c9a61024ee" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding FileRequestAsync::Bind</definition>
+        <argsstring>(void(*func)(FileRequestResult *))</argsstring>
+        <name>Bind</name>
+        <qualifiedname>FileRequestAsync::Bind</qualifiedname>
+        <param>
+          <type>void(*)(<ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *)</type>
+          <declname>func</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Binds a function as request-finished event handler. The event handler is only invoked once (one-shot). The caller must hold a reference to the returned object, otherwise the handler is unbound.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>func</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>function. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>request binding reference. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="211" column="20" bodyfile="async_handler.cpp" bodystart="400" bodyend="406"/>
+      </memberdef>
+      <memberdef kind="function" id="class_file_request_async_1aaeaac6cc0d5735d91001376bf86fbf22" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void FileRequestAsync::DownloadDone</definition>
+        <argsstring>(bool success)</argsstring>
+        <name>DownloadDone</name>
+        <qualifiedname>FileRequestAsync::DownloadDone</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>success</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="214" column="6" bodyfile="async_handler.cpp" bodystart="431" bodyend="456"/>
+      </memberdef>
+      <memberdef kind="function" id="class_file_request_async_1a7208f32b5d5123ac75e581c7f405d162" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void FileRequestAsync::UpdateProgress</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateProgress</name>
+        <qualifiedname>FileRequestAsync::UpdateProgress</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="215" column="6" bodyfile="async_handler.cpp" bodystart="390" bodyend="398"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_file_request_async_1ad41c77e0d460e1baa96bf566fc5221bd" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void FileRequestAsync::CallListeners</definition>
+        <argsstring>(bool success)</argsstring>
+        <name>CallListeners</name>
+        <qualifiedname>FileRequestAsync::CallListeners</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>success</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="217" column="6" bodyfile="async_handler.cpp" bodystart="416" bodyend="429"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Handles a single asynchronous file request. </para>
+    </detaileddescription>
+    <location file="async_handler.h" line="111" column="1" bodyfile="async_handler.h" bodystart="111" bodyend="226"/>
+    <listofallmembers>
+      <member refid="class_file_request_async_1a9d256ac58c96043be1f660243a650a80" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>AsyncState</name></member>
+      <member refid="class_file_request_async_1a042f21382c31aaccc80a6ec1b0697169" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>Bind</name></member>
+      <member refid="class_file_request_async_1a6c0a47b7f42968e0161502cc998d003c" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>Bind</name></member>
+      <member refid="class_file_request_async_1a7987524c8dfb66c0a4bed7c9a61024ee" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>Bind</name></member>
+      <member refid="class_file_request_async_1ad41c77e0d460e1baa96bf566fc5221bd" prot="private" virt="non-virtual"><scope>FileRequestAsync</scope><name>CallListeners</name></member>
+      <member refid="class_file_request_async_1aa53d015a670250195afa748c43eee36e" prot="private" virt="non-virtual"><scope>FileRequestAsync</scope><name>directory</name></member>
+      <member refid="class_file_request_async_1aaeaac6cc0d5735d91001376bf86fbf22" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>DownloadDone</name></member>
+      <member refid="class_file_request_async_1a4e431c7fe0e9f4c4982b97d2b1fdb3f4" prot="private" virt="non-virtual"><scope>FileRequestAsync</scope><name>file</name></member>
+      <member refid="class_file_request_async_1abd1e80b9333f94dbf18a8ce91a940dec" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>FileRequestAsync</name></member>
+      <member refid="class_file_request_async_1ac88c30400f4352e2ed612f3ee7aedbe3" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>GetPath</name></member>
+      <member refid="class_file_request_async_1afbb250fbf70d0acfc15eee39716f2b26" prot="private" virt="non-virtual"><scope>FileRequestAsync</scope><name>graphic</name></member>
+      <member refid="class_file_request_async_1a5ed9f8b9e66425130dabdb0ea677585c" prot="private" virt="non-virtual"><scope>FileRequestAsync</scope><name>important</name></member>
+      <member refid="class_file_request_async_1a69eec733f04f0e9e9a69addfe5a1db92" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>IsGraphicFile</name></member>
+      <member refid="class_file_request_async_1aefef764e77da773bb19f0ef33f2a7041" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>IsImportantFile</name></member>
+      <member refid="class_file_request_async_1a8ace44c2c22e271f08dc8d747ed0055a" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>IsReady</name></member>
+      <member refid="class_file_request_async_1a0371a58269c5602aa28ff20af967db8d" prot="private" virt="non-virtual"><scope>FileRequestAsync</scope><name>listeners</name></member>
+      <member refid="class_file_request_async_1a77652fbc48b30a7725cc1558e4d587a2" prot="private" virt="non-virtual"><scope>FileRequestAsync</scope><name>path</name></member>
+      <member refid="class_file_request_async_1ad58ab06b33fe6e8d42392734fd48bfe5" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>SetGraphicFile</name></member>
+      <member refid="class_file_request_async_1ab16dd2c74d2091314ec38469cc44ec1d" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>SetImportantFile</name></member>
+      <member refid="class_file_request_async_1a51c4a038e3b18ec6d8bd03df2763ad17" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>Start</name></member>
+      <member refid="class_file_request_async_1a35869a0362e686ae72b2093e10d02899" prot="private" virt="non-virtual"><scope>FileRequestAsync</scope><name>state</name></member>
+      <member refid="class_file_request_async_1a9d256ac58c96043be1f660243a650a80a66f14ac3894a69084e4aa9cf908fb2f8" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>State_DoneFailure</name></member>
+      <member refid="class_file_request_async_1a9d256ac58c96043be1f660243a650a80ac56c92131286b150b401bc4920932e23" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>State_DoneSuccess</name></member>
+      <member refid="class_file_request_async_1a9d256ac58c96043be1f660243a650a80a00e38eb2b7295dd651515ed094f7e260" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>State_Pending</name></member>
+      <member refid="class_file_request_async_1a9d256ac58c96043be1f660243a650a80aa5ce4d9f461da8d72de3e3bfa925f322" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>State_WaitForStart</name></member>
+      <member refid="class_file_request_async_1a7208f32b5d5123ac75e581c7f405d162" prot="public" virt="non-virtual"><scope>FileRequestAsync</scope><name>UpdateProgress</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -215,3 +215,4 @@ void Window_ShopParty::OnCharsetSpriteReady(FileRequestResult* /* result */, int
 		}
 	}
 }
+

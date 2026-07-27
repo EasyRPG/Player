@@ -1,0 +1,1180 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_pixel_format_t" kind="class" language="C++" prot="public">
+    <compoundname>PixelFormatT</compoundname>
+    <basecompoundref refid="class_pixel_format" prot="public" virt="non-virtual">PixelFormat</basecompoundref>
+    <includes refid="pixel__format_8h" local="no">pixel_format.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>BITS</declname>
+        <defname>BITS</defname>
+      </param>
+      <param>
+        <type>bool</type>
+        <declname>DYNAMIC_MASKS</declname>
+        <defname>DYNAMIC_MASKS</defname>
+      </param>
+      <param>
+        <type>bool</type>
+        <declname>DYNAMIC_ALPHA</declname>
+        <defname>DYNAMIC_ALPHA</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>ALPHA</declname>
+        <defname>ALPHA</defname>
+      </param>
+      <param>
+        <type>bool</type>
+        <declname>ALIGNED</declname>
+        <defname>ALIGNED</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>RB</declname>
+        <defname>RB</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>RS</declname>
+        <defname>RS</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>GB</declname>
+        <defname>GB</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>GS</declname>
+        <defname>GS</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BB</declname>
+        <defname>BB</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>BS</declname>
+        <defname>BS</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>AB</declname>
+        <defname>AB</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>AS</declname>
+        <defname>AS</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_pixel_format_t_1ad6ea22d9e11f6656912fc387bd04987f" prot="public" static="no">
+        <type><ref refid="class_pixel_format_t" kindref="compound">PixelFormatT</ref>&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, <ref refid="lvm_8c_1a2688e9bc2c975760015dd57956107eb4" kindref="member">RB</ref>, RS, GB, GS, BB, BS, AB, AS &gt;</type>
+        <definition>typedef PixelFormatT&lt;BITS,DYNAMIC_MASKS,DYNAMIC_ALPHA,ALPHA,ALIGNED,RB,RS,GB,GS,BB,BS,AB,AS&gt; PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::my_type</definition>
+        <argsstring></argsstring>
+        <name>my_type</name>
+        <qualifiedname>PixelFormatT::my_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="502" column="22" bodyfile="pixel_format.h" bodystart="502" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_pixel_format_t_1ae97e0c73ff137b2df9b47765bc7f75ce" prot="public" static="no">
+        <type><ref refid="structbits__traits" kindref="compound">bits_traits</ref>&lt; <ref refid="class_pixel_format_t_1ad6ea22d9e11f6656912fc387bd04987f" kindref="member">my_type</ref>, <ref refid="class_pixel_format_t_1aee28c9cf68e277f765560e41c624b4fa" kindref="member">bits</ref> &gt;</type>
+        <definition>typedef bits_traits&lt;my_type, bits&gt; PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::bits_traits_type</definition>
+        <argsstring></argsstring>
+        <name>bits_traits_type</name>
+        <qualifiedname>PixelFormatT::bits_traits_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="520" column="21" bodyfile="pixel_format.h" bodystart="520" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_pixel_format_t_1a84d42a8b69099275aa8131321471abef" prot="public" static="no">
+        <type><ref refid="structdynamic__traits__t" kindref="compound">dynamic_traits_t</ref>&lt; DYNAMIC_MASKS, DYNAMIC_ALPHA, BITS, <ref refid="lvm_8c_1a2688e9bc2c975760015dd57956107eb4" kindref="member">RB</ref>, RS, GB, GS, BB, BS, AB, AS, ALPHA &gt;</type>
+        <definition>typedef dynamic_traits_t&lt;DYNAMIC_MASKS,DYNAMIC_ALPHA,BITS,RB,RS,GB,GS,BB,BS,AB,AS,ALPHA&gt; PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::dynamic_traits_type</definition>
+        <argsstring></argsstring>
+        <name>dynamic_traits_type</name>
+        <qualifiedname>PixelFormatT::dynamic_traits_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="521" column="26" bodyfile="pixel_format.h" bodystart="521" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_pixel_format_t_1a5af403df3187e2efb09dd54235da1dd0" prot="public" static="no">
+        <type><ref refid="structalpha__type__traits" kindref="compound">alpha_type_traits</ref>&lt; <ref refid="class_pixel_format_t_1ad6ea22d9e11f6656912fc387bd04987f" kindref="member">my_type</ref>, <ref refid="class_pixel_format_t_1a3641b5714e5bcf5e6cf8773846389d1c" kindref="member">dynamic_alpha</ref>, <ref refid="class_pixel_format_t_1a6092eff64aaddfb72ae371ec852bb68c" kindref="member">alpha</ref> &gt;</type>
+        <definition>typedef alpha_type_traits&lt;my_type, dynamic_alpha, alpha&gt; PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::alpha_type_traits_type</definition>
+        <argsstring></argsstring>
+        <name>alpha_type_traits_type</name>
+        <qualifiedname>PixelFormatT::alpha_type_traits_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="522" column="27" bodyfile="pixel_format.h" bodystart="522" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_pixel_format_t_1adff9eaddf1182ab6a4d8a8e6f026a852" prot="public" static="no">
+        <type><ref refid="structopacity__type__traits" kindref="compound">opacity_type_traits</ref>&lt; <ref refid="class_pixel_format_t_1ad6ea22d9e11f6656912fc387bd04987f" kindref="member">my_type</ref>, <ref refid="class_pixel_format_t_1a3641b5714e5bcf5e6cf8773846389d1c" kindref="member">dynamic_alpha</ref>, <ref refid="class_pixel_format_t_1ab6d7e59901102e3f9d1233e438f5201f" kindref="member">opacity</ref> &gt;</type>
+        <definition>typedef opacity_type_traits&lt;my_type, dynamic_alpha, opacity&gt; PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::opacity_type_traits_type</definition>
+        <argsstring></argsstring>
+        <name>opacity_type_traits_type</name>
+        <qualifiedname>PixelFormatT::opacity_type_traits_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="523" column="29" bodyfile="pixel_format.h" bodystart="523" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_pixel_format_t_1ac4c541547c064fba9f7c7137d4293151" prot="public" static="no">
+        <type><ref refid="structalpha__traits" kindref="compound">alpha_traits</ref>&lt; <ref refid="class_pixel_format_t_1ad6ea22d9e11f6656912fc387bd04987f" kindref="member">my_type</ref>, <ref refid="class_pixel_format_t_1adaa36afa84347e2d955bcdf8b7d9afc8" kindref="member">aligned</ref>, <ref refid="class_pixel_format_t_1a3641b5714e5bcf5e6cf8773846389d1c" kindref="member">dynamic_alpha</ref>, <ref refid="class_pixel_format_t_1a6092eff64aaddfb72ae371ec852bb68c" kindref="member">alpha</ref> &gt;</type>
+        <definition>typedef alpha_traits&lt;my_type, aligned, dynamic_alpha, alpha&gt; PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::alpha_traits_type</definition>
+        <argsstring></argsstring>
+        <name>alpha_traits_type</name>
+        <qualifiedname>PixelFormatT::alpha_traits_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="524" column="22" bodyfile="pixel_format.h" bodystart="524" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_pixel_format_t_1a314ed6ed766974ce2dfb4e99074839f1" prot="public" static="no">
+        <type><ref refid="structrgba__traits" kindref="compound">rgba_traits</ref>&lt; <ref refid="class_pixel_format_t_1ad6ea22d9e11f6656912fc387bd04987f" kindref="member">my_type</ref>, <ref refid="class_pixel_format_t_1adaa36afa84347e2d955bcdf8b7d9afc8" kindref="member">aligned</ref>, <ref refid="class_pixel_format_t_1a3641b5714e5bcf5e6cf8773846389d1c" kindref="member">dynamic_alpha</ref>, <ref refid="class_pixel_format_t_1a6092eff64aaddfb72ae371ec852bb68c" kindref="member">alpha</ref> &gt;</type>
+        <definition>typedef rgba_traits&lt;my_type, aligned, dynamic_alpha, alpha&gt; PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::rgba_traits_type</definition>
+        <argsstring></argsstring>
+        <name>rgba_traits_type</name>
+        <qualifiedname>PixelFormatT::rgba_traits_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="525" column="21" bodyfile="pixel_format.h" bodystart="525" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_pixel_format_t_1ae1857dae2f5820d42102c0f9a8c7829a" prot="public" static="no">
+        <type><ref refid="structmask__traits" kindref="compound">mask_traits</ref>&lt; <ref refid="class_pixel_format_t_1ad6ea22d9e11f6656912fc387bd04987f" kindref="member">my_type</ref>, <ref refid="class_pixel_format_t_1a04eb902ef8ddcecd48b741b3199b37dd" kindref="member">dynamic_masks</ref>, <ref refid="lvm_8c_1a2688e9bc2c975760015dd57956107eb4" kindref="member">RB</ref>, RS &gt;</type>
+        <definition>typedef mask_traits&lt;my_type, dynamic_masks, RB, RS&gt; PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::mask_r_traits_type</definition>
+        <argsstring></argsstring>
+        <name>mask_r_traits_type</name>
+        <qualifiedname>PixelFormatT::mask_r_traits_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="526" column="21" bodyfile="pixel_format.h" bodystart="526" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_pixel_format_t_1a659cdfd2ce0213540624c7d29925223c" prot="public" static="no">
+        <type><ref refid="structmask__traits" kindref="compound">mask_traits</ref>&lt; <ref refid="class_pixel_format_t_1ad6ea22d9e11f6656912fc387bd04987f" kindref="member">my_type</ref>, <ref refid="class_pixel_format_t_1a04eb902ef8ddcecd48b741b3199b37dd" kindref="member">dynamic_masks</ref>, GB, GS &gt;</type>
+        <definition>typedef mask_traits&lt;my_type, dynamic_masks, GB, GS&gt; PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::mask_g_traits_type</definition>
+        <argsstring></argsstring>
+        <name>mask_g_traits_type</name>
+        <qualifiedname>PixelFormatT::mask_g_traits_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="527" column="21" bodyfile="pixel_format.h" bodystart="527" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_pixel_format_t_1a22863df5f8db108616e9af8f91f09f55" prot="public" static="no">
+        <type><ref refid="structmask__traits" kindref="compound">mask_traits</ref>&lt; <ref refid="class_pixel_format_t_1ad6ea22d9e11f6656912fc387bd04987f" kindref="member">my_type</ref>, <ref refid="class_pixel_format_t_1a04eb902ef8ddcecd48b741b3199b37dd" kindref="member">dynamic_masks</ref>, BB, BS &gt;</type>
+        <definition>typedef mask_traits&lt;my_type, dynamic_masks, BB, BS&gt; PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::mask_b_traits_type</definition>
+        <argsstring></argsstring>
+        <name>mask_b_traits_type</name>
+        <qualifiedname>PixelFormatT::mask_b_traits_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="528" column="21" bodyfile="pixel_format.h" bodystart="528" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_pixel_format_t_1ae48700c8874199b3d71647a8738a8562" prot="public" static="no">
+        <type><ref refid="structmask__traits" kindref="compound">mask_traits</ref>&lt; <ref refid="class_pixel_format_t_1ad6ea22d9e11f6656912fc387bd04987f" kindref="member">my_type</ref>, <ref refid="class_pixel_format_t_1a04eb902ef8ddcecd48b741b3199b37dd" kindref="member">dynamic_masks</ref>, AB, AS &gt;</type>
+        <definition>typedef mask_traits&lt;my_type, dynamic_masks, AB, AS&gt; PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::mask_a_traits_type</definition>
+        <argsstring></argsstring>
+        <name>mask_a_traits_type</name>
+        <qualifiedname>PixelFormatT::mask_a_traits_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="529" column="21" bodyfile="pixel_format.h" bodystart="529" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_pixel_format_t_1aee28c9cf68e277f765560e41c624b4fa" prot="public" static="yes" mutable="no">
+        <type>const int</type>
+        <definition>const int PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::bits</definition>
+        <argsstring></argsstring>
+        <name>bits</name>
+        <qualifiedname>PixelFormatT::bits</qualifiedname>
+        <initializer>= BITS</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="504" column="18" bodyfile="pixel_format.h" bodystart="504" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_pixel_format_t_1a7b4a6f4d760500ffdfc6252414fe4818" prot="public" static="yes" mutable="no">
+        <type>const int</type>
+        <definition>const int PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::bytes</definition>
+        <argsstring></argsstring>
+        <name>bytes</name>
+        <qualifiedname>PixelFormatT::bytes</qualifiedname>
+        <initializer>= (BITS + 7) / 8</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="505" column="18" bodyfile="pixel_format.h" bodystart="505" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_pixel_format_t_1a04eb902ef8ddcecd48b741b3199b37dd" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::dynamic_masks</definition>
+        <argsstring></argsstring>
+        <name>dynamic_masks</name>
+        <qualifiedname>PixelFormatT::dynamic_masks</qualifiedname>
+        <initializer>= DYNAMIC_MASKS</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="507" column="19" bodyfile="pixel_format.h" bodystart="507" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_pixel_format_t_1a3641b5714e5bcf5e6cf8773846389d1c" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::dynamic_alpha</definition>
+        <argsstring></argsstring>
+        <name>dynamic_alpha</name>
+        <qualifiedname>PixelFormatT::dynamic_alpha</qualifiedname>
+        <initializer>= DYNAMIC_ALPHA</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="508" column="19" bodyfile="pixel_format.h" bodystart="508" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_pixel_format_t_1a6092eff64aaddfb72ae371ec852bb68c" prot="public" static="yes" mutable="no">
+        <type>const <ref refid="namespace_p_f_1a2efd68b89cc15c64bf0f69e2c7ea6c85" kindref="member">PF::AlphaType</ref></type>
+        <definition>const PF::AlphaType PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::alpha</definition>
+        <argsstring></argsstring>
+        <name>alpha</name>
+        <qualifiedname>PixelFormatT::alpha</qualifiedname>
+        <initializer>= (<ref refid="namespace_p_f_1a2efd68b89cc15c64bf0f69e2c7ea6c85" kindref="member">PF::AlphaType</ref>) ALPHA</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="509" column="28" bodyfile="pixel_format.h" bodystart="509" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_pixel_format_t_1ab6d7e59901102e3f9d1233e438f5201f" prot="public" static="yes" mutable="no">
+        <type>const <ref refid="namespace_p_f_1a323a70e21a8a35900f0d3e524d823fea" kindref="member">PF::OpacityType</ref></type>
+        <definition>const PF::OpacityType PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::opacity</definition>
+        <argsstring></argsstring>
+        <name>opacity</name>
+        <qualifiedname>PixelFormatT::opacity</qualifiedname>
+        <initializer>                             =
+ALPHA == <ref refid="namespace_p_f_1a2efd68b89cc15c64bf0f69e2c7ea6c85a393005ae51a5ac49e9813b18ddff9281" kindref="member">PF::NoAlpha</ref> ? <ref refid="namespace_p_f_1a323a70e21a8a35900f0d3e524d823feaaae8e5162023df30e3e422e7cd5eb7b1c" kindref="member">PF::Opaque</ref> :
+(AB == 1) ? <ref refid="namespace_p_f_1a323a70e21a8a35900f0d3e524d823feaa028234f4106c51b7fdc0939f1e86463e" kindref="member">PF::Binary</ref> :
+<ref refid="namespace_p_f_1a323a70e21a8a35900f0d3e524d823feaa8ea8163caec45d2a63183a99734dc169" kindref="member">PF::Variable</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="510" column="30" bodyfile="pixel_format.h" bodystart="510" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_pixel_format_t_1adaa36afa84347e2d955bcdf8b7d9afc8" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::aligned</definition>
+        <argsstring></argsstring>
+        <name>aligned</name>
+        <qualifiedname>PixelFormatT::aligned</qualifiedname>
+        <initializer>= ALIGNED</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="515" column="19" bodyfile="pixel_format.h" bodystart="515" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_pixel_format_t_1a29e9c861ebf95df462a2c948c5c0aa04" prot="public" static="yes" mutable="no">
+        <type>const int</type>
+        <definition>const int PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::ONE</definition>
+        <argsstring></argsstring>
+        <name>ONE</name>
+        <qualifiedname>PixelFormatT::ONE</qualifiedname>
+        <initializer>= 255</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="517" column="18" bodyfile="pixel_format.h" bodystart="517" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_pixel_format_t_1a731894702119b09b04706a13050b3190" prot="public" static="no" mutable="no">
+        <type><ref refid="class_pixel_format_t_1a84d42a8b69099275aa8131321471abef" kindref="member">dynamic_traits_type</ref></type>
+        <definition>dynamic_traits_type PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::dynamic_traits</definition>
+        <argsstring></argsstring>
+        <name>dynamic_traits</name>
+        <qualifiedname>PixelFormatT::dynamic_traits</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="530" column="21" bodyfile="pixel_format.h" bodystart="530" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_pixel_format_t_1aa20876fae74385e141edee838be86bd0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::PixelFormatT</definition>
+        <argsstring>()</argsstring>
+        <name>PixelFormatT</name>
+        <qualifiedname>PixelFormatT::PixelFormatT</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="532" column="1" bodyfile="pixel_format.h" bodystart="532" bodyend="532"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1ae1ab064a7c38dc9306f15c00eac361bb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::PixelFormatT</definition>
+        <argsstring>(const DynamicFormat &amp;format)</argsstring>
+        <name>PixelFormatT</name>
+        <qualifiedname>PixelFormatT::PixelFormatT</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref> &amp;</type>
+          <declname>format</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="533" column="1" bodyfile="pixel_format.h" bodystart="533" bodyend="533"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a800d7fa6bd6608a4c9503abca9d32ce5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::uint32_to_rgba</definition>
+        <argsstring>(uint32_t pix, uint8_t &amp;r, uint8_t &amp;g, uint8_t &amp;b, uint8_t &amp;a) const</argsstring>
+        <name>uint32_to_rgba</name>
+        <qualifiedname>PixelFormatT::uint32_to_rgba</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>pix</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="543" column="13" bodyfile="pixel_format.h" bodystart="543" bodyend="548"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a484d6addfd7c9fe9f88bd7d5569bc7e5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::rgba_to_uint32_t</definition>
+        <argsstring>(const uint8_t &amp;r, const uint8_t &amp;g, const uint8_t &amp;b, const uint8_t &amp;a) const</argsstring>
+        <name>rgba_to_uint32_t</name>
+        <qualifiedname>PixelFormatT::rgba_to_uint32_t</qualifiedname>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="550" column="17" bodyfile="pixel_format.h" bodystart="550" bodyend="556"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a48201d82ab85d9909b8692bca3c075ec" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref> &amp;</type>
+        <definition>const DynamicFormat &amp; PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::format</definition>
+        <argsstring>() const</argsstring>
+        <name>format</name>
+        <qualifiedname>PixelFormatT::format</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="558" column="28" bodyfile="pixel_format.h" bodystart="558" bodyend="560"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1af7f320301f2a59f7f34490410f4313b7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::r_byte</definition>
+        <argsstring>() const</argsstring>
+        <name>r_byte</name>
+        <qualifiedname>PixelFormatT::r_byte</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="562" column="12" bodyfile="pixel_format.h" bodystart="562" bodyend="562"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1ae06765687fb42257d26b5ee74b3bdcb6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::g_byte</definition>
+        <argsstring>() const</argsstring>
+        <name>g_byte</name>
+        <qualifiedname>PixelFormatT::g_byte</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="563" column="12" bodyfile="pixel_format.h" bodystart="563" bodyend="563"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a307538444916f11701f837fb3ec47155" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::b_byte</definition>
+        <argsstring>() const</argsstring>
+        <name>b_byte</name>
+        <qualifiedname>PixelFormatT::b_byte</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="564" column="12" bodyfile="pixel_format.h" bodystart="564" bodyend="564"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a8d2787848d9ea1ef583f448e7d20733d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::a_byte</definition>
+        <argsstring>() const</argsstring>
+        <name>a_byte</name>
+        <qualifiedname>PixelFormatT::a_byte</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="565" column="12" bodyfile="pixel_format.h" bodystart="565" bodyend="565"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a04bca0641eb638098670313bb81f52e7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::r_mask</definition>
+        <argsstring>() const</argsstring>
+        <name>r_mask</name>
+        <qualifiedname>PixelFormatT::r_mask</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="567" column="17" bodyfile="pixel_format.h" bodystart="567" bodyend="567"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a88fe72c7cd237afe5f1db08515f61ca5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::g_mask</definition>
+        <argsstring>() const</argsstring>
+        <name>g_mask</name>
+        <qualifiedname>PixelFormatT::g_mask</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="568" column="17" bodyfile="pixel_format.h" bodystart="568" bodyend="568"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a4a9b11f2f80df96bde54d9c2b2851046" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::b_mask</definition>
+        <argsstring>() const</argsstring>
+        <name>b_mask</name>
+        <qualifiedname>PixelFormatT::b_mask</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="569" column="17" bodyfile="pixel_format.h" bodystart="569" bodyend="569"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1af066464a878fa2e9fabf90f9dbfcb000" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::a_mask</definition>
+        <argsstring>() const</argsstring>
+        <name>a_mask</name>
+        <qualifiedname>PixelFormatT::a_mask</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="570" column="17" bodyfile="pixel_format.h" bodystart="570" bodyend="570"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a0dbd059c1263d263739e400cab1c6964" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::r_bits</definition>
+        <argsstring>() const</argsstring>
+        <name>r_bits</name>
+        <qualifiedname>PixelFormatT::r_bits</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="572" column="12" bodyfile="pixel_format.h" bodystart="572" bodyend="572"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a2e83acf25c001ac8031cff75774169d2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::g_bits</definition>
+        <argsstring>() const</argsstring>
+        <name>g_bits</name>
+        <qualifiedname>PixelFormatT::g_bits</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="573" column="12" bodyfile="pixel_format.h" bodystart="573" bodyend="573"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1ad58504d3fb50651eba48bd085a10dddf" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::b_bits</definition>
+        <argsstring>() const</argsstring>
+        <name>b_bits</name>
+        <qualifiedname>PixelFormatT::b_bits</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="574" column="12" bodyfile="pixel_format.h" bodystart="574" bodyend="574"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a35f91c6dd5d36bbb5c67ad1035a680df" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::a_bits</definition>
+        <argsstring>() const</argsstring>
+        <name>a_bits</name>
+        <qualifiedname>PixelFormatT::a_bits</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="575" column="12" bodyfile="pixel_format.h" bodystart="575" bodyend="575"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a9129037eba16a2ebd292eed81042d4e6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::r_shift</definition>
+        <argsstring>() const</argsstring>
+        <name>r_shift</name>
+        <qualifiedname>PixelFormatT::r_shift</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="577" column="12" bodyfile="pixel_format.h" bodystart="577" bodyend="577"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1aaa1aba2577f1dab6c93da9e85bbd60ec" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::g_shift</definition>
+        <argsstring>() const</argsstring>
+        <name>g_shift</name>
+        <qualifiedname>PixelFormatT::g_shift</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="578" column="12" bodyfile="pixel_format.h" bodystart="578" bodyend="578"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a314cbc7684e5c07abb3568baf4186127" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::b_shift</definition>
+        <argsstring>() const</argsstring>
+        <name>b_shift</name>
+        <qualifiedname>PixelFormatT::b_shift</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="579" column="12" bodyfile="pixel_format.h" bodystart="579" bodyend="579"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1afaba38d778b3a562a15fccacf0936321" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::a_shift</definition>
+        <argsstring>() const</argsstring>
+        <name>a_shift</name>
+        <qualifiedname>PixelFormatT::a_shift</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="580" column="12" bodyfile="pixel_format.h" bodystart="580" bodyend="580"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a3e1f869d161c306508e5306ae4909505" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="namespace_p_f_1a2efd68b89cc15c64bf0f69e2c7ea6c85" kindref="member">PF::AlphaType</ref></type>
+        <definition>PF::AlphaType PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::alpha_type</definition>
+        <argsstring>() const</argsstring>
+        <name>alpha_type</name>
+        <qualifiedname>PixelFormatT::alpha_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="582" column="22" bodyfile="pixel_format.h" bodystart="582" bodyend="584"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a531dc9114782774fe65703a9e75849e5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::opacity_type</definition>
+        <argsstring>() const</argsstring>
+        <name>opacity_type</name>
+        <qualifiedname>PixelFormatT::opacity_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="586" column="13" bodyfile="pixel_format.h" bodystart="586" bodyend="588"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a7152acdfd695de7177c02d57ceec952a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::has_alpha</definition>
+        <argsstring>() const</argsstring>
+        <name>has_alpha</name>
+        <qualifiedname>PixelFormatT::has_alpha</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="590" column="13" bodyfile="pixel_format.h" bodystart="590" bodyend="592"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a4ecfee3438cbf79e40b67e9e20955698" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::get_uint32_t</definition>
+        <argsstring>(const uint8_t *p) const</argsstring>
+        <name>get_uint32_t</name>
+        <qualifiedname>PixelFormatT::get_uint32_t</qualifiedname>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="594" column="17" bodyfile="pixel_format.h" bodystart="594" bodyend="596"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1abf7798f51000102b56948c802406937d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::set_uint32_t</definition>
+        <argsstring>(uint8_t *p, uint32_t pix) const</argsstring>
+        <name>set_uint32_t</name>
+        <qualifiedname>PixelFormatT::set_uint32_t</qualifiedname>
+        <param>
+          <type>uint8_t *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>pix</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="598" column="13" bodyfile="pixel_format.h" bodystart="598" bodyend="600"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1afb890530e22cb60a7f93927ff7f1c5a3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::copy_pixel</definition>
+        <argsstring>(uint8_t *dst, const uint8_t *src) const</argsstring>
+        <name>copy_pixel</name>
+        <qualifiedname>PixelFormatT::copy_pixel</qualifiedname>
+        <param>
+          <type>uint8_t *</type>
+          <declname>dst</declname>
+        </param>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="602" column="13" bodyfile="pixel_format.h" bodystart="602" bodyend="604"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a82bac420e938ec6f2f4693b3d45490dd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::copy_pixels</definition>
+        <argsstring>(uint8_t *dst, const uint8_t *src, int n) const</argsstring>
+        <name>copy_pixels</name>
+        <qualifiedname>PixelFormatT::copy_pixels</qualifiedname>
+        <param>
+          <type>uint8_t *</type>
+          <declname>dst</declname>
+        </param>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="606" column="13" bodyfile="pixel_format.h" bodystart="606" bodyend="608"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a8da3076ad738f553a40ece8cebc4bf08" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::set_pixels</definition>
+        <argsstring>(uint8_t *dst, const uint8_t *src, int n) const</argsstring>
+        <name>set_pixels</name>
+        <qualifiedname>PixelFormatT::set_pixels</qualifiedname>
+        <param>
+          <type>uint8_t *</type>
+          <declname>dst</declname>
+        </param>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="610" column="13" bodyfile="pixel_format.h" bodystart="610" bodyend="612"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1aa6662bfa199d1c560b8ab99729cdd3b6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::opaque</definition>
+        <argsstring>() const</argsstring>
+        <name>opaque</name>
+        <qualifiedname>PixelFormatT::opaque</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="614" column="16" bodyfile="pixel_format.h" bodystart="614" bodyend="616"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a825abc7d241fc5c1f304190b93296a37" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::get_alpha</definition>
+        <argsstring>(const uint8_t *p) const</argsstring>
+        <name>get_alpha</name>
+        <qualifiedname>PixelFormatT::get_alpha</qualifiedname>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="618" column="16" bodyfile="pixel_format.h" bodystart="618" bodyend="620"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1aa740eb3d67df4be692fb012730867427" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::set_alpha</definition>
+        <argsstring>(uint8_t *p, uint8_t alpha) const</argsstring>
+        <name>set_alpha</name>
+        <qualifiedname>PixelFormatT::set_alpha</qualifiedname>
+        <param>
+          <type>uint8_t *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>alpha</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="622" column="13" bodyfile="pixel_format.h" bodystart="622" bodyend="624"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a94d97055f90232336579a61cc622ace8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::get_rgba</definition>
+        <argsstring>(const uint8_t *p, uint8_t &amp;r, uint8_t &amp;g, uint8_t &amp;b, uint8_t &amp;a) const</argsstring>
+        <name>get_rgba</name>
+        <qualifiedname>PixelFormatT::get_rgba</qualifiedname>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="626" column="13" bodyfile="pixel_format.h" bodystart="626" bodyend="628"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a0b69eb0ae8ee5a40229a00f309c5ef45" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::set_rgba</definition>
+        <argsstring>(uint8_t *p, const uint8_t &amp;r, const uint8_t &amp;g, const uint8_t &amp;b, const uint8_t &amp;a) const</argsstring>
+        <name>set_rgba</name>
+        <qualifiedname>PixelFormatT::set_rgba</qualifiedname>
+        <param>
+          <type>uint8_t *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="630" column="13" bodyfile="pixel_format.h" bodystart="630" bodyend="632"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>bool PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::Match</definition>
+        <argsstring>(const DynamicFormat &amp;ref) const override</argsstring>
+        <name>Match</name>
+        <qualifiedname>PixelFormatT::Match</qualifiedname>
+        <reimplements refid="class_pixel_format_1a9cc17552bce0d6589994050650eeb5d6">Match</reimplements>
+        <param>
+          <type>const <ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref> &amp;</type>
+          <declname>ref</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="634" column="6" bodyfile="pixel_format.h" bodystart="634" bodyend="643"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::Bits</definition>
+        <argsstring>() const override</argsstring>
+        <name>Bits</name>
+        <qualifiedname>PixelFormatT::Bits</qualifiedname>
+        <reimplements refid="class_pixel_format_1a0508043dcf860b848c1b4f7a0d39c609">Bits</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="645" column="5" bodyfile="pixel_format.h" bodystart="645" bodyend="647"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>const <ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref> &amp;</type>
+        <definition>const DynamicFormat &amp; PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::Format</definition>
+        <argsstring>() const override</argsstring>
+        <name>Format</name>
+        <qualifiedname>PixelFormatT::Format</qualifiedname>
+        <reimplements refid="class_pixel_format_1ab1d3a307a8eb96cf4a6326df6d7d4305">Format</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="649" column="21" bodyfile="pixel_format.h" bodystart="649" bodyend="651"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a5bfde8bb0f8af26bbf1a787063eec44f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::SetFormat</definition>
+        <argsstring>(const DynamicFormat &amp;format)</argsstring>
+        <name>SetFormat</name>
+        <qualifiedname>PixelFormatT::SetFormat</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref> &amp;</type>
+          <declname>format</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="653" column="6" bodyfile="pixel_format.h" bodystart="653" bodyend="655"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>bool PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::HasAlpha</definition>
+        <argsstring>() const override</argsstring>
+        <name>HasAlpha</name>
+        <qualifiedname>PixelFormatT::HasAlpha</qualifiedname>
+        <reimplements refid="class_pixel_format_1a0f9d9d988a1d4c74cbfd970fdb088e7a">HasAlpha</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="657" column="6" bodyfile="pixel_format.h" bodystart="657" bodyend="659"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_pixel_format_t_1a5777582d45130cbfa5f316d67f84292e" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;::endian</definition>
+        <argsstring>(int byte)</argsstring>
+        <name>endian</name>
+        <qualifiedname>PixelFormatT::endian</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>byte</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="535" column="19" bodyfile="pixel_format.h" bodystart="535" bodyend="541"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>PixelFormat</label>
+        <link refid="class_pixel_format"/>
+      </node>
+      <node id="1">
+        <label>PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>PixelFormat</label>
+        <link refid="class_pixel_format"/>
+      </node>
+      <node id="1">
+        <label>PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="pixel_format.h" line="500" column="1" bodyfile="pixel_format.h" bodystart="500" bodyend="660"/>
+    <listofallmembers>
+      <member refid="class_pixel_format_t_1a35f91c6dd5d36bbb5c67ad1035a680df" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>a_bits</name></member>
+      <member refid="class_pixel_format_t_1a8d2787848d9ea1ef583f448e7d20733d" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>a_byte</name></member>
+      <member refid="class_pixel_format_t_1af066464a878fa2e9fabf90f9dbfcb000" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>a_mask</name></member>
+      <member refid="class_pixel_format_t_1afaba38d778b3a562a15fccacf0936321" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>a_shift</name></member>
+      <member refid="class_pixel_format_t_1adaa36afa84347e2d955bcdf8b7d9afc8" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>aligned</name></member>
+      <member refid="class_pixel_format_t_1a6092eff64aaddfb72ae371ec852bb68c" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>alpha</name></member>
+      <member refid="class_pixel_format_t_1ac4c541547c064fba9f7c7137d4293151" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>alpha_traits_type</name></member>
+      <member refid="class_pixel_format_t_1a3e1f869d161c306508e5306ae4909505" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>alpha_type</name></member>
+      <member refid="class_pixel_format_t_1a5af403df3187e2efb09dd54235da1dd0" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>alpha_type_traits_type</name></member>
+      <member refid="class_pixel_format_t_1ad58504d3fb50651eba48bd085a10dddf" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>b_bits</name></member>
+      <member refid="class_pixel_format_t_1a307538444916f11701f837fb3ec47155" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>b_byte</name></member>
+      <member refid="class_pixel_format_t_1a4a9b11f2f80df96bde54d9c2b2851046" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>b_mask</name></member>
+      <member refid="class_pixel_format_t_1a314cbc7684e5c07abb3568baf4186127" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>b_shift</name></member>
+      <member refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56" prot="public" virt="virtual"><scope>PixelFormatT</scope><name>Bits</name></member>
+      <member refid="class_pixel_format_t_1aee28c9cf68e277f765560e41c624b4fa" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>bits</name></member>
+      <member refid="class_pixel_format_t_1ae97e0c73ff137b2df9b47765bc7f75ce" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>bits_traits_type</name></member>
+      <member refid="class_pixel_format_t_1a7b4a6f4d760500ffdfc6252414fe4818" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>bytes</name></member>
+      <member refid="class_pixel_format_t_1afb890530e22cb60a7f93927ff7f1c5a3" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>copy_pixel</name></member>
+      <member refid="class_pixel_format_t_1a82bac420e938ec6f2f4693b3d45490dd" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>copy_pixels</name></member>
+      <member refid="class_pixel_format_t_1a3641b5714e5bcf5e6cf8773846389d1c" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>dynamic_alpha</name></member>
+      <member refid="class_pixel_format_t_1a04eb902ef8ddcecd48b741b3199b37dd" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>dynamic_masks</name></member>
+      <member refid="class_pixel_format_t_1a731894702119b09b04706a13050b3190" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>dynamic_traits</name></member>
+      <member refid="class_pixel_format_t_1a84d42a8b69099275aa8131321471abef" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>dynamic_traits_type</name></member>
+      <member refid="class_pixel_format_t_1a5777582d45130cbfa5f316d67f84292e" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>endian</name></member>
+      <member refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c" prot="public" virt="virtual"><scope>PixelFormatT</scope><name>Format</name></member>
+      <member refid="class_pixel_format_t_1a48201d82ab85d9909b8692bca3c075ec" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>format</name></member>
+      <member refid="class_pixel_format_t_1a2e83acf25c001ac8031cff75774169d2" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>g_bits</name></member>
+      <member refid="class_pixel_format_t_1ae06765687fb42257d26b5ee74b3bdcb6" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>g_byte</name></member>
+      <member refid="class_pixel_format_t_1a88fe72c7cd237afe5f1db08515f61ca5" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>g_mask</name></member>
+      <member refid="class_pixel_format_t_1aaa1aba2577f1dab6c93da9e85bbd60ec" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>g_shift</name></member>
+      <member refid="class_pixel_format_t_1a825abc7d241fc5c1f304190b93296a37" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>get_alpha</name></member>
+      <member refid="class_pixel_format_t_1a94d97055f90232336579a61cc622ace8" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>get_rgba</name></member>
+      <member refid="class_pixel_format_t_1a4ecfee3438cbf79e40b67e9e20955698" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>get_uint32_t</name></member>
+      <member refid="class_pixel_format_t_1a7152acdfd695de7177c02d57ceec952a" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>has_alpha</name></member>
+      <member refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b" prot="public" virt="virtual"><scope>PixelFormatT</scope><name>HasAlpha</name></member>
+      <member refid="class_pixel_format_t_1ae48700c8874199b3d71647a8738a8562" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>mask_a_traits_type</name></member>
+      <member refid="class_pixel_format_t_1a22863df5f8db108616e9af8f91f09f55" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>mask_b_traits_type</name></member>
+      <member refid="class_pixel_format_t_1a659cdfd2ce0213540624c7d29925223c" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>mask_g_traits_type</name></member>
+      <member refid="class_pixel_format_t_1ae1857dae2f5820d42102c0f9a8c7829a" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>mask_r_traits_type</name></member>
+      <member refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b" prot="public" virt="virtual"><scope>PixelFormatT</scope><name>Match</name></member>
+      <member refid="class_pixel_format_t_1ad6ea22d9e11f6656912fc387bd04987f" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>my_type</name></member>
+      <member refid="class_pixel_format_t_1a29e9c861ebf95df462a2c948c5c0aa04" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>ONE</name></member>
+      <member refid="class_pixel_format_t_1ab6d7e59901102e3f9d1233e438f5201f" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>opacity</name></member>
+      <member refid="class_pixel_format_t_1a531dc9114782774fe65703a9e75849e5" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>opacity_type</name></member>
+      <member refid="class_pixel_format_t_1adff9eaddf1182ab6a4d8a8e6f026a852" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>opacity_type_traits_type</name></member>
+      <member refid="class_pixel_format_t_1aa6662bfa199d1c560b8ab99729cdd3b6" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>opaque</name></member>
+      <member refid="class_pixel_format_1ab7b090934f3a409ca630982876549e51" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>PixelFormat</name></member>
+      <member refid="class_pixel_format_t_1aa20876fae74385e141edee838be86bd0" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>PixelFormatT</name></member>
+      <member refid="class_pixel_format_t_1ae1ab064a7c38dc9306f15c00eac361bb" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>PixelFormatT</name></member>
+      <member refid="class_pixel_format_t_1a0dbd059c1263d263739e400cab1c6964" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>r_bits</name></member>
+      <member refid="class_pixel_format_t_1af7f320301f2a59f7f34490410f4313b7" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>r_byte</name></member>
+      <member refid="class_pixel_format_t_1a04bca0641eb638098670313bb81f52e7" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>r_mask</name></member>
+      <member refid="class_pixel_format_t_1a9129037eba16a2ebd292eed81042d4e6" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>r_shift</name></member>
+      <member refid="class_pixel_format_t_1a484d6addfd7c9fe9f88bd7d5569bc7e5" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>rgba_to_uint32_t</name></member>
+      <member refid="class_pixel_format_t_1a314ed6ed766974ce2dfb4e99074839f1" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>rgba_traits_type</name></member>
+      <member refid="class_pixel_format_t_1aa740eb3d67df4be692fb012730867427" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>set_alpha</name></member>
+      <member refid="class_pixel_format_t_1a8da3076ad738f553a40ece8cebc4bf08" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>set_pixels</name></member>
+      <member refid="class_pixel_format_t_1a0b69eb0ae8ee5a40229a00f309c5ef45" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>set_rgba</name></member>
+      <member refid="class_pixel_format_t_1abf7798f51000102b56948c802406937d" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>set_uint32_t</name></member>
+      <member refid="class_pixel_format_t_1a5bfde8bb0f8af26bbf1a787063eec44f" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>SetFormat</name></member>
+      <member refid="class_pixel_format_t_1a800d7fa6bd6608a4c9503abca9d32ce5" prot="public" virt="non-virtual"><scope>PixelFormatT</scope><name>uint32_to_rgba</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,569 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classmidisynth_1_1envelope__generator" kind="class" language="C++" prot="public">
+    <compoundname>midisynth::envelope_generator</compoundname>
+    <includes refid="midisynth_8h" local="no">midisynth.h</includes>
+    <sectiondef kind="private-type">
+      <memberdef kind="enum" id="classmidisynth_1_1envelope__generator_1ad913a52b4ae220a5300f21d10b05e634" prot="private" static="no" strong="no">
+        <type></type>
+        <name>@375221215266250175172240263330377304142120361235</name>
+        <qualifiedname>midisynth::envelope_generator::@375221215266250175172240263330377304142120361235</qualifiedname>
+        <enumvalue id="classmidisynth_1_1envelope__generator_1ad913a52b4ae220a5300f21d10b05e634a7ba69973cc0df7230eb3ef5be70466af" prot="private">
+          <name>ATTACK</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classmidisynth_1_1envelope__generator_1ad913a52b4ae220a5300f21d10b05e634a7f28804e646c63c4e1cdd86d9c19aabf" prot="private">
+          <name>ATTACK_RELEASE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classmidisynth_1_1envelope__generator_1ad913a52b4ae220a5300f21d10b05e634a46828b26cde774f00adee9d984c0ca54" prot="private">
+          <name>DECAY</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classmidisynth_1_1envelope__generator_1ad913a52b4ae220a5300f21d10b05e634af9910310385215b12df418764ddebefb" prot="private">
+          <name>DECAY_RELEASE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classmidisynth_1_1envelope__generator_1ad913a52b4ae220a5300f21d10b05e634a80528c8642f772036fcd4f819c0a07c4" prot="private">
+          <name>SASTAIN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classmidisynth_1_1envelope__generator_1ad913a52b4ae220a5300f21d10b05e634a877cb0da352d8bdd11f358884dc9350e" prot="private">
+          <name>RELEASE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classmidisynth_1_1envelope__generator_1ad913a52b4ae220a5300f21d10b05e634a3e4f8ff1e06395fba182f911156c03cc" prot="private">
+          <name>SOUNDOFF</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classmidisynth_1_1envelope__generator_1ad913a52b4ae220a5300f21d10b05e634a10823385b6c6765cbad9a38eec7efce0" prot="private">
+          <name>FINISHED</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="284" column="9" bodyfile="midisynth.h" bodystart="284" bodyend="284"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1a0bd5318890afb57d4510ec2a1f0b074d" prot="private" static="no" mutable="no">
+        <type>enum midisynth::envelope_generator::@375221215266250175172240263330377304142120361235</type>
+        <definition>enum midisynth::envelope_generator::@375221215266250175172240263330377304142120361235 midisynth::envelope_generator::state</definition>
+        <argsstring></argsstring>
+        <name>state</name>
+        <qualifiedname>midisynth::envelope_generator::state</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="284" column="19"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1a8b0378291b40ac1cc8ad11a3da625bdc" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::envelope_generator::AR</definition>
+        <argsstring></argsstring>
+        <name>AR</name>
+        <qualifiedname>midisynth::envelope_generator::AR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="285" column="13" bodyfile="midisynth.h" bodystart="285" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1a3325a37b376c0825093bf800dd2ce377" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::envelope_generator::DR</definition>
+        <argsstring></argsstring>
+        <name>DR</name>
+        <qualifiedname>midisynth::envelope_generator::DR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="285" column="16" bodyfile="midisynth.h" bodystart="285" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1a7db78000e5d24af8582ccbaa62359703" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::envelope_generator::SR</definition>
+        <argsstring></argsstring>
+        <name>SR</name>
+        <qualifiedname>midisynth::envelope_generator::SR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="285" column="19" bodyfile="midisynth.h" bodystart="285" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1a282a8cba90d081d1817c3b01b6254284" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::envelope_generator::RR</definition>
+        <argsstring></argsstring>
+        <name>RR</name>
+        <qualifiedname>midisynth::envelope_generator::RR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="285" column="22" bodyfile="midisynth.h" bodystart="285" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1a9f91062e7c34473f54ec27df4d458c49" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::envelope_generator::TL</definition>
+        <argsstring></argsstring>
+        <name>TL</name>
+        <qualifiedname>midisynth::envelope_generator::TL</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="285" column="25" bodyfile="midisynth.h" bodystart="285" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1aacb4a86f812fa2096700ef47b5f2ceed" prot="private" static="no" mutable="no">
+        <type>uint_least32_t</type>
+        <definition>uint_least32_t midisynth::envelope_generator::fAR</definition>
+        <argsstring></argsstring>
+        <name>fAR</name>
+        <qualifiedname>midisynth::envelope_generator::fAR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="286" column="24" bodyfile="midisynth.h" bodystart="286" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1a6391007a59b8e5f2bf0ef24fa6e9d6c3" prot="private" static="no" mutable="no">
+        <type>uint_least32_t</type>
+        <definition>uint_least32_t midisynth::envelope_generator::fDR</definition>
+        <argsstring></argsstring>
+        <name>fDR</name>
+        <qualifiedname>midisynth::envelope_generator::fDR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="286" column="28" bodyfile="midisynth.h" bodystart="286" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1a6537e20cf96e257b773221b421d2dffa" prot="private" static="no" mutable="no">
+        <type>uint_least32_t</type>
+        <definition>uint_least32_t midisynth::envelope_generator::fSR</definition>
+        <argsstring></argsstring>
+        <name>fSR</name>
+        <qualifiedname>midisynth::envelope_generator::fSR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="286" column="32" bodyfile="midisynth.h" bodystart="286" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1a5d56d1dfd35efbbc3801688fd68e7678" prot="private" static="no" mutable="no">
+        <type>uint_least32_t</type>
+        <definition>uint_least32_t midisynth::envelope_generator::fRR</definition>
+        <argsstring></argsstring>
+        <name>fRR</name>
+        <qualifiedname>midisynth::envelope_generator::fRR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="286" column="36" bodyfile="midisynth.h" bodystart="286" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1ac32d6679e5d06d315dfbebe6f6e7dc2c" prot="private" static="no" mutable="no">
+        <type>uint_least32_t</type>
+        <definition>uint_least32_t midisynth::envelope_generator::fSL</definition>
+        <argsstring></argsstring>
+        <name>fSL</name>
+        <qualifiedname>midisynth::envelope_generator::fSL</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="286" column="40" bodyfile="midisynth.h" bodystart="286" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1abbb9a760d7d91a2ea1559624f44b24e4" prot="private" static="no" mutable="no">
+        <type>uint_least32_t</type>
+        <definition>uint_least32_t midisynth::envelope_generator::fTL</definition>
+        <argsstring></argsstring>
+        <name>fTL</name>
+        <qualifiedname>midisynth::envelope_generator::fTL</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="286" column="44" bodyfile="midisynth.h" bodystart="286" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1a2bcd86552f03a071765e23501b04d0ee" prot="private" static="no" mutable="no">
+        <type>uint_least32_t</type>
+        <definition>uint_least32_t midisynth::envelope_generator::fOR</definition>
+        <argsstring></argsstring>
+        <name>fOR</name>
+        <qualifiedname>midisynth::envelope_generator::fOR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="286" column="48" bodyfile="midisynth.h" bodystart="286" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1ac22274a92876f56ed207e1c84ba9e77e" prot="private" static="no" mutable="no">
+        <type>uint_least32_t</type>
+        <definition>uint_least32_t midisynth::envelope_generator::fSS</definition>
+        <argsstring></argsstring>
+        <name>fSS</name>
+        <qualifiedname>midisynth::envelope_generator::fSS</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="286" column="52" bodyfile="midisynth.h" bodystart="286" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1a25ef711f4fe33ff8e9bb3fd2b4c19809" prot="private" static="no" mutable="no">
+        <type>uint_least32_t</type>
+        <definition>uint_least32_t midisynth::envelope_generator::fDRR</definition>
+        <argsstring></argsstring>
+        <name>fDRR</name>
+        <qualifiedname>midisynth::envelope_generator::fDRR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="286" column="56" bodyfile="midisynth.h" bodystart="286" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1a3cb6cae9589959dbecd867d147618a48" prot="private" static="no" mutable="no">
+        <type>uint_least32_t</type>
+        <definition>uint_least32_t midisynth::envelope_generator::fDSS</definition>
+        <argsstring></argsstring>
+        <name>fDSS</name>
+        <qualifiedname>midisynth::envelope_generator::fDSS</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="286" column="61" bodyfile="midisynth.h" bodystart="286" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1ab64afedf48824c2d8742882b99d11c89" prot="private" static="no" mutable="no">
+        <type>uint_least32_t</type>
+        <definition>uint_least32_t midisynth::envelope_generator::current</definition>
+        <argsstring></argsstring>
+        <name>current</name>
+        <qualifiedname>midisynth::envelope_generator::current</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="287" column="24" bodyfile="midisynth.h" bodystart="287" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1ab261207ac84dc6373187d31e02df16c0" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float midisynth::envelope_generator::rate</definition>
+        <argsstring></argsstring>
+        <name>rate</name>
+        <qualifiedname>midisynth::envelope_generator::rate</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="288" column="15" bodyfile="midisynth.h" bodystart="288" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1a58386ffaeecd63dd21c7ab914af31deb" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float midisynth::envelope_generator::hold</definition>
+        <argsstring></argsstring>
+        <name>hold</name>
+        <qualifiedname>midisynth::envelope_generator::hold</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="289" column="15" bodyfile="midisynth.h" bodystart="289" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1envelope__generator_1aa51d573e58fc2b5ea7500207c12ad866" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float midisynth::envelope_generator::freeze</definition>
+        <argsstring></argsstring>
+        <name>freeze</name>
+        <qualifiedname>midisynth::envelope_generator::freeze</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="290" column="15" bodyfile="midisynth.h" bodystart="290" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classmidisynth_1_1envelope__generator_1a1edb8859fb58affe9c93e67ad85b8526" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>midisynth::envelope_generator::envelope_generator</definition>
+        <argsstring>(int AR, int DR, int SR, int RR, int SL, int TL)</argsstring>
+        <name>envelope_generator</name>
+        <qualifiedname>midisynth::envelope_generator::envelope_generator</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>AR</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>DR</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>SR</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>RR</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>SL</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>TL</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="275" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1envelope__generator_1a6e06e6a9fb0c48c5066c87da64a4bb67" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::envelope_generator::set_rate</definition>
+        <argsstring>(float rate)</argsstring>
+        <name>set_rate</name>
+        <qualifiedname>midisynth::envelope_generator::set_rate</qualifiedname>
+        <param>
+          <type>float</type>
+          <declname>rate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="276" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1envelope__generator_1a167ee7f249bf4482121e6ea316abc228" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::envelope_generator::set_hold</definition>
+        <argsstring>(float value)</argsstring>
+        <name>set_hold</name>
+        <qualifiedname>midisynth::envelope_generator::set_hold</qualifiedname>
+        <param>
+          <type>float</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="277" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1envelope__generator_1a1b5c29d1d49043c7d1d222d1688f94f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::envelope_generator::set_freeze</definition>
+        <argsstring>(float value)</argsstring>
+        <name>set_freeze</name>
+        <qualifiedname>midisynth::envelope_generator::set_freeze</qualifiedname>
+        <param>
+          <type>float</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="278" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1envelope__generator_1a00dd6fc6e246959405c759c50a5964ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::envelope_generator::key_off</definition>
+        <argsstring>()</argsstring>
+        <name>key_off</name>
+        <qualifiedname>midisynth::envelope_generator::key_off</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="279" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1envelope__generator_1a50130af6e884506ee89a959ddd8285e5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::envelope_generator::sound_off</definition>
+        <argsstring>()</argsstring>
+        <name>sound_off</name>
+        <qualifiedname>midisynth::envelope_generator::sound_off</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="280" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1envelope__generator_1adcb0617c57efc472df14d0c17cd8e734" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool midisynth::envelope_generator::is_finished</definition>
+        <argsstring>() const</argsstring>
+        <name>is_finished</name>
+        <qualifiedname>midisynth::envelope_generator::is_finished</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="281" column="14" bodyfile="midisynth.h" bodystart="281" bodyend="281"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1envelope__generator_1a9af97726acd6c780ed159ee0d992f1d6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::envelope_generator::get_next</definition>
+        <argsstring>()</argsstring>
+        <name>get_next</name>
+        <qualifiedname>midisynth::envelope_generator::get_next</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="282" column="13"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classmidisynth_1_1envelope__generator_1a6df05dc88acc4639534e41e96853a0f7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::envelope_generator::update_parameters</definition>
+        <argsstring>()</argsstring>
+        <name>update_parameters</name>
+        <qualifiedname>midisynth::envelope_generator::update_parameters</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="291" column="14"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="midisynth.h" line="273" column="5" bodyfile="midisynth.h" bodystart="273" bodyend="292"/>
+    <listofallmembers>
+      <member refid="classmidisynth_1_1envelope__generator_1a8b0378291b40ac1cc8ad11a3da625bdc" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>AR</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1ad913a52b4ae220a5300f21d10b05e634a7ba69973cc0df7230eb3ef5be70466af" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>ATTACK</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1ad913a52b4ae220a5300f21d10b05e634a7f28804e646c63c4e1cdd86d9c19aabf" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>ATTACK_RELEASE</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1ab64afedf48824c2d8742882b99d11c89" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>current</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1ad913a52b4ae220a5300f21d10b05e634a46828b26cde774f00adee9d984c0ca54" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>DECAY</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1ad913a52b4ae220a5300f21d10b05e634af9910310385215b12df418764ddebefb" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>DECAY_RELEASE</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a3325a37b376c0825093bf800dd2ce377" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>DR</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a1edb8859fb58affe9c93e67ad85b8526" prot="public" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>envelope_generator</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1aacb4a86f812fa2096700ef47b5f2ceed" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>fAR</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a6391007a59b8e5f2bf0ef24fa6e9d6c3" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>fDR</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a25ef711f4fe33ff8e9bb3fd2b4c19809" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>fDRR</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a3cb6cae9589959dbecd867d147618a48" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>fDSS</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1ad913a52b4ae220a5300f21d10b05e634a10823385b6c6765cbad9a38eec7efce0" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>FINISHED</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a2bcd86552f03a071765e23501b04d0ee" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>fOR</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1aa51d573e58fc2b5ea7500207c12ad866" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>freeze</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a5d56d1dfd35efbbc3801688fd68e7678" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>fRR</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1ac32d6679e5d06d315dfbebe6f6e7dc2c" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>fSL</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a6537e20cf96e257b773221b421d2dffa" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>fSR</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1ac22274a92876f56ed207e1c84ba9e77e" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>fSS</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1abbb9a760d7d91a2ea1559624f44b24e4" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>fTL</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a9af97726acd6c780ed159ee0d992f1d6" prot="public" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>get_next</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a58386ffaeecd63dd21c7ab914af31deb" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>hold</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1adcb0617c57efc472df14d0c17cd8e734" prot="public" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>is_finished</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a00dd6fc6e246959405c759c50a5964ed" prot="public" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>key_off</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1ab261207ac84dc6373187d31e02df16c0" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>rate</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1ad913a52b4ae220a5300f21d10b05e634a877cb0da352d8bdd11f358884dc9350e" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>RELEASE</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a282a8cba90d081d1817c3b01b6254284" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>RR</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1ad913a52b4ae220a5300f21d10b05e634a80528c8642f772036fcd4f819c0a07c4" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>SASTAIN</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a1b5c29d1d49043c7d1d222d1688f94f0" prot="public" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>set_freeze</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a167ee7f249bf4482121e6ea316abc228" prot="public" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>set_hold</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a6e06e6a9fb0c48c5066c87da64a4bb67" prot="public" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>set_rate</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a50130af6e884506ee89a959ddd8285e5" prot="public" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>sound_off</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1ad913a52b4ae220a5300f21d10b05e634a3e4f8ff1e06395fba182f911156c03cc" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>SOUNDOFF</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a7db78000e5d24af8582ccbaa62359703" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>SR</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a0bd5318890afb57d4510ec2a1f0b074d" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>state</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a9f91062e7c34473f54ec27df4d458c49" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>TL</name></member>
+      <member refid="classmidisynth_1_1envelope__generator_1a6df05dc88acc4639534e41e96853a0f7" prot="private" virt="non-virtual"><scope>midisynth::envelope_generator</scope><name>update_parameters</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

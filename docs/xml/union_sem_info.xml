@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="union_sem_info" kind="union" language="C++" prot="public">
+    <compoundname>SemInfo</compoundname>
+    <includes refid="llex_8h" local="no">llex.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="union_sem_info_1a43b00f784510a2d500550b81578177d8" prot="public" static="no" mutable="no">
+        <type><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref></type>
+        <definition>lua_Number SemInfo::r</definition>
+        <argsstring></argsstring>
+        <name>r</name>
+        <qualifiedname>SemInfo::r</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="50" column="14" bodyfile="leasy/lua/llex.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="union_sem_info_1a6ed52b8a8b415d8f16089445f93e5391" prot="public" static="no" mutable="no">
+        <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+        <definition>lua_Integer SemInfo::i</definition>
+        <argsstring></argsstring>
+        <name>i</name>
+        <qualifiedname>SemInfo::i</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="51" column="15" bodyfile="leasy/lua/llex.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="union_sem_info_1a393ebb62432ff3e689283e54e113b33e" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>TString* SemInfo::ts</definition>
+        <argsstring></argsstring>
+        <name>ts</name>
+        <qualifiedname>SemInfo::ts</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="52" column="11" bodyfile="leasy/lua/llex.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>SemInfo</label>
+        <link refid="union_sem_info"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>ts</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/llex.h" line="49" column="1" bodyfile="leasy/lua/llex.h" bodystart="49" bodyend="53"/>
+    <listofallmembers>
+      <member refid="union_sem_info_1a6ed52b8a8b415d8f16089445f93e5391" prot="public" virt="non-virtual"><scope>SemInfo</scope><name>i</name></member>
+      <member refid="union_sem_info_1a43b00f784510a2d500550b81578177d8" prot="public" virt="non-virtual"><scope>SemInfo</scope><name>r</name></member>
+      <member refid="union_sem_info_1a393ebb62432ff3e689283e54e113b33e" prot="public" virt="non-virtual"><scope>SemInfo</scope><name>ts</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

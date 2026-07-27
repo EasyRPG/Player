@@ -116,3 +116,4 @@ inline void Game_Switches::SetWarning(int w) {
 }
 
 #endif
+

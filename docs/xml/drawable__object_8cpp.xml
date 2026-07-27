@@ -1,0 +1,417 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="drawable__object_8cpp" kind="file" language="C++">
+    <compoundname>drawable_object.cpp</compoundname>
+    <includes refid="drawable_8h" local="yes">drawable.h</includes>
+    <includes refid="image__png_8h" local="yes">image_png.h</includes>
+    <includes refid="drawable__object_8hpp" local="yes">drawable_object.hpp</includes>
+    <includes refid="ldebug_8hpp" local="yes">../ldebug.hpp</includes>
+    <includes refid="memguard_8hpp" local="yes">../ily3/memguard.hpp</includes>
+    <includes refid="basetypes_8hpp" local="yes">../ily3/basetypes.hpp</includes>
+    <incdepgraph>
+      <node id="6">
+        <label>bitmap.h</label>
+        <link refid="bitmap_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>image_png.h</label>
+        <link refid="image__png_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+      </node>
+      <node id="48">
+        <label>../ily3/basetypes.hpp</label>
+        <link refid="basetypes_8hpp"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>../ily3/memguard.hpp</label>
+        <link refid="memguard_8hpp"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>../ldebug.hpp</label>
+        <link refid="ldebug_8hpp"/>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/libs2/drawable_object.cpp</label>
+        <link refid="drawable__object_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>drawable_object.hpp</label>
+        <link refid="drawable__object_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>opacity.h</label>
+        <link refid="opacity_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="19">
+        <label>pixel_format.h</label>
+        <link refid="pixel__format_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>pixman_image_ptr.h</label>
+        <link refid="pixman__image__ptr_8h"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>point.h</label>
+        <link refid="point_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>rect.h</label>
+        <link refid="rect_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>text.h</label>
+        <link refid="text_8h"/>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>tone.h</label>
+        <link refid="tone_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>algorithm</label>
+      </node>
+      <node id="10">
+        <label>cassert</label>
+      </node>
+      <node id="38">
+        <label>climits</label>
+      </node>
+      <node id="3">
+        <label>cstdint</label>
+      </node>
+      <node id="20">
+        <label>cstdlib</label>
+      </node>
+      <node id="21">
+        <label>cstring</label>
+      </node>
+      <node id="24">
+        <label>ctime</label>
+      </node>
+      <node id="29">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="30">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="25">
+        <label>functional</label>
+      </node>
+      <node id="46">
+        <label>iostream</label>
+      </node>
+      <node id="40">
+        <label>istream</label>
+      </node>
+      <node id="28">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="32">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="27">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="8">
+        <label>map</label>
+      </node>
+      <node id="4">
+        <label>memory</label>
+      </node>
+      <node id="17">
+        <label>ostream</label>
+      </node>
+      <node id="11">
+        <label>pixman.h</label>
+      </node>
+      <node id="7">
+        <label>string</label>
+      </node>
+      <node id="16">
+        <label>tuple</label>
+      </node>
+      <node id="42">
+        <label>unordered_map</label>
+      </node>
+      <node id="9">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceleasy">leasy</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1libs2">leasy::libs2</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="drawable_8h" kindref="compound">drawable.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="image__png_8h" kindref="compound">image_png.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="drawable__object_8hpp" kindref="compound">drawable_object.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ldebug_8hpp" kindref="compound">../ldebug.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="memguard_8hpp" kindref="compound">../ily3/memguard.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="basetypes_8hpp" kindref="compound">../ily3/basetypes.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="namespaceleasy_1_1libs2" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1libs2" kindref="compound">leasy::libs2</ref><sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="31" refid="classleasy_1_1libs2_1_1_drawable_object_1a5e353c8e8dc30d5ceb705db3ec72a09f" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_opacity" kindref="compound">Opacity</ref><sp/>*<ref refid="classleasy_1_1libs2_1_1_drawable_object_1a5e353c8e8dc30d5ceb705db3ec72a09f" kindref="member">DrawableObject::opacity</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>&amp;this-&gt;<ref refid="classleasy_1_1libs2_1_1_drawable_object_1a5a17a96af10ae188569abb1d1f6cbb69" kindref="member">opa</ref>;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="classleasy_1_1libs2_1_1_drawable_object_1ace19853419bf127ca29e06cd1ce910ed" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="structleasy_1_1ily3_1_1twin" kindref="compound">ily3::twin&lt;int&gt;</ref><sp/>*<ref refid="classleasy_1_1libs2_1_1_drawable_object_1ace19853419bf127ca29e06cd1ce910ed" kindref="member">DrawableObject::position</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>&amp;this-&gt;<ref refid="classleasy_1_1libs2_1_1_drawable_object_1a7f76682e192626428568822655dbe972" kindref="member">pos</ref>;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="classleasy_1_1libs2_1_1_drawable_object_1a602a8e559743af4ad83fcf2943a9c5f6" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="structleasy_1_1ily3_1_1twin" kindref="compound">ily3::twin&lt;int&gt;</ref><sp/>*<ref refid="classleasy_1_1libs2_1_1_drawable_object_1a602a8e559743af4ad83fcf2943a9c5f6" kindref="member">DrawableObject::size</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>&amp;this-&gt;<ref refid="classleasy_1_1libs2_1_1_drawable_object_1a24abf93a728a2fd7511cca8c2def9773" kindref="member">siz</ref>;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="classleasy_1_1libs2_1_1_drawable_object_1a509afc745ace73154c1a1e241646bfb7" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classleasy_1_1libs2_1_1_drawable_object_1a509afc745ace73154c1a1e241646bfb7" kindref="member">DrawableObject::DrawableObject</ref>()<sp/>:<sp/><ref refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" kindref="member">Drawable</ref>(255)<sp/>{}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="classleasy_1_1libs2_1_1_drawable_object_1abf3ab8b419c81c9bc1e41f294b1e8716" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="class_rect" kindref="compound">Rect</ref><sp/><ref refid="classleasy_1_1libs2_1_1_drawable_object_1abf3ab8b419c81c9bc1e41f294b1e8716" kindref="member">DrawableObject::get_rect</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_rect" kindref="compound">Rect</ref>(<ref refid="classleasy_1_1libs2_1_1_drawable_object_1a7f76682e192626428568822655dbe972" kindref="member">pos</ref>.y,<sp/><ref refid="classleasy_1_1libs2_1_1_drawable_object_1a7f76682e192626428568822655dbe972" kindref="member">pos</ref>.x,<sp/><ref refid="classleasy_1_1libs2_1_1_drawable_object_1a24abf93a728a2fd7511cca8c2def9773" kindref="member">siz</ref>.x,<sp/><ref refid="classleasy_1_1libs2_1_1_drawable_object_1a24abf93a728a2fd7511cca8c2def9773" kindref="member">siz</ref>.y);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/libs2/drawable_object.cpp"/>
+  </compounddef>
+</doxygen>

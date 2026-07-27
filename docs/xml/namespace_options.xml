@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_options" kind="namespace" language="C++">
+    <compoundname>Options</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_options_1a9cafbc4b6637b09df7b0d66b36b26492" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* Options::debug_mode</definition>
+        <argsstring></argsstring>
+        <name>debug_mode</name>
+        <qualifiedname>Options::debug_mode</qualifiedname>
+        <initializer>= &quot;easyrpg_debug_mode&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/ui.cpp" line="43" column="12" bodyfile="platform/libretro/ui.cpp" bodystart="43" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/libretro/ui.cpp" line="42" column="1"/>
+  </compounddef>
+</doxygen>

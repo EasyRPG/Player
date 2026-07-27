@@ -1,0 +1,232 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_filesystem___stream_1_1_output_stream" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>Filesystem_Stream::OutputStream</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::ostream</basecompoundref>
+    <includes refid="filesystem__stream_8h" local="no">filesystem_stream.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_filesystem___stream_1_1_output_stream_1aec8b8f416d6caf07d1eaa87fcefe419b" prot="private" static="no" mutable="no">
+        <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+        <definition>FilesystemView Filesystem_Stream::OutputStream::fs</definition>
+        <argsstring></argsstring>
+        <name>fs</name>
+        <qualifiedname>Filesystem_Stream::OutputStream::fs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="71" column="16" bodyfile="filesystem_stream.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_filesystem___stream_1_1_output_stream_1a7debb70783fd8d38a112b55c2c05b062" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Filesystem_Stream::OutputStream::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>Filesystem_Stream::OutputStream::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="72" column="13" bodyfile="filesystem_stream.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_filesystem___stream_1_1_output_stream_1acc5867da882a35d2337a1a695438ccaf" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Filesystem_Stream::OutputStream::OutputStream</definition>
+        <argsstring>()</argsstring>
+        <name>OutputStream</name>
+        <qualifiedname>Filesystem_Stream::OutputStream::OutputStream</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="59" column="10" bodyfile="filesystem_stream.h" bodystart="59" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_output_stream_1a972b65c2e4c27ba12c20228c7bfcdf3f" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Filesystem_Stream::OutputStream::OutputStream</definition>
+        <argsstring>(std::streambuf *sb, FilesystemView fs, std::string name)</argsstring>
+        <name>OutputStream</name>
+        <qualifiedname>Filesystem_Stream::OutputStream::OutputStream</qualifiedname>
+        <param>
+          <type>std::streambuf *</type>
+          <declname>sb</declname>
+        </param>
+        <param>
+          <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="60" column="10" bodyfile="filesystem_stream.cpp" bodystart="67" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_output_stream_1a8eda95d94f165bbc8f198870db5a663e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Filesystem_Stream::OutputStream::~OutputStream</definition>
+        <argsstring>() override</argsstring>
+        <name>~OutputStream</name>
+        <qualifiedname>Filesystem_Stream::OutputStream::~OutputStream</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="61" column="1" bodyfile="filesystem_stream.cpp" bodystart="70" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_output_stream_1abcddeb26dfc934244a42b39d35b99c0e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Filesystem_Stream::OutputStream::OutputStream</definition>
+        <argsstring>(const OutputStream &amp;)=delete</argsstring>
+        <name>OutputStream</name>
+        <qualifiedname>Filesystem_Stream::OutputStream::OutputStream</qualifiedname>
+        <param>
+          <type>const OutputStream &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="62" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_output_stream_1a174a991936ef2ecde0a8b86b460d622b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_output_stream_1acc5867da882a35d2337a1a695438ccaf" kindref="member">OutputStream</ref> &amp;</type>
+        <definition>OutputStream &amp; Filesystem_Stream::OutputStream::operator=</definition>
+        <argsstring>(const OutputStream &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Filesystem_Stream::OutputStream::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_filesystem___stream_1_1_output_stream_1acc5867da882a35d2337a1a695438ccaf" kindref="member">OutputStream</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="63" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_output_stream_1aadcb217fd5f693e6de4ba2bc663c2202" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>Filesystem_Stream::OutputStream::OutputStream</definition>
+        <argsstring>(OutputStream &amp;&amp;os) noexcept</argsstring>
+        <name>OutputStream</name>
+        <qualifiedname>Filesystem_Stream::OutputStream::OutputStream</qualifiedname>
+        <param>
+          <type>OutputStream &amp;&amp;</type>
+          <declname>os</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="64" column="1" bodyfile="filesystem_stream.cpp" bodystart="77" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_output_stream_1af1db6a4023e5070b49df6de56855ccf4" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_output_stream_1acc5867da882a35d2337a1a695438ccaf" kindref="member">OutputStream</ref> &amp;</type>
+        <definition>Filesystem_Stream::OutputStream &amp; Filesystem_Stream::OutputStream::operator=</definition>
+        <argsstring>(OutputStream &amp;&amp;os) noexcept</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Filesystem_Stream::OutputStream::operator=</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_output_stream_1acc5867da882a35d2337a1a695438ccaf" kindref="member">OutputStream</ref> &amp;&amp;</type>
+          <declname>os</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="65" column="14" bodyfile="filesystem_stream.cpp" bodystart="83" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_output_stream_1a1c4ca142e8e7cfdbc2c6ec18d0b8df58" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Filesystem_Stream::OutputStream::GetName</definition>
+        <argsstring>() const</argsstring>
+        <name>GetName</name>
+        <qualifiedname>Filesystem_Stream::OutputStream::GetName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="67" column="18" bodyfile="filesystem_stream.cpp" bodystart="92" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_output_stream_1a5775c8b0b42546bfb2b9828f9185722b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Filesystem_Stream::OutputStream::Close</definition>
+        <argsstring>()</argsstring>
+        <name>Close</name>
+        <qualifiedname>Filesystem_Stream::OutputStream::Close</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="68" column="6" bodyfile="filesystem_stream.cpp" bodystart="96" bodyend="99"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Filesystem_Stream::OutputStream</label>
+        <link refid="class_filesystem___stream_1_1_output_stream"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::ostream</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Filesystem_Stream::OutputStream</label>
+        <link refid="class_filesystem___stream_1_1_output_stream"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::ostream</label>
+      </node>
+    </collaborationgraph>
+    <location file="filesystem_stream.h" line="57" column="1" bodyfile="filesystem_stream.h" bodystart="57" bodyend="73"/>
+    <listofallmembers>
+      <member refid="class_filesystem___stream_1_1_output_stream_1a5775c8b0b42546bfb2b9828f9185722b" prot="public" virt="non-virtual"><scope>Filesystem_Stream::OutputStream</scope><name>Close</name></member>
+      <member refid="class_filesystem___stream_1_1_output_stream_1aec8b8f416d6caf07d1eaa87fcefe419b" prot="private" virt="non-virtual"><scope>Filesystem_Stream::OutputStream</scope><name>fs</name></member>
+      <member refid="class_filesystem___stream_1_1_output_stream_1a1c4ca142e8e7cfdbc2c6ec18d0b8df58" prot="public" virt="non-virtual"><scope>Filesystem_Stream::OutputStream</scope><name>GetName</name></member>
+      <member refid="class_filesystem___stream_1_1_output_stream_1a7debb70783fd8d38a112b55c2c05b062" prot="private" virt="non-virtual"><scope>Filesystem_Stream::OutputStream</scope><name>name</name></member>
+      <member refid="class_filesystem___stream_1_1_output_stream_1a174a991936ef2ecde0a8b86b460d622b" prot="public" virt="non-virtual"><scope>Filesystem_Stream::OutputStream</scope><name>operator=</name></member>
+      <member refid="class_filesystem___stream_1_1_output_stream_1af1db6a4023e5070b49df6de56855ccf4" prot="public" virt="non-virtual"><scope>Filesystem_Stream::OutputStream</scope><name>operator=</name></member>
+      <member refid="class_filesystem___stream_1_1_output_stream_1acc5867da882a35d2337a1a695438ccaf" prot="public" virt="non-virtual"><scope>Filesystem_Stream::OutputStream</scope><name>OutputStream</name></member>
+      <member refid="class_filesystem___stream_1_1_output_stream_1a972b65c2e4c27ba12c20228c7bfcdf3f" prot="public" virt="non-virtual"><scope>Filesystem_Stream::OutputStream</scope><name>OutputStream</name></member>
+      <member refid="class_filesystem___stream_1_1_output_stream_1abcddeb26dfc934244a42b39d35b99c0e" prot="public" virt="non-virtual"><scope>Filesystem_Stream::OutputStream</scope><name>OutputStream</name></member>
+      <member refid="class_filesystem___stream_1_1_output_stream_1aadcb217fd5f693e6de4ba2bc663c2202" prot="public" virt="non-virtual"><scope>Filesystem_Stream::OutputStream</scope><name>OutputStream</name></member>
+      <member refid="class_filesystem___stream_1_1_output_stream_1a8eda95d94f165bbc8f198870db5a663e" prot="public" virt="non-virtual"><scope>Filesystem_Stream::OutputStream</scope><name>~OutputStream</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

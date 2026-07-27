@@ -1,0 +1,223 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1metadata_1_1overload__set" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>leasy::metadata::overload_set</compoundname>
+    <basecompoundref refid="classleasy_1_1metadata_1_1function__base__t" prot="public" virt="non-virtual">leasy::metadata::function_base_t</basecompoundref>
+    <includes refid="function_8hpp" local="no">function.hpp</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classleasy_1_1metadata_1_1overload__set_1ab75a7afebc3b928b31c4530bb7a1498f" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classleasy_1_1metadata_1_1function" kindref="compound">function</ref> &gt;</type>
+        <definition>std::vector&lt;function&gt; leasy::metadata::overload_set::funcs</definition>
+        <argsstring></argsstring>
+        <name>funcs</name>
+        <qualifiedname>leasy::metadata::overload_set::funcs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="115" column="17" bodyfile="leasy/metadata/function.hpp" bodystart="115" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1metadata_1_1overload__set_1a3068516ed8d84b367ecb70e21adcea71" prot="private" static="no" mutable="no">
+        <type>std::function&lt; int(<ref refid="structlua___state" kindref="compound">lua_State</ref> *)&gt;</type>
+        <definition>std::function&lt;int(lua_State*)&gt; leasy::metadata::overload_set::bridge</definition>
+        <argsstring></argsstring>
+        <name>bridge</name>
+        <qualifiedname>leasy::metadata::overload_set::bridge</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="116" column="19" bodyfile="leasy/metadata/function.hpp" bodystart="116" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1overload__set_1aa585d2af9a8850688ed81576d6f4d4aa" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::pair&lt; bool, std::string &gt;</type>
+        <definition>std::pair&lt; bool, std::string &gt; leasy::metadata::overload_set::is_callable</definition>
+        <argsstring>(const std::vector&lt; std::any &gt; &amp;args) const override</argsstring>
+        <name>is_callable</name>
+        <qualifiedname>leasy::metadata::overload_set::is_callable</qualifiedname>
+        <reimplements refid="classleasy_1_1metadata_1_1function__base__t_1a4191d0d015a76b420d98064b10f24eab">is_callable</reimplements>
+        <param>
+          <type>const std::vector&lt; std::any &gt; &amp;</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="120" column="22" bodyfile="leasy/metadata/function.hpp" bodystart="120" bodyend="130"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1overload__set_1aa6ac61e066d67ae4590196857dd0cb87" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::any</type>
+        <definition>std::any leasy::metadata::overload_set::call</definition>
+        <argsstring>(const std::vector&lt; std::any &gt; &amp;args) const override</argsstring>
+        <name>call</name>
+        <qualifiedname>leasy::metadata::overload_set::call</qualifiedname>
+        <reimplements refid="classleasy_1_1metadata_1_1function__base__t_1a1f415e9591840be8beac967f9131cbd2">call</reimplements>
+        <param>
+          <type>const std::vector&lt; std::any &gt; &amp;</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="132" column="21" bodyfile="leasy/metadata/function.hpp" bodystart="132" bodyend="142"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1overload__set_1ab484801734a3bd45551ef8cb05e4be9f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::function&lt; int(<ref refid="structlua___state" kindref="compound">lua_State</ref> *)&gt;</type>
+        <definition>std::function&lt; int(lua_State *)&gt; leasy::metadata::overload_set::lua</definition>
+        <argsstring>() const override</argsstring>
+        <name>lua</name>
+        <qualifiedname>leasy::metadata::overload_set::lua</qualifiedname>
+        <reimplements refid="classleasy_1_1metadata_1_1function__base__t_1a42715055f5630b60e8c830f95de3a388">lua</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="144" column="26" bodyfile="leasy/metadata/function.hpp" bodystart="144" bodyend="151"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1overload__set_1a04f732eee6c5f44761a531b6a65c818b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::metadata::overload_set::overload_set</definition>
+        <argsstring>()</argsstring>
+        <name>overload_set</name>
+        <qualifiedname>leasy::metadata::overload_set::overload_set</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="153" column="12" bodyfile="leasy/metadata/function.hpp" bodystart="153" bodyend="153"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1overload__set_1a4cd7ff77dac190b5d224736c3e9c891a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Fs</declname>
+            <defname>Fs</defname>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>leasy::metadata::overload_set::overload_set</definition>
+        <argsstring>(const std::string &amp;name, Fs &amp;&amp;...fs)</argsstring>
+        <name>overload_set</name>
+        <qualifiedname>leasy::metadata::overload_set::overload_set</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>Fs &amp;&amp;...</type>
+          <declname>fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="156" column="12" bodyfile="leasy/metadata/function.hpp" bodystart="156" bodyend="161"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1overload__set_1ab925a6109fbc6af0100015644cded2e2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref></type>
+        <definition>Object leasy::metadata::overload_set::dump</definition>
+        <argsstring>() const override</argsstring>
+        <name>dump</name>
+        <qualifiedname>leasy::metadata::overload_set::dump</qualifiedname>
+        <reimplements refid="classleasy_1_1metadata_1_1_data_1aa147e2dbf84c5b9edc0874e0492c8a5e">dump</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="163" column="19" bodyfile="leasy/metadata/function.hpp" bodystart="163" bodyend="167"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1overload__set_1a21fd539abbc727397fc9d8b03ff815c6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void leasy::metadata::overload_set::bind</definition>
+        <argsstring>(ul2::lstate &amp;state) const override</argsstring>
+        <name>bind</name>
+        <qualifiedname>leasy::metadata::overload_set::bind</qualifiedname>
+        <reimplements refid="classleasy_1_1metadata_1_1_data_1a8776e154751bda5ca9d54b684c2c5699">bind</reimplements>
+        <param>
+          <type><ref refid="classleasy_1_1ul2_1_1lstate" kindref="compound">ul2::lstate</ref> &amp;</type>
+          <declname>state</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="169" column="17" bodyfile="leasy/metadata/function.hpp" bodystart="169" bodyend="171"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>leasy::metadata::Data</label>
+        <link refid="classleasy_1_1metadata_1_1_data"/>
+      </node>
+      <node id="2">
+        <label>leasy::metadata::function_base_t</label>
+        <link refid="classleasy_1_1metadata_1_1function__base__t"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy::metadata::overload_set</label>
+        <link refid="classleasy_1_1metadata_1_1overload__set"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>leasy::metadata::Data</label>
+        <link refid="classleasy_1_1metadata_1_1_data"/>
+      </node>
+      <node id="2">
+        <label>leasy::metadata::function_base_t</label>
+        <link refid="classleasy_1_1metadata_1_1function__base__t"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy::metadata::overload_set</label>
+        <link refid="classleasy_1_1metadata_1_1overload__set"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/metadata/function.hpp" line="113" column="3" bodyfile="leasy/metadata/function.hpp" bodystart="113" bodyend="172"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1metadata_1_1overload__set_1a21fd539abbc727397fc9d8b03ff815c6" prot="public" virt="virtual"><scope>leasy::metadata::overload_set</scope><name>bind</name></member>
+      <member refid="classleasy_1_1metadata_1_1overload__set_1a3068516ed8d84b367ecb70e21adcea71" prot="private" virt="non-virtual"><scope>leasy::metadata::overload_set</scope><name>bridge</name></member>
+      <member refid="classleasy_1_1metadata_1_1overload__set_1aa6ac61e066d67ae4590196857dd0cb87" prot="public" virt="virtual"><scope>leasy::metadata::overload_set</scope><name>call</name></member>
+      <member refid="classleasy_1_1metadata_1_1overload__set_1ab925a6109fbc6af0100015644cded2e2" prot="public" virt="virtual"><scope>leasy::metadata::overload_set</scope><name>dump</name></member>
+      <member refid="classleasy_1_1metadata_1_1overload__set_1ab75a7afebc3b928b31c4530bb7a1498f" prot="private" virt="non-virtual"><scope>leasy::metadata::overload_set</scope><name>funcs</name></member>
+      <member refid="classleasy_1_1metadata_1_1overload__set_1aa585d2af9a8850688ed81576d6f4d4aa" prot="public" virt="virtual"><scope>leasy::metadata::overload_set</scope><name>is_callable</name></member>
+      <member refid="classleasy_1_1metadata_1_1overload__set_1ab484801734a3bd45551ef8cb05e4be9f" prot="public" virt="virtual"><scope>leasy::metadata::overload_set</scope><name>lua</name></member>
+      <member refid="classleasy_1_1metadata_1_1function__base__t_1aac3a26cb956eea1305b511a642e9e42f" prot="public" virt="non-virtual"><scope>leasy::metadata::overload_set</scope><name>name</name></member>
+      <member refid="classleasy_1_1metadata_1_1overload__set_1a04f732eee6c5f44761a531b6a65c818b" prot="public" virt="non-virtual"><scope>leasy::metadata::overload_set</scope><name>overload_set</name></member>
+      <member refid="classleasy_1_1metadata_1_1overload__set_1a4cd7ff77dac190b5d224736c3e9c891a" prot="public" virt="non-virtual"><scope>leasy::metadata::overload_set</scope><name>overload_set</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

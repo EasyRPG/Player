@@ -1,0 +1,264 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdrwav__metadata" kind="struct" language="C++" prot="public">
+    <compoundname>drwav_metadata</compoundname>
+    <includes refid="dr__wav_8h" local="no">dr_wav.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdrwav__metadata_1a5b5e73bd73c56eca5eece896fd873a86" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1af3da8b9a4d5c3f87e5228dac5c5a5516" kindref="member">drwav_metadata_type</ref></type>
+        <definition>drwav_metadata_type drwav_metadata::type</definition>
+        <argsstring></argsstring>
+        <name>type</name>
+        <qualifiedname>drwav_metadata::type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="822" column="25" bodyfile="external/dr_wav.h" bodystart="822" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__metadata_1adc3059d9c14142ac0cdc01868a8c4ce2" prot="public" static="no" mutable="no">
+        <type><ref refid="structdrwav__cue" kindref="compound">drwav_cue</ref></type>
+        <definition>drwav_cue drwav_metadata::cue</definition>
+        <argsstring></argsstring>
+        <name>cue</name>
+        <qualifiedname>drwav_metadata::cue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="826" column="19" bodyfile="external/dr_wav.h" bodystart="826" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__metadata_1a16a8c7c5eb870a9ab84b7e01257c40bb" prot="public" static="no" mutable="no">
+        <type><ref refid="structdrwav__smpl" kindref="compound">drwav_smpl</ref></type>
+        <definition>drwav_smpl drwav_metadata::smpl</definition>
+        <argsstring></argsstring>
+        <name>smpl</name>
+        <qualifiedname>drwav_metadata::smpl</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="827" column="20" bodyfile="external/dr_wav.h" bodystart="827" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__metadata_1a49874ff81c7eea16ec67a59a268a5775" prot="public" static="no" mutable="no">
+        <type><ref refid="structdrwav__acid" kindref="compound">drwav_acid</ref></type>
+        <definition>drwav_acid drwav_metadata::acid</definition>
+        <argsstring></argsstring>
+        <name>acid</name>
+        <qualifiedname>drwav_metadata::acid</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="828" column="20" bodyfile="external/dr_wav.h" bodystart="828" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__metadata_1ad4f83da323ebc2b54855b6b837d820f8" prot="public" static="no" mutable="no">
+        <type><ref refid="structdrwav__inst" kindref="compound">drwav_inst</ref></type>
+        <definition>drwav_inst drwav_metadata::inst</definition>
+        <argsstring></argsstring>
+        <name>inst</name>
+        <qualifiedname>drwav_metadata::inst</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="829" column="20" bodyfile="external/dr_wav.h" bodystart="829" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__metadata_1a148033a8db214480f19ad89ab8c85c19" prot="public" static="no" mutable="no">
+        <type><ref refid="structdrwav__bext" kindref="compound">drwav_bext</ref></type>
+        <definition>drwav_bext drwav_metadata::bext</definition>
+        <argsstring></argsstring>
+        <name>bext</name>
+        <qualifiedname>drwav_metadata::bext</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="830" column="20" bodyfile="external/dr_wav.h" bodystart="830" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__metadata_1a05921cfb030fc25634efe935d4d42585" prot="public" static="no" mutable="no">
+        <type><ref refid="structdrwav__list__label__or__note" kindref="compound">drwav_list_label_or_note</ref></type>
+        <definition>drwav_list_label_or_note drwav_metadata::labelOrNote</definition>
+        <argsstring></argsstring>
+        <name>labelOrNote</name>
+        <qualifiedname>drwav_metadata::labelOrNote</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="831" column="34" bodyfile="external/dr_wav.h" bodystart="831" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__metadata_1afd701d8c94a74084040e6ae8fdb859af" prot="public" static="no" mutable="no">
+        <type><ref refid="structdrwav__list__labelled__cue__region" kindref="compound">drwav_list_labelled_cue_region</ref></type>
+        <definition>drwav_list_labelled_cue_region drwav_metadata::labelledCueRegion</definition>
+        <argsstring></argsstring>
+        <name>labelledCueRegion</name>
+        <qualifiedname>drwav_metadata::labelledCueRegion</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="832" column="40" bodyfile="external/dr_wav.h" bodystart="832" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__metadata_1ab977e2dcd5a07e2c2cc91ec959387b26" prot="public" static="no" mutable="no">
+        <type><ref refid="structdrwav__list__info__text" kindref="compound">drwav_list_info_text</ref></type>
+        <definition>drwav_list_info_text drwav_metadata::infoText</definition>
+        <argsstring></argsstring>
+        <name>infoText</name>
+        <qualifiedname>drwav_metadata::infoText</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="833" column="30" bodyfile="external/dr_wav.h" bodystart="833" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__metadata_1ac858acebf1bf322e2dc46e2850ee5133" prot="public" static="no" mutable="no">
+        <type><ref refid="structdrwav__unknown__metadata" kindref="compound">drwav_unknown_metadata</ref></type>
+        <definition>drwav_unknown_metadata drwav_metadata::unknown</definition>
+        <argsstring></argsstring>
+        <name>unknown</name>
+        <qualifiedname>drwav_metadata::unknown</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="834" column="32" bodyfile="external/dr_wav.h" bodystart="834" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__metadata_1a01076ebcc2909ec5f42595b38d8ba139" prot="public" static="no" mutable="no">
+        <type>union drwav_metadata::@332132257016122157316260337043044232312324375213</type>
+        <definition>union drwav_metadata::@332132257016122157316260337043044232312324375213 drwav_metadata::data</definition>
+        <argsstring></argsstring>
+        <name>data</name>
+        <qualifiedname>drwav_metadata::data</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="835" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="6">
+        <label>drwav_acid</label>
+        <link refid="structdrwav__acid"/>
+      </node>
+      <node id="8">
+        <label>drwav_bext</label>
+        <link refid="structdrwav__bext"/>
+      </node>
+      <node id="2">
+        <label>drwav_cue</label>
+        <link refid="structdrwav__cue"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>pCuePoints</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>drwav_cue_point</label>
+        <link refid="structdrwav__cue__point"/>
+      </node>
+      <node id="7">
+        <label>drwav_inst</label>
+        <link refid="structdrwav__inst"/>
+      </node>
+      <node id="11">
+        <label>drwav_list_info_text</label>
+        <link refid="structdrwav__list__info__text"/>
+      </node>
+      <node id="9">
+        <label>drwav_list_label_or_note</label>
+        <link refid="structdrwav__list__label__or__note"/>
+      </node>
+      <node id="10">
+        <label>drwav_list_labelled_cue_region</label>
+        <link refid="structdrwav__list__labelled__cue__region"/>
+      </node>
+      <node id="1">
+        <label>drwav_metadata</label>
+        <link refid="structdrwav__metadata"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>cue</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>smpl</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>acid</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>inst</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>bext</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>labelOrNote</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>labelledCueRegion</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>infoText</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>unknown</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>drwav_smpl</label>
+        <link refid="structdrwav__smpl"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>pLoops</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>drwav_smpl_loop</label>
+        <link refid="structdrwav__smpl__loop"/>
+      </node>
+      <node id="12">
+        <label>drwav_unknown_metadata</label>
+        <link refid="structdrwav__unknown__metadata"/>
+      </node>
+    </collaborationgraph>
+    <location file="external/dr_wav.h" line="819" column="1" bodyfile="external/dr_wav.h" bodystart="820" bodyend="836"/>
+    <listofallmembers>
+      <member refid="structdrwav__metadata_1a49874ff81c7eea16ec67a59a268a5775" prot="public" virt="non-virtual"><scope>drwav_metadata</scope><name>acid</name></member>
+      <member refid="structdrwav__metadata_1a148033a8db214480f19ad89ab8c85c19" prot="public" virt="non-virtual"><scope>drwav_metadata</scope><name>bext</name></member>
+      <member refid="structdrwav__metadata_1adc3059d9c14142ac0cdc01868a8c4ce2" prot="public" virt="non-virtual"><scope>drwav_metadata</scope><name>cue</name></member>
+      <member refid="structdrwav__metadata_1a01076ebcc2909ec5f42595b38d8ba139" prot="public" virt="non-virtual"><scope>drwav_metadata</scope><name>data</name></member>
+      <member refid="structdrwav__metadata_1ab977e2dcd5a07e2c2cc91ec959387b26" prot="public" virt="non-virtual"><scope>drwav_metadata</scope><name>infoText</name></member>
+      <member refid="structdrwav__metadata_1ad4f83da323ebc2b54855b6b837d820f8" prot="public" virt="non-virtual"><scope>drwav_metadata</scope><name>inst</name></member>
+      <member refid="structdrwav__metadata_1afd701d8c94a74084040e6ae8fdb859af" prot="public" virt="non-virtual"><scope>drwav_metadata</scope><name>labelledCueRegion</name></member>
+      <member refid="structdrwav__metadata_1a05921cfb030fc25634efe935d4d42585" prot="public" virt="non-virtual"><scope>drwav_metadata</scope><name>labelOrNote</name></member>
+      <member refid="structdrwav__metadata_1a16a8c7c5eb870a9ab84b7e01257c40bb" prot="public" virt="non-virtual"><scope>drwav_metadata</scope><name>smpl</name></member>
+      <member refid="structdrwav__metadata_1a5b5e73bd73c56eca5eece896fd873a86" prot="public" virt="non-virtual"><scope>drwav_metadata</scope><name>type</name></member>
+      <member refid="structdrwav__metadata_1ac858acebf1bf322e2dc46e2850ee5133" prot="public" virt="non-virtual"><scope>drwav_metadata</scope><name>unknown</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

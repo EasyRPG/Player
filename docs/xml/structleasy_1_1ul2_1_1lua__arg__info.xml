@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ul2_1_1lua__arg__info" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ul2::lua_arg_info</compoundname>
+    <includes refid="any__function_8hpp" local="no">any_function.hpp</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structleasy_1_1ul2_1_1lua__arg__info_1a9dcb9d3a87545e3fabf7c1373e5b214e" prot="public" static="no" mutable="no">
+        <type>std::type_index</type>
+        <definition>std::type_index leasy::ul2::lua_arg_info::type</definition>
+        <argsstring></argsstring>
+        <name>type</name>
+        <qualifiedname>leasy::ul2::lua_arg_info::type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/any_function.hpp" line="47" column="21" bodyfile="leasy/ul2/any_function.hpp" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1ul2_1_1lua__arg__info_1a2b7444375d84adbf79640f169e2300f9" prot="public" static="no" mutable="no">
+        <type><ref refid="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57" kindref="member">lua_kind</ref></type>
+        <definition>lua_kind leasy::ul2::lua_arg_info::kind</definition>
+        <argsstring></argsstring>
+        <name>kind</name>
+        <qualifiedname>leasy::ul2::lua_arg_info::kind</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/any_function.hpp" line="48" column="21" bodyfile="leasy/ul2/any_function.hpp" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1ul2_1_1lua__arg__info_1adc8f0b0436d10dab31dab6b097389f3b" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string leasy::ul2::lua_arg_info::metatable_name</definition>
+        <argsstring></argsstring>
+        <name>metatable_name</name>
+        <qualifiedname>leasy::ul2::lua_arg_info::metatable_name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/any_function.hpp" line="49" column="21" bodyfile="leasy/ul2/any_function.hpp" bodystart="49" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ul2/any_function.hpp" line="46" column="1" bodyfile="leasy/ul2/any_function.hpp" bodystart="46" bodyend="50"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ul2_1_1lua__arg__info_1a2b7444375d84adbf79640f169e2300f9" prot="public" virt="non-virtual"><scope>leasy::ul2::lua_arg_info</scope><name>kind</name></member>
+      <member refid="structleasy_1_1ul2_1_1lua__arg__info_1adc8f0b0436d10dab31dab6b097389f3b" prot="public" virt="non-virtual"><scope>leasy::ul2::lua_arg_info</scope><name>metatable_name</name></member>
+      <member refid="structleasy_1_1ul2_1_1lua__arg__info_1a9dcb9d3a87545e3fabf7c1373e5b214e" prot="public" virt="non-virtual"><scope>leasy::ul2::lua_arg_info</scope><name>type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

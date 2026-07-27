@@ -42,3 +42,4 @@ namespace ImageBMP {
 }
 
 #endif
+

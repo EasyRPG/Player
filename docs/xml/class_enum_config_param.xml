@@ -1,0 +1,396 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_enum_config_param" kind="class" language="C++" prot="public">
+    <compoundname>EnumConfigParam</compoundname>
+    <basecompoundref refid="class_config_param_base" prot="public" virt="non-virtual">ConfigParamBase&lt; E &gt;</basecompoundref>
+    <includes refid="config__param_8h" local="no">config_param.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename E</type>
+      </param>
+      <param>
+        <type>size_t</type>
+        <declname>S</declname>
+        <defname>S</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_enum_config_param_1ad3e32a74b400ee9ec6556089224c52c6" prot="private" static="no" mutable="no">
+        <type>lcf::FlagSet&lt; E &gt;</type>
+        <definition>lcf::FlagSet&lt;E&gt; EnumConfigParam&lt; E, S &gt;::_valid</definition>
+        <argsstring></argsstring>
+        <name>_valid</name>
+        <qualifiedname>EnumConfigParam::_valid</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="422" column="14" bodyfile="config_param.h" bodystart="422" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_enum_config_param_1ad41b099071c1d96a92e6666d4e6f5719" prot="private" static="no" mutable="no">
+        <type>std::array&lt; std::string_view, S &gt;</type>
+        <definition>std::array&lt;std::string_view, S&gt; EnumConfigParam&lt; E, S &gt;::_values</definition>
+        <argsstring></argsstring>
+        <name>_values</name>
+        <qualifiedname>EnumConfigParam::_values</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="423" column="12" bodyfile="config_param.h" bodystart="423" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_enum_config_param_1acdadfe2b451634ec0a66685349c24683" prot="private" static="no" mutable="no">
+        <type>std::array&lt; std::string_view, S &gt;</type>
+        <definition>std::array&lt;std::string_view, S&gt; EnumConfigParam&lt; E, S &gt;::_tags</definition>
+        <argsstring></argsstring>
+        <name>_tags</name>
+        <qualifiedname>EnumConfigParam::_tags</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="424" column="12" bodyfile="config_param.h" bodystart="424" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_enum_config_param_1a93fc922d5fa1ca518cbce3d94ebaf23e" prot="private" static="no" mutable="no">
+        <type>std::array&lt; std::string_view, S &gt;</type>
+        <definition>std::array&lt;std::string_view, S&gt; EnumConfigParam&lt; E, S &gt;::_value_descriptions</definition>
+        <argsstring></argsstring>
+        <name>_value_descriptions</name>
+        <qualifiedname>EnumConfigParam::_value_descriptions</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="425" column="12" bodyfile="config_param.h" bodystart="425" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_enum_config_param_1af349420d1f201608ec147f1a886bdd76" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool EnumConfigParam&lt; E, S &gt;::_enabled</definition>
+        <argsstring></argsstring>
+        <name>_enabled</name>
+        <qualifiedname>EnumConfigParam::_enabled</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="426" column="6" bodyfile="config_param.h" bodystart="426" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_enum_config_param_1a529e3387b5a8572f75452d0557b119f8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>EnumConfigParam&lt; E, S &gt;::EnumConfigParam</definition>
+        <argsstring>(std::string_view name, std::string_view description, std::string_view config_section, std::string_view config_key, E value, std::array&lt; std::string_view, S &gt; values, std::array&lt; std::string_view, S &gt; tags, std::array&lt; std::string_view, S &gt; value_descriptions)</argsstring>
+        <name>EnumConfigParam</name>
+        <qualifiedname>EnumConfigParam::EnumConfigParam</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>description</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>config_section</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>config_key</declname>
+        </param>
+        <param>
+          <type>E</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>std::array&lt; std::string_view, S &gt;</type>
+          <declname>values</declname>
+        </param>
+        <param>
+          <type>std::array&lt; std::string_view, S &gt;</type>
+          <declname>tags</declname>
+        </param>
+        <param>
+          <type>std::array&lt; std::string_view, S &gt;</type>
+          <declname>value_descriptions</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="351" column="1" bodyfile="config_param.h" bodystart="351" bodyend="356"/>
+      </memberdef>
+      <memberdef kind="function" id="class_enum_config_param_1a858b7360a686acb3f86c0720bfe55ab7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>bool EnumConfigParam&lt; E, S &gt;::vIsValid</definition>
+        <argsstring>(const E &amp;value) const override</argsstring>
+        <name>vIsValid</name>
+        <qualifiedname>EnumConfigParam::vIsValid</qualifiedname>
+        <reimplements refid="class_config_param_base_1a8b8d537bc0275c083bffaf98116f0dda">vIsValid</reimplements>
+        <param>
+          <type>const E &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="358" column="6" bodyfile="config_param.h" bodystart="358" bodyend="360"/>
+      </memberdef>
+      <memberdef kind="function" id="class_enum_config_param_1aae40bd616ae4475a319ea9e2789eb6df" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void EnumConfigParam&lt; E, S &gt;::ReplaceValidSet</definition>
+        <argsstring>(lcf::FlagSet&lt; E &gt; valid)</argsstring>
+        <name>ReplaceValidSet</name>
+        <qualifiedname>EnumConfigParam::ReplaceValidSet</qualifiedname>
+        <param>
+          <type>lcf::FlagSet&lt; E &gt;</type>
+          <declname>valid</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="362" column="6" bodyfile="config_param.h" bodystart="362" bodyend="367"/>
+      </memberdef>
+      <memberdef kind="function" id="class_enum_config_param_1a32aa022fdecc2b44f9179e859442ba2d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void EnumConfigParam&lt; E, S &gt;::AddToValidSet</definition>
+        <argsstring>(E value)</argsstring>
+        <name>AddToValidSet</name>
+        <qualifiedname>EnumConfigParam::AddToValidSet</qualifiedname>
+        <param>
+          <type>E</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="369" column="6" bodyfile="config_param.h" bodystart="369" bodyend="371"/>
+      </memberdef>
+      <memberdef kind="function" id="class_enum_config_param_1a34c606f4568fa10b8c2f5ec14f50ae32" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void EnumConfigParam&lt; E, S &gt;::RemoveFromValidSet</definition>
+        <argsstring>(const E &amp;value)</argsstring>
+        <name>RemoveFromValidSet</name>
+        <qualifiedname>EnumConfigParam::RemoveFromValidSet</qualifiedname>
+        <param>
+          <type>const E &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="373" column="6" bodyfile="config_param.h" bodystart="373" bodyend="378"/>
+      </memberdef>
+      <memberdef kind="function" id="class_enum_config_param_1a0dc5b4efff9ef0506161436b7a2ac85d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string EnumConfigParam&lt; E, S &gt;::ValueToString</definition>
+        <argsstring>() const override</argsstring>
+        <name>ValueToString</name>
+        <qualifiedname>EnumConfigParam::ValueToString</qualifiedname>
+        <reimplements refid="class_config_param_base_1aa50c70a0101b92717f895a0d101f4037">ValueToString</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>human readable representation of the value for the settings scene </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="380" column="13" bodyfile="config_param.h" bodystart="380" bodyend="382"/>
+      </memberdef>
+      <memberdef kind="function" id="class_enum_config_param_1a2f4bc4437d047a57b5bad744eb3bc62f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::array&lt; std::string_view, S &gt;</type>
+        <definition>std::array&lt; std::string_view, S &gt; EnumConfigParam&lt; E, S &gt;::GetValues</definition>
+        <argsstring>() const</argsstring>
+        <name>GetValues</name>
+        <qualifiedname>EnumConfigParam::GetValues</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="384" column="12" bodyfile="config_param.h" bodystart="384" bodyend="386"/>
+      </memberdef>
+      <memberdef kind="function" id="class_enum_config_param_1a648dc712e8fcd65ccd84801fc481c56d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::array&lt; std::string_view, S &gt;</type>
+        <definition>std::array&lt; std::string_view, S &gt; EnumConfigParam&lt; E, S &gt;::GetDescriptions</definition>
+        <argsstring>() const</argsstring>
+        <name>GetDescriptions</name>
+        <qualifiedname>EnumConfigParam::GetDescriptions</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="388" column="12" bodyfile="config_param.h" bodystart="388" bodyend="390"/>
+      </memberdef>
+      <memberdef kind="function" id="class_enum_config_param_1af8b3bfdc4547afa4df39a8ce868b54cb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool EnumConfigParam&lt; E, S &gt;::SetFromString</definition>
+        <argsstring>(std::string_view value)</argsstring>
+        <name>SetFromString</name>
+        <qualifiedname>EnumConfigParam::SetFromString</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="392" column="6" bodyfile="config_param.h" bodystart="392" bodyend="400"/>
+      </memberdef>
+      <memberdef kind="function" id="class_enum_config_param_1a89b8fd31a2120446fe6da0563a2207de" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>bool EnumConfigParam&lt; E, S &gt;::FromIni</definition>
+        <argsstring>(const lcf::INIReader &amp;ini) override</argsstring>
+        <name>FromIni</name>
+        <qualifiedname>EnumConfigParam::FromIni</qualifiedname>
+        <reimplements refid="class_config_param_base_1a0baf7f7760a3141267184a0e251c3ba2">FromIni</reimplements>
+        <param>
+          <type>const lcf::INIReader &amp;</type>
+          <declname>ini</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="402" column="6" bodyfile="config_param.h" bodystart="402" bodyend="413"/>
+      </memberdef>
+      <memberdef kind="function" id="class_enum_config_param_1a090bb61450fe8ddba3c99869bb2f97cd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void EnumConfigParam&lt; E, S &gt;::ToIni</definition>
+        <argsstring>(std::ostream &amp;ini) const</argsstring>
+        <name>ToIni</name>
+        <qualifiedname>EnumConfigParam::ToIni</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>ini</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="415" column="6" bodyfile="config_param.h" bodystart="415" bodyend="419"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_enum_config_param_1ae2a35644d0217f0b203e3a1e4aab6da8" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>E</type>
+        <definition>E EnumConfigParam&lt; E, S &gt;::GetFirstValid</definition>
+        <argsstring>() const</argsstring>
+        <name>GetFirstValid</name>
+        <qualifiedname>EnumConfigParam::GetFirstValid</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="config_param.h" line="428" column="3" bodyfile="config_param.h" bodystart="428" bodyend="436"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>ConfigParamBase&lt; E &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="1">
+        <label>EnumConfigParam&lt; E, S &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>ConfigParamBase&lt; E &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="1">
+        <label>EnumConfigParam&lt; E, S &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="config_param.h" line="349" column="1" bodyfile="config_param.h" bodystart="349" bodyend="437"/>
+    <listofallmembers>
+      <member refid="class_config_param_base_1a8ca4a74a2f3d5d8cc252162190893c9e" prot="protected" virt="non-virtual"><scope>EnumConfigParam</scope><name>_config_key</name></member>
+      <member refid="class_config_param_base_1a9093f720aa1025c05d48316d0ccefe65" prot="protected" virt="non-virtual"><scope>EnumConfigParam</scope><name>_config_section</name></member>
+      <member refid="class_config_param_base_1a6b63463243218d57495cd29033f1736c" prot="protected" virt="non-virtual"><scope>EnumConfigParam</scope><name>_description</name></member>
+      <member refid="class_enum_config_param_1af349420d1f201608ec147f1a886bdd76" prot="private" virt="non-virtual"><scope>EnumConfigParam</scope><name>_enabled</name></member>
+      <member refid="class_config_param_base_1ac46a1abdfbd2aea6d6ad84000e43ce41" prot="protected" virt="non-virtual"><scope>EnumConfigParam</scope><name>_name</name></member>
+      <member refid="class_enum_config_param_1acdadfe2b451634ec0a66685349c24683" prot="private" virt="non-virtual"><scope>EnumConfigParam</scope><name>_tags</name></member>
+      <member refid="class_enum_config_param_1ad3e32a74b400ee9ec6556089224c52c6" prot="private" virt="non-virtual"><scope>EnumConfigParam</scope><name>_valid</name></member>
+      <member refid="class_config_param_base_1ad486a9f44dcf1b8d760071884d29ce89" prot="protected" virt="non-virtual"><scope>EnumConfigParam</scope><name>_value</name></member>
+      <member refid="class_enum_config_param_1a93fc922d5fa1ca518cbce3d94ebaf23e" prot="private" virt="non-virtual"><scope>EnumConfigParam</scope><name>_value_descriptions</name></member>
+      <member refid="class_enum_config_param_1ad41b099071c1d96a92e6666d4e6f5719" prot="private" virt="non-virtual"><scope>EnumConfigParam</scope><name>_values</name></member>
+      <member refid="class_enum_config_param_1a32aa022fdecc2b44f9179e859442ba2d" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>AddToValidSet</name></member>
+      <member refid="class_config_param_base_1ab00b08f1b9375287f6cb07e6731781a3" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>ConfigParamBase</name></member>
+      <member refid="class_enum_config_param_1a529e3387b5a8572f75452d0557b119f8" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>EnumConfigParam</name></member>
+      <member refid="class_enum_config_param_1a89b8fd31a2120446fe6da0563a2207de" prot="public" virt="virtual"><scope>EnumConfigParam</scope><name>FromIni</name></member>
+      <member refid="class_config_param_base_1a69547a9d358dae48d13b2115c17efd53" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>Get</name></member>
+      <member refid="class_config_param_base_1a928b6c9786fe9f1aa6237a097d20e8b0" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>GetDescription</name></member>
+      <member refid="class_enum_config_param_1a648dc712e8fcd65ccd84801fc481c56d" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>GetDescriptions</name></member>
+      <member refid="class_enum_config_param_1ae2a35644d0217f0b203e3a1e4aab6da8" prot="private" virt="non-virtual"><scope>EnumConfigParam</scope><name>GetFirstValid</name></member>
+      <member refid="class_config_param_base_1a88ae1702b97bd390636496a4e7114edd" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>GetName</name></member>
+      <member refid="class_enum_config_param_1a2f4bc4437d047a57b5bad744eb3bc62f" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>GetValues</name></member>
+      <member refid="class_config_param_base_1a2f8f8f70ca825f22319102ac3cb75bbd" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>IsLocked</name></member>
+      <member refid="class_config_param_base_1ad022cc572286546bcaa541de5859d24f" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>IsOptionVisible</name></member>
+      <member refid="class_config_param_base_1ab3e65722fba80c0bcd4420fe1bab8dc9" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>IsValid</name></member>
+      <member refid="class_config_param_base_1ac8648cf6d4b5ae495f5dc02bdf1074ac" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>Lock</name></member>
+      <member refid="class_enum_config_param_1a34c606f4568fa10b8c2f5ec14f50ae32" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>RemoveFromValidSet</name></member>
+      <member refid="class_enum_config_param_1aae40bd616ae4475a319ea9e2789eb6df" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>ReplaceValidSet</name></member>
+      <member refid="class_config_param_base_1a8b45465ea459016817e6cc38a7fe1950" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>Set</name></member>
+      <member refid="class_config_param_base_1abe0d636ddc983d8965c70493f434ef2d" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>SetDescription</name></member>
+      <member refid="class_enum_config_param_1af8b3bfdc4547afa4df39a8ce868b54cb" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>SetFromString</name></member>
+      <member refid="class_config_param_base_1afcca350f7a5df7e9e60f768fc69ce82a" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>SetLocked</name></member>
+      <member refid="class_config_param_base_1a19e2a139b6abf38a353e5f8e9055137b" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>SetName</name></member>
+      <member refid="class_config_param_base_1ae462283da6956166010805a492fbb12f" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>SetOptionVisible</name></member>
+      <member refid="class_enum_config_param_1a090bb61450fe8ddba3c99869bb2f97cd" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>ToIni</name></member>
+      <member refid="class_config_param_base_1a64e7e428e4d66ab9e00ad46ef146ceb1" prot="public" virt="non-virtual"><scope>EnumConfigParam</scope><name>value_type</name></member>
+      <member refid="class_enum_config_param_1a0dc5b4efff9ef0506161436b7a2ac85d" prot="public" virt="virtual"><scope>EnumConfigParam</scope><name>ValueToString</name></member>
+      <member refid="class_enum_config_param_1a858b7360a686acb3f86c0720bfe55ab7" prot="public" virt="virtual"><scope>EnumConfigParam</scope><name>vIsValid</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

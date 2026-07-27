@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_image_out" kind="struct" language="C++" prot="public">
+    <compoundname>ImageOut</compoundname>
+    <includes refid="bitmap_8h" local="no">bitmap.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_image_out_1a484ffd4f25e9f83c61359c10fb598205" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ImageOut::width</definition>
+        <argsstring></argsstring>
+        <name>width</name>
+        <qualifiedname>ImageOut::width</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="664" column="5" bodyfile="bitmap.h" bodystart="664" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_image_out_1a411812ece4ee3ae037231e0f98ce4679" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ImageOut::height</definition>
+        <argsstring></argsstring>
+        <name>height</name>
+        <qualifiedname>ImageOut::height</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="665" column="5" bodyfile="bitmap.h" bodystart="665" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_image_out_1ae620d4ba2be53f61cabe15b7eeb392e0" prot="public" static="no" mutable="no">
+        <type>void *</type>
+        <definition>void* ImageOut::pixels</definition>
+        <argsstring></argsstring>
+        <name>pixels</name>
+        <qualifiedname>ImageOut::pixels</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="666" column="6" bodyfile="bitmap.h" bodystart="666" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_image_out_1ae8e8b33ef9224452a7403d0986c573bf" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ImageOut::bpp</definition>
+        <argsstring></argsstring>
+        <name>bpp</name>
+        <qualifiedname>ImageOut::bpp</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap.h" line="667" column="5" bodyfile="bitmap.h" bodystart="667" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="bitmap.h" line="663" column="1" bodyfile="bitmap.h" bodystart="663" bodyend="668"/>
+    <listofallmembers>
+      <member refid="struct_image_out_1ae8e8b33ef9224452a7403d0986c573bf" prot="public" virt="non-virtual"><scope>ImageOut</scope><name>bpp</name></member>
+      <member refid="struct_image_out_1a411812ece4ee3ae037231e0f98ce4679" prot="public" virt="non-virtual"><scope>ImageOut</scope><name>height</name></member>
+      <member refid="struct_image_out_1ae620d4ba2be53f61cabe15b7eeb392e0" prot="public" virt="non-virtual"><scope>ImageOut</scope><name>pixels</name></member>
+      <member refid="struct_image_out_1a484ffd4f25e9f83c61359c10fb598205" prot="public" virt="non-virtual"><scope>ImageOut</scope><name>width</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

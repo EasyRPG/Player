@@ -345,3 +345,4 @@ inline void Window::SetFont(FontRef font) {
 }
 
 #endif
+

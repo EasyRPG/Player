@@ -235,3 +235,4 @@ constexpr Window_VarList::Mode Scene_Debug::GetWindowMode(Mode mode) {
 }
 
 #endif
+

@@ -281,3 +281,4 @@ namespace Json_Helper {
 } // namespace Json_Helper
 
 #endif // HAVE_NLOHMANN_JSON
+

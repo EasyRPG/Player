@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_bcebcf30496dd30f7ea1e06a0f5e984c" kind="dir">
+    <compoundname>lcf</compoundname>
+    <innerfile refid="data_8h">data.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="lcf/"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_mbuffer" kind="struct" language="C++" prot="public">
+    <compoundname>Mbuffer</compoundname>
+    <includes refid="lzio_8h" local="no">lzio.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_mbuffer_1a857012deb824b216c19d7e4d15be5561" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* Mbuffer::buffer</definition>
+        <argsstring></argsstring>
+        <name>buffer</name>
+        <qualifiedname>Mbuffer::buffer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lzio.h" line="24" column="8" bodyfile="leasy/lua/lzio.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_mbuffer_1abd195588f24e02b6f5bfb1a39a109380" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t Mbuffer::n</definition>
+        <argsstring></argsstring>
+        <name>n</name>
+        <qualifiedname>Mbuffer::n</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lzio.h" line="25" column="10" bodyfile="leasy/lua/lzio.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_mbuffer_1a48bbc7ce4413bf1cf9f4825f1ce36e41" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t Mbuffer::buffsize</definition>
+        <argsstring></argsstring>
+        <name>buffsize</name>
+        <qualifiedname>Mbuffer::buffsize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lzio.h" line="26" column="10" bodyfile="leasy/lua/lzio.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/lua/lzio.h" line="23" column="1" bodyfile="leasy/lua/lzio.h" bodystart="23" bodyend="27"/>
+    <listofallmembers>
+      <member refid="struct_mbuffer_1a857012deb824b216c19d7e4d15be5561" prot="public" virt="non-virtual"><scope>Mbuffer</scope><name>buffer</name></member>
+      <member refid="struct_mbuffer_1a48bbc7ce4413bf1cf9f4825f1ce36e41" prot="public" virt="non-virtual"><scope>Mbuffer</scope><name>buffsize</name></member>
+      <member refid="struct_mbuffer_1abd195588f24e02b6f5bfb1a39a109380" prot="public" virt="non-virtual"><scope>Mbuffer</scope><name>n</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

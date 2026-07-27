@@ -1,0 +1,443 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="fileext__guesser_8cpp" kind="file" language="C++">
+    <compoundname>fileext_guesser.cpp</compoundname>
+    <includes refid="filefinder_8h" local="yes">filefinder.h</includes>
+    <includes refid="fileext__guesser_8h" local="yes">fileext_guesser.h</includes>
+    <includes refid="meta_8h" local="yes">meta.h</includes>
+    <includes refid="output_8h" local="yes">output.h</includes>
+    <includes refid="string__view_8h" local="yes">string_view.h</includes>
+    <includes local="no">sstream</includes>
+    <incdepgraph>
+      <node id="15">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>fileext_guesser.cpp</label>
+        <link refid="fileext__guesser_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>fileext_guesser.h</label>
+        <link refid="fileext__guesser_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>meta.h</label>
+        <link refid="meta_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="35">
+        <label>output.h</label>
+        <link refid="output_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>cassert</label>
+      </node>
+      <node id="12">
+        <label>cstdint</label>
+      </node>
+      <node id="28">
+        <label>cstdio</label>
+      </node>
+      <node id="25">
+        <label>ctime</label>
+      </node>
+      <node id="22">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="23">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="26">
+        <label>functional</label>
+      </node>
+      <node id="29">
+        <label>ios</label>
+      </node>
+      <node id="36">
+        <label>iosfwd</label>
+      </node>
+      <node id="9">
+        <label>istream</label>
+      </node>
+      <node id="21">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="27">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="34">
+        <label>lcf/inireader.h</label>
+      </node>
+      <node id="18">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="20">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="33">
+        <label>map</label>
+      </node>
+      <node id="6">
+        <label>memory</label>
+      </node>
+      <node id="10">
+        <label>ostream</label>
+      </node>
+      <node id="37">
+        <label>sstream</label>
+      </node>
+      <node id="16">
+        <label>string</label>
+      </node>
+      <node id="13">
+        <label>unordered_map</label>
+      </node>
+      <node id="31">
+        <label>utility</label>
+      </node>
+      <node id="14">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="filefinder_8h" kindref="compound">filefinder.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="fileext__guesser_8h" kindref="compound">fileext_guesser.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="meta_8h" kindref="compound">meta.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="output_8h" kindref="compound">output.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="string__view_8h" kindref="compound">string_view.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;sstream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>RtPrefix<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;rpg_rt.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string<sp/>MapPrefix<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;map&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>MapPrefixLength<sp/>=<sp/>8;<sp/></highlight><highlight class="comment">//<sp/>mapXXXX.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="namespace_file_ext_guesser_1a84f41cba147f9091c96f623b1de4416f" refkind="member"><highlight class="normal"><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser" kindref="compound">FileExtGuesser::RPG2KNonStandardFilenameGuesser</ref><sp/><ref refid="namespace_file_ext_guesser_1a84f41cba147f9091c96f623b1de4416f" kindref="member">FileExtGuesser::GetRPG2kProjectWithRenames</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref>&amp;<sp/>fs)<sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Try<sp/>to<sp/>rescue<sp/>and<sp/>determine<sp/>file<sp/>extensions.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>We<sp/>need<sp/>to<sp/>figure<sp/>out<sp/>the<sp/>names<sp/>of<sp/>the<sp/>map<sp/>tree<sp/>and<sp/>the<sp/>DB<sp/>(maps<sp/>come<sp/>later).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;RPG2KNonStandardFilenameGuesser::ExtAndSize&gt;<sp/>candidates;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>entries<sp/>=<sp/>fs.<ref refid="class_filesystem_view_1aad4efb9cd59aaffcdeab8d7d75178e8e" kindref="member">ListDirectory</ref>();</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(entries)<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>&amp;item:<sp/>*entries)<sp/>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(item.second.type<sp/>!=<sp/><ref refid="class_directory_tree_1a5125eceb043bf8c21630d6e90b7f46c4ad2203cb1237cb6460cbad94564e39345" kindref="member">DirectoryTree::FileType::Regular</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(item.first.length()<sp/>==<sp/>RtPrefix.length()<sp/>+<sp/>3<sp/>&amp;&amp;<sp/>StartsWith(item.first,<sp/>RtPrefix))<sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>ext<sp/>=<sp/>item.first.substr(RtPrefix.length());</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ext<sp/>!=<sp/></highlight><highlight class="stringliteral">&quot;exe&quot;</highlight><highlight class="normal"><sp/>&amp;&amp;<sp/>ext<sp/>!=<sp/></highlight><highlight class="stringliteral">&quot;ini&quot;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>candidates.emplace_back(item.second.name,<sp/>ext,<sp/>fs.<ref refid="class_filesystem_view_1aedb1b0d4fcdf5ebe69010d082cdc217e" kindref="member">GetFilesize</ref>(fs.<ref refid="class_filesystem_view_1abcab7f2060f92a8905c4d83f4cce8f5e" kindref="member">FindFile</ref>(item.second.name)));</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Avoid<sp/>needless<sp/>scanning<sp/>if<sp/>we<sp/>can&apos;t<sp/>figure<sp/>it<sp/>out</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(candidates.size()<sp/>&gt;<sp/>2)<sp/>{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Return<sp/>only<sp/>if<sp/>we<sp/>matched<sp/>exactly<sp/>two<sp/>files.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(candidates.size()<sp/>==<sp/>2)<sp/>{</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser" kindref="compound">RPG2KNonStandardFilenameGuesser</ref><sp/>res;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>res.<ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1aec262acfe3c906eab24b026d92b4187d" kindref="member">rpgRTs</ref>.first<sp/>=<sp/>candidates[0];</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>res.<ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1aec262acfe3c906eab24b026d92b4187d" kindref="member">rpgRTs</ref>.second<sp/>=<sp/>candidates[1];</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>res;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser" kindref="compound">RPG2KNonStandardFilenameGuesser</ref>();</highlight></codeline>
+<codeline lineno="68"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70" refid="namespace_file_ext_guesser_1ac0e2c6894c40be43c2c99819af87dd42" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_file_ext_guesser_1ac0e2c6894c40be43c2c99819af87dd42" kindref="member">FileExtGuesser::GuessAndAddLmuExtension</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref>&amp;<sp/>fs,<sp/><ref refid="class_meta" kindref="compound">Meta</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>meta,<sp/><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap" kindref="compound">RPG2KFileExtRemap</ref>&amp;<sp/>mapping)</highlight></codeline>
+<codeline lineno="71"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>If<sp/>metadata<sp/>is<sp/>provided,<sp/>rely<sp/>on<sp/>that.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>metaLmu<sp/>=<sp/>meta.GetLmuAlias();</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!metaLmu.empty())<sp/>{</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mapping.<ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a34c067b238249242d74560c58792b1ce" kindref="member">extMap</ref>[<ref refid="options_8h_1ae1913e82c9fbc770ab1407a2de1dac94" kindref="member">SUFFIX_LMU</ref>]<sp/>=<sp/>metaLmu;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1aec7bcd2124d7576a8b20873585de07cd" kindref="member">Output::Debug</ref>(</highlight><highlight class="stringliteral">&quot;Metadata-provided<sp/>non-standard<sp/>extension<sp/>for<sp/>LMU({})&quot;</highlight><highlight class="normal">,<sp/>metaLmu);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Try<sp/>to<sp/>rescue<sp/>and<sp/>determine<sp/>file<sp/>extensions.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Without<sp/>metadata,<sp/>scan<sp/>for<sp/>matching<sp/>files.<sp/>Stop<sp/>after<sp/>you<sp/>find<sp/>a<sp/>few;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/>we<sp/>can&apos;t<sp/>just<sp/>pick<sp/>the<sp/>first<sp/>since<sp/>there<sp/>may<sp/>be<sp/>some<sp/>backup<sp/>files<sp/>on<sp/>disk.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::unordered_map&lt;std::string,<sp/>int&gt;<sp/>extCounts;<sp/></highlight><highlight class="comment">//<sp/>ext<sp/>=&gt;<sp/>count</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>entries<sp/>=<sp/>fs.<ref refid="class_filesystem_view_1aad4efb9cd59aaffcdeab8d7d75178e8e" kindref="member">ListDirectory</ref>();</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(entries)<sp/>{</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>&amp;item:<sp/>*entries)<sp/>{</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(item.second.type<sp/>!=<sp/><ref refid="class_directory_tree_1a5125eceb043bf8c21630d6e90b7f46c4ad2203cb1237cb6460cbad94564e39345" kindref="member">DirectoryTree::FileType::Regular</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(item.first.length()<sp/>==<sp/>MapPrefixLength<sp/>+<sp/>3<sp/>&amp;&amp;</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>StartsWith(item.first,<sp/>MapPrefix))<sp/>{</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>ext<sp/>=<sp/>item.first.substr(MapPrefixLength);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>extCounts[ext]<sp/>+=<sp/>1;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(extCounts[ext]<sp/>&gt;=<sp/>5)<sp/>{</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mapping.<ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a34c067b238249242d74560c58792b1ce" kindref="member">extMap</ref>[<ref refid="options_8h_1ae1913e82c9fbc770ab1407a2de1dac94" kindref="member">SUFFIX_LMU</ref>]<sp/>=<sp/>ext;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1aec7bcd2124d7576a8b20873585de07cd" kindref="member">Output::Debug</ref>(</highlight><highlight class="stringliteral">&quot;Guessing<sp/>non-standard<sp/>extension<sp/>for<sp/>LMU({})&quot;</highlight><highlight class="normal">,<sp/>ext);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="103"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105" refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1ae217321917c0315c7c31162dae5bd566" refkind="member"><highlight class="normal"><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap" kindref="compound">FileExtGuesser::RPG2KFileExtRemap</ref><sp/><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1ae217321917c0315c7c31162dae5bd566" kindref="member">FileExtGuesser::RPG2KNonStandardFilenameGuesser::guessExtensions</ref>(<ref refid="class_meta" kindref="compound">Meta</ref>&amp;<sp/>meta)</highlight></codeline>
+<codeline lineno="106"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap" kindref="compound">RPG2KFileExtRemap</ref><sp/>res;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Since<sp/>the<sp/>file<sp/>extensions<sp/>are<sp/>non-standard,<sp/>we</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>won&apos;t<sp/>have<sp/>CRCs<sp/>for<sp/>them,<sp/>so<sp/>we<sp/>need<sp/>to<sp/>guess<sp/>more</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!this-&gt;<ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1ad8316268d0cd569c71aaae546084fe2e" kindref="member">Empty</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>meta.<ref refid="class_meta_1a83427cb3ff066fe00a52e28d2eb5f3c4" kindref="member">ReInitForNonStandardExtensions</ref>(<ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1aec262acfe3c906eab24b026d92b4187d" kindref="member">rpgRTs</ref>.first.fname,<sp/><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1aec262acfe3c906eab24b026d92b4187d" kindref="member">rpgRTs</ref>.second.fname);</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>If<sp/>metadata<sp/>exists,<sp/>we<sp/>don&apos;t<sp/>need<sp/>to<sp/>guess</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>metaLdb<sp/>=<sp/>meta.GetLdbAlias();</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>metaLmt<sp/>=<sp/>meta.GetLmtAlias();</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!metaLdb.empty())<sp/>{</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>res.<ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a34c067b238249242d74560c58792b1ce" kindref="member">extMap</ref>[<ref refid="options_8h_1a42d9a1e74d7a886b4886861e27299cd6" kindref="member">SUFFIX_LDB</ref>]<sp/>=<sp/>metaLdb;</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!metaLmt.empty())<sp/>{</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>res.<ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a34c067b238249242d74560c58792b1ce" kindref="member">extMap</ref>[<ref refid="options_8h_1a8cd5be750d4131a43a016c6d341656ff" kindref="member">SUFFIX_LMT</ref>]<sp/>=<sp/>metaLmt;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>If<sp/>neither<sp/>exists,<sp/>we<sp/>have<sp/>to<sp/>fall<sp/>back<sp/>to<sp/>guessing.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!(metaLdb.empty()<sp/>&amp;&amp;<sp/>metaLmt.empty()))<sp/>{</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1aec7bcd2124d7576a8b20873585de07cd" kindref="member">Output::Debug</ref>(</highlight><highlight class="stringliteral">&quot;Metadata-provided<sp/>non-standard<sp/>extension<sp/>for<sp/>LDB({})<sp/>and<sp/>LMT({})&quot;</highlight><highlight class="normal">,<sp/>metaLdb,<sp/>metaLmt);</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>With<sp/>no<sp/>metadata,<sp/>just<sp/>assume<sp/>the<sp/>largest<sp/>file<sp/>is<sp/>the<sp/>database</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>It&apos;s<sp/>usually<sp/>bigger<sp/>by<sp/>a<sp/>factor<sp/>of<sp/>10.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>first<sp/>=<sp/><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1aec262acfe3c906eab24b026d92b4187d" kindref="member">rpgRTs</ref>.first;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>second<sp/>=<sp/><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1aec262acfe3c906eab24b026d92b4187d" kindref="member">rpgRTs</ref>.second;</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(first.sz<sp/>&gt;<sp/>second.sz)<sp/>{</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>res.<ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a34c067b238249242d74560c58792b1ce" kindref="member">extMap</ref>[<ref refid="options_8h_1a42d9a1e74d7a886b4886861e27299cd6" kindref="member">SUFFIX_LDB</ref>]<sp/>=<sp/>first.ext;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>res.<ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a34c067b238249242d74560c58792b1ce" kindref="member">extMap</ref>[<ref refid="options_8h_1a8cd5be750d4131a43a016c6d341656ff" kindref="member">SUFFIX_LMT</ref>]<sp/>=<sp/>second.ext;</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>res.<ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a34c067b238249242d74560c58792b1ce" kindref="member">extMap</ref>[<ref refid="options_8h_1a42d9a1e74d7a886b4886861e27299cd6" kindref="member">SUFFIX_LDB</ref>]<sp/>=<sp/>second.ext;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>res.<ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a34c067b238249242d74560c58792b1ce" kindref="member">extMap</ref>[<ref refid="options_8h_1a8cd5be750d4131a43a016c6d341656ff" kindref="member">SUFFIX_LMT</ref>]<sp/>=<sp/>first.ext;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1aec7bcd2124d7576a8b20873585de07cd" kindref="member">Output::Debug</ref>(</highlight><highlight class="stringliteral">&quot;Guessing<sp/>non-standard<sp/>extensions<sp/>for<sp/>LDB({})<sp/>and<sp/>LMT({})&quot;</highlight><highlight class="normal">,<sp/>res.<ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a34c067b238249242d74560c58792b1ce" kindref="member">extMap</ref>[<ref refid="options_8h_1a42d9a1e74d7a886b4886861e27299cd6" kindref="member">SUFFIX_LDB</ref>],<sp/>res.<ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a34c067b238249242d74560c58792b1ce" kindref="member">extMap</ref>[<ref refid="options_8h_1a8cd5be750d4131a43a016c6d341656ff" kindref="member">SUFFIX_LMT</ref>]);</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>res;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147" refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1ad8316268d0cd569c71aaae546084fe2e" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1ad8316268d0cd569c71aaae546084fe2e" kindref="member">FileExtGuesser::RPG2KNonStandardFilenameGuesser::Empty</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1aec262acfe3c906eab24b026d92b4187d" kindref="member">rpgRTs</ref>.first.ext.empty()<sp/>||<sp/><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_non_standard_filename_guesser_1aec262acfe3c906eab24b026d92b4187d" kindref="member">rpgRTs</ref>.second.ext.empty();</highlight></codeline>
+<codeline lineno="149"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151" refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a29489fb0acf8fdeb3a1c204ad69fe45c" refkind="member"><highlight class="normal">std::string<sp/><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a29489fb0acf8fdeb3a1c204ad69fe45c" kindref="member">FileExtGuesser::RPG2KFileExtRemap::MakeFilename</ref>(std::string_view<sp/>prefix,<sp/>std::string_view<sp/>suffix)</highlight></codeline>
+<codeline lineno="152"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/>std::stringstream<sp/>res;</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>res<sp/>&lt;&lt;prefix<sp/>&lt;&lt;</highlight><highlight class="stringliteral">&quot;.&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>it<sp/>=<sp/><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a34c067b238249242d74560c58792b1ce" kindref="member">extMap</ref>.find(ToString(suffix));</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(it<sp/>!=<sp/><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a34c067b238249242d74560c58792b1ce" kindref="member">extMap</ref>.end())<sp/>{</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>res<sp/>&lt;&lt;<sp/>it-&gt;second;</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>res<sp/>&lt;&lt;<sp/>suffix;</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>res.str();</highlight></codeline>
+<codeline lineno="163"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="fileext_guesser.cpp"/>
+  </compounddef>
+</doxygen>

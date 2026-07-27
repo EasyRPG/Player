@@ -49,3 +49,4 @@ namespace leasy::tests {
 }
 
 leasy::tests::Test1 foo();
+

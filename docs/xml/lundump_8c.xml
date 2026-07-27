@@ -1,0 +1,1227 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lundump_8c" kind="file" language="C++">
+    <compoundname>lundump.c</compoundname>
+    <includes refid="lprefix_8h" local="yes">lprefix.h</includes>
+    <includes local="no">limits.h</includes>
+    <includes local="no">string.h</includes>
+    <includes refid="lua_8h" local="yes">lua.h</includes>
+    <includes refid="ldebug_8h" local="yes">ldebug.h</includes>
+    <includes refid="ldo_8h" local="yes">ldo.h</includes>
+    <includes refid="lfunc_8h" local="yes">lfunc.h</includes>
+    <includes refid="lmem_8h" local="yes">lmem.h</includes>
+    <includes refid="lobject_8h" local="yes">lobject.h</includes>
+    <includes refid="lstring_8h" local="yes">lstring.h</includes>
+    <includes refid="ltable_8h" local="yes">ltable.h</includes>
+    <includes refid="lundump_8h" local="yes">lundump.h</includes>
+    <includes refid="lzio_8h" local="yes">lzio.h</includes>
+    <incdepgraph>
+      <node id="9">
+        <label>ldebug.h</label>
+        <link refid="ldebug_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>ldo.h</label>
+        <link refid="ldo_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>lfunc.h</label>
+        <link refid="lfunc_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>lgc.h</label>
+        <link refid="lgc_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>lmem.h</label>
+        <link refid="lmem_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>lobject.h</label>
+        <link refid="lobject_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>lprefix.h</label>
+        <link refid="lprefix_8h"/>
+      </node>
+      <node id="10">
+        <label>lstate.h</label>
+        <link refid="lstate_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>lstring.h</label>
+        <link refid="lstring_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>ltable.h</label>
+        <link refid="ltable_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>ltm.h</label>
+        <link refid="ltm_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lundump.c</label>
+        <link refid="lundump_8c"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>lundump.h</label>
+        <link refid="lundump_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>lzio.h</label>
+        <link refid="lzio_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>limits.h</label>
+      </node>
+      <node id="16">
+        <label>signal.h</label>
+      </node>
+      <node id="6">
+        <label>stdarg.h</label>
+      </node>
+      <node id="7">
+        <label>stddef.h</label>
+      </node>
+      <node id="4">
+        <label>string.h</label>
+      </node>
+    </incdepgraph>
+    <innerclass refid="struct_load_state" prot="public">LoadState</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lundump_8c_1aa480de4ebd1ff43b613879e98ab2bcd8" prot="public" static="no">
+        <name>lundump_c</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="7" column="9" bodyfile="leasy/lua/lundump.c" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lundump_8c_1abf0b3947b59218777a8e928a10be205b" prot="public" static="no">
+        <name>LUA_CORE</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="8" column="9" bodyfile="leasy/lua/lundump.c" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lundump_8c_1ac24baf04a83a58a79d218599dc7474c7" prot="public" static="no">
+        <name>luai_verifycode</name>
+        <param><defname>L</defname></param>
+        <param><defname>f</defname></param>
+        <initializer>/* empty */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="30" column="9" bodyfile="leasy/lua/lundump.c" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lundump_8c_1ac2c6d25be53702eb5dac5a27feec260e" prot="public" static="no">
+        <name>loadVector</name>
+        <param><defname>S</defname></param>
+        <param><defname>b</defname></param>
+        <param><defname>n</defname></param>
+        <initializer>loadBlock(S,b,<ref refid="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" kindref="member">cast_sizet</ref>(n)*sizeof((b)[0]))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="55" column="9" bodyfile="leasy/lua/lundump.c" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lundump_8c_1aecfc8b8330ab32c6d430cf1cdf68c5b2" prot="public" static="no">
+        <name>getaddr</name>
+        <param><defname>S</defname></param>
+        <param><defname>n</defname></param>
+        <param><defname>t</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(t *, getaddr_(S,<ref refid="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" kindref="member">cast_sizet</ref>(n) * sizeof(t)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="74" column="9" bodyfile="leasy/lua/lundump.c" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lundump_8c_1ab1d6f5039e26f72694ca2e711b21a232" prot="public" static="no">
+        <name>loadVar</name>
+        <param><defname>S</defname></param>
+        <param><defname>x</defname></param>
+        <initializer><ref refid="lundump_8c_1ac2c6d25be53702eb5dac5a27feec260e" kindref="member">loadVector</ref>(S,&amp;x,1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="85" column="9" bodyfile="leasy/lua/lundump.c" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lundump_8c_1ae30a29ad1512572bca8ef79f7609bbe2" prot="public" static="no">
+        <name>checknum</name>
+        <param><defname>S</defname></param>
+        <param><defname>tvar</defname></param>
+        <param><defname>value</defname></param>
+        <param><defname>tname</defname></param>
+        <initializer>{ tvar i; checknumsize(S, sizeof(i), tname); \
+  <ref refid="lundump_8c_1ab1d6f5039e26f72694ca2e711b21a232" kindref="member">loadVar</ref>(S, i); \
+  checknumformat(S, i == value, tname); }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="371" column="9" bodyfile="leasy/lua/lundump.c" bodystart="371" bodyend="374"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="lundump_8c_1a4359a67dfcb96fbedf2becab47365599" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref></type>
+        <definition>static l_noret error</definition>
+        <argsstring>(LoadState *S, const char *why)</argsstring>
+        <name>error</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>why</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="45" column="16" bodyfile="leasy/lua/lundump.c" bodystart="45" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1a4670431cdf12dffe51a41446256a537f" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void loadBlock</definition>
+        <argsstring>(LoadState *S, void *b, size_t size)</argsstring>
+        <name>loadBlock</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="57" column="13" bodyfile="leasy/lua/lundump.c" bodystart="57" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1a7baaea7ae467e811057b86d1fb2a50ee" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void loadAlign</definition>
+        <argsstring>(LoadState *S, unsigned align)</argsstring>
+        <name>loadAlign</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>align</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="64" column="13" bodyfile="leasy/lua/lundump.c" bodystart="64" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1aa46ddef6d7d91e902f9049c7324cb2d7" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const void *</type>
+        <definition>static const void * getaddr_</definition>
+        <argsstring>(LoadState *S, size_t size)</argsstring>
+        <name>getaddr_</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="76" column="19" bodyfile="leasy/lua/lundump.c" bodystart="76" bodyend="82"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1a42ccd2fdd0830eda677e6b0b4bb5ec5a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>static lu_byte loadByte</definition>
+        <argsstring>(LoadState *S)</argsstring>
+        <name>loadByte</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="88" column="16" bodyfile="leasy/lua/lundump.c" bodystart="88" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1ad0afd5abf32c95cc88546429a928415f" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref></type>
+        <definition>static lua_Unsigned loadVarint</definition>
+        <argsstring>(LoadState *S, lua_Unsigned limit)</argsstring>
+        <name>loadVarint</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref></type>
+          <declname>limit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="97" column="21" bodyfile="leasy/lua/lundump.c" bodystart="97" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1adb3e45444a299e4974bf48f8c4bfde15" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>static size_t loadSize</definition>
+        <argsstring>(LoadState *S)</argsstring>
+        <name>loadSize</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="111" column="15" bodyfile="leasy/lua/lundump.c" bodystart="111" bodyend="113"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1abc34d9e099b17660e4eaf21b2039ef03" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int loadInt</definition>
+        <argsstring>(LoadState *S)</argsstring>
+        <name>loadInt</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="116" column="12" bodyfile="leasy/lua/lundump.c" bodystart="116" bodyend="118"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1abc39c54e4b51ab039f8b8f90f45b3d19" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref></type>
+        <definition>static lua_Number loadNumber</definition>
+        <argsstring>(LoadState *S)</argsstring>
+        <name>loadNumber</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="122" column="19" bodyfile="leasy/lua/lundump.c" bodystart="122" bodyend="126"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1a47c3697d53ebc451a28687215007e69e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+        <definition>static lua_Integer loadInteger</definition>
+        <argsstring>(LoadState *S)</argsstring>
+        <name>loadInteger</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="129" column="20" bodyfile="leasy/lua/lundump.c" bodystart="129" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1a061c910a274c7aaeda26a7a9e45e505a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void loadString</definition>
+        <argsstring>(LoadState *S, Proto *p, TString **sl)</argsstring>
+        <name>loadString</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_proto" kindref="compound">Proto</ref> *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_string" kindref="compound">TString</ref> **</type>
+          <declname>sl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="145" column="13" bodyfile="leasy/lua/lundump.c" bodystart="145" bodyend="184"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1acd554fb4ba9399a7a48919de12daa53f" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void loadCode</definition>
+        <argsstring>(LoadState *S, Proto *f)</argsstring>
+        <name>loadCode</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_proto" kindref="compound">Proto</ref> *</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="187" column="13" bodyfile="leasy/lua/lundump.c" bodystart="187" bodyend="199"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1aee1cec7c2e42145e5f8c0050fcbc4080" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void loadFunction</definition>
+        <argsstring>(LoadState *S, Proto *f)</argsstring>
+        <name>loadFunction</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_proto" kindref="compound">Proto</ref> *</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="326" column="13" bodyfile="leasy/lua/lundump.c" bodystart="326" bodyend="341" declfile="leasy/lua/lundump.c" declline="202" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1a4a169ad6d9eefbca97c3a62641d65e48" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void loadConstants</definition>
+        <argsstring>(LoadState *S, Proto *f)</argsstring>
+        <name>loadConstants</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_proto" kindref="compound">Proto</ref> *</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="205" column="13" bodyfile="leasy/lua/lundump.c" bodystart="205" bodyend="244"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1a6a14558eb41ec5a096e4094f033531fe" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void loadProtos</definition>
+        <argsstring>(LoadState *S, Proto *f)</argsstring>
+        <name>loadProtos</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_proto" kindref="compound">Proto</ref> *</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="247" column="13" bodyfile="leasy/lua/lundump.c" bodystart="247" bodyend="259"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1a08010fa069d0ec9c6345dfe053001bd7" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void loadUpvalues</definition>
+        <argsstring>(LoadState *S, Proto *f)</argsstring>
+        <name>loadUpvalues</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_proto" kindref="compound">Proto</ref> *</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="268" column="13" bodyfile="leasy/lua/lundump.c" bodystart="268" bodyend="280"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1a121ddfe27d3762c4b5ed14bd3746af7a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void loadDebug</definition>
+        <argsstring>(LoadState *S, Proto *f)</argsstring>
+        <name>loadDebug</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_proto" kindref="compound">Proto</ref> *</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="283" column="13" bodyfile="leasy/lua/lundump.c" bodystart="283" bodyend="323"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1a005ddaa01fdc44c5223b2b641fcb1653" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void checkliteral</definition>
+        <argsstring>(LoadState *S, const char *s, const char *msg)</argsstring>
+        <name>checkliteral</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>msg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="344" column="13" bodyfile="leasy/lua/lundump.c" bodystart="344" bodyend="350"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1a50bdf205fe340144f4a6a229471da87e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref></type>
+        <definition>static l_noret numerror</definition>
+        <argsstring>(LoadState *S, const char *what, const char *tname)</argsstring>
+        <name>numerror</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>what</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>tname</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="353" column="16" bodyfile="leasy/lua/lundump.c" bodystart="353" bodyend="356"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1aac56ee596e789354c72fe9ef2fb12425" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void checknumsize</definition>
+        <argsstring>(LoadState *S, int size, const char *tname)</argsstring>
+        <name>checknumsize</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>size</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>tname</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="359" column="13" bodyfile="leasy/lua/lundump.c" bodystart="359" bodyend="362"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1ac7a57b21eb38e3eebe7b95dcbcd27280" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void checknumformat</definition>
+        <argsstring>(LoadState *S, int eq, const char *tname)</argsstring>
+        <name>checknumformat</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>eq</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>tname</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="365" column="13" bodyfile="leasy/lua/lundump.c" bodystart="365" bodyend="368"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1aef0399a03c281a51786c05a14b74b637" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void checkHeader</definition>
+        <argsstring>(LoadState *S)</argsstring>
+        <name>checkHeader</name>
+        <param>
+          <type><ref refid="struct_load_state" kindref="compound">LoadState</ref> *</type>
+          <declname>S</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="377" column="13" bodyfile="leasy/lua/lundump.c" bodystart="377" bodyend="389"/>
+      </memberdef>
+      <memberdef kind="function" id="lundump_8c_1abe61c3dc465c8ab5d8bafba61ecfb93e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_l_closure" kindref="compound">LClosure</ref> *</type>
+        <definition>LClosure * luaU_undump</definition>
+        <argsstring>(lua_State *L, ZIO *Z, const char *name, int fixed)</argsstring>
+        <name>luaU_undump</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref> *</type>
+          <declname>Z</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>fixed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lundump.c" line="395" column="10" bodyfile="leasy/lua/lundump.c" bodystart="395" bodyend="423"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lundump.c<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>load<sp/>precompiled<sp/>Lua<sp/>chunks</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="lundump_8c_1aa480de4ebd1ff43b613879e98ab2bcd8" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lundump_c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="lundump_8c_1abf0b3947b59218777a8e928a10be205b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_CORE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lprefix_8h" kindref="compound">lprefix.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;limits.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lua_8h" kindref="compound">lua.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ldebug_8h" kindref="compound">ldebug.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ldo_8h" kindref="compound">ldo.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lfunc_8h" kindref="compound">lfunc.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lmem_8h" kindref="compound">lmem.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lobject_8h" kindref="compound">lobject.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lstring_8h" kindref="compound">lstring.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ltable_8h" kindref="compound">ltable.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lundump_8h" kindref="compound">lundump.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lzio_8h" kindref="compound">lzio.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(luai_verifycode)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="lundump_8c_1ac24baf04a83a58a79d218599dc7474c7" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luai_verifycode(L,f)<sp/><sp/></highlight><highlight class="comment">/*<sp/>empty<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="struct_load_state" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="35" refid="struct_load_state_1a8eabd10510332ab5eaf5244bb347bac2" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*<ref refid="struct_load_state_1a8eabd10510332ab5eaf5244bb347bac2" kindref="member">L</ref>;</highlight></codeline>
+<codeline lineno="36" refid="struct_load_state_1a53f2d5fa2c176bdf96701c983afb8182" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref><sp/>*<ref refid="struct_load_state_1a53f2d5fa2c176bdf96701c983afb8182" kindref="member">Z</ref>;</highlight></codeline>
+<codeline lineno="37" refid="struct_load_state_1a0cd70a73d5f61472258ebb5256abbaef" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*<ref refid="struct_load_state_1a0cd70a73d5f61472258ebb5256abbaef" kindref="member">name</ref>;</highlight></codeline>
+<codeline lineno="38" refid="struct_load_state_1a3db1e21c4eb6791e4660915b8590d5bd" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*<ref refid="struct_load_state_1a3db1e21c4eb6791e4660915b8590d5bd" kindref="member">h</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>list<sp/>for<sp/>string<sp/>reuse<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="struct_load_state_1ade5f6d2738be5ef6a2c372f75d74d9ba" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="struct_load_state_1ade5f6d2738be5ef6a2c372f75d74d9ba" kindref="member">offset</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>current<sp/>position<sp/>relative<sp/>to<sp/>beginning<sp/>of<sp/>dump<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="struct_load_state_1a1026b355ed4e6dc3964d871bed93499d" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref><sp/><ref refid="struct_load_state_1a1026b355ed4e6dc3964d871bed93499d" kindref="member">nstr</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>number<sp/>of<sp/>strings<sp/>in<sp/>the<sp/>list<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="struct_load_state_1a0b5e45fc200ee82d1a8224db13717b7a" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="struct_load_state_1a0b5e45fc200ee82d1a8224db13717b7a" kindref="member">fixed</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>dump<sp/>is<sp/>fixed<sp/>in<sp/>memory<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal">}<sp/><ref refid="struct_load_state" kindref="compound">LoadState</ref>;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref><sp/>error<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*why)<sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><ref refid="lobject_8c_1a65ca3be2a1f862455baaedd6a2275238" kindref="member">luaO_pushfstring</ref>(S-&gt;L,<sp/></highlight><highlight class="stringliteral">&quot;%s:<sp/>bad<sp/>binary<sp/>format<sp/>(%s)&quot;</highlight><highlight class="normal">,<sp/>S-&gt;name,<sp/>why);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><ref refid="ldo_8c_1a717a80f91a6e8dd85101173268d94eca" kindref="member">luaD_throw</ref>(S-&gt;L,<sp/><ref refid="lua_8h_1a779d4c0fc1c9da41b7d983646267e11f" kindref="member">LUA_ERRSYNTAX</ref>);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="52"><highlight class="comment">**<sp/>All<sp/>high-level<sp/>loads<sp/>go<sp/>through<sp/>loadVector;<sp/>you<sp/>can<sp/>change<sp/>it<sp/>to</highlight></codeline>
+<codeline lineno="53"><highlight class="comment">**<sp/>adapt<sp/>to<sp/>the<sp/>endianness<sp/>of<sp/>the<sp/>input</highlight></codeline>
+<codeline lineno="54"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55" refid="lundump_8c_1ac2c6d25be53702eb5dac5a27feec260e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>loadVector(S,b,n)<sp/><sp/><sp/>loadBlock(S,b,cast_sizet(n)*sizeof((b)[0]))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>loadBlock<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*b,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>size)<sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lzio_8c_1a8f724436a986edc42726b43aded0759a" kindref="member">luaZ_read</ref>(S-&gt;Z,<sp/>b,<sp/>size)<sp/>!=<sp/>0)</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>error(S,<sp/></highlight><highlight class="stringliteral">&quot;truncated<sp/>chunk&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/>S-&gt;offset<sp/>+=<sp/>size;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>loadAlign<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>align)<sp/>{</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>padding<sp/>=<sp/>align<sp/>-<sp/><ref refid="llimits_8h_1a6ce2ddc5b419ed6f302573db3cc03e56" kindref="member">cast_uint</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;offset<sp/>%<sp/>align);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(padding<sp/>&lt;<sp/>align)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>(padding<sp/>==<sp/>align)<sp/>means<sp/>no<sp/>padding<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>paddingContent;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>loadBlock(S,<sp/>&amp;paddingContent,<sp/>padding);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;offset<sp/>%<sp/>align<sp/>==<sp/>0);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="lundump_8c_1aecfc8b8330ab32c6d430cf1cdf68c5b2" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>getaddr(S,n,t)<sp/><sp/>cast(t<sp/>*,<sp/>getaddr_(S,cast_sizet(n)<sp/>*<sp/>sizeof(t)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*getaddr_<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>size)<sp/>{</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*block<sp/>=<sp/><ref refid="lzio_8c_1ab054e6d137f5b771cae0768766499ed4" kindref="member">luaZ_getaddr</ref>(S-&gt;Z,<sp/>size);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/>S-&gt;offset<sp/>+=<sp/>size;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(block<sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>error(S,<sp/></highlight><highlight class="stringliteral">&quot;truncated<sp/>fixed<sp/>buffer&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>block;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85" refid="lundump_8c_1ab1d6f5039e26f72694ca2e711b21a232" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>loadVar(S,x)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>loadVector(S,&amp;x,1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/>loadByte<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S)<sp/>{</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>b<sp/>=<sp/><ref refid="lzio_8h_1aecca8ea1e6dc0c97b458f77c0e3491de" kindref="member">zgetc</ref>(S-&gt;Z);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(b<sp/>==<sp/><ref refid="lzio_8h_1a8341bdc72db5a2f045e18440f9523008" kindref="member">EOZ</ref>)</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>error(S,<sp/></highlight><highlight class="stringliteral">&quot;truncated<sp/>chunk&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/>S-&gt;offset++;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1a596f5b6e992f53a5a4e5732083448dd4" kindref="member">cast_byte</ref>(b);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref><sp/>loadVarint<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S,<sp/><ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref><sp/>limit)<sp/>{</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref><sp/>x<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>b;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/>limit<sp/>&gt;&gt;=<sp/>7;</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">do</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>b<sp/>=<sp/>loadByte(S);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(x<sp/>&gt;<sp/>limit)</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>error(S,<sp/></highlight><highlight class="stringliteral">&quot;integer<sp/>overflow&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>x<sp/>=<sp/>(x<sp/>&lt;&lt;<sp/>7)<sp/>|<sp/>(b<sp/>&amp;<sp/>0x7f);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>((b<sp/>&amp;<sp/>0x80)<sp/>!=<sp/>0);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>x;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>loadSize<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S)<sp/>{</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" kindref="member">cast_sizet</ref>(loadVarint(S,<sp/><ref refid="llimits_8h_1a0592dba56693fad79136250c11e5a7fe" kindref="member">MAX_SIZE</ref>));</highlight></codeline>
+<codeline lineno="113"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>loadInt<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S)<sp/>{</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1a37a9e2c4b53433d34bad0f12a1500c08" kindref="member">cast_int</ref>(loadVarint(S,<sp/><ref refid="llimits_8h_1a025d385a5ce274fa6eade82b6e1458d1" kindref="member">cast_sizet</ref>(INT_MAX)));</highlight></codeline>
+<codeline lineno="118"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref><sp/>loadNumber<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S)<sp/>{</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref><sp/>x;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><ref refid="lundump_8c_1ab1d6f5039e26f72694ca2e711b21a232" kindref="member">loadVar</ref>(S,<sp/>x);</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>x;</highlight></codeline>
+<codeline lineno="126"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>loadInteger<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S)<sp/>{</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref><sp/>cx<sp/>=<sp/>loadVarint(S,<sp/>LUA_MAXUNSIGNED);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>decode<sp/>unsigned<sp/>to<sp/>signed<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((cx<sp/>&amp;<sp/>1)<sp/>!=<sp/>0)</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1a873fa1b216f8caed046edbcebd4c1bc8" kindref="member">l_castU2S</ref>(~(cx<sp/>&gt;&gt;<sp/>1));</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1a873fa1b216f8caed046edbcebd4c1bc8" kindref="member">l_castU2S</ref>(cx<sp/>&gt;&gt;<sp/>1);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="140"><highlight class="comment">**<sp/>Load<sp/>a<sp/>nullable<sp/>string<sp/>into<sp/>slot<sp/>&apos;sl&apos;<sp/>from<sp/>prototype<sp/>&apos;p&apos;.<sp/>The</highlight></codeline>
+<codeline lineno="141"><highlight class="comment">**<sp/>assignment<sp/>to<sp/>the<sp/>slot<sp/>and<sp/>the<sp/>barrier<sp/>must<sp/>be<sp/>performed<sp/>before<sp/>any</highlight></codeline>
+<codeline lineno="142"><highlight class="comment">**<sp/>possible<sp/>GC<sp/>activity,<sp/>to<sp/>anchor<sp/>the<sp/>string.<sp/>(Both<sp/>&apos;loadVector&apos;<sp/>and</highlight></codeline>
+<codeline lineno="143"><highlight class="comment">**<sp/>&apos;luaH_setint&apos;<sp/>can<sp/>call<sp/>the<sp/>GC.)</highlight></codeline>
+<codeline lineno="144"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>loadString<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S,<sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*p,<sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>**sl)<sp/>{</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a076002258aeaaa674bb44896d5167c65" kindref="member">L</ref><sp/>=<sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;L;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*ts;</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>sv;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>size<sp/>=<sp/>loadSize(S);</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(size<sp/>==<sp/>0)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>previously<sp/>saved<sp/>string?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref><sp/>idx<sp/>=<sp/>loadVarint(S,<sp/>LUA_MAXUNSIGNED);<sp/><sp/></highlight><highlight class="comment">/*<sp/>get<sp/>its<sp/>index<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>stv;</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(idx<sp/>==<sp/>0)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>no<sp/>string?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(*sl<sp/>==<sp/>NULL);<sp/><sp/></highlight><highlight class="comment">/*<sp/>must<sp/>be<sp/>prefilled<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lobject_8h_1a40d12e88a0d8249d226109e0d6d70dd6" kindref="member">novariant</ref>(<ref refid="ltable_8c_1a964d855012301ec7d38a05add149924a" kindref="member">luaH_getint</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;h,<sp/><ref refid="llimits_8h_1a873fa1b216f8caed046edbcebd4c1bc8" kindref="member">l_castU2S</ref>(idx),<sp/>&amp;stv))<sp/>!=<sp/><ref refid="lua_8h_1a57de20d87bb5131a3159f2bd52e3fab6" kindref="member">LUA_TSTRING</ref>)</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>error(S,<sp/></highlight><highlight class="stringliteral">&quot;invalid<sp/>string<sp/>index&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/>*sl<sp/>=<sp/>ts<sp/>=<sp/><ref refid="lobject_8h_1a8661397faed512ccc9c70a4661f1a83d" kindref="member">tsvalue</ref>(&amp;stv);<sp/><sp/></highlight><highlight class="comment">/*<sp/>get<sp/>its<sp/>value<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lgc_8h_1a90ac4f3c7085a418025edcc7215e8983" kindref="member">luaC_objbarrier</ref>(L,<sp/>p,<sp/>ts);</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/><sp/></highlight><highlight class="comment">/*<sp/>do<sp/>not<sp/>save<sp/>it<sp/>again<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((size<sp/>-=<sp/>1)<sp/>&lt;=<sp/><ref refid="lstring_8h_1a54fe4797308d6b24bf84fa0129a155bd" kindref="member">LUAI_MAXSHORTLEN</ref>)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>short<sp/>string?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>buff[<ref refid="lstring_8h_1a54fe4797308d6b24bf84fa0129a155bd" kindref="member">LUAI_MAXSHORTLEN</ref><sp/>+<sp/>1];<sp/><sp/></highlight><highlight class="comment">/*<sp/>extra<sp/>space<sp/>for<sp/>&apos;\0&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lundump_8c_1ac2c6d25be53702eb5dac5a27feec260e" kindref="member">loadVector</ref>(S,<sp/>buff,<sp/>size<sp/>+<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>load<sp/>string<sp/>into<sp/>buffer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>*sl<sp/>=<sp/>ts<sp/>=<sp/><ref refid="lstring_8c_1af922b364943afbe71e4da82a0c50188c" kindref="member">luaS_newlstr</ref>(L,<sp/>buff,<sp/>size);<sp/><sp/></highlight><highlight class="comment">/*<sp/>create<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lgc_8h_1a90ac4f3c7085a418025edcc7215e8983" kindref="member">luaC_objbarrier</ref>(L,<sp/>p,<sp/>ts);</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;fixed)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>for<sp/>a<sp/>fixed<sp/>buffer,<sp/>use<sp/>a<sp/>fixed<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s<sp/>=<sp/><ref refid="lundump_8c_1aecfc8b8330ab32c6d430cf1cdf68c5b2" kindref="member">getaddr</ref>(S,<sp/>size<sp/>+<sp/>1,<sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">);<sp/><sp/></highlight><highlight class="comment">/*<sp/>get<sp/>content<sp/>address<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/>*sl<sp/>=<sp/>ts<sp/>=<sp/><ref refid="lstring_8c_1a19076f7c0ad6a3dab477ed89d323e95a" kindref="member">luaS_newextlstr</ref>(L,<sp/>s,<sp/>size,<sp/>NULL,<sp/>NULL);</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lgc_8h_1a90ac4f3c7085a418025edcc7215e8983" kindref="member">luaC_objbarrier</ref>(L,<sp/>p,<sp/>ts);</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>create<sp/>internal<sp/>copy<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/>*sl<sp/>=<sp/>ts<sp/>=<sp/><ref refid="lstring_8c_1afe48506ed76e04857cca7e0851f92737" kindref="member">luaS_createlngstrobj</ref>(L,<sp/>size);<sp/><sp/></highlight><highlight class="comment">/*<sp/>create<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lgc_8h_1a90ac4f3c7085a418025edcc7215e8983" kindref="member">luaC_objbarrier</ref>(L,<sp/>p,<sp/>ts);</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lundump_8c_1ac2c6d25be53702eb5dac5a27feec260e" kindref="member">loadVector</ref>(S,<sp/><ref refid="lobject_8h_1a325f4b36c75016ecca213448d2affd48" kindref="member">getlngstr</ref>(ts),<sp/>size<sp/>+<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>load<sp/>directly<sp/>in<sp/>final<sp/>place<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>add<sp/>string<sp/>to<sp/>list<sp/>of<sp/>saved<sp/>strings<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;nstr++;</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1a251a2d3bada66aaed6249a89a0afe5f0" kindref="member">setsvalue</ref>(L,<sp/>&amp;sv,<sp/>ts);</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><ref refid="ltable_8c_1a9eefa8191c63f55cffb6b7b58217467c" kindref="member">luaH_setint</ref>(L,<sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;h,<sp/><ref refid="llimits_8h_1a873fa1b216f8caed046edbcebd4c1bc8" kindref="member">l_castU2S</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;nstr),<sp/>&amp;sv);</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><ref refid="lgc_8h_1aabe37ed7d61a6f603f8a3b259c34c846" kindref="member">luaC_objbarrierback</ref>(L,<sp/><ref refid="lstate_8h_1a254ca29aba03e47440082d4591a9734e" kindref="member">obj2gco</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;h),<sp/>ts);</highlight></codeline>
+<codeline lineno="184"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>loadCode<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S,<sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*f)<sp/>{</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n<sp/>=<sp/>loadInt(S);</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/>loadAlign(S,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(f-&gt;<ref refid="struct_proto_1a53b66e4e4ac4b612a41b67a0ace9b6a5" kindref="member">code</ref>[0]));</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;fixed)<sp/>{</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a53b66e4e4ac4b612a41b67a0ace9b6a5" kindref="member">code</ref><sp/>=<sp/><ref refid="lundump_8c_1aecfc8b8330ab32c6d430cf1cdf68c5b2" kindref="member">getaddr</ref>(S,<sp/>n,<sp/><ref refid="lobject_8h_1aa81d2e7f7263ef29946852d4966a192e" kindref="member">Instruction</ref>);</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a43e4d3849b5859112d93bdc2534a7cc0" kindref="member">sizecode</ref><sp/>=<sp/>n;</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a53b66e4e4ac4b612a41b67a0ace9b6a5" kindref="member">code</ref><sp/>=<sp/><ref refid="lmem_8h_1ab223744a0660c0aa48e388ca51466839" kindref="member">luaM_newvectorchecked</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;L,<sp/>n,<sp/><ref refid="lobject_8h_1aa81d2e7f7263ef29946852d4966a192e" kindref="member">Instruction</ref>);</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a43e4d3849b5859112d93bdc2534a7cc0" kindref="member">sizecode</ref><sp/>=<sp/>n;</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lundump_8c_1ac2c6d25be53702eb5dac5a27feec260e" kindref="member">loadVector</ref>(S,<sp/>f-&gt;<ref refid="struct_proto_1a53b66e4e4ac4b612a41b67a0ace9b6a5" kindref="member">code</ref>,<sp/>n);</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="199"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>loadFunction(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S,<sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*f);</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>loadConstants<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S,<sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*f)<sp/>{</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i;</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n<sp/>=<sp/>loadInt(S);</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/>f-&gt;<ref refid="struct_proto_1ae292fb0c0558679704933824ce96eac2" kindref="member">k</ref><sp/>=<sp/><ref refid="lmem_8h_1ab223744a0660c0aa48e388ca51466839" kindref="member">luaM_newvectorchecked</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;L,<sp/>n,<sp/><ref refid="struct_t_value" kindref="compound">TValue</ref>);</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/>f-&gt;<ref refid="struct_proto_1a5bd719e0486168f6ecd4b01bf41a7444" kindref="member">sizek</ref><sp/>=<sp/>n;</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1ad9034def7bbc1965ec3d714d84620b07" kindref="member">setnilvalue</ref>(&amp;f-&gt;<ref refid="struct_proto_1ae292fb0c0558679704933824ce96eac2" kindref="member">k</ref>[i]);</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*o<sp/>=<sp/>&amp;f-&gt;<ref refid="struct_proto_1ae292fb0c0558679704933824ce96eac2" kindref="member">k</ref>[i];</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>t<sp/>=<sp/>loadByte(S);</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(t)<sp/>{</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lobject_8h_1aac7a0aeb62c96ba16c7638e707bfaac0" kindref="member">LUA_VNIL</ref>:</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1ad9034def7bbc1965ec3d714d84620b07" kindref="member">setnilvalue</ref>(o);</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lobject_8h_1a95236d400066ed64a37c72d3dada7e9d" kindref="member">LUA_VFALSE</ref>:</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1ad0259526a10884432dd2e7ea10b90e0f" kindref="member">setbfvalue</ref>(o);</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lobject_8h_1aed66cd95aa3f518c947b5bd9e17bab47" kindref="member">LUA_VTRUE</ref>:</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1a1b86e0dccf6b92c4c89d47af26e3a8e3" kindref="member">setbtvalue</ref>(o);</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lobject_8h_1a19aaaf978586be9032b63b7a8807631a" kindref="member">LUA_VNUMFLT</ref>:</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1ae357382324a8220a3cf77607752de887" kindref="member">setfltvalue</ref>(o,<sp/>loadNumber(S));</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lobject_8h_1a69aa5cae89d634d458e0da4957257745" kindref="member">LUA_VNUMINT</ref>:</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1af9dd109ba186841ab26efb2d62baf4f6" kindref="member">setivalue</ref>(o,<sp/>loadInteger(S));</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lobject_8h_1a794410ffd7267ef873eb05ac695b1ba6" kindref="member">LUA_VSHRSTR</ref>:</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lobject_8h_1a6869fcb0a0178b6d70d431eae1683199" kindref="member">LUA_VLNGSTR</ref>:<sp/>{</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(f-&gt;<ref refid="struct_proto_1a92b6ec319e7aa1ee8b8ff7807353ad96" kindref="member">source</ref><sp/>==<sp/>NULL);</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>loadString(S,<sp/>f,<sp/>&amp;f-&gt;<ref refid="struct_proto_1a92b6ec319e7aa1ee8b8ff7807353ad96" kindref="member">source</ref>);<sp/><sp/></highlight><highlight class="comment">/*<sp/>use<sp/>&apos;source&apos;<sp/>to<sp/>anchor<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(f-&gt;<ref refid="struct_proto_1a92b6ec319e7aa1ee8b8ff7807353ad96" kindref="member">source</ref><sp/>==<sp/>NULL)</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>error(S,<sp/></highlight><highlight class="stringliteral">&quot;bad<sp/>format<sp/>for<sp/>constant<sp/>string&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1aa7a9ab918b0322fa100f3f7af16d2375" kindref="member">setsvalue2n</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;L,<sp/>o,<sp/>f-&gt;<ref refid="struct_proto_1a92b6ec319e7aa1ee8b8ff7807353ad96" kindref="member">source</ref>);<sp/><sp/></highlight><highlight class="comment">/*<sp/>save<sp/>it<sp/>in<sp/>the<sp/>right<sp/>place<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a92b6ec319e7aa1ee8b8ff7807353ad96" kindref="member">source</ref><sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:<sp/>error(S,<sp/></highlight><highlight class="stringliteral">&quot;invalid<sp/>constant&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="244"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"></highlight></codeline>
+<codeline lineno="246"><highlight class="normal"></highlight></codeline>
+<codeline lineno="247"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>loadProtos<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S,<sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*f)<sp/>{</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i;</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n<sp/>=<sp/>loadInt(S);</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/>f-&gt;<ref refid="struct_proto_1a54dc8e2e8973007794fa0ab0e4a71461" kindref="member">p</ref><sp/>=<sp/><ref refid="lmem_8h_1ab223744a0660c0aa48e388ca51466839" kindref="member">luaM_newvectorchecked</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;L,<sp/>n,<sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*);</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/>f-&gt;<ref refid="struct_proto_1a73ddad1a18b7c46be46ec32aa2a08632" kindref="member">sizep</ref><sp/>=<sp/>n;</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a54dc8e2e8973007794fa0ab0e4a71461" kindref="member">p</ref>[i]<sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a54dc8e2e8973007794fa0ab0e4a71461" kindref="member">p</ref>[i]<sp/>=<sp/><ref refid="lfunc_8c_1a78072f482d26cf634979db8c825ed8e4" kindref="member">luaF_newproto</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;L);</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lgc_8h_1a90ac4f3c7085a418025edcc7215e8983" kindref="member">luaC_objbarrier</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;L,<sp/>f,<sp/>f-&gt;<ref refid="struct_proto_1a54dc8e2e8973007794fa0ab0e4a71461" kindref="member">p</ref>[i]);</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/>loadFunction(S,<sp/>f-&gt;<ref refid="struct_proto_1a54dc8e2e8973007794fa0ab0e4a71461" kindref="member">p</ref>[i]);</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="259"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal"></highlight></codeline>
+<codeline lineno="262"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="263"><highlight class="comment">**<sp/>Load<sp/>the<sp/>upvalues<sp/>for<sp/>a<sp/>function.<sp/>The<sp/>names<sp/>must<sp/>be<sp/>filled<sp/>first,</highlight></codeline>
+<codeline lineno="264"><highlight class="comment">**<sp/>because<sp/>the<sp/>filling<sp/>of<sp/>the<sp/>other<sp/>fields<sp/>can<sp/>raise<sp/>read<sp/>errors<sp/>and</highlight></codeline>
+<codeline lineno="265"><highlight class="comment">**<sp/>the<sp/>creation<sp/>of<sp/>the<sp/>error<sp/>message<sp/>can<sp/>call<sp/>an<sp/>emergency<sp/>collection;</highlight></codeline>
+<codeline lineno="266"><highlight class="comment">**<sp/>in<sp/>that<sp/>case<sp/>all<sp/>prototypes<sp/>must<sp/>be<sp/>consistent<sp/>for<sp/>the<sp/>GC.</highlight></codeline>
+<codeline lineno="267"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="268"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>loadUpvalues<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S,<sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*f)<sp/>{</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i;</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n<sp/>=<sp/>loadInt(S);</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/>f-&gt;<ref refid="struct_proto_1a028070514796b4accbd99c59e6b83930" kindref="member">upvalues</ref><sp/>=<sp/><ref refid="lmem_8h_1ab223744a0660c0aa48e388ca51466839" kindref="member">luaM_newvectorchecked</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;L,<sp/>n,<sp/><ref refid="struct_upvaldesc" kindref="compound">Upvaldesc</ref>);</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/>f-&gt;<ref refid="struct_proto_1a6ecec897497ba7d94df6ef69289ef5c0" kindref="member">sizeupvalues</ref><sp/>=<sp/>n;</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)<sp/><sp/></highlight><highlight class="comment">/*<sp/>make<sp/>array<sp/>valid<sp/>for<sp/>GC<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a028070514796b4accbd99c59e6b83930" kindref="member">upvalues</ref>[i].<ref refid="struct_upvaldesc_1a8870289fbc6611275d093ef1c08cf9ed" kindref="member">name</ref><sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>following<sp/>calls<sp/>can<sp/>raise<sp/>errors<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a028070514796b4accbd99c59e6b83930" kindref="member">upvalues</ref>[i].<ref refid="struct_upvaldesc_1a1e5182ac7b8b72848ed71b7b4844e3d1" kindref="member">instack</ref><sp/>=<sp/>loadByte(S);</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a028070514796b4accbd99c59e6b83930" kindref="member">upvalues</ref>[i].<ref refid="struct_upvaldesc_1a8478ecca9cb593200c562a0837aedfac" kindref="member">idx</ref><sp/>=<sp/>loadByte(S);</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a028070514796b4accbd99c59e6b83930" kindref="member">upvalues</ref>[i].<ref refid="struct_upvaldesc_1a1315fb98c5f398c3f3323967cb9ec7ba" kindref="member">kind</ref><sp/>=<sp/>loadByte(S);</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="280"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"></highlight></codeline>
+<codeline lineno="282"><highlight class="normal"></highlight></codeline>
+<codeline lineno="283"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>loadDebug<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S,<sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*f)<sp/>{</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i;</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n<sp/>=<sp/>loadInt(S);</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;fixed)<sp/>{</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a4d8b6a245668e28870027f70a98cce98" kindref="member">lineinfo</ref><sp/>=<sp/><ref refid="lundump_8c_1aecfc8b8330ab32c6d430cf1cdf68c5b2" kindref="member">getaddr</ref>(S,<sp/>n,<sp/><ref refid="llimits_8h_1aab58a246c9e0a85c4c2ed0fd8d6724bb" kindref="member">ls_byte</ref>);</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a65303ae1d815313f3358a578113fcc6e" kindref="member">sizelineinfo</ref><sp/>=<sp/>n;</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a4d8b6a245668e28870027f70a98cce98" kindref="member">lineinfo</ref><sp/>=<sp/><ref refid="lmem_8h_1ab223744a0660c0aa48e388ca51466839" kindref="member">luaM_newvectorchecked</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;L,<sp/>n,<sp/><ref refid="llimits_8h_1aab58a246c9e0a85c4c2ed0fd8d6724bb" kindref="member">ls_byte</ref>);</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a65303ae1d815313f3358a578113fcc6e" kindref="member">sizelineinfo</ref><sp/>=<sp/>n;</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lundump_8c_1ac2c6d25be53702eb5dac5a27feec260e" kindref="member">loadVector</ref>(S,<sp/>f-&gt;<ref refid="struct_proto_1a4d8b6a245668e28870027f70a98cce98" kindref="member">lineinfo</ref>,<sp/>n);</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/>n<sp/>=<sp/>loadInt(S);</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(n<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/>loadAlign(S,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;fixed)<sp/>{</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a012268f6cdec514d296b50356decff4e" kindref="member">abslineinfo</ref><sp/>=<sp/><ref refid="lundump_8c_1aecfc8b8330ab32c6d430cf1cdf68c5b2" kindref="member">getaddr</ref>(S,<sp/>n,<sp/><ref refid="struct_abs_line_info" kindref="compound">AbsLineInfo</ref>);</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a48c289d2c5198fb3bb997196943e9902" kindref="member">sizeabslineinfo</ref><sp/>=<sp/>n;</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a012268f6cdec514d296b50356decff4e" kindref="member">abslineinfo</ref><sp/>=<sp/><ref refid="lmem_8h_1ab223744a0660c0aa48e388ca51466839" kindref="member">luaM_newvectorchecked</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;L,<sp/>n,<sp/><ref refid="struct_abs_line_info" kindref="compound">AbsLineInfo</ref>);</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a48c289d2c5198fb3bb997196943e9902" kindref="member">sizeabslineinfo</ref><sp/>=<sp/>n;</highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lundump_8c_1ac2c6d25be53702eb5dac5a27feec260e" kindref="member">loadVector</ref>(S,<sp/>f-&gt;<ref refid="struct_proto_1a012268f6cdec514d296b50356decff4e" kindref="member">abslineinfo</ref>,<sp/>n);</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/>n<sp/>=<sp/>loadInt(S);</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/>f-&gt;<ref refid="struct_proto_1a41d627972548e1a6aaf358480ed46f69" kindref="member">locvars</ref><sp/>=<sp/><ref refid="lmem_8h_1ab223744a0660c0aa48e388ca51466839" kindref="member">luaM_newvectorchecked</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;L,<sp/>n,<sp/><ref refid="struct_loc_var" kindref="compound">LocVar</ref>);</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/>f-&gt;<ref refid="struct_proto_1ac2ab37e941e8866687f44f7b2f4b95a9" kindref="member">sizelocvars</ref><sp/>=<sp/>n;</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a41d627972548e1a6aaf358480ed46f69" kindref="member">locvars</ref>[i].<ref refid="struct_loc_var_1acf62684d78349320b90b4acfa3b6d22a" kindref="member">varname</ref><sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/>loadString(S,<sp/>f,<sp/>&amp;f-&gt;<ref refid="struct_proto_1a41d627972548e1a6aaf358480ed46f69" kindref="member">locvars</ref>[i].<ref refid="struct_loc_var_1acf62684d78349320b90b4acfa3b6d22a" kindref="member">varname</ref>);</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a41d627972548e1a6aaf358480ed46f69" kindref="member">locvars</ref>[i].<ref refid="struct_loc_var_1ac5a8bf5a59430eea070db5b1a97d8b88" kindref="member">startpc</ref><sp/>=<sp/>loadInt(S);</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a41d627972548e1a6aaf358480ed46f69" kindref="member">locvars</ref>[i].<ref refid="struct_loc_var_1af7f0f7d509579ffec5610e329f85693b" kindref="member">endpc</ref><sp/>=<sp/>loadInt(S);</highlight></codeline>
+<codeline lineno="317"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="318"><highlight class="normal"><sp/><sp/>n<sp/>=<sp/>loadInt(S);</highlight></codeline>
+<codeline lineno="319"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(n<sp/>!=<sp/>0)<sp/><sp/></highlight><highlight class="comment">/*<sp/>does<sp/>it<sp/>have<sp/>debug<sp/>information?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="320"><highlight class="normal"><sp/><sp/><sp/><sp/>n<sp/>=<sp/>f-&gt;<ref refid="struct_proto_1a6ecec897497ba7d94df6ef69289ef5c0" kindref="member">sizeupvalues</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>must<sp/>be<sp/>this<sp/>many<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="321"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>n;<sp/>i++)</highlight></codeline>
+<codeline lineno="322"><highlight class="normal"><sp/><sp/><sp/><sp/>loadString(S,<sp/>f,<sp/>&amp;f-&gt;<ref refid="struct_proto_1a028070514796b4accbd99c59e6b83930" kindref="member">upvalues</ref>[i].<ref refid="struct_upvaldesc_1a8870289fbc6611275d093ef1c08cf9ed" kindref="member">name</ref>);</highlight></codeline>
+<codeline lineno="323"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="324"><highlight class="normal"></highlight></codeline>
+<codeline lineno="325"><highlight class="normal"></highlight></codeline>
+<codeline lineno="326"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>loadFunction<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S,<sp/><ref refid="struct_proto" kindref="compound">Proto</ref><sp/>*f)<sp/>{</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"><sp/><sp/>f-&gt;<ref refid="struct_proto_1a62cf1c61b70bfaa4f1fb839b7398160b" kindref="member">linedefined</ref><sp/>=<sp/>loadInt(S);</highlight></codeline>
+<codeline lineno="328"><highlight class="normal"><sp/><sp/>f-&gt;<ref refid="struct_proto_1a9ef7fae1b22b11f5a145cfee8150059c" kindref="member">lastlinedefined</ref><sp/>=<sp/>loadInt(S);</highlight></codeline>
+<codeline lineno="329"><highlight class="normal"><sp/><sp/>f-&gt;<ref refid="struct_proto_1a3f106f177af6c68ffd8b042713266b98" kindref="member">numparams</ref><sp/>=<sp/>loadByte(S);</highlight></codeline>
+<codeline lineno="330"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>get<sp/>only<sp/>the<sp/>meaningful<sp/>flags<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/>f-&gt;<ref refid="struct_proto_1a16d8b2f349f89bdeabda995cf96c1fb0" kindref="member">flag</ref><sp/>=<sp/><ref refid="llimits_8h_1a596f5b6e992f53a5a4e5732083448dd4" kindref="member">cast_byte</ref>(loadByte(S)<sp/>&amp;<sp/>~<ref refid="lobject_8h_1a258afaabf3edee5f46c6e798fc0dec8b" kindref="member">PF_FIXED</ref>);</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;fixed)</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/>f-&gt;<ref refid="struct_proto_1a16d8b2f349f89bdeabda995cf96c1fb0" kindref="member">flag</ref><sp/>|=<sp/><ref refid="lobject_8h_1a258afaabf3edee5f46c6e798fc0dec8b" kindref="member">PF_FIXED</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>signal<sp/>that<sp/>code<sp/>is<sp/>fixed<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="334"><highlight class="normal"><sp/><sp/>f-&gt;<ref refid="struct_proto_1a9c9ed4e9d996233f75cdf56b912e4803" kindref="member">maxstacksize</ref><sp/>=<sp/>loadByte(S);</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"><sp/><sp/>loadCode(S,<sp/>f);</highlight></codeline>
+<codeline lineno="336"><highlight class="normal"><sp/><sp/>loadConstants(S,<sp/>f);</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/>loadUpvalues(S,<sp/>f);</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"><sp/><sp/>loadProtos(S,<sp/>f);</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"><sp/><sp/>loadString(S,<sp/>f,<sp/>&amp;f-&gt;<ref refid="struct_proto_1a92b6ec319e7aa1ee8b8ff7807353ad96" kindref="member">source</ref>);</highlight></codeline>
+<codeline lineno="340"><highlight class="normal"><sp/><sp/>loadDebug(S,<sp/>f);</highlight></codeline>
+<codeline lineno="341"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"></highlight></codeline>
+<codeline lineno="343"><highlight class="normal"></highlight></codeline>
+<codeline lineno="344"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>checkliteral<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*msg)<sp/>{</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>buff[</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="lua_8h_1af21c9fa681dc005c17a7b288882cae1b" kindref="member">LUA_SIGNATURE</ref>)<sp/>+<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="lundump_8h_1ad6f33b546a90e78ddb67428b712b48ae" kindref="member">LUAC_DATA</ref>)];<sp/></highlight><highlight class="comment">/*<sp/>larger<sp/>than<sp/>both<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="346"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>len<sp/>=<sp/>strlen(s);</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/><ref refid="lundump_8c_1ac2c6d25be53702eb5dac5a27feec260e" kindref="member">loadVector</ref>(S,<sp/>buff,<sp/>len);</highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(memcmp(s,<sp/>buff,<sp/>len)<sp/>!=<sp/>0)</highlight></codeline>
+<codeline lineno="349"><highlight class="normal"><sp/><sp/><sp/><sp/>error(S,<sp/>msg);</highlight></codeline>
+<codeline lineno="350"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="351"><highlight class="normal"></highlight></codeline>
+<codeline lineno="352"><highlight class="normal"></highlight></codeline>
+<codeline lineno="353"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref><sp/>numerror<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*what,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*tname)<sp/>{</highlight></codeline>
+<codeline lineno="354"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*msg<sp/>=<sp/><ref refid="lobject_8c_1a65ca3be2a1f862455baaedd6a2275238" kindref="member">luaO_pushfstring</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" kindref="member">S</ref>-&gt;L,<sp/></highlight><highlight class="stringliteral">&quot;%s<sp/>%s<sp/>mismatch&quot;</highlight><highlight class="normal">,<sp/>tname,<sp/>what);</highlight></codeline>
+<codeline lineno="355"><highlight class="normal"><sp/><sp/>error(S,<sp/>msg);</highlight></codeline>
+<codeline lineno="356"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="357"><highlight class="normal"></highlight></codeline>
+<codeline lineno="358"><highlight class="normal"></highlight></codeline>
+<codeline lineno="359"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>checknumsize<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>size,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*tname)<sp/>{</highlight></codeline>
+<codeline lineno="360"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(size<sp/>!=<sp/>loadByte(S))</highlight></codeline>
+<codeline lineno="361"><highlight class="normal"><sp/><sp/><sp/><sp/>numerror(S,<sp/></highlight><highlight class="stringliteral">&quot;size&quot;</highlight><highlight class="normal">,<sp/>tname);</highlight></codeline>
+<codeline lineno="362"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="363"><highlight class="normal"></highlight></codeline>
+<codeline lineno="364"><highlight class="normal"></highlight></codeline>
+<codeline lineno="365"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>checknumformat<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>eq,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*tname)<sp/>{</highlight></codeline>
+<codeline lineno="366"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!eq)</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"><sp/><sp/><sp/><sp/>numerror(S,<sp/></highlight><highlight class="stringliteral">&quot;format&quot;</highlight><highlight class="normal">,<sp/>tname);</highlight></codeline>
+<codeline lineno="368"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="369"><highlight class="normal"></highlight></codeline>
+<codeline lineno="370"><highlight class="normal"></highlight></codeline>
+<codeline lineno="371" refid="lundump_8c_1ae30a29ad1512572bca8ef79f7609bbe2" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>checknum(S,tvar,value,tname)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="372"><highlight class="preprocessor"><sp/><sp/>{<sp/>tvar<sp/>i;<sp/>checknumsize(S,<sp/>sizeof(i),<sp/>tname);<sp/>\</highlight></codeline>
+<codeline lineno="373"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>loadVar(S,<sp/>i);<sp/>\</highlight></codeline>
+<codeline lineno="374"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>checknumformat(S,<sp/>i<sp/>==<sp/>value,<sp/>tname);<sp/>}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="375"><highlight class="normal"></highlight></codeline>
+<codeline lineno="376"><highlight class="normal"></highlight></codeline>
+<codeline lineno="377"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>checkHeader<sp/>(<ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>*S)<sp/>{</highlight></codeline>
+<codeline lineno="378"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>skip<sp/>1st<sp/>char<sp/>(already<sp/>read<sp/>and<sp/>checked)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="379"><highlight class="normal"><sp/><sp/>checkliteral(S,<sp/>&amp;<ref refid="lua_8h_1af21c9fa681dc005c17a7b288882cae1b" kindref="member">LUA_SIGNATURE</ref>[1],<sp/></highlight><highlight class="stringliteral">&quot;not<sp/>a<sp/>binary<sp/>chunk&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="380"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(loadByte(S)<sp/>!=<sp/><ref refid="lundump_8h_1aaef225d352d4ab1461adc02e4fa027cd" kindref="member">LUAC_VERSION</ref>)</highlight></codeline>
+<codeline lineno="381"><highlight class="normal"><sp/><sp/><sp/><sp/>error(S,<sp/></highlight><highlight class="stringliteral">&quot;version<sp/>mismatch&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="382"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(loadByte(S)<sp/>!=<sp/><ref refid="lundump_8h_1a1898203259aab6e1d60737b1e95c2adc" kindref="member">LUAC_FORMAT</ref>)</highlight></codeline>
+<codeline lineno="383"><highlight class="normal"><sp/><sp/><sp/><sp/>error(S,<sp/></highlight><highlight class="stringliteral">&quot;format<sp/>mismatch&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="384"><highlight class="normal"><sp/><sp/>checkliteral(S,<sp/><ref refid="lundump_8h_1ad6f33b546a90e78ddb67428b712b48ae" kindref="member">LUAC_DATA</ref>,<sp/></highlight><highlight class="stringliteral">&quot;corrupted<sp/>chunk&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="385"><highlight class="normal"><sp/><sp/><ref refid="lundump_8c_1ae30a29ad1512572bca8ef79f7609bbe2" kindref="member">checknum</ref>(S,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">,<sp/><ref refid="lundump_8h_1af8b5bd7f864ed14aef7a9e7405ce6aad" kindref="member">LUAC_INT</ref>,<sp/></highlight><highlight class="stringliteral">&quot;int&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="386"><highlight class="normal"><sp/><sp/><ref refid="lundump_8c_1ae30a29ad1512572bca8ef79f7609bbe2" kindref="member">checknum</ref>(S,<sp/><ref refid="lobject_8h_1aa81d2e7f7263ef29946852d4966a192e" kindref="member">Instruction</ref>,<sp/><ref refid="lundump_8h_1acc5e08088d3780b427e5dc124ab75087" kindref="member">LUAC_INST</ref>,<sp/></highlight><highlight class="stringliteral">&quot;instruction&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="387"><highlight class="normal"><sp/><sp/><ref refid="lundump_8c_1ae30a29ad1512572bca8ef79f7609bbe2" kindref="member">checknum</ref>(S,<sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref>,<sp/><ref refid="lundump_8h_1af8b5bd7f864ed14aef7a9e7405ce6aad" kindref="member">LUAC_INT</ref>,<sp/></highlight><highlight class="stringliteral">&quot;Lua<sp/>integer&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="388"><highlight class="normal"><sp/><sp/><ref refid="lundump_8c_1ae30a29ad1512572bca8ef79f7609bbe2" kindref="member">checknum</ref>(S,<sp/><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref>,<sp/><ref refid="lundump_8h_1a83a08bb2d400b526bb4a2f449523dd62" kindref="member">LUAC_NUM</ref>,<sp/></highlight><highlight class="stringliteral">&quot;Lua<sp/>number&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="389"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="390"><highlight class="normal"></highlight></codeline>
+<codeline lineno="391"><highlight class="normal"></highlight></codeline>
+<codeline lineno="392"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="393"><highlight class="comment">**<sp/>Load<sp/>precompiled<sp/>chunk.</highlight></codeline>
+<codeline lineno="394"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="395" refid="lundump_8c_1abe61c3dc465c8ab5d8bafba61ecfb93e" refkind="member"><highlight class="normal"><ref refid="struct_l_closure" kindref="compound">LClosure</ref><sp/>*<ref refid="lundump_8c_1abe61c3dc465c8ab5d8bafba61ecfb93e" kindref="member">luaU_undump</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref><sp/>*Z,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*name,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>fixed)<sp/>{</highlight></codeline>
+<codeline lineno="396"><highlight class="normal"><sp/><sp/><ref refid="struct_load_state" kindref="compound">LoadState</ref><sp/>S;</highlight></codeline>
+<codeline lineno="397"><highlight class="normal"><sp/><sp/><ref refid="struct_l_closure" kindref="compound">LClosure</ref><sp/>*cl;</highlight></codeline>
+<codeline lineno="398"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(*name<sp/>==<sp/></highlight><highlight class="charliteral">&apos;@&apos;</highlight><highlight class="normal"><sp/>||<sp/>*name<sp/>==<sp/></highlight><highlight class="charliteral">&apos;=&apos;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="399"><highlight class="normal"><sp/><sp/><sp/><sp/>name<sp/>=<sp/>name<sp/>+<sp/>1;</highlight></codeline>
+<codeline lineno="400"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(*name<sp/>==<sp/><ref refid="lua_8h_1af21c9fa681dc005c17a7b288882cae1b" kindref="member">LUA_SIGNATURE</ref>[0])</highlight></codeline>
+<codeline lineno="401"><highlight class="normal"><sp/><sp/><sp/><sp/>name<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;binary<sp/>string&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="402"><highlight class="normal"><sp/><sp/>S.name<sp/>=<sp/>name;</highlight></codeline>
+<codeline lineno="403"><highlight class="normal"><sp/><sp/>S.L<sp/>=<sp/>L;</highlight></codeline>
+<codeline lineno="404"><highlight class="normal"><sp/><sp/>S.Z<sp/>=<sp/>Z;</highlight></codeline>
+<codeline lineno="405"><highlight class="normal"><sp/><sp/>S.fixed<sp/>=<sp/><ref refid="llimits_8h_1a596f5b6e992f53a5a4e5732083448dd4" kindref="member">cast_byte</ref>(fixed);</highlight></codeline>
+<codeline lineno="406"><highlight class="normal"><sp/><sp/>S.offset<sp/>=<sp/>1;<sp/><sp/></highlight><highlight class="comment">/*<sp/>fist<sp/>byte<sp/>was<sp/>already<sp/>read<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="407"><highlight class="normal"><sp/><sp/>checkHeader(&amp;S);</highlight></codeline>
+<codeline lineno="408"><highlight class="normal"><sp/><sp/>cl<sp/>=<sp/><ref refid="lfunc_8c_1a4049c15d574d5f46017021a55b2026cd" kindref="member">luaF_newLclosure</ref>(L,<sp/>loadByte(&amp;S));</highlight></codeline>
+<codeline lineno="409"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1a3e4e5270b0c50551ed8c3a0367f56d14" kindref="member">setclLvalue2s</ref>(L,<sp/>L-&gt;top.p,<sp/>cl);</highlight></codeline>
+<codeline lineno="410"><highlight class="normal"><sp/><sp/><ref refid="ldo_8c_1a4dd006aa3210fdc854d0441e2a98c9af" kindref="member">luaD_inctop</ref>(L);</highlight></codeline>
+<codeline lineno="411"><highlight class="normal"><sp/><sp/>S.h<sp/>=<sp/><ref refid="ltable_8c_1a47b1a680f251e08074df2b9a5a7c028e" kindref="member">luaH_new</ref>(L);<sp/><sp/></highlight><highlight class="comment">/*<sp/>create<sp/>list<sp/>of<sp/>saved<sp/>strings<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="412"><highlight class="normal"><sp/><sp/>S.nstr<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="413"><highlight class="normal"><sp/><sp/><ref refid="lobject_8h_1aea789832f6c549f64cb3903216a7aeac" kindref="member">sethvalue2s</ref>(L,<sp/>L-&gt;top.p,<sp/>S.h);<sp/><sp/></highlight><highlight class="comment">/*<sp/>anchor<sp/>it<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="414"><highlight class="normal"><sp/><sp/><ref refid="ldo_8c_1a4dd006aa3210fdc854d0441e2a98c9af" kindref="member">luaD_inctop</ref>(L);</highlight></codeline>
+<codeline lineno="415"><highlight class="normal"><sp/><sp/>cl-&gt;<ref refid="struct_l_closure_1a4cf173817d3897b0e70822e70d241d6c" kindref="member">p</ref><sp/>=<sp/><ref refid="lfunc_8c_1a78072f482d26cf634979db8c825ed8e4" kindref="member">luaF_newproto</ref>(L);</highlight></codeline>
+<codeline lineno="416"><highlight class="normal"><sp/><sp/><ref refid="lgc_8h_1a90ac4f3c7085a418025edcc7215e8983" kindref="member">luaC_objbarrier</ref>(L,<sp/>cl,<sp/>cl-&gt;<ref refid="struct_l_closure_1a4cf173817d3897b0e70822e70d241d6c" kindref="member">p</ref>);</highlight></codeline>
+<codeline lineno="417"><highlight class="normal"><sp/><sp/>loadFunction(&amp;S,<sp/>cl-&gt;<ref refid="struct_l_closure_1a4cf173817d3897b0e70822e70d241d6c" kindref="member">p</ref>);</highlight></codeline>
+<codeline lineno="418"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(cl-&gt;nupvalues<sp/>!=<sp/>cl-&gt;<ref refid="struct_l_closure_1a4cf173817d3897b0e70822e70d241d6c" kindref="member">p</ref>-&gt;<ref refid="struct_proto_1a6ecec897497ba7d94df6ef69289ef5c0" kindref="member">sizeupvalues</ref>)</highlight></codeline>
+<codeline lineno="419"><highlight class="normal"><sp/><sp/><sp/><sp/>error(&amp;S,<sp/></highlight><highlight class="stringliteral">&quot;corrupted<sp/>chunk&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="420"><highlight class="normal"><sp/><sp/><ref refid="lundump_8c_1ac24baf04a83a58a79d218599dc7474c7" kindref="member">luai_verifycode</ref>(L,<sp/>cl-&gt;<ref refid="struct_l_closure_1a4cf173817d3897b0e70822e70d241d6c" kindref="member">p</ref>);</highlight></codeline>
+<codeline lineno="421"><highlight class="normal"><sp/><sp/>L-&gt;top.p--;<sp/><sp/></highlight><highlight class="comment">/*<sp/>pop<sp/>table<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="422"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>cl;</highlight></codeline>
+<codeline lineno="423"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="424"><highlight class="normal"></highlight></codeline>
+<codeline lineno="425"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lundump.c"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,430 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___switches" kind="class" language="C++" prot="public">
+    <compoundname>Game_Switches</compoundname>
+    <includes refid="game__switches_8h" local="no">game_switches.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_game___switches_1a8bc41f0d26672afd80f5ab34225f05a0" prot="public" static="no">
+        <type>std::vector&lt; bool &gt;</type>
+        <definition>using Game_Switches::Switches_t = std::vector&lt;bool&gt;</definition>
+        <argsstring></argsstring>
+        <name>Switches_t</name>
+        <qualifiedname>Game_Switches::Switches_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="34" column="1" bodyfile="game_switches.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_game___switches_1ac250bb9ff154a749888f99017d43c0d5" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Game_Switches::kMaxWarnings</definition>
+        <argsstring></argsstring>
+        <name>kMaxWarnings</name>
+        <qualifiedname>Game_Switches::kMaxWarnings</qualifiedname>
+        <initializer>= 10</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="35" column="22" bodyfile="game_switches.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___switches_1aa36360922d542adc51794350d9e0e4be" prot="private" static="no" mutable="no">
+        <type><ref refid="class_game___switches_1a8bc41f0d26672afd80f5ab34225f05a0" kindref="member">Switches_t</ref></type>
+        <definition>Switches_t Game_Switches::_switches</definition>
+        <argsstring></argsstring>
+        <name>_switches</name>
+        <qualifiedname>Game_Switches::_switches</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="66" column="12" bodyfile="game_switches.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___switches_1a53253b47b221ec40987fa89a5f42ae29" prot="private" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t Game_Switches::lower_limit</definition>
+        <argsstring></argsstring>
+        <name>lower_limit</name>
+        <qualifiedname>Game_Switches::lower_limit</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="67" column="8" bodyfile="game_switches.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___switches_1a5faa165ae87e0466bbc696f8add7e0e0" prot="private" static="no" mutable="yes">
+        <type>int</type>
+        <definition>int Game_Switches::_warnings</definition>
+        <argsstring></argsstring>
+        <name>_warnings</name>
+        <qualifiedname>Game_Switches::_warnings</qualifiedname>
+        <initializer>= <ref refid="class_game___switches_1ac250bb9ff154a749888f99017d43c0d5" kindref="member">kMaxWarnings</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="68" column="13" bodyfile="game_switches.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___switches_1a9c2f2c9398c488addf49c908bf733c57" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Switches::Game_Switches</definition>
+        <argsstring>()=default</argsstring>
+        <name>Game_Switches</name>
+        <qualifiedname>Game_Switches::Game_Switches</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="37" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___switches_1a21f23430073b56f3063dffeb86786914" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Switches::SetData</definition>
+        <argsstring>(Switches_t s)</argsstring>
+        <name>SetData</name>
+        <qualifiedname>Game_Switches::SetData</qualifiedname>
+        <param>
+          <type><ref refid="class_game___switches_1a8bc41f0d26672afd80f5ab34225f05a0" kindref="member">Switches_t</ref></type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="39" column="6" bodyfile="game_switches.h" bodystart="72" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___switches_1a167a81cb5b3ab63a073e944c6d25c9bb" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="class_game___switches_1a8bc41f0d26672afd80f5ab34225f05a0" kindref="member">Switches_t</ref> &amp;</type>
+        <definition>const Game_Switches::Switches_t &amp; Game_Switches::GetData</definition>
+        <argsstring>() const</argsstring>
+        <name>GetData</name>
+        <qualifiedname>Game_Switches::GetData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="40" column="18" bodyfile="game_switches.h" bodystart="76" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___switches_1a2f63817a7f25d8f72d858fe84592c624" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Switches::SetLowerLimit</definition>
+        <argsstring>(size_t limit)</argsstring>
+        <name>SetLowerLimit</name>
+        <qualifiedname>Game_Switches::SetLowerLimit</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>limit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="42" column="6" bodyfile="game_switches.h" bodystart="80" bodyend="82"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___switches_1adb7bcee8ad2a64d897dc5f9b66cebcb9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Switches::Get</definition>
+        <argsstring>(int switch_id) const</argsstring>
+        <name>Get</name>
+        <qualifiedname>Game_Switches::Get</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>switch_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="44" column="6" bodyfile="game_switches.h" bodystart="100" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___switches_1a18189dc3f2b2903df4429df729caff21" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Switches::GetInt</definition>
+        <argsstring>(int switch_id) const</argsstring>
+        <name>GetInt</name>
+        <qualifiedname>Game_Switches::GetInt</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>switch_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="45" column="5" bodyfile="game_switches.h" bodystart="110" bodyend="112"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___switches_1a4c4baade273b1d21f5fb577e31650a93" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Switches::Set</definition>
+        <argsstring>(int switch_id, bool value)</argsstring>
+        <name>Set</name>
+        <qualifiedname>Game_Switches::Set</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>switch_id</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="47" column="6" bodyfile="game_switches.cpp" bodystart="29" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___switches_1a4cd2ab62419709146af8b190bc8b5b78" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Switches::SetRange</definition>
+        <argsstring>(int first_id, int last_id, bool value)</argsstring>
+        <name>SetRange</name>
+        <qualifiedname>Game_Switches::SetRange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="48" column="6" bodyfile="game_switches.cpp" bodystart="45" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___switches_1a2f4e3e60603011d1eb676fb09c3ffe25" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Switches::Flip</definition>
+        <argsstring>(int switch_id)</argsstring>
+        <name>Flip</name>
+        <qualifiedname>Game_Switches::Flip</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>switch_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="50" column="6" bodyfile="game_switches.cpp" bodystart="59" bodyend="73"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___switches_1a2b3b88ca801350245de3b4dea1653aca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Switches::FlipRange</definition>
+        <argsstring>(int first_id, int last_id)</argsstring>
+        <name>FlipRange</name>
+        <qualifiedname>Game_Switches::FlipRange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="51" column="6" bodyfile="game_switches.cpp" bodystart="75" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___switches_1ac7e80d9dcacabf396cb65d5d68df807c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_Switches::GetName</definition>
+        <argsstring>(int switch_id) const</argsstring>
+        <name>GetName</name>
+        <qualifiedname>Game_Switches::GetName</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>switch_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="53" column="18" bodyfile="game_switches.cpp" bodystart="89" bodyend="98"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___switches_1aa9f4386416a1f520330b9660be59307d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Switches::IsValid</definition>
+        <argsstring>(int switch_id) const</argsstring>
+        <name>IsValid</name>
+        <qualifiedname>Game_Switches::IsValid</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>switch_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="55" column="6" bodyfile="game_switches.h" bodystart="92" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___switches_1a96f299c2d3f9dc0a4d421be4320fa9db" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Switches::GetSize</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSize</name>
+        <qualifiedname>Game_Switches::GetSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="57" column="5" bodyfile="game_switches.h" bodystart="84" bodyend="86"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___switches_1a3e7be7de2ad9ece7c1b1b758d786c515" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Switches::GetSizeWithLimit</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSizeWithLimit</name>
+        <qualifiedname>Game_Switches::GetSizeWithLimit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="58" column="5" bodyfile="game_switches.h" bodystart="88" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___switches_1ac67b800aa24e0cf1896bfb3847e2184d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Switches::SetWarning</definition>
+        <argsstring>(int w)</argsstring>
+        <name>SetWarning</name>
+        <qualifiedname>Game_Switches::SetWarning</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>w</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="60" column="6" bodyfile="game_switches.h" bodystart="114" bodyend="116"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_game___switches_1ae7f913db81902b75098dd5f623bb8504" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Switches::ShouldWarn</definition>
+        <argsstring>(int first_id, int last_id) const</argsstring>
+        <name>ShouldWarn</name>
+        <qualifiedname>Game_Switches::ShouldWarn</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="63" column="6" bodyfile="game_switches.h" bodystart="96" bodyend="98"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___switches_1aebdb31221bc739110c68f87796f69c7e" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Switches::WarnGet</definition>
+        <argsstring>(int variable_id) const</argsstring>
+        <name>WarnGet</name>
+        <qualifiedname>Game_Switches::WarnGet</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_switches.h" line="64" column="6" bodyfile="game_switches.cpp" bodystart="24" bodyend="27"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_game___switches" kindref="compound">Game_Switches</ref> class </para>
+    </detaileddescription>
+    <location file="game_switches.h" line="32" column="1" bodyfile="game_switches.h" bodystart="32" bodyend="69"/>
+    <listofallmembers>
+      <member refid="class_game___switches_1aa36360922d542adc51794350d9e0e4be" prot="private" virt="non-virtual"><scope>Game_Switches</scope><name>_switches</name></member>
+      <member refid="class_game___switches_1a5faa165ae87e0466bbc696f8add7e0e0" prot="private" virt="non-virtual"><scope>Game_Switches</scope><name>_warnings</name></member>
+      <member refid="class_game___switches_1a2f4e3e60603011d1eb676fb09c3ffe25" prot="public" virt="non-virtual"><scope>Game_Switches</scope><name>Flip</name></member>
+      <member refid="class_game___switches_1a2b3b88ca801350245de3b4dea1653aca" prot="public" virt="non-virtual"><scope>Game_Switches</scope><name>FlipRange</name></member>
+      <member refid="class_game___switches_1a9c2f2c9398c488addf49c908bf733c57" prot="public" virt="non-virtual"><scope>Game_Switches</scope><name>Game_Switches</name></member>
+      <member refid="class_game___switches_1adb7bcee8ad2a64d897dc5f9b66cebcb9" prot="public" virt="non-virtual"><scope>Game_Switches</scope><name>Get</name></member>
+      <member refid="class_game___switches_1a167a81cb5b3ab63a073e944c6d25c9bb" prot="public" virt="non-virtual"><scope>Game_Switches</scope><name>GetData</name></member>
+      <member refid="class_game___switches_1a18189dc3f2b2903df4429df729caff21" prot="public" virt="non-virtual"><scope>Game_Switches</scope><name>GetInt</name></member>
+      <member refid="class_game___switches_1ac7e80d9dcacabf396cb65d5d68df807c" prot="public" virt="non-virtual"><scope>Game_Switches</scope><name>GetName</name></member>
+      <member refid="class_game___switches_1a96f299c2d3f9dc0a4d421be4320fa9db" prot="public" virt="non-virtual"><scope>Game_Switches</scope><name>GetSize</name></member>
+      <member refid="class_game___switches_1a3e7be7de2ad9ece7c1b1b758d786c515" prot="public" virt="non-virtual"><scope>Game_Switches</scope><name>GetSizeWithLimit</name></member>
+      <member refid="class_game___switches_1aa9f4386416a1f520330b9660be59307d" prot="public" virt="non-virtual"><scope>Game_Switches</scope><name>IsValid</name></member>
+      <member refid="class_game___switches_1ac250bb9ff154a749888f99017d43c0d5" prot="public" virt="non-virtual"><scope>Game_Switches</scope><name>kMaxWarnings</name></member>
+      <member refid="class_game___switches_1a53253b47b221ec40987fa89a5f42ae29" prot="private" virt="non-virtual"><scope>Game_Switches</scope><name>lower_limit</name></member>
+      <member refid="class_game___switches_1a4c4baade273b1d21f5fb577e31650a93" prot="public" virt="non-virtual"><scope>Game_Switches</scope><name>Set</name></member>
+      <member refid="class_game___switches_1a21f23430073b56f3063dffeb86786914" prot="public" virt="non-virtual"><scope>Game_Switches</scope><name>SetData</name></member>
+      <member refid="class_game___switches_1a2f63817a7f25d8f72d858fe84592c624" prot="public" virt="non-virtual"><scope>Game_Switches</scope><name>SetLowerLimit</name></member>
+      <member refid="class_game___switches_1a4cd2ab62419709146af8b190bc8b5b78" prot="public" virt="non-virtual"><scope>Game_Switches</scope><name>SetRange</name></member>
+      <member refid="class_game___switches_1ac67b800aa24e0cf1896bfb3847e2184d" prot="public" virt="non-virtual"><scope>Game_Switches</scope><name>SetWarning</name></member>
+      <member refid="class_game___switches_1ae7f913db81902b75098dd5f623bb8504" prot="private" virt="non-virtual"><scope>Game_Switches</scope><name>ShouldWarn</name></member>
+      <member refid="class_game___switches_1a8bc41f0d26672afd80f5ab34225f05a0" prot="public" virt="non-virtual"><scope>Game_Switches</scope><name>Switches_t</name></member>
+      <member refid="class_game___switches_1aebdb31221bc739110c68f87796f69c7e" prot="private" virt="non-virtual"><scope>Game_Switches</scope><name>WarnGet</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

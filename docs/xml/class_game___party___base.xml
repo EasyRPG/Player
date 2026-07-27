@@ -1,0 +1,341 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___party___base" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Game_Party_Base</compoundname>
+    <derivedcompoundref refid="class_game___enemy_party" prot="public" virt="non-virtual">Game_EnemyParty</derivedcompoundref>
+    <derivedcompoundref refid="class_game___party" prot="public" virt="non-virtual">Game_Party</derivedcompoundref>
+    <includes refid="game__party__base_8h" local="no">game_party_base.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___party___base_1a8b1fda73ee9191a7459fd02c666e429a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>Game_Party_Base::~Game_Party_Base</definition>
+        <argsstring>()</argsstring>
+        <name>~Game_Party_Base</name>
+        <qualifiedname>Game_Party_Base::~Game_Party_Base</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party_base.h" line="31" column="9" bodyfile="game_party_base.cpp" bodystart="24" bodyend="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party___base_1a095bec7070ff47df4003339892f3584a" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+        <definition>virtual Game_Battler &amp; Game_Party_Base::operator[]</definition>
+        <argsstring>(const int index)=0</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>Game_Party_Base::operator[]</qualifiedname>
+        <reimplementedby refid="class_game___enemy_party_1a96a755ee5c3ffbb998b56dd7d7cc05c9">operator[]</reimplementedby>
+        <reimplementedby refid="class_game___party_1a5566fae089dec772fd8a55e5bbc67baf">operator[]</reimplementedby>
+        <param>
+          <type>const int</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets a battler from the party by position in the party</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of member to return </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Party battler </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party_base.h" line="39" column="22"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party___base_1a821fd1269f3ef045dd801e526b03e117" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int Game_Party_Base::GetBattlerCount</definition>
+        <argsstring>() const =0</argsstring>
+        <name>GetBattlerCount</name>
+        <qualifiedname>Game_Party_Base::GetBattlerCount</qualifiedname>
+        <reimplementedby refid="class_game___enemy_party_1a5cb21f34d7cab932a4145acfcc5dc323">GetBattlerCount</reimplementedby>
+        <reimplementedby refid="class_game___party_1aa623bc4c7c92879870385198cf25b404">GetBattlerCount</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns how many members are in the party</para>
+<para><simplesect kind="return"><para>Number of members in the party </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party_base.h" line="46" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party___base_1a866853d28e7860ae1091338ff4b521a7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int Game_Party_Base::GetVisibleBattlerCount</definition>
+        <argsstring>() const =0</argsstring>
+        <name>GetVisibleBattlerCount</name>
+        <qualifiedname>Game_Party_Base::GetVisibleBattlerCount</qualifiedname>
+        <reimplementedby refid="class_game___enemy_party_1aa386ac1422987293de7e4a87ed493748">GetVisibleBattlerCount</reimplementedby>
+        <reimplementedby refid="class_game___party_1adbfa5e9b36cc6c18b1ab8ec766e59c8c">GetVisibleBattlerCount</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns how many members are in the party and not hidden</para>
+<para><simplesect kind="return"><para>Number of members in the party who are not hidden </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party_base.h" line="53" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party___base_1a0e89ee3a41a2df84878a8b8d0a98008c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Game_Party_Base::GetBattlers</definition>
+        <argsstring>(std::vector&lt; Game_Battler * &gt; &amp;out)</argsstring>
+        <name>GetBattlers</name>
+        <qualifiedname>Game_Party_Base::GetBattlers</qualifiedname>
+        <param>
+          <type>std::vector&lt; <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> * &gt; &amp;</type>
+          <declname>out</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns a list of all battlers in the party</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>List of all battlers </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party_base.h" line="60" column="14" bodyfile="game_party_base.cpp" bodystart="27" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party___base_1abff96233b2f3f5b2641c9f4cc6f3f213" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Game_Party_Base::GetActiveBattlers</definition>
+        <argsstring>(std::vector&lt; Game_Battler * &gt; &amp;out)</argsstring>
+        <name>GetActiveBattlers</name>
+        <qualifiedname>Game_Party_Base::GetActiveBattlers</qualifiedname>
+        <param>
+          <type>std::vector&lt; <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> * &gt; &amp;</type>
+          <declname>out</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets a list with all active (not dead or hidden) party members.</para>
+<para><simplesect kind="return"><para>list of all active party members </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party_base.h" line="67" column="14" bodyfile="game_party_base.cpp" bodystart="35" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party___base_1a7acd39bc87d84b1152fd0669ef7cc67b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Game_Party_Base::GetDeadBattlers</definition>
+        <argsstring>(std::vector&lt; Game_Battler * &gt; &amp;out)</argsstring>
+        <name>GetDeadBattlers</name>
+        <qualifiedname>Game_Party_Base::GetDeadBattlers</qualifiedname>
+        <param>
+          <type>std::vector&lt; <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> * &gt; &amp;</type>
+          <declname>out</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns a list of all dead battlers in the party</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>List of all dead battlers </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party_base.h" line="74" column="14" bodyfile="game_party_base.cpp" bodystart="45" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party___base_1af92468545b05992b8f6a7e7c482c5e32" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+        <definition>Game_Battler * Game_Party_Base::GetNextActiveBattler</definition>
+        <argsstring>(Game_Battler *battler)</argsstring>
+        <name>GetNextActiveBattler</name>
+        <qualifiedname>Game_Party_Base::GetNextActiveBattler</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>battler</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return the next active battler (not dead or hidden) in the party based on the passed battler.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>battler</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Battler </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Battler after the provided one, NULL if battler isn&apos;t in party at all. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party_base.h" line="83" column="22" bodyfile="game_party_base.cpp" bodystart="55" bodyend="82"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party___base_1a5b9f8e6c98e78dee9f82d6eeba2d06df" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+        <definition>Game_Battler * Game_Party_Base::GetRandomActiveBattler</definition>
+        <argsstring>()</argsstring>
+        <name>GetRandomActiveBattler</name>
+        <qualifiedname>Game_Party_Base::GetRandomActiveBattler</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets a random active (not dead or hidden) battler from the party <simplesect kind="return"><para>Random alive battler </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party_base.h" line="89" column="22" bodyfile="game_party_base.cpp" bodystart="84" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party___base_1a98fa2454690a665e2af3c49bce74f419" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+        <definition>Game_Battler * Game_Party_Base::GetRandomDeadBattler</definition>
+        <argsstring>()</argsstring>
+        <name>GetRandomDeadBattler</name>
+        <qualifiedname>Game_Party_Base::GetRandomDeadBattler</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets a random dead battler from the party</para>
+<para><simplesect kind="return"><para>Random dead battler </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party_base.h" line="96" column="22" bodyfile="game_party_base.cpp" bodystart="93" bodyend="101"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party___base_1aa43443a5b5f56716fb08de317e610273" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Game_Party_Base::IsAnyActive</definition>
+        <argsstring>()</argsstring>
+        <name>IsAnyActive</name>
+        <qualifiedname>Game_Party_Base::IsAnyActive</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Tests if any party members is active (not dead or hidden)</para>
+<para><simplesect kind="return"><para>Whether all are dead. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party_base.h" line="103" column="14" bodyfile="game_party_base.cpp" bodystart="103" bodyend="105"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party___base_1aaecb52f4b655eb4825de94840a21d522" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party_Base::GetAverageAgility</definition>
+        <argsstring>()</argsstring>
+        <name>GetAverageAgility</name>
+        <qualifiedname>Game_Party_Base::GetAverageAgility</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets average agility of the party (for battle)</para>
+<para><simplesect kind="return"><para>average agility </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party_base.h" line="110" column="5" bodyfile="game_party_base.cpp" bodystart="107" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party___base_1aee9463dcc01c87395bf0a559edc7a156" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party_Base::GetMemberIndex</definition>
+        <argsstring>(Game_Battler *battler)</argsstring>
+        <name>GetMemberIndex</name>
+        <qualifiedname>Game_Party_Base::GetMemberIndex</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>battler</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the index of the battler in the party</para>
+<para><simplesect kind="return"><para>the battlers party index, or -1 if not in the party </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party_base.h" line="117" column="5" bodyfile="game_party_base.cpp" bodystart="122" bodyend="135"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Base class of the two Parties (Allied and Enemy) </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Game_EnemyParty</label>
+        <link refid="class_game___enemy_party"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Game_Party</label>
+        <link refid="class_game___party"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Game_Party_Base</label>
+        <link refid="class_game___party___base"/>
+      </node>
+    </inheritancegraph>
+    <location file="game_party_base.h" line="29" column="1" bodyfile="game_party_base.h" bodystart="29" bodyend="121"/>
+    <listofallmembers>
+      <member refid="class_game___party___base_1abff96233b2f3f5b2641c9f4cc6f3f213" prot="public" virt="virtual"><scope>Game_Party_Base</scope><name>GetActiveBattlers</name></member>
+      <member refid="class_game___party___base_1aaecb52f4b655eb4825de94840a21d522" prot="public" virt="non-virtual"><scope>Game_Party_Base</scope><name>GetAverageAgility</name></member>
+      <member refid="class_game___party___base_1a821fd1269f3ef045dd801e526b03e117" prot="public" virt="pure-virtual"><scope>Game_Party_Base</scope><name>GetBattlerCount</name></member>
+      <member refid="class_game___party___base_1a0e89ee3a41a2df84878a8b8d0a98008c" prot="public" virt="virtual"><scope>Game_Party_Base</scope><name>GetBattlers</name></member>
+      <member refid="class_game___party___base_1a7acd39bc87d84b1152fd0669ef7cc67b" prot="public" virt="virtual"><scope>Game_Party_Base</scope><name>GetDeadBattlers</name></member>
+      <member refid="class_game___party___base_1aee9463dcc01c87395bf0a559edc7a156" prot="public" virt="non-virtual"><scope>Game_Party_Base</scope><name>GetMemberIndex</name></member>
+      <member refid="class_game___party___base_1af92468545b05992b8f6a7e7c482c5e32" prot="public" virt="virtual"><scope>Game_Party_Base</scope><name>GetNextActiveBattler</name></member>
+      <member refid="class_game___party___base_1a5b9f8e6c98e78dee9f82d6eeba2d06df" prot="public" virt="virtual"><scope>Game_Party_Base</scope><name>GetRandomActiveBattler</name></member>
+      <member refid="class_game___party___base_1a98fa2454690a665e2af3c49bce74f419" prot="public" virt="virtual"><scope>Game_Party_Base</scope><name>GetRandomDeadBattler</name></member>
+      <member refid="class_game___party___base_1a866853d28e7860ae1091338ff4b521a7" prot="public" virt="pure-virtual"><scope>Game_Party_Base</scope><name>GetVisibleBattlerCount</name></member>
+      <member refid="class_game___party___base_1aa43443a5b5f56716fb08de317e610273" prot="public" virt="virtual"><scope>Game_Party_Base</scope><name>IsAnyActive</name></member>
+      <member refid="class_game___party___base_1a095bec7070ff47df4003339892f3584a" prot="public" virt="pure-virtual"><scope>Game_Party_Base</scope><name>operator[]</name></member>
+      <member refid="class_game___party___base_1a8b1fda73ee9191a7459fd02c666e429a" prot="public" virt="virtual"><scope>Game_Party_Base</scope><name>~Game_Party_Base</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,339 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___enemy_party" kind="class" language="C++" prot="public">
+    <compoundname>Game_EnemyParty</compoundname>
+    <basecompoundref refid="class_game___party___base" prot="public" virt="non-virtual">Game_Party_Base</basecompoundref>
+    <includes refid="game__enemyparty_8h" local="no">game_enemyparty.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___enemy_party_1a67997451249fd176d0672bb0fa749ca0" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="class_game___enemy" kindref="compound">Game_Enemy</ref> &gt;</type>
+        <definition>std::vector&lt;Game_Enemy&gt; Game_EnemyParty::enemies</definition>
+        <argsstring></argsstring>
+        <name>enemies</name>
+        <qualifiedname>Game_EnemyParty::enemies</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemyparty.h" line="95" column="13" bodyfile="game_enemyparty.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___enemy_party_1a171043e9eeed6806665b048539f26cf5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_EnemyParty::Game_EnemyParty</definition>
+        <argsstring>()</argsstring>
+        <name>Game_EnemyParty</name>
+        <qualifiedname>Game_EnemyParty::Game_EnemyParty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes Game_Enemy_Party. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemyparty.h" line="35" column="1" bodyfile="game_enemyparty.cpp" bodystart="29" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_party_1a96a755ee5c3ffbb998b56dd7d7cc05c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_game___enemy" kindref="compound">Game_Enemy</ref> &amp;</type>
+        <definition>Game_Enemy &amp; Game_EnemyParty::operator[]</definition>
+        <argsstring>(const int index) override</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>Game_EnemyParty::operator[]</qualifiedname>
+        <reimplements refid="class_game___party___base_1a095bec7070ff47df4003339892f3584a">operator[]</reimplements>
+        <param>
+          <type>const int</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets a battler from the party by position in the party</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of member to return </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Party battler </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemyparty.h" line="37" column="12" bodyfile="game_enemyparty.cpp" bodystart="39" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_party_1a5cb21f34d7cab932a4145acfcc5dc323" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Game_EnemyParty::GetBattlerCount</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetBattlerCount</name>
+        <qualifiedname>Game_EnemyParty::GetBattlerCount</qualifiedname>
+        <reimplements refid="class_game___party___base_1a821fd1269f3ef045dd801e526b03e117">GetBattlerCount</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns how many members are in the party</para>
+<para><simplesect kind="return"><para>Number of members in the party </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemyparty.h" line="39" column="5" bodyfile="game_enemyparty.cpp" bodystart="47" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_party_1aa386ac1422987293de7e4a87ed493748" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Game_EnemyParty::GetVisibleBattlerCount</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetVisibleBattlerCount</name>
+        <qualifiedname>Game_EnemyParty::GetVisibleBattlerCount</qualifiedname>
+        <reimplements refid="class_game___party___base_1a866853d28e7860ae1091338ff4b521a7">GetVisibleBattlerCount</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns how many members are in the party and not hidden</para>
+<para><simplesect kind="return"><para>Number of members in the party who are not hidden </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemyparty.h" line="40" column="5" bodyfile="game_enemyparty.cpp" bodystart="51" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_party_1a5a23aa0ccd909560101d8be5692b432a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_EnemyParty::ResetBattle</definition>
+        <argsstring>(int battle_troop_id)</argsstring>
+        <name>ResetBattle</name>
+        <qualifiedname>Game_EnemyParty::ResetBattle</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>battle_troop_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reset the party for a new battle.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>battle_troop_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of the enemy party, or 0 for empty. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemyparty.h" line="47" column="6" bodyfile="game_enemyparty.cpp" bodystart="59" bodyend="89"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_party_1ad0cae368a95eba412dada250b6821706" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="class_game___enemy" kindref="compound">Game_Enemy</ref> * &gt;</type>
+        <definition>std::vector&lt; Game_Enemy * &gt; Game_EnemyParty::GetEnemies</definition>
+        <argsstring>()</argsstring>
+        <name>GetEnemies</name>
+        <qualifiedname>Game_EnemyParty::GetEnemies</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets a list with all party members</para>
+<para><simplesect kind="return"><para>list of party members </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemyparty.h" line="54" column="13" bodyfile="game_enemyparty.cpp" bodystart="91" bodyend="98"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_party_1a5fbbf84fc1d00748bec681b5324fa6ca" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_EnemyParty::GetExp</definition>
+        <argsstring>() const</argsstring>
+        <name>GetExp</name>
+        <qualifiedname>Game_EnemyParty::GetExp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sums up the experience points of all enemy party members.</para>
+<para><simplesect kind="return"><para>All experience points </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemyparty.h" line="61" column="5" bodyfile="game_enemyparty.cpp" bodystart="101" bodyend="109"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_party_1a32823c419c096b74df0ee08a6d81fac4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_EnemyParty::GetMoney</definition>
+        <argsstring>() const</argsstring>
+        <name>GetMoney</name>
+        <qualifiedname>Game_EnemyParty::GetMoney</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sums up the money of all enemy party members.</para>
+<para><simplesect kind="return"><para>All money </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemyparty.h" line="68" column="5" bodyfile="game_enemyparty.cpp" bodystart="111" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_party_1a8086cff5ecf9feb8b173059c7d697cf5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_EnemyParty::GenerateDrops</definition>
+        <argsstring>(std::vector&lt; int &gt; &amp;out) const</argsstring>
+        <name>GenerateDrops</name>
+        <qualifiedname>Game_EnemyParty::GenerateDrops</qualifiedname>
+        <param>
+          <type>std::vector&lt; int &gt; &amp;</type>
+          <declname>out</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Rolls once for each enemy&apos;s drops.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>List of the dropped items&apos; IDs </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemyparty.h" line="75" column="6" bodyfile="game_enemyparty.cpp" bodystart="121" bodyend="132"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_party_1ab7937c1a63e47d589b9ab118940d7ae4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___enemy" kindref="compound">Game_Enemy</ref> *</type>
+        <definition>Game_Enemy * Game_EnemyParty::GetEnemy</definition>
+        <argsstring>(int idx)</argsstring>
+        <name>GetEnemy</name>
+        <qualifiedname>Game_EnemyParty::GetEnemy</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>idx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the enemy by party index.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>idx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the index of the enemy. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>enemy from party </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemyparty.h" line="83" column="12" bodyfile="game_enemyparty.cpp" bodystart="32" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___enemy_party_1a88291cdc2a102bbb67d9f6887490499f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_EnemyParty::GetEnemyPositionInParty</definition>
+        <argsstring>(const Game_Enemy *enemy) const</argsstring>
+        <name>GetEnemyPositionInParty</name>
+        <qualifiedname>Game_EnemyParty::GetEnemyPositionInParty</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___enemy" kindref="compound">Game_Enemy</ref> *</type>
+          <declname>enemy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the position index of the enemy in the party.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>enemy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the enemy to query.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>0 based index, or -1 if not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_enemyparty.h" line="92" column="5" bodyfile="game_enemyparty.cpp" bodystart="134" bodyend="139"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Manages the enemy party during battles. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Game_EnemyParty</label>
+        <link refid="class_game___enemy_party"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Game_Party_Base</label>
+        <link refid="class_game___party___base"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Game_EnemyParty</label>
+        <link refid="class_game___enemy_party"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Game_Party_Base</label>
+        <link refid="class_game___party___base"/>
+      </node>
+    </collaborationgraph>
+    <location file="game_enemyparty.h" line="30" column="1" bodyfile="game_enemyparty.h" bodystart="30" bodyend="96"/>
+    <listofallmembers>
+      <member refid="class_game___enemy_party_1a67997451249fd176d0672bb0fa749ca0" prot="private" virt="non-virtual"><scope>Game_EnemyParty</scope><name>enemies</name></member>
+      <member refid="class_game___enemy_party_1a171043e9eeed6806665b048539f26cf5" prot="public" virt="non-virtual"><scope>Game_EnemyParty</scope><name>Game_EnemyParty</name></member>
+      <member refid="class_game___enemy_party_1a8086cff5ecf9feb8b173059c7d697cf5" prot="public" virt="non-virtual"><scope>Game_EnemyParty</scope><name>GenerateDrops</name></member>
+      <member refid="class_game___party___base_1abff96233b2f3f5b2641c9f4cc6f3f213" prot="public" virt="virtual"><scope>Game_EnemyParty</scope><name>GetActiveBattlers</name></member>
+      <member refid="class_game___party___base_1aaecb52f4b655eb4825de94840a21d522" prot="public" virt="non-virtual"><scope>Game_EnemyParty</scope><name>GetAverageAgility</name></member>
+      <member refid="class_game___enemy_party_1a5cb21f34d7cab932a4145acfcc5dc323" prot="public" virt="virtual"><scope>Game_EnemyParty</scope><name>GetBattlerCount</name></member>
+      <member refid="class_game___party___base_1a0e89ee3a41a2df84878a8b8d0a98008c" prot="public" virt="virtual"><scope>Game_EnemyParty</scope><name>GetBattlers</name></member>
+      <member refid="class_game___party___base_1a7acd39bc87d84b1152fd0669ef7cc67b" prot="public" virt="virtual"><scope>Game_EnemyParty</scope><name>GetDeadBattlers</name></member>
+      <member refid="class_game___enemy_party_1ad0cae368a95eba412dada250b6821706" prot="public" virt="non-virtual"><scope>Game_EnemyParty</scope><name>GetEnemies</name></member>
+      <member refid="class_game___enemy_party_1ab7937c1a63e47d589b9ab118940d7ae4" prot="public" virt="non-virtual"><scope>Game_EnemyParty</scope><name>GetEnemy</name></member>
+      <member refid="class_game___enemy_party_1a88291cdc2a102bbb67d9f6887490499f" prot="public" virt="non-virtual"><scope>Game_EnemyParty</scope><name>GetEnemyPositionInParty</name></member>
+      <member refid="class_game___enemy_party_1a5fbbf84fc1d00748bec681b5324fa6ca" prot="public" virt="non-virtual"><scope>Game_EnemyParty</scope><name>GetExp</name></member>
+      <member refid="class_game___party___base_1aee9463dcc01c87395bf0a559edc7a156" prot="public" virt="non-virtual"><scope>Game_EnemyParty</scope><name>GetMemberIndex</name></member>
+      <member refid="class_game___enemy_party_1a32823c419c096b74df0ee08a6d81fac4" prot="public" virt="non-virtual"><scope>Game_EnemyParty</scope><name>GetMoney</name></member>
+      <member refid="class_game___party___base_1af92468545b05992b8f6a7e7c482c5e32" prot="public" virt="virtual"><scope>Game_EnemyParty</scope><name>GetNextActiveBattler</name></member>
+      <member refid="class_game___party___base_1a5b9f8e6c98e78dee9f82d6eeba2d06df" prot="public" virt="virtual"><scope>Game_EnemyParty</scope><name>GetRandomActiveBattler</name></member>
+      <member refid="class_game___party___base_1a98fa2454690a665e2af3c49bce74f419" prot="public" virt="virtual"><scope>Game_EnemyParty</scope><name>GetRandomDeadBattler</name></member>
+      <member refid="class_game___enemy_party_1aa386ac1422987293de7e4a87ed493748" prot="public" virt="virtual"><scope>Game_EnemyParty</scope><name>GetVisibleBattlerCount</name></member>
+      <member refid="class_game___party___base_1aa43443a5b5f56716fb08de317e610273" prot="public" virt="virtual"><scope>Game_EnemyParty</scope><name>IsAnyActive</name></member>
+      <member refid="class_game___enemy_party_1a96a755ee5c3ffbb998b56dd7d7cc05c9" prot="public" virt="virtual"><scope>Game_EnemyParty</scope><name>operator[]</name></member>
+      <member refid="class_game___enemy_party_1a5a23aa0ccd909560101d8be5692b432a" prot="public" virt="non-virtual"><scope>Game_EnemyParty</scope><name>ResetBattle</name></member>
+      <member refid="class_game___party___base_1a8b1fda73ee9191a7459fd02c666e429a" prot="public" virt="virtual"><scope>Game_EnemyParty</scope><name>~Game_Party_Base</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

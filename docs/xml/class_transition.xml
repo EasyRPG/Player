@@ -1,0 +1,1006 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_transition" kind="class" language="C++" prot="public">
+    <compoundname>Transition</compoundname>
+    <basecompoundref refid="class_drawable" prot="public" virt="non-virtual">Drawable</basecompoundref>
+    <includes refid="transition_8h" local="no">transition.h</includes>
+    <innerclass refid="struct_transition_1_1_flash_data" prot="private">Transition::FlashData</innerclass>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_transition_1aca03fd04a22c40b5315f79e6f1122253" prot="public" static="no" strong="no">
+        <type></type>
+        <name>Type</name>
+        <qualifiedname>Transition::Type</qualifiedname>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a7e76e1288a234e99db2facd73cc6138f" prot="public">
+          <name>TransitionFadeIn</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253aa95a5916db1124dad99e452e6db812b5" prot="public">
+          <name>TransitionFadeOut</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a9e6500d7f7ac9144afd4e7aa6ab09171" prot="public">
+          <name>TransitionRandomBlocks</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253ad3404650245ae576cec7645a33201c91" prot="public">
+          <name>TransitionRandomBlocksDown</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a9a52fbb4ebb068c728aac706cab3ee97" prot="public">
+          <name>TransitionRandomBlocksUp</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253acaba35aaa2925084b64e03ac172bf2e3" prot="public">
+          <name>TransitionBlindOpen</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253ad3f030d137dea0a58f6093b2209a48ab" prot="public">
+          <name>TransitionBlindClose</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a96145e9750e4118827758b0e09882ce2" prot="public">
+          <name>TransitionVerticalStripesIn</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253adda37dd3bc44ff73db134b482b9a9dc8" prot="public">
+          <name>TransitionVerticalStripesOut</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a57088c67944b3c0fef4c557d5b9c4a4f" prot="public">
+          <name>TransitionHorizontalStripesIn</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253acae4b7a06d2069d5c456a14c3907458f" prot="public">
+          <name>TransitionHorizontalStripesOut</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253af0f2c05c8670f462224eada341d92a51" prot="public">
+          <name>TransitionBorderToCenterIn</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253ace8160d2368fc53d70078a429875ecd8" prot="public">
+          <name>TransitionBorderToCenterOut</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a75614f18ff753f8f01a091e44703c4b9" prot="public">
+          <name>TransitionCenterToBorderIn</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a07dc54f0ce52d3f6c0fb82b6d3a09698" prot="public">
+          <name>TransitionCenterToBorderOut</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a48a97bbcf08b2b3ca599bd718358def1" prot="public">
+          <name>TransitionScrollUpIn</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a59da8037aea885ce502080784af46d68" prot="public">
+          <name>TransitionScrollDownIn</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253aac01593d905fdf4b231beb0eddddaa77" prot="public">
+          <name>TransitionScrollLeftIn</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a82d679199832ed6780cbab53d87870f2" prot="public">
+          <name>TransitionScrollRightIn</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a9e4d13e27d5d02a73ca1bd7f2df39495" prot="public">
+          <name>TransitionScrollUpOut</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253ac7cdc4b12e38e515e0f821d18810982b" prot="public">
+          <name>TransitionScrollDownOut</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a0b9b4f5d63a13da001424cb8f8b1b69f" prot="public">
+          <name>TransitionScrollLeftOut</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a19946df1f8e4ffb58d8dd9b6317fb16d" prot="public">
+          <name>TransitionScrollRightOut</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a2f3259bf6fea026de2d5eea5d3e02a37" prot="public">
+          <name>TransitionVerticalCombine</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253ad88bc76526c86ead411693b64d4dcb7e" prot="public">
+          <name>TransitionVerticalDivision</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a193b6ef85afa58cf4746691d58a2c10b" prot="public">
+          <name>TransitionHorizontalCombine</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a055893d8a1298e8edfa58708a3e4bde7" prot="public">
+          <name>TransitionHorizontalDivision</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a1aab3856bd257cee320bb35f47aa5901" prot="public">
+          <name>TransitionCrossCombine</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253aac02523d5328dc55f9426f03079e413a" prot="public">
+          <name>TransitionCrossDivision</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a41242083c66fc01286f8c19d3466dd89" prot="public">
+          <name>TransitionZoomIn</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253adcb7c794dbd153d4beb301f8d36e6166" prot="public">
+          <name>TransitionZoomOut</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a5001cf7d558ec239c529cc4e29d5cc23" prot="public">
+          <name>TransitionMosaicIn</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253aa61d261b49a1f19323cf4ae365a56b9d" prot="public">
+          <name>TransitionMosaicOut</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a91cb6b840086af9b664a776b1f411b5c" prot="public">
+          <name>TransitionWaveIn</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a08e86068e40261a8fb6e6f054c0169c8" prot="public">
+          <name>TransitionWaveOut</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253a6d67e9c2fc7edd52f8f3acc2e0604c41" prot="public">
+          <name>TransitionCutIn</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253ac8b9d4d03561c847c226e0d65852db7f" prot="public">
+          <name>TransitionCutOut</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_transition_1aca03fd04a22c40b5315f79e6f1122253adb0f42499bb57d5827b1f476615c9803" prot="public">
+          <name>TransitionNone</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="38" column="1" bodyfile="transition.h" bodystart="38" bodyend="77"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_transition_1aabaaa84f29e9a0cda0f71e470df8177c" prot="private" static="no" mutable="no">
+        <type>const uint32_t</type>
+        <definition>const uint32_t Transition::size_random_blocks</definition>
+        <argsstring></argsstring>
+        <name>size_random_blocks</name>
+        <qualifiedname>Transition::size_random_blocks</qualifiedname>
+        <initializer>= 4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="124" column="16" bodyfile="transition.h" bodystart="124" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_transition_1a5b726ee877af205b876e73630c5d204c" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Transition::screen1</definition>
+        <argsstring></argsstring>
+        <name>screen1</name>
+        <qualifiedname>Transition::screen1</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="126" column="11" bodyfile="transition.h" bodystart="126" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_transition_1a45f129cd1efa1226b877c2620afa40fb" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Transition::screen2</definition>
+        <argsstring></argsstring>
+        <name>screen2</name>
+        <qualifiedname>Transition::screen2</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="127" column="11" bodyfile="transition.h" bodystart="127" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_transition_1a789bc22f6a4683d078481d4a1e55743c" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Transition::random_block_transition</definition>
+        <argsstring></argsstring>
+        <name>random_block_transition</name>
+        <qualifiedname>Transition::random_block_transition</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="128" column="11" bodyfile="transition.h" bodystart="128" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_transition_1a749b15b4d15ddd052084ec1a00796f2a" prot="private" static="no" mutable="no">
+        <type><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253" kindref="member">Type</ref></type>
+        <definition>Type Transition::transition_type</definition>
+        <argsstring></argsstring>
+        <name>transition_type</name>
+        <qualifiedname>Transition::transition_type</qualifiedname>
+        <initializer>= <ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253adb0f42499bb57d5827b1f476615c9803" kindref="member">TransitionNone</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="130" column="6" bodyfile="transition.h" bodystart="130" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_transition_1aa992a8a41167de81c4eb702538685141" prot="private" static="no" mutable="no">
+        <type><ref refid="class_scene" kindref="compound">Scene</ref> *</type>
+        <definition>Scene* Transition::scene</definition>
+        <argsstring></argsstring>
+        <name>scene</name>
+        <qualifiedname>Transition::scene</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="131" column="7" bodyfile="transition.h" bodystart="131" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_transition_1aa5486f03e765cd53a13bb7a017d5c229" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Transition::current_frame</definition>
+        <argsstring></argsstring>
+        <name>current_frame</name>
+        <qualifiedname>Transition::current_frame</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="132" column="5" bodyfile="transition.h" bodystart="132" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_transition_1ae28379a44346b972ea3a91beb7ed285b" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Transition::total_frames</definition>
+        <argsstring></argsstring>
+        <name>total_frames</name>
+        <qualifiedname>Transition::total_frames</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="133" column="5" bodyfile="transition.h" bodystart="133" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_transition_1a53359be57e706dabc68a1be0b0eb2c13" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Transition::from_erase</definition>
+        <argsstring></argsstring>
+        <name>from_erase</name>
+        <qualifiedname>Transition::from_erase</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="134" column="6" bodyfile="transition.h" bodystart="134" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_transition_1a9d143de3312d1c39b9af665e5f7777ec" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Transition::to_erase</definition>
+        <argsstring></argsstring>
+        <name>to_erase</name>
+        <qualifiedname>Transition::to_erase</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="135" column="6" bodyfile="transition.h" bodystart="135" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_transition_1aec2147f7d010d571435757bfb711cb3c" prot="private" static="no" mutable="no">
+        <type>FlashData</type>
+        <definition>FlashData Transition::flash</definition>
+        <argsstring></argsstring>
+        <name>flash</name>
+        <qualifiedname>Transition::flash</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="144" column="11" bodyfile="transition.h" bodystart="144" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_transition_1a66d671aa537ab4cba08ba8240949a778" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Transition::flash_power</definition>
+        <argsstring></argsstring>
+        <name>flash_power</name>
+        <qualifiedname>Transition::flash_power</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="146" column="5" bodyfile="transition.h" bodystart="146" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_transition_1a96e1f7b5dffd82dda57084c9f708696a" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Transition::flash_duration</definition>
+        <argsstring></argsstring>
+        <name>flash_duration</name>
+        <qualifiedname>Transition::flash_duration</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="147" column="5" bodyfile="transition.h" bodystart="147" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_transition_1a6dac112b18834e209410cff753ccc9ef" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Transition::flash_iterations</definition>
+        <argsstring></argsstring>
+        <name>flash_iterations</name>
+        <qualifiedname>Transition::flash_iterations</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="148" column="5" bodyfile="transition.h" bodystart="148" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_transition_1a8357511afccf035091391da52577451b" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; Transition::zoom_position</definition>
+        <argsstring></argsstring>
+        <name>zoom_position</name>
+        <qualifiedname>Transition::zoom_position</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="150" column="13" bodyfile="transition.h" bodystart="150" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_transition_1ac03d2cab7ea37de84e101c787876ba22" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; uint32_t &gt;</type>
+        <definition>std::vector&lt;uint32_t&gt; Transition::random_blocks</definition>
+        <argsstring></argsstring>
+        <name>random_blocks</name>
+        <qualifiedname>Transition::random_blocks</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="151" column="13" bodyfile="transition.h" bodystart="151" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_transition_1a1e55aa1259f8185233eff1e355ad9cfd" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t Transition::current_blocks_print</definition>
+        <argsstring></argsstring>
+        <name>current_blocks_print</name>
+        <qualifiedname>Transition::current_blocks_print</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="152" column="10" bodyfile="transition.h" bodystart="152" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_transition_1a1819e681c210353e4005f76cbd7b6379" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Transition::GetDefaultFrames</definition>
+        <argsstring>(Type type)</argsstring>
+        <name>GetDefaultFrames</name>
+        <qualifiedname>Transition::GetDefaultFrames</qualifiedname>
+        <param>
+          <type><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253" kindref="member">Type</ref></type>
+          <declname>type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the default number of frames for the given transition type.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Which type to request</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>default number of frames for this transition type </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="86" column="12" bodyfile="transition.cpp" bodystart="40" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="class_transition_1a2ea3a30e9e6eb45adf260cbf5d921a67" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_transition" kindref="compound">Transition</ref> &amp;</type>
+        <definition>Transition &amp; Transition::instance</definition>
+        <argsstring>()</argsstring>
+        <name>instance</name>
+        <qualifiedname>Transition::instance</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the transition singleton </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="89" column="19" bodyfile="transition.h" bodystart="157" bodyend="160"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_transition_1ad992ecd8cedd44d743862098d1243ef9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Transition::InitShow</definition>
+        <argsstring>(Type type, Scene *linked_scene, int duration=-1)</argsstring>
+        <name>InitShow</name>
+        <qualifiedname>Transition::InitShow</qualifiedname>
+        <param>
+          <type><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253" kindref="member">Type</ref></type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type><ref refid="class_scene" kindref="compound">Scene</ref> *</type>
+          <declname>linked_scene</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>duration</declname>
+          <defval>-1</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initiate a ShowScreen transition</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>transition type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>linked_scene</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scene transitioning, it should be either the scene summoning (this) or the current instance (Scene::instance.get()) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>duration</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>transition duration, set to -1 to use the default number of frames. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="98" column="6" bodyfile="transition.h" bodystart="162" bodyend="164"/>
+      </memberdef>
+      <memberdef kind="function" id="class_transition_1a5089f4dd8662d8e0e85319b8fd47c329" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Transition::InitErase</definition>
+        <argsstring>(Type type, Scene *linked_scene, int duration=-1)</argsstring>
+        <name>InitErase</name>
+        <qualifiedname>Transition::InitErase</qualifiedname>
+        <param>
+          <type><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253" kindref="member">Type</ref></type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type><ref refid="class_scene" kindref="compound">Scene</ref> *</type>
+          <declname>linked_scene</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>duration</declname>
+          <defval>-1</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initiate an EraseScreen transition</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>transition type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>linked_scene</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scene transitioning, it should be either the scene summoning (this) or the current instance (Scene::instance.get()) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>duration</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>transition duration, set to -1 to use the default number of frames. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="107" column="6" bodyfile="transition.h" bodystart="166" bodyend="168"/>
+      </memberdef>
+      <memberdef kind="function" id="class_transition_1ae8c7e9d3239ebea79fd9e1fefb691dbd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Transition::PrependFlashes</definition>
+        <argsstring>(int r, int g, int b, int power, int duration, int iterations)</argsstring>
+        <name>PrependFlashes</name>
+        <qualifiedname>Transition::PrependFlashes</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>power</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>duration</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iterations</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="109" column="6" bodyfile="transition.cpp" bodystart="61" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="class_transition_1a1529a72ac0e0cae8e2b8f1e2f64feab6" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Transition::Draw</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Transition::Draw</qualifiedname>
+        <reimplements refid="class_drawable_1aa8a9b151f40368331f6fd8bbdd20133f">Draw</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="111" column="6" bodyfile="transition.cpp" bodystart="177" bodyend="390"/>
+      </memberdef>
+      <memberdef kind="function" id="class_transition_1afa699138288c6a552aff575d50fe599b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Transition::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>Transition::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="112" column="6" bodyfile="transition.cpp" bodystart="392" bodyend="441"/>
+      </memberdef>
+      <memberdef kind="function" id="class_transition_1a690fdf34cd2d381c5491ece8cbbcfdc9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Transition::IsActive</definition>
+        <argsstring>() const</argsstring>
+        <name>IsActive</name>
+        <qualifiedname>Transition::IsActive</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="114" column="6" bodyfile="transition.h" bodystart="170" bodyend="172"/>
+      </memberdef>
+      <memberdef kind="function" id="class_transition_1af70ff4d34a05454aec2ee5691eb4b0d5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Transition::IsErasedNotActive</definition>
+        <argsstring>() const</argsstring>
+        <name>IsErasedNotActive</name>
+        <qualifiedname>Transition::IsErasedNotActive</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="115" column="6" bodyfile="transition.h" bodystart="174" bodyend="176"/>
+      </memberdef>
+      <memberdef kind="function" id="class_transition_1a1d80545a15225a4c9fbc8163fb28170a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Transition::FromErase</definition>
+        <argsstring>() const</argsstring>
+        <name>FromErase</name>
+        <qualifiedname>Transition::FromErase</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="117" column="6" bodyfile="transition.h" bodystart="178" bodyend="180"/>
+      </memberdef>
+      <memberdef kind="function" id="class_transition_1ad94161ad6e44e74492c82e56145a9165" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Transition::ToErase</definition>
+        <argsstring>() const</argsstring>
+        <name>ToErase</name>
+        <qualifiedname>Transition::ToErase</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="118" column="6" bodyfile="transition.h" bodystart="182" bodyend="184"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_transition_1a73b44b2338b11807f77b620a3e810f92" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Transition::Transition</definition>
+        <argsstring>()</argsstring>
+        <name>Transition</name>
+        <qualifiedname>Transition::Transition</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="121" column="1" bodyfile="transition.cpp" bodystart="56" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="class_transition_1ae41614a356770bb4cc4a4e627eee3255" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Transition::Init</definition>
+        <argsstring>(Type type, Scene *linked_scene, int duration, bool erase)</argsstring>
+        <name>Init</name>
+        <qualifiedname>Transition::Init</qualifiedname>
+        <param>
+          <type><ref refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253" kindref="member">Type</ref></type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type><ref refid="class_scene" kindref="compound">Scene</ref> *</type>
+          <declname>linked_scene</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>duration</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>erase</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="122" column="6" bodyfile="transition.cpp" bodystart="73" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="class_transition_1ad15afd7b82aefb5749abc42b8586f351" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Transition::SetAttributesTransitions</definition>
+        <argsstring>()</argsstring>
+        <name>SetAttributesTransitions</name>
+        <qualifiedname>Transition::SetAttributesTransitions</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transition.h" line="154" column="6" bodyfile="transition.cpp" bodystart="122" bodyend="175"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_transition" kindref="compound">Transition</ref> class. Shows the transition between two screens. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>Transition</label>
+        <link refid="class_transition"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>Transition</label>
+        <link refid="class_transition"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="transition.h" line="36" column="1" bodyfile="transition.h" bodystart="36" bodyend="155"/>
+    <listofallmembers>
+      <member refid="class_transition_1a1e55aa1259f8185233eff1e355ad9cfd" prot="private" virt="non-virtual"><scope>Transition</scope><name>current_blocks_print</name></member>
+      <member refid="class_transition_1aa5486f03e765cd53a13bb7a017d5c229" prot="private" virt="non-virtual"><scope>Transition</scope><name>current_frame</name></member>
+      <member refid="class_transition_1a1529a72ac0e0cae8e2b8f1e2f64feab6" prot="public" virt="virtual"><scope>Transition</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>Transition</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>Transition</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>Transition</scope><name>Flags</name></member>
+      <member refid="class_transition_1aec2147f7d010d571435757bfb711cb3c" prot="private" virt="non-virtual"><scope>Transition</scope><name>flash</name></member>
+      <member refid="class_transition_1a96e1f7b5dffd82dda57084c9f708696a" prot="private" virt="non-virtual"><scope>Transition</scope><name>flash_duration</name></member>
+      <member refid="class_transition_1a6dac112b18834e209410cff753ccc9ef" prot="private" virt="non-virtual"><scope>Transition</scope><name>flash_iterations</name></member>
+      <member refid="class_transition_1a66d671aa537ab4cba08ba8240949a778" prot="private" virt="non-virtual"><scope>Transition</scope><name>flash_power</name></member>
+      <member refid="class_transition_1a53359be57e706dabc68a1be0b0eb2c13" prot="private" virt="non-virtual"><scope>Transition</scope><name>from_erase</name></member>
+      <member refid="class_transition_1a1d80545a15225a4c9fbc8163fb28170a" prot="public" virt="non-virtual"><scope>Transition</scope><name>FromErase</name></member>
+      <member refid="class_transition_1a1819e681c210353e4005f76cbd7b6379" prot="public" virt="non-virtual"><scope>Transition</scope><name>GetDefaultFrames</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>Transition</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>Transition</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>Transition</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>Transition</scope><name>GetRenderOy</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>Transition</scope><name>GetZ</name></member>
+      <member refid="class_transition_1ae41614a356770bb4cc4a4e627eee3255" prot="private" virt="non-virtual"><scope>Transition</scope><name>Init</name></member>
+      <member refid="class_transition_1a5089f4dd8662d8e0e85319b8fd47c329" prot="public" virt="non-virtual"><scope>Transition</scope><name>InitErase</name></member>
+      <member refid="class_transition_1ad992ecd8cedd44d743862098d1243ef9" prot="public" virt="non-virtual"><scope>Transition</scope><name>InitShow</name></member>
+      <member refid="class_transition_1a2ea3a30e9e6eb45adf260cbf5d921a67" prot="public" virt="non-virtual"><scope>Transition</scope><name>instance</name></member>
+      <member refid="class_transition_1a690fdf34cd2d381c5491ece8cbbcfdc9" prot="public" virt="non-virtual"><scope>Transition</scope><name>IsActive</name></member>
+      <member refid="class_transition_1af70ff4d34a05454aec2ee5691eb4b0d5" prot="public" virt="non-virtual"><scope>Transition</scope><name>IsErasedNotActive</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>Transition</scope><name>IsGlobal</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>Transition</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>Transition</scope><name>IsVisible</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>Transition</scope><name>operator=</name></member>
+      <member refid="class_transition_1ae8c7e9d3239ebea79fd9e1fefb691dbd" prot="public" virt="non-virtual"><scope>Transition</scope><name>PrependFlashes</name></member>
+      <member refid="class_transition_1a789bc22f6a4683d078481d4a1e55743c" prot="private" virt="non-virtual"><scope>Transition</scope><name>random_block_transition</name></member>
+      <member refid="class_transition_1ac03d2cab7ea37de84e101c787876ba22" prot="private" virt="non-virtual"><scope>Transition</scope><name>random_blocks</name></member>
+      <member refid="class_transition_1aa992a8a41167de81c4eb702538685141" prot="private" virt="non-virtual"><scope>Transition</scope><name>scene</name></member>
+      <member refid="class_transition_1a5b726ee877af205b876e73630c5d204c" prot="private" virt="non-virtual"><scope>Transition</scope><name>screen1</name></member>
+      <member refid="class_transition_1a45f129cd1efa1226b877c2620afa40fb" prot="private" virt="non-virtual"><scope>Transition</scope><name>screen2</name></member>
+      <member refid="class_transition_1ad15afd7b82aefb5749abc42b8586f351" prot="private" virt="non-virtual"><scope>Transition</scope><name>SetAttributesTransitions</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>Transition</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>Transition</scope><name>SetRenderOy</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>Transition</scope><name>SetVisible</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>Transition</scope><name>SetZ</name></member>
+      <member refid="class_transition_1aabaaa84f29e9a0cda0f71e470df8177c" prot="private" virt="non-virtual"><scope>Transition</scope><name>size_random_blocks</name></member>
+      <member refid="class_transition_1a9d143de3312d1c39b9af665e5f7777ec" prot="private" virt="non-virtual"><scope>Transition</scope><name>to_erase</name></member>
+      <member refid="class_transition_1ad94161ad6e44e74492c82e56145a9165" prot="public" virt="non-virtual"><scope>Transition</scope><name>ToErase</name></member>
+      <member refid="class_transition_1ae28379a44346b972ea3a91beb7ed285b" prot="private" virt="non-virtual"><scope>Transition</scope><name>total_frames</name></member>
+      <member refid="class_transition_1a73b44b2338b11807f77b620a3e810f92" prot="private" virt="non-virtual"><scope>Transition</scope><name>Transition</name></member>
+      <member refid="class_transition_1a749b15b4d15ddd052084ec1a00796f2a" prot="private" virt="non-virtual"><scope>Transition</scope><name>transition_type</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ad3f030d137dea0a58f6093b2209a48ab" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionBlindClose</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253acaba35aaa2925084b64e03ac172bf2e3" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionBlindOpen</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253af0f2c05c8670f462224eada341d92a51" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionBorderToCenterIn</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ace8160d2368fc53d70078a429875ecd8" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionBorderToCenterOut</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a75614f18ff753f8f01a091e44703c4b9" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionCenterToBorderIn</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a07dc54f0ce52d3f6c0fb82b6d3a09698" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionCenterToBorderOut</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a1aab3856bd257cee320bb35f47aa5901" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionCrossCombine</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253aac02523d5328dc55f9426f03079e413a" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionCrossDivision</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a6d67e9c2fc7edd52f8f3acc2e0604c41" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionCutIn</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ac8b9d4d03561c847c226e0d65852db7f" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionCutOut</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a7e76e1288a234e99db2facd73cc6138f" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionFadeIn</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253aa95a5916db1124dad99e452e6db812b5" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionFadeOut</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a193b6ef85afa58cf4746691d58a2c10b" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionHorizontalCombine</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a055893d8a1298e8edfa58708a3e4bde7" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionHorizontalDivision</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a57088c67944b3c0fef4c557d5b9c4a4f" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionHorizontalStripesIn</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253acae4b7a06d2069d5c456a14c3907458f" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionHorizontalStripesOut</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a5001cf7d558ec239c529cc4e29d5cc23" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionMosaicIn</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253aa61d261b49a1f19323cf4ae365a56b9d" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionMosaicOut</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253adb0f42499bb57d5827b1f476615c9803" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionNone</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a9e6500d7f7ac9144afd4e7aa6ab09171" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionRandomBlocks</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ad3404650245ae576cec7645a33201c91" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionRandomBlocksDown</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a9a52fbb4ebb068c728aac706cab3ee97" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionRandomBlocksUp</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a59da8037aea885ce502080784af46d68" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionScrollDownIn</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ac7cdc4b12e38e515e0f821d18810982b" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionScrollDownOut</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253aac01593d905fdf4b231beb0eddddaa77" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionScrollLeftIn</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a0b9b4f5d63a13da001424cb8f8b1b69f" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionScrollLeftOut</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a82d679199832ed6780cbab53d87870f2" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionScrollRightIn</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a19946df1f8e4ffb58d8dd9b6317fb16d" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionScrollRightOut</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a48a97bbcf08b2b3ca599bd718358def1" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionScrollUpIn</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a9e4d13e27d5d02a73ca1bd7f2df39495" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionScrollUpOut</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a2f3259bf6fea026de2d5eea5d3e02a37" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionVerticalCombine</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253ad88bc76526c86ead411693b64d4dcb7e" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionVerticalDivision</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a96145e9750e4118827758b0e09882ce2" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionVerticalStripesIn</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253adda37dd3bc44ff73db134b482b9a9dc8" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionVerticalStripesOut</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a91cb6b840086af9b664a776b1f411b5c" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionWaveIn</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a08e86068e40261a8fb6e6f054c0169c8" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionWaveOut</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253a41242083c66fc01286f8c19d3466dd89" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionZoomIn</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253adcb7c794dbd153d4beb301f8d36e6166" prot="public" virt="non-virtual"><scope>Transition</scope><name>TransitionZoomOut</name></member>
+      <member refid="class_transition_1aca03fd04a22c40b5315f79e6f1122253" prot="public" virt="non-virtual"><scope>Transition</scope><name>Type</name></member>
+      <member refid="class_transition_1afa699138288c6a552aff575d50fe599b" prot="public" virt="non-virtual"><scope>Transition</scope><name>Update</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>Transition</scope><name>Z_t</name></member>
+      <member refid="class_transition_1a8357511afccf035091391da52577451b" prot="private" virt="non-virtual"><scope>Transition</scope><name>zoom_position</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>Transition</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

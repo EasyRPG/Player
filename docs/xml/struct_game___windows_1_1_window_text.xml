@@ -1,0 +1,190 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___windows_1_1_window_text" kind="struct" language="C++" prot="public">
+    <compoundname>Game_Windows::WindowText</compoundname>
+    <includes refid="game__windows_8h" local="no">game_windows.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___windows_1_1_window_text_1a430a1dd0c89a15573003b815c6e317ed" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Game_Windows::WindowText::text</definition>
+        <argsstring></argsstring>
+        <name>text</name>
+        <qualifiedname>Game_Windows::WindowText::text</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="49" column="13" bodyfile="game_windows.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___windows_1_1_window_text_1a65b0aa24141cbbf34d9c096f083d7f95" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Windows::WindowText::position_x</definition>
+        <argsstring></argsstring>
+        <name>position_x</name>
+        <qualifiedname>Game_Windows::WindowText::position_x</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="50" column="5" bodyfile="game_windows.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___windows_1_1_window_text_1a8041faf6338f5acb59ba53c3418086de" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Windows::WindowText::position_y</definition>
+        <argsstring></argsstring>
+        <name>position_y</name>
+        <qualifiedname>Game_Windows::WindowText::position_y</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="51" column="5" bodyfile="game_windows.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___windows_1_1_window_text_1ad23808a54f183b2cf581c29b9fb8cfaa" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Game_Windows::WindowText::font_name</definition>
+        <argsstring></argsstring>
+        <name>font_name</name>
+        <qualifiedname>Game_Windows::WindowText::font_name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="52" column="13" bodyfile="game_windows.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___windows_1_1_window_text_1a88b8de6177617bd1d34232ea621ae6e9" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Windows::WindowText::font_size</definition>
+        <argsstring></argsstring>
+        <name>font_size</name>
+        <qualifiedname>Game_Windows::WindowText::font_size</qualifiedname>
+        <initializer>= 12</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="53" column="5" bodyfile="game_windows.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___windows_1_1_window_text_1aec42d111bf5d5713d31b93da96806cdb" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Windows::WindowText::letter_spacing</definition>
+        <argsstring></argsstring>
+        <name>letter_spacing</name>
+        <qualifiedname>Game_Windows::WindowText::letter_spacing</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="54" column="5" bodyfile="game_windows.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___windows_1_1_window_text_1a4eca7c4789afef56ef529efeef7b3286" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Windows::WindowText::line_spacing</definition>
+        <argsstring></argsstring>
+        <name>line_spacing</name>
+        <qualifiedname>Game_Windows::WindowText::line_spacing</qualifiedname>
+        <initializer>= 4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="55" column="5" bodyfile="game_windows.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___windows_1_1_window_text_1aefbec7dc8cfc481a7535e56bf7c382e7" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Windows::WindowText::draw_gradient</definition>
+        <argsstring></argsstring>
+        <name>draw_gradient</name>
+        <qualifiedname>Game_Windows::WindowText::draw_gradient</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="56" column="6" bodyfile="game_windows.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___windows_1_1_window_text_1a4c468d5e4c5269829510ce0c0cec7a9d" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Windows::WindowText::draw_shadow</definition>
+        <argsstring></argsstring>
+        <name>draw_shadow</name>
+        <qualifiedname>Game_Windows::WindowText::draw_shadow</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="57" column="6" bodyfile="game_windows.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___windows_1_1_window_text_1a9ef7dee2ec365ed1c67e93b0b44efc7c" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Windows::WindowText::bold</definition>
+        <argsstring></argsstring>
+        <name>bold</name>
+        <qualifiedname>Game_Windows::WindowText::bold</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="58" column="6" bodyfile="game_windows.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___windows_1_1_window_text_1a349f76d6002b7b0770017e8aada0a45f" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Windows::WindowText::italic</definition>
+        <argsstring></argsstring>
+        <name>italic</name>
+        <qualifiedname>Game_Windows::WindowText::italic</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="59" column="6" bodyfile="game_windows.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_windows.h" line="48" column="1" bodyfile="game_windows.h" bodystart="48" bodyend="60"/>
+    <listofallmembers>
+      <member refid="struct_game___windows_1_1_window_text_1a9ef7dee2ec365ed1c67e93b0b44efc7c" prot="public" virt="non-virtual"><scope>Game_Windows::WindowText</scope><name>bold</name></member>
+      <member refid="struct_game___windows_1_1_window_text_1aefbec7dc8cfc481a7535e56bf7c382e7" prot="public" virt="non-virtual"><scope>Game_Windows::WindowText</scope><name>draw_gradient</name></member>
+      <member refid="struct_game___windows_1_1_window_text_1a4c468d5e4c5269829510ce0c0cec7a9d" prot="public" virt="non-virtual"><scope>Game_Windows::WindowText</scope><name>draw_shadow</name></member>
+      <member refid="struct_game___windows_1_1_window_text_1ad23808a54f183b2cf581c29b9fb8cfaa" prot="public" virt="non-virtual"><scope>Game_Windows::WindowText</scope><name>font_name</name></member>
+      <member refid="struct_game___windows_1_1_window_text_1a88b8de6177617bd1d34232ea621ae6e9" prot="public" virt="non-virtual"><scope>Game_Windows::WindowText</scope><name>font_size</name></member>
+      <member refid="struct_game___windows_1_1_window_text_1a349f76d6002b7b0770017e8aada0a45f" prot="public" virt="non-virtual"><scope>Game_Windows::WindowText</scope><name>italic</name></member>
+      <member refid="struct_game___windows_1_1_window_text_1aec42d111bf5d5713d31b93da96806cdb" prot="public" virt="non-virtual"><scope>Game_Windows::WindowText</scope><name>letter_spacing</name></member>
+      <member refid="struct_game___windows_1_1_window_text_1a4eca7c4789afef56ef529efeef7b3286" prot="public" virt="non-virtual"><scope>Game_Windows::WindowText</scope><name>line_spacing</name></member>
+      <member refid="struct_game___windows_1_1_window_text_1a65b0aa24141cbbf34d9c096f083d7f95" prot="public" virt="non-virtual"><scope>Game_Windows::WindowText</scope><name>position_x</name></member>
+      <member refid="struct_game___windows_1_1_window_text_1a8041faf6338f5acb59ba53c3418086de" prot="public" virt="non-virtual"><scope>Game_Windows::WindowText</scope><name>position_y</name></member>
+      <member refid="struct_game___windows_1_1_window_text_1a430a1dd0c89a15573003b815c6e317ed" prot="public" virt="non-virtual"><scope>Game_Windows::WindowText</scope><name>text</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

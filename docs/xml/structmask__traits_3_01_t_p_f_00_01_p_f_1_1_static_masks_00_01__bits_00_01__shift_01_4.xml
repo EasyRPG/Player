@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structmask__traits_3_01_t_p_f_00_01_p_f_1_1_static_masks_00_01__bits_00_01__shift_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;</compoundname>
+    <includes refid="pixel__format_8h" local="no">pixel_format.h</includes>
+    <templateparamlist>
+      <param>
+        <type>class TPF</type>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>_bits</declname>
+        <defname>_bits</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>_shift</declname>
+        <defname>_shift</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="structmask__traits_3_01_t_p_f_00_01_p_f_1_1_static_masks_00_01__bits_00_01__shift_01_4_1adca6b8e09d0530573459f0bfff9e9adb" prot="public" static="yes" mutable="no">
+        <type>const int</type>
+        <definition>const int mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;::_byte</definition>
+        <argsstring></argsstring>
+        <name>_byte</name>
+        <qualifiedname>mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;::_byte</qualifiedname>
+        <initializer>= _shift / 8</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="445" column="18" bodyfile="pixel_format.h" bodystart="445" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmask__traits_3_01_t_p_f_00_01_p_f_1_1_static_masks_00_01__bits_00_01__shift_01_4_1ad424e09a5780c2003b7039ca088eacb4" prot="public" static="yes" mutable="no">
+        <type>const int</type>
+        <definition>const int mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;::_mask</definition>
+        <argsstring></argsstring>
+        <name>_mask</name>
+        <qualifiedname>mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;::_mask</qualifiedname>
+        <initializer>= ((1 &lt;&lt; _bits)-1) &lt;&lt; _shift</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="446" column="18" bodyfile="pixel_format.h" bodystart="446" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="structmask__traits_3_01_t_p_f_00_01_p_f_1_1_static_masks_00_01__bits_00_01__shift_01_4_1ab87f06d2cecec3864fdcc905b49b1649" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;::bits</definition>
+        <argsstring>(const Component &amp;)</argsstring>
+        <name>bits</name>
+        <qualifiedname>mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;::bits</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_component" kindref="compound">Component</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="447" column="19" bodyfile="pixel_format.h" bodystart="447" bodyend="447"/>
+      </memberdef>
+      <memberdef kind="function" id="structmask__traits_3_01_t_p_f_00_01_p_f_1_1_static_masks_00_01__bits_00_01__shift_01_4_1a5b1273ac56f13dc40d4aa3451a13d650" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;::shift</definition>
+        <argsstring>(const Component &amp;)</argsstring>
+        <name>shift</name>
+        <qualifiedname>mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;::shift</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_component" kindref="compound">Component</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="448" column="19" bodyfile="pixel_format.h" bodystart="448" bodyend="448"/>
+      </memberdef>
+      <memberdef kind="function" id="structmask__traits_3_01_t_p_f_00_01_p_f_1_1_static_masks_00_01__bits_00_01__shift_01_4_1ae4d31d5170c4492d21cfedc14041f8ee" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;::byte</definition>
+        <argsstring>(const Component &amp;)</argsstring>
+        <name>byte</name>
+        <qualifiedname>mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;::byte</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_component" kindref="compound">Component</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="449" column="19" bodyfile="pixel_format.h" bodystart="449" bodyend="449"/>
+      </memberdef>
+      <memberdef kind="function" id="structmask__traits_3_01_t_p_f_00_01_p_f_1_1_static_masks_00_01__bits_00_01__shift_01_4_1a002010fc0d857cee071b94ca36314514" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;::mask</definition>
+        <argsstring>(const Component &amp;)</argsstring>
+        <name>mask</name>
+        <qualifiedname>mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;::mask</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_component" kindref="compound">Component</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="450" column="19" bodyfile="pixel_format.h" bodystart="450" bodyend="450"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pixel_format.h" line="444" column="1" bodyfile="pixel_format.h" bodystart="444" bodyend="451"/>
+    <listofallmembers>
+      <member refid="structmask__traits_3_01_t_p_f_00_01_p_f_1_1_static_masks_00_01__bits_00_01__shift_01_4_1adca6b8e09d0530573459f0bfff9e9adb" prot="public" virt="non-virtual"><scope>mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;</scope><name>_byte</name></member>
+      <member refid="structmask__traits_3_01_t_p_f_00_01_p_f_1_1_static_masks_00_01__bits_00_01__shift_01_4_1ad424e09a5780c2003b7039ca088eacb4" prot="public" virt="non-virtual"><scope>mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;</scope><name>_mask</name></member>
+      <member refid="structmask__traits_3_01_t_p_f_00_01_p_f_1_1_static_masks_00_01__bits_00_01__shift_01_4_1ab87f06d2cecec3864fdcc905b49b1649" prot="public" virt="non-virtual"><scope>mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;</scope><name>bits</name></member>
+      <member refid="structmask__traits_3_01_t_p_f_00_01_p_f_1_1_static_masks_00_01__bits_00_01__shift_01_4_1ae4d31d5170c4492d21cfedc14041f8ee" prot="public" virt="non-virtual"><scope>mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;</scope><name>byte</name></member>
+      <member refid="structmask__traits_3_01_t_p_f_00_01_p_f_1_1_static_masks_00_01__bits_00_01__shift_01_4_1a002010fc0d857cee071b94ca36314514" prot="public" virt="non-virtual"><scope>mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;</scope><name>mask</name></member>
+      <member refid="structmask__traits_3_01_t_p_f_00_01_p_f_1_1_static_masks_00_01__bits_00_01__shift_01_4_1a5b1273ac56f13dc40d4aa3451a13d650" prot="public" virt="non-virtual"><scope>mask_traits&lt; TPF, PF::StaticMasks, _bits, _shift &gt;</scope><name>shift</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

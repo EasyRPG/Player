@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_window___settings_1_1_stack_frame" kind="struct" language="C++" prot="public">
+    <compoundname>Window_Settings::StackFrame</compoundname>
+    <includes refid="window__settings_8h" local="no">window_settings.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_window___settings_1_1_stack_frame_1a726281b4aa2f6ad1ebc484d13da5b37c" prot="public" static="no" mutable="no">
+        <type><ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562" kindref="member">UiMode</ref></type>
+        <definition>UiMode Window_Settings::StackFrame::uimode</definition>
+        <argsstring></argsstring>
+        <name>uimode</name>
+        <qualifiedname>Window_Settings::StackFrame::uimode</qualifiedname>
+        <initializer>= <ref refid="class_window___settings_1a2b1d3896609700d9a59d684b50e43562a32c65fb5e75649fd5b7023df88c972da" kindref="member">eNone</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="83" column="8" bodyfile="window_settings.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___settings_1_1_stack_frame_1af027ac053b2ae0d5d92fe3e5a57da7ca" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Settings::StackFrame::arg</definition>
+        <argsstring></argsstring>
+        <name>arg</name>
+        <qualifiedname>Window_Settings::StackFrame::arg</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="84" column="5" bodyfile="window_settings.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___settings_1_1_stack_frame_1a1921e6c45dce3e3a5daf071404e2abaa" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Settings::StackFrame::scratch</definition>
+        <argsstring></argsstring>
+        <name>scratch</name>
+        <qualifiedname>Window_Settings::StackFrame::scratch</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="85" column="5" bodyfile="window_settings.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___settings_1_1_stack_frame_1a09228e39b9a33597416478e6ad2ad61b" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Settings::StackFrame::scratch2</definition>
+        <argsstring></argsstring>
+        <name>scratch2</name>
+        <qualifiedname>Window_Settings::StackFrame::scratch2</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="86" column="5" bodyfile="window_settings.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_window___settings_1_1_stack_frame_1adb56fd7a5d0eba7d08d5f6f3e6caa674" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="struct_window___settings_1_1_option" kindref="compound">Option</ref> &gt;</type>
+        <definition>std::vector&lt;Option&gt; Window_Settings::StackFrame::options</definition>
+        <argsstring></argsstring>
+        <name>options</name>
+        <qualifiedname>Window_Settings::StackFrame::options</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_settings.h" line="87" column="13" bodyfile="window_settings.h" bodystart="87" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="window_settings.h" line="82" column="1" bodyfile="window_settings.h" bodystart="82" bodyend="88"/>
+    <listofallmembers>
+      <member refid="struct_window___settings_1_1_stack_frame_1af027ac053b2ae0d5d92fe3e5a57da7ca" prot="public" virt="non-virtual"><scope>Window_Settings::StackFrame</scope><name>arg</name></member>
+      <member refid="struct_window___settings_1_1_stack_frame_1adb56fd7a5d0eba7d08d5f6f3e6caa674" prot="public" virt="non-virtual"><scope>Window_Settings::StackFrame</scope><name>options</name></member>
+      <member refid="struct_window___settings_1_1_stack_frame_1a1921e6c45dce3e3a5daf071404e2abaa" prot="public" virt="non-virtual"><scope>Window_Settings::StackFrame</scope><name>scratch</name></member>
+      <member refid="struct_window___settings_1_1_stack_frame_1a09228e39b9a33597416478e6ad2ad61b" prot="public" virt="non-virtual"><scope>Window_Settings::StackFrame</scope><name>scratch2</name></member>
+      <member refid="struct_window___settings_1_1_stack_frame_1a726281b4aa2f6ad1ebc484d13da5b37c" prot="public" virt="non-virtual"><scope>Window_Settings::StackFrame</scope><name>uimode</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

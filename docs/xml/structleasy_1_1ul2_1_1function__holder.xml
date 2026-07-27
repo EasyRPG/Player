@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ul2_1_1function__holder" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ul2::function_holder</compoundname>
+    <includes refid="state_8hpp" local="no">state.hpp</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structleasy_1_1ul2_1_1function__holder_1a2df59448bc2217df0e9f6477e3d33c36" prot="public" static="no" mutable="no">
+        <type>std::function&lt; int(<ref refid="structlua___state" kindref="compound">lua_State</ref> *)&gt;</type>
+        <definition>std::function&lt;int(lua_State*)&gt; leasy::ul2::function_holder::fn</definition>
+        <argsstring></argsstring>
+        <name>fn</name>
+        <qualifiedname>leasy::ul2::function_holder::fn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="39" column="19" bodyfile="leasy/ul2/state.hpp" bodystart="39" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ul2/state.hpp" line="38" column="3" bodyfile="leasy/ul2/state.hpp" bodystart="38" bodyend="40"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ul2_1_1function__holder_1a2df59448bc2217df0e9f6477e3d33c36" prot="public" virt="non-virtual"><scope>leasy::ul2::function_holder</scope><name>fn</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

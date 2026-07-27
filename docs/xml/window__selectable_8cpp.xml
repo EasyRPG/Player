@@ -1,0 +1,1265 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="window__selectable_8cpp" kind="file" language="C++">
+    <compoundname>window_selectable.cpp</compoundname>
+    <includes refid="window__selectable_8h" local="yes">window_selectable.h</includes>
+    <includes refid="game__system_8h" local="yes">game_system.h</includes>
+    <includes refid="input_8h" local="yes">input.h</includes>
+    <includes refid="util__macro_8h" local="yes">util_macro.h</includes>
+    <includes refid="bitmap_8h" local="yes">bitmap.h</includes>
+    <incdepgraph>
+      <node id="60">
+        <label>async_handler.h</label>
+        <link refid="async__handler_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="91">
+        <label>async_op.h</label>
+        <link refid="async__op_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>bitmap.h</label>
+        <link refid="bitmap_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="104">
+        <label>config_param.h</label>
+        <link refid="config__param_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+        <childnode refid="110" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="93">
+        <label>drawable_list.h</label>
+        <link refid="drawable__list_8h"/>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+      </node>
+      <node id="105">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="107" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>flash.h</label>
+        <link refid="flash_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="99">
+        <label>flat_map.h</label>
+        <link refid="flat__map_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+      </node>
+      <node id="85">
+        <label>font.h</label>
+        <link refid="font_8h"/>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>game_actor.h</label>
+        <link refid="game__actor_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>game_battler.h</label>
+        <link refid="game__battler_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+      </node>
+      <node id="111">
+        <label>game_clock.h</label>
+        <link refid="game__clock_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="112" relation="include">
+        </childnode>
+        <childnode refid="113" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="103">
+        <label>game_config.h</label>
+        <link refid="game__config_8h"/>
+        <childnode refid="104" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="87">
+        <label>game_system.h</label>
+        <link refid="game__system_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="94">
+        <label>input.h</label>
+        <link refid="input_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+      </node>
+      <node id="96">
+        <label>input_buttons.h</label>
+        <link refid="input__buttons_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+      </node>
+      <node id="101">
+        <label>input_source.h</label>
+        <link refid="input__source_8h"/>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+        <childnode refid="111" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="100">
+        <label>keys.h</label>
+        <link refid="keys_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+      </node>
+      <node id="64">
+        <label>lcf/data.h</label>
+        <link refid="data_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+      </node>
+      <node id="63">
+        <label>main_data.h</label>
+        <link refid="main__data_8h"/>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>opacity.h</label>
+        <link refid="opacity_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="22">
+        <label>pixel_format.h</label>
+        <link refid="pixel__format_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>pixman_image_ptr.h</label>
+        <link refid="pixman__image__ptr_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="113">
+        <label>platform/clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="112" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+        <childnode refid="114" relation="include">
+        </childnode>
+        <childnode refid="115" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>point.h</label>
+        <link refid="point_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>rect.h</label>
+        <link refid="rect_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="90">
+        <label>scene.h</label>
+        <link refid="scene_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="59">
+        <label>sprite.h</label>
+        <link refid="sprite_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="62">
+        <label>sprite_actor.h</label>
+        <link refid="sprite__actor_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+      </node>
+      <node id="58">
+        <label>sprite_battler.h</label>
+        <link refid="sprite__battler_8h"/>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+      </node>
+      <node id="61">
+        <label>sprite_weapon.h</label>
+        <link refid="sprite__weapon_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>state.h</label>
+        <link refid="state_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+      </node>
+      <node id="115">
+        <label>std_clock.h</label>
+        <link refid="std__clock_8h"/>
+        <childnode refid="112" relation="include">
+        </childnode>
+        <childnode refid="114" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>text.h</label>
+        <link refid="text_8h"/>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>tone.h</label>
+        <link refid="tone_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="89">
+        <label>transition.h</label>
+        <link refid="transition_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="116">
+        <label>util_macro.h</label>
+        <link refid="util__macro_8h"/>
+      </node>
+      <node id="26">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>window.h</label>
+        <link refid="window_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>window_base.h</label>
+        <link refid="window__base_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="84">
+        <label>window_help.h</label>
+        <link refid="window__help_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>window_selectable.cpp</label>
+        <link refid="window__selectable_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="116" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>window_selectable.h</label>
+        <link refid="window__selectable_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>algorithm</label>
+      </node>
+      <node id="5">
+        <label>array</label>
+      </node>
+      <node id="95">
+        <label>bitset</label>
+      </node>
+      <node id="16">
+        <label>cassert</label>
+      </node>
+      <node id="112">
+        <label>chrono</label>
+      </node>
+      <node id="40">
+        <label>climits</label>
+      </node>
+      <node id="13">
+        <label>cstdint</label>
+      </node>
+      <node id="106">
+        <label>cstdio</label>
+      </node>
+      <node id="23">
+        <label>cstdlib</label>
+      </node>
+      <node id="24">
+        <label>cstring</label>
+      </node>
+      <node id="27">
+        <label>ctime</label>
+      </node>
+      <node id="31">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="32">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="102">
+        <label>fstream</label>
+      </node>
+      <node id="3">
+        <label>functional</label>
+      </node>
+      <node id="97">
+        <label>initializer_list</label>
+      </node>
+      <node id="107">
+        <label>ios</label>
+      </node>
+      <node id="42">
+        <label>istream</label>
+      </node>
+      <node id="55">
+        <label>lcf/dbbitarray.h</label>
+      </node>
+      <node id="30">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="98">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="110">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="108">
+        <label>lcf/inireader.h</label>
+      </node>
+      <node id="50">
+        <label>lcf/rpg/actor.h</label>
+      </node>
+      <node id="71">
+        <label>lcf/rpg/animation.h</label>
+      </node>
+      <node id="69">
+        <label>lcf/rpg/attribute.h</label>
+      </node>
+      <node id="77">
+        <label>lcf/rpg/battlecommand.h</label>
+      </node>
+      <node id="78">
+        <label>lcf/rpg/battleranimation.h</label>
+      </node>
+      <node id="72">
+        <label>lcf/rpg/chipset.h</label>
+      </node>
+      <node id="76">
+        <label>lcf/rpg/class.h</label>
+      </node>
+      <node id="75">
+        <label>lcf/rpg/commonevent.h</label>
+      </node>
+      <node id="83">
+        <label>lcf/rpg/database.h</label>
+      </node>
+      <node id="67">
+        <label>lcf/rpg/enemy.h</label>
+      </node>
+      <node id="81">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="48">
+        <label>lcf/rpg/fwd.h</label>
+      </node>
+      <node id="66">
+        <label>lcf/rpg/item.h</label>
+      </node>
+      <node id="51">
+        <label>lcf/rpg/learning.h</label>
+      </node>
+      <node id="80">
+        <label>lcf/rpg/music.h</label>
+      </node>
+      <node id="49">
+        <label>lcf/rpg/saveactor.h</label>
+      </node>
+      <node id="88">
+        <label>lcf/rpg/savesystem.h</label>
+      </node>
+      <node id="65">
+        <label>lcf/rpg/skill.h</label>
+      </node>
+      <node id="79">
+        <label>lcf/rpg/sound.h</label>
+      </node>
+      <node id="54">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="74">
+        <label>lcf/rpg/system.h</label>
+      </node>
+      <node id="73">
+        <label>lcf/rpg/terms.h</label>
+      </node>
+      <node id="70">
+        <label>lcf/rpg/terrain.h</label>
+      </node>
+      <node id="82">
+        <label>lcf/rpg/treemap.h</label>
+      </node>
+      <node id="68">
+        <label>lcf/rpg/troop.h</label>
+      </node>
+      <node id="86">
+        <label>lcf/scope_guard.h</label>
+      </node>
+      <node id="34">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="29">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="53">
+        <label>limits</label>
+      </node>
+      <node id="14">
+        <label>map</label>
+      </node>
+      <node id="11">
+        <label>memory</label>
+      </node>
+      <node id="20">
+        <label>ostream</label>
+      </node>
+      <node id="17">
+        <label>pixman.h</label>
+      </node>
+      <node id="6">
+        <label>string</label>
+      </node>
+      <node id="114">
+        <label>thread</label>
+      </node>
+      <node id="19">
+        <label>tuple</label>
+      </node>
+      <node id="109">
+        <label>type_traits</label>
+      </node>
+      <node id="44">
+        <label>unordered_map</label>
+      </node>
+      <node id="92">
+        <label>utility</label>
+      </node>
+      <node id="15">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="window__selectable_8cpp_1a090e181d740ac15dabd30990aa910333" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int arrow_animation_frames</definition>
+        <argsstring></argsstring>
+        <name>arrow_animation_frames</name>
+        <initializer>= 20</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_selectable.cpp" line="25" column="15" bodyfile="window_selectable.cpp" bodystart="25" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="window__selectable_8h" kindref="compound">window_selectable.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__system_8h" kindref="compound">game_system.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="input_8h" kindref="compound">input.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="util__macro_8h" kindref="compound">util_macro.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="bitmap_8h" kindref="compound">bitmap.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25" refid="window__selectable_8cpp_1a090e181d740ac15dabd30990aa910333" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="scene__debug_8cpp_1a090e181d740ac15dabd30990aa910333" kindref="member">arrow_animation_frames</ref><sp/>=<sp/>20;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Constructor</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="class_window___selectable_1a432f6e58c02d8f2d6973158af56de9f2" refkind="member"><highlight class="normal"><ref refid="class_window___selectable_1a432f6e58c02d8f2d6973158af56de9f2" kindref="member">Window_Selectable::Window_Selectable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ix,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iy,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iwidth,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iheight)<sp/>:</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___base_1ab4bd342e1f0f125b9c823b0903979648" kindref="member">Window_Base</ref>(ix,<sp/>iy,<sp/>iwidth,<sp/>iheight)<sp/>{<sp/>}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="class_window___selectable_1aecc125d715ca5bcd511c23bb6b897648" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1aecc125d715ca5bcd511c23bb6b897648" kindref="member">Window_Selectable::CreateContents</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>w<sp/>=<sp/>std::max(0,<sp/><ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>-<sp/><ref refid="class_window_1a7783ccb4806cd474920af47bfb6e34de" kindref="member">border_x</ref><sp/>*<sp/>2);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>h<sp/>=<sp/>std::max(0,<sp/>std::max(<ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>-<sp/><ref refid="class_window_1acfcd1e1710f455bc7e300a0e1969a819" kindref="member">border_y</ref><sp/>*<sp/>2,<sp/><ref refid="class_window___selectable_1a249bdfb36eff3e53a8ba01057c31dfa1" kindref="member">GetRowMax</ref>()<sp/>*<sp/><ref refid="class_window___selectable_1a4042f282e2b3b74896c7e067b679aa17" kindref="member">menu_item_height</ref>));</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window_1ade4932d29b75cdd8f14b474006210505" kindref="member">SetContents</ref>(<ref refid="class_bitmap_1a891b66af37d944992f953d647535b9ac" kindref="member">Bitmap::Create</ref>(w,<sp/>h));</highlight></codeline>
+<codeline lineno="36"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Properties</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="class_window___selectable_1af12367a9070a2bdc41c3e1ac40f23186" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1af12367a9070a2bdc41c3e1ac40f23186" kindref="member">Window_Selectable::GetIndex</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref>;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="43" refid="class_window___selectable_1aaf928ad0ab55c9aaff10ade1d3d0e01b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1aaf928ad0ab55c9aaff10ade1d3d0e01b" kindref="member">Window_Selectable::SetIndex</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nindex)<sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>=<sp/><ref refid="util__macro_8h_1adf77a48fdc00d2f05c34a228d1e1c237" kindref="member">min</ref>(nindex,<sp/><ref refid="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" kindref="member">item_max</ref><sp/>-<sp/>1);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1a30d9a51374e74ae0a59da6bf9ae77d79" kindref="member">active</ref><sp/>&amp;&amp;<sp/><ref refid="class_window___selectable_1a9b0e8113100fc890a6e54204e7d59d1a" kindref="member">help_window</ref><sp/>!=<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a1dfb10711a23fb5feac2c0392e423b06" kindref="member">UpdateHelp</ref>();</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a57004fa930f77fcfba2442ff45de2f2c" kindref="member">UpdateCursorRect</ref>();</highlight></codeline>
+<codeline lineno="49"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="50" refid="class_window___selectable_1ab8787975859c1af609b10560fb0ee8d5" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1ab8787975859c1af609b10560fb0ee8d5" kindref="member">Window_Selectable::GetColumnMax</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref>;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="53" refid="class_window___selectable_1ae39cda16f0198a9bd33983b1cf31b5a8" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1ae39cda16f0198a9bd33983b1cf31b5a8" kindref="member">Window_Selectable::SetColumnMax</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ncolmax)<sp/>{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref><sp/>=<sp/>ncolmax;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="56" refid="class_window___selectable_1a249bdfb36eff3e53a8ba01057c31dfa1" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1a249bdfb36eff3e53a8ba01057c31dfa1" kindref="member">Window_Selectable::GetRowMax</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(<ref refid="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" kindref="member">item_max</ref><sp/>+<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref><sp/>-<sp/>1)<sp/>/<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref>;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="59" refid="class_window___selectable_1ad5eae54b7a337b0aa35871ee22024bdf" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1ad5eae54b7a337b0aa35871ee22024bdf" kindref="member">Window_Selectable::GetTopRow</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_window_1a8dde2b1118eb9b211156c78f95e82037" kindref="member">oy</ref><sp/>/<sp/><ref refid="class_window___selectable_1a4042f282e2b3b74896c7e067b679aa17" kindref="member">menu_item_height</ref>;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="62" refid="class_window___selectable_1a45ae718509f3677b47ca7d1ed18a55ff" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1a45ae718509f3677b47ca7d1ed18a55ff" kindref="member">Window_Selectable::SetTopRow</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>row)<sp/>{</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(row<sp/>&lt;<sp/>0)<sp/>row<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(row<sp/>&gt;<sp/><ref refid="class_window___selectable_1a249bdfb36eff3e53a8ba01057c31dfa1" kindref="member">GetRowMax</ref>()<sp/>-<sp/>1)<sp/>row<sp/>=<sp/><ref refid="class_window___selectable_1a249bdfb36eff3e53a8ba01057c31dfa1" kindref="member">GetRowMax</ref>()<sp/>-<sp/>1;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window_1a554315b28175a03de936f5f97cf5e4cd" kindref="member">SetOy</ref>(row<sp/>*<sp/><ref refid="class_window___selectable_1a4042f282e2b3b74896c7e067b679aa17" kindref="member">menu_item_height</ref>);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="67" refid="class_window___selectable_1a7f71a0b8145cf6211abac7cb7472e0dd" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1a7f71a0b8145cf6211abac7cb7472e0dd" kindref="member">Window_Selectable::GetPageRowMax</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref><sp/>-<sp/><ref refid="class_window_1acfcd1e1710f455bc7e300a0e1969a819" kindref="member">border_y</ref><sp/>*<sp/>2)<sp/>/<sp/><ref refid="class_window___selectable_1a4042f282e2b3b74896c7e067b679aa17" kindref="member">menu_item_height</ref>;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="70" refid="class_window___selectable_1a2a2720627e3fbc400800e1de5534a685" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1a2a2720627e3fbc400800e1de5534a685" kindref="member">Window_Selectable::GetPageItemMax</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1a7f71a0b8145cf6211abac7cb7472e0dd" kindref="member">GetPageRowMax</ref>()<sp/>*<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref>;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="class_window___selectable_1a8f2add0e27d97659ed742e8d82668dae" refkind="member"><highlight class="normal"><ref refid="class_rect" kindref="compound">Rect</ref><sp/><ref refid="class_window___selectable_1a8f2add0e27d97659ed742e8d82668dae" kindref="member">Window_Selectable::GetItemRect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_rect" kindref="compound">Rect</ref><sp/>rect<sp/>=<sp/><ref refid="class_rect" kindref="compound">Rect</ref>();</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>rect.<ref refid="class_rect_1a367714e71d566668addb140c7981b5bc" kindref="member">width</ref><sp/>=<sp/>(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>/<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref><sp/>-<sp/>16);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>rect.<ref refid="class_rect_1a64d1ef14e429e1816539de4c54361e55" kindref="member">x</ref><sp/>=<sp/>(<ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>%<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref><sp/>*<sp/>(rect.<ref refid="class_rect_1a367714e71d566668addb140c7981b5bc" kindref="member">width</ref><sp/>+<sp/>16));</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>rect.<ref refid="class_rect_1ad79d7bf12771a81627a672452437011d" kindref="member">height</ref><sp/>=<sp/><ref refid="class_window___selectable_1a4042f282e2b3b74896c7e067b679aa17" kindref="member">menu_item_height</ref><sp/>-<sp/>4;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>rect.<ref refid="class_rect_1a1e37b6f8a4fb0d68ba22c8fffffab0a4" kindref="member">y</ref><sp/>=<sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>/<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref><sp/>*<sp/><ref refid="class_window___selectable_1a4042f282e2b3b74896c7e067b679aa17" kindref="member">menu_item_height</ref><sp/>+<sp/><ref refid="class_window___selectable_1a4042f282e2b3b74896c7e067b679aa17" kindref="member">menu_item_height</ref><sp/>/<sp/>8;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>rect;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83" refid="class_window___selectable_1ac5cba35d9b5e704f93fbfe32b319e55e" refkind="member"><highlight class="normal"><ref refid="class_window___help" kindref="compound">Window_Help</ref>*<sp/><ref refid="class_window___selectable_1ac5cba35d9b5e704f93fbfe32b319e55e" kindref="member">Window_Selectable::GetHelpWindow</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1a9b0e8113100fc890a6e54204e7d59d1a" kindref="member">help_window</ref>;</highlight></codeline>
+<codeline lineno="85"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87" refid="class_window___selectable_1a106200ec57a53c50468bd77ded0faf36" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1a106200ec57a53c50468bd77ded0faf36" kindref="member">Window_Selectable::SetHelpWindow</ref>(<ref refid="class_window___help" kindref="compound">Window_Help</ref>*<sp/>nhelp_window)<sp/>{</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a9b0e8113100fc890a6e54204e7d59d1a" kindref="member">help_window</ref><sp/>=<sp/>nhelp_window;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1a30d9a51374e74ae0a59da6bf9ae77d79" kindref="member">active</ref><sp/>&amp;&amp;<sp/><ref refid="class_window___selectable_1a9b0e8113100fc890a6e54204e7d59d1a" kindref="member">help_window</ref><sp/>!=<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a1dfb10711a23fb5feac2c0392e423b06" kindref="member">UpdateHelp</ref>();</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94" refid="class_window___selectable_1a1dfb10711a23fb5feac2c0392e423b06" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1a1dfb10711a23fb5feac2c0392e423b06" kindref="member">Window_Selectable::UpdateHelp</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window___selectable_1a8eacf2a319bd83a3c07849e1ad254dd9" kindref="member">UpdateHelpFn</ref><sp/>&amp;&amp;<sp/><ref refid="class_window___selectable_1a9b0e8113100fc890a6e54204e7d59d1a" kindref="member">help_window</ref><sp/>!=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a8eacf2a319bd83a3c07849e1ad254dd9" kindref="member">UpdateHelpFn</ref>(*<ref refid="class_window___selectable_1a9b0e8113100fc890a6e54204e7d59d1a" kindref="member">help_window</ref>,<sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref>);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="98"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Update<sp/>Cursor<sp/>Rect</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101" refid="class_window___selectable_1a57004fa930f77fcfba2442ff45de2f2c" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1a57004fa930f77fcfba2442ff45de2f2c" kindref="member">Window_Selectable::UpdateCursorRect</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>cursor_width<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>&lt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window_1a60601365a7ade2022e7c1445ba04ff6c" kindref="member">SetCursorRect</ref>(<ref refid="class_rect" kindref="compound">Rect</ref>());</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>row<sp/>=<sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>/<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref>;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(row<sp/>&lt;<sp/><ref refid="class_window___selectable_1ad5eae54b7a337b0aa35871ee22024bdf" kindref="member">GetTopRow</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a45ae718509f3677b47ca7d1ed18a55ff" kindref="member">SetTopRow</ref>(row);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(row<sp/>&gt;<sp/><ref refid="class_window___selectable_1ad5eae54b7a337b0aa35871ee22024bdf" kindref="member">GetTopRow</ref>()<sp/>+<sp/>(<ref refid="class_window___selectable_1a7f71a0b8145cf6211abac7cb7472e0dd" kindref="member">GetPageRowMax</ref>()<sp/>-<sp/>1))<sp/>{</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a45ae718509f3677b47ca7d1ed18a55ff" kindref="member">SetTopRow</ref>(row<sp/>-<sp/>(<ref refid="class_window___selectable_1a7f71a0b8145cf6211abac7cb7472e0dd" kindref="member">GetPageRowMax</ref>()<sp/>-<sp/>1));</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>cursor_width<sp/>=<sp/>(<ref refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" kindref="member">width</ref><sp/>/<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref><sp/>-<sp/>16)<sp/>+<sp/>8;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref><sp/>=<sp/>(<ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>%<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref><sp/>*<sp/>(cursor_width<sp/>+<sp/>8))<sp/>-<sp/>4;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref><sp/>=<sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>/<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref><sp/>*<sp/><ref refid="class_window___selectable_1a4042f282e2b3b74896c7e067b679aa17" kindref="member">menu_item_height</ref><sp/>-<sp/><ref refid="class_window_1a8dde2b1118eb9b211156c78f95e82037" kindref="member">oy</ref>;</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window_1a60601365a7ade2022e7c1445ba04ff6c" kindref="member">SetCursorRect</ref>(<ref refid="class_rect" kindref="compound">Rect</ref>(<ref refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" kindref="member">x</ref>,<sp/><ref refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" kindref="member">y</ref>,<sp/>cursor_width,<sp/><ref refid="class_window___selectable_1a4042f282e2b3b74896c7e067b679aa17" kindref="member">menu_item_height</ref>));</highlight></codeline>
+<codeline lineno="120"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122" refid="class_window___selectable_1a8412b5d1eb53e98330447d8e238ab5f2" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1a8412b5d1eb53e98330447d8e238ab5f2" kindref="member">Window_Selectable::UpdateArrows</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>show_up_arrow<sp/>=<sp/>(<ref refid="class_window___selectable_1ad5eae54b7a337b0aa35871ee22024bdf" kindref="member">GetTopRow</ref>()<sp/>&gt;<sp/>0);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>show_down_arrow<sp/>=<sp/>(<ref refid="class_window___selectable_1ad5eae54b7a337b0aa35871ee22024bdf" kindref="member">GetTopRow</ref>()<sp/>&lt;<sp/>(<ref refid="class_window___selectable_1a249bdfb36eff3e53a8ba01057c31dfa1" kindref="member">GetRowMax</ref>()<sp/>-<sp/><ref refid="class_window___selectable_1a7f71a0b8145cf6211abac7cb7472e0dd" kindref="member">GetPageRowMax</ref>()));</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(show_up_arrow<sp/>||<sp/>show_down_arrow)<sp/>{</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a039d27bee45f565c75a819923acf3865" kindref="member">arrow_frame</ref><sp/>=<sp/>(<ref refid="class_window___selectable_1a039d27bee45f565c75a819923acf3865" kindref="member">arrow_frame</ref><sp/>+<sp/>1)<sp/>%<sp/>(<ref refid="scene__debug_8cpp_1a090e181d740ac15dabd30990aa910333" kindref="member">arrow_animation_frames</ref><sp/>*<sp/>2);</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>arrow_visible<sp/>=<sp/>(<ref refid="class_window___selectable_1a039d27bee45f565c75a819923acf3865" kindref="member">arrow_frame</ref><sp/>&lt;<sp/><ref refid="scene__debug_8cpp_1a090e181d740ac15dabd30990aa910333" kindref="member">arrow_animation_frames</ref>);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window_1ab09359aa2d8084e2dadd5b854e24cff8" kindref="member">SetUpArrow</ref>(show_up_arrow<sp/>&amp;&amp;<sp/>arrow_visible);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window_1a620068c714ba998fac887fce18b89c38" kindref="member">SetDownArrow</ref>(show_down_arrow<sp/>&amp;&amp;<sp/>arrow_visible);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Update</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135" refid="class_window___selectable_1aff3576c095aee4a6de7851305389c628" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1aff3576c095aee4a6de7851305389c628" kindref="member">Window_Selectable::Update</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___base_1acaae99eb154cc5e203c2fc87af953725" kindref="member">Window_Base::Update</ref>();</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1a30d9a51374e74ae0a59da6bf9ae77d79" kindref="member">active</ref><sp/>&amp;&amp;<sp/><ref refid="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" kindref="member">item_max</ref><sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>&gt;=<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window___selectable_1ae0260f6237e92923599d4cc40254f6c8" kindref="member">scroll_dir</ref><sp/>!=<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a75400e1a71780a88c41bd8d89e9c4b3c" kindref="member">scroll_progress</ref>++;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window_1a554315b28175a03de936f5f97cf5e4cd" kindref="member">SetOy</ref>(<ref refid="class_window_1abbb96431e08ed99c32a87e654211cb09" kindref="member">GetOy</ref>()<sp/>+<sp/>(<ref refid="class_window___selectable_1a4042f282e2b3b74896c7e067b679aa17" kindref="member">menu_item_height</ref><sp/>*<sp/><ref refid="class_window___selectable_1a75400e1a71780a88c41bd8d89e9c4b3c" kindref="member">scroll_progress</ref><sp/>/<sp/>4<sp/>-<sp/><ref refid="class_window___selectable_1a4042f282e2b3b74896c7e067b679aa17" kindref="member">menu_item_height</ref><sp/>*<sp/>(<ref refid="class_window___selectable_1a75400e1a71780a88c41bd8d89e9c4b3c" kindref="member">scroll_progress</ref><sp/>-<sp/>1)<sp/>/<sp/>4)<sp/>*<sp/><ref refid="class_window___selectable_1ae0260f6237e92923599d4cc40254f6c8" kindref="member">scroll_dir</ref>);</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a8412b5d1eb53e98330447d8e238ab5f2" kindref="member">UpdateArrows</ref>();</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window___selectable_1a75400e1a71780a88c41bd8d89e9c4b3c" kindref="member">scroll_progress</ref><sp/>&lt;<sp/>4)<sp/>{</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1ae0260f6237e92923599d4cc40254f6c8" kindref="member">scroll_dir</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a75400e1a71780a88c41bd8d89e9c4b3c" kindref="member">scroll_progress</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1a30d9a51374e74ae0a59da6bf9ae77d79" kindref="member">active</ref><sp/>&amp;&amp;<sp/><ref refid="class_window___selectable_1a9b0e8113100fc890a6e54204e7d59d1a" kindref="member">help_window</ref><sp/>!=<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a1dfb10711a23fb5feac2c0392e423b06" kindref="member">UpdateHelp</ref>();</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a57004fa930f77fcfba2442ff45de2f2c" kindref="member">UpdateCursorRect</ref>();</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>old_index<sp/>=<sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref>;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>move_down<sp/>=<sp/>[&amp;]()<sp/>{</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>&lt;<sp/><ref refid="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" kindref="member">item_max</ref><sp/>-<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref><sp/>||<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref><sp/>==<sp/>1<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;SePlay(<ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;GetSystemSE(<ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;SFX_Cursor));</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>=<sp/>(<ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>+<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref>)<sp/>%<sp/><ref refid="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" kindref="member">item_max</ref>;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1ab6be4bcd3b976880b343d853d895a2dd" kindref="member">Input::IsTriggered</ref>(<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a9d978af135e87844101fc99e300c8f58" kindref="member">Input::DOWN</ref>)<sp/>||<sp/><ref refid="namespace_input_1ab6be4bcd3b976880b343d853d895a2dd" kindref="member">Input::IsTriggered</ref>(<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a27e758129d31f572d27ef0fed5f4a2cf" kindref="member">Input::SCROLL_DOWN</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>move_down();</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1aaeb9666738f2c5e2f66e55a72e3cde4d" kindref="member">Input::IsRepeated</ref>(<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a9d978af135e87844101fc99e300c8f58" kindref="member">Input::DOWN</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window___selectable_1a429136ca4c7bba644b7ea71a2e82aca4" kindref="member">endless_scrolling</ref><sp/>||<sp/>(<ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>+<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref>)<sp/>%<sp/><ref refid="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" kindref="member">item_max</ref><sp/>&gt;<sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>move_down();</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>move_up<sp/>=<sp/>[&amp;]()<sp/>{</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>&gt;=<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref><sp/>||<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref><sp/>==<sp/>1)<sp/>{</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;SePlay(<ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;GetSystemSE(<ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;SFX_Cursor));</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>=<sp/>(<ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>-<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref><sp/>+<sp/><ref refid="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" kindref="member">item_max</ref>)<sp/>%<sp/><ref refid="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" kindref="member">item_max</ref>;</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1ab6be4bcd3b976880b343d853d895a2dd" kindref="member">Input::IsTriggered</ref>(<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a9ec921f299e4319707dfe2060dea69cf" kindref="member">Input::UP</ref>)<sp/>||<sp/><ref refid="namespace_input_1ab6be4bcd3b976880b343d853d895a2dd" kindref="member">Input::IsTriggered</ref>(<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a79f453c64d2d86870165beb238ef3784" kindref="member">Input::SCROLL_UP</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>move_up();</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1aaeb9666738f2c5e2f66e55a72e3cde4d" kindref="member">Input::IsRepeated</ref>(<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a9ec921f299e4319707dfe2060dea69cf" kindref="member">Input::UP</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window___selectable_1a429136ca4c7bba644b7ea71a2e82aca4" kindref="member">endless_scrolling</ref><sp/>||<sp/>(<ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>-<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref><sp/>+<sp/><ref refid="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" kindref="member">item_max</ref>)<sp/>%<sp/><ref refid="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" kindref="member">item_max</ref><sp/>&lt;<sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>move_up();</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>page<sp/>up/down<sp/>is<sp/>limited<sp/>to<sp/>selectables<sp/>with<sp/>one<sp/>column</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref><sp/>==<sp/>1)<sp/>{</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1aaeb9666738f2c5e2f66e55a72e3cde4d" kindref="member">Input::IsRepeated</ref>(<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7aa33ab2a89b7f1bc5006751e9fe812401" kindref="member">Input::PAGE_DOWN</ref>)<sp/>&amp;&amp;<sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>&lt;<sp/><ref refid="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" kindref="member">item_max</ref><sp/>-<sp/>1)<sp/>{</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;SePlay(<ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;GetSystemSE(<ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;SFX_Cursor));</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>new_pos<sp/>=<sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>+<sp/><ref refid="class_window___selectable_1a7f71a0b8145cf6211abac7cb7472e0dd" kindref="member">GetPageRowMax</ref>();</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>=<sp/>(new_pos<sp/>&lt;=<sp/><ref refid="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" kindref="member">item_max</ref><sp/>-<sp/>1)<sp/>?<sp/>new_pos<sp/>:<sp/><ref refid="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" kindref="member">item_max</ref><sp/>-<sp/>1;</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1aaeb9666738f2c5e2f66e55a72e3cde4d" kindref="member">Input::IsRepeated</ref>(<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7ae0443f23b394b15cf3ffaf2d7295eac2" kindref="member">Input::PAGE_UP</ref>)<sp/>&amp;&amp;<sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;SePlay(<ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;GetSystemSE(<ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;SFX_Cursor));</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>new_pos<sp/>=<sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>-<sp/><ref refid="class_window___selectable_1a7f71a0b8145cf6211abac7cb7472e0dd" kindref="member">GetPageRowMax</ref>();</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>=<sp/>(new_pos<sp/>&gt;=<sp/>0)<sp/>?<sp/>new_pos<sp/>:<sp/>0;</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1aaeb9666738f2c5e2f66e55a72e3cde4d" kindref="member">Input::IsRepeated</ref>(<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7ad1462d708a410892b3b73461bf9c566a" kindref="member">Input::RIGHT</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref><sp/>&gt;=<sp/><ref refid="class_window___selectable_1ad9bec229a50e00bc3a5caa5d78127341" kindref="member">wrap_limit</ref><sp/>&amp;&amp;<sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>&lt;<sp/><ref refid="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" kindref="member">item_max</ref><sp/>-<sp/>1)<sp/>{</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;SePlay(<ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;GetSystemSE(<ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;SFX_Cursor));</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>+=<sp/>1;</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1aaeb9666738f2c5e2f66e55a72e3cde4d" kindref="member">Input::IsRepeated</ref>(<ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7ad44f3c96cfa9c446730f72f31c40c6a0" kindref="member">Input::LEFT</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref><sp/>&gt;=<sp/><ref refid="class_window___selectable_1ad9bec229a50e00bc3a5caa5d78127341" kindref="member">wrap_limit</ref><sp/>&amp;&amp;<sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;SePlay(<ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;GetSystemSE(<ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;SFX_Cursor));</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>-=<sp/>1;</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(std::abs(<ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>-<sp/>old_index)<sp/>&lt;=<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>row<sp/>=<sp/><ref refid="class_window___selectable_1aac00242370976fa0b3411b7c707e33b7" kindref="member">index</ref><sp/>/<sp/><ref refid="class_window___selectable_1a19702836b4b312d5d46c097e3675fd33" kindref="member">column_max</ref>;</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(row<sp/>&lt;<sp/><ref refid="class_window___selectable_1ad5eae54b7a337b0aa35871ee22024bdf" kindref="member">GetTopRow</ref>()<sp/>&amp;&amp;<sp/>old_index<sp/>&lt;<sp/><ref refid="class_window___selectable_1aae9ccaed4509fdd9105de5ca450618b1" kindref="member">item_max</ref><sp/>-<sp/>1)<sp/>{</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1ae0260f6237e92923599d4cc40254f6c8" kindref="member">scroll_dir</ref><sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(row<sp/>&gt;<sp/><ref refid="class_window___selectable_1ad5eae54b7a337b0aa35871ee22024bdf" kindref="member">GetTopRow</ref>()<sp/>+<sp/>(<ref refid="class_window___selectable_1a7f71a0b8145cf6211abac7cb7472e0dd" kindref="member">GetPageRowMax</ref>()<sp/>-<sp/>1)<sp/>&amp;&amp;<sp/>old_index<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1ae0260f6237e92923599d4cc40254f6c8" kindref="member">scroll_dir</ref><sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_window_1a30d9a51374e74ae0a59da6bf9ae77d79" kindref="member">active</ref><sp/>&amp;&amp;<sp/><ref refid="class_window___selectable_1a9b0e8113100fc890a6e54204e7d59d1a" kindref="member">help_window</ref><sp/>!=<sp/>NULL)<sp/>{</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a1dfb10711a23fb5feac2c0392e423b06" kindref="member">UpdateHelp</ref>();</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a57004fa930f77fcfba2442ff45de2f2c" kindref="member">UpdateCursorRect</ref>();</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a8412b5d1eb53e98330447d8e238ab5f2" kindref="member">UpdateArrows</ref>();</highlight></codeline>
+<codeline lineno="226"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"></highlight></codeline>
+<codeline lineno="228"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Set<sp/>endless<sp/>scrolling<sp/>state</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="229" refid="class_window___selectable_1aedc274bcfe73547d2f912c107ba5a32b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1aedc274bcfe73547d2f912c107ba5a32b" kindref="member">Window_Selectable::SetEndlessScrolling</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>state)<sp/>{</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a429136ca4c7bba644b7ea71a2e82aca4" kindref="member">endless_scrolling</ref><sp/>=<sp/>state;</highlight></codeline>
+<codeline lineno="231"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"></highlight></codeline>
+<codeline lineno="233"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Set<sp/>menu<sp/>item<sp/>height</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="234" refid="class_window___selectable_1a1bd20b1c0832c3ed15ef1422568c67ad" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1a1bd20b1c0832c3ed15ef1422568c67ad" kindref="member">Window_Selectable::SetMenuItemHeight</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1a4042f282e2b3b74896c7e067b679aa17" kindref="member">menu_item_height</ref><sp/>=<sp/><ref refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" kindref="member">height</ref>;</highlight></codeline>
+<codeline lineno="236"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"></highlight></codeline>
+<codeline lineno="238" refid="class_window___selectable_1aa9a57e76079fbb262feef2ebc7abede1" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_window___selectable_1aa9a57e76079fbb262feef2ebc7abede1" kindref="member">Window_Selectable::SetSingleColumnWrapping</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>wrap)<sp/>{</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_window___selectable_1ad9bec229a50e00bc3a5caa5d78127341" kindref="member">wrap_limit</ref><sp/>=<sp/>wrap<sp/>?<sp/>1<sp/>:<sp/>2;</highlight></codeline>
+<codeline lineno="240"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="window_selectable.cpp"/>
+  </compounddef>
+</doxygen>

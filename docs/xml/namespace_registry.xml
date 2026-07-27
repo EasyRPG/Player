@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_registry" kind="namespace" language="C++">
+    <compoundname>Registry</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_registry_1a48e6047396e72ca42cd2d74875b57523" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Registry::ReadStrValue</definition>
+        <argsstring>(HKEY hkey, std::string_view key, std::string_view val, REGVIEW view=NATIVE)</argsstring>
+        <name>ReadStrValue</name>
+        <qualifiedname>Registry::ReadStrValue</qualifiedname>
+        <param>
+          <type><ref refid="registry_8h_1ae2e607e1a220eb25c3a5b9b35184a7a1" kindref="member">HKEY</ref></type>
+          <declname>hkey</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>val</declname>
+        </param>
+        <param>
+          <type><ref refid="registry_8h_1a1624c0eda60c8ca0ef704bf74ccdd1e7" kindref="member">REGVIEW</ref></type>
+          <declname>view</declname>
+          <defval><ref refid="registry_8h_1a1624c0eda60c8ca0ef704bf74ccdd1e7a26741459537a01adc304c787cdd3243e" kindref="member">NATIVE</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reads string value. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="registry.h" line="46" column="13" bodyfile="registry_wine.cpp" bodystart="38" bodyend="154" declfile="registry.h" declline="46" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_registry_1a980195cdf103157609558f39708edab3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Registry::ReadBinValue</definition>
+        <argsstring>(HKEY hkey, std::string_view, std::string_view val, unsigned char *bin, REGVIEW view=NATIVE)</argsstring>
+        <name>ReadBinValue</name>
+        <qualifiedname>Registry::ReadBinValue</qualifiedname>
+        <param>
+          <type><ref refid="registry_8h_1ae2e607e1a220eb25c3a5b9b35184a7a1" kindref="member">HKEY</ref></type>
+          <declname>hkey</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>val</declname>
+        </param>
+        <param>
+          <type>unsigned char *</type>
+          <declname>bin</declname>
+        </param>
+        <param>
+          <type><ref refid="registry_8h_1a1624c0eda60c8ca0ef704bf74ccdd1e7" kindref="member">REGVIEW</ref></type>
+          <declname>view</declname>
+          <defval><ref refid="registry_8h_1a1624c0eda60c8ca0ef704bf74ccdd1e7a26741459537a01adc304c787cdd3243e" kindref="member">NATIVE</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reads binary value. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="registry.h" line="51" column="5" bodyfile="registry_wine.cpp" bodystart="156" bodyend="158" declfile="registry.h" declline="51" declcolumn="5"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="namespace_registry" kindref="compound">Registry</ref> namespace </para>
+    </detaileddescription>
+    <location file="registry.h" line="42" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1unordered__map_3_01_k_00_01_v_01_4_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ul2::lua_stack&lt; std::unordered_map&lt; K, V &gt; &gt;</compoundname>
+    <includes refid="lua__stack_8hpp" local="no">lua_stack.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type>typename K</type>
+      </param>
+      <param>
+        <type>typename V</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1unordered__map_3_01_k_00_01_v_01_4_01_4_1aa4d059227610a61d10e9215faf77abb9" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::unordered_map&lt; K, V &gt;</type>
+        <definition>static std::unordered_map&lt; K, V &gt; leasy::ul2::lua_stack&lt; std::unordered_map&lt; K, V &gt; &gt;::get</definition>
+        <argsstring>(lua_State *L, int index)</argsstring>
+        <name>get</name>
+        <qualifiedname>leasy::ul2::lua_stack&lt; std::unordered_map&lt; K, V &gt; &gt;::get</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/lua_stack.hpp" line="360" column="5" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="360" bodyend="380"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1unordered__map_3_01_k_00_01_v_01_4_01_4_1aad5be92417f36fd01a1a8dab498eeff4" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void leasy::ul2::lua_stack&lt; std::unordered_map&lt; K, V &gt; &gt;::push</definition>
+        <argsstring>(lua_State *L, const std::unordered_map&lt; K, V &gt; &amp;map)</argsstring>
+        <name>push</name>
+        <qualifiedname>leasy::ul2::lua_stack&lt; std::unordered_map&lt; K, V &gt; &gt;::push</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const std::unordered_map&lt; K, V &gt; &amp;</type>
+          <declname>map</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/lua_stack.hpp" line="382" column="15" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="382" bodyend="395"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ul2/lua_stack.hpp" line="357" column="1" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="358" bodyend="396"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1unordered__map_3_01_k_00_01_v_01_4_01_4_1aa4d059227610a61d10e9215faf77abb9" prot="public" virt="non-virtual"><scope>leasy::ul2::lua_stack&lt; std::unordered_map&lt; K, V &gt; &gt;</scope><name>get</name></member>
+      <member refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1unordered__map_3_01_k_00_01_v_01_4_01_4_1aad5be92417f36fd01a1a8dab498eeff4" prot="public" virt="non-virtual"><scope>leasy::ul2::lua_stack&lt; std::unordered_map&lt; K, V &gt; &gt;</scope><name>push</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

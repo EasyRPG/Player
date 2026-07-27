@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_transform" kind="struct" language="C++" prot="public">
+    <compoundname>Transform</compoundname>
+    <includes refid="transform_8h" local="no">transform.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_transform_1a6cc016841adff9a8a47d4ae9d5de2398" prot="public" static="no" mutable="no">
+        <type>pixman_transform_t</type>
+        <definition>pixman_transform_t Transform::matrix</definition>
+        <argsstring></argsstring>
+        <name>matrix</name>
+        <qualifiedname>Transform::matrix</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transform.h" line="29" column="20" bodyfile="transform.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_transform_1a108d13bcd3272036aaaed87126f283d1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Transform::Transform</definition>
+        <argsstring>(const pixman_transform_t &amp;m)</argsstring>
+        <name>Transform</name>
+        <qualifiedname>Transform::Transform</qualifiedname>
+        <param>
+          <type>const pixman_transform_t &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transform.h" line="31" column="1" bodyfile="transform.h" bodystart="31" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_transform_1a235642f76555e0cb1387ad4767fd4d58" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="struct_transform" kindref="compound">Transform</ref> &amp;</type>
+        <definition>Transform &amp; Transform::operator*=</definition>
+        <argsstring>(const Transform &amp;rhs)</argsstring>
+        <name>operator*=</name>
+        <qualifiedname>Transform::operator*=</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_transform" kindref="compound">Transform</ref> &amp;</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transform.h" line="65" column="11" bodyfile="transform.h" bodystart="65" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_transform_1a57cf1e054e6ab64f030ab4a8c831ed77" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="struct_transform" kindref="compound">Transform</ref></type>
+        <definition>Transform Transform::Inverse</definition>
+        <argsstring>() const</argsstring>
+        <name>Inverse</name>
+        <qualifiedname>Transform::Inverse</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transform.h" line="70" column="18" bodyfile="transform.h" bodystart="70" bodyend="74"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="struct_transform_1abf70abe916b6e6e4290b1da22fbe1d31" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="struct_transform" kindref="compound">Transform</ref></type>
+        <definition>static Transform Transform::Rotation</definition>
+        <argsstring>(double angle)</argsstring>
+        <name>Rotation</name>
+        <qualifiedname>Transform::Rotation</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>angle</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transform.h" line="33" column="25" bodyfile="transform.h" bodystart="33" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_transform_1a4863a13f774151e7ca6f234187b9bb39" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="struct_transform" kindref="compound">Transform</ref></type>
+        <definition>static Transform Transform::Scale</definition>
+        <argsstring>(double sx, double sy)</argsstring>
+        <name>Scale</name>
+        <qualifiedname>Transform::Scale</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>sx</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>sy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transform.h" line="41" column="25" bodyfile="transform.h" bodystart="41" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_transform_1ad1050b46e778e10552bd4c4b079ab93a" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="struct_transform" kindref="compound">Transform</ref></type>
+        <definition>static Transform Transform::Scale</definition>
+        <argsstring>(int sx, int sy)</argsstring>
+        <name>Scale</name>
+        <qualifiedname>Transform::Scale</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>sx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>sy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transform.h" line="49" column="25" bodyfile="transform.h" bodystart="49" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_transform_1a24420a91bf2be5508452d26025a37c3a" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="struct_transform" kindref="compound">Transform</ref></type>
+        <definition>static Transform Transform::Translation</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>Translation</name>
+        <qualifiedname>Transform::Translation</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="transform.h" line="57" column="25" bodyfile="transform.h" bodystart="57" bodyend="63"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="transform.h" line="28" column="1" bodyfile="transform.h" bodystart="28" bodyend="75"/>
+    <listofallmembers>
+      <member refid="struct_transform_1a57cf1e054e6ab64f030ab4a8c831ed77" prot="public" virt="non-virtual"><scope>Transform</scope><name>Inverse</name></member>
+      <member refid="struct_transform_1a6cc016841adff9a8a47d4ae9d5de2398" prot="public" virt="non-virtual"><scope>Transform</scope><name>matrix</name></member>
+      <member refid="struct_transform_1a235642f76555e0cb1387ad4767fd4d58" prot="public" virt="non-virtual"><scope>Transform</scope><name>operator*=</name></member>
+      <member refid="struct_transform_1abf70abe916b6e6e4290b1da22fbe1d31" prot="public" virt="non-virtual"><scope>Transform</scope><name>Rotation</name></member>
+      <member refid="struct_transform_1a4863a13f774151e7ca6f234187b9bb39" prot="public" virt="non-virtual"><scope>Transform</scope><name>Scale</name></member>
+      <member refid="struct_transform_1ad1050b46e778e10552bd4c4b079ab93a" prot="public" virt="non-virtual"><scope>Transform</scope><name>Scale</name></member>
+      <member refid="struct_transform_1a108d13bcd3272036aaaed87126f283d1" prot="public" virt="non-virtual"><scope>Transform</scope><name>Transform</name></member>
+      <member refid="struct_transform_1a24420a91bf2be5508452d26025a37c3a" prot="public" virt="non-virtual"><scope>Transform</scope><name>Translation</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

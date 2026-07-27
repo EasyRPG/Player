@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ul2_1_1variant__loader" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ul2::variant_loader</compoundname>
+    <includes refid="lua__stack_8hpp" local="no">lua_stack.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type>typename Variant</type>
+      </param>
+      <param>
+        <type>typename T</type>
+      </param>
+      <param>
+        <type>typename...</type>
+        <declname>Rest</declname>
+        <defname>Rest</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="structleasy_1_1ul2_1_1variant__loader_1a07657ddb2664e05a2e34b39315b7d40a" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool leasy::ul2::variant_loader&lt; Variant, T, Rest &gt;::load</definition>
+        <argsstring>(lua_State *L, int idx, Variant &amp;v)</argsstring>
+        <name>load</name>
+        <qualifiedname>leasy::ul2::variant_loader::load</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>idx</declname>
+        </param>
+        <param>
+          <type>Variant &amp;</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/lua_stack.hpp" line="283" column="17" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="283" bodyend="291"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ul2/lua_stack.hpp" line="282" column="3" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="282" bodyend="292"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ul2_1_1variant__loader_1a07657ddb2664e05a2e34b39315b7d40a" prot="public" virt="non-virtual"><scope>leasy::ul2::variant_loader</scope><name>load</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

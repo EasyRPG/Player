@@ -1,0 +1,2179 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="game__config_8h" kind="file" language="C++">
+    <compoundname>game_config.h</compoundname>
+    <includes refid="config__param_8h" local="yes">config_param.h</includes>
+    <includes refid="filesystem_8h" local="yes">filesystem.h</includes>
+    <includes refid="options_8h" local="yes">options.h</includes>
+    <includes refid="input__buttons_8h" local="yes">input_buttons.h</includes>
+    <includes refid="utils_8h" local="yes">utils.h</includes>
+    <includedby refid="audio_8h" local="yes">audio.h</includedby>
+    <includedby refid="baseui_8h" local="yes">baseui.h</includedby>
+    <includedby refid="game__config_8cpp" local="yes">game_config.cpp</includedby>
+    <includedby refid="input_8cpp" local="yes">input.cpp</includedby>
+    <includedby refid="input_8h" local="yes">input.h</includedby>
+    <includedby refid="input__buttons__desktop_8cpp" local="yes">input_buttons_desktop.cpp</includedby>
+    <includedby refid="input__source_8h" local="yes">input_source.h</includedby>
+    <includedby refid="leasy_2ui_2window_8cpp" local="yes">leasy/ui/window.cpp</includedby>
+    <includedby refid="window_8hpp" local="yes">leasy/ui/window.hpp</includedby>
+    <includedby refid="3ds_2input__buttons_8cpp" local="yes">platform/3ds/input_buttons.cpp</includedby>
+    <includedby refid="libretro_2input__buttons_8cpp" local="yes">platform/libretro/input_buttons.cpp</includedby>
+    <includedby refid="psvita_2input__buttons_8cpp" local="yes">platform/psvita/input_buttons.cpp</includedby>
+    <includedby refid="psvita_2ui_8cpp" local="yes">platform/psvita/ui.cpp</includedby>
+    <includedby refid="sdl2__ui_8cpp" local="yes">platform/sdl/sdl2_ui.cpp</includedby>
+    <includedby refid="sdl3__ui_8cpp" local="yes">platform/sdl/sdl3_ui.cpp</includedby>
+    <includedby refid="switch_2input__buttons_8cpp" local="yes">platform/switch/input_buttons.cpp</includedby>
+    <includedby refid="wii_2input__buttons_8cpp" local="yes">platform/wii/input_buttons.cpp</includedby>
+    <includedby refid="wiiu_2input__buttons_8cpp" local="yes">platform/wiiu/input_buttons.cpp</includedby>
+    <includedby refid="player_8h" local="yes">player.h</includedby>
+    <includedby refid="scene__language_8h" local="yes">scene_language.h</includedby>
+    <includedby refid="scene__settings_8h" local="yes">scene_settings.h</includedby>
+    <includedby refid="scene__title_8cpp" local="yes">scene_title.cpp</includedby>
+    <includedby refid="window__settings_8cpp" local="yes">window_settings.cpp</includedby>
+    <incdepgraph>
+      <node id="2">
+        <label>config_param.h</label>
+        <link refid="config__param_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>flat_map.h</label>
+        <link refid="flat__map_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>game_config.h</label>
+        <link refid="game__config_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>input_buttons.h</label>
+        <link refid="input__buttons_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>keys.h</label>
+        <link refid="keys_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="23">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>algorithm</label>
+      </node>
+      <node id="31">
+        <label>array</label>
+      </node>
+      <node id="14">
+        <label>cassert</label>
+      </node>
+      <node id="18">
+        <label>cstdint</label>
+      </node>
+      <node id="29">
+        <label>cstdio</label>
+      </node>
+      <node id="26">
+        <label>ctime</label>
+      </node>
+      <node id="6">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="7">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="27">
+        <label>functional</label>
+      </node>
+      <node id="38">
+        <label>initializer_list</label>
+      </node>
+      <node id="30">
+        <label>ios</label>
+      </node>
+      <node id="15">
+        <label>istream</label>
+      </node>
+      <node id="5">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="28">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="36">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="32">
+        <label>lcf/inireader.h</label>
+      </node>
+      <node id="24">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="4">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="33">
+        <label>limits</label>
+      </node>
+      <node id="12">
+        <label>memory</label>
+      </node>
+      <node id="16">
+        <label>ostream</label>
+      </node>
+      <node id="22">
+        <label>string</label>
+      </node>
+      <node id="35">
+        <label>type_traits</label>
+      </node>
+      <node id="19">
+        <label>unordered_map</label>
+      </node>
+      <node id="40">
+        <label>utility</label>
+      </node>
+      <node id="20">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="119">
+        <label>algo.cpp</label>
+        <link refid="algo_8cpp"/>
+      </node>
+      <node id="120">
+        <label>async_handler.cpp</label>
+        <link refid="async__handler_8cpp"/>
+      </node>
+      <node id="121">
+        <label>attribute.cpp</label>
+        <link refid="attribute_8cpp"/>
+      </node>
+      <node id="3">
+        <label>audio.cpp</label>
+        <link refid="audio_8cpp"/>
+      </node>
+      <node id="2">
+        <label>audio.h</label>
+        <link refid="audio_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>audio_decoder_midi.cpp</label>
+        <link refid="audio__decoder__midi_8cpp"/>
+      </node>
+      <node id="6">
+        <label>audio_generic.cpp</label>
+        <link refid="audio__generic_8cpp"/>
+      </node>
+      <node id="5">
+        <label>audio_generic.h</label>
+        <link refid="audio__generic_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>audio_midi.cpp</label>
+        <link refid="audio__midi_8cpp"/>
+      </node>
+      <node id="122">
+        <label>autobattle.cpp</label>
+        <link refid="autobattle_8cpp"/>
+      </node>
+      <node id="123">
+        <label>background.cpp</label>
+        <link refid="background_8cpp"/>
+      </node>
+      <node id="37">
+        <label>baseui.cpp</label>
+        <link refid="baseui_8cpp"/>
+      </node>
+      <node id="36">
+        <label>baseui.h</label>
+        <link refid="baseui_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>battle_animation.cpp</label>
+        <link refid="battle__animation_8cpp"/>
+      </node>
+      <node id="124">
+        <label>cache.cpp</label>
+        <link refid="cache_8cpp"/>
+      </node>
+      <node id="18">
+        <label>decoder_fluidsynth.cpp</label>
+        <link refid="decoder__fluidsynth_8cpp"/>
+      </node>
+      <node id="125">
+        <label>directory_tree.cpp</label>
+        <link refid="directory__tree_8cpp"/>
+      </node>
+      <node id="39">
+        <label>dynrpg_textplugin.cpp</label>
+        <link refid="dynrpg__textplugin_8cpp"/>
+      </node>
+      <node id="126">
+        <label>enemyai.cpp</label>
+        <link refid="enemyai_8cpp"/>
+      </node>
+      <node id="128">
+        <label>exe_reader.cpp</label>
+        <link refid="exe__reader_8cpp"/>
+      </node>
+      <node id="127">
+        <label>exe_reader.h</label>
+        <link refid="exe__reader_8h"/>
+        <childnode refid="128" relation="include">
+        </childnode>
+        <childnode refid="129" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+      </node>
+      <node id="130">
+        <label>feature.cpp</label>
+        <link refid="feature_8cpp"/>
+      </node>
+      <node id="131">
+        <label>filefinder.cpp</label>
+        <link refid="filefinder_8cpp"/>
+      </node>
+      <node id="132">
+        <label>filefinder_rtp.cpp</label>
+        <link refid="filefinder__rtp_8cpp"/>
+      </node>
+      <node id="133">
+        <label>filesystem.cpp</label>
+        <link refid="filesystem_8cpp"/>
+      </node>
+      <node id="134">
+        <label>font.cpp</label>
+        <link refid="font_8cpp"/>
+      </node>
+      <node id="75">
+        <label>fps_overlay.cpp</label>
+        <link refid="fps__overlay_8cpp"/>
+      </node>
+      <node id="135">
+        <label>game_actor.cpp</label>
+        <link refid="game__actor_8cpp"/>
+      </node>
+      <node id="136">
+        <label>game_battle.cpp</label>
+        <link refid="game__battle_8cpp"/>
+      </node>
+      <node id="137">
+        <label>game_battlealgorithm.cpp</label>
+        <link refid="game__battlealgorithm_8cpp"/>
+      </node>
+      <node id="138">
+        <label>game_battler.cpp</label>
+        <link refid="game__battler_8cpp"/>
+      </node>
+      <node id="19">
+        <label>game_character.cpp</label>
+        <link refid="game__character_8cpp"/>
+      </node>
+      <node id="73">
+        <label>game_config.cpp</label>
+        <link refid="game__config_8cpp"/>
+      </node>
+      <node id="1">
+        <label>game_config.h</label>
+        <link refid="game__config_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="110" relation="include">
+        </childnode>
+        <childnode refid="111" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="112" relation="include">
+        </childnode>
+        <childnode refid="113" relation="include">
+        </childnode>
+        <childnode refid="114" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="115" relation="include">
+        </childnode>
+        <childnode refid="116" relation="include">
+        </childnode>
+        <childnode refid="117" relation="include">
+        </childnode>
+        <childnode refid="118" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="139">
+        <label>game_config_game.cpp</label>
+        <link refid="game__config__game_8cpp"/>
+      </node>
+      <node id="129">
+        <label>game_destiny.cpp</label>
+        <link refid="game__destiny_8cpp"/>
+      </node>
+      <node id="140">
+        <label>game_dynrpg.cpp</label>
+        <link refid="game__dynrpg_8cpp"/>
+      </node>
+      <node id="141">
+        <label>game_enemy.cpp</label>
+        <link refid="game__enemy_8cpp"/>
+      </node>
+      <node id="142">
+        <label>game_enemy.h</label>
+        <link refid="game__enemy_8h"/>
+        <childnode refid="119" relation="include">
+        </childnode>
+        <childnode refid="121" relation="include">
+        </childnode>
+        <childnode refid="122" relation="include">
+        </childnode>
+        <childnode refid="126" relation="include">
+        </childnode>
+        <childnode refid="137" relation="include">
+        </childnode>
+        <childnode refid="141" relation="include">
+        </childnode>
+        <childnode refid="143" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="148" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="150" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="152" relation="include">
+        </childnode>
+        <childnode refid="153" relation="include">
+        </childnode>
+        <childnode refid="147" relation="include">
+        </childnode>
+      </node>
+      <node id="144">
+        <label>game_enemyparty.cpp</label>
+        <link refid="game__enemyparty_8cpp"/>
+      </node>
+      <node id="143">
+        <label>game_enemyparty.h</label>
+        <link refid="game__enemyparty_8h"/>
+        <childnode refid="122" relation="include">
+        </childnode>
+        <childnode refid="126" relation="include">
+        </childnode>
+        <childnode refid="136" relation="include">
+        </childnode>
+        <childnode refid="137" relation="include">
+        </childnode>
+        <childnode refid="138" relation="include">
+        </childnode>
+        <childnode refid="144" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="145" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="146" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="147" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+      </node>
+      <node id="154">
+        <label>game_event.cpp</label>
+        <link refid="game__event_8cpp"/>
+      </node>
+      <node id="20">
+        <label>game_ineluki.cpp</label>
+        <link refid="game__ineluki_8cpp"/>
+      </node>
+      <node id="21">
+        <label>game_interpreter.cpp</label>
+        <link refid="game__interpreter_8cpp"/>
+      </node>
+      <node id="145">
+        <label>game_interpreter_battle.cpp</label>
+        <link refid="game__interpreter__battle_8cpp"/>
+      </node>
+      <node id="22">
+        <label>game_interpreter_control_variables.cpp</label>
+        <link refid="game__interpreter__control__variables_8cpp"/>
+      </node>
+      <node id="23">
+        <label>game_interpreter_map.cpp</label>
+        <link refid="game__interpreter__map_8cpp"/>
+      </node>
+      <node id="24">
+        <label>game_interpreter_shared.cpp</label>
+        <link refid="game__interpreter__shared_8cpp"/>
+      </node>
+      <node id="44">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="155">
+        <label>game_message.cpp</label>
+        <link refid="game__message_8cpp"/>
+      </node>
+      <node id="156">
+        <label>game_message_terms.cpp</label>
+        <link refid="game__message__terms_8cpp"/>
+      </node>
+      <node id="149">
+        <label>game_party.cpp</label>
+        <link refid="game__party_8cpp"/>
+      </node>
+      <node id="157">
+        <label>game_pictures.cpp</label>
+        <link refid="game__pictures_8cpp"/>
+      </node>
+      <node id="76">
+        <label>game_player.cpp</label>
+        <link refid="game__player_8cpp"/>
+      </node>
+      <node id="77">
+        <label>game_quit.cpp</label>
+        <link refid="game__quit_8cpp"/>
+      </node>
+      <node id="158">
+        <label>game_screen.cpp</label>
+        <link refid="game__screen_8cpp"/>
+      </node>
+      <node id="159">
+        <label>game_screen.h</label>
+        <link refid="game__screen_8h"/>
+        <childnode refid="123" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="136" relation="include">
+        </childnode>
+        <childnode refid="138" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="157" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="158" relation="include">
+        </childnode>
+        <childnode refid="146" relation="include">
+        </childnode>
+        <childnode refid="160" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="161" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="162" relation="include">
+        </childnode>
+        <childnode refid="152" relation="include">
+        </childnode>
+        <childnode refid="153" relation="include">
+        </childnode>
+        <childnode refid="163" relation="include">
+        </childnode>
+        <childnode refid="164" relation="include">
+        </childnode>
+        <childnode refid="147" relation="include">
+        </childnode>
+        <childnode refid="165" relation="include">
+        </childnode>
+        <childnode refid="166" relation="include">
+        </childnode>
+      </node>
+      <node id="167">
+        <label>game_strings.cpp</label>
+        <link refid="game__strings_8cpp"/>
+      </node>
+      <node id="168">
+        <label>game_strings.h</label>
+        <link refid="game__strings_8h"/>
+        <childnode refid="140" relation="include">
+        </childnode>
+        <childnode refid="155" relation="include">
+        </childnode>
+        <childnode refid="167" relation="include">
+        </childnode>
+        <childnode refid="169" relation="include">
+        </childnode>
+        <childnode refid="146" relation="include">
+        </childnode>
+        <childnode refid="170" relation="include">
+        </childnode>
+        <childnode refid="171" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="161" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>game_system.cpp</label>
+        <link refid="game__system_8cpp"/>
+      </node>
+      <node id="169">
+        <label>game_windows.cpp</label>
+        <link refid="game__windows_8cpp"/>
+      </node>
+      <node id="40">
+        <label>graphics.cpp</label>
+        <link refid="graphics_8cpp"/>
+      </node>
+      <node id="41">
+        <label>input.cpp</label>
+        <link refid="input_8cpp"/>
+      </node>
+      <node id="74">
+        <label>input.h</label>
+        <link refid="input_8h"/>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="107" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+      </node>
+      <node id="110">
+        <label>input_buttons_desktop.cpp</label>
+        <link refid="input__buttons__desktop_8cpp"/>
+      </node>
+      <node id="42">
+        <label>input_source.cpp</label>
+        <link refid="input__source_8cpp"/>
+      </node>
+      <node id="111">
+        <label>input_source.h</label>
+        <link refid="input__source_8h"/>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>leasy/leasy.cpp</label>
+        <link refid="leasy_8cpp"/>
+      </node>
+      <node id="43">
+        <label>leasy/leasy.hpp</label>
+        <link refid="leasy_8hpp"/>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="48">
+        <label>leasy/ui/window.cpp</label>
+        <link refid="leasy_2ui_2window_8cpp"/>
+      </node>
+      <node id="49">
+        <label>leasy/ui/window.hpp</label>
+        <link refid="window_8hpp"/>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>leasy/ui/winstream.hpp</label>
+        <link refid="winstream_8hpp"/>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="146">
+        <label>main_data.cpp</label>
+        <link refid="main__data_8cpp"/>
+      </node>
+      <node id="78">
+        <label>maniac_patch.cpp</label>
+        <link refid="maniac__patch_8cpp"/>
+      </node>
+      <node id="170">
+        <label>maniac_patch.h</label>
+        <link refid="maniac__patch_8h"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>message_overlay.cpp</label>
+        <link refid="message__overlay_8cpp"/>
+      </node>
+      <node id="172">
+        <label>meta.cpp</label>
+        <link refid="meta_8cpp"/>
+      </node>
+      <node id="51">
+        <label>output.cpp</label>
+        <link refid="output_8cpp"/>
+      </node>
+      <node id="171">
+        <label>pending_message.cpp</label>
+        <link refid="pending__message_8cpp"/>
+      </node>
+      <node id="160">
+        <label>plane.cpp</label>
+        <link refid="plane_8cpp"/>
+      </node>
+      <node id="112">
+        <label>platform/3ds/input_buttons.cpp</label>
+        <link refid="3ds_2input__buttons_8cpp"/>
+      </node>
+      <node id="173">
+        <label>platform/3ds/main.cpp</label>
+        <link refid="3ds_2main_8cpp"/>
+      </node>
+      <node id="53">
+        <label>platform/3ds/ui.cpp</label>
+        <link refid="3ds_2ui_8cpp"/>
+      </node>
+      <node id="52">
+        <label>platform/3ds/ui.h</label>
+        <link refid="3ds_2ui_8h"/>
+        <childnode refid="53" relation="include">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp</label>
+        <link refid="org__easyrpg__player__player___easy_rpg_player_activity_8cpp"/>
+      </node>
+      <node id="55">
+        <label>platform/emscripten/interface.cpp</label>
+        <link refid="interface_8cpp"/>
+      </node>
+      <node id="56">
+        <label>platform/emscripten/main.cpp</label>
+        <link refid="emscripten_2main_8cpp"/>
+      </node>
+      <node id="7">
+        <label>platform/libretro/audio.h</label>
+        <link refid="platform_2libretro_2audio_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="113">
+        <label>platform/libretro/input_buttons.cpp</label>
+        <link refid="libretro_2input__buttons_8cpp"/>
+      </node>
+      <node id="9">
+        <label>platform/libretro/midiout_device.cpp</label>
+        <link refid="midiout__device_8cpp"/>
+      </node>
+      <node id="10">
+        <label>platform/libretro/ui.cpp</label>
+        <link refid="libretro_2ui_8cpp"/>
+      </node>
+      <node id="8">
+        <label>platform/libretro/ui.h</label>
+        <link refid="libretro_2ui_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>platform/psvita/audio.h</label>
+        <link refid="platform_2psvita_2audio_8h"/>
+      </node>
+      <node id="114">
+        <label>platform/psvita/input_buttons.cpp</label>
+        <link refid="psvita_2input__buttons_8cpp"/>
+      </node>
+      <node id="174">
+        <label>platform/psvita/main.cpp</label>
+        <link refid="psvita_2main_8cpp"/>
+      </node>
+      <node id="58">
+        <label>platform/psvita/ui.cpp</label>
+        <link refid="psvita_2ui_8cpp"/>
+      </node>
+      <node id="57">
+        <label>platform/psvita/ui.h</label>
+        <link refid="psvita_2ui_8h"/>
+        <childnode refid="58" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>platform/sdl/main.cpp</label>
+        <link refid="sdl_2main_8cpp"/>
+      </node>
+      <node id="12">
+        <label>platform/sdl/sdl2_audio.h</label>
+        <link refid="sdl2__audio_8h"/>
+      </node>
+      <node id="60">
+        <label>platform/sdl/sdl2_ui.cpp</label>
+        <link refid="sdl2__ui_8cpp"/>
+      </node>
+      <node id="59">
+        <label>platform/sdl/sdl2_ui.h</label>
+        <link refid="sdl2__ui_8h"/>
+        <childnode refid="60" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>platform/sdl/sdl3_audio.h</label>
+        <link refid="sdl3__audio_8h"/>
+      </node>
+      <node id="62">
+        <label>platform/sdl/sdl3_ui.cpp</label>
+        <link refid="sdl3__ui_8cpp"/>
+      </node>
+      <node id="61">
+        <label>platform/sdl/sdl3_ui.h</label>
+        <link refid="sdl3__ui_8h"/>
+        <childnode refid="62" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>platform/sdl/sdl_audio.h</label>
+        <link refid="sdl__audio_8h"/>
+      </node>
+      <node id="64">
+        <label>platform/sdl/sdl_ui.cpp</label>
+        <link refid="sdl__ui_8cpp"/>
+      </node>
+      <node id="63">
+        <label>platform/sdl/sdl_ui.h</label>
+        <link refid="sdl__ui_8h"/>
+        <childnode refid="64" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>platform/switch/audio.h</label>
+        <link refid="platform_2switch_2audio_8h"/>
+      </node>
+      <node id="115">
+        <label>platform/switch/input_buttons.cpp</label>
+        <link refid="switch_2input__buttons_8cpp"/>
+      </node>
+      <node id="175">
+        <label>platform/switch/main.cpp</label>
+        <link refid="switch_2main_8cpp"/>
+      </node>
+      <node id="66">
+        <label>platform/switch/ui.cpp</label>
+        <link refid="switch_2ui_8cpp"/>
+      </node>
+      <node id="65">
+        <label>platform/switch/ui.h</label>
+        <link refid="switch_2ui_8h"/>
+        <childnode refid="66" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>platform/wii/audio.h</label>
+        <link refid="platform_2wii_2audio_8h"/>
+      </node>
+      <node id="116">
+        <label>platform/wii/input_buttons.cpp</label>
+        <link refid="wii_2input__buttons_8cpp"/>
+      </node>
+      <node id="67">
+        <label>platform/wii/main.cpp</label>
+        <link refid="wii_2main_8cpp"/>
+      </node>
+      <node id="117">
+        <label>platform/wiiu/input_buttons.cpp</label>
+        <link refid="wiiu_2input__buttons_8cpp"/>
+      </node>
+      <node id="176">
+        <label>platform/wiiu/main.cpp</label>
+        <link refid="wiiu_2main_8cpp"/>
+      </node>
+      <node id="26">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="118">
+        <label>player.h</label>
+        <link refid="player_8h"/>
+        <childnode refid="119" relation="include">
+        </childnode>
+        <childnode refid="120" relation="include">
+        </childnode>
+        <childnode refid="121" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="122" relation="include">
+        </childnode>
+        <childnode refid="123" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="124" relation="include">
+        </childnode>
+        <childnode refid="125" relation="include">
+        </childnode>
+        <childnode refid="126" relation="include">
+        </childnode>
+        <childnode refid="127" relation="include">
+        </childnode>
+        <childnode refid="130" relation="include">
+        </childnode>
+        <childnode refid="131" relation="include">
+        </childnode>
+        <childnode refid="132" relation="include">
+        </childnode>
+        <childnode refid="133" relation="include">
+        </childnode>
+        <childnode refid="134" relation="include">
+        </childnode>
+        <childnode refid="135" relation="include">
+        </childnode>
+        <childnode refid="136" relation="include">
+        </childnode>
+        <childnode refid="137" relation="include">
+        </childnode>
+        <childnode refid="138" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="139" relation="include">
+        </childnode>
+        <childnode refid="140" relation="include">
+        </childnode>
+        <childnode refid="141" relation="include">
+        </childnode>
+        <childnode refid="142" relation="include">
+        </childnode>
+        <childnode refid="154" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="145" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="155" relation="include">
+        </childnode>
+        <childnode refid="156" relation="include">
+        </childnode>
+        <childnode refid="157" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="158" relation="include">
+        </childnode>
+        <childnode refid="159" relation="include">
+        </childnode>
+        <childnode refid="167" relation="include">
+        </childnode>
+        <childnode refid="168" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="169" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="146" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="172" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="171" relation="include">
+        </childnode>
+        <childnode refid="160" relation="include">
+        </childnode>
+        <childnode refid="173" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="174" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="175" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="176" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="177" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="161" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="178" relation="include">
+        </childnode>
+        <childnode refid="152" relation="include">
+        </childnode>
+        <childnode refid="179" relation="include">
+        </childnode>
+        <childnode refid="180" relation="include">
+        </childnode>
+        <childnode refid="153" relation="include">
+        </childnode>
+        <childnode refid="163" relation="include">
+        </childnode>
+        <childnode refid="181" relation="include">
+        </childnode>
+        <childnode refid="164" relation="include">
+        </childnode>
+        <childnode refid="147" relation="include">
+        </childnode>
+        <childnode refid="165" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="166" relation="include">
+        </childnode>
+        <childnode refid="182" relation="include">
+        </childnode>
+        <childnode refid="183" relation="include">
+        </childnode>
+        <childnode refid="184" relation="include">
+        </childnode>
+        <childnode refid="185" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="186" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="187" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="188" relation="include">
+        </childnode>
+        <childnode refid="191" relation="include">
+        </childnode>
+        <childnode refid="192" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>scene.cpp</label>
+        <link refid="scene_8cpp"/>
+      </node>
+      <node id="79">
+        <label>scene_actortarget.cpp</label>
+        <link refid="scene__actortarget_8cpp"/>
+      </node>
+      <node id="80">
+        <label>scene_battle.cpp</label>
+        <link refid="scene__battle_8cpp"/>
+      </node>
+      <node id="148">
+        <label>scene_battle.h</label>
+        <link refid="scene__battle_8h"/>
+        <childnode refid="145" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="149" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="150" relation="include">
+        </childnode>
+        <childnode refid="151" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="81">
+        <label>scene_battle_rpg2k.cpp</label>
+        <link refid="scene__battle__rpg2k_8cpp"/>
+      </node>
+      <node id="150">
+        <label>scene_battle_rpg2k.h</label>
+        <link refid="scene__battle__rpg2k_8h"/>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+      </node>
+      <node id="82">
+        <label>scene_battle_rpg2k3.cpp</label>
+        <link refid="scene__battle__rpg2k3_8cpp"/>
+      </node>
+      <node id="151">
+        <label>scene_battle_rpg2k3.h</label>
+        <link refid="scene__battle__rpg2k3_8h"/>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+      </node>
+      <node id="68">
+        <label>scene_debug.cpp</label>
+        <link refid="scene__debug_8cpp"/>
+      </node>
+      <node id="28">
+        <label>scene_end.cpp</label>
+        <link refid="scene__end_8cpp"/>
+      </node>
+      <node id="83">
+        <label>scene_equip.cpp</label>
+        <link refid="scene__equip_8cpp"/>
+      </node>
+      <node id="69">
+        <label>scene_file.cpp</label>
+        <link refid="scene__file_8cpp"/>
+      </node>
+      <node id="29">
+        <label>scene_gamebrowser.cpp</label>
+        <link refid="scene__gamebrowser_8cpp"/>
+      </node>
+      <node id="84">
+        <label>scene_gameover.cpp</label>
+        <link refid="scene__gameover_8cpp"/>
+      </node>
+      <node id="85">
+        <label>scene_import.cpp</label>
+        <link refid="scene__import_8cpp"/>
+      </node>
+      <node id="86">
+        <label>scene_item.cpp</label>
+        <link refid="scene__item_8cpp"/>
+      </node>
+      <node id="30">
+        <label>scene_language.cpp</label>
+        <link refid="scene__language_8cpp"/>
+      </node>
+      <node id="96">
+        <label>scene_language.h</label>
+        <link refid="scene__language_8h"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="177">
+        <label>scene_load.cpp</label>
+        <link refid="scene__load_8cpp"/>
+      </node>
+      <node id="87">
+        <label>scene_logo.cpp</label>
+        <link refid="scene__logo_8cpp"/>
+      </node>
+      <node id="31">
+        <label>scene_map.cpp</label>
+        <link refid="scene__map_8cpp"/>
+      </node>
+      <node id="32">
+        <label>scene_menu.cpp</label>
+        <link refid="scene__menu_8cpp"/>
+      </node>
+      <node id="88">
+        <label>scene_name.cpp</label>
+        <link refid="scene__name_8cpp"/>
+      </node>
+      <node id="89">
+        <label>scene_order.cpp</label>
+        <link refid="scene__order_8cpp"/>
+      </node>
+      <node id="161">
+        <label>scene_save.cpp</label>
+        <link refid="scene__save_8cpp"/>
+      </node>
+      <node id="33">
+        <label>scene_settings.cpp</label>
+        <link refid="scene__settings_8cpp"/>
+      </node>
+      <node id="97">
+        <label>scene_settings.h</label>
+        <link refid="scene__settings_8h"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="90">
+        <label>scene_shop.cpp</label>
+        <link refid="scene__shop_8cpp"/>
+      </node>
+      <node id="189">
+        <label>scene_shop.h</label>
+        <link refid="scene__shop_8h"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="106" relation="include">
+        </childnode>
+      </node>
+      <node id="91">
+        <label>scene_skill.cpp</label>
+        <link refid="scene__skill_8cpp"/>
+      </node>
+      <node id="92">
+        <label>scene_status.cpp</label>
+        <link refid="scene__status_8cpp"/>
+      </node>
+      <node id="93">
+        <label>scene_teleport.cpp</label>
+        <link refid="scene__teleport_8cpp"/>
+      </node>
+      <node id="34">
+        <label>scene_title.cpp</label>
+        <link refid="scene__title_8cpp"/>
+      </node>
+      <node id="162">
+        <label>screen.cpp</label>
+        <link refid="screen_8cpp"/>
+      </node>
+      <node id="178">
+        <label>sprite.cpp</label>
+        <link refid="sprite_8cpp"/>
+      </node>
+      <node id="152">
+        <label>sprite_actor.cpp</label>
+        <link refid="sprite__actor_8cpp"/>
+      </node>
+      <node id="179">
+        <label>sprite_battler.cpp</label>
+        <link refid="sprite__battler_8cpp"/>
+      </node>
+      <node id="180">
+        <label>sprite_character.cpp</label>
+        <link refid="sprite__character_8cpp"/>
+      </node>
+      <node id="153">
+        <label>sprite_enemy.cpp</label>
+        <link refid="sprite__enemy_8cpp"/>
+      </node>
+      <node id="163">
+        <label>sprite_picture.cpp</label>
+        <link refid="sprite__picture_8cpp"/>
+      </node>
+      <node id="181">
+        <label>sprite_timer.cpp</label>
+        <link refid="sprite__timer_8cpp"/>
+      </node>
+      <node id="164">
+        <label>sprite_weapon.cpp</label>
+        <link refid="sprite__weapon_8cpp"/>
+      </node>
+      <node id="147">
+        <label>spriteset_battle.cpp</label>
+        <link refid="spriteset__battle_8cpp"/>
+      </node>
+      <node id="165">
+        <label>spriteset_map.cpp</label>
+        <link refid="spriteset__map_8cpp"/>
+      </node>
+      <node id="70">
+        <label>tilemap_layer.cpp</label>
+        <link refid="tilemap__layer_8cpp"/>
+      </node>
+      <node id="71">
+        <label>transition.cpp</label>
+        <link refid="transition_8cpp"/>
+      </node>
+      <node id="72">
+        <label>translation.cpp</label>
+        <link refid="translation_8cpp"/>
+      </node>
+      <node id="166">
+        <label>weather.cpp</label>
+        <link refid="weather_8cpp"/>
+      </node>
+      <node id="182">
+        <label>window.cpp</label>
+        <link refid="window_8cpp"/>
+      </node>
+      <node id="183">
+        <label>window_actortarget.cpp</label>
+        <link refid="window__actortarget_8cpp"/>
+      </node>
+      <node id="184">
+        <label>window_base.cpp</label>
+        <link refid="window__base_8cpp"/>
+      </node>
+      <node id="185">
+        <label>window_battlemessage.cpp</label>
+        <link refid="window__battlemessage_8cpp"/>
+      </node>
+      <node id="94">
+        <label>window_battlestatus.cpp</label>
+        <link refid="window__battlestatus_8cpp"/>
+      </node>
+      <node id="186">
+        <label>window_equipstatus.cpp</label>
+        <link refid="window__equipstatus_8cpp"/>
+      </node>
+      <node id="98">
+        <label>window_input_settings.cpp</label>
+        <link refid="window__input__settings_8cpp"/>
+      </node>
+      <node id="95">
+        <label>window_input_settings.h</label>
+        <link refid="window__input__settings_8h"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+      </node>
+      <node id="99">
+        <label>window_interpreter.cpp</label>
+        <link refid="window__interpreter_8cpp"/>
+      </node>
+      <node id="100">
+        <label>window_keyboard.cpp</label>
+        <link refid="window__keyboard_8cpp"/>
+      </node>
+      <node id="187">
+        <label>window_menustatus.cpp</label>
+        <link refid="window__menustatus_8cpp"/>
+      </node>
+      <node id="101">
+        <label>window_message.cpp</label>
+        <link refid="window__message_8cpp"/>
+      </node>
+      <node id="102">
+        <label>window_numberinput.cpp</label>
+        <link refid="window__numberinput_8cpp"/>
+      </node>
+      <node id="103">
+        <label>window_savefile.cpp</label>
+        <link refid="window__savefile_8cpp"/>
+      </node>
+      <node id="104">
+        <label>window_selectable.cpp</label>
+        <link refid="window__selectable_8cpp"/>
+      </node>
+      <node id="35">
+        <label>window_settings.cpp</label>
+        <link refid="window__settings_8cpp"/>
+      </node>
+      <node id="105">
+        <label>window_settings.h</label>
+        <link refid="window__settings_8h"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="106">
+        <label>window_shop.cpp</label>
+        <link refid="window__shop_8cpp"/>
+      </node>
+      <node id="190">
+        <label>window_shopbuy.cpp</label>
+        <link refid="window__shopbuy_8cpp"/>
+      </node>
+      <node id="188">
+        <label>window_shopbuy.h</label>
+        <link refid="window__shopbuy_8h"/>
+        <childnode refid="189" relation="include">
+        </childnode>
+        <childnode refid="190" relation="include">
+        </childnode>
+      </node>
+      <node id="107">
+        <label>window_shopnumber.cpp</label>
+        <link refid="window__shopnumber_8cpp"/>
+      </node>
+      <node id="191">
+        <label>window_skill.cpp</label>
+        <link refid="window__skill_8cpp"/>
+      </node>
+      <node id="192">
+        <label>window_skillstatus.cpp</label>
+        <link refid="window__skillstatus_8cpp"/>
+      </node>
+      <node id="108">
+        <label>window_stringview.cpp</label>
+        <link refid="window__stringview_8cpp"/>
+      </node>
+      <node id="109">
+        <label>window_varlist.cpp</label>
+        <link refid="window__varlist_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="struct_game___config_player" prot="public">Game_ConfigPlayer</innerclass>
+    <innerclass refid="struct_game___config_video" prot="public">Game_ConfigVideo</innerclass>
+    <innerclass refid="struct_game___config_audio" prot="public">Game_ConfigAudio</innerclass>
+    <innerclass refid="struct_game___config_input" prot="public">Game_ConfigInput</innerclass>
+    <innerclass refid="struct_game___config" prot="public">Game_Config</innerclass>
+    <innernamespace refid="namespace_config_enum">ConfigEnum</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="game__config_8h_1a6175f6a612f47bf5a789245310fd0471" prot="public" static="no">
+        <name>EP_GAME_CONFIG_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="20" column="9" bodyfile="game_config.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="game__config_8h_1acecfd2ff5807c74538b9258765040b39" prot="public" static="no">
+        <name>EP_FLUID_NAME</name>
+        <initializer>&quot;FluidSynth&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="83" column="10" bodyfile="game_config.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_GAME_CONFIG_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="game__config_8h_1a6175f6a612f47bf5a789245310fd0471" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_GAME_CONFIG_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="config__param_8h" kindref="compound">config_param.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="filesystem_8h" kindref="compound">filesystem.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="options_8h" kindref="compound">options.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="input__buttons_8h" kindref="compound">input_buttons.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="utils_8h" kindref="compound">utils.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_cmdline_parser" kindref="compound">CmdlineParser</ref>;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="namespace_config_enum" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_config_enum" kindref="compound">ConfigEnum</ref><sp/>{</highlight></codeline>
+<codeline lineno="38" refid="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000" kindref="member">ScalingMode</ref><sp/>{</highlight></codeline>
+<codeline lineno="40" refid="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000a60494f02d440f316319dd0fad40ad007" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000a60494f02d440f316319dd0fad40ad007" kindref="member">Nearest</ref>,</highlight></codeline>
+<codeline lineno="42" refid="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000aa0faef0851b4294c06f2b94bb1cb2044" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000aa0faef0851b4294c06f2b94bb1cb2044" kindref="member">Integer</ref>,</highlight></codeline>
+<codeline lineno="44" refid="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000aaf17c98bbd83c27d6426d2ff3fa81d7f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000aaf17c98bbd83c27d6426d2ff3fa81d7f" kindref="member">Bilinear</ref>,</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47" refid="namespace_config_enum_1aed4f168068862c122f4b138e2a3c3897" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="namespace_config_enum_1aed4f168068862c122f4b138e2a3c3897" kindref="member">GameResolution</ref><sp/>{</highlight></codeline>
+<codeline lineno="49" refid="namespace_config_enum_1aed4f168068862c122f4b138e2a3c3897a0a52da7a03a6de3beefe54f8c03ad80d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_config_enum_1aed4f168068862c122f4b138e2a3c3897a0a52da7a03a6de3beefe54f8c03ad80d" kindref="member">Original</ref>,</highlight></codeline>
+<codeline lineno="51" refid="namespace_config_enum_1aed4f168068862c122f4b138e2a3c3897a9bc9d2fa721a4e855537c9c423285806" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_config_enum_1aed4f168068862c122f4b138e2a3c3897a9bc9d2fa721a4e855537c9c423285806" kindref="member">Widescreen</ref>,</highlight></codeline>
+<codeline lineno="53" refid="namespace_config_enum_1aed4f168068862c122f4b138e2a3c3897ad7842fe6f1601ee07f984d6c3cc5d6f8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_config_enum_1aed4f168068862c122f4b138e2a3c3897ad7842fe6f1601ee07f984d6c3cc5d6f8" kindref="member">Ultrawide</ref></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="namespace_config_enum_1afbe539eb659a120eac031060bcf0237b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="namespace_config_enum_1afbe539eb659a120eac031060bcf0237b" kindref="member">StartupLogos</ref><sp/>{</highlight></codeline>
+<codeline lineno="57" refid="namespace_config_enum_1afbe539eb659a120eac031060bcf0237ba6adf97f83acf6453d4a6a4b1070f3754" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_config_enum_1afbe539eb659a120eac031060bcf0237ba6adf97f83acf6453d4a6a4b1070f3754" kindref="member">None</ref>,</highlight></codeline>
+<codeline lineno="58" refid="namespace_config_enum_1afbe539eb659a120eac031060bcf0237ba90589c47f06eb971d548591f23c285af" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_config_enum_1afbe539eb659a120eac031060bcf0237ba90589c47f06eb971d548591f23c285af" kindref="member">Custom</ref>,</highlight></codeline>
+<codeline lineno="59" refid="namespace_config_enum_1afbe539eb659a120eac031060bcf0237bab1c94ca2fbc3e78fc30069c8d0f01680" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_config_enum_1afbe539eb659a120eac031060bcf0237bab1c94ca2fbc3e78fc30069c8d0f01680" kindref="member">All</ref></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="namespace_config_enum_1ac1da8e22735a3ab19903bda7c0b7c76a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="namespace_config_enum_1ac1da8e22735a3ab19903bda7c0b7c76a" kindref="member">StartupLangSelect</ref><sp/>{</highlight></codeline>
+<codeline lineno="63" refid="namespace_config_enum_1ac1da8e22735a3ab19903bda7c0b7c76aa6e7b34fa59e1bd229b207892956dc41c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_config_enum_1ac1da8e22735a3ab19903bda7c0b7c76aa6e7b34fa59e1bd229b207892956dc41c" kindref="member">Never</ref>,</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Shows<sp/>language<sp/>screen<sp/>when<sp/>no<sp/>saves<sp/>are<sp/>found<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="namespace_config_enum_1ac1da8e22735a3ab19903bda7c0b7c76aa965d87c4fa290286400dde2a615f76b9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_config_enum_1ac1da8e22735a3ab19903bda7c0b7c76aa965d87c4fa290286400dde2a615f76b9" kindref="member">FirstStartup</ref>,</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>Always<sp/>show<sp/>the<sp/>language<sp/>screen<sp/>before<sp/>the<sp/>title<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67" refid="namespace_config_enum_1ac1da8e22735a3ab19903bda7c0b7c76aa68eec46437c384d8dad18d5464ebc35c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_config_enum_1ac1da8e22735a3ab19903bda7c0b7c76aa68eec46437c384d8dad18d5464ebc35c" kindref="member">Always</ref></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70" refid="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4de" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4de" kindref="member">ShowFps</ref><sp/>{</highlight></codeline>
+<codeline lineno="72" refid="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4dea88559a0cfd8250c9d65970cc145c92d4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4dea88559a0cfd8250c9d65970cc145c92d4" kindref="member">OFF</ref>,</highlight></codeline>
+<codeline lineno="74" refid="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4dea90651ebea9a35ec4e018c8157492e17c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4dea90651ebea9a35ec4e018c8157492e17c" kindref="member">ON</ref>,</highlight></codeline>
+<codeline lineno="76" refid="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4dea6b551379c3c0b59326abdaf3b4395bd3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4dea6b551379c3c0b59326abdaf3b4395bd3" kindref="member">Overlay</ref></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="78"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>HAVE_FLUIDLITE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_FLUID_NAME<sp/>&quot;FluidLite&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83" refid="game__config_8h_1acecfd2ff5807c74538b9258765040b39" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_FLUID_NAME<sp/>&quot;FluidSynth&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86" refid="struct_game___config_player" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_game___config_player" kindref="compound">Game_ConfigPlayer</ref><sp/>{</highlight></codeline>
+<codeline lineno="87" refid="struct_game___config_player_1a949a8e7e56570a805625567f5a68ec98" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="config__param_8h_1ac508820ef5654cf916f7e0901ce5ca11" kindref="member">StringConfigParam</ref><sp/><ref refid="struct_game___config_player_1a949a8e7e56570a805625567f5a68ec98" kindref="member">autobattle_algo</ref>{<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="88" refid="struct_game___config_player_1adf87d1e81046cc688022bc60151cf6e1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="config__param_8h_1ac508820ef5654cf916f7e0901ce5ca11" kindref="member">StringConfigParam</ref><sp/><ref refid="struct_game___config_player_1adf87d1e81046cc688022bc60151cf6e1" kindref="member">enemyai_algo</ref>{<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="89" refid="struct_game___config_player_1ac494f90930eae509e07f6c150a44d890" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_player_1ac494f90930eae509e07f6c150a44d890" kindref="member">settings_autosave</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Save<sp/>settings<sp/>on<sp/>exit&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Automatically<sp/>save<sp/>the<sp/>settings<sp/>on<sp/>exit&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Player&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;SettingsAutosave&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="90" refid="struct_game___config_player_1ac557f3b177e0574c4c7915304f42a1f1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_player_1ac557f3b177e0574c4c7915304f42a1f1" kindref="member">settings_in_title</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Show<sp/>settings<sp/>on<sp/>title<sp/>screen&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Display<sp/>settings<sp/>menu<sp/>item<sp/>on<sp/>the<sp/>title<sp/>screen&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Player&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;SettingsInTitle&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="91" refid="struct_game___config_player_1a5d375a74ce5142d6e42e06241c96765c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_player_1a5d375a74ce5142d6e42e06241c96765c" kindref="member">settings_in_menu</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Show<sp/>settings<sp/>in<sp/>menu&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Display<sp/>settings<sp/>menu<sp/>item<sp/>on<sp/>the<sp/>menu<sp/>screen&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Player&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;SettingsInMenu&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="92" refid="struct_game___config_player_1aa754cff3ae463ccdbcd04dc144facf75" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_enum_config_param" kindref="compound">EnumConfigParam&lt;ConfigEnum::StartupLogos, 3&gt;</ref><sp/><ref refid="struct_game___config_player_1aa754cff3ae463ccdbcd04dc144facf75" kindref="member">show_startup_logos</ref>{</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Startup<sp/>Logos&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Logos<sp/>that<sp/>are<sp/>displayed<sp/>on<sp/>startup&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Player&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;StartupLogos&quot;</highlight><highlight class="normal">,<sp/><ref refid="namespace_config_enum_1afbe539eb659a120eac031060bcf0237ba90589c47f06eb971d548591f23c285af" kindref="member">ConfigEnum::StartupLogos::Custom</ref>,</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight><highlight class="stringliteral">&quot;None&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Custom&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;All&quot;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight><highlight class="stringliteral">&quot;none&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;custom&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;all&quot;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight><highlight class="stringliteral">&quot;Do<sp/>not<sp/>show<sp/>any<sp/>additional<sp/>logos&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Show<sp/>custom<sp/>logos<sp/>bundled<sp/>with<sp/>the<sp/>game&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Show<sp/>all<sp/>logos,<sp/>including<sp/>the<sp/>original<sp/>from<sp/>RPG<sp/>Maker&quot;</highlight><highlight class="normal">)};</highlight></codeline>
+<codeline lineno="97" refid="struct_game___config_player_1ae53dc5686e96ab982fa3f88325642bd0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_path_config_param" kindref="compound">PathConfigParam</ref><sp/><ref refid="struct_game___config_player_1ae53dc5686e96ab982fa3f88325642bd0" kindref="member">font1</ref><sp/>{<sp/></highlight><highlight class="stringliteral">&quot;Font<sp/>1&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;The<sp/>game<sp/>chooses<sp/>whether<sp/>it<sp/>wants<sp/>font<sp/>1<sp/>or<sp/>2&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Player&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Font1&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="98" refid="struct_game___config_player_1a378049638b72cada83050a31583a130a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_range_config_param" kindref="compound">RangeConfigParam&lt;int&gt;</ref><sp/><ref refid="struct_game___config_player_1a378049638b72cada83050a31583a130a" kindref="member">font1_size</ref><sp/>{<sp/></highlight><highlight class="stringliteral">&quot;Font<sp/>1<sp/>Size&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Player&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Font1Size&quot;</highlight><highlight class="normal">,<sp/>12,<sp/>6,<sp/>16};</highlight></codeline>
+<codeline lineno="99" refid="struct_game___config_player_1ae058863dfce310957dbab39d9e3f5b6b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_path_config_param" kindref="compound">PathConfigParam</ref><sp/><ref refid="struct_game___config_player_1ae058863dfce310957dbab39d9e3f5b6b" kindref="member">font2</ref><sp/>{<sp/></highlight><highlight class="stringliteral">&quot;Font<sp/>2&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;The<sp/>game<sp/>chooses<sp/>whether<sp/>it<sp/>wants<sp/>font<sp/>1<sp/>or<sp/>2&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Player&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Font2&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="100" refid="struct_game___config_player_1a80fbaa9a7a88dcb840fa009166511212" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_range_config_param" kindref="compound">RangeConfigParam&lt;int&gt;</ref><sp/><ref refid="struct_game___config_player_1a80fbaa9a7a88dcb840fa009166511212" kindref="member">font2_size</ref><sp/>{<sp/></highlight><highlight class="stringliteral">&quot;Font<sp/>2<sp/>Size&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Player&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Font2Size&quot;</highlight><highlight class="normal">,<sp/>12,<sp/>6,<sp/>16};</highlight></codeline>
+<codeline lineno="101" refid="struct_game___config_player_1a459ddadc26abe8a80ae1b1844b249cbe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_enum_config_param" kindref="compound">EnumConfigParam&lt;ConfigEnum::StartupLangSelect, 3&gt;</ref><sp/><ref refid="struct_game___config_player_1a459ddadc26abe8a80ae1b1844b249cbe" kindref="member">lang_select_on_start</ref><sp/>{</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Startup<sp/>Language<sp/>Menu&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Show<sp/>language<sp/>menu<sp/>before<sp/>booting<sp/>up<sp/>a<sp/>game&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Player&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;StartupLangSelect&quot;</highlight><highlight class="normal">,<sp/><ref refid="namespace_config_enum_1ac1da8e22735a3ab19903bda7c0b7c76aa965d87c4fa290286400dde2a615f76b9" kindref="member">ConfigEnum::StartupLangSelect::FirstStartup</ref>,</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight><highlight class="stringliteral">&quot;Never&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;First<sp/>Start&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Always&quot;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight><highlight class="stringliteral">&quot;never&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;FirstStartup&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;always&quot;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight><highlight class="stringliteral">&quot;Never<sp/>show<sp/>language<sp/>menu<sp/>on<sp/>start&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Show<sp/>on<sp/>first<sp/>start<sp/>(when<sp/>no<sp/>save<sp/>files<sp/>are<sp/>found)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Always<sp/>show<sp/>language<sp/>menu<sp/>prior<sp/>to<sp/>the<sp/>title<sp/>screen&quot;</highlight><highlight class="normal">)<sp/>};</highlight></codeline>
+<codeline lineno="106" refid="struct_game___config_player_1a2996d9da11e28d728b3963917c6ea0e3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_player_1a2996d9da11e28d728b3963917c6ea0e3" kindref="member">lang_select_in_title</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Show<sp/>language<sp/>menu<sp/>on<sp/>title<sp/>screen&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Display<sp/>language<sp/>menu<sp/>item<sp/>on<sp/>the<sp/>title<sp/>screen&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Player&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;LanguageInTitle&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="107" refid="struct_game___config_player_1a35d4a91db6b1ea9ed9200fac850a0def" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_player_1a35d4a91db6b1ea9ed9200fac850a0def" kindref="member">log_enabled</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Logging&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Write<sp/>diagnostic<sp/>messages<sp/>into<sp/>a<sp/>logfile&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Player&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Logging&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="108" refid="struct_game___config_player_1a2f6a5f903604c8ae5ad5b2af257151b5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_range_config_param" kindref="compound">RangeConfigParam&lt;int&gt;</ref><sp/><ref refid="struct_game___config_player_1a2f6a5f903604c8ae5ad5b2af257151b5" kindref="member">screenshot_scale</ref><sp/>{<sp/></highlight><highlight class="stringliteral">&quot;Screenshot<sp/>scaling<sp/>factor&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Scale<sp/>screenshots<sp/>by<sp/>the<sp/>given<sp/>factor&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Player&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ScreenshotScale&quot;</highlight><highlight class="normal">,<sp/>1,<sp/>1,<sp/>24};</highlight></codeline>
+<codeline lineno="109" refid="struct_game___config_player_1a7b8c69f6e228da9d36baca6dc6adf420" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_player_1a7b8c69f6e228da9d36baca6dc6adf420" kindref="member">screenshot_timestamp</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Screenshot<sp/>timestamp&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Add<sp/>the<sp/>current<sp/>date<sp/>and<sp/>time<sp/>to<sp/>the<sp/>file<sp/>name&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Player&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ScreenshotTimestamp&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="110" refid="struct_game___config_player_1ae2b91f8246c36697bba89d85893b920c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_player_1ae2b91f8246c36697bba89d85893b920c" kindref="member">automatic_screenshots</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Automatic<sp/>screenshots&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Periodically<sp/>take<sp/>screenshots&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Player&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;AutomaticScreenshots&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="111" refid="struct_game___config_player_1a36a11f969087729ff933024e62e8aab4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_range_config_param" kindref="compound">RangeConfigParam&lt;int&gt;</ref><sp/><ref refid="struct_game___config_player_1a36a11f969087729ff933024e62e8aab4" kindref="member">automatic_screenshots_interval</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Screenshot<sp/>interval&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;The<sp/>interval<sp/>between<sp/>automatic<sp/>screenshots<sp/>(seconds)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Player&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;AutomaticScreenshotsInterval&quot;</highlight><highlight class="normal">,<sp/>30,<sp/>1,<sp/>999999<sp/>};</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___config_player_1ad72c1610d9e4c08652ea41fab3f3db7f" kindref="member">Hide</ref>();</highlight></codeline>
+<codeline lineno="114"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116" refid="struct_game___config_video" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_game___config_video" kindref="compound">Game_ConfigVideo</ref><sp/>{</highlight></codeline>
+<codeline lineno="117" refid="struct_game___config_video_1a2b5a6f48eeb77aac514fdbf1ce4bea67" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_locked_config_param" kindref="compound">LockedConfigParam&lt;std::string&gt;</ref><sp/><ref refid="struct_game___config_video_1a2b5a6f48eeb77aac514fdbf1ce4bea67" kindref="member">renderer</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Renderer&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;The<sp/>rendering<sp/>engine&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;auto&quot;</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="118" refid="struct_game___config_video_1a2b8d1b5b3082de3ae23e1e4f0e1663d2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_video_1a2b8d1b5b3082de3ae23e1e4f0e1663d2" kindref="member">vsync</ref>{<sp/></highlight><highlight class="stringliteral">&quot;V-Sync&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Toggle<sp/>V-Sync<sp/>mode<sp/>(Recommended:<sp/>ON)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Video&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Vsync&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="119" refid="struct_game___config_video_1a7b140218c0881925e25fd107eff70c74" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_video_1a7b140218c0881925e25fd107eff70c74" kindref="member">fullscreen</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Fullscreen&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Toggle<sp/>between<sp/>fullscreen<sp/>and<sp/>window<sp/>mode&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Video&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Fullscreen&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="120" refid="struct_game___config_video_1a0d9167bcb1be48c0d9fe86e8348e3076" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_enum_config_param" kindref="compound">EnumConfigParam&lt;ConfigEnum::ShowFps, 3&gt;</ref><sp/><ref refid="struct_game___config_video_1a0d9167bcb1be48c0d9fe86e8348e3076" kindref="member">fps</ref>{</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;FPS<sp/>counter&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;How<sp/>to<sp/>display<sp/>the<sp/>FPS<sp/>counter&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Video&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Fps&quot;</highlight><highlight class="normal">,<sp/><ref refid="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4dea88559a0cfd8250c9d65970cc145c92d4" kindref="member">ConfigEnum::ShowFps::OFF</ref>,</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight><highlight class="stringliteral">&quot;[OFF]&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;[ON]&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Overlay&quot;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight><highlight class="stringliteral">&quot;off&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;on&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;overlay&quot;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight><highlight class="stringliteral">&quot;Do<sp/>not<sp/>show<sp/>the<sp/>FPS<sp/>counter&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Show<sp/>the<sp/>FPS<sp/>counter&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Always<sp/>show<sp/>the<sp/>FPS<sp/>counter<sp/>inside<sp/>the<sp/>window&quot;</highlight><highlight class="normal">)};</highlight></codeline>
+<codeline lineno="125" refid="struct_game___config_video_1ae1e0754890bb459a9b5184b0300efa1f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_range_config_param" kindref="compound">RangeConfigParam&lt;int&gt;</ref><sp/><ref refid="struct_game___config_video_1ae1e0754890bb459a9b5184b0300efa1f" kindref="member">fps_limit</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Frame<sp/>Limiter&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Toggle<sp/>the<sp/>frames<sp/>per<sp/>second<sp/>limit<sp/>(Recommended:<sp/>60)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Video&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;FpsLimit&quot;</highlight><highlight class="normal">,<sp/><ref refid="options_8h_1aaa0b8e2587392b1fa7ea5b2cfc12b029" kindref="member">DEFAULT_FPS</ref>,<sp/>0,<sp/>99999<sp/>};</highlight></codeline>
+<codeline lineno="126" refid="struct_game___config_video_1a5f164eecc469c91b8641cdcab4abb6b8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_config_param" kindref="compound">ConfigParam&lt;int&gt;</ref><sp/><ref refid="struct_game___config_video_1a5f164eecc469c91b8641cdcab4abb6b8" kindref="member">window_zoom</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Window<sp/>Zoom&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Toggle<sp/>the<sp/>window<sp/>zoom<sp/>level&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Video&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;WindowZoom&quot;</highlight><highlight class="normal">,<sp/>2<sp/>};</highlight></codeline>
+<codeline lineno="127" refid="struct_game___config_video_1a4a2661d3d8fa3d0fccfc3660e39609d6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_enum_config_param" kindref="compound">EnumConfigParam&lt;ConfigEnum::ScalingMode, 3&gt;</ref><sp/><ref refid="struct_game___config_video_1a4a2661d3d8fa3d0fccfc3660e39609d6" kindref="member">scaling_mode</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Scaling<sp/>method&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;How<sp/>the<sp/>output<sp/>is<sp/>scaled&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Video&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ScalingMode&quot;</highlight><highlight class="normal">,<sp/><ref refid="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000a60494f02d440f316319dd0fad40ad007" kindref="member">ConfigEnum::ScalingMode::Nearest</ref>,</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight><highlight class="stringliteral">&quot;Nearest&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Integer&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Bilinear&quot;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight><highlight class="stringliteral">&quot;nearest&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;integer&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;bilinear&quot;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight><highlight class="stringliteral">&quot;Scale<sp/>to<sp/>screen<sp/>size<sp/>(Causes<sp/>scaling<sp/>artifacts)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Scale<sp/>to<sp/>multiple<sp/>of<sp/>the<sp/>game<sp/>resolution&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Like<sp/>Nearest,<sp/>but<sp/>output<sp/>is<sp/>blurred<sp/>to<sp/>avoid<sp/>artifacts&quot;</highlight><highlight class="normal">)};</highlight></codeline>
+<codeline lineno="131" refid="struct_game___config_video_1abe1315bf7d2c834ca5a6d86141df5a44" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_video_1abe1315bf7d2c834ca5a6d86141df5a44" kindref="member">stretch</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Stretch&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Stretch<sp/>to<sp/>the<sp/>width<sp/>of<sp/>the<sp/>window/screen&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Video&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Stretch&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="132" refid="struct_game___config_video_1a08cc11f5e6e6e3660e5abbe620b06733" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_video_1a08cc11f5e6e6e3660e5abbe620b06733" kindref="member">pause_when_focus_lost</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Pause<sp/>when<sp/>focus<sp/>lost&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Pause<sp/>the<sp/>program<sp/>when<sp/>it<sp/>is<sp/>in<sp/>the<sp/>background&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Video&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;PauseWhenFocusLost&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="133" refid="struct_game___config_video_1a495d1743000b56198af9a1b6dceaf661" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_video_1a495d1743000b56198af9a1b6dceaf661" kindref="member">touch_ui</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Touch<sp/>Ui&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Display<sp/>the<sp/>touch<sp/>ui&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Video&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;TouchUi&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="134" refid="struct_game___config_video_1a3ccf6d982dd5ebcd20ddfe6a8a339f2d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_enum_config_param" kindref="compound">EnumConfigParam&lt;ConfigEnum::GameResolution, 3&gt;</ref><sp/><ref refid="struct_game___config_video_1a3ccf6d982dd5ebcd20ddfe6a8a339f2d" kindref="member">game_resolution</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Resolution&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Game<sp/>resolution.<sp/>Changes<sp/>require<sp/>a<sp/>restart.&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Video&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;GameResolution&quot;</highlight><highlight class="normal">,<sp/><ref refid="namespace_config_enum_1aed4f168068862c122f4b138e2a3c3897a0a52da7a03a6de3beefe54f8c03ad80d" kindref="member">ConfigEnum::GameResolution::Original</ref>,</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight><highlight class="stringliteral">&quot;Original<sp/>(Recommended)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Widescreen<sp/>(Experimental)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Ultrawide<sp/>(Experimental)&quot;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight><highlight class="stringliteral">&quot;original&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;widescreen&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ultrawide&quot;</highlight><highlight class="normal">),</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(</highlight><highlight class="stringliteral">&quot;The<sp/>default<sp/>resolution<sp/>(320x240,<sp/>4:3)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Can<sp/>cause<sp/>glitches<sp/>(416x240,<sp/>16:9)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Can<sp/>cause<sp/>glitches<sp/>(560x240,<sp/>21:9)&quot;</highlight><highlight class="normal">)};</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>These<sp/>are<sp/>never<sp/>shown<sp/>and<sp/>are<sp/>used<sp/>to<sp/>restore<sp/>the<sp/>window<sp/>to<sp/>the<sp/>previous<sp/>position</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="140" refid="struct_game___config_video_1a180b94747d911e260725a1e8dc1bda2f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_config_param" kindref="compound">ConfigParam&lt;int&gt;</ref><sp/><ref refid="struct_game___config_video_1a180b94747d911e260725a1e8dc1bda2f" kindref="member">window_x</ref>{<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Video&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;WindowX&quot;</highlight><highlight class="normal">,<sp/>-1<sp/>};</highlight></codeline>
+<codeline lineno="141" refid="struct_game___config_video_1acbc79c3a3dd5fd9c261fe509d2d6bc55" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_config_param" kindref="compound">ConfigParam&lt;int&gt;</ref><sp/><ref refid="struct_game___config_video_1acbc79c3a3dd5fd9c261fe509d2d6bc55" kindref="member">window_y</ref>{<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Video&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;WindowY&quot;</highlight><highlight class="normal">,<sp/>-1<sp/>};</highlight></codeline>
+<codeline lineno="142" refid="struct_game___config_video_1a496405fd81e7187f23d32d8220a6ac82" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_config_param" kindref="compound">ConfigParam&lt;int&gt;</ref><sp/><ref refid="struct_game___config_video_1a496405fd81e7187f23d32d8220a6ac82" kindref="member">window_width</ref>{<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Video&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;WindowWidth&quot;</highlight><highlight class="normal">,<sp/>-1<sp/>};</highlight></codeline>
+<codeline lineno="143" refid="struct_game___config_video_1aa3a2919c8e41c39060c4309f9e4e6342" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_config_param" kindref="compound">ConfigParam&lt;int&gt;</ref><sp/><ref refid="struct_game___config_video_1aa3a2919c8e41c39060c4309f9e4e6342" kindref="member">window_height</ref>{<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Video&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;WindowHeight&quot;</highlight><highlight class="normal">,<sp/>-1<sp/>};</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___config_video_1a9242682401eda8269a58c629e069d312" kindref="member">Hide</ref>();</highlight></codeline>
+<codeline lineno="146"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148" refid="struct_game___config_audio" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_game___config_audio" kindref="compound">Game_ConfigAudio</ref><sp/>{</highlight></codeline>
+<codeline lineno="149" refid="struct_game___config_audio_1a49f21f922dc30aa89ec8cc53e87b3151" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_range_config_param" kindref="compound">RangeConfigParam&lt;int&gt;</ref><sp/><ref refid="struct_game___config_audio_1a49f21f922dc30aa89ec8cc53e87b3151" kindref="member">music_volume</ref>{<sp/></highlight><highlight class="stringliteral">&quot;BGM<sp/>Volume&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Volume<sp/>of<sp/>the<sp/>background<sp/>music&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Audio&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;MusicVolume&quot;</highlight><highlight class="normal">,<sp/>100,<sp/>0,<sp/>100<sp/>};</highlight></codeline>
+<codeline lineno="150" refid="struct_game___config_audio_1ada7b7e74ca80175860c640b05efed25b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_range_config_param" kindref="compound">RangeConfigParam&lt;int&gt;</ref><sp/><ref refid="struct_game___config_audio_1ada7b7e74ca80175860c640b05efed25b" kindref="member">sound_volume</ref>{<sp/></highlight><highlight class="stringliteral">&quot;SFX<sp/>Volume&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Volume<sp/>of<sp/>the<sp/>sound<sp/>effects&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Audio&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;SoundVolume&quot;</highlight><highlight class="normal">,<sp/>100,<sp/>0,<sp/>100<sp/>};</highlight></codeline>
+<codeline lineno="151" refid="struct_game___config_audio_1a2393c8ae5818882912fa335d94237301" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_audio_1a2393c8ae5818882912fa335d94237301" kindref="member">fluidsynth_midi</ref><sp/>{<sp/><ref refid="game__config_8h_1acecfd2ff5807c74538b9258765040b39" kindref="member">EP_FLUID_NAME</ref><sp/></highlight><highlight class="stringliteral">&quot;<sp/>(SF2)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Play<sp/>MIDI<sp/>using<sp/>SF2<sp/>soundfonts&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Audio&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Fluidsynth&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="152" refid="struct_game___config_audio_1abaddcd5b2855b920e6720c1b339b75e1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_audio_1abaddcd5b2855b920e6720c1b339b75e1" kindref="member">wildmidi_midi</ref><sp/>{<sp/></highlight><highlight class="stringliteral">&quot;WildMidi<sp/>(GUS)&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Play<sp/>MIDI<sp/>using<sp/>GUS<sp/>patches&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Audio&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;WildMidi&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="153" refid="struct_game___config_audio_1ac19f9a3c8b6b47ed0dcf238d6fcef09f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_audio_1ac19f9a3c8b6b47ed0dcf238d6fcef09f" kindref="member">native_midi</ref><sp/>{<sp/></highlight><highlight class="stringliteral">&quot;Native<sp/>MIDI&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Play<sp/>MIDI<sp/>through<sp/>the<sp/>operating<sp/>system<sp/>&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Audio&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;NativeMidi&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="154" refid="struct_game___config_audio_1a979d839abe0c3842f4f1c86262d4a58d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_locked_config_param" kindref="compound">LockedConfigParam&lt;std::string&gt;</ref><sp/><ref refid="struct_game___config_audio_1a979d839abe0c3842f4f1c86262d4a58d" kindref="member">fmmidi_midi</ref><sp/>{<sp/></highlight><highlight class="stringliteral">&quot;FmMidi&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Play<sp/>MIDI<sp/>using<sp/>the<sp/>built-in<sp/>MIDI<sp/>synthesizer&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;[Always<sp/>ON]&quot;</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="155" refid="struct_game___config_audio_1a7b8025f9e92080961090920ce1a3c20c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_path_config_param" kindref="compound">PathConfigParam</ref><sp/><ref refid="struct_game___config_audio_1a7b8025f9e92080961090920ce1a3c20c" kindref="member">soundfont</ref><sp/>{<sp/></highlight><highlight class="stringliteral">&quot;Soundfont&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Soundfont<sp/>to<sp/>use<sp/>for<sp/>&quot;</highlight><highlight class="normal"><sp/><ref refid="game__config_8h_1acecfd2ff5807c74538b9258765040b39" kindref="member">EP_FLUID_NAME</ref>,<sp/></highlight><highlight class="stringliteral">&quot;Audio&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Soundfont&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___config_audio_1ad42c29e5c71d4cb06fe601c595842696" kindref="member">Hide</ref>();</highlight></codeline>
+<codeline lineno="158"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160" refid="struct_game___config_input" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_game___config_input" kindref="compound">Game_ConfigInput</ref><sp/>{</highlight></codeline>
+<codeline lineno="161" refid="struct_game___config_input_1ab6cb28ac523f7a95e449a6987bb665f2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_range_config_param" kindref="compound">RangeConfigParam&lt;int&gt;</ref><sp/><ref refid="struct_game___config_input_1ab6cb28ac523f7a95e449a6987bb665f2" kindref="member">speed_modifier_a</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Fast<sp/>Forward<sp/>A:<sp/>Speed&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Set<sp/>fast<sp/>forward<sp/>A<sp/>speed&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Input&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;SpeedModifierA&quot;</highlight><highlight class="normal">,<sp/>3,<sp/>2,<sp/>100<sp/>};</highlight></codeline>
+<codeline lineno="162" refid="struct_game___config_input_1ae9aa7c9d2adc1fe28045ddf7aef5f630" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_range_config_param" kindref="compound">RangeConfigParam&lt;int&gt;</ref><sp/><ref refid="struct_game___config_input_1ae9aa7c9d2adc1fe28045ddf7aef5f630" kindref="member">speed_modifier_b</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Fast<sp/>Forward<sp/>B:<sp/>Speed&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Set<sp/>fast<sp/>forward<sp/>B<sp/>speed&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Input&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;SpeedModifierB&quot;</highlight><highlight class="normal">,<sp/>10,<sp/>2,<sp/>100<sp/>};</highlight></codeline>
+<codeline lineno="163" refid="struct_game___config_input_1a4cf750c71cf31910ec3adedd964359ce" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_input_1a4cf750c71cf31910ec3adedd964359ce" kindref="member">gamepad_swap_analog</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Gamepad:<sp/>Swap<sp/>Analog<sp/>Sticks&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Swap<sp/>left<sp/>and<sp/>right<sp/>stick&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Input&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;GamepadSwapAnalog&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="164" refid="struct_game___config_input_1aa963f9e797f853d2096a30432ed8db80" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_input_1aa963f9e797f853d2096a30432ed8db80" kindref="member">gamepad_swap_dpad_with_buttons</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Gamepad:<sp/>Swap<sp/>D-Pad<sp/>with<sp/>buttons&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Swap<sp/>D-Pad<sp/>with<sp/>ABXY-Buttons&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Input&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;GamepadSwapDpad&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="165" refid="struct_game___config_input_1a2f8a2bed8014773f22fcfe047e08a3c5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref><sp/><ref refid="struct_game___config_input_1a2f8a2bed8014773f22fcfe047e08a3c5" kindref="member">gamepad_swap_ab_and_xy</ref>{<sp/></highlight><highlight class="stringliteral">&quot;Gamepad:<sp/>Swap<sp/>AB<sp/>and<sp/>XY&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Swap<sp/>A<sp/>and<sp/>B<sp/>with<sp/>X<sp/>and<sp/>Y&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Input&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;GamepadSwapAbxy&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal"><sp/>};</highlight></codeline>
+<codeline lineno="166" refid="struct_game___config_input_1ac3db689eaad1b83e8075f10576a60ecc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_input_1a6c58920837b877254184fff33f735e9f" kindref="member">Input::ButtonMappingArray</ref><sp/><ref refid="struct_game___config_input_1ac3db689eaad1b83e8075f10576a60ecc" kindref="member">buttons</ref>;</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___config_input_1aa9fdebd8abf0e82f172b629f3a8948e1" kindref="member">Hide</ref>();</highlight></codeline>
+<codeline lineno="169"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight></codeline>
+<codeline lineno="171" refid="struct_game___config" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_game___config" kindref="compound">Game_Config</ref><sp/>{</highlight></codeline>
+<codeline lineno="173" refid="struct_game___config_1ab3963857f5088d55b658ca4cb25b6aaf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_game___config_player" kindref="compound">Game_ConfigPlayer</ref><sp/><ref refid="struct_game___config_1ab3963857f5088d55b658ca4cb25b6aaf" kindref="member">player</ref>;</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="176" refid="struct_game___config_1aeda7a37a18bd0b2f658d3f6e69529de9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_game___config_video" kindref="compound">Game_ConfigVideo</ref><sp/><ref refid="struct_game___config_1aeda7a37a18bd0b2f658d3f6e69529de9" kindref="member">video</ref>;</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="179" refid="struct_game___config_1ac9bf83f157b15bd82307e4a7b5725de9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_game___config_audio" kindref="compound">Game_ConfigAudio</ref><sp/><ref refid="struct_game___config_1ac9bf83f157b15bd82307e4a7b5725de9" kindref="member">audio</ref>;</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="182" refid="struct_game___config_1a80d42fd9d90a52f619fcc81419ddc1b7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_game___config_input" kindref="compound">Game_ConfigInput</ref><sp/><ref refid="struct_game___config_1a80d42fd9d90a52f619fcc81419ddc1b7" kindref="member">input</ref>;</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="struct_game___config" kindref="compound">Game_Config</ref><sp/><ref refid="struct_game___config_1a5c9f1de2bee569421786e498891475d4" kindref="member">Create</ref>(<ref refid="class_cmdline_parser" kindref="compound">CmdlineParser</ref>&amp;<sp/>cp);</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::string<sp/><ref refid="struct_game___config_1a9d6ad182ae9e2e3e6dff05340b33e0db" kindref="member">GetConfigPath</ref>(<ref refid="class_cmdline_parser" kindref="compound">CmdlineParser</ref>&amp;<sp/>cp);</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref><sp/><ref refid="struct_game___config_1a59c18f70caeb793912159cd132922072" kindref="member">GetGlobalConfigFilesystem</ref>();</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref><sp/><ref refid="struct_game___config_1ad47ae32cb02997818ca9d910989f9c24" kindref="member">GetSoundfontFilesystem</ref>();</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref><sp/><ref refid="struct_game___config_1a6ca2e3d04b9cb327eaaf1157b35182bd" kindref="member">GetFontFilesystem</ref>();</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref><sp/><ref refid="struct_game___config_1a73b765b9a0a01ef2d99b8d2222429e2e" kindref="member">GetGlobalConfigFileInput</ref>();</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_filesystem___stream_1_1_output_stream" kindref="compound">Filesystem_Stream::OutputStream</ref><sp/><ref refid="struct_game___config_1aa9213452ef943bb0e647a76d65b9ac65" kindref="member">GetGlobalConfigFileOutput</ref>();</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"></highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_filesystem___stream_1_1_output_stream" kindref="compound">Filesystem_Stream::OutputStream</ref>&amp;<sp/><ref refid="struct_game___config_1a0a0a11ad65afc59898c5279108f4acf1" kindref="member">GetLogFileOutput</ref>();</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"></highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___config_1a18b1aef98e1b4c7febe5ef8256e11a8c" kindref="member">CloseLogFile</ref>();</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___config_1a4ff42f83627656298f65e925d2d4aa97" kindref="member">LoadFromStream</ref>(<ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref>&amp;<sp/>is);</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___config_1aa192e3addec6f4c522d4a4cf3bae5f95" kindref="member">LoadFromArgs</ref>(<ref refid="class_cmdline_parser" kindref="compound">CmdlineParser</ref>&amp;<sp/>cp);</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"></highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___config_1ac18a69ff4afcdaac486bc513223a5d0c" kindref="member">WriteToStream</ref>(<ref refid="class_filesystem___stream_1_1_output_stream" kindref="compound">Filesystem_Stream::OutputStream</ref>&amp;<sp/>os)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="252"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="game_config.h"/>
+  </compounddef>
+</doxygen>

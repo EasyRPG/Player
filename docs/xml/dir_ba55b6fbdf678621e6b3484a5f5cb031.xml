@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_ba55b6fbdf678621e6b3484a5f5cb031" kind="dir">
+    <compoundname>leasy/ily3</compoundname>
+    <innerfile refid="__lua__scripts_8cpp">_lua_scripts.cpp</innerfile>
+    <innerfile refid="__lua__scripts_8hpp">_lua_scripts.hpp</innerfile>
+    <innerfile refid="basetypes_8hpp">basetypes.hpp</innerfile>
+    <innerfile refid="boot_8cpp">boot.cpp</innerfile>
+    <innerfile refid="drawqueue_8cpp">drawqueue.cpp</innerfile>
+    <innerfile refid="drawqueue_8hpp">drawqueue.hpp</innerfile>
+    <innerfile refid="easyfs_8cpp">easyfs.cpp</innerfile>
+    <innerfile refid="easyfs_8hpp">easyfs.hpp</innerfile>
+    <innerfile refid="ily3_8cpp">ily3.cpp</innerfile>
+    <innerfile refid="ily3_8hpp">ily3.hpp</innerfile>
+    <innerfile refid="libsys_8cpp">libsys.cpp</innerfile>
+    <innerfile refid="libsys_8hpp">libsys.hpp</innerfile>
+    <innerfile refid="math_8hpp">math.hpp</innerfile>
+    <innerfile refid="memguard_8hpp">memguard.hpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ily3/"/>
+  </compounddef>
+</doxygen>

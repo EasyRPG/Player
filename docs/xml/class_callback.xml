@@ -1,0 +1,243 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_callback" kind="class" language="C++" prot="public">
+    <compoundname>Callback</compoundname>
+    <includes refid="callback_8h" local="no">callback.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename ...</type>
+        <declname>Args</declname>
+        <defname>Args</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_callback_1ac8b1e059cf2faca92ce663bcbbea296a" prot="public" static="no">
+        <type>void</type>
+        <definition>using Callback&lt; Args &gt;::Ret = void</definition>
+        <argsstring></argsstring>
+        <name>Ret</name>
+        <qualifiedname>Callback::Ret</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="callback.h" line="102" column="1" bodyfile="callback.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_callback_1a7a46695a2e4bb36c98e87459173019a2" prot="public" static="no">
+        <type>std::function&lt; <ref refid="class_callback_1ac8b1e059cf2faca92ce663bcbbea296a" kindref="member">Ret</ref>(Args...)&gt;</type>
+        <definition>using Callback&lt; Args &gt;::Fn = std::function&lt;Ret(Args...)&gt;</definition>
+        <argsstring></argsstring>
+        <name>Fn</name>
+        <qualifiedname>Callback::Fn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="callback.h" line="103" column="1" bodyfile="callback.h" bodystart="103" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_callback_1ac672fea94f5312314de29187a36c250a" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::pair&lt; int, <ref refid="class_callback_1a7a46695a2e4bb36c98e87459173019a2" kindref="member">Fn</ref> &gt; &gt;</type>
+        <definition>std::vector&lt;std::pair&lt;int, Fn&gt; &gt; Callback&lt; Args &gt;::listeners</definition>
+        <argsstring></argsstring>
+        <name>listeners</name>
+        <qualifiedname>Callback::listeners</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="callback.h" line="153" column="13" bodyfile="callback.h" bodystart="153" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_callback_1a72436d07da3abec214abfb8887806b9a" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Callback&lt; Args &gt;::next_id</definition>
+        <argsstring></argsstring>
+        <name>next_id</name>
+        <qualifiedname>Callback::next_id</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="callback.h" line="155" column="5" bodyfile="callback.h" bodystart="155" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_callback_1afbd663dfc4978f6718e9ded7300f1e04" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>int Callback&lt; Args &gt;::BindUnmanaged</definition>
+        <argsstring>(Ret(T::*func)(Args...), T *that, Args... args)</argsstring>
+        <name>BindUnmanaged</name>
+        <qualifiedname>Callback::BindUnmanaged</qualifiedname>
+        <param>
+          <type><ref refid="class_callback_1ac8b1e059cf2faca92ce663bcbbea296a" kindref="member">Ret</ref>(T::*)(Args...)</type>
+          <declname>func</declname>
+        </param>
+        <param>
+          <type>T *</type>
+          <declname>that</declname>
+        </param>
+        <param>
+          <type>Args...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="callback.h" line="106" column="5" bodyfile="callback.h" bodystart="106" bodyend="109"/>
+      </memberdef>
+      <memberdef kind="function" id="class_callback_1a61a22b3140f10be7dc23bf3869f7283a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Callback&lt; Args &gt;::BindUnmanaged</definition>
+        <argsstring>(Fn func)</argsstring>
+        <name>BindUnmanaged</name>
+        <qualifiedname>Callback::BindUnmanaged</qualifiedname>
+        <param>
+          <type><ref refid="class_callback_1a7a46695a2e4bb36c98e87459173019a2" kindref="member">Fn</ref></type>
+          <declname>func</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="callback.h" line="111" column="5" bodyfile="callback.h" bodystart="111" bodyend="114"/>
+      </memberdef>
+      <memberdef kind="function" id="class_callback_1a45d90939de701d7437cbc3b0ceab516b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="callback_8h_1aa7afe9d1b453d259fd2d845eafcbfbf3" kindref="member">BindingScopeGuard</ref></type>
+        <definition>BindingScopeGuard Callback&lt; Args &gt;::Bind</definition>
+        <argsstring>(Ret(T::*func)(Args...), T *that, Args... args)</argsstring>
+        <name>Bind</name>
+        <qualifiedname>Callback::Bind</qualifiedname>
+        <param>
+          <type><ref refid="class_callback_1ac8b1e059cf2faca92ce663bcbbea296a" kindref="member">Ret</ref>(T::*)(Args...)</type>
+          <declname>func</declname>
+        </param>
+        <param>
+          <type>T *</type>
+          <declname>that</declname>
+        </param>
+        <param>
+          <type>Args...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="callback.h" line="117" column="19" bodyfile="callback.h" bodystart="117" bodyend="123"/>
+      </memberdef>
+      <memberdef kind="function" id="class_callback_1af0216aaa7a1b8fe0dc32042f311633fc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="callback_8h_1aa7afe9d1b453d259fd2d845eafcbfbf3" kindref="member">BindingScopeGuard</ref></type>
+        <definition>BindingScopeGuard Callback&lt; Args &gt;::Bind</definition>
+        <argsstring>(Fn func)</argsstring>
+        <name>Bind</name>
+        <qualifiedname>Callback::Bind</qualifiedname>
+        <param>
+          <type><ref refid="class_callback_1a7a46695a2e4bb36c98e87459173019a2" kindref="member">Fn</ref></type>
+          <declname>func</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="callback.h" line="125" column="19" bodyfile="callback.h" bodystart="125" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="function" id="class_callback_1a27ef02c58e8a61ba92bfdfb4b99c902b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Callback&lt; Args &gt;::Unbind</definition>
+        <argsstring>(int id)</argsstring>
+        <name>Unbind</name>
+        <qualifiedname>Callback::Unbind</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="callback.h" line="133" column="6" bodyfile="callback.h" bodystart="133" bodyend="140"/>
+      </memberdef>
+      <memberdef kind="function" id="class_callback_1ada4aa19d9a8300a826135edab260b76b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Callback&lt; Args &gt;::Call</definition>
+        <argsstring>(Args... args)</argsstring>
+        <name>Call</name>
+        <qualifiedname>Callback::Call</qualifiedname>
+        <param>
+          <type>Args...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="callback.h" line="142" column="6" bodyfile="callback.h" bodystart="142" bodyend="146"/>
+      </memberdef>
+      <memberdef kind="function" id="class_callback_1a7f2c9a474e8bd9ef74727da574a73939" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Callback&lt; Args &gt;::Clear</definition>
+        <argsstring>()</argsstring>
+        <name>Clear</name>
+        <qualifiedname>Callback::Clear</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="callback.h" line="148" column="6" bodyfile="callback.h" bodystart="148" bodyend="150"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="callback.h" line="100" column="1" bodyfile="callback.h" bodystart="100" bodyend="156"/>
+    <listofallmembers>
+      <member refid="class_callback_1a45d90939de701d7437cbc3b0ceab516b" prot="public" virt="non-virtual"><scope>Callback</scope><name>Bind</name></member>
+      <member refid="class_callback_1af0216aaa7a1b8fe0dc32042f311633fc" prot="public" virt="non-virtual"><scope>Callback</scope><name>Bind</name></member>
+      <member refid="class_callback_1afbd663dfc4978f6718e9ded7300f1e04" prot="public" virt="non-virtual"><scope>Callback</scope><name>BindUnmanaged</name></member>
+      <member refid="class_callback_1a61a22b3140f10be7dc23bf3869f7283a" prot="public" virt="non-virtual"><scope>Callback</scope><name>BindUnmanaged</name></member>
+      <member refid="class_callback_1ada4aa19d9a8300a826135edab260b76b" prot="public" virt="non-virtual"><scope>Callback</scope><name>Call</name></member>
+      <member refid="class_callback_1a7f2c9a474e8bd9ef74727da574a73939" prot="public" virt="non-virtual"><scope>Callback</scope><name>Clear</name></member>
+      <member refid="class_callback_1a7a46695a2e4bb36c98e87459173019a2" prot="public" virt="non-virtual"><scope>Callback</scope><name>Fn</name></member>
+      <member refid="class_callback_1ac672fea94f5312314de29187a36c250a" prot="private" virt="non-virtual"><scope>Callback</scope><name>listeners</name></member>
+      <member refid="class_callback_1a72436d07da3abec214abfb8887806b9a" prot="private" virt="non-virtual"><scope>Callback</scope><name>next_id</name></member>
+      <member refid="class_callback_1ac8b1e059cf2faca92ce663bcbbea296a" prot="public" virt="non-virtual"><scope>Callback</scope><name>Ret</name></member>
+      <member refid="class_callback_1a27ef02c58e8a61ba92bfdfb4b99c902b" prot="public" virt="non-virtual"><scope>Callback</scope><name>Unbind</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

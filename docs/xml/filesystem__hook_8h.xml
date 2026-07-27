@@ -1,0 +1,200 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="filesystem__hook_8h" kind="file" language="C++">
+    <compoundname>filesystem_hook.h</compoundname>
+    <includes refid="filesystem_8h" local="yes">filesystem.h</includes>
+    <includedby refid="filesystem__hook_8cpp" local="yes">filesystem_hook.cpp</includedby>
+    <includedby refid="player_8cpp" local="yes">player.cpp</includedby>
+    <incdepgraph>
+      <node id="10">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>filesystem_hook.h</label>
+        <link refid="filesystem__hook_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>cassert</label>
+      </node>
+      <node id="4">
+        <label>cstdint</label>
+      </node>
+      <node id="17">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="18">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="6">
+        <label>istream</label>
+      </node>
+      <node id="16">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="13">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="15">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="5">
+        <label>memory</label>
+      </node>
+      <node id="7">
+        <label>ostream</label>
+      </node>
+      <node id="11">
+        <label>string</label>
+      </node>
+      <node id="8">
+        <label>unordered_map</label>
+      </node>
+      <node id="9">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>filesystem_hook.cpp</label>
+        <link refid="filesystem__hook_8cpp"/>
+      </node>
+      <node id="1">
+        <label>filesystem_hook.h</label>
+        <link refid="filesystem__hook_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_hook_filesystem" prot="public">HookFilesystem</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="filesystem__hook_8h_1ad633943e4831b9a5f2c705cd26bf9c91" prot="public" static="no">
+        <name>EP_FILESYSTEM_HOOK_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_hook.h" line="20" column="9" bodyfile="filesystem_hook.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_FILESYSTEM_HOOK_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="filesystem__hook_8h_1ad633943e4831b9a5f2c705cd26bf9c91" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_FILESYSTEM_HOOK_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="filesystem_8h" kindref="compound">filesystem.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27" refid="class_hook_filesystem" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_hook_filesystem_1abd203dbb2cab1b794afd5db946389545" kindref="member">HookFilesystem</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_1a9134daaffbc1e9ce8777e82d6156c3a8" kindref="member">Filesystem</ref><sp/>{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="29" refid="class_hook_filesystem_1abc8de4e1c34e21efe5cfbc9e5b6cc98e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="class_hook_filesystem_1abc8de4e1c34e21efe5cfbc9e5b6cc98e" kindref="member">Hook</ref><sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>Sacred<sp/>Tears:<sp/>TRUE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Shifts<sp/>the<sp/>offset<sp/>of<sp/>all<sp/>bytes<sp/>in<sp/>the<sp/>LMT<sp/>back<sp/>by<sp/>one</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="class_hook_filesystem_1abc8de4e1c34e21efe5cfbc9e5b6cc98ea600415f1b81c64d43f57d668e822e294" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_hook_filesystem_1abc8de4e1c34e21efe5cfbc9e5b6cc98ea600415f1b81c64d43f57d668e822e294" kindref="member">SacredTears</ref></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="class_hook_filesystem_1abd203dbb2cab1b794afd5db946389545" kindref="member">HookFilesystem</ref>(<ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref><sp/>parent_fs,<sp/><ref refid="class_hook_filesystem_1abc8de4e1c34e21efe5cfbc9e5b6cc98e" kindref="member">Hook</ref><sp/>hook);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref><sp/><ref refid="class_hook_filesystem_1ada32d205391c70f8283f3c1bdf3146c6" kindref="member">Detect</ref>(<ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref><sp/>fs);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_hook_filesystem_1a32c6498daca743e83330ebdcfeec04cf" kindref="member">IsFile</ref>(std::string_view<sp/>path)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_hook_filesystem_1a241c34ec685984708a5121d65127ab2a" kindref="member">IsDirectory</ref>(std::string_view<sp/>path,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>follow_symlinks)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_hook_filesystem_1a9a1483c0a2128edb9dc5df4f100377c3" kindref="member">Exists</ref>(std::string_view<sp/>path)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>int64_t<sp/><ref refid="class_hook_filesystem_1a4117351fd46529b6353b5550c5921063" kindref="member">GetFilesize</ref>(std::string_view<sp/>path)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_hook_filesystem_1af1e7bee7f3a1adcf14b03e4177de6509" kindref="member">MakeDirectory</ref>(std::string_view<sp/>dir,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>follow_symlinks)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_hook_filesystem_1a79a66018b53d3f40df90576e17d5c7cb" kindref="member">IsFeatureSupported</ref>(<ref refid="namespace_feature" kindref="compound">Feature</ref><sp/>f)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="class_hook_filesystem_1a68574b2ef76a1458728311bbcfb29b1c" kindref="member">Describe</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_hook_filesystem_1adf7b113b7094a5e8f834e504e5a0289c" kindref="member">GetDirectoryContent</ref>(std::string_view<sp/>path,<sp/>std::vector&lt;DirectoryTree::Entry&gt;&amp;<sp/>entries)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>std::streambuf*<sp/><ref refid="class_hook_filesystem_1a80d6efbf005b42c08f12e81e648ad259" kindref="member">CreateInputStreambuffer</ref>(std::string_view<sp/>path,<sp/>std::ios_base::openmode<sp/>mode)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>std::streambuf*<sp/><ref refid="class_hook_filesystem_1ab0fa0059ef7a32d1f2ff78dbc05d2d47" kindref="member">CreateOutputStreambuffer</ref>(std::string_view<sp/>path,<sp/>std::ios_base::openmode<sp/>mode)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="class_hook_filesystem_1a1a6e5c3397cdb8d7cd5ded14ef95935b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_hook_filesystem_1abc8de4e1c34e21efe5cfbc9e5b6cc98e" kindref="member">Hook</ref><sp/><ref refid="class_hook_filesystem_1a1a6e5c3397cdb8d7cd5ded14ef95935b" kindref="member">active_hook</ref>;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="filesystem_hook.h"/>
+  </compounddef>
+</doxygen>

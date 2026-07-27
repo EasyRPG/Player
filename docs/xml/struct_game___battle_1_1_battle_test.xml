@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___battle_1_1_battle_test" kind="struct" language="C++" prot="public">
+    <compoundname>Game_Battle::BattleTest</compoundname>
+    <includes refid="game__battle_8h" local="no">game_battle.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___battle_1_1_battle_test_1add38178365be34378577ee46eb1903ca" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Battle::BattleTest::enabled</definition>
+        <argsstring></argsstring>
+        <name>enabled</name>
+        <qualifiedname>Game_Battle::BattleTest::enabled</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="188" column="6" bodyfile="game_battle.h" bodystart="188" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___battle_1_1_battle_test_1a08f2ed505accfe9310410f621a8b38e1" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Battle::BattleTest::troop_id</definition>
+        <argsstring></argsstring>
+        <name>troop_id</name>
+        <qualifiedname>Game_Battle::BattleTest::troop_id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="189" column="5" bodyfile="game_battle.h" bodystart="189" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___battle_1_1_battle_test_1aa283057d1d1d51f072abd6ffe168f7ee" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Game_Battle::BattleTest::background</definition>
+        <argsstring></argsstring>
+        <name>background</name>
+        <qualifiedname>Game_Battle::BattleTest::background</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="190" column="13" bodyfile="game_battle.h" bodystart="190" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___battle_1_1_battle_test_1adfa31d33d01acc5660da8e3dab100c10" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Battle::BattleTest::terrain_id</definition>
+        <argsstring></argsstring>
+        <name>terrain_id</name>
+        <qualifiedname>Game_Battle::BattleTest::terrain_id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="191" column="5" bodyfile="game_battle.h" bodystart="191" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___battle_1_1_battle_test_1a72940d552517230d9b908f603b1a87f4" prot="public" static="no" mutable="no">
+        <type>lcf::rpg::System::BattleFormation</type>
+        <definition>lcf::rpg::System::BattleFormation Game_Battle::BattleTest::formation</definition>
+        <argsstring></argsstring>
+        <name>formation</name>
+        <qualifiedname>Game_Battle::BattleTest::formation</qualifiedname>
+        <initializer>= lcf::rpg::System::BattleFormation_terrain</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="192" column="35" bodyfile="game_battle.h" bodystart="192" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___battle_1_1_battle_test_1ad0fd47b2c0f5118de4b5d545fdadbb82" prot="public" static="no" mutable="no">
+        <type>lcf::rpg::System::BattleCondition</type>
+        <definition>lcf::rpg::System::BattleCondition Game_Battle::BattleTest::condition</definition>
+        <argsstring></argsstring>
+        <name>condition</name>
+        <qualifiedname>Game_Battle::BattleTest::condition</qualifiedname>
+        <initializer>= lcf::rpg::System::BattleCondition_none</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battle.h" line="193" column="35" bodyfile="game_battle.h" bodystart="193" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_battle.h" line="187" column="1" bodyfile="game_battle.h" bodystart="187" bodyend="194"/>
+    <listofallmembers>
+      <member refid="struct_game___battle_1_1_battle_test_1aa283057d1d1d51f072abd6ffe168f7ee" prot="public" virt="non-virtual"><scope>Game_Battle::BattleTest</scope><name>background</name></member>
+      <member refid="struct_game___battle_1_1_battle_test_1ad0fd47b2c0f5118de4b5d545fdadbb82" prot="public" virt="non-virtual"><scope>Game_Battle::BattleTest</scope><name>condition</name></member>
+      <member refid="struct_game___battle_1_1_battle_test_1add38178365be34378577ee46eb1903ca" prot="public" virt="non-virtual"><scope>Game_Battle::BattleTest</scope><name>enabled</name></member>
+      <member refid="struct_game___battle_1_1_battle_test_1a72940d552517230d9b908f603b1a87f4" prot="public" virt="non-virtual"><scope>Game_Battle::BattleTest</scope><name>formation</name></member>
+      <member refid="struct_game___battle_1_1_battle_test_1adfa31d33d01acc5660da8e3dab100c10" prot="public" virt="non-virtual"><scope>Game_Battle::BattleTest</scope><name>terrain_id</name></member>
+      <member refid="struct_game___battle_1_1_battle_test_1a08f2ed505accfe9310410f621a8b38e1" prot="public" virt="non-virtual"><scope>Game_Battle::BattleTest</scope><name>troop_id</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

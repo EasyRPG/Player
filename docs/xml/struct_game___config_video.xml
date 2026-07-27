@@ -1,0 +1,390 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___config_video" kind="struct" language="C++" prot="public">
+    <compoundname>Game_ConfigVideo</compoundname>
+    <includes refid="game__config_8h" local="no">game_config.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___config_video_1a2b5a6f48eeb77aac514fdbf1ce4bea67" prot="public" static="no" mutable="no">
+        <type><ref refid="class_locked_config_param" kindref="compound">LockedConfigParam</ref>&lt; std::string &gt;</type>
+        <definition>LockedConfigParam&lt;std::string&gt; Game_ConfigVideo::renderer</definition>
+        <argsstring></argsstring>
+        <name>renderer</name>
+        <qualifiedname>Game_ConfigVideo::renderer</qualifiedname>
+        <initializer>{ &quot;Renderer&quot;, &quot;The rendering engine&quot;, &quot;auto&quot; }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="117" column="19" bodyfile="game_config.h" bodystart="117" bodyend="117"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_video_1a2b8d1b5b3082de3ae23e1e4f0e1663d2" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigVideo::vsync</definition>
+        <argsstring></argsstring>
+        <name>vsync</name>
+        <qualifiedname>Game_ConfigVideo::vsync</qualifiedname>
+        <initializer>{ &quot;V-Sync&quot;, &quot;Toggle V-Sync mode (Recommended: ON)&quot;, &quot;Video&quot;, &quot;Vsync&quot;, true }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="118" column="17" bodyfile="game_config.h" bodystart="118" bodyend="118"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_video_1a7b140218c0881925e25fd107eff70c74" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigVideo::fullscreen</definition>
+        <argsstring></argsstring>
+        <name>fullscreen</name>
+        <qualifiedname>Game_ConfigVideo::fullscreen</qualifiedname>
+        <initializer>{ &quot;Fullscreen&quot;, &quot;Toggle between fullscreen and window mode&quot;, &quot;Video&quot;, &quot;Fullscreen&quot;, true }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="119" column="17" bodyfile="game_config.h" bodystart="119" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_video_1a0d9167bcb1be48c0d9fe86e8348e3076" prot="public" static="no" mutable="no">
+        <type><ref refid="class_enum_config_param" kindref="compound">EnumConfigParam</ref>&lt; <ref refid="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4de" kindref="member">ConfigEnum::ShowFps</ref>, 3 &gt;</type>
+        <definition>EnumConfigParam&lt;ConfigEnum::ShowFps, 3&gt; Game_ConfigVideo::fps</definition>
+        <argsstring></argsstring>
+        <name>fps</name>
+        <qualifiedname>Game_ConfigVideo::fps</qualifiedname>
+        <initializer>{
+        &quot;FPS counter&quot;, &quot;How to display the FPS counter&quot;, &quot;Video&quot;, &quot;Fps&quot;, <ref refid="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4dea88559a0cfd8250c9d65970cc145c92d4" kindref="member">ConfigEnum::ShowFps::OFF</ref>,
+        <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(&quot;[OFF]&quot;, &quot;[ON]&quot;, &quot;Overlay&quot;),
+        <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(&quot;off&quot;, &quot;on&quot;, &quot;overlay&quot;),
+        <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(&quot;Do not show the FPS counter&quot;, &quot;Show the FPS counter&quot;, &quot;Always show the FPS counter inside the window&quot;)}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="120" column="17" bodyfile="game_config.h" bodystart="120" bodyend="124"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_video_1ae1e0754890bb459a9b5184b0300efa1f" prot="public" static="no" mutable="no">
+        <type><ref refid="class_range_config_param" kindref="compound">RangeConfigParam</ref>&lt; int &gt;</type>
+        <definition>RangeConfigParam&lt;int&gt; Game_ConfigVideo::fps_limit</definition>
+        <argsstring></argsstring>
+        <name>fps_limit</name>
+        <qualifiedname>Game_ConfigVideo::fps_limit</qualifiedname>
+        <initializer>{ &quot;Frame Limiter&quot;, &quot;Toggle the frames per second limit (Recommended: 60)&quot;, &quot;Video&quot;, &quot;FpsLimit&quot;, <ref refid="options_8h_1aaa0b8e2587392b1fa7ea5b2cfc12b029" kindref="member">DEFAULT_FPS</ref>, 0, 99999 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="125" column="18" bodyfile="game_config.h" bodystart="125" bodyend="125"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_video_1a5f164eecc469c91b8641cdcab4abb6b8" prot="public" static="no" mutable="no">
+        <type><ref refid="class_config_param" kindref="compound">ConfigParam</ref>&lt; int &gt;</type>
+        <definition>ConfigParam&lt;int&gt; Game_ConfigVideo::window_zoom</definition>
+        <argsstring></argsstring>
+        <name>window_zoom</name>
+        <qualifiedname>Game_ConfigVideo::window_zoom</qualifiedname>
+        <initializer>{ &quot;Window Zoom&quot;, &quot;Toggle the window zoom level&quot;, &quot;Video&quot;, &quot;WindowZoom&quot;, 2 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="126" column="13" bodyfile="game_config.h" bodystart="126" bodyend="126"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_video_1a4a2661d3d8fa3d0fccfc3660e39609d6" prot="public" static="no" mutable="no">
+        <type><ref refid="class_enum_config_param" kindref="compound">EnumConfigParam</ref>&lt; <ref refid="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000" kindref="member">ConfigEnum::ScalingMode</ref>, 3 &gt;</type>
+        <definition>EnumConfigParam&lt;ConfigEnum::ScalingMode, 3&gt; Game_ConfigVideo::scaling_mode</definition>
+        <argsstring></argsstring>
+        <name>scaling_mode</name>
+        <qualifiedname>Game_ConfigVideo::scaling_mode</qualifiedname>
+        <initializer>{ &quot;Scaling method&quot;, &quot;How the output is scaled&quot;, &quot;Video&quot;, &quot;ScalingMode&quot;, <ref refid="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000a60494f02d440f316319dd0fad40ad007" kindref="member">ConfigEnum::ScalingMode::Nearest</ref>,
+        <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(&quot;Nearest&quot;, &quot;Integer&quot;, &quot;Bilinear&quot;),
+        <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(&quot;nearest&quot;, &quot;integer&quot;, &quot;bilinear&quot;),
+        <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(&quot;Scale to screen size (Causes scaling artifacts)&quot;, &quot;Scale to multiple of the game resolution&quot;, &quot;Like Nearest, but output is blurred to avoid artifacts&quot;)}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="127" column="17" bodyfile="game_config.h" bodystart="127" bodyend="130"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_video_1abe1315bf7d2c834ca5a6d86141df5a44" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigVideo::stretch</definition>
+        <argsstring></argsstring>
+        <name>stretch</name>
+        <qualifiedname>Game_ConfigVideo::stretch</qualifiedname>
+        <initializer>{ &quot;Stretch&quot;, &quot;Stretch to the width of the window/screen&quot;, &quot;Video&quot;, &quot;Stretch&quot;, false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="131" column="17" bodyfile="game_config.h" bodystart="131" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_video_1a08cc11f5e6e6e3660e5abbe620b06733" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigVideo::pause_when_focus_lost</definition>
+        <argsstring></argsstring>
+        <name>pause_when_focus_lost</name>
+        <qualifiedname>Game_ConfigVideo::pause_when_focus_lost</qualifiedname>
+        <initializer>{ &quot;Pause when focus lost&quot;, &quot;Pause the program when it is in the background&quot;, &quot;Video&quot;, &quot;PauseWhenFocusLost&quot;, true }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="132" column="17" bodyfile="game_config.h" bodystart="132" bodyend="132"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_video_1a495d1743000b56198af9a1b6dceaf661" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigVideo::touch_ui</definition>
+        <argsstring></argsstring>
+        <name>touch_ui</name>
+        <qualifiedname>Game_ConfigVideo::touch_ui</qualifiedname>
+        <initializer>{ &quot;Touch Ui&quot;, &quot;Display the touch ui&quot;, &quot;Video&quot;, &quot;TouchUi&quot;, true }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="133" column="17" bodyfile="game_config.h" bodystart="133" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_video_1a3ccf6d982dd5ebcd20ddfe6a8a339f2d" prot="public" static="no" mutable="no">
+        <type><ref refid="class_enum_config_param" kindref="compound">EnumConfigParam</ref>&lt; <ref refid="namespace_config_enum_1aed4f168068862c122f4b138e2a3c3897" kindref="member">ConfigEnum::GameResolution</ref>, 3 &gt;</type>
+        <definition>EnumConfigParam&lt;ConfigEnum::GameResolution, 3&gt; Game_ConfigVideo::game_resolution</definition>
+        <argsstring></argsstring>
+        <name>game_resolution</name>
+        <qualifiedname>Game_ConfigVideo::game_resolution</qualifiedname>
+        <initializer>{ &quot;Resolution&quot;, &quot;Game resolution. Changes require a restart.&quot;, &quot;Video&quot;, &quot;GameResolution&quot;, <ref refid="namespace_config_enum_1aed4f168068862c122f4b138e2a3c3897a0a52da7a03a6de3beefe54f8c03ad80d" kindref="member">ConfigEnum::GameResolution::Original</ref>,
+        <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(&quot;Original (Recommended)&quot;, &quot;Widescreen (Experimental)&quot;, &quot;Ultrawide (Experimental)&quot;),
+        Utils::MakeSvArray(&quot;original&quot;, &quot;widescreen&quot;, &quot;ultrawide&quot;),
+        <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(&quot;The default resolution (320x240, 4:3)&quot;, &quot;Can cause glitches (416x240, 16:9)&quot;, &quot;Can cause glitches (560x240, 21:9)&quot;)}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="134" column="17" bodyfile="game_config.h" bodystart="134" bodyend="137"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_video_1a180b94747d911e260725a1e8dc1bda2f" prot="public" static="no" mutable="no">
+        <type><ref refid="class_config_param" kindref="compound">ConfigParam</ref>&lt; int &gt;</type>
+        <definition>ConfigParam&lt;int&gt; Game_ConfigVideo::window_x</definition>
+        <argsstring></argsstring>
+        <name>window_x</name>
+        <qualifiedname>Game_ConfigVideo::window_x</qualifiedname>
+        <initializer>{ &quot;&quot;, &quot;&quot;, &quot;Video&quot;, &quot;WindowX&quot;, -1 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="140" column="13" bodyfile="game_config.h" bodystart="140" bodyend="140"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_video_1acbc79c3a3dd5fd9c261fe509d2d6bc55" prot="public" static="no" mutable="no">
+        <type><ref refid="class_config_param" kindref="compound">ConfigParam</ref>&lt; int &gt;</type>
+        <definition>ConfigParam&lt;int&gt; Game_ConfigVideo::window_y</definition>
+        <argsstring></argsstring>
+        <name>window_y</name>
+        <qualifiedname>Game_ConfigVideo::window_y</qualifiedname>
+        <initializer>{ &quot;&quot;, &quot;&quot;, &quot;Video&quot;, &quot;WindowY&quot;, -1 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="141" column="13" bodyfile="game_config.h" bodystart="141" bodyend="141"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_video_1a496405fd81e7187f23d32d8220a6ac82" prot="public" static="no" mutable="no">
+        <type><ref refid="class_config_param" kindref="compound">ConfigParam</ref>&lt; int &gt;</type>
+        <definition>ConfigParam&lt;int&gt; Game_ConfigVideo::window_width</definition>
+        <argsstring></argsstring>
+        <name>window_width</name>
+        <qualifiedname>Game_ConfigVideo::window_width</qualifiedname>
+        <initializer>{ &quot;&quot;, &quot;&quot;, &quot;Video&quot;, &quot;WindowWidth&quot;, -1 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="142" column="13" bodyfile="game_config.h" bodystart="142" bodyend="142"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_video_1aa3a2919c8e41c39060c4309f9e4e6342" prot="public" static="no" mutable="no">
+        <type><ref refid="class_config_param" kindref="compound">ConfigParam</ref>&lt; int &gt;</type>
+        <definition>ConfigParam&lt;int&gt; Game_ConfigVideo::window_height</definition>
+        <argsstring></argsstring>
+        <name>window_height</name>
+        <qualifiedname>Game_ConfigVideo::window_height</qualifiedname>
+        <initializer>{ &quot;&quot;, &quot;&quot;, &quot;Video&quot;, &quot;WindowHeight&quot;, -1 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="143" column="13" bodyfile="game_config.h" bodystart="143" bodyend="143"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_game___config_video_1a9242682401eda8269a58c629e069d312" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_ConfigVideo::Hide</definition>
+        <argsstring>()</argsstring>
+        <name>Hide</name>
+        <qualifiedname>Game_ConfigVideo::Hide</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="145" column="6" bodyfile="game_config.cpp" bodystart="71" bodyend="87"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="5">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>ConfigParam&lt; int &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>ConfigParam&lt; std::string &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>ConfigParamBase&lt; ConfigEnum::GameResolution &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="13">
+        <label>ConfigParamBase&lt; ConfigEnum::ScalingMode &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="8">
+        <label>ConfigParamBase&lt; ConfigEnum::ShowFps &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="6">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="10">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="4">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="14">
+        <label>EnumConfigParam&lt; ConfigEnum::GameResolution, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="15" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>EnumConfigParam&lt; ConfigEnum::ScalingMode, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="13" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>EnumConfigParam&lt; ConfigEnum::ShowFps, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Game_ConfigVideo</label>
+        <link refid="struct_game___config_video"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>renderer</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>fullscreen</edgelabel>
+          <edgelabel>pause_when_focus_lost</edgelabel>
+          <edgelabel>stretch</edgelabel>
+          <edgelabel>touch_ui</edgelabel>
+          <edgelabel>vsync</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>fps</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>fps_limit</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>window_height</edgelabel>
+          <edgelabel>window_width</edgelabel>
+          <edgelabel>window_x</edgelabel>
+          <edgelabel>window_y</edgelabel>
+          <edgelabel>window_zoom</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>scaling_mode</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>game_resolution</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>LockedConfigParam&lt; std::string &gt;</label>
+        <link refid="class_locked_config_param"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="game_config.h" line="116" column="1" bodyfile="game_config.h" bodystart="116" bodyend="146"/>
+    <listofallmembers>
+      <member refid="struct_game___config_video_1a0d9167bcb1be48c0d9fe86e8348e3076" prot="public" virt="non-virtual"><scope>Game_ConfigVideo</scope><name>fps</name></member>
+      <member refid="struct_game___config_video_1ae1e0754890bb459a9b5184b0300efa1f" prot="public" virt="non-virtual"><scope>Game_ConfigVideo</scope><name>fps_limit</name></member>
+      <member refid="struct_game___config_video_1a7b140218c0881925e25fd107eff70c74" prot="public" virt="non-virtual"><scope>Game_ConfigVideo</scope><name>fullscreen</name></member>
+      <member refid="struct_game___config_video_1a3ccf6d982dd5ebcd20ddfe6a8a339f2d" prot="public" virt="non-virtual"><scope>Game_ConfigVideo</scope><name>game_resolution</name></member>
+      <member refid="struct_game___config_video_1a9242682401eda8269a58c629e069d312" prot="public" virt="non-virtual"><scope>Game_ConfigVideo</scope><name>Hide</name></member>
+      <member refid="struct_game___config_video_1a08cc11f5e6e6e3660e5abbe620b06733" prot="public" virt="non-virtual"><scope>Game_ConfigVideo</scope><name>pause_when_focus_lost</name></member>
+      <member refid="struct_game___config_video_1a2b5a6f48eeb77aac514fdbf1ce4bea67" prot="public" virt="non-virtual"><scope>Game_ConfigVideo</scope><name>renderer</name></member>
+      <member refid="struct_game___config_video_1a4a2661d3d8fa3d0fccfc3660e39609d6" prot="public" virt="non-virtual"><scope>Game_ConfigVideo</scope><name>scaling_mode</name></member>
+      <member refid="struct_game___config_video_1abe1315bf7d2c834ca5a6d86141df5a44" prot="public" virt="non-virtual"><scope>Game_ConfigVideo</scope><name>stretch</name></member>
+      <member refid="struct_game___config_video_1a495d1743000b56198af9a1b6dceaf661" prot="public" virt="non-virtual"><scope>Game_ConfigVideo</scope><name>touch_ui</name></member>
+      <member refid="struct_game___config_video_1a2b8d1b5b3082de3ae23e1e4f0e1663d2" prot="public" virt="non-virtual"><scope>Game_ConfigVideo</scope><name>vsync</name></member>
+      <member refid="struct_game___config_video_1aa3a2919c8e41c39060c4309f9e4e6342" prot="public" virt="non-virtual"><scope>Game_ConfigVideo</scope><name>window_height</name></member>
+      <member refid="struct_game___config_video_1a496405fd81e7187f23d32d8220a6ac82" prot="public" virt="non-virtual"><scope>Game_ConfigVideo</scope><name>window_width</name></member>
+      <member refid="struct_game___config_video_1a180b94747d911e260725a1e8dc1bda2f" prot="public" virt="non-virtual"><scope>Game_ConfigVideo</scope><name>window_x</name></member>
+      <member refid="struct_game___config_video_1acbc79c3a3dd5fd9c261fe509d2d6bc55" prot="public" virt="non-virtual"><scope>Game_ConfigVideo</scope><name>window_y</name></member>
+      <member refid="struct_game___config_video_1a5f164eecc469c91b8641cdcab4abb6b8" prot="public" virt="non-virtual"><scope>Game_ConfigVideo</scope><name>window_zoom</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

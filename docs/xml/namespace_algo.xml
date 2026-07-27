@@ -1,0 +1,1038 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_algo" kind="namespace" language="C++">
+    <compoundname>Algo</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_algo_1a7d551848877a4ab37254c51c7007984e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Algo::IsRowAdjusted</definition>
+        <argsstring>(lcf::rpg::SaveActor::RowType row, lcf::rpg::System::BattleCondition cond, bool offense)</argsstring>
+        <name>IsRowAdjusted</name>
+        <qualifiedname>Algo::IsRowAdjusted</qualifiedname>
+        <param>
+          <type>lcf::rpg::SaveActor::RowType</type>
+          <declname>row</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::System::BattleCondition</type>
+          <declname>cond</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>offense</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compute whether a row adjustment should occur.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>row</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The row value to check </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cond</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The current battle condition </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>offense</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to adjust for an offensive action (true) or defensive action (false)</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the row adjustment should apply or not. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="37" column="6" bodyfile="algo.cpp" bodystart="37" bodyend="44" declfile="algo.h" declline="42" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1a58ad1280737f517ef7ceec9d2c187dcd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Algo::IsRowAdjusted</definition>
+        <argsstring>(const Game_Battler &amp;battler, lcf::rpg::System::BattleCondition cond, bool offense, bool allow_enemy)</argsstring>
+        <name>IsRowAdjusted</name>
+        <qualifiedname>Algo::IsRowAdjusted</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>battler</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::System::BattleCondition</type>
+          <declname>cond</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>offense</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>allow_enemy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compute whether a row adjustment should occur.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>actor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The actor whose row to check </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cond</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The current battle condition </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>offense</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to adjust for an offensive action (true) or defensive action (false) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>allow_enemy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Compute row adjustment for enemies also and treat them as always in front row.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the row adjustment should apply or not. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="46" column="6" bodyfile="algo.cpp" bodystart="46" bodyend="56" declfile="algo.h" declline="54" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1a45f675823ba2de61493b6041e2403d67" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int Algo::CalcToHitAgiAdjustment</definition>
+        <argsstring>(int to_hit, const Game_Battler &amp;source, const Game_Battler &amp;target, Game_Battler::Weapon weapon)</argsstring>
+        <name>CalcToHitAgiAdjustment</name>
+        <qualifiedname>Algo::CalcToHitAgiAdjustment</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>to_hit</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Game_Battler::Weapon</ref></type>
+          <declname>weapon</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="58" column="12" bodyfile="algo.cpp" bodystart="58" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1a8d35a06c65058399dfc00991f008ead3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Algo::CalcNormalAttackToHit</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler &amp;target, Game_Battler::Weapon weapon, lcf::rpg::System::BattleCondition cond, bool emulate_2k3_enemy_row_bug)</argsstring>
+        <name>CalcNormalAttackToHit</name>
+        <qualifiedname>Algo::CalcNormalAttackToHit</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Game_Battler::Weapon</ref></type>
+          <declname>weapon</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::System::BattleCondition</type>
+          <declname>cond</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>emulate_2k3_enemy_row_bug</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compute the hit rate for a physical attack</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The source of the action </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The target of the action </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cond</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The current battle condition </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>weapon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Which weapon to use or kWeaponAll for combined </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>emulate_2k3_enemy_row_bug</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether or not to emulate 2k3 bug where RPG_RT considers defending enemies in the front row</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Success hit rate </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="67" column="5" bodyfile="algo.cpp" bodystart="67" bodyend="106" declfile="algo.h" declline="80" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1a20a91270cefd9cbc513b8506ad6319ee" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Algo::CalcSkillToHit</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler &amp;target, const lcf::rpg::Skill &amp;skill, lcf::rpg::System::BattleCondition cond, bool emulate_2k3_enemy_row_bug)</argsstring>
+        <name>CalcSkillToHit</name>
+        <qualifiedname>Algo::CalcSkillToHit</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::System::BattleCondition</type>
+          <declname>cond</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>emulate_2k3_enemy_row_bug</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compute the hit rate for a skill</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The source of the action </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The target of the action </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>skill</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Which skill to calculate hit rate for </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cond</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The current battle condition </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>emulate_2k3_enemy_row_bug</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether or not to emulate 2k3 bug where RPG_RT considers defending enemies in the front row</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Success hit rate </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="109" column="5" bodyfile="algo.cpp" bodystart="109" bodyend="151" declfile="algo.h" declline="97" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1ab67c5269af43207db8390348e3a23457" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Algo::CalcCriticalHitChance</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler &amp;target, Game_Battler::Weapon weapon, int fixed_chance)</argsstring>
+        <name>CalcCriticalHitChance</name>
+        <qualifiedname>Algo::CalcCriticalHitChance</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Game_Battler::Weapon</ref></type>
+          <declname>weapon</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>fixed_chance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compute the critical hit rate if source attacks target.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The attacker </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The defender </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>weapon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Which weapon to use or kWeaponAll for combined </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>fixed_chance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Fixed critical hit rate percentage</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Critical hit rate. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="153" column="5" bodyfile="algo.cpp" bodystart="153" bodyend="162" declfile="algo.h" declline="109" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1a9107512f1e8fb47737369aad99ca75bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Algo::VarianceAdjustEffect</definition>
+        <argsstring>(int base, int var)</argsstring>
+        <name>VarianceAdjustEffect</name>
+        <qualifiedname>Algo::VarianceAdjustEffect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>base</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Uses RPG_RT algorithm for performing a variance adjument to damage/healing effects and returns the result.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>base</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- the base amount of the effect </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>var</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- the variance level from 0 to 10</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the adjusted damage amount </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="164" column="5" bodyfile="algo.cpp" bodystart="164" bodyend="171" declfile="algo.h" declline="67" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1a1eed647865cbbd603f19dce881627d32" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Algo::AdjustDamageForDefend</definition>
+        <argsstring>(int dmg, const Game_Battler &amp;target)</argsstring>
+        <name>AdjustDamageForDefend</name>
+        <qualifiedname>Algo::AdjustDamageForDefend</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>dmg</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Check if target is defending and perform damage adjustment if so.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dmg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The base amount of damage. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>who is to receive damage</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The adjusted damage. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="173" column="5" bodyfile="algo.cpp" bodystart="173" bodyend="181" declfile="algo.h" declline="119" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1a08850b1850959032ed1004bec615979b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Algo::CalcNormalAttackEffect</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler &amp;target, Game_Battler::Weapon weapon, bool is_critical_hit, bool is_charged, bool apply_variance, lcf::rpg::System::BattleCondition cond, bool emulate_2k3_enemy_row_bug)</argsstring>
+        <name>CalcNormalAttackEffect</name>
+        <qualifiedname>Algo::CalcNormalAttackEffect</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Game_Battler::Weapon</ref></type>
+          <declname>weapon</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>is_critical_hit</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>is_charged</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>apply_variance</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::System::BattleCondition</type>
+          <declname>cond</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>emulate_2k3_enemy_row_bug</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compute the base damage for a normal attack This includes: source atk, target def, source row, attributes, target row, critical, source charged, and variance It does not include: hit rate, critical hit rate, target defend adjustment, value clamping</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The source of the action </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The target of the action </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>weapon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Which weapon to use or kWeaponAll for combined </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>is_critical_hit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, apply critical hit bonus </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>is_charged</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, the attacker was charged </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>apply_variance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, apply variance to the damage </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cond</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The current battle condition </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>emulate_2k3_enemy_row_bug</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether or not to emulate 2k3 bug where RPG_RT considers defending enemies in the front row</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>effect amount </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="183" column="5" bodyfile="algo.cpp" bodystart="183" bodyend="223" declfile="algo.h" declline="137" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1a7e199ac5516798acc758b27fbfab2c30" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Algo::CalcSkillEffect</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler &amp;target, const lcf::rpg::Skill &amp;skill, bool apply_variance, bool is_critical_hit, lcf::rpg::System::BattleCondition cond, bool emulate_2k3_enemy_row_bug)</argsstring>
+        <name>CalcSkillEffect</name>
+        <qualifiedname>Algo::CalcSkillEffect</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>apply_variance</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>is_critical_hit</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::System::BattleCondition</type>
+          <declname>cond</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>emulate_2k3_enemy_row_bug</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compute the base damage for a skill This includes: power, source atk/mag, target def/mag, attributes, variance It does not include: hit rate, target defend adjustment, value clamping</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The source of the action </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The target of the action </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>skill</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The skill to use </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>apply_variance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, apply variance to the damage </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>is_critical_hit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, apply critical hit bonus </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cond</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The current battle condition </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>emulate_2k3_enemy_row_bug</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether or not to emulate 2k3 bug where RPG_RT considers defending enemies in the front row</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>effect amount </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="225" column="5" bodyfile="algo.cpp" bodystart="225" bodyend="263" declfile="algo.h" declline="161" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1a41467d6a739c9c0bd0cdb26ad6effe6e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Algo::CalcSelfDestructEffect</definition>
+        <argsstring>(const Game_Battler &amp;source, const Game_Battler &amp;target, bool apply_variance)</argsstring>
+        <name>CalcSelfDestructEffect</name>
+        <qualifiedname>Algo::CalcSelfDestructEffect</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>apply_variance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Compute the base damage for self-destruct This includes: power, source atk, target def, variance It does not include: hit rate, target defend adjustment, value clamping</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The source of the action </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The target of the action </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>apply_variance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, apply variance to the damage</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>effect amount </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="265" column="5" bodyfile="algo.cpp" bodystart="265" bodyend="277" declfile="algo.h" declline="180" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1a490e9b8058df0f592847da75bb33ae3d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Algo::CalcSkillCost</definition>
+        <argsstring>(const lcf::rpg::Skill &amp;skill, int max_sp, bool half_sp_cost)</argsstring>
+        <name>CalcSkillCost</name>
+        <qualifiedname>Algo::CalcSkillCost</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>max_sp</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>half_sp_cost</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calculate the sp cost for a skill. This includes: power, source atk, target def, variance It does not include: hit rate, target defend adjustment, value clamping</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>skill</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The skill to compute </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>max_sp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the max sp of the user </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>half_sp_cost</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if user has half_sp_cost modifier</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>sp cost </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="279" column="5" bodyfile="algo.cpp" bodystart="279" bodyend="284" declfile="algo.h" declline="195" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1ab3267bbe86fdc1faa92c6ef033ed7d99" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Algo::CalcSkillHpCost</definition>
+        <argsstring>(const lcf::rpg::Skill &amp;skill, int max_hp)</argsstring>
+        <name>CalcSkillHpCost</name>
+        <qualifiedname>Algo::CalcSkillHpCost</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>max_hp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calculates the hp cost for a skill.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>skill</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The skill to compute </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>max_sp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the max hp of the user</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>hp cost </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="286" column="5" bodyfile="algo.cpp" bodystart="286" bodyend="290" declfile="algo.h" declline="205" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1a214826572362f723b3d821c45f6fcd5c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Algo::IsSkillUsable</definition>
+        <argsstring>(const lcf::rpg::Skill &amp;skill, bool require_states_persist)</argsstring>
+        <name>IsSkillUsable</name>
+        <qualifiedname>Algo::IsSkillUsable</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>require_states_persist</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="292" column="6" bodyfile="algo.cpp" bodystart="292" bodyend="334" declfile="algo.h" declline="214" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1a3c160b41abda6e973e9ab6f16ac21263" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Algo::GetNumberOfAttacks</definition>
+        <argsstring>(int actor_id, const lcf::rpg::Item &amp;weapon)</argsstring>
+        <name>GetNumberOfAttacks</name>
+        <qualifiedname>Algo::GetNumberOfAttacks</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>actor_id</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Item &amp;</type>
+          <declname>weapon</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the number of attacks the weapon can do.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>the</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>id of the actor to check </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>weapon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the item to check </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>If weapon is not a weapon type, the result is undefined. </para>
+</simplesect>
+<simplesect kind="return"><para>the number of attacks. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.cpp" line="336" column="5" bodyfile="algo.cpp" bodystart="336" bodyend="347" declfile="algo.h" declline="269" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1a54c6aa2e1a3540d61ba9a172599f75af" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Algo::IsNormalOrSubskill</definition>
+        <argsstring>(const lcf::rpg::Skill &amp;skill)</argsstring>
+        <name>IsNormalOrSubskill</name>
+        <qualifiedname>Algo::IsNormalOrSubskill</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if the skill is a normal or subskill type.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>skill</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the skill to check </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if a normal skill or a 2k3 subskill. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.h" line="223" column="13" bodyfile="algo.h" bodystart="223" bodyend="226"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1a5895dc00ae63fc798bae221ec7fb6e28" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Algo::SkillTargetsEnemies</definition>
+        <argsstring>(const lcf::rpg::Skill &amp;skill)</argsstring>
+        <name>SkillTargetsEnemies</name>
+        <qualifiedname>Algo::SkillTargetsEnemies</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if the skill targets the opposing party.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>skill</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the skill to check </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if targets opposing party </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.h" line="234" column="13" bodyfile="algo.h" bodystart="234" bodyend="237"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1a3e98b972fa5dbde2ac31832000fe1066" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Algo::SkillTargetsAllies</definition>
+        <argsstring>(const lcf::rpg::Skill &amp;skill)</argsstring>
+        <name>SkillTargetsAllies</name>
+        <qualifiedname>Algo::SkillTargetsAllies</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if the skill targets the allied party.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>skill</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the skill to check </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if targets allied party </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.h" line="245" column="13" bodyfile="algo.h" bodystart="245" bodyend="247"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_algo_1a0b3fa785119e3ff1404efb5a5a1e5a31" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Algo::SkillTargetsOne</definition>
+        <argsstring>(const lcf::rpg::Skill &amp;skill)</argsstring>
+        <name>SkillTargetsOne</name>
+        <qualifiedname>Algo::SkillTargetsOne</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if the skill has a single target</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>skill</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the skill to check </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if targets a single battler </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="algo.h" line="255" column="13" bodyfile="algo.h" bodystart="255" bodyend="259"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="algo.cpp" line="35" column="1"/>
+  </compounddef>
+</doxygen>

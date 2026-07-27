@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classmidisequencer_1_1uncopyable" kind="class" language="C++" prot="public">
+    <compoundname>midisequencer::uncopyable</compoundname>
+    <derivedcompoundref refid="classmidisequencer_1_1output" prot="private" virt="non-virtual">midisequencer::output</derivedcompoundref>
+    <derivedcompoundref refid="classmidisequencer_1_1sequencer" prot="private" virt="non-virtual">midisequencer::sequencer</derivedcompoundref>
+    <includes refid="midisequencer_8h" local="no">midisequencer.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classmidisequencer_1_1uncopyable_1af78d270fee3ee1b2c5e05a7ffb70e37b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>midisequencer::uncopyable::uncopyable</definition>
+        <argsstring>()</argsstring>
+        <name>uncopyable</name>
+        <qualifiedname>midisequencer::uncopyable::uncopyable</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="54" column="9" bodyfile="midisequencer.h" bodystart="54" bodyend="54"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classmidisequencer_1_1uncopyable_1a11715769d3f4a900dbed88c2c9dfa5e3" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>midisequencer::uncopyable::uncopyable</definition>
+        <argsstring>(const uncopyable &amp;)</argsstring>
+        <name>uncopyable</name>
+        <qualifiedname>midisequencer::uncopyable::uncopyable</qualifiedname>
+        <param>
+          <type>const uncopyable &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="56" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1uncopyable_1ae645029a915daf121a5cf621a90d71b3" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisequencer::uncopyable::operator=</definition>
+        <argsstring>(const uncopyable &amp;)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>midisequencer::uncopyable::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="classmidisequencer_1_1uncopyable_1af78d270fee3ee1b2c5e05a7ffb70e37b" kindref="member">uncopyable</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="57" column="14"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>AudioDecoderMidi</label>
+        <link refid="class_audio_decoder_midi"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>midisequencer::output</label>
+        <link refid="classmidisequencer_1_1output"/>
+        <childnode refid="1" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>midisequencer::sequencer</label>
+        <link refid="classmidisequencer_1_1sequencer"/>
+        <childnode refid="1" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>midisequencer::uncopyable</label>
+        <link refid="classmidisequencer_1_1uncopyable"/>
+      </node>
+    </inheritancegraph>
+    <location file="midisequencer.h" line="52" column="5" bodyfile="midisequencer.h" bodystart="52" bodyend="58"/>
+    <listofallmembers>
+      <member refid="classmidisequencer_1_1uncopyable_1ae645029a915daf121a5cf621a90d71b3" prot="private" virt="non-virtual"><scope>midisequencer::uncopyable</scope><name>operator=</name></member>
+      <member refid="classmidisequencer_1_1uncopyable_1af78d270fee3ee1b2c5e05a7ffb70e37b" prot="public" virt="non-virtual"><scope>midisequencer::uncopyable</scope><name>uncopyable</name></member>
+      <member refid="classmidisequencer_1_1uncopyable_1a11715769d3f4a900dbed88c2c9dfa5e3" prot="private" virt="non-virtual"><scope>midisequencer::uncopyable</scope><name>uncopyable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

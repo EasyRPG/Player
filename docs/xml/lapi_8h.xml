@@ -1,0 +1,328 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lapi_8h" kind="file" language="C++">
+    <compoundname>lapi.h</compoundname>
+    <includes refid="llimits_8h" local="yes">llimits.h</includes>
+    <includes refid="lstate_8h" local="yes">lstate.h</includes>
+    <includedby refid="lapi_8c" local="yes">leasy/lua/lapi.c</includedby>
+    <includedby refid="ldebug_8c" local="yes">leasy/lua/ldebug.c</includedby>
+    <includedby refid="ldo_8c" local="yes">leasy/lua/ldo.c</includedby>
+    <includedby refid="ldump_8c" local="yes">leasy/lua/ldump.c</includedby>
+    <includedby refid="lstate_8c" local="yes">leasy/lua/lstate.c</includedby>
+    <includedby refid="lvm_8c" local="yes">leasy/lua/lvm.c</includedby>
+    <includedby refid="lzio_8c" local="yes">leasy/lua/lzio.c</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/lua/lapi.h</label>
+        <link refid="lapi_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>lmem.h</label>
+        <link refid="lmem_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>lobject.h</label>
+        <link refid="lobject_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>lstate.h</label>
+        <link refid="lstate_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>ltm.h</label>
+        <link refid="ltm_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>lzio.h</label>
+        <link refid="lzio_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>limits.h</label>
+      </node>
+      <node id="13">
+        <label>signal.h</label>
+      </node>
+      <node id="6">
+        <label>stdarg.h</label>
+      </node>
+      <node id="4">
+        <label>stddef.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>leasy/lua/lapi.c</label>
+        <link refid="lapi_8c"/>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lapi.h</label>
+        <link refid="lapi_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>leasy/lua/ldebug.c</label>
+        <link refid="ldebug_8c"/>
+      </node>
+      <node id="4">
+        <label>leasy/lua/ldo.c</label>
+        <link refid="ldo_8c"/>
+      </node>
+      <node id="5">
+        <label>leasy/lua/ldump.c</label>
+        <link refid="ldump_8c"/>
+      </node>
+      <node id="6">
+        <label>leasy/lua/lstate.c</label>
+        <link refid="lstate_8c"/>
+      </node>
+      <node id="7">
+        <label>leasy/lua/lvm.c</label>
+        <link refid="lvm_8c"/>
+      </node>
+      <node id="8">
+        <label>leasy/lua/lzio.c</label>
+        <link refid="lzio_8c"/>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lapi_8h_1ad7a42e1cc11f94e1f06ed80814fcb606" prot="public" static="no">
+        <name>api_check</name>
+        <param><defname>l</defname></param>
+        <param><defname>e</defname></param>
+        <param><defname>msg</defname></param>
+        <initializer>((void)(l), <ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>((e) &amp;&amp; msg))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lapi.h" line="19" column="9" bodyfile="leasy/lua/lapi.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lapi_8h_1afe4a5994dd3704ec53de77f9fd121915" prot="public" static="no">
+        <name>api_incr_top</name>
+        <param><defname>L</defname></param>
+        <initializer>(L-&gt;top.p++, <ref refid="lapi_8h_1ad7a42e1cc11f94e1f06ed80814fcb606" kindref="member">api_check</ref>(L, L-&gt;top.p &lt;= L-&gt;ci-&gt;top.p, &quot;stack overflow&quot;))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lapi.h" line="25" column="9" bodyfile="leasy/lua/lapi.h" bodystart="25" bodyend="26"/>
+      </memberdef>
+      <memberdef kind="define" id="lapi_8h_1aa68a48b9104aeadf4842c25c12a9b8c9" prot="public" static="no">
+        <name>lua_lock</name>
+        <param><defname>L</defname></param>
+        <initializer>((void) 0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lapi.h" line="34" column="9" bodyfile="leasy/lua/lapi.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lapi_8h_1a1781f2a7d9161848a246d475a9171875" prot="public" static="no">
+        <name>lua_unlock</name>
+        <param><defname>L</defname></param>
+        <initializer>((void) 0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lapi.h" line="35" column="9" bodyfile="leasy/lua/lapi.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lapi_8h_1afd1f4a36958642707b7598a48c507599" prot="public" static="no">
+        <name>adjustresults</name>
+        <param><defname>L</defname></param>
+        <param><defname>nres</defname></param>
+        <initializer>{ if ((nres) &lt;= <ref refid="lua_8h_1ace3545adc11664c2f2b152fbe8b6283c" kindref="member">LUA_MULTRET</ref> &amp;&amp; L-&gt;ci-&gt;top.p &lt; L-&gt;top.p) \
+L-&gt;ci-&gt;top.p = L-&gt;top.p; }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lapi.h" line="45" column="9" bodyfile="leasy/lua/lapi.h" bodystart="45" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="define" id="lapi_8h_1a9785915283c3f0a0ec90f1b6be32b2c2" prot="public" static="no">
+        <name>api_checknelems</name>
+        <param><defname>L</defname></param>
+        <param><defname>n</defname></param>
+        <initializer><ref refid="lapi_8h_1ad7a42e1cc11f94e1f06ed80814fcb606" kindref="member">api_check</ref>(L, (n) &lt; (L-&gt;top.p - L-&gt;ci-&gt;func.p), \
+                  &quot;not enough elements in the stack&quot;)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lapi.h" line="51" column="9" bodyfile="leasy/lua/lapi.h" bodystart="51" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="define" id="lapi_8h_1ad266a3111b058356ccf99610e4fb56cc" prot="public" static="no">
+        <name>api_checkpop</name>
+        <param><defname>L</defname></param>
+        <param><defname>n</defname></param>
+        <initializer><ref refid="lapi_8h_1ad7a42e1cc11f94e1f06ed80814fcb606" kindref="member">api_check</ref>(L, (n) &lt; L-&gt;top.p - L-&gt;ci-&gt;func.p &amp;&amp;  \
+                 L-&gt;tbclist.p &lt; L-&gt;top.p - (n), \
+          &quot;not enough free elements in the stack&quot;)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lapi.h" line="60" column="9" bodyfile="leasy/lua/lapi.h" bodystart="60" bodyend="63"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lapi.h<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Auxiliary<sp/>functions<sp/>from<sp/>Lua<sp/>API</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>lapi_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lapi_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="llimits_8h" kindref="compound">llimits.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lstate_8h" kindref="compound">lstate.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(LUA_USE_APICHECK)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;assert.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>api_check(l,e,msg)<sp/><sp/>assert(e)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#else<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>for<sp/>testing<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19" refid="lapi_8h_1ad7a42e1cc11f94e1f06ed80814fcb606" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>api_check(l,e,msg)<sp/><sp/>((void)(l),<sp/>lua_assert((e)<sp/>&amp;&amp;<sp/>msg))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Increments<sp/>&apos;L-&gt;top.p&apos;,<sp/>checking<sp/>for<sp/>stack<sp/>overflows<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25" refid="lapi_8h_1afe4a5994dd3704ec53de77f9fd121915" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>api_incr_top(L)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="26"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>(L-&gt;top.p++,<sp/>api_check(L,<sp/>L-&gt;top.p<sp/>&lt;=<sp/>L-&gt;ci-&gt;top.p,<sp/>&quot;stack<sp/>overflow&quot;))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="30"><highlight class="comment">**<sp/>macros<sp/>that<sp/>are<sp/>executed<sp/>whenever<sp/>program<sp/>enters<sp/>the<sp/>Lua<sp/>core</highlight></codeline>
+<codeline lineno="31"><highlight class="comment">**<sp/>(&apos;lua_lock&apos;)<sp/>and<sp/>leaves<sp/>the<sp/>core<sp/>(&apos;lua_unlock&apos;)</highlight></codeline>
+<codeline lineno="32"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(lua_lock)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="lapi_8h_1aa68a48b9104aeadf4842c25c12a9b8c9" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lua_lock(L)<sp/>((void)<sp/>0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="lapi_8h_1a1781f2a7d9161848a246d475a9171875" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lua_unlock(L)<sp/><sp/><sp/>((void)<sp/>0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="41"><highlight class="comment">**<sp/>If<sp/>a<sp/>call<sp/>returns<sp/>too<sp/>many<sp/>multiple<sp/>returns,<sp/>the<sp/>callee<sp/>may<sp/>not<sp/>have</highlight></codeline>
+<codeline lineno="42"><highlight class="comment">**<sp/>stack<sp/>space<sp/>to<sp/>accommodate<sp/>all<sp/>results.<sp/>In<sp/>this<sp/>case,<sp/>this<sp/>macro</highlight></codeline>
+<codeline lineno="43"><highlight class="comment">**<sp/>increases<sp/>its<sp/>stack<sp/>space<sp/>(&apos;L-&gt;ci-&gt;top.p&apos;).</highlight></codeline>
+<codeline lineno="44"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="lapi_8h_1afd1f4a36958642707b7598a48c507599" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>adjustresults(L,nres)<sp/>\</highlight></codeline>
+<codeline lineno="46"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>{<sp/>if<sp/>((nres)<sp/>&lt;=<sp/>LUA_MULTRET<sp/>&amp;&amp;<sp/>L-&gt;ci-&gt;top.p<sp/>&lt;<sp/>L-&gt;top.p)<sp/>\</highlight></codeline>
+<codeline lineno="47"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>L-&gt;ci-&gt;top.p<sp/>=<sp/>L-&gt;top.p;<sp/>}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Ensure<sp/>the<sp/>stack<sp/>has<sp/>at<sp/>least<sp/>&apos;n&apos;<sp/>elements<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="lapi_8h_1a9785915283c3f0a0ec90f1b6be32b2c2" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>api_checknelems(L,n)<sp/>\</highlight></codeline>
+<codeline lineno="52"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/>api_check(L,<sp/>(n)<sp/>&lt;<sp/>(L-&gt;top.p<sp/>-<sp/>L-&gt;ci-&gt;func.p),<sp/>\</highlight></codeline>
+<codeline lineno="53"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;not<sp/>enough<sp/>elements<sp/>in<sp/>the<sp/>stack&quot;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Ensure<sp/>the<sp/>stack<sp/>has<sp/>at<sp/>least<sp/>&apos;n&apos;<sp/>elements<sp/>to<sp/>be<sp/>popped.<sp/>(Some</highlight></codeline>
+<codeline lineno="57"><highlight class="comment">**<sp/>functions<sp/>only<sp/>update<sp/>a<sp/>slot<sp/>after<sp/>checking<sp/>it<sp/>for<sp/>popping,<sp/>but<sp/>that</highlight></codeline>
+<codeline lineno="58"><highlight class="comment">**<sp/>is<sp/>only<sp/>an<sp/>optimization<sp/>for<sp/>a<sp/>pop<sp/>followed<sp/>by<sp/>a<sp/>push.)</highlight></codeline>
+<codeline lineno="59"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60" refid="lapi_8h_1ad266a3111b058356ccf99610e4fb56cc" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>api_checkpop(L,n)<sp/>\</highlight></codeline>
+<codeline lineno="61"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>api_check(L,<sp/>(n)<sp/>&lt;<sp/>L-&gt;top.p<sp/>-<sp/>L-&gt;ci-&gt;func.p<sp/>&amp;&amp;<sp/><sp/>\</highlight></codeline>
+<codeline lineno="62"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>L-&gt;tbclist.p<sp/>&lt;<sp/>L-&gt;top.p<sp/>-<sp/>(n),<sp/>\</highlight></codeline>
+<codeline lineno="63"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;not<sp/>enough<sp/>free<sp/>elements<sp/>in<sp/>the<sp/>stack&quot;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lapi.h"/>
+  </compounddef>
+</doxygen>

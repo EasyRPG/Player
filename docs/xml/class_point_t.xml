@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_point_t" kind="class" language="C++" prot="public">
+    <compoundname>PointT</compoundname>
+    <includes refid="point_8h" local="no">point.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_point_t_1a88170ff11abcdf3dc054341bbafe6378" prot="public" static="no" mutable="no">
+        <type>T</type>
+        <definition>T PointT&lt; T &gt;::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <qualifiedname>PointT::x</qualifiedname>
+        <initializer>= T()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>X coordinate. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="point.h" line="44" column="3" bodyfile="point.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_point_t_1a52fba2bc64a6b8a2254acc3dd316adae" prot="public" static="no" mutable="no">
+        <type>T</type>
+        <definition>T PointT&lt; T &gt;::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <qualifiedname>PointT::y</qualifiedname>
+        <initializer>= T()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Y coordinate. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="point.h" line="47" column="3" bodyfile="point.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_point_t_1aa72e14da7e35c9dcbf888e13373e77d2" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>PointT&lt; T &gt;::PointT</definition>
+        <argsstring>()=default</argsstring>
+        <name>PointT</name>
+        <qualifiedname>PointT::PointT</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor. All values are set to default (0). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="point.h" line="33" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="class_point_t_1acd286eb6aa7cf24ccef17aac6d31b3ff" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>PointT&lt; T &gt;::PointT</definition>
+        <argsstring>(T x, T y)</argsstring>
+        <name>PointT</name>
+        <qualifiedname>PointT::PointT</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>initial x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>initial y. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="point.h" line="41" column="11" bodyfile="point.h" bodystart="41" bodyend="41"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref>. </para>
+    </detaileddescription>
+    <location file="point.h" line="28" column="1" bodyfile="point.h" bodystart="28" bodyend="48"/>
+    <listofallmembers>
+      <member refid="class_point_t_1aa72e14da7e35c9dcbf888e13373e77d2" prot="public" virt="non-virtual"><scope>PointT</scope><name>PointT</name></member>
+      <member refid="class_point_t_1acd286eb6aa7cf24ccef17aac6d31b3ff" prot="public" virt="non-virtual"><scope>PointT</scope><name>PointT</name></member>
+      <member refid="class_point_t_1a88170ff11abcdf3dc054341bbafe6378" prot="public" virt="non-virtual"><scope>PointT</scope><name>x</name></member>
+      <member refid="class_point_t_1a52fba2bc64a6b8a2254acc3dd316adae" prot="public" virt="non-virtual"><scope>PointT</scope><name>y</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

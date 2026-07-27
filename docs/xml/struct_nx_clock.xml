@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_nx_clock" kind="struct" language="C++" prot="public">
+    <compoundname>NxClock</compoundname>
+    <includes refid="switch_2clock_8h" local="no">clock.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="struct_nx_clock_1a88c04c411e2e7d2cfefb30142b25015e" prot="public" static="no">
+        <type>int64_t</type>
+        <definition>using NxClock::rep = int64_t</definition>
+        <argsstring></argsstring>
+        <name>rep</name>
+        <qualifiedname>NxClock::rep</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/switch/clock.h" line="28" column="1" bodyfile="platform/switch/clock.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_nx_clock_1a971d520cedbf16ccb52e36333af91cec" prot="public" static="no">
+        <type>std::ratio&lt; 1, <ref refid="struct_nx_clock_1aec4c9d18158148ea934e7eda87a868ea" kindref="member">ticks_per_sec</ref> &gt;</type>
+        <definition>using NxClock::period = std::ratio&lt;1,ticks_per_sec&gt;</definition>
+        <argsstring></argsstring>
+        <name>period</name>
+        <qualifiedname>NxClock::period</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/switch/clock.h" line="29" column="1" bodyfile="platform/switch/clock.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_nx_clock_1a208c135eb4a73a62546e9eb2d99cab83" prot="public" static="no">
+        <type>std::chrono::duration&lt; <ref refid="struct_nx_clock_1a88c04c411e2e7d2cfefb30142b25015e" kindref="member">rep</ref>, <ref refid="struct_nx_clock_1a971d520cedbf16ccb52e36333af91cec" kindref="member">period</ref> &gt;</type>
+        <definition>using NxClock::duration = std::chrono::duration&lt;rep,period&gt;</definition>
+        <argsstring></argsstring>
+        <name>duration</name>
+        <qualifiedname>NxClock::duration</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/switch/clock.h" line="30" column="1" bodyfile="platform/switch/clock.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_nx_clock_1a51893d3875f41f8e54fae2efa8c7a9d5" prot="public" static="no">
+        <type>std::chrono::time_point&lt; <ref refid="struct_nx_clock" kindref="compound">NxClock</ref>, <ref refid="struct_nx_clock_1a208c135eb4a73a62546e9eb2d99cab83" kindref="member">duration</ref> &gt;</type>
+        <definition>using NxClock::time_point = std::chrono::time_point&lt;NxClock,duration&gt;</definition>
+        <argsstring></argsstring>
+        <name>time_point</name>
+        <qualifiedname>NxClock::time_point</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/switch/clock.h" line="31" column="1" bodyfile="platform/switch/clock.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="struct_nx_clock_1aec4c9d18158148ea934e7eda87a868ea" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int64_t</type>
+        <definition>int64_t NxClock::ticks_per_sec</definition>
+        <argsstring></argsstring>
+        <name>ticks_per_sec</name>
+        <qualifiedname>NxClock::ticks_per_sec</qualifiedname>
+        <initializer>= 19200000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/switch/clock.h" line="26" column="26" bodyfile="platform/switch/clock.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_nx_clock_1a24e5289181f2c2651bebc39dee50abb6" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool NxClock::is_steady</definition>
+        <argsstring></argsstring>
+        <name>is_steady</name>
+        <qualifiedname>NxClock::is_steady</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/switch/clock.h" line="33" column="23" bodyfile="platform/switch/clock.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="struct_nx_clock_1afbab6adb219c08add9764269709dd7d9" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="struct_nx_clock_1a51893d3875f41f8e54fae2efa8c7a9d5" kindref="member">time_point</ref></type>
+        <definition>NxClock::time_point NxClock::now</definition>
+        <argsstring>()</argsstring>
+        <name>now</name>
+        <qualifiedname>NxClock::now</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/switch/clock.h" line="35" column="19" bodyfile="platform/switch/clock.h" bodystart="43" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_nx_clock_1a26aeaa341c572d4cced9ed825fdd28bb" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename R</type>
+          </param>
+          <param>
+            <type>typename P</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void NxClock::SleepFor</definition>
+        <argsstring>(std::chrono::duration&lt; R, P &gt; dt)</argsstring>
+        <name>SleepFor</name>
+        <qualifiedname>NxClock::SleepFor</qualifiedname>
+        <param>
+          <type>std::chrono::duration&lt; R, P &gt;</type>
+          <declname>dt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/switch/clock.h" line="38" column="13" bodyfile="platform/switch/clock.h" bodystart="49" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_nx_clock_1a746f930ecfc3a3584fcfc3f70735f7fa" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const char *</type>
+        <definition>const char * NxClock::Name</definition>
+        <argsstring>()</argsstring>
+        <name>Name</name>
+        <qualifiedname>NxClock::Name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/switch/clock.h" line="40" column="29" bodyfile="platform/switch/clock.h" bodystart="54" bodyend="56"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/switch/clock.h" line="25" column="1" bodyfile="platform/switch/clock.h" bodystart="25" bodyend="41"/>
+    <listofallmembers>
+      <member refid="struct_nx_clock_1a208c135eb4a73a62546e9eb2d99cab83" prot="public" virt="non-virtual"><scope>NxClock</scope><name>duration</name></member>
+      <member refid="struct_nx_clock_1a24e5289181f2c2651bebc39dee50abb6" prot="public" virt="non-virtual"><scope>NxClock</scope><name>is_steady</name></member>
+      <member refid="struct_nx_clock_1a746f930ecfc3a3584fcfc3f70735f7fa" prot="public" virt="non-virtual"><scope>NxClock</scope><name>Name</name></member>
+      <member refid="struct_nx_clock_1afbab6adb219c08add9764269709dd7d9" prot="public" virt="non-virtual"><scope>NxClock</scope><name>now</name></member>
+      <member refid="struct_nx_clock_1a971d520cedbf16ccb52e36333af91cec" prot="public" virt="non-virtual"><scope>NxClock</scope><name>period</name></member>
+      <member refid="struct_nx_clock_1a88c04c411e2e7d2cfefb30142b25015e" prot="public" virt="non-virtual"><scope>NxClock</scope><name>rep</name></member>
+      <member refid="struct_nx_clock_1a26aeaa341c572d4cced9ed825fdd28bb" prot="public" virt="non-virtual"><scope>NxClock</scope><name>SleepFor</name></member>
+      <member refid="struct_nx_clock_1aec4c9d18158148ea934e7eda87a868ea" prot="public" virt="non-virtual"><scope>NxClock</scope><name>ticks_per_sec</name></member>
+      <member refid="struct_nx_clock_1a51893d3875f41f8e54fae2efa8c7a9d5" prot="public" virt="non-virtual"><scope>NxClock</scope><name>time_point</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___quit" kind="class" language="C++" prot="public">
+    <compoundname>Game_Quit</compoundname>
+    <includes refid="game__quit_8h" local="no">game_quit.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___quit_1aaa7bf67e42447f7f800da93aff3a3400" prot="private" static="no" mutable="no">
+        <type><ref refid="class_window___help" kindref="compound">Window_Help</ref></type>
+        <definition>Window_Help Game_Quit::window</definition>
+        <argsstring></argsstring>
+        <name>window</name>
+        <qualifiedname>Game_Quit::window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_quit.h" line="34" column="13" bodyfile="game_quit.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___quit_1ad054a0bbe7c38c7d8fb5e28d336137c0" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Quit::time_left</definition>
+        <argsstring></argsstring>
+        <name>time_left</name>
+        <qualifiedname>Game_Quit::time_left</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_quit.h" line="35" column="5" bodyfile="game_quit.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___quit_1a6e9cac1972bc422eabb7682b915935e8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Quit::Game_Quit</definition>
+        <argsstring>()</argsstring>
+        <name>Game_Quit</name>
+        <qualifiedname>Game_Quit::Game_Quit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_quit.h" line="26" column="1" bodyfile="game_quit.cpp" bodystart="30" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___quit_1a400f432712ab96dd5e468f85079c9c14" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Quit::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>Game_Quit::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_quit.h" line="27" column="6" bodyfile="game_quit.cpp" bodystart="39" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___quit_1a8fc31e90760f1169c4c49a1eb10a8f78" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Quit::OnResolutionChange</definition>
+        <argsstring>()</argsstring>
+        <name>OnResolutionChange</name>
+        <qualifiedname>Game_Quit::OnResolutionChange</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_quit.h" line="28" column="6" bodyfile="game_quit.cpp" bodystart="59" bodyend="62"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___quit_1ad852281133205571d58afc057e0f7c13" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Quit::ShouldQuit</definition>
+        <argsstring>() const</argsstring>
+        <name>ShouldQuit</name>
+        <qualifiedname>Game_Quit::ShouldQuit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_quit.h" line="30" column="6" bodyfile="game_quit.h" bodystart="38" bodyend="40"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_game___quit_1a84afaf0644f002292482dd9897bbceb4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Quit::Reset</definition>
+        <argsstring>()</argsstring>
+        <name>Reset</name>
+        <qualifiedname>Game_Quit::Reset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_quit.h" line="32" column="6" bodyfile="game_quit.cpp" bodystart="64" bodyend="67"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_quit.h" line="24" column="1" bodyfile="game_quit.h" bodystart="24" bodyend="36"/>
+    <listofallmembers>
+      <member refid="class_game___quit_1a6e9cac1972bc422eabb7682b915935e8" prot="public" virt="non-virtual"><scope>Game_Quit</scope><name>Game_Quit</name></member>
+      <member refid="class_game___quit_1a8fc31e90760f1169c4c49a1eb10a8f78" prot="public" virt="non-virtual"><scope>Game_Quit</scope><name>OnResolutionChange</name></member>
+      <member refid="class_game___quit_1a84afaf0644f002292482dd9897bbceb4" prot="private" virt="non-virtual"><scope>Game_Quit</scope><name>Reset</name></member>
+      <member refid="class_game___quit_1ad852281133205571d58afc057e0f7c13" prot="public" virt="non-virtual"><scope>Game_Quit</scope><name>ShouldQuit</name></member>
+      <member refid="class_game___quit_1ad054a0bbe7c38c7d8fb5e28d336137c0" prot="private" virt="non-virtual"><scope>Game_Quit</scope><name>time_left</name></member>
+      <member refid="class_game___quit_1a400f432712ab96dd5e468f85079c9c14" prot="public" virt="non-virtual"><scope>Game_Quit</scope><name>Update</name></member>
+      <member refid="class_game___quit_1aaa7bf67e42447f7f800da93aff3a3400" prot="private" virt="non-virtual"><scope>Game_Quit</scope><name>window</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

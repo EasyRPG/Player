@@ -1,0 +1,323 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lprefix_8h" kind="file" language="C++">
+    <compoundname>lprefix.h</compoundname>
+    <includedby refid="lapi_8c" local="yes">leasy/lua/lapi.c</includedby>
+    <includedby refid="lauxlib_8c" local="yes">leasy/lua/lauxlib.c</includedby>
+    <includedby refid="lbaselib_8c" local="yes">leasy/lua/lbaselib.c</includedby>
+    <includedby refid="lcode_8c" local="yes">leasy/lua/lcode.c</includedby>
+    <includedby refid="lcorolib_8c" local="yes">leasy/lua/lcorolib.c</includedby>
+    <includedby refid="lctype_8c" local="yes">leasy/lua/lctype.c</includedby>
+    <includedby refid="ldblib_8c" local="yes">leasy/lua/ldblib.c</includedby>
+    <includedby refid="ldebug_8c" local="yes">leasy/lua/ldebug.c</includedby>
+    <includedby refid="ldo_8c" local="yes">leasy/lua/ldo.c</includedby>
+    <includedby refid="ldump_8c" local="yes">leasy/lua/ldump.c</includedby>
+    <includedby refid="lfunc_8c" local="yes">leasy/lua/lfunc.c</includedby>
+    <includedby refid="lgc_8c" local="yes">leasy/lua/lgc.c</includedby>
+    <includedby refid="linit_8c" local="yes">leasy/lua/linit.c</includedby>
+    <includedby refid="liolib_8c" local="yes">leasy/lua/liolib.c</includedby>
+    <includedby refid="llex_8c" local="yes">leasy/lua/llex.c</includedby>
+    <includedby refid="lmathlib_8c" local="yes">leasy/lua/lmathlib.c</includedby>
+    <includedby refid="lmem_8c" local="yes">leasy/lua/lmem.c</includedby>
+    <includedby refid="loadlib_8c" local="yes">leasy/lua/loadlib.c</includedby>
+    <includedby refid="lobject_8c" local="yes">leasy/lua/lobject.c</includedby>
+    <includedby refid="lopcodes_8c" local="yes">leasy/lua/lopcodes.c</includedby>
+    <includedby refid="loslib_8c" local="yes">leasy/lua/loslib.c</includedby>
+    <includedby refid="lparser_8c" local="yes">leasy/lua/lparser.c</includedby>
+    <includedby refid="lstate_8c" local="yes">leasy/lua/lstate.c</includedby>
+    <includedby refid="lstring_8c" local="yes">leasy/lua/lstring.c</includedby>
+    <includedby refid="lstrlib_8c" local="yes">leasy/lua/lstrlib.c</includedby>
+    <includedby refid="ltable_8c" local="yes">leasy/lua/ltable.c</includedby>
+    <includedby refid="ltablib_8c" local="yes">leasy/lua/ltablib.c</includedby>
+    <includedby refid="ltm_8c" local="yes">leasy/lua/ltm.c</includedby>
+    <includedby refid="lundump_8c" local="yes">leasy/lua/lundump.c</includedby>
+    <includedby refid="lutf8lib_8c" local="yes">leasy/lua/lutf8lib.c</includedby>
+    <includedby refid="lvm_8c" local="yes">leasy/lua/lvm.c</includedby>
+    <includedby refid="lzio_8c" local="yes">leasy/lua/lzio.c</includedby>
+    <invincdepgraph>
+      <node id="2">
+        <label>leasy/lua/lapi.c</label>
+        <link refid="lapi_8c"/>
+      </node>
+      <node id="3">
+        <label>leasy/lua/lauxlib.c</label>
+        <link refid="lauxlib_8c"/>
+      </node>
+      <node id="4">
+        <label>leasy/lua/lbaselib.c</label>
+        <link refid="lbaselib_8c"/>
+      </node>
+      <node id="5">
+        <label>leasy/lua/lcode.c</label>
+        <link refid="lcode_8c"/>
+      </node>
+      <node id="6">
+        <label>leasy/lua/lcorolib.c</label>
+        <link refid="lcorolib_8c"/>
+      </node>
+      <node id="7">
+        <label>leasy/lua/lctype.c</label>
+        <link refid="lctype_8c"/>
+      </node>
+      <node id="8">
+        <label>leasy/lua/ldblib.c</label>
+        <link refid="ldblib_8c"/>
+      </node>
+      <node id="9">
+        <label>leasy/lua/ldebug.c</label>
+        <link refid="ldebug_8c"/>
+      </node>
+      <node id="10">
+        <label>leasy/lua/ldo.c</label>
+        <link refid="ldo_8c"/>
+      </node>
+      <node id="11">
+        <label>leasy/lua/ldump.c</label>
+        <link refid="ldump_8c"/>
+      </node>
+      <node id="12">
+        <label>leasy/lua/lfunc.c</label>
+        <link refid="lfunc_8c"/>
+      </node>
+      <node id="13">
+        <label>leasy/lua/lgc.c</label>
+        <link refid="lgc_8c"/>
+      </node>
+      <node id="14">
+        <label>leasy/lua/linit.c</label>
+        <link refid="linit_8c"/>
+      </node>
+      <node id="15">
+        <label>leasy/lua/liolib.c</label>
+        <link refid="liolib_8c"/>
+      </node>
+      <node id="16">
+        <label>leasy/lua/llex.c</label>
+        <link refid="llex_8c"/>
+      </node>
+      <node id="17">
+        <label>leasy/lua/lmathlib.c</label>
+        <link refid="lmathlib_8c"/>
+      </node>
+      <node id="18">
+        <label>leasy/lua/lmem.c</label>
+        <link refid="lmem_8c"/>
+      </node>
+      <node id="19">
+        <label>leasy/lua/loadlib.c</label>
+        <link refid="loadlib_8c"/>
+      </node>
+      <node id="20">
+        <label>leasy/lua/lobject.c</label>
+        <link refid="lobject_8c"/>
+      </node>
+      <node id="21">
+        <label>leasy/lua/lopcodes.c</label>
+        <link refid="lopcodes_8c"/>
+      </node>
+      <node id="22">
+        <label>leasy/lua/loslib.c</label>
+        <link refid="loslib_8c"/>
+      </node>
+      <node id="23">
+        <label>leasy/lua/lparser.c</label>
+        <link refid="lparser_8c"/>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lprefix.h</label>
+        <link refid="lprefix_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>leasy/lua/lstate.c</label>
+        <link refid="lstate_8c"/>
+      </node>
+      <node id="25">
+        <label>leasy/lua/lstring.c</label>
+        <link refid="lstring_8c"/>
+      </node>
+      <node id="26">
+        <label>leasy/lua/lstrlib.c</label>
+        <link refid="lstrlib_8c"/>
+      </node>
+      <node id="27">
+        <label>leasy/lua/ltable.c</label>
+        <link refid="ltable_8c"/>
+      </node>
+      <node id="28">
+        <label>leasy/lua/ltablib.c</label>
+        <link refid="ltablib_8c"/>
+      </node>
+      <node id="29">
+        <label>leasy/lua/ltm.c</label>
+        <link refid="ltm_8c"/>
+      </node>
+      <node id="30">
+        <label>leasy/lua/lundump.c</label>
+        <link refid="lundump_8c"/>
+      </node>
+      <node id="31">
+        <label>leasy/lua/lutf8lib.c</label>
+        <link refid="lutf8lib_8c"/>
+      </node>
+      <node id="32">
+        <label>leasy/lua/lvm.c</label>
+        <link refid="lvm_8c"/>
+      </node>
+      <node id="33">
+        <label>leasy/lua/lzio.c</label>
+        <link refid="lzio_8c"/>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lprefix_8h_1a78c99ffd76a7bb3c8c74db76207e9ab4" prot="public" static="no">
+        <name>_XOPEN_SOURCE</name>
+        <initializer>600</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lprefix.h" line="17" column="9" bodyfile="leasy/lua/lprefix.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lprefix_8h_1a0cdbd4d0545340d33dfe595811475ccd" prot="public" static="no">
+        <name>_LARGEFILE_SOURCE</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lprefix.h" line="26" column="9" bodyfile="leasy/lua/lprefix.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lprefix_8h_1a44d01ba0a136b8e27ad362f5a823d14e" prot="public" static="no">
+        <name>_FILE_OFFSET_BITS</name>
+        <initializer>64</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lprefix.h" line="27" column="9" bodyfile="leasy/lua/lprefix.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lprefix.h<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Definitions<sp/>for<sp/>Lua<sp/>code<sp/>that<sp/>must<sp/>come<sp/>before<sp/>any<sp/>other<sp/>header<sp/>file</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>lprefix_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lprefix_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment">**<sp/>Allows<sp/>POSIX/XSI<sp/>stuff</highlight></codeline>
+<codeline lineno="13"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(LUA_USE_C89)<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>{<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(_XOPEN_SOURCE)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17" refid="lprefix_8h_1a78c99ffd76a7bb3c8c74db76207e9ab4" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_XOPEN_SOURCE<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>600</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#elif<sp/>_XOPEN_SOURCE<sp/>==<sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#undef<sp/>_XOPEN_SOURCE<sp/><sp/></highlight><highlight class="comment">/*<sp/>use<sp/>-D_XOPEN_SOURCE=0<sp/>to<sp/>undefine<sp/>it<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment">**<sp/>Allows<sp/>manipulation<sp/>of<sp/>large<sp/>files<sp/>in<sp/>gcc<sp/>and<sp/>some<sp/>other<sp/>compilers</highlight></codeline>
+<codeline lineno="24"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(LUA_32BITS)<sp/>&amp;&amp;<sp/>!defined(_FILE_OFFSET_BITS)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="lprefix_8h_1a0cdbd4d0545340d33dfe595811475ccd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_LARGEFILE_SOURCE<sp/><sp/><sp/><sp/><sp/><sp/><sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27" refid="lprefix_8h_1a44d01ba0a136b8e27ad362f5a823d14e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_FILE_OFFSET_BITS<sp/><sp/><sp/><sp/><sp/><sp/><sp/>64</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>}<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="34"><highlight class="comment">**<sp/>Windows<sp/>stuff</highlight></codeline>
+<codeline lineno="35"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(_WIN32)<sp/></highlight><highlight class="comment">/*<sp/>{<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(_CRT_SECURE_NO_WARNINGS)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_CRT_SECURE_NO_WARNINGS<sp/><sp/></highlight><highlight class="comment">/*<sp/>avoid<sp/>warnings<sp/>about<sp/>ISO<sp/>C<sp/>functions<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>}<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lprefix.h"/>
+  </compounddef>
+</doxygen>

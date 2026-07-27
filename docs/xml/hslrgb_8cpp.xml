@@ -1,0 +1,259 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="hslrgb_8cpp" kind="file" language="C++">
+    <compoundname>hslrgb.cpp</compoundname>
+    <includes refid="hslrgb_8h" local="yes">hslrgb.h</includes>
+    <includes refid="util__macro_8h" local="yes">util_macro.h</includes>
+    <incdepgraph>
+      <node id="3">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>hslrgb.cpp</label>
+        <link refid="hslrgb_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>hslrgb.h</label>
+        <link refid="hslrgb_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>util_macro.h</label>
+        <link refid="util__macro_8h"/>
+      </node>
+      <node id="4">
+        <label>cstdint</label>
+      </node>
+      <node id="6">
+        <label>ostream</label>
+      </node>
+      <node id="5">
+        <label>tuple</label>
+      </node>
+    </incdepgraph>
+    <innerclass refid="struct_color_h_s_l" prot="public">ColorHSL</innerclass>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="hslrgb_8cpp_1a7b1682dd185cc8e019f90684860f9cfa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_color_h_s_l" kindref="compound">ColorHSL</ref></type>
+        <definition>ColorHSL RGB2HSL</definition>
+        <argsstring>(Color col)</argsstring>
+        <name>RGB2HSL</name>
+        <param>
+          <type><ref refid="class_color" kindref="compound">Color</ref></type>
+          <declname>col</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>RGB to HSL. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="hslrgb.cpp" line="31" column="10" bodyfile="hslrgb.cpp" bodystart="31" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="hslrgb_8cpp_1a4bf5a3a39fa92c8af730099372c021f2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Hue_2_RGB</definition>
+        <argsstring>(double v1, double v2, double vH)</argsstring>
+        <name>Hue_2_RGB</name>
+        <param>
+          <type>double</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>v2</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>vH</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Hue to RGB. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="hslrgb.cpp" line="69" column="8" bodyfile="hslrgb.cpp" bodystart="69" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="hslrgb_8cpp_1a64c41d4bc2a8a72098290e695e2125e7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color HSL2RGB</definition>
+        <argsstring>(ColorHSL col)</argsstring>
+        <name>HSL2RGB</name>
+        <param>
+          <type><ref refid="struct_color_h_s_l" kindref="compound">ColorHSL</ref></type>
+          <declname>col</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>HSL to RGB. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="hslrgb.cpp" line="81" column="7" bodyfile="hslrgb.cpp" bodystart="81" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="hslrgb_8cpp_1aff675a06f8159a97623f558fbbca4fda" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color RGBAdjustHSL</definition>
+        <argsstring>(Color col, double h, double s, double l)</argsstring>
+        <name>RGBAdjustHSL</name>
+        <param>
+          <type><ref refid="class_color" kindref="compound">Color</ref></type>
+          <declname>col</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>h</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>l</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Ajusts RGB with HSL. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="hslrgb.cpp" line="102" column="7" bodyfile="hslrgb.cpp" bodystart="102" bodyend="118"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="hslrgb_8h" kindref="compound">hslrgb.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="util__macro_8h" kindref="compound">util_macro.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22" refid="struct_color_h_s_l" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_color_h_s_l" kindref="compound">ColorHSL</ref><sp/>{</highlight></codeline>
+<codeline lineno="23" refid="struct_color_h_s_l_1a6aad22a05370fcf3b6f0ce6a31695808" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="struct_color_h_s_l_1a6aad22a05370fcf3b6f0ce6a31695808" kindref="member">h</ref>;</highlight></codeline>
+<codeline lineno="24" refid="struct_color_h_s_l_1a4bc1532bb564bcafee5ff90a6528e7c8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="struct_color_h_s_l_1a4bc1532bb564bcafee5ff90a6528e7c8" kindref="member">s</ref>;</highlight></codeline>
+<codeline lineno="25" refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" kindref="member">l</ref>;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="hslrgb_8cpp_1a7b1682dd185cc8e019f90684860f9cfa" refkind="member"><highlight class="normal"><ref refid="struct_color_h_s_l" kindref="compound">ColorHSL</ref><sp/><ref refid="hslrgb_8cpp_1a7b1682dd185cc8e019f90684860f9cfa" kindref="member">RGB2HSL</ref>(<ref refid="class_color" kindref="compound">Color</ref><sp/>col)<sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_color_h_s_l" kindref="compound">ColorHSL</ref><sp/>ncol;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>vmin,<sp/>vmax,<sp/>delta;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>r,<sp/>g,<sp/>b;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>r<sp/>=<sp/>col.<ref refid="class_color_1a8c55aa73e839e57527559cd732bda475" kindref="member">red</ref><sp/>/<sp/>255.0;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>g<sp/>=<sp/>col.<ref refid="class_color_1a4f8414e1814c166da1859ce388149d78" kindref="member">green</ref><sp/>/<sp/>255.0;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>b<sp/>=<sp/>col.<ref refid="class_color_1acad45c325d520d1c24ea774099821c7c" kindref="member">blue</ref><sp/>/<sp/>255.0;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>vmin<sp/>=<sp/><ref refid="util__macro_8h_1adf77a48fdc00d2f05c34a228d1e1c237" kindref="member">min</ref>(<ref refid="util__macro_8h_1adf77a48fdc00d2f05c34a228d1e1c237" kindref="member">min</ref>(r,<sp/>g),<sp/>b);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>vmax<sp/>=<sp/><ref refid="util__macro_8h_1a3f4ae913e2a7b3479faa6afe7c6948cd" kindref="member">max</ref>(<ref refid="util__macro_8h_1a3f4ae913e2a7b3479faa6afe7c6948cd" kindref="member">max</ref>(r,<sp/>g),<sp/>b);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>delta<sp/>=<sp/>vmax<sp/>-<sp/>vmin;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>ncol.<ref refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" kindref="member">l</ref><sp/>=<sp/>(vmax<sp/>+<sp/>vmin)<sp/>/<sp/>2;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(delta<sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ncol.<ref refid="struct_color_h_s_l_1a6aad22a05370fcf3b6f0ce6a31695808" kindref="member">h</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ncol.<ref refid="struct_color_h_s_l_1a4bc1532bb564bcafee5ff90a6528e7c8" kindref="member">s</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>dr,<sp/>dg,<sp/>db;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ncol.<ref refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" kindref="member">l</ref><sp/>&lt;<sp/>0.5)<sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ncol.<ref refid="struct_color_h_s_l_1a4bc1532bb564bcafee5ff90a6528e7c8" kindref="member">s</ref><sp/>=<sp/>delta<sp/>/<sp/>(vmax<sp/>+<sp/>vmin);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ncol.<ref refid="struct_color_h_s_l_1a4bc1532bb564bcafee5ff90a6528e7c8" kindref="member">s</ref><sp/>=<sp/>delta<sp/>/<sp/>(2<sp/>-<sp/>vmax<sp/>-<sp/>vmin);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dr<sp/>=<sp/>(((vmax<sp/>-<sp/>r)<sp/>/<sp/>6)<sp/>+<sp/>(delta<sp/>/<sp/>2))<sp/>/<sp/>delta;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dg<sp/>=<sp/>(((vmax<sp/>-<sp/>g)<sp/>/<sp/>6)<sp/>+<sp/>(delta<sp/>/<sp/>2))<sp/>/<sp/>delta;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>db<sp/>=<sp/>(((vmax<sp/>-<sp/>b)<sp/>/<sp/>6)<sp/>+<sp/>(delta<sp/>/<sp/>2))<sp/>/<sp/>delta;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(r<sp/>==<sp/>vmax)<sp/>{</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ncol.<ref refid="struct_color_h_s_l_1a6aad22a05370fcf3b6f0ce6a31695808" kindref="member">h</ref><sp/>=<sp/>db<sp/>-<sp/>dg;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(g<sp/>==<sp/>vmax)<sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ncol.<ref refid="struct_color_h_s_l_1a6aad22a05370fcf3b6f0ce6a31695808" kindref="member">h</ref><sp/>=<sp/>(1.0<sp/>/<sp/>3)<sp/>+<sp/>dr<sp/>-<sp/>db;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(b<sp/>==<sp/>vmax)<sp/>{</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ncol.<ref refid="struct_color_h_s_l_1a6aad22a05370fcf3b6f0ce6a31695808" kindref="member">h</ref><sp/>=<sp/>(2.0<sp/>/<sp/>3)<sp/>+<sp/>dg<sp/>-<sp/>dr;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ncol;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="hslrgb_8cpp_1a4bf5a3a39fa92c8af730099372c021f2" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="hslrgb_8cpp_1a4bf5a3a39fa92c8af730099372c021f2" kindref="member">Hue_2_RGB</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>v1,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>v2,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>vH)<sp/>{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(vH<sp/>&lt;<sp/>0)<sp/>vH<sp/>+=<sp/>1;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(vH<sp/>&gt;<sp/>1)<sp/>vH<sp/>-=<sp/>1;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((6<sp/>*<sp/>vH)<sp/>&lt;<sp/>1)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(v1<sp/>+<sp/>(v2<sp/>-<sp/>v1)<sp/>*<sp/>6<sp/>*<sp/>vH);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((2<sp/>*<sp/>vH)<sp/>&lt;<sp/>1)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(v2);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((3<sp/>*<sp/>vH)<sp/>&lt;<sp/>2)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(v1<sp/>+<sp/>(v2<sp/>-<sp/>v1)<sp/>*<sp/>((2.0<sp/>/<sp/>3)<sp/>-<sp/>vH<sp/>)<sp/>*<sp/>6);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>v1;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81" refid="hslrgb_8cpp_1a64c41d4bc2a8a72098290e695e2125e7" refkind="member"><highlight class="normal"><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="hslrgb_8cpp_1a64c41d4bc2a8a72098290e695e2125e7" kindref="member">HSL2RGB</ref>(<ref refid="struct_color_h_s_l" kindref="compound">ColorHSL</ref><sp/>col)<sp/>{</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/>ncol(0,<sp/>0,<sp/>0,<sp/>0);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(col.<ref refid="struct_color_h_s_l_1a4bc1532bb564bcafee5ff90a6528e7c8" kindref="member">s</ref><sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ncol.<ref refid="class_color_1a8c55aa73e839e57527559cd732bda475" kindref="member">red</ref><sp/>=<sp/>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>char)(col.<ref refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" kindref="member">l</ref><sp/>*<sp/>255);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ncol.<ref refid="class_color_1a4f8414e1814c166da1859ce388149d78" kindref="member">green</ref><sp/>=<sp/>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>char)(col.<ref refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" kindref="member">l</ref><sp/>*<sp/>255);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ncol.<ref refid="class_color_1acad45c325d520d1c24ea774099821c7c" kindref="member">blue</ref><sp/>=<sp/>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>char)(col.<ref refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" kindref="member">l</ref><sp/>*<sp/>255);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>v1,<sp/>v2;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(col.<ref refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" kindref="member">l</ref><sp/>&lt;<sp/>0.5)<sp/>{</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v2<sp/>=<sp/>col.<ref refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" kindref="member">l</ref><sp/>*<sp/>(1<sp/>+<sp/>col.<ref refid="struct_color_h_s_l_1a4bc1532bb564bcafee5ff90a6528e7c8" kindref="member">s</ref>);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v2<sp/>=<sp/>(col.<ref refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" kindref="member">l</ref><sp/>+<sp/>col.<ref refid="struct_color_h_s_l_1a4bc1532bb564bcafee5ff90a6528e7c8" kindref="member">s</ref>)<sp/>-<sp/>(col.<ref refid="struct_color_h_s_l_1a4bc1532bb564bcafee5ff90a6528e7c8" kindref="member">s</ref><sp/>*<sp/>col.<ref refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" kindref="member">l</ref>);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v1<sp/>=<sp/>2<sp/>*<sp/>col.<ref refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" kindref="member">l</ref><sp/>-<sp/>v2;</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ncol.<ref refid="class_color_1a8c55aa73e839e57527559cd732bda475" kindref="member">red</ref><sp/>=<sp/>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>char)(255<sp/>*<sp/><ref refid="hslrgb_8cpp_1a4bf5a3a39fa92c8af730099372c021f2" kindref="member">Hue_2_RGB</ref>(v1,<sp/>v2,<sp/>col.<ref refid="struct_color_h_s_l_1a6aad22a05370fcf3b6f0ce6a31695808" kindref="member">h</ref><sp/>+<sp/>(1.0<sp/>/<sp/>3)));</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ncol.<ref refid="class_color_1a4f8414e1814c166da1859ce388149d78" kindref="member">green</ref><sp/>=<sp/>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>char)(255<sp/>*<sp/><ref refid="hslrgb_8cpp_1a4bf5a3a39fa92c8af730099372c021f2" kindref="member">Hue_2_RGB</ref>(v1,<sp/>v2,<sp/>col.<ref refid="struct_color_h_s_l_1a6aad22a05370fcf3b6f0ce6a31695808" kindref="member">h</ref>));</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ncol.<ref refid="class_color_1acad45c325d520d1c24ea774099821c7c" kindref="member">blue</ref><sp/>=<sp/>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>char)(255<sp/>*<sp/><ref refid="hslrgb_8cpp_1a4bf5a3a39fa92c8af730099372c021f2" kindref="member">Hue_2_RGB</ref>(v1,<sp/>v2,<sp/>col.<ref refid="struct_color_h_s_l_1a6aad22a05370fcf3b6f0ce6a31695808" kindref="member">h</ref><sp/>-<sp/>(1.0<sp/>/<sp/>3)));</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ncol;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102" refid="hslrgb_8cpp_1aff675a06f8159a97623f558fbbca4fda" refkind="member"><highlight class="normal"><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="hslrgb_8cpp_1aff675a06f8159a97623f558fbbca4fda" kindref="member">RGBAdjustHSL</ref>(<ref refid="class_color" kindref="compound">Color</ref><sp/>col,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>h,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>s,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>l)<sp/>{</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_color_h_s_l" kindref="compound">ColorHSL</ref><sp/>hsl;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/>rgb<sp/>=<sp/>col;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>hsl<sp/>=<sp/><ref refid="hslrgb_8cpp_1a7b1682dd185cc8e019f90684860f9cfa" kindref="member">RGB2HSL</ref>(rgb);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>hsl.<ref refid="struct_color_h_s_l_1a6aad22a05370fcf3b6f0ce6a31695808" kindref="member">h</ref><sp/>=<sp/>hsl.<ref refid="struct_color_h_s_l_1a6aad22a05370fcf3b6f0ce6a31695808" kindref="member">h</ref><sp/>+<sp/>h<sp/>/<sp/>360.0;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(hsl.<ref refid="struct_color_h_s_l_1a6aad22a05370fcf3b6f0ce6a31695808" kindref="member">h</ref><sp/>&gt;<sp/>1)<sp/>hsl.<ref refid="struct_color_h_s_l_1a6aad22a05370fcf3b6f0ce6a31695808" kindref="member">h</ref><sp/>-=<sp/>1;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(hsl.<ref refid="struct_color_h_s_l_1a6aad22a05370fcf3b6f0ce6a31695808" kindref="member">h</ref><sp/>&lt;<sp/>0)<sp/>hsl.<ref refid="struct_color_h_s_l_1a6aad22a05370fcf3b6f0ce6a31695808" kindref="member">h</ref><sp/>+=<sp/>1;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>hsl.<ref refid="struct_color_h_s_l_1a4bc1532bb564bcafee5ff90a6528e7c8" kindref="member">s</ref><sp/>=<sp/>hsl.<ref refid="struct_color_h_s_l_1a4bc1532bb564bcafee5ff90a6528e7c8" kindref="member">s</ref><sp/>+<sp/>s;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(hsl.<ref refid="struct_color_h_s_l_1a4bc1532bb564bcafee5ff90a6528e7c8" kindref="member">s</ref><sp/>&gt;<sp/>1)<sp/>hsl.<ref refid="struct_color_h_s_l_1a4bc1532bb564bcafee5ff90a6528e7c8" kindref="member">s</ref><sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(hsl.<ref refid="struct_color_h_s_l_1a4bc1532bb564bcafee5ff90a6528e7c8" kindref="member">s</ref><sp/>&lt;<sp/>0)<sp/>hsl.<ref refid="struct_color_h_s_l_1a4bc1532bb564bcafee5ff90a6528e7c8" kindref="member">s</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>hsl.<ref refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" kindref="member">l</ref><sp/>=<sp/>hsl.<ref refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" kindref="member">l</ref><sp/>*<sp/>l;</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(hsl.<ref refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" kindref="member">l</ref><sp/>&gt;<sp/>1)<sp/>hsl.<ref refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" kindref="member">l</ref><sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(hsl.<ref refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" kindref="member">l</ref><sp/>&lt;<sp/>0)<sp/>hsl.<ref refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" kindref="member">l</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>rgb<sp/>=<sp/><ref refid="hslrgb_8cpp_1a64c41d4bc2a8a72098290e695e2125e7" kindref="member">HSL2RGB</ref>(hsl);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/>rgb.<ref refid="class_color_1a8f76c7e20ecccd56a47950cda706c5e2" kindref="member">alpha</ref><sp/>=<sp/>col.<ref refid="class_color_1a8f76c7e20ecccd56a47950cda706c5e2" kindref="member">alpha</ref>;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>rgb;</highlight></codeline>
+<codeline lineno="118"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="hslrgb.cpp"/>
+  </compounddef>
+</doxygen>

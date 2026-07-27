@@ -119,3 +119,4 @@ namespace leasy::typings2 {
     return std::invoke(F, std::forward<Args>(args)...);
   }
 }
+

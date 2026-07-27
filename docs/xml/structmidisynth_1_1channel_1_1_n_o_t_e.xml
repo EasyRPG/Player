@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structmidisynth_1_1channel_1_1_n_o_t_e" kind="struct" language="C++" prot="private">
+    <compoundname>midisynth::channel::NOTE</compoundname>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="structmidisynth_1_1channel_1_1_n_o_t_e_1a368e4605a97b57634071b0f64826d2aa" prot="public" static="no" strong="no">
+        <type></type>
+        <name>STATUS</name>
+        <qualifiedname>midisynth::channel::NOTE::STATUS</qualifiedname>
+        <enumvalue id="structmidisynth_1_1channel_1_1_n_o_t_e_1a368e4605a97b57634071b0f64826d2aaa9bda6928eef5ec9a82ce6c11c48e58d4" prot="public">
+          <name>NOTEON</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="structmidisynth_1_1channel_1_1_n_o_t_e_1a368e4605a97b57634071b0f64826d2aaa49e6c978da795525119676d3a49657bc" prot="public">
+          <name>NOTEOFF</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="structmidisynth_1_1channel_1_1_n_o_t_e_1a368e4605a97b57634071b0f64826d2aaadbc17d6b5690d51c3b45c5e767079cee" prot="public">
+          <name>SOUNDOFF</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="162" column="13" bodyfile="midisynth.h" bodystart="162" bodyend="164"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structmidisynth_1_1channel_1_1_n_o_t_e_1ab4ed0d6f88e2b196dbe2eb42a874111f" prot="public" static="no" mutable="no">
+        <type>class note *</type>
+        <definition>class note* midisynth::channel::NOTE::note</definition>
+        <argsstring></argsstring>
+        <name>note</name>
+        <qualifiedname>midisynth::channel::NOTE::note</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="160" column="24" bodyfile="midisynth.h" bodystart="160" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1channel_1_1_n_o_t_e_1aba1789399759405da052bc9acd45d052" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::NOTE::key</definition>
+        <argsstring></argsstring>
+        <name>key</name>
+        <qualifiedname>midisynth::channel::NOTE::key</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="161" column="17" bodyfile="midisynth.h" bodystart="161" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structmidisynth_1_1channel_1_1_n_o_t_e_1aa189fc2d22ded3d478ef512cfb57e8ab" prot="public" static="no" mutable="no">
+        <type>enum midisynth::channel::NOTE::STATUS</type>
+        <definition>enum midisynth::channel::NOTE::STATUS midisynth::channel::NOTE::status</definition>
+        <argsstring></argsstring>
+        <name>status</name>
+        <qualifiedname>midisynth::channel::NOTE::status</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="164" column="19"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structmidisynth_1_1channel_1_1_n_o_t_e_1a4c8848706f273a1b29233bbef02c121b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>midisynth::channel::NOTE::NOTE</definition>
+        <argsstring>(class note *p, int key_)</argsstring>
+        <name>NOTE</name>
+        <qualifiedname>midisynth::channel::NOTE::NOTE</qualifiedname>
+        <param>
+          <type>class note *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>key_</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="165" column="13" bodyfile="midisynth.h" bodystart="165" bodyend="165"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>midisynth::channel::NOTE</label>
+        <childnode refid="2" relation="usage">
+          <edgelabel>note</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>midisynth::note</label>
+        <link refid="classmidisynth_1_1note"/>
+        <childnode refid="3" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>midisynth::uncopyable</label>
+        <link refid="classmidisynth_1_1uncopyable"/>
+      </node>
+    </collaborationgraph>
+    <location file="midisynth.h" line="159" column="9" bodyfile="midisynth.h" bodystart="159" bodyend="166"/>
+    <listofallmembers>
+      <member refid="structmidisynth_1_1channel_1_1_n_o_t_e_1aba1789399759405da052bc9acd45d052" prot="public" virt="non-virtual"><scope>midisynth::channel::NOTE</scope><name>key</name></member>
+      <member refid="structmidisynth_1_1channel_1_1_n_o_t_e_1a4c8848706f273a1b29233bbef02c121b" prot="public" virt="non-virtual"><scope>midisynth::channel::NOTE</scope><name>NOTE</name></member>
+      <member refid="structmidisynth_1_1channel_1_1_n_o_t_e_1ab4ed0d6f88e2b196dbe2eb42a874111f" prot="public" virt="non-virtual"><scope>midisynth::channel::NOTE</scope><name>note</name></member>
+      <member refid="structmidisynth_1_1channel_1_1_n_o_t_e_1a368e4605a97b57634071b0f64826d2aaa49e6c978da795525119676d3a49657bc" prot="public" virt="non-virtual"><scope>midisynth::channel::NOTE</scope><name>NOTEOFF</name></member>
+      <member refid="structmidisynth_1_1channel_1_1_n_o_t_e_1a368e4605a97b57634071b0f64826d2aaa9bda6928eef5ec9a82ce6c11c48e58d4" prot="public" virt="non-virtual"><scope>midisynth::channel::NOTE</scope><name>NOTEON</name></member>
+      <member refid="structmidisynth_1_1channel_1_1_n_o_t_e_1a368e4605a97b57634071b0f64826d2aaadbc17d6b5690d51c3b45c5e767079cee" prot="public" virt="non-virtual"><scope>midisynth::channel::NOTE</scope><name>SOUNDOFF</name></member>
+      <member refid="structmidisynth_1_1channel_1_1_n_o_t_e_1a368e4605a97b57634071b0f64826d2aa" prot="public" virt="non-virtual"><scope>midisynth::channel::NOTE</scope><name>STATUS</name></member>
+      <member refid="structmidisynth_1_1channel_1_1_n_o_t_e_1aa189fc2d22ded3d478ef512cfb57e8ab" prot="public" virt="non-virtual"><scope>midisynth::channel::NOTE</scope><name>status</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

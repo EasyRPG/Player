@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_flash" kind="namespace" language="C++">
+    <compoundname>Flash</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_flash_1adfcaf558cb753e096b2e29e34da7977d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Flash::Update</definition>
+        <argsstring>(double &amp;current_level, int32_t &amp;time_left, bool continuous, int32_t period, int32_t sat)</argsstring>
+        <name>Update</name>
+        <qualifiedname>Flash::Update</qualifiedname>
+        <param>
+          <type>double &amp;</type>
+          <declname>current_level</declname>
+        </param>
+        <param>
+          <type>int32_t &amp;</type>
+          <declname>time_left</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>continuous</declname>
+        </param>
+        <param>
+          <type>int32_t</type>
+          <declname>period</declname>
+        </param>
+        <param>
+          <type>int32_t</type>
+          <declname>sat</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Perform one time step of flash data animation</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>current_level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>flash level </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>time_left</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>amount of flash time left </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>continuous</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>true if continuous flash </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>period</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>original flash period </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sat</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>original flash saturation </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flash.h" line="36" column="13" bodyfile="flash.h" bodystart="36" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_flash_1ac7e39354bb504ec81d38412d93a19ea5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Flash::Update</definition>
+        <argsstring>(double &amp;current_level, int32_t &amp;time_left)</argsstring>
+        <name>Update</name>
+        <qualifiedname>Flash::Update</qualifiedname>
+        <param>
+          <type>double &amp;</type>
+          <declname>current_level</declname>
+        </param>
+        <param>
+          <type>int32_t &amp;</type>
+          <declname>time_left</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Perform one time step of flash data animation</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>current_level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>flash level </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>time_left</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>amount of flash time left </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flash.h" line="60" column="13" bodyfile="flash.h" bodystart="60" bodyend="62"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_flash_1abba50f622766e542cff461cacf0483fb" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color Flash::MakeColor</definition>
+        <argsstring>(int r, int g, int b, double current_level)</argsstring>
+        <name>MakeColor</name>
+        <qualifiedname>Flash::MakeColor</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>current_level</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Create a <ref refid="class_color" kindref="compound">Color</ref> object from RPG_RT flash values [0,31]</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>red color </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>g</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>green color </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>blue color </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>current_level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>strength of flash </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flash.h" line="72" column="17" bodyfile="flash.h" bodystart="72" bodyend="74"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Contains helper functions for flash effect </para>
+    </detaileddescription>
+    <location file="flash.h" line="26" column="1"/>
+  </compounddef>
+</doxygen>

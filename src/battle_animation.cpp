@@ -415,3 +415,4 @@ void BattleAnimation::SetFrame(int frame) {
 void BattleAnimation::SetInvert(bool inverted) {
 	invert = inverted;
 }
+

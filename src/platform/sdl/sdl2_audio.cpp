@@ -126,3 +126,4 @@ void Sdl2Audio::UnlockMutex() const {
 }
 
 #endif
+

@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="union_stk_id_rel" kind="union" language="C++" prot="public">
+    <compoundname>StkIdRel</compoundname>
+    <includes refid="lobject_8h" local="no">lobject.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="union_stk_id_rel_1a217d7edba31898cdfe8fdd91df893d26" prot="public" static="no" mutable="no">
+        <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+        <definition>StkId StkIdRel::p</definition>
+        <argsstring></argsstring>
+        <name>p</name>
+        <qualifiedname>StkIdRel::p</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="166" column="9" bodyfile="leasy/lua/lobject.h" bodystart="166" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="union_stk_id_rel_1aa5b9278d862af81303c5ce9f9b62943b" prot="public" static="no" mutable="no">
+        <type>ptrdiff_t</type>
+        <definition>ptrdiff_t StkIdRel::offset</definition>
+        <argsstring></argsstring>
+        <name>offset</name>
+        <qualifiedname>StkIdRel::offset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="167" column="13" bodyfile="leasy/lua/lobject.h" bodystart="167" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>StackValue</label>
+        <link refid="union_stack_value"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>val</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>StkIdRel</label>
+        <link refid="union_stk_id_rel"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>p</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>TValue</label>
+        <link refid="struct_t_value"/>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lobject.h" line="165" column="1" bodyfile="leasy/lua/lobject.h" bodystart="165" bodyend="168"/>
+    <listofallmembers>
+      <member refid="union_stk_id_rel_1aa5b9278d862af81303c5ce9f9b62943b" prot="public" virt="non-virtual"><scope>StkIdRel</scope><name>offset</name></member>
+      <member refid="union_stk_id_rel_1a217d7edba31898cdfe8fdd91df893d26" prot="public" virt="non-virtual"><scope>StkIdRel</scope><name>p</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

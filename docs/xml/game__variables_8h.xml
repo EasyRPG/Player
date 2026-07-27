@@ -1,0 +1,632 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="game__variables_8h" kind="file" language="C++">
+    <compoundname>game_variables.h</compoundname>
+    <includes refid="data_8h" local="no">lcf/data.h</includes>
+    <includes refid="compiler_8h" local="yes">compiler.h</includes>
+    <includes refid="string__view_8h" local="yes">string_view.h</includes>
+    <includes local="no">cstdint</includes>
+    <includes local="no">string</includes>
+    <includedby refid="dynrpg__easyrpg_8cpp" local="yes">dynrpg_easyrpg.cpp</includedby>
+    <includedby refid="dynrpg__textplugin_8cpp" local="yes">dynrpg_textplugin.cpp</includedby>
+    <includedby refid="game__battle_8cpp" local="yes">game_battle.cpp</includedby>
+    <includedby refid="game__dynrpg_8cpp" local="yes">game_dynrpg.cpp</includedby>
+    <includedby refid="game__event_8cpp" local="yes">game_event.cpp</includedby>
+    <includedby refid="game__interpreter_8cpp" local="yes">game_interpreter.cpp</includedby>
+    <includedby refid="game__interpreter__battle_8cpp" local="yes">game_interpreter_battle.cpp</includedby>
+    <includedby refid="game__interpreter__map_8cpp" local="yes">game_interpreter_map.cpp</includedby>
+    <includedby refid="game__message_8cpp" local="yes">game_message.cpp</includedby>
+    <includedby refid="game__screen_8cpp" local="yes">game_screen.cpp</includedby>
+    <includedby refid="game__strings_8cpp" local="yes">game_strings.cpp</includedby>
+    <includedby refid="game__strings_8h" local="yes">game_strings.h</includedby>
+    <includedby refid="game__variables_8cpp" local="yes">game_variables.cpp</includedby>
+    <includedby refid="main__data_8cpp" local="yes">main_data.cpp</includedby>
+    <includedby refid="maniac__patch_8cpp" local="yes">maniac_patch.cpp</includedby>
+    <includedby refid="pending__message_8cpp" local="yes">pending_message.cpp</includedby>
+    <includedby refid="player_8cpp" local="yes">player.cpp</includedby>
+    <includedby refid="scene__debug_8cpp" local="yes">scene_debug.cpp</includedby>
+    <includedby refid="scene__map_8cpp" local="yes">scene_map.cpp</includedby>
+    <includedby refid="scene__save_8cpp" local="yes">scene_save.cpp</includedby>
+    <includedby refid="window__interpreter_8cpp" local="yes">window_interpreter.cpp</includedby>
+    <includedby refid="window__message_8cpp" local="yes">window_message.cpp</includedby>
+    <includedby refid="window__numberinput_8cpp" local="yes">window_numberinput.cpp</includedby>
+    <includedby refid="window__varlist_8cpp" local="yes">window_varlist.cpp</includedby>
+    <incdepgraph>
+      <node id="26">
+        <label>compiler.h</label>
+        <link refid="compiler_8h"/>
+      </node>
+      <node id="1">
+        <label>game_variables.h</label>
+        <link refid="game__variables_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>lcf/data.h</label>
+        <link refid="data_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>cstdint</label>
+      </node>
+      <node id="30">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="31">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="29">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="5">
+        <label>lcf/rpg/actor.h</label>
+      </node>
+      <node id="13">
+        <label>lcf/rpg/animation.h</label>
+      </node>
+      <node id="10">
+        <label>lcf/rpg/attribute.h</label>
+      </node>
+      <node id="19">
+        <label>lcf/rpg/battlecommand.h</label>
+      </node>
+      <node id="20">
+        <label>lcf/rpg/battleranimation.h</label>
+      </node>
+      <node id="14">
+        <label>lcf/rpg/chipset.h</label>
+      </node>
+      <node id="18">
+        <label>lcf/rpg/class.h</label>
+      </node>
+      <node id="17">
+        <label>lcf/rpg/commonevent.h</label>
+      </node>
+      <node id="25">
+        <label>lcf/rpg/database.h</label>
+      </node>
+      <node id="8">
+        <label>lcf/rpg/enemy.h</label>
+      </node>
+      <node id="23">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="7">
+        <label>lcf/rpg/item.h</label>
+      </node>
+      <node id="22">
+        <label>lcf/rpg/music.h</label>
+      </node>
+      <node id="6">
+        <label>lcf/rpg/skill.h</label>
+      </node>
+      <node id="21">
+        <label>lcf/rpg/sound.h</label>
+      </node>
+      <node id="11">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="16">
+        <label>lcf/rpg/system.h</label>
+      </node>
+      <node id="15">
+        <label>lcf/rpg/terms.h</label>
+      </node>
+      <node id="12">
+        <label>lcf/rpg/terrain.h</label>
+      </node>
+      <node id="24">
+        <label>lcf/rpg/treemap.h</label>
+      </node>
+      <node id="9">
+        <label>lcf/rpg/troop.h</label>
+      </node>
+      <node id="28">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="3">
+        <label>string</label>
+      </node>
+      <node id="4">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>dynrpg_easyrpg.cpp</label>
+        <link refid="dynrpg__easyrpg_8cpp"/>
+      </node>
+      <node id="3">
+        <label>dynrpg_textplugin.cpp</label>
+        <link refid="dynrpg__textplugin_8cpp"/>
+      </node>
+      <node id="4">
+        <label>game_battle.cpp</label>
+        <link refid="game__battle_8cpp"/>
+      </node>
+      <node id="5">
+        <label>game_dynrpg.cpp</label>
+        <link refid="game__dynrpg_8cpp"/>
+      </node>
+      <node id="6">
+        <label>game_event.cpp</label>
+        <link refid="game__event_8cpp"/>
+      </node>
+      <node id="7">
+        <label>game_interpreter.cpp</label>
+        <link refid="game__interpreter_8cpp"/>
+      </node>
+      <node id="8">
+        <label>game_interpreter_battle.cpp</label>
+        <link refid="game__interpreter__battle_8cpp"/>
+      </node>
+      <node id="9">
+        <label>game_interpreter_map.cpp</label>
+        <link refid="game__interpreter__map_8cpp"/>
+      </node>
+      <node id="17">
+        <label>game_interpreter_shared.cpp</label>
+        <link refid="game__interpreter__shared_8cpp"/>
+      </node>
+      <node id="10">
+        <label>game_message.cpp</label>
+        <link refid="game__message_8cpp"/>
+      </node>
+      <node id="11">
+        <label>game_screen.cpp</label>
+        <link refid="game__screen_8cpp"/>
+      </node>
+      <node id="12">
+        <label>game_strings.cpp</label>
+        <link refid="game__strings_8cpp"/>
+      </node>
+      <node id="13">
+        <label>game_strings.h</label>
+        <link refid="game__strings_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>game_variables.cpp</label>
+        <link refid="game__variables_8cpp"/>
+      </node>
+      <node id="1">
+        <label>game_variables.h</label>
+        <link refid="game__variables_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>game_windows.cpp</label>
+        <link refid="game__windows_8cpp"/>
+      </node>
+      <node id="15">
+        <label>main_data.cpp</label>
+        <link refid="main__data_8cpp"/>
+      </node>
+      <node id="18">
+        <label>maniac_patch.cpp</label>
+        <link refid="maniac__patch_8cpp"/>
+      </node>
+      <node id="16">
+        <label>maniac_patch.h</label>
+        <link refid="maniac__patch_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>pending_message.cpp</label>
+        <link refid="pending__message_8cpp"/>
+      </node>
+      <node id="20">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="21">
+        <label>scene_debug.cpp</label>
+        <link refid="scene__debug_8cpp"/>
+      </node>
+      <node id="25">
+        <label>scene_map.cpp</label>
+        <link refid="scene__map_8cpp"/>
+      </node>
+      <node id="22">
+        <label>scene_save.cpp</label>
+        <link refid="scene__save_8cpp"/>
+      </node>
+      <node id="26">
+        <label>window_interpreter.cpp</label>
+        <link refid="window__interpreter_8cpp"/>
+      </node>
+      <node id="27">
+        <label>window_message.cpp</label>
+        <link refid="window__message_8cpp"/>
+      </node>
+      <node id="28">
+        <label>window_numberinput.cpp</label>
+        <link refid="window__numberinput_8cpp"/>
+      </node>
+      <node id="23">
+        <label>window_varlist.cpp</label>
+        <link refid="window__varlist_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_game___variables" prot="public">Game_Variables</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="game__variables_8h_1a6196a11a11ad0634c7579d2433b8cd1f" prot="public" static="no">
+        <name>EP_GAME_VARIABLES_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="20" column="9" bodyfile="game_variables.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_GAME_VARIABLES_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="game__variables_8h_1a6196a11a11ad0634c7579d2433b8cd1f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_GAME_VARIABLES_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="data_8h" kindref="compound">lcf/data.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="compiler_8h" kindref="compound">compiler.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="string__view_8h" kindref="compound">string_view.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstdint&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="class_game___variables" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_game___variables_1ae00d6f1d42d1ddbb9850a6b8107045f1" kindref="member">Game_Variables</ref><sp/>{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="34" refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>=<sp/>int32_t;</highlight></codeline>
+<codeline lineno="35" refid="class_game___variables_1a0bec30e68da9da0a91645cccda56d8af" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_game___variables_1a0bec30e68da9da0a91645cccda56d8af" kindref="member">Variables_t</ref><sp/>=<sp/>std::vector&lt;Var_t&gt;;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="class_game___variables_1aa6fd54ba6de623a306a5f773a8c192dd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1aa6fd54ba6de623a306a5f773a8c192dd" kindref="member">max_warnings</ref><sp/>=<sp/>10;</highlight></codeline>
+<codeline lineno="38" refid="class_game___variables_1a7fb4aa5ae8c4b16cf3bda74df6718fa3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1a7fb4aa5ae8c4b16cf3bda74df6718fa3" kindref="member">min_2k</ref><sp/>=<sp/>-999999;</highlight></codeline>
+<codeline lineno="39" refid="class_game___variables_1aa43cae31632e974001b3574fc6816545" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1aa43cae31632e974001b3574fc6816545" kindref="member">max_2k</ref><sp/>=<sp/>999999;</highlight></codeline>
+<codeline lineno="40" refid="class_game___variables_1a0b89b3f070cbd9e07a7b63bc25aabb62" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1a0b89b3f070cbd9e07a7b63bc25aabb62" kindref="member">min_2k3</ref><sp/>=<sp/>-9999999;</highlight></codeline>
+<codeline lineno="41" refid="class_game___variables_1a5e28315c9201ee6bca683af0c3caa8df" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1a5e28315c9201ee6bca683af0c3caa8df" kindref="member">max_2k3</ref><sp/>=<sp/>9999999;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1ae00d6f1d42d1ddbb9850a6b8107045f1" kindref="member">Game_Variables</ref>(<ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1ad5fc1cf64e2a8145f0d0f16023025c9e" kindref="member">SetData</ref>(<ref refid="class_game___variables_1a0bec30e68da9da0a91645cccda56d8af" kindref="member">Variables_t</ref>);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a0bec30e68da9da0a91645cccda56d8af" kindref="member">Variables_t</ref>&amp;<sp/><ref refid="class_game___variables_1a02fb0107974ce2449d93bb6161eb8c29" kindref="member">GetData</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a17a2113af52ea83069d760dd5d068e79" kindref="member">SetLowerLimit</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>limit);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1a11c9a90f8e69ba4cc1a2bcafdb413cf8" kindref="member">GetIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="52" refid="class_game___variables_1ab3b0d3669cd93a22c23cc5e4fcc3112d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1ab3b0d3669cd93a22c23cc5e4fcc3112d" kindref="member">GetWithMode</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mode)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;Var_t&gt;<sp/><ref refid="class_game___variables_1a7c52dd3cc5f4fe93788c3fcd0125c3a1" kindref="member">GetRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>length);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1ac9b7db3b0a9a0721cde0fe06fa90337d" kindref="member">Set</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1a00d10ea75a5affe7ce4ff600417b8fd8" kindref="member">Add</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1adc853fd7bfd9fa745d3d46f169844639" kindref="member">Sub</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1a034568be935750066a31521221dc34ae" kindref="member">Mult</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1aef56c165efd318ab06e982398c7abcaa" kindref="member">Div</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1aa5945bec38938f3653f1f7079faae0ec" kindref="member">Mod</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1adb0d0c63186d24ceda676e747003f3c8" kindref="member">BitOr</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1ae2e5e4d9c7df9487ae4f4fd553f7eeb0" kindref="member">BitAnd</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1a382d8c60ad840d494c9c714707bda598" kindref="member">BitXor</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1ad4f12ae690debe5098b6ee9a9060f58d" kindref="member">BitShiftLeft</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1acd8d7c060b13db9b26d636805fbac4d6" kindref="member">BitShiftRight</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a8771f393181b303ec2c59323414f6fb5" kindref="member">SetRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1ab9dbad38f6dd6ed9bc5d0bb2c54f0a2b" kindref="member">AddRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a999bb61982ff43db1cd0319b4eb66682" kindref="member">SubRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a32f1ea14cacefe857213029378d2d3e2" kindref="member">MultRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a07e3178bdbf70577c3f77604b9a3a9b3" kindref="member">DivRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1af89d7b219756a35638fc6f8b0c45a560" kindref="member">ModRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a743ef50637db15b7bbea453841a3a2f4" kindref="member">BitOrRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a6b76072fd7ca2172b5dc25d424e4e9a2" kindref="member">BitAndRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a20660296fae0a8b75996a49f1df86633" kindref="member">BitXorRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a113a7c1e1aa93d31b6fcf03b83a5eb8c" kindref="member">BitShiftLeftRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1aff121b414a62dc3605771ff5b8a397db" kindref="member">BitShiftRightRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a36cb9db44a1a1c774ed38e124810ee08" kindref="member">SetRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1adf3c33f74a348f56f500a683fb2d2bcf" kindref="member">AddRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a02e361d9b9ff261325eb2e702ef3e128" kindref="member">SubRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a3fb348c119e20bd3bc2554e6855c3aba" kindref="member">MultRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1aacb103546cd1c4335a9f5b8470336356" kindref="member">DivRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1aafccf406a869d2266c5e93e2bad8292f" kindref="member">ModRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1af8177238bb0345e8074cc9f5cb8a4b5e" kindref="member">BitOrRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a49d17d50ed574c6eb9533d59ce7a038e" kindref="member">BitAndRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a78368a02a32bc074f009dea2d8c4f31f" kindref="member">BitXorRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1ac752fe9250bf40bee424507d48d4f90f" kindref="member">BitShiftLeftRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a442a211ef8af3a7abf4b466b720da06f" kindref="member">BitShiftRightRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1aec0396c3279b4269cad3f6606e7a5123" kindref="member">SetRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a6ce58e6cdf7c8e561093f1ae6a22a3ed" kindref="member">AddRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a459fdf87a543aea60bfd7f18b0769dd2" kindref="member">SubRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1ae3c8729779ed0e3d9985e59dfd1685ed" kindref="member">MultRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a306d962116db88b195c8330e412b6732" kindref="member">DivRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a9700839c839cbfd2ef82f67ce5967ffd" kindref="member">ModRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a3d53130e992e0ddfc6697bfe45c1152a" kindref="member">BitOrRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1ad14f83c9d5d8ea9f42b76d8ee666e302" kindref="member">BitAndRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a5a1bc63b6a2d8d5a31ecf389a8bc05f5" kindref="member">BitXorRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a92a2b15e02fee42f732cb808aa012a1e" kindref="member">BitShiftLeftRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a2211cd901f1eb5ac5d00bfb3d9cb5bf4" kindref="member">BitShiftRightRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a39dd2daf1c29afb808b6034e30c88af9" kindref="member">SetRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1af56f456e58efc86f3f56db1517c8fb6c" kindref="member">AddRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1abd960410d5c1d5d9b5370225ba39cdcc" kindref="member">SubRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a21fcbe9fd45906f6ce4bdfb3150d9bdc" kindref="member">MultRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a0577545ab4beea2bc1a194eb9a0b4ef8" kindref="member">DivRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a4be5f633e61ac859249bdbe80535ad9e" kindref="member">ModRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a52ad4c4ec798634a13e697c3ed007a44" kindref="member">BitOrRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a6a5cb5ba40898d8c99f178355a4385ea" kindref="member">BitAndRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a30f7b0ff2d374de7bf34d598f27f2a5d" kindref="member">BitXorRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval);</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a95eea66b1e0f564a7642c400da4c3efc" kindref="member">BitShiftLeftRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval);</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a64dd68701474160ef67f492d2ddb2202" kindref="member">BitShiftRightRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a0f9fa43e3802ab8ed5600504f0827bc0" kindref="member">EnumerateRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a9e97a615b492e75b6a2f45079eba1b96" kindref="member">SortRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>asc);</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a802be8f55c0c81c07dfb76357150086b" kindref="member">ShuffleRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id);</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a16db8e4c60a57d5beecdff0deb20896e" kindref="member">SetArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a318abd91a37634ed4d1e6c6bee8c5512" kindref="member">AddArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1ae6928d10967d8cd596ef13ac815368bc" kindref="member">SubArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a436d75867c17edc363bf1afffe0c2e8d" kindref="member">MultArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b);</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a6ffa87aea2298579fa9f674bca371079" kindref="member">DivArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a6176115b3c3efed66fa4b89bbf695918" kindref="member">ModArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b);</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a390751e8d23810679507cd93326f7733" kindref="member">BitOrArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a13fbd1bb9afa7e4125ad4c6e09bf67eb" kindref="member">BitAndArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a59bddba20cea80d1a7c5baabf288f23d" kindref="member">BitXorArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b);</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a426c8c1c224af0b74d7665f5eb40aac2" kindref="member">BitShiftLeftArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a809600c99d7b84fb90b2527d09a40c38" kindref="member">BitShiftRightArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b);</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a70b42e2d7cecc40b14a3502664aa4063" kindref="member">SwapArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string_view<sp/><ref refid="class_game___variables_1aad50284b378cecb51d27d4d4a1d8a602" kindref="member">GetName</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>_id)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1ab86ff52fab3a284811d7a0bbadcadc28" kindref="member">GetSize</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1adeee3e510811c88f79e292cfaa6e3cce" kindref="member">GetSizeWithLimit</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1af0ef985eb05a2983cb773017f515ccb7" kindref="member">IsValid</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a0635c339c4bfd8810ff88efe10478088" kindref="member">SetWarning</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>w);</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1adceebdc751835592784898f090ce2bc9" kindref="member">GetMaxValue</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/><ref refid="class_game___variables_1a6fab88d0dfe8dc1f817ad6dcb4bf241a" kindref="member">GetMinValue</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a0d4db7f16c886480296008b9b4ea3305" kindref="member">GetMaxDigits</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>ShouldWarn(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>WarnGet(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>F&gt;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>SetOp(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value,<sp/>F&amp;&amp;<sp/>op,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>warn);</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>PrepareRange(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>warn,<sp/>Args...<sp/>args);</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>PrepareArray(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>warn,<sp/>Args...<sp/>args);</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>V,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>F&gt;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>WriteRange(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/>V&amp;&amp;<sp/>value,<sp/>F&amp;&amp;<sp/>op);</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>F&gt;</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>WriteRangeVariable(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id,<sp/>F&amp;&amp;<sp/>op);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>F&gt;</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>WriteArray(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b,<sp/>F&amp;&amp;<sp/>op);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a0bec30e68da9da0a91645cccda56d8af" kindref="member">Variables_t</ref><sp/>_variables;</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>_min<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>_max<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>lower_limit<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">mutable</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>_warnings<sp/>=<sp/><ref refid="class_game___variables_1aa6fd54ba6de623a306a5f773a8c192dd" kindref="member">max_warnings</ref>;</highlight></codeline>
+<codeline lineno="166"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168" refid="class_game___variables_1ad5fc1cf64e2a8145f0d0f16023025c9e" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1ad5fc1cf64e2a8145f0d0f16023025c9e" kindref="member">Game_Variables::SetData</ref>(<ref refid="class_game___variables_1a0bec30e68da9da0a91645cccda56d8af" kindref="member">Variables_t</ref><sp/>v)<sp/>{</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/>_variables<sp/>=<sp/>std::move(v);</highlight></codeline>
+<codeline lineno="170"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172" refid="class_game___variables_1a02fb0107974ce2449d93bb6161eb8c29" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a0bec30e68da9da0a91645cccda56d8af" kindref="member">Game_Variables::Variables_t</ref>&amp;<sp/><ref refid="class_game___variables_1a02fb0107974ce2449d93bb6161eb8c29" kindref="member">Game_Variables::GetData</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_variables;</highlight></codeline>
+<codeline lineno="174"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight></codeline>
+<codeline lineno="176" refid="class_game___variables_1a17a2113af52ea83069d760dd5d068e79" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a17a2113af52ea83069d760dd5d068e79" kindref="member">Game_Variables::SetLowerLimit</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>limit)<sp/>{</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/>lower_limit<sp/>=<sp/>limit;</highlight></codeline>
+<codeline lineno="178"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight></codeline>
+<codeline lineno="180" refid="class_game___variables_1ab86ff52fab3a284811d7a0bbadcadc28" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1ab86ff52fab3a284811d7a0bbadcadc28" kindref="member">Game_Variables::GetSize</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(_variables.size());</highlight></codeline>
+<codeline lineno="182"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="184" refid="class_game___variables_1adeee3e510811c88f79e292cfaa6e3cce" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1adeee3e510811c88f79e292cfaa6e3cce" kindref="member">Game_Variables::GetSizeWithLimit</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::max&lt;int&gt;(lower_limit,<sp/>_variables.size());</highlight></codeline>
+<codeline lineno="186"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="188" refid="class_game___variables_1af0ef985eb05a2983cb773017f515ccb7" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1af0ef985eb05a2983cb773017f515ccb7" kindref="member">Game_Variables::IsValid</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>variable_id<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>variable_id<sp/>&lt;=<sp/><ref refid="class_game___variables_1adeee3e510811c88f79e292cfaa6e3cce" kindref="member">GetSizeWithLimit</ref>();</highlight></codeline>
+<codeline lineno="190"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>Game_Variables::ShouldWarn(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(first_id<sp/>&lt;=<sp/>0<sp/>||<sp/>last_id<sp/>&gt;<sp/><ref refid="class_game___variables_1adeee3e510811c88f79e292cfaa6e3cce" kindref="member">GetSizeWithLimit</ref>())<sp/>&amp;&amp;<sp/>_warnings<sp/>&gt;<sp/>0;</highlight></codeline>
+<codeline lineno="194"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight></codeline>
+<codeline lineno="196" refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Game_Variables::Var_t</ref><sp/><ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Game_Variables::Get</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="compiler_8h_1a6193ed68030ec53b5e6be36887041873" kindref="member">EP_UNLIKELY</ref>(ShouldWarn(variable_id,<sp/>variable_id)))<sp/>{</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>WarnGet(variable_id);</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(variable_id<sp/>&lt;=<sp/>0<sp/>||<sp/>variable_id<sp/>&gt;<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(_variables.size()))<sp/>{</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_variables[variable_id<sp/>-<sp/>1];</highlight></codeline>
+<codeline lineno="204"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"></highlight></codeline>
+<codeline lineno="206" refid="class_game___variables_1a11c9a90f8e69ba4cc1a2bcafdb413cf8" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Game_Variables::Var_t</ref><sp/><ref refid="class_game___variables_1a11c9a90f8e69ba4cc1a2bcafdb413cf8" kindref="member">Game_Variables::GetIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>val_indirect<sp/>=<sp/><ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(variable_id);</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(</highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(val_indirect));</highlight></codeline>
+<codeline lineno="209"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"></highlight></codeline>
+<codeline lineno="211" refid="class_game___variables_1a0635c339c4bfd8810ff88efe10478088" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a0635c339c4bfd8810ff88efe10478088" kindref="member">Game_Variables::SetWarning</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>w)<sp/>{</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/>_warnings<sp/>=<sp/>w;</highlight></codeline>
+<codeline lineno="213"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+<codeline lineno="215" refid="class_game___variables_1adceebdc751835592784898f090ce2bc9" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Game_Variables::Var_t</ref><sp/><ref refid="class_game___variables_1adceebdc751835592784898f090ce2bc9" kindref="member">Game_Variables::GetMaxValue</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_max;</highlight></codeline>
+<codeline lineno="217"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight></codeline>
+<codeline lineno="219" refid="class_game___variables_1a6fab88d0dfe8dc1f817ad6dcb4bf241a" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Game_Variables::Var_t</ref><sp/><ref refid="class_game___variables_1a6fab88d0dfe8dc1f817ad6dcb4bf241a" kindref="member">Game_Variables::GetMinValue</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>_min;</highlight></codeline>
+<codeline lineno="221"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"></highlight></codeline>
+<codeline lineno="223"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="224"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="game_variables.h"/>
+  </compounddef>
+</doxygen>

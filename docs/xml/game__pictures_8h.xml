@@ -1,0 +1,447 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="game__pictures_8h" kind="file" language="C++">
+    <compoundname>game_pictures.h</compoundname>
+    <includes local="no">string</includes>
+    <includes local="no">deque</includes>
+    <includes refid="async__handler_8h" local="yes">async_handler.h</includes>
+    <includes local="no">lcf/rpg/savepicture.h</includes>
+    <includes refid="sprite__picture_8h" local="yes">sprite_picture.h</includes>
+    <includedby refid="dynrpg__textplugin_8cpp" local="yes">dynrpg_textplugin.cpp</includedby>
+    <includedby refid="game__battle_8cpp" local="yes">game_battle.cpp</includedby>
+    <includedby refid="game__interpreter_8cpp" local="yes">game_interpreter.cpp</includedby>
+    <includedby refid="game__map_8cpp" local="yes">game_map.cpp</includedby>
+    <includedby refid="game__pictures_8cpp" local="yes">game_pictures.cpp</includedby>
+    <includedby refid="game__player_8cpp" local="yes">game_player.cpp</includedby>
+    <includedby refid="game__windows_8h" local="yes">game_windows.h</includedby>
+    <includedby refid="main__data_8cpp" local="yes">main_data.cpp</includedby>
+    <includedby refid="player_8cpp" local="yes">player.cpp</includedby>
+    <includedby refid="scene__battle_8cpp" local="yes">scene_battle.cpp</includedby>
+    <includedby refid="scene__map_8cpp" local="yes">scene_map.cpp</includedby>
+    <includedby refid="scene__save_8cpp" local="yes">scene_save.cpp</includedby>
+    <includedby refid="sprite__picture_8cpp" local="yes">sprite_picture.cpp</includedby>
+    <incdepgraph>
+      <node id="4">
+        <label>async_handler.h</label>
+        <link refid="async__handler_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>game_pictures.h</label>
+        <link refid="game__pictures_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>rect.h</label>
+        <link refid="rect_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>sprite.h</label>
+        <link refid="sprite_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>sprite_picture.h</label>
+        <link refid="sprite__picture_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>tone.h</label>
+        <link refid="tone_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>algorithm</label>
+      </node>
+      <node id="17">
+        <label>cstdint</label>
+      </node>
+      <node id="3">
+        <label>deque</label>
+      </node>
+      <node id="11">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="12">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="5">
+        <label>functional</label>
+      </node>
+      <node id="10">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="13">
+        <label>lcf/rpg/savepicture.h</label>
+      </node>
+      <node id="9">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="6">
+        <label>memory</label>
+      </node>
+      <node id="19">
+        <label>ostream</label>
+      </node>
+      <node id="2">
+        <label>string</label>
+      </node>
+      <node id="18">
+        <label>tuple</label>
+      </node>
+      <node id="7">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>dynrpg_textplugin.cpp</label>
+        <link refid="dynrpg__textplugin_8cpp"/>
+      </node>
+      <node id="3">
+        <label>game_battle.cpp</label>
+        <link refid="game__battle_8cpp"/>
+      </node>
+      <node id="4">
+        <label>game_interpreter.cpp</label>
+        <link refid="game__interpreter_8cpp"/>
+      </node>
+      <node id="5">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="6">
+        <label>game_pictures.cpp</label>
+        <link refid="game__pictures_8cpp"/>
+      </node>
+      <node id="1">
+        <label>game_pictures.h</label>
+        <link refid="game__pictures_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>game_player.cpp</label>
+        <link refid="game__player_8cpp"/>
+      </node>
+      <node id="9">
+        <label>game_windows.cpp</label>
+        <link refid="game__windows_8cpp"/>
+      </node>
+      <node id="8">
+        <label>game_windows.h</label>
+        <link refid="game__windows_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>main_data.cpp</label>
+        <link refid="main__data_8cpp"/>
+      </node>
+      <node id="11">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="14">
+        <label>scene_battle.cpp</label>
+        <link refid="scene__battle_8cpp"/>
+      </node>
+      <node id="15">
+        <label>scene_map.cpp</label>
+        <link refid="scene__map_8cpp"/>
+      </node>
+      <node id="12">
+        <label>scene_save.cpp</label>
+        <link refid="scene__save_8cpp"/>
+      </node>
+      <node id="13">
+        <label>sprite_picture.cpp</label>
+        <link refid="sprite__picture_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_game___pictures" prot="public">Game_Pictures</innerclass>
+    <innerclass refid="struct_game___pictures_1_1_params" prot="public">Game_Pictures::Params</innerclass>
+    <innerclass refid="struct_game___pictures_1_1_show_params" prot="public">Game_Pictures::ShowParams</innerclass>
+    <innerclass refid="struct_game___pictures_1_1_move_params" prot="public">Game_Pictures::MoveParams</innerclass>
+    <innerclass refid="struct_game___pictures_1_1_picture" prot="public">Game_Pictures::Picture</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="game__pictures_8h_1a5d063734ac0ee903172d38ecfc044536" prot="public" static="no">
+        <name>EP_GAME_PICTURE_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="20" column="9" bodyfile="game_pictures.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_GAME_PICTURE_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="game__pictures_8h_1a5d063734ac0ee903172d38ecfc044536" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_GAME_PICTURE_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;deque&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="async__handler_8h" kindref="compound">async_handler.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/savepicture.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="sprite__picture_8h" kindref="compound">sprite_picture.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_sprite___picture" kindref="compound">Sprite_Picture</ref>;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_scene" kindref="compound">Scene</ref>;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_window___base" kindref="compound">Window_Base</ref>;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="class_game___pictures" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_game___pictures_1a4d0f98c0903ca09df68853b8247681c1" kindref="member">Game_Pictures</ref><sp/>{</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="38" refid="class_game___pictures_1a4d0f98c0903ca09df68853b8247681c1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___pictures_1a4d0f98c0903ca09df68853b8247681c1" kindref="member">Game_Pictures</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___pictures_1ac135b756a88c82ca56c9184de91d12d7" kindref="member">SetSaveData</ref>(std::vector&lt;lcf::rpg::SavePicture&gt;<sp/>save);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;lcf::rpg::SavePicture&gt;<sp/><ref refid="class_game___pictures_1af72c95ec73dd82c6d599c8587f30048c" kindref="member">GetSaveData</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___pictures_1a9b2a42c8b858d48c4089facd53c7fe11" kindref="member">InitGraphics</ref>();</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___pictures_1afbd88c99ec547f4af10748cb1e8c85ef" kindref="member">GetDefaultNumberOfPictures</ref>();</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47" refid="struct_game___pictures_1_1_params" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_game___pictures_1_1_params" kindref="compound">Params</ref><sp/>{</highlight></codeline>
+<codeline lineno="48" refid="struct_game___pictures_1_1_params_1a70a137eada5d7d61351f86f510a9892c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_params_1a70a137eada5d7d61351f86f510a9892c" kindref="member">position_x</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="49" refid="struct_game___pictures_1_1_params_1abf85d051a3c5e13e4e2b640732105ebf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_params_1abf85d051a3c5e13e4e2b640732105ebf" kindref="member">position_y</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="50" refid="struct_game___pictures_1_1_params_1aad56581deb7c0ab48ebf38b598123592" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_params_1aad56581deb7c0ab48ebf38b598123592" kindref="member">top_trans</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="51" refid="struct_game___pictures_1_1_params_1a9da7e92d7813db595b695ebb0c6d6b13" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_params_1a9da7e92d7813db595b695ebb0c6d6b13" kindref="member">bottom_trans</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="52" refid="struct_game___pictures_1_1_params_1ab49a26d33d2b670441458c7906fd6e49" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_params_1ab49a26d33d2b670441458c7906fd6e49" kindref="member">red</ref><sp/>=<sp/>100;</highlight></codeline>
+<codeline lineno="53" refid="struct_game___pictures_1_1_params_1ab24499e50994cd787752f8facd9eb72b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_params_1ab24499e50994cd787752f8facd9eb72b" kindref="member">green</ref><sp/>=<sp/>100;</highlight></codeline>
+<codeline lineno="54" refid="struct_game___pictures_1_1_params_1a7d270a5445048ad20ccd4ab7dbf81fdf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_params_1a7d270a5445048ad20ccd4ab7dbf81fdf" kindref="member">blue</ref><sp/>=<sp/>100;</highlight></codeline>
+<codeline lineno="55" refid="struct_game___pictures_1_1_params_1a189f1fb009f8b5a16c6534644be5f4e8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_params_1a189f1fb009f8b5a16c6534644be5f4e8" kindref="member">saturation</ref><sp/>=<sp/>100;</highlight></codeline>
+<codeline lineno="56" refid="struct_game___pictures_1_1_params_1a4e9b4ce7709e007e3c8228352967c740" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_params_1a4e9b4ce7709e007e3c8228352967c740" kindref="member">effect_mode</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="57" refid="struct_game___pictures_1_1_params_1ab935d776a4a9bffba7f7bfc387008e1a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_params_1ab935d776a4a9bffba7f7bfc387008e1a" kindref="member">effect_power</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Extensions</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="struct_game___pictures_1_1_params_1a599768ca888df27a07c7039f541b9a5d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_params_1a599768ca888df27a07c7039f541b9a5d" kindref="member">flip_x</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="60" refid="struct_game___pictures_1_1_params_1a49f001abc9efbed30dfb7c0df5c9340a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_params_1a49f001abc9efbed30dfb7c0df5c9340a" kindref="member">flip_y</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="61" refid="struct_game___pictures_1_1_params_1a9cc8573787b8cb412190a992dcab9ff6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_params_1a9cc8573787b8cb412190a992dcab9ff6" kindref="member">blend_mode</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="62" refid="struct_game___pictures_1_1_params_1acc00a4f4224a1af6b82d6f4afd7a3dba" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_params_1acc00a4f4224a1af6b82d6f4afd7a3dba" kindref="member">origin</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="63" refid="struct_game___pictures_1_1_params_1afbc55c62770a735f7587101922643ee2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_params_1afbc55c62770a735f7587101922643ee2" kindref="member">magnify_width</ref><sp/>=<sp/>100;<sp/></highlight><highlight class="comment">//<sp/>RPG_RT<sp/>supports<sp/>magnify,<sp/>but<sp/>not<sp/>independent<sp/>for<sp/>w/h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64" refid="struct_game___pictures_1_1_params_1acd268f28b18a20b89adbce8577f9c263" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_params_1acd268f28b18a20b89adbce8577f9c263" kindref="member">magnify_height</ref><sp/>=<sp/>100;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="66" refid="struct_game___pictures_1_1_show_params" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_game___pictures_1_1_show_params" kindref="compound">ShowParams</ref><sp/>:<sp/><ref refid="struct_game___pictures_1_1_params" kindref="compound">Params</ref><sp/>{</highlight></codeline>
+<codeline lineno="67" refid="struct_game___pictures_1_1_show_params_1a08cdb3bd01032f665593a88b4956cbdb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="struct_game___pictures_1_1_show_params_1a08cdb3bd01032f665593a88b4956cbdb" kindref="member">name</ref>;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>RPG<sp/>Maker<sp/>2k3<sp/>1.12</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="struct_game___pictures_1_1_show_params_1a9e4d7d5ebb99d31b3e6f7a3e8103e71b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_show_params_1a9e4d7d5ebb99d31b3e6f7a3e8103e71b" kindref="member">spritesheet_cols</ref><sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="70" refid="struct_game___pictures_1_1_show_params_1a6be4b8c0f1d61bc828cfc17b3875b5ed" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_show_params_1a6be4b8c0f1d61bc828cfc17b3875b5ed" kindref="member">spritesheet_rows</ref><sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="71" refid="struct_game___pictures_1_1_show_params_1abee05698567d50c009102b3b7f795432" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_show_params_1abee05698567d50c009102b3b7f795432" kindref="member">spritesheet_frame</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="72" refid="struct_game___pictures_1_1_show_params_1a1c5e049cf490c5b0b2418bd7942a694d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_show_params_1a1c5e049cf490c5b0b2418bd7942a694d" kindref="member">spritesheet_speed</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="73" refid="struct_game___pictures_1_1_show_params_1a133f120e0454f9feebbf3d4032b39614" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_show_params_1a133f120e0454f9feebbf3d4032b39614" kindref="member">map_layer</ref><sp/>=<sp/>7;</highlight></codeline>
+<codeline lineno="74" refid="struct_game___pictures_1_1_show_params_1a6bb1a9f8b4453b1b45dbb3c1e788eb2b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_show_params_1a6bb1a9f8b4453b1b45dbb3c1e788eb2b" kindref="member">battle_layer</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>erase_on_map_change<sp/>|<sp/>affected_by_flash<sp/>|<sp/>affected_by_shake</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="76" refid="struct_game___pictures_1_1_show_params_1ac8f27ac38e64041e100a77617a8bb94b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_show_params_1ac8f27ac38e64041e100a77617a8bb94b" kindref="member">flags</ref><sp/>=<sp/>1<sp/>|<sp/>32<sp/>|<sp/>64;</highlight></codeline>
+<codeline lineno="77" refid="struct_game___pictures_1_1_show_params_1a5a748d69bdec24dc07387d1db5bd89cf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_show_params_1a5a748d69bdec24dc07387d1db5bd89cf" kindref="member">spritesheet_play_once</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="78" refid="struct_game___pictures_1_1_show_params_1a4c456e055e4e52d1b23226adc261b6bc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_show_params_1a4c456e055e4e52d1b23226adc261b6bc" kindref="member">use_transparent_color</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="79" refid="struct_game___pictures_1_1_show_params_1a07cb1d090fbf13b1b88bbd41c9501320" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_show_params_1a07cb1d090fbf13b1b88bbd41c9501320" kindref="member">fixed_to_map</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82" refid="struct_game___pictures_1_1_move_params" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_game___pictures_1_1_move_params" kindref="compound">MoveParams</ref><sp/>:<sp/><ref refid="struct_game___pictures_1_1_params" kindref="compound">Params</ref><sp/>{</highlight></codeline>
+<codeline lineno="83" refid="struct_game___pictures_1_1_move_params_1a0146bbfacbcc20256db89faa13ab4a85" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_move_params_1a0146bbfacbcc20256db89faa13ab4a85" kindref="member">duration</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___pictures_1a8ef7b423b841cc3b0ee62c4be98fbbb0" kindref="member">Show</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_show_params" kindref="compound">ShowParams</ref>&amp;<sp/>params);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___pictures_1a18670179a611e6ab44ac98f1a92f9f52" kindref="member">Move</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_move_params" kindref="compound">MoveParams</ref>&amp;<sp/>params);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___pictures_1a7b4d094dc8b489eb20e722c7b0ac7a0b" kindref="member">Erase</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___pictures_1ad886328413060f44051b6ea3bb6fd349" kindref="member">EraseAll</ref>();</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___pictures_1a2747ccfb3be069ffd3c9e7dec65cf294" kindref="member">Update</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_battle);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___pictures_1af7fcc5142f68b9d89e97a0cf61720b88" kindref="member">OnMapChange</ref>();</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___pictures_1abc0045438e54b00da7e364a3066d9e19" kindref="member">OnBattleEnd</ref>();</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___pictures_1a7b7cf1dbb54a3dc299101bf181321277" kindref="member">OnMapScrolled</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>dx,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>dy);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97" refid="struct_game___pictures_1_1_picture" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_game___pictures_1_1_picture_1a25beac018fd0355bc63b59a6ad2c710f" kindref="member">Picture</ref><sp/>{</highlight></codeline>
+<codeline lineno="98" refid="struct_game___pictures_1_1_picture_1a25beac018fd0355bc63b59a6ad2c710f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1a25beac018fd0355bc63b59a6ad2c710f" kindref="member">Picture</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">)<sp/>{<sp/><ref refid="struct_game___pictures_1_1_picture_1a9ee9ad3626a89d94c1b80b40904273fe" kindref="member">data</ref>.ID<sp/>=<sp/>id;<sp/>}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1a25beac018fd0355bc63b59a6ad2c710f" kindref="member">Picture</ref>(lcf::rpg::SavePicture<sp/><ref refid="struct_game___pictures_1_1_picture_1a9ee9ad3626a89d94c1b80b40904273fe" kindref="member">data</ref>);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101" refid="struct_game___pictures_1_1_picture_1a3372335531c62f08eda3176cc955ca5d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::unique_ptr&lt;Sprite_Picture&gt;<sp/><ref refid="struct_game___pictures_1_1_picture_1a3372335531c62f08eda3176cc955ca5d" kindref="member">sprite</ref>;</highlight></codeline>
+<codeline lineno="102" refid="struct_game___pictures_1_1_picture_1a9ee9ad3626a89d94c1b80b40904273fe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lcf::rpg::SavePicture<sp/><ref refid="struct_game___pictures_1_1_picture_1a9ee9ad3626a89d94c1b80b40904273fe" kindref="member">data</ref>;</highlight></codeline>
+<codeline lineno="103" refid="struct_game___pictures_1_1_picture_1a46147a86c13b2ad72fbedeaae589ade8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref><sp/><ref refid="struct_game___pictures_1_1_picture_1a46147a86c13b2ad72fbedeaae589ade8" kindref="member">request_id</ref>;</highlight></codeline>
+<codeline lineno="104" refid="struct_game___pictures_1_1_picture_1a50c465858e28579292030974d4205e2d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1a50c465858e28579292030974d4205e2d" kindref="member">needs_update</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="105" refid="struct_game___pictures_1_1_picture_1adc7d78e7676ed4a54ec8f7b4a502c8a9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1adc7d78e7676ed4a54ec8f7b4a502c8a9" kindref="member">origin</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1a9b1af05a3a939a8a722ad505bfb6156a" kindref="member">Update</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_battle);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1ac9da31bc84f751b275b4532a6210e7c7" kindref="member">IsOnMap</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1ab9b610340e006fbe741863466561bbe9" kindref="member">IsOnBattle</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1ac0a4231d1b5cec0edffe95c467f4d49c" kindref="member">NumSpriteSheetFrames</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_game___pictures_1_1_show_params" kindref="compound">ShowParams</ref><sp/><ref refid="struct_game___pictures_1_1_picture_1aedca0528ac02eaa1fc6f90bbd1de0161" kindref="member">GetShowParams</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1ae8026c352258bca3076dccf2ca6d6d52" kindref="member">SetNonEffectParams</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_params" kindref="compound">Params</ref>&amp;<sp/>params,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>set_positions);</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1ac3c75064fb7c903c93cfc05fd536cd87" kindref="member">Show</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_show_params" kindref="compound">ShowParams</ref>&amp;<sp/>params);</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1a31f133d688e04463d1333d3b7ad07cf2" kindref="member">Move</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_move_params" kindref="compound">MoveParams</ref>&amp;<sp/>params);</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1acf056c00d85c337cd404b03079e2a00d" kindref="member">Erase</ref>();</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1a8587b4796b824f05645f7b5459c8a420" kindref="member">Exists</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1aafe5bcbdbd25d92b95a988a3bbfb6dd3" kindref="member">CreateSprite</ref>();</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1aa2de8a4a15fd5258c846809250ba0172" kindref="member">IsRequestPending</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1a2e4356f32b8602055a94eb41e5f58406" kindref="member">MakeRequestImportant</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1a03b9d27079b63281d27e1c64e328242d" kindref="member">OnPictureSpriteReady</ref>();</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1aacaaeb5d5e4318629c90680db3eb267c" kindref="member">ApplyOrigin</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_move);</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1aa4f063d1966a281b3a87ef0937fd664f" kindref="member">OnMapScrolled</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>dx,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>dy);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1ab920616350ed01530b1f094bedf9b765" kindref="member">AttachWindow</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_window___base" kindref="compound">Window_Base</ref>&amp;<sp/>window);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1a6136237f400bb182000a6dd5a6c6b2e4" kindref="member">IsWindowAttached</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_game___pictures_1_1_picture" kindref="compound">Picture</ref>&amp;<sp/><ref refid="class_game___pictures_1a967b53320516e0e70d781691eb43e225" kindref="member">GetPicture</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_game___pictures_1_1_picture" kindref="compound">Picture</ref>*<sp/><ref refid="class_game___pictures_1afb33804abe58d1085a4e71695a6c6865" kindref="member">GetPicturePtr</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RequestPictureSprite(<ref refid="struct_game___pictures_1_1_picture" kindref="compound">Picture</ref>&amp;<sp/>pic);</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>OnPictureSpriteReady(<ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref>*,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;Picture&gt;<sp/>pictures;</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>frame_counter<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="143"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="145" refid="struct_game___pictures_1_1_picture_1ac9da31bc84f751b275b4532a6210e7c7" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1ac9da31bc84f751b275b4532a6210e7c7" kindref="member">Game_Pictures::Picture::IsOnMap</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1a9ee9ad3626a89d94c1b80b40904273fe" kindref="member">data</ref>.map_layer<sp/>&gt;<sp/>0;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149" refid="struct_game___pictures_1_1_picture_1ab9b610340e006fbe741863466561bbe9" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1ab9b610340e006fbe741863466561bbe9" kindref="member">Game_Pictures::Picture::IsOnBattle</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="struct_game___pictures_1_1_picture_1a9ee9ad3626a89d94c1b80b40904273fe" kindref="member">data</ref>.battle_layer<sp/>&gt;<sp/>0;</highlight></codeline>
+<codeline lineno="151"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="game_pictures.h"/>
+  </compounddef>
+</doxygen>

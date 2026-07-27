@@ -52,3 +52,4 @@ namespace Registry {
 }
 
 #endif
+

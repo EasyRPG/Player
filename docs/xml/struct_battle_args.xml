@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_battle_args" kind="struct" language="C++" prot="public">
+    <compoundname>BattleArgs</compoundname>
+    <includes refid="scene__battle_8h" local="no">scene_battle.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_battle_args_1a8a79febd82197a49d8256c365cdbf809" prot="public" static="no" mutable="no">
+        <type><ref refid="scene__battle_8h_1a50909d5c462724b7e4e2a8b72859e5dd" kindref="member">BattleContinuation</ref></type>
+        <definition>BattleContinuation BattleArgs::on_battle_end</definition>
+        <argsstring></argsstring>
+        <name>on_battle_end</name>
+        <qualifiedname>BattleArgs::on_battle_end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="55" column="20" bodyfile="scene_battle.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_battle_args_1a954e7d32d98aaa822957e17a047353c1" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string BattleArgs::background</definition>
+        <argsstring></argsstring>
+        <name>background</name>
+        <qualifiedname>BattleArgs::background</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="56" column="13" bodyfile="scene_battle.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_battle_args_1adfe871cd9d8873a51bba2ef7fc05817c" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int BattleArgs::troop_id</definition>
+        <argsstring></argsstring>
+        <name>troop_id</name>
+        <qualifiedname>BattleArgs::troop_id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="57" column="5" bodyfile="scene_battle.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_battle_args_1accea4eba7c3e462edbf53c170cdd2075" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int BattleArgs::terrain_id</definition>
+        <argsstring></argsstring>
+        <name>terrain_id</name>
+        <qualifiedname>BattleArgs::terrain_id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="58" column="5" bodyfile="scene_battle.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_battle_args_1a6ed4840dd227fcf2bf079ffcb1fb24fd" prot="public" static="no" mutable="no">
+        <type>lcf::rpg::System::BattleFormation</type>
+        <definition>lcf::rpg::System::BattleFormation BattleArgs::formation</definition>
+        <argsstring></argsstring>
+        <name>formation</name>
+        <qualifiedname>BattleArgs::formation</qualifiedname>
+        <initializer>= lcf::rpg::System::BattleFormation_terrain</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="59" column="35" bodyfile="scene_battle.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_battle_args_1af79d3e234e949d47d38596f73a8255e3" prot="public" static="no" mutable="no">
+        <type>lcf::rpg::System::BattleCondition</type>
+        <definition>lcf::rpg::System::BattleCondition BattleArgs::condition</definition>
+        <argsstring></argsstring>
+        <name>condition</name>
+        <qualifiedname>BattleArgs::condition</qualifiedname>
+        <initializer>= lcf::rpg::System::BattleCondition_none</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="60" column="35" bodyfile="scene_battle.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_battle_args_1a62d36450d562802dd11b36f4930c2f09" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool BattleArgs::first_strike</definition>
+        <argsstring></argsstring>
+        <name>first_strike</name>
+        <qualifiedname>BattleArgs::first_strike</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="61" column="6" bodyfile="scene_battle.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_battle_args_1a08da555eb6096d092987fad3157255fc" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool BattleArgs::allow_escape</definition>
+        <argsstring></argsstring>
+        <name>allow_escape</name>
+        <qualifiedname>BattleArgs::allow_escape</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="62" column="6" bodyfile="scene_battle.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="scene_battle.h" line="54" column="1" bodyfile="scene_battle.h" bodystart="54" bodyend="63"/>
+    <listofallmembers>
+      <member refid="struct_battle_args_1a08da555eb6096d092987fad3157255fc" prot="public" virt="non-virtual"><scope>BattleArgs</scope><name>allow_escape</name></member>
+      <member refid="struct_battle_args_1a954e7d32d98aaa822957e17a047353c1" prot="public" virt="non-virtual"><scope>BattleArgs</scope><name>background</name></member>
+      <member refid="struct_battle_args_1af79d3e234e949d47d38596f73a8255e3" prot="public" virt="non-virtual"><scope>BattleArgs</scope><name>condition</name></member>
+      <member refid="struct_battle_args_1a62d36450d562802dd11b36f4930c2f09" prot="public" virt="non-virtual"><scope>BattleArgs</scope><name>first_strike</name></member>
+      <member refid="struct_battle_args_1a6ed4840dd227fcf2bf079ffcb1fb24fd" prot="public" virt="non-virtual"><scope>BattleArgs</scope><name>formation</name></member>
+      <member refid="struct_battle_args_1a8a79febd82197a49d8256c365cdbf809" prot="public" virt="non-virtual"><scope>BattleArgs</scope><name>on_battle_end</name></member>
+      <member refid="struct_battle_args_1accea4eba7c3e462edbf53c170cdd2075" prot="public" virt="non-virtual"><scope>BattleArgs</scope><name>terrain_id</name></member>
+      <member refid="struct_battle_args_1adfe871cd9d8873a51bba2ef7fc05817c" prot="public" virt="non-virtual"><scope>BattleArgs</scope><name>troop_id</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

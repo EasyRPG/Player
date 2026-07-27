@@ -1,0 +1,1449 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_base_ui" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>BaseUi</compoundname>
+    <derivedcompoundref refid="class_ctr_ui" prot="public" virt="non-virtual">CtrUi</derivedcompoundref>
+    <derivedcompoundref refid="class_libretro_ui" prot="public" virt="non-virtual">LibretroUi</derivedcompoundref>
+    <derivedcompoundref refid="class_nx_ui" prot="public" virt="non-virtual">NxUi</derivedcompoundref>
+    <derivedcompoundref refid="class_psp2_ui" prot="public" virt="non-virtual">Psp2Ui</derivedcompoundref>
+    <derivedcompoundref refid="class_sdl2_ui" prot="public" virt="non-virtual">Sdl2Ui</derivedcompoundref>
+    <derivedcompoundref refid="class_sdl3_ui" prot="public" virt="non-virtual">Sdl3Ui</derivedcompoundref>
+    <derivedcompoundref refid="class_sdl_ui" prot="public" virt="non-virtual">SdlUi</derivedcompoundref>
+    <includes refid="baseui_8h" local="no">baseui.h</includes>
+    <innerclass refid="struct_base_ui_1_1_display_mode" prot="protected">BaseUi::DisplayMode</innerclass>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_base_ui_1aa55d38974520aa1b75d19ac8fc78184b" prot="public" static="no">
+        <type>std::bitset&lt; <ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8abd075526b5c7e3bbe4e8853c17b66c28" kindref="member">Input::Keys::KEYS_COUNT</ref> &gt;</type>
+        <definition>typedef std::bitset&lt;Input::Keys::KEYS_COUNT&gt; BaseUi::KeyStatus</definition>
+        <argsstring></argsstring>
+        <name>KeyStatus</name>
+        <qualifiedname>BaseUi::KeyStatus</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="184" column="21" bodyfile="baseui.h" bodystart="184" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_base_ui_1a2d3af98fda6d7a8b33b71235bfe1bc62" prot="protected" static="no" mutable="no">
+        <type><ref refid="struct_game___config_video" kindref="compound">Game_ConfigVideo</ref></type>
+        <definition>Game_ConfigVideo BaseUi::vcfg</definition>
+        <argsstring></argsstring>
+        <name>vcfg</name>
+        <qualifiedname>BaseUi::vcfg</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="274" column="18" bodyfile="baseui.h" bodystart="274" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_ui_1ad968d67d945a727f6be3556cb4e15dfb" prot="protected" static="no" mutable="no">
+        <type><ref refid="struct_base_ui_1_1_display_mode" kindref="compound">DisplayMode</ref></type>
+        <definition>DisplayMode BaseUi::current_display_mode</definition>
+        <argsstring></argsstring>
+        <name>current_display_mode</name>
+        <qualifiedname>BaseUi::current_display_mode</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Current display mode. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="290" column="13" bodyfile="baseui.h" bodystart="290" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_ui_1acb63c6d48a74e7c111a5d8d54eb9bc44" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_base_ui_1aa55d38974520aa1b75d19ac8fc78184b" kindref="member">KeyStatus</ref></type>
+        <definition>KeyStatus BaseUi::keys</definition>
+        <argsstring></argsstring>
+        <name>keys</name>
+        <qualifiedname>BaseUi::keys</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="292" column="11" bodyfile="baseui.h" bodystart="292" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_ui_1a77e2002cc546f7326d1bf154192ec99c" prot="protected" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef BaseUi::main_surface</definition>
+        <argsstring></argsstring>
+        <name>main_surface</name>
+        <qualifiedname>BaseUi::main_surface</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Surface used for zoom. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="295" column="11" bodyfile="baseui.h" bodystart="295" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_ui_1ad40db5525bb26ed0fd1b5e258da45b7c" prot="protected" static="no" mutable="no">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point BaseUi::mouse_pos</definition>
+        <argsstring></argsstring>
+        <name>mouse_pos</name>
+        <qualifiedname>BaseUi::mouse_pos</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Mouse position on screen relative to the window. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="298" column="7" bodyfile="baseui.h" bodystart="298" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_ui_1a96512cebf65e9153cb3b377a1080eaef" prot="protected" static="no" mutable="no">
+        <type><ref refid="struct_input_1_1_analog_input" kindref="compound">Input::AnalogInput</ref></type>
+        <definition>Input::AnalogInput BaseUi::analog_input</definition>
+        <argsstring></argsstring>
+        <name>analog_input</name>
+        <qualifiedname>BaseUi::analog_input</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Axis of game controllers </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="301" column="20" bodyfile="baseui.h" bodystart="301" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_ui_1a18ee3fdd88366c546ceb2daf3382f425" prot="protected" static="no" mutable="no">
+        <type>std::array&lt; <ref refid="struct_input_1_1_touch_input" kindref="compound">Input::TouchInput</ref>, 5 &gt;</type>
+        <definition>std::array&lt;Input::TouchInput, 5&gt; BaseUi::touch_input</definition>
+        <argsstring></argsstring>
+        <name>touch_input</name>
+        <qualifiedname>BaseUi::touch_input</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Touch inputs for up to five finger </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="304" column="12" bodyfile="baseui.h" bodystart="304" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_ui_1afbefd1cf3f059e1613cdb93a92ddfae2" prot="protected" static="no" mutable="no">
+        <type>std::array&lt; bool, 5 &gt;</type>
+        <definition>std::array&lt;bool, 5&gt; BaseUi::finger_input</definition>
+        <argsstring></argsstring>
+        <name>finger_input</name>
+        <qualifiedname>BaseUi::finger_input</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="namespace_state" kindref="compound">State</ref> of the 5 fingers (true touched, false not) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="307" column="12" bodyfile="baseui.h" bodystart="307" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_ui_1ae38aec6a7306ee56bdd3c4a0d0bb76e6" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color BaseUi::back_color</definition>
+        <argsstring></argsstring>
+        <name>back_color</name>
+        <qualifiedname>BaseUi::back_color</qualifiedname>
+        <initializer>= <ref refid="class_color" kindref="compound">Color</ref>{ 0, 0, 0, 255 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_color" kindref="compound">Color</ref> for display background. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="310" column="7" bodyfile="baseui.h" bodystart="310" bodyend="310"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_ui_1a59b0524cf6d37e9d5ce7ff5c749e620c" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool BaseUi::mouse_focus</definition>
+        <argsstring></argsstring>
+        <name>mouse_focus</name>
+        <qualifiedname>BaseUi::mouse_focus</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Mouse hovering the window flag. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="313" column="6" bodyfile="baseui.h" bodystart="313" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_ui_1a8277cb2800b716f1775d74a71a752ec7" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_game___clock_1a636ab985f05b7e289d6c3ad1984e1e9f" kindref="member">Game_Clock::duration</ref></type>
+        <definition>Game_Clock::duration BaseUi::frame_limit</definition>
+        <argsstring></argsstring>
+        <name>frame_limit</name>
+        <qualifiedname>BaseUi::frame_limit</qualifiedname>
+        <initializer>= <ref refid="class_game___clock_1a5deb06182f4a64fc60077eb6378be05e" kindref="member">Game_Clock::GetTargetGameTimeStep</ref>()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The amount of time each frame should take, based on fps limit </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="316" column="22" bodyfile="baseui.h" bodystart="316" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_ui_1a3fcf56158d2dbfa1a2dddf5b62dd8c86" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool BaseUi::cursor_visible</definition>
+        <argsstring></argsstring>
+        <name>cursor_visible</name>
+        <qualifiedname>BaseUi::cursor_visible</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Cursor visibility flag. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="319" column="6" bodyfile="baseui.h" bodystart="319" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_ui_1aeae86a5ea89c8717b55692b023768373" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool BaseUi::external_frame_rate</definition>
+        <argsstring></argsstring>
+        <name>external_frame_rate</name>
+        <qualifiedname>BaseUi::external_frame_rate</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Ui manages frame rate externally </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="322" column="6" bodyfile="baseui.h" bodystart="322" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_base_ui_1abdffe1380198934a10588fd57081eba6" prot="protected" static="no" mutable="no">
+        <type><ref refid="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4de" kindref="member">ConfigEnum::ShowFps</ref></type>
+        <definition>ConfigEnum::ShowFps BaseUi::original_fps_show_state</definition>
+        <argsstring></argsstring>
+        <name>original_fps_show_state</name>
+        <qualifiedname>BaseUi::original_fps_show_state</qualifiedname>
+        <initializer>= <ref refid="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4dea88559a0cfd8250c9d65970cc145c92d4" kindref="member">ConfigEnum::ShowFps::OFF</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Used by the F2 toggle: Remembers which configuration (ON or Overlay) was used </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="325" column="21" bodyfile="baseui.h" bodystart="325" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_base_ui_1acb710126bbe5950a70d4dd6348d4bed1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type></type>
+        <definition>virtual BaseUi::~BaseUi</definition>
+        <argsstring>()</argsstring>
+        <name>~BaseUi</name>
+        <qualifiedname>BaseUi::~BaseUi</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Virtual Destructor. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="49" column="9" bodyfile="baseui.h" bodystart="49" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a7cf7aa4d9d0c4c86bcec4ff6ef15c4f9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void BaseUi::ToggleFullscreen</definition>
+        <argsstring>()</argsstring>
+        <name>ToggleFullscreen</name>
+        <qualifiedname>BaseUi::ToggleFullscreen</qualifiedname>
+        <reimplementedby refid="class_sdl2_ui_1aa68305661ff27728df93bfc286dd892a">ToggleFullscreen</reimplementedby>
+        <reimplementedby refid="class_sdl3_ui_1a691d733e412f2ec29e3add459ff643ff">ToggleFullscreen</reimplementedby>
+        <reimplementedby refid="class_sdl_ui_1a264b8110da28df1226f96d329b942b76">ToggleFullscreen</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Toggles fullscreen. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="63" column="14" bodyfile="baseui.h" bodystart="63" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1abb92ae64151143bc0a186fa934ffafa6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void BaseUi::ToggleZoom</definition>
+        <argsstring>()</argsstring>
+        <name>ToggleZoom</name>
+        <qualifiedname>BaseUi::ToggleZoom</qualifiedname>
+        <reimplementedby refid="class_sdl2_ui_1a14d9739dbdecccc02d2663abd85ba802">ToggleZoom</reimplementedby>
+        <reimplementedby refid="class_sdl3_ui_1a826c84f7edfea75b8251d454f41efa5f">ToggleZoom</reimplementedby>
+        <reimplementedby refid="class_sdl_ui_1a7bddb73cbbbc2f365f14e93ad31ee96f">ToggleZoom</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Toggles zoom. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="68" column="14" bodyfile="baseui.h" bodystart="68" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1aa5adf73d350d9cf4635084df16849461" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool BaseUi::ProcessEvents</definition>
+        <argsstring>()=0</argsstring>
+        <name>ProcessEvents</name>
+        <qualifiedname>BaseUi::ProcessEvents</qualifiedname>
+        <reimplementedby refid="class_ctr_ui_1af905280aa444ab2a44374e2397dd219c">ProcessEvents</reimplementedby>
+        <reimplementedby refid="class_libretro_ui_1a208421b01aa72b50827a6e000251c90f">ProcessEvents</reimplementedby>
+        <reimplementedby refid="class_nx_ui_1a1fa1cf95109c3e62bc528d9bae634357">ProcessEvents</reimplementedby>
+        <reimplementedby refid="class_psp2_ui_1afa2332c25058b779f899e18d6871c274">ProcessEvents</reimplementedby>
+        <reimplementedby refid="class_sdl2_ui_1add911e74566c0b5d34e445f5961a0ed8">ProcessEvents</reimplementedby>
+        <reimplementedby refid="class_sdl3_ui_1afc0443d6fee3afb27b3ec743277ad3df">ProcessEvents</reimplementedby>
+        <reimplementedby refid="class_sdl_ui_1a18312de9ba5c9486d4a0451e0a3667a1">ProcessEvents</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Processes events queue.</para>
+<para><simplesect kind="return"><para>When false requests an immediate <ref refid="namespace_player" kindref="compound">Player</ref> shutdown </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="75" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a0c76ff69fe6792d43cdfefdad462c48a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BaseUi::CleanDisplay</definition>
+        <argsstring>()</argsstring>
+        <name>CleanDisplay</name>
+        <qualifiedname>BaseUi::CleanDisplay</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Cleans video buffer. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="80" column="6" bodyfile="baseui.cpp" bodystart="71" bodyend="73"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1ad0ac519b67b66dda5df6289a3f9e25c2" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void BaseUi::UpdateDisplay</definition>
+        <argsstring>()=0</argsstring>
+        <name>UpdateDisplay</name>
+        <qualifiedname>BaseUi::UpdateDisplay</qualifiedname>
+        <reimplementedby refid="class_ctr_ui_1ae99c19782498453ff14294e32974906b">UpdateDisplay</reimplementedby>
+        <reimplementedby refid="class_libretro_ui_1a6886fbd02fbdd584bcab2bf545ab1cd1">UpdateDisplay</reimplementedby>
+        <reimplementedby refid="class_nx_ui_1ac2b3f05f136dbf5460510bab0b9eff63">UpdateDisplay</reimplementedby>
+        <reimplementedby refid="class_psp2_ui_1a5a4002ef93665318f6268a86065c3484">UpdateDisplay</reimplementedby>
+        <reimplementedby refid="class_sdl2_ui_1ab7a015ff22d7e8872f7cfc1f2e7e7e0a">UpdateDisplay</reimplementedby>
+        <reimplementedby refid="class_sdl3_ui_1ac00da0876af0a0a815d8245bbf8fb5c1">UpdateDisplay</reimplementedby>
+        <reimplementedby refid="class_sdl_ui_1ac7215dea546923496e95047fada81b20">UpdateDisplay</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates video buffer. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="85" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a6705177f2e26c41cd38aedf809b3ff96" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef BaseUi::CaptureScreen</definition>
+        <argsstring>()</argsstring>
+        <name>CaptureScreen</name>
+        <qualifiedname>BaseUi::CaptureScreen</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets a copy of the display surface.</para>
+<para><simplesect kind="return"><para>bitmap a copy of the display surface. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="92" column="11" bodyfile="baseui.cpp" bodystart="65" bodyend="69"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1ac838b906c382e0bd53eae5f775ef5dfb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void BaseUi::SetTitle</definition>
+        <argsstring>(const std::string &amp;)</argsstring>
+        <name>SetTitle</name>
+        <qualifiedname>BaseUi::SetTitle</qualifiedname>
+        <reimplementedby refid="class_sdl2_ui_1a4df04c7e7ab2d86552545095c193dc66">SetTitle</reimplementedby>
+        <reimplementedby refid="class_sdl3_ui_1aaf58c5482df9121a31ce1fa3eac04361">SetTitle</reimplementedby>
+        <reimplementedby refid="class_sdl_ui_1a0d9b248eb2284a285b79a4850e8cb84e">SetTitle</reimplementedby>
+        <param>
+          <type>const std::string &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets display title.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>title</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>title string. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="99" column="14" bodyfile="baseui.h" bodystart="99" bodyend="99"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1ae0d4c82612a9c1e8b76dcde91dd90217" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool BaseUi::ShowCursor</definition>
+        <argsstring>(bool)</argsstring>
+        <name>ShowCursor</name>
+        <qualifiedname>BaseUi::ShowCursor</qualifiedname>
+        <reimplementedby refid="class_sdl2_ui_1a2b9ee84fa4ebcdd960c33eff72f52b40">ShowCursor</reimplementedby>
+        <reimplementedby refid="class_sdl3_ui_1a61b487d9c8c642fea6d1fa792f34cc17">ShowCursor</reimplementedby>
+        <reimplementedby refid="class_sdl_ui_1a5a5b2569dc466cbb1d64bb5d7d8db69a">ShowCursor</reimplementedby>
+        <param>
+          <type>bool</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets if the cursor should be shown.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>flag</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>cursor visibility flag. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>previous state. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="107" column="14" bodyfile="baseui.h" bodystart="107" bodyend="107"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1ad2f8960e9e9b562cf67d249557f6259a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool BaseUi::HandleErrorOutput</definition>
+        <argsstring>(const std::string &amp;)</argsstring>
+        <name>HandleErrorOutput</name>
+        <qualifiedname>BaseUi::HandleErrorOutput</qualifiedname>
+        <reimplementedby refid="class_ctr_ui_1ab7ea841931fdc07ea20ec697b429d88a">HandleErrorOutput</reimplementedby>
+        <reimplementedby refid="class_sdl2_ui_1ab2f907a4968d7f5660c1246f7e76470b">HandleErrorOutput</reimplementedby>
+        <reimplementedby refid="class_sdl3_ui_1aeb1c3feb182c5b50dc856ca37b10b217">HandleErrorOutput</reimplementedby>
+        <param>
+          <type>const std::string &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Outputs the error message in a custom way depending on platform</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>message string. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>wether error has been handled </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="115" column="14" bodyfile="baseui.h" bodystart="115" bodyend="115"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a1e7122e1da0ce80c92fc4bbd70ab3529" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool BaseUi::IsFullscreen</definition>
+        <argsstring>() const</argsstring>
+        <name>IsFullscreen</name>
+        <qualifiedname>BaseUi::IsFullscreen</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if fullscreen mode is active.</para>
+<para><simplesect kind="return"><para>whether fullscreen mode is active. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="122" column="6" bodyfile="baseui.h" bodystart="343" bodyend="345"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a8a6e1bfb68cd5283b9ba510eae44453c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect BaseUi::GetWindowMetrics</definition>
+        <argsstring>() const</argsstring>
+        <name>GetWindowMetrics</name>
+        <qualifiedname>BaseUi::GetWindowMetrics</qualifiedname>
+        <reimplementedby refid="class_sdl2_ui_1a30e6cb9b9a1419332527a77be7564bc2">GetWindowMetrics</reimplementedby>
+        <reimplementedby refid="class_sdl3_ui_1ac96a6df6c24754a7798841b1998b3c0f">GetWindowMetrics</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>dimensions of the window </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="134" column="14" bodyfile="baseui.h" bodystart="331" bodyend="333"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1afc0660dcf3b0a7c3e6354b215b409e2a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>long</type>
+        <definition>long BaseUi::GetWidth</definition>
+        <argsstring>() const</argsstring>
+        <name>GetWidth</name>
+        <qualifiedname>BaseUi::GetWidth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets client width size.</para>
+<para><simplesect kind="return"><para>client width size. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="141" column="6" bodyfile="baseui.h" bodystart="369" bodyend="371"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1acaea0726d275e4cfe660d450c15613ff" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>long</type>
+        <definition>long BaseUi::GetHeight</definition>
+        <argsstring>() const</argsstring>
+        <name>GetHeight</name>
+        <qualifiedname>BaseUi::GetHeight</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets client height size.</para>
+<para><simplesect kind="return"><para>client height size. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="148" column="6" bodyfile="baseui.h" bodystart="373" bodyend="375"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a749ed505a2e01d7c3f09304ef8d66e27" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool BaseUi::GetMouseFocus</definition>
+        <argsstring>() const</argsstring>
+        <name>GetMouseFocus</name>
+        <qualifiedname>BaseUi::GetMouseFocus</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets whether mouse is hovering the display.</para>
+<para><simplesect kind="return"><para>whether mouse is hovering the display. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="155" column="6" bodyfile="baseui.h" bodystart="377" bodyend="379"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1ab8e3ba8ce6415a4c706b628093d07d08" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref> &amp;</type>
+        <definition>const Point &amp; BaseUi::GetMousePosition</definition>
+        <argsstring>() const</argsstring>
+        <name>GetMousePosition</name>
+        <qualifiedname>BaseUi::GetMousePosition</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>mouse position. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="160" column="13" bodyfile="baseui.h" bodystart="381" bodyend="383"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a1743a7957049618f9092313ef3643ff8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="struct_input_1_1_analog_input" kindref="compound">Input::AnalogInput</ref> &amp;</type>
+        <definition>const Input::AnalogInput &amp; BaseUi::GetAnalogInput</definition>
+        <argsstring>() const</argsstring>
+        <name>GetAnalogInput</name>
+        <qualifiedname>BaseUi::GetAnalogInput</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Axis of the analog controller inputs </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="165" column="26" bodyfile="baseui.h" bodystart="385" bodyend="387"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a665686e47cf5b94d8fe84b7fb255330a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::array&lt; <ref refid="struct_input_1_1_touch_input" kindref="compound">Input::TouchInput</ref>, 5 &gt; &amp;</type>
+        <definition>std::array&lt; Input::TouchInput, 5 &gt; &amp; BaseUi::GetTouchInput</definition>
+        <argsstring>()</argsstring>
+        <name>GetTouchInput</name>
+        <qualifiedname>BaseUi::GetTouchInput</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Information about touch input </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="170" column="12" bodyfile="baseui.h" bodystart="389" bodyend="391"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1ac58c799344c947f74f7680ac92b29f46" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref> const &amp;</type>
+        <definition>BitmapRef const  &amp; BaseUi::GetDisplaySurface</definition>
+        <argsstring>() const</argsstring>
+        <name>GetDisplaySurface</name>
+        <qualifiedname>BaseUi::GetDisplaySurface</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="172" column="17" bodyfile="baseui.h" bodystart="355" bodyend="357"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a6a12e3b17421efa5ab8be3789bba01d6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref> &amp;</type>
+        <definition>BitmapRef &amp; BaseUi::GetDisplaySurface</definition>
+        <argsstring>()</argsstring>
+        <name>GetDisplaySurface</name>
+        <qualifiedname>BaseUi::GetDisplaySurface</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="173" column="11" bodyfile="baseui.h" bodystart="359" bodyend="361"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1ab3cb68a47aa7a742bd2aba62c3c93830" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool BaseUi::ChangeDisplaySurfaceResolution</definition>
+        <argsstring>(int new_width, int new_height)</argsstring>
+        <name>ChangeDisplaySurfaceResolution</name>
+        <qualifiedname>BaseUi::ChangeDisplaySurfaceResolution</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>new_width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>new_height</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Requests a resolution change of the framebuffer.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>new_width</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new width </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>new_height</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new height </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the resolution change was successful </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="182" column="6" bodyfile="baseui.cpp" bodystart="116" bodyend="122"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a26429a01230e03334c6d534b50aea481" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_base_ui_1aa55d38974520aa1b75d19ac8fc78184b" kindref="member">KeyStatus</ref> &amp;</type>
+        <definition>BaseUi::KeyStatus &amp; BaseUi::GetKeyStates</definition>
+        <argsstring>()</argsstring>
+        <name>GetKeyStates</name>
+        <qualifiedname>BaseUi::GetKeyStates</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets vector with the all keys pressed states.</para>
+<para><simplesect kind="return"><para>vector with the all keys pressed states. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="191" column="11" bodyfile="baseui.h" bodystart="351" bodyend="353"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a783a7b0dbc389c5230011b4e7ba72fcf" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool BaseUi::IsFrameRateSynchronized</definition>
+        <argsstring>() const</argsstring>
+        <name>IsFrameRateSynchronized</name>
+        <qualifiedname>BaseUi::IsFrameRateSynchronized</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if the display manages the framerate </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="194" column="6" bodyfile="baseui.h" bodystart="335" bodyend="337"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1ad7dcb52dbf687ea604d2c4994c0215c7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool BaseUi::RenderFps</definition>
+        <argsstring>() const</argsstring>
+        <name>RenderFps</name>
+        <qualifiedname>BaseUi::RenderFps</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if we should render the fps counter to the screen </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="197" column="6" bodyfile="baseui.h" bodystart="393" bodyend="395"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1acfec1d72d810c6b6adc2fecf6ef322cc" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool BaseUi::ShowFpsOnTitle</definition>
+        <argsstring>() const</argsstring>
+        <name>ShowFpsOnTitle</name>
+        <qualifiedname>BaseUi::ShowFpsOnTitle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if we should render the fps counter to the title bar </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="200" column="6" bodyfile="baseui.h" bodystart="397" bodyend="399"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1abca78fd083436f0a9d036d949fc5e371" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void BaseUi::ToggleShowFps</definition>
+        <argsstring>()</argsstring>
+        <name>ToggleShowFps</name>
+        <qualifiedname>BaseUi::ToggleShowFps</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Toggle between showing FPS or not showing FPS </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="203" column="6" bodyfile="baseui.h" bodystart="401" bodyend="412"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a34ccc599af3eb7185a41f45f042d5d66" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void BaseUi::SetShowFps</definition>
+        <argsstring>(ConfigEnum::ShowFps fps)</argsstring>
+        <name>SetShowFps</name>
+        <qualifiedname>BaseUi::SetShowFps</qualifiedname>
+        <param>
+          <type><ref refid="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4de" kindref="member">ConfigEnum::ShowFps</ref></type>
+          <declname>fps</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Whether we should show fps </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="206" column="6" bodyfile="baseui.h" bodystart="414" bodyend="417"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a2b870c00dadecb6351d14dacca1d9b02" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void BaseUi::SetPauseWhenFocusLost</definition>
+        <argsstring>(bool value)</argsstring>
+        <name>SetPauseWhenFocusLost</name>
+        <qualifiedname>BaseUi::SetPauseWhenFocusLost</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set whether the program pauses the execution when the program focus is lost. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="212" column="6" bodyfile="baseui.h" bodystart="419" bodyend="421"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a29fb87f2f0bea382c9e07a4787546155" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_game___clock_1a636ab985f05b7e289d6c3ad1984e1e9f" kindref="member">Game_Clock::duration</ref></type>
+        <definition>Game_Clock::duration BaseUi::GetFrameLimit</definition>
+        <argsstring>() const</argsstring>
+        <name>GetFrameLimit</name>
+        <qualifiedname>BaseUi::GetFrameLimit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the minimum amount of time each physical frame should take. If the UI manages time (i.e.) vsync, will return a 0 duration. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="218" column="22" bodyfile="baseui.h" bodystart="423" bodyend="425"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a9b36faf7ba0bdd8c0fb78a1b1241be4f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void BaseUi::SetFrameLimit</definition>
+        <argsstring>(int fps_limit)</argsstring>
+        <name>SetFrameLimit</name>
+        <qualifiedname>BaseUi::SetFrameLimit</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>fps_limit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the frame limit. Note that this uses int instead of <ref refid="class_game___clock" kindref="compound">Game_Clock</ref> to make the invocation easier.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fps_limit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new fps limit </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="226" column="6" bodyfile="baseui.h" bodystart="427" bodyend="431"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a1edf200ee8e139d481ed571c4705a31b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void BaseUi::SetScalingMode</definition>
+        <argsstring>(ConfigEnum::ScalingMode)</argsstring>
+        <name>SetScalingMode</name>
+        <qualifiedname>BaseUi::SetScalingMode</qualifiedname>
+        <reimplementedby refid="class_psp2_ui_1a9750efa5430653b86cb5824962f85d36">SetScalingMode</reimplementedby>
+        <reimplementedby refid="class_sdl2_ui_1a3df53063f2ab5734a9433f23e26e8145">SetScalingMode</reimplementedby>
+        <reimplementedby refid="class_sdl3_ui_1a8b2d0396c994555127e4ff976650ec0b">SetScalingMode</reimplementedby>
+        <param>
+          <type><ref refid="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000" kindref="member">ConfigEnum::ScalingMode</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the scaling mode of the window </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="229" column="14" bodyfile="baseui.h" bodystart="229" bodyend="229"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1aeaa4e3a8c3f70be2c7bbf18ba89d5a1a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BaseUi::SetGameResolution</definition>
+        <argsstring>(ConfigEnum::GameResolution resolution)</argsstring>
+        <name>SetGameResolution</name>
+        <qualifiedname>BaseUi::SetGameResolution</qualifiedname>
+        <param>
+          <type><ref refid="namespace_config_enum_1aed4f168068862c122f4b138e2a3c3897" kindref="member">ConfigEnum::GameResolution</ref></type>
+          <declname>resolution</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the game resolution settings. Not to be confused with WinW/WinH setting from the ini. This is for configuring a resolution that is effective for all games.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>resolution</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new resolution </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="238" column="6" bodyfile="baseui.cpp" bodystart="75" bodyend="77"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a1d3a2649b6ee63174afd8d8aff879658" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool BaseUi::OpenURL</definition>
+        <argsstring>(std::string_view path)</argsstring>
+        <name>OpenURL</name>
+        <qualifiedname>BaseUi::OpenURL</qualifiedname>
+        <reimplementedby refid="class_sdl2_ui_1a49213b6bdc00af138bb383d83c478bd4">OpenURL</reimplementedby>
+        <reimplementedby refid="class_sdl3_ui_1a83094e15fc0880c4f77348c9c6b00039">OpenURL</reimplementedby>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Opens the specified URL through the operating system. Opens a file browser when <ulink url="file://">file://</ulink> is provided.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>url</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>URL to open </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true when successful </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="247" column="14" bodyfile="baseui.h" bodystart="247" bodyend="247"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a16737efd977c20b828b477086915da89" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void BaseUi::ToggleStretch</definition>
+        <argsstring>()</argsstring>
+        <name>ToggleStretch</name>
+        <qualifiedname>BaseUi::ToggleStretch</qualifiedname>
+        <reimplementedby refid="class_ctr_ui_1a60b0a67f180f2c1feaa9b720624181d0">ToggleStretch</reimplementedby>
+        <reimplementedby refid="class_nx_ui_1a6e25aded34b03c676a40a5851baabe54">ToggleStretch</reimplementedby>
+        <reimplementedby refid="class_psp2_ui_1aaa31d9fb803110178e77257f9fabd64d">ToggleStretch</reimplementedby>
+        <reimplementedby refid="class_sdl2_ui_1ad719aebec8a9ade65ed9be22e3497f41">ToggleStretch</reimplementedby>
+        <reimplementedby refid="class_sdl3_ui_1a49c26ebae053ce1b8956f04f3494090e">ToggleStretch</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Toggles &quot;stretch to screen width&quot; on or off </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="250" column="14" bodyfile="baseui.h" bodystart="250" bodyend="250"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a4325b9a6266e1f202ea1f887a3c2f022" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void BaseUi::ToggleVsync</definition>
+        <argsstring>()</argsstring>
+        <name>ToggleVsync</name>
+        <qualifiedname>BaseUi::ToggleVsync</qualifiedname>
+        <reimplementedby refid="class_psp2_ui_1a11367e4f24ac09f762193c7b1bcc5386">ToggleVsync</reimplementedby>
+        <reimplementedby refid="class_sdl2_ui_1a596f5942e25530080bb8a98ee39667b0">ToggleVsync</reimplementedby>
+        <reimplementedby refid="class_sdl3_ui_1a96d0f5a9c07d44ab389afeea4e092fef">ToggleVsync</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Turns vsync on or off </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="253" column="14" bodyfile="baseui.h" bodystart="253" bodyend="253"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1ad21fdbce0abcbd781791071dd7bb3bd1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void BaseUi::ToggleTouchUi</definition>
+        <argsstring>()</argsstring>
+        <name>ToggleTouchUi</name>
+        <qualifiedname>BaseUi::ToggleTouchUi</qualifiedname>
+        <reimplementedby refid="class_ctr_ui_1a9d4b7fb54037a0c9833330428af2f03b">ToggleTouchUi</reimplementedby>
+        <reimplementedby refid="class_nx_ui_1a5751b29747c262739695e490c018cc47">ToggleTouchUi</reimplementedby>
+        <reimplementedby refid="class_psp2_ui_1a3927d225718c9f5aecef917351b14851">ToggleTouchUi</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Turns a touch ui on or off. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="256" column="14" bodyfile="baseui.h" bodystart="256" bodyend="256"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a1d9ab96f32fc80f68ea299a56c588b48" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_game___config_video" kindref="compound">Game_ConfigVideo</ref></type>
+        <definition>Game_ConfigVideo BaseUi::GetConfig</definition>
+        <argsstring>() const</argsstring>
+        <name>GetConfig</name>
+        <qualifiedname>BaseUi::GetConfig</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>current video options. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="261" column="18" bodyfile="baseui.cpp" bodystart="79" bodyend="114"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_base_ui_1a1259ecf0abbfeca8f798dc05ec7cf973" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::shared_ptr&lt; <ref refid="class_base_ui" kindref="compound">BaseUi</ref> &gt;</type>
+        <definition>std::shared_ptr&lt; BaseUi &gt; BaseUi::CreateUi</definition>
+        <argsstring>(long width, long height, const Game_Config &amp;cfg)</argsstring>
+        <name>CreateUi</name>
+        <qualifiedname>BaseUi::CreateUi</qualifiedname>
+        <param>
+          <type>long</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>long</type>
+          <declname>height</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_game___config" kindref="compound">Game_Config</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates a new <ref refid="class_base_ui" kindref="compound">BaseUi</ref>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>width</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>display client width. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>height</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>display client height. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cfg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>config options </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="58" column="24" bodyfile="baseui.cpp" bodystart="41" bodyend="53"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_base_ui_1abc04d498f5fac11ee11f9c9122207c13" prot="protected" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BaseUi::BaseUi</definition>
+        <argsstring>(const Game_Config &amp;cfg)</argsstring>
+        <name>BaseUi</name>
+        <qualifiedname>BaseUi::BaseUi</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_game___config" kindref="compound">Game_Config</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Protected Constructor. Use CreateUi instead. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="267" column="10" bodyfile="baseui.cpp" bodystart="55" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a6f97cd92275f9c2a0bbe357171d7b9b7" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void BaseUi::SetFrameRateSynchronized</definition>
+        <argsstring>(bool value)</argsstring>
+        <name>SetFrameRateSynchronized</name>
+        <qualifiedname>BaseUi::SetFrameRateSynchronized</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="269" column="6" bodyfile="baseui.h" bodystart="339" bodyend="341"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1aa4c8869422507e9d9b216eff0465413c" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void BaseUi::SetIsFullscreen</definition>
+        <argsstring>(bool value)</argsstring>
+        <name>SetIsFullscreen</name>
+        <qualifiedname>BaseUi::SetIsFullscreen</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="270" column="6" bodyfile="baseui.h" bodystart="347" bodyend="349"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1aef921da0d7b4ec1e7ee45f62097e2e5a" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void BaseUi::vGetConfig</definition>
+        <argsstring>(Game_ConfigVideo &amp;cfg) const =0</argsstring>
+        <name>vGetConfig</name>
+        <qualifiedname>BaseUi::vGetConfig</qualifiedname>
+        <reimplementedby refid="class_ctr_ui_1afa2dfec0d50a34ed276198fe03fd4635">vGetConfig</reimplementedby>
+        <reimplementedby refid="class_libretro_ui_1adfa05f536212d5629a263170cb7b3915">vGetConfig</reimplementedby>
+        <reimplementedby refid="class_nx_ui_1a5353945717c832e938dadf8ba0b604d1">vGetConfig</reimplementedby>
+        <reimplementedby refid="class_psp2_ui_1a9954b6bdd4d07bd819674c7a7eac5ff8">vGetConfig</reimplementedby>
+        <reimplementedby refid="class_sdl2_ui_1a7d2b954eb2f2d99cd730d6c59dd3510b">vGetConfig</reimplementedby>
+        <reimplementedby refid="class_sdl3_ui_1a48505a29a3473018305fc09280dc010b">vGetConfig</reimplementedby>
+        <reimplementedby refid="class_sdl_ui_1acac38566c90bc5d9bde2934e0e312687">vGetConfig</reimplementedby>
+        <param>
+          <type><ref refid="struct_game___config_video" kindref="compound">Game_ConfigVideo</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="271" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_base_ui_1a58f5dc89bb89fae57b3d8512a5c5810a" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>bool BaseUi::vChangeDisplaySurfaceResolution</definition>
+        <argsstring>(int new_width, int new_height)</argsstring>
+        <name>vChangeDisplaySurfaceResolution</name>
+        <qualifiedname>BaseUi::vChangeDisplaySurfaceResolution</qualifiedname>
+        <reimplementedby refid="class_libretro_ui_1acba58e993094d47b321777ee56b5df15">vChangeDisplaySurfaceResolution</reimplementedby>
+        <reimplementedby refid="class_sdl2_ui_1a77f75bf579fb733f2df90349ee976ccf">vChangeDisplaySurfaceResolution</reimplementedby>
+        <reimplementedby refid="class_sdl3_ui_1a54324cc1e7a3ed8a244ecf8dfbe5c3d1">vChangeDisplaySurfaceResolution</reimplementedby>
+        <param>
+          <type>int</type>
+          <declname>new_width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>new_height</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="baseui.h" line="272" column="14" bodyfile="baseui.h" bodystart="363" bodyend="367"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_base_ui" kindref="compound">BaseUi</ref> base abstract class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>BaseUi</label>
+        <link refid="class_base_ui"/>
+      </node>
+      <node id="2">
+        <label>CtrUi</label>
+        <link refid="class_ctr_ui"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>LibretroUi</label>
+        <link refid="class_libretro_ui"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>NxUi</label>
+        <link refid="class_nx_ui"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Psp2Ui</label>
+        <link refid="class_psp2_ui"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Sdl2Ui</label>
+        <link refid="class_sdl2_ui"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Sdl3Ui</label>
+        <link refid="class_sdl3_ui"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>SdlUi</label>
+        <link refid="class_sdl_ui"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>BaseUi</label>
+        <link refid="class_base_ui"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>vcfg</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>current_display_mode</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>mouse_pos</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>analog_input</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>back_color</edgelabel>
+        </childnode>
+      </node>
+      <node id="17">
+        <label>BaseUi::DisplayMode</label>
+        <link refid="struct_base_ui_1_1_display_mode"/>
+      </node>
+      <node id="6">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>Color</label>
+        <link refid="class_color"/>
+      </node>
+      <node id="12">
+        <label>ConfigParam&lt; int &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>ConfigParam&lt; std::string &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>ConfigParamBase&lt; ConfigEnum::GameResolution &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="14">
+        <label>ConfigParamBase&lt; ConfigEnum::ScalingMode &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="9">
+        <label>ConfigParamBase&lt; ConfigEnum::ShowFps &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="7">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="11">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="5">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="15">
+        <label>EnumConfigParam&lt; ConfigEnum::GameResolution, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="16" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>EnumConfigParam&lt; ConfigEnum::ScalingMode, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="14" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>EnumConfigParam&lt; ConfigEnum::ShowFps, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Game_ConfigVideo</label>
+        <link refid="struct_game___config_video"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>renderer</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>fullscreen</edgelabel>
+          <edgelabel>pause_when_focus_lost</edgelabel>
+          <edgelabel>stretch</edgelabel>
+          <edgelabel>touch_ui</edgelabel>
+          <edgelabel>vsync</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>fps</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>fps_limit</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>window_height</edgelabel>
+          <edgelabel>window_width</edgelabel>
+          <edgelabel>window_x</edgelabel>
+          <edgelabel>window_y</edgelabel>
+          <edgelabel>window_zoom</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>scaling_mode</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>game_resolution</edgelabel>
+        </childnode>
+      </node>
+      <node id="19">
+        <label>Input::AnalogInput</label>
+        <link refid="struct_input_1_1_analog_input"/>
+        <childnode refid="20" relation="usage">
+          <edgelabel>primary</edgelabel>
+          <edgelabel>secondary</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>LockedConfigParam&lt; std::string &gt;</label>
+        <link refid="class_locked_config_param"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>PointT&lt; float &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="18">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="10">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="baseui.h" line="44" column="1" bodyfile="baseui.h" bodystart="44" bodyend="326"/>
+    <listofallmembers>
+      <member refid="class_base_ui_1a96512cebf65e9153cb3b377a1080eaef" prot="protected" virt="non-virtual"><scope>BaseUi</scope><name>analog_input</name></member>
+      <member refid="class_base_ui_1ae38aec6a7306ee56bdd3c4a0d0bb76e6" prot="protected" virt="non-virtual"><scope>BaseUi</scope><name>back_color</name></member>
+      <member refid="class_base_ui_1abc04d498f5fac11ee11f9c9122207c13" prot="protected" virt="non-virtual"><scope>BaseUi</scope><name>BaseUi</name></member>
+      <member refid="class_base_ui_1a6705177f2e26c41cd38aedf809b3ff96" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>CaptureScreen</name></member>
+      <member refid="class_base_ui_1ab3cb68a47aa7a742bd2aba62c3c93830" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>ChangeDisplaySurfaceResolution</name></member>
+      <member refid="class_base_ui_1a0c76ff69fe6792d43cdfefdad462c48a" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>CleanDisplay</name></member>
+      <member refid="class_base_ui_1a1259ecf0abbfeca8f798dc05ec7cf973" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>CreateUi</name></member>
+      <member refid="class_base_ui_1ad968d67d945a727f6be3556cb4e15dfb" prot="protected" virt="non-virtual"><scope>BaseUi</scope><name>current_display_mode</name></member>
+      <member refid="class_base_ui_1a3fcf56158d2dbfa1a2dddf5b62dd8c86" prot="protected" virt="non-virtual"><scope>BaseUi</scope><name>cursor_visible</name></member>
+      <member refid="class_base_ui_1aeae86a5ea89c8717b55692b023768373" prot="protected" virt="non-virtual"><scope>BaseUi</scope><name>external_frame_rate</name></member>
+      <member refid="class_base_ui_1afbefd1cf3f059e1613cdb93a92ddfae2" prot="protected" virt="non-virtual"><scope>BaseUi</scope><name>finger_input</name></member>
+      <member refid="class_base_ui_1a8277cb2800b716f1775d74a71a752ec7" prot="protected" virt="non-virtual"><scope>BaseUi</scope><name>frame_limit</name></member>
+      <member refid="class_base_ui_1a1743a7957049618f9092313ef3643ff8" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>GetAnalogInput</name></member>
+      <member refid="class_base_ui_1a1d9ab96f32fc80f68ea299a56c588b48" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>GetConfig</name></member>
+      <member refid="class_base_ui_1ac58c799344c947f74f7680ac92b29f46" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>GetDisplaySurface</name></member>
+      <member refid="class_base_ui_1a6a12e3b17421efa5ab8be3789bba01d6" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>GetDisplaySurface</name></member>
+      <member refid="class_base_ui_1a29fb87f2f0bea382c9e07a4787546155" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>GetFrameLimit</name></member>
+      <member refid="class_base_ui_1acaea0726d275e4cfe660d450c15613ff" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>GetHeight</name></member>
+      <member refid="class_base_ui_1a26429a01230e03334c6d534b50aea481" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>GetKeyStates</name></member>
+      <member refid="class_base_ui_1a749ed505a2e01d7c3f09304ef8d66e27" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>GetMouseFocus</name></member>
+      <member refid="class_base_ui_1ab8e3ba8ce6415a4c706b628093d07d08" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>GetMousePosition</name></member>
+      <member refid="class_base_ui_1a665686e47cf5b94d8fe84b7fb255330a" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>GetTouchInput</name></member>
+      <member refid="class_base_ui_1afc0660dcf3b0a7c3e6354b215b409e2a" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>GetWidth</name></member>
+      <member refid="class_base_ui_1a8a6e1bfb68cd5283b9ba510eae44453c" prot="public" virt="virtual"><scope>BaseUi</scope><name>GetWindowMetrics</name></member>
+      <member refid="class_base_ui_1ad2f8960e9e9b562cf67d249557f6259a" prot="public" virt="virtual"><scope>BaseUi</scope><name>HandleErrorOutput</name></member>
+      <member refid="class_base_ui_1a783a7b0dbc389c5230011b4e7ba72fcf" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>IsFrameRateSynchronized</name></member>
+      <member refid="class_base_ui_1a1e7122e1da0ce80c92fc4bbd70ab3529" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>IsFullscreen</name></member>
+      <member refid="class_base_ui_1acb63c6d48a74e7c111a5d8d54eb9bc44" prot="protected" virt="non-virtual"><scope>BaseUi</scope><name>keys</name></member>
+      <member refid="class_base_ui_1aa55d38974520aa1b75d19ac8fc78184b" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>KeyStatus</name></member>
+      <member refid="class_base_ui_1a77e2002cc546f7326d1bf154192ec99c" prot="protected" virt="non-virtual"><scope>BaseUi</scope><name>main_surface</name></member>
+      <member refid="class_base_ui_1a59b0524cf6d37e9d5ce7ff5c749e620c" prot="protected" virt="non-virtual"><scope>BaseUi</scope><name>mouse_focus</name></member>
+      <member refid="class_base_ui_1ad40db5525bb26ed0fd1b5e258da45b7c" prot="protected" virt="non-virtual"><scope>BaseUi</scope><name>mouse_pos</name></member>
+      <member refid="class_base_ui_1a1d3a2649b6ee63174afd8d8aff879658" prot="public" virt="virtual"><scope>BaseUi</scope><name>OpenURL</name></member>
+      <member refid="class_base_ui_1abdffe1380198934a10588fd57081eba6" prot="protected" virt="non-virtual"><scope>BaseUi</scope><name>original_fps_show_state</name></member>
+      <member refid="class_base_ui_1aa5adf73d350d9cf4635084df16849461" prot="public" virt="pure-virtual"><scope>BaseUi</scope><name>ProcessEvents</name></member>
+      <member refid="class_base_ui_1ad7dcb52dbf687ea604d2c4994c0215c7" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>RenderFps</name></member>
+      <member refid="class_base_ui_1a9b36faf7ba0bdd8c0fb78a1b1241be4f" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>SetFrameLimit</name></member>
+      <member refid="class_base_ui_1a6f97cd92275f9c2a0bbe357171d7b9b7" prot="protected" virt="non-virtual"><scope>BaseUi</scope><name>SetFrameRateSynchronized</name></member>
+      <member refid="class_base_ui_1aeaa4e3a8c3f70be2c7bbf18ba89d5a1a" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>SetGameResolution</name></member>
+      <member refid="class_base_ui_1aa4c8869422507e9d9b216eff0465413c" prot="protected" virt="non-virtual"><scope>BaseUi</scope><name>SetIsFullscreen</name></member>
+      <member refid="class_base_ui_1a2b870c00dadecb6351d14dacca1d9b02" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>SetPauseWhenFocusLost</name></member>
+      <member refid="class_base_ui_1a1edf200ee8e139d481ed571c4705a31b" prot="public" virt="virtual"><scope>BaseUi</scope><name>SetScalingMode</name></member>
+      <member refid="class_base_ui_1a34ccc599af3eb7185a41f45f042d5d66" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>SetShowFps</name></member>
+      <member refid="class_base_ui_1ac838b906c382e0bd53eae5f775ef5dfb" prot="public" virt="virtual"><scope>BaseUi</scope><name>SetTitle</name></member>
+      <member refid="class_base_ui_1ae0d4c82612a9c1e8b76dcde91dd90217" prot="public" virt="virtual"><scope>BaseUi</scope><name>ShowCursor</name></member>
+      <member refid="class_base_ui_1acfec1d72d810c6b6adc2fecf6ef322cc" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>ShowFpsOnTitle</name></member>
+      <member refid="class_base_ui_1a7cf7aa4d9d0c4c86bcec4ff6ef15c4f9" prot="public" virt="virtual"><scope>BaseUi</scope><name>ToggleFullscreen</name></member>
+      <member refid="class_base_ui_1abca78fd083436f0a9d036d949fc5e371" prot="public" virt="non-virtual"><scope>BaseUi</scope><name>ToggleShowFps</name></member>
+      <member refid="class_base_ui_1a16737efd977c20b828b477086915da89" prot="public" virt="virtual"><scope>BaseUi</scope><name>ToggleStretch</name></member>
+      <member refid="class_base_ui_1ad21fdbce0abcbd781791071dd7bb3bd1" prot="public" virt="virtual"><scope>BaseUi</scope><name>ToggleTouchUi</name></member>
+      <member refid="class_base_ui_1a4325b9a6266e1f202ea1f887a3c2f022" prot="public" virt="virtual"><scope>BaseUi</scope><name>ToggleVsync</name></member>
+      <member refid="class_base_ui_1abb92ae64151143bc0a186fa934ffafa6" prot="public" virt="virtual"><scope>BaseUi</scope><name>ToggleZoom</name></member>
+      <member refid="class_base_ui_1a18ee3fdd88366c546ceb2daf3382f425" prot="protected" virt="non-virtual"><scope>BaseUi</scope><name>touch_input</name></member>
+      <member refid="class_base_ui_1ad0ac519b67b66dda5df6289a3f9e25c2" prot="public" virt="pure-virtual"><scope>BaseUi</scope><name>UpdateDisplay</name></member>
+      <member refid="class_base_ui_1a2d3af98fda6d7a8b33b71235bfe1bc62" prot="protected" virt="non-virtual"><scope>BaseUi</scope><name>vcfg</name></member>
+      <member refid="class_base_ui_1a58f5dc89bb89fae57b3d8512a5c5810a" prot="protected" virt="virtual"><scope>BaseUi</scope><name>vChangeDisplaySurfaceResolution</name></member>
+      <member refid="class_base_ui_1aef921da0d7b4ec1e7ee45f62097e2e5a" prot="protected" virt="pure-virtual"><scope>BaseUi</scope><name>vGetConfig</name></member>
+      <member refid="class_base_ui_1acb710126bbe5950a70d4dd6348d4bed1" prot="public" virt="virtual"><scope>BaseUi</scope><name>~BaseUi</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

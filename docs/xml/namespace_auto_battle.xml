@@ -1,0 +1,669 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_auto_battle" kind="namespace" language="C++">
+    <compoundname>AutoBattle</compoundname>
+    <innerclass refid="class_auto_battle_1_1_algorithm_base" prot="public">AutoBattle::AlgorithmBase</innerclass>
+    <innerclass refid="class_auto_battle_1_1_rpg_rt_compat" prot="public">AutoBattle::RpgRtCompat</innerclass>
+    <innerclass refid="class_auto_battle_1_1_attack_only" prot="public">AutoBattle::AttackOnly</innerclass>
+    <innerclass refid="class_auto_battle_1_1_rpg_rt_improved" prot="public">AutoBattle::RpgRtImproved</innerclass>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_auto_battle_1af225dd05823f9371ce5985708f400301" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void AutoBattle::DebugLog</definition>
+        <argsstring>(const char *, Args &amp;&amp;...)</argsstring>
+        <name>DebugLog</name>
+        <qualifiedname>AutoBattle::DebugLog</qualifiedname>
+        <param>
+          <type>const char *</type>
+        </param>
+        <param>
+          <type>Args &amp;&amp;</type>
+          <declname>...</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.cpp" line="40" column="13" bodyfile="autobattle.cpp" bodystart="40" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_auto_battle_1aa51a90ffdf30bebb14bec8ee7f8d84e7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unique_ptr&lt; <ref refid="class_auto_battle_1_1_algorithm_base" kindref="compound">AlgorithmBase</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; AlgorithmBase &gt; AutoBattle::CreateAlgorithm</definition>
+        <argsstring>(std::string_view name)</argsstring>
+        <name>CreateAlgorithm</name>
+        <qualifiedname>AutoBattle::CreateAlgorithm</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Auto battle algorithm factory function which creates auto battle algorithm from the given name</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>of the algo. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An auto battle algorithm to be used in battles. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.cpp" line="43" column="17" bodyfile="autobattle.cpp" bodystart="43" bodyend="58" declfile="autobattle.h" declline="39" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_auto_battle_1a6038c155529799c1abbaa0ef57f1a670" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int AutoBattle::CalcSkillCostAutoBattle</definition>
+        <argsstring>(const Game_Actor &amp;source, const lcf::rpg::Skill &amp;skill, bool emulate_bugs)</argsstring>
+        <name>CalcSkillCostAutoBattle</name>
+        <qualifiedname>AutoBattle::CalcSkillCostAutoBattle</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>emulate_bugs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.cpp" line="79" column="12" bodyfile="autobattle.cpp" bodystart="79" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_auto_battle_1ae335b89e69233550fcdf3ea4e35ceee7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double AutoBattle::CalcSkillHealAutoBattleTargetRank</definition>
+        <argsstring>(const Game_Actor &amp;source, const Game_Battler &amp;target, const lcf::rpg::Skill &amp;skill, lcf::rpg::System::BattleCondition cond, bool apply_variance, bool emulate_bugs)</argsstring>
+        <name>CalcSkillHealAutoBattleTargetRank</name>
+        <qualifiedname>AutoBattle::CalcSkillHealAutoBattleTargetRank</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::System::BattleCondition</type>
+          <declname>cond</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>apply_variance</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>emulate_bugs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calculate the auto battle effectiveness rank of source using healing skill on target.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the user of the skill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the target of the skill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>skill</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the skill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cond</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the battle condition </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>apply_variance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, apply variance to the damage </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>emulate_bugs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Emulate all RPG_RT bugs for accuracy</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>skill Must be a normal or subskill or the result is undefined. </para>
+</simplesect>
+<simplesect kind="pre"><para>skill must target self, ally, or ally party or the result is undefined. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.cpp" line="86" column="8" bodyfile="autobattle.cpp" bodystart="86" bodyend="120" declfile="autobattle.h" declline="128" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_auto_battle_1a64894dfd61c115a9065022ffc570c093" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double AutoBattle::CalcSkillDmgAutoBattleTargetRank</definition>
+        <argsstring>(const Game_Actor &amp;source, const Game_Battler &amp;target, const lcf::rpg::Skill &amp;skill, lcf::rpg::System::BattleCondition cond, bool apply_variance, bool emulate_bugs)</argsstring>
+        <name>CalcSkillDmgAutoBattleTargetRank</name>
+        <qualifiedname>AutoBattle::CalcSkillDmgAutoBattleTargetRank</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::System::BattleCondition</type>
+          <declname>cond</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>apply_variance</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>emulate_bugs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calculate the auto battle effectiveness rank of source using damage skill on target.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the user of the skill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the target of the skill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>skill</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the skill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cond</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the battle condition </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>apply_variance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, apply variance to the damage </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>emulate_bugs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Emulate all RPG_RT bugs for accuracy</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="pre"><para>skill Must be a normal or subskill or the result is undefined. </para>
+</simplesect>
+<simplesect kind="pre"><para>skill must target enemy, or enemy party or the result is undefined. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.cpp" line="122" column="8" bodyfile="autobattle.cpp" bodystart="122" bodyend="156" declfile="autobattle.h" declline="143" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_auto_battle_1a69302febd754ceee7aef8a857412de90" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double AutoBattle::CalcSkillAutoBattleRank</definition>
+        <argsstring>(const Game_Actor &amp;source, const lcf::rpg::Skill &amp;skill, lcf::rpg::System::BattleCondition cond, bool apply_variance, bool emulate_bugs)</argsstring>
+        <name>CalcSkillAutoBattleRank</name>
+        <qualifiedname>AutoBattle::CalcSkillAutoBattleRank</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::System::BattleCondition</type>
+          <declname>cond</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>apply_variance</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>emulate_bugs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calculate the auto battle total effectiveness rank of using a skill.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the user of the skill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>skill</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the skill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cond</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the battle condition </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>apply_variance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, apply variance to the damage </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>emulate_bugs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Emulate all RPG_RT bugs for accuracy </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.cpp" line="158" column="8" bodyfile="autobattle.cpp" bodystart="158" bodyend="205" declfile="autobattle.h" declline="154" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_auto_battle_1acb817e1100cfd1490fda3844070c2044" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double AutoBattle::CalcNormalAttackAutoBattleTargetRank</definition>
+        <argsstring>(const Game_Actor &amp;source, const Game_Battler &amp;target, Game_Battler::Weapon weapon, lcf::rpg::System::BattleCondition cond, bool apply_variance, bool emulate_bugs)</argsstring>
+        <name>CalcNormalAttackAutoBattleTargetRank</name>
+        <qualifiedname>AutoBattle::CalcNormalAttackAutoBattleTargetRank</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Game_Battler::Weapon</ref></type>
+          <declname>weapon</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::System::BattleCondition</type>
+          <declname>cond</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>apply_variance</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>emulate_bugs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calculate the auto battle effectiveness rank of source attacking target.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the user of the skill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the target of the skill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cond</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the battle condition </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>apply_variance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, apply variance to the damage </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>emulate_bugs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Emulate all RPG_RT bugs for accuracy </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.cpp" line="207" column="8" bodyfile="autobattle.cpp" bodystart="207" bodyend="256" declfile="autobattle.h" declline="165" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_auto_battle_1afab1366e29a825d61ffcd20dc2db6a48" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double AutoBattle::CalcNormalAttackAutoBattleRank</definition>
+        <argsstring>(const Game_Actor &amp;source, Game_Battler::Weapon weapon, const lcf::rpg::System::BattleCondition cond, bool apply_variance, bool emulate_bugs)</argsstring>
+        <name>CalcNormalAttackAutoBattleRank</name>
+        <qualifiedname>AutoBattle::CalcNormalAttackAutoBattleRank</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Game_Battler::Weapon</ref></type>
+          <declname>weapon</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::System::BattleCondition</type>
+          <declname>cond</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>apply_variance</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>emulate_bugs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calculate the auto battle total effectiveness rank of using a normal attack.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the user of the skill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>weapon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Which weapon to use in the calculation </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cond</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the battle condition </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>apply_variance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, apply variance to the damage </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>emulate_bugs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Emulate all RPG_RT bugs for accuracy </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.cpp" line="258" column="8" bodyfile="autobattle.cpp" bodystart="258" bodyend="277" declfile="autobattle.h" declline="176" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_auto_battle_1ac8b6d0d6db1a8974d2191ac4ced1df34" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AutoBattle::SelectAutoBattleAction</definition>
+        <argsstring>(Game_Actor &amp;source, Game_Battler::Weapon weapon, lcf::rpg::System::BattleCondition cond, bool do_skills, bool attack_variance, bool skill_variance, bool emulate_bugs)</argsstring>
+        <name>SelectAutoBattleAction</name>
+        <qualifiedname>AutoBattle::SelectAutoBattleAction</qualifiedname>
+        <param>
+          <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Game_Battler::Weapon</ref></type>
+          <declname>weapon</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::System::BattleCondition</type>
+          <declname>cond</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>do_skills</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>attack_variance</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>skill_variance</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>emulate_bugs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Runs the RPG_RT auto battle algorithm and sets a Game_BattlerAlgorithm on the source.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>actor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Which actor to select auto battle action for </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>weapon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Which weapon to use in the calculation </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cond</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the battle condition </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>do_skills</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to include skills or not </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>attack_variance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to include variance in normal attack ranking </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>skill_variance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to include variance in skill ranking </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>emulate_bugs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Emulate all RPG_RT bugs for accuracy </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="post"><para>actor may have a battle algorithm set, unless an error occured. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.cpp" line="279" column="6" bodyfile="autobattle.cpp" bodystart="279" bodyend="373" declfile="autobattle.h" declline="190" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_auto_battle_1aa2410a91c0af65f50e3f0c6b2af821ab" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void AutoBattle::SelectAutoBattleActionRpgRtCompat</definition>
+        <argsstring>(Game_Actor &amp;source, lcf::rpg::System::BattleCondition cond)</argsstring>
+        <name>SelectAutoBattleActionRpgRtCompat</name>
+        <qualifiedname>AutoBattle::SelectAutoBattleActionRpgRtCompat</qualifiedname>
+        <param>
+          <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::System::BattleCondition</type>
+          <declname>cond</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calls <ref refid="namespace_auto_battle_1ac8b6d0d6db1a8974d2191ac4ced1df34" kindref="member">SelectAutoBattleAction()</ref> with RPG_RT strictly compatible flags.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>actor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Which actor to select auto battle action for </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cond</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the battle condition </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="post"><para>actor may have a battle algorithm set, unless an error occured. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.h" line="205" column="13" bodyfile="autobattle.h" bodystart="205" bodyend="207"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="autobattle.cpp" line="31" column="1"/>
+  </compounddef>
+</doxygen>

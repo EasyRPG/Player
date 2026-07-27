@@ -619,3 +619,4 @@ int Game_Variables::GetMaxDigits() const {
 	auto val = std::max(std::llabs(_max), std::llabs(_min));
 	return static_cast<int>(std::log10(val) + 1);
 }
+

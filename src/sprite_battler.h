@@ -100,3 +100,4 @@ inline Sprite_Battler::FixedFacing Sprite_Battler::GetFixedFacing() const {
 }
 
 #endif
+

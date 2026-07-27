@@ -1,0 +1,1079 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_audio_decoder_midi" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>AudioDecoderMidi</compoundname>
+    <basecompoundref refid="class_audio_decoder_base" prot="public" virt="non-virtual">AudioDecoderBase</basecompoundref>
+    <basecompoundref refid="classmidisequencer_1_1output" prot="public" virt="non-virtual">midisequencer::output</basecompoundref>
+    <includes refid="audio__decoder__midi_8h" local="no">audio_decoder_midi.h</includes>
+    <innerclass refid="struct_audio_decoder_midi_1_1_midi_tempo_data" prot="private">AudioDecoderMidi::MidiTempoData</innerclass>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_audio_decoder_midi_1a2af192ff1bd8d4eb40d09d4311907f0b" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; uint8_t &gt;</type>
+        <definition>std::vector&lt;uint8_t&gt; AudioDecoderMidi::file_buffer</definition>
+        <argsstring></argsstring>
+        <name>file_buffer</name>
+        <qualifiedname>AudioDecoderMidi::file_buffer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="160" column="13" bodyfile="audio_decoder_midi.h" bodystart="160" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_midi_1a5af204dc7c9d0c42a89aa66dbfc7a7d2" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t AudioDecoderMidi::file_buffer_pos</definition>
+        <argsstring></argsstring>
+        <name>file_buffer_pos</name>
+        <qualifiedname>AudioDecoderMidi::file_buffer_pos</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="161" column="8" bodyfile="audio_decoder_midi.h" bodystart="161" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="class_audio_decoder_midi_1a8285a0aa34889efa8cb8d6e1a8a49c76" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int AudioDecoderMidi::midi_default_tempo</definition>
+        <argsstring></argsstring>
+        <name>midi_default_tempo</name>
+        <qualifiedname>AudioDecoderMidi::midi_default_tempo</qualifiedname>
+        <initializer>= 500000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="163" column="22" bodyfile="audio_decoder_midi.h" bodystart="163" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_audio_decoder_midi_1ae87158e4cdb348508aa456a519401dbf" prot="private" static="no" mutable="no">
+        <type>std::chrono::microseconds</type>
+        <definition>std::chrono::microseconds AudioDecoderMidi::mtime</definition>
+        <argsstring></argsstring>
+        <name>mtime</name>
+        <qualifiedname>AudioDecoderMidi::mtime</qualifiedname>
+        <initializer>= std::chrono::microseconds(0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="176" column="27" bodyfile="audio_decoder_midi.h" bodystart="176" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_midi_1a3ab011041244ae2fbc1e6d55a4fb5ba0" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float AudioDecoderMidi::pitch</definition>
+        <argsstring></argsstring>
+        <name>pitch</name>
+        <qualifiedname>AudioDecoderMidi::pitch</qualifiedname>
+        <initializer>= 1.0f</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="177" column="7" bodyfile="audio_decoder_midi.h" bodystart="177" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_midi_1a196696f55a9650a68f82efbe9a854d26" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool AudioDecoderMidi::paused</definition>
+        <argsstring></argsstring>
+        <name>paused</name>
+        <qualifiedname>AudioDecoderMidi::paused</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="178" column="6" bodyfile="audio_decoder_midi.h" bodystart="178" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_midi_1a6d9cf10addf0943b5df3f182b8432c9f" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float AudioDecoderMidi::volume</definition>
+        <argsstring></argsstring>
+        <name>volume</name>
+        <qualifiedname>AudioDecoderMidi::volume</qualifiedname>
+        <initializer>= 0.0f</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="179" column="7" bodyfile="audio_decoder_midi.h" bodystart="179" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_midi_1a73436d8d7d9db13ca4d0bb7bfe62587d" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float AudioDecoderMidi::global_volume</definition>
+        <argsstring></argsstring>
+        <name>global_volume</name>
+        <qualifiedname>AudioDecoderMidi::global_volume</qualifiedname>
+        <initializer>= 1.0f</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="180" column="7" bodyfile="audio_decoder_midi.h" bodystart="180" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_midi_1a9ecb566d8112860bf0c5071df11aa5d9" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float AudioDecoderMidi::log_volume</definition>
+        <argsstring></argsstring>
+        <name>log_volume</name>
+        <qualifiedname>AudioDecoderMidi::log_volume</qualifiedname>
+        <initializer>= 0.0f</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="181" column="7" bodyfile="audio_decoder_midi.h" bodystart="181" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_midi_1a0ae734d9ee5b1cce3b545c69f340dc4e" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool AudioDecoderMidi::loops_to_end</definition>
+        <argsstring></argsstring>
+        <name>loops_to_end</name>
+        <qualifiedname>AudioDecoderMidi::loops_to_end</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="182" column="6" bodyfile="audio_decoder_midi.h" bodystart="182" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_midi_1a2257f8365d42fa24d2af4771ddbce9de" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int AudioDecoderMidi::fade_steps</definition>
+        <argsstring></argsstring>
+        <name>fade_steps</name>
+        <qualifiedname>AudioDecoderMidi::fade_steps</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="184" column="5" bodyfile="audio_decoder_midi.h" bodystart="184" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_midi_1a94881cc5c6e5f6ae03b273d0abfb77d5" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float AudioDecoderMidi::fade_volume_end</definition>
+        <argsstring></argsstring>
+        <name>fade_volume_end</name>
+        <qualifiedname>AudioDecoderMidi::fade_volume_end</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="185" column="7" bodyfile="audio_decoder_midi.h" bodystart="185" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_midi_1a36fb724571e59ea52ccf0f1b0d82ec5a" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float AudioDecoderMidi::delta_volume_step</definition>
+        <argsstring></argsstring>
+        <name>delta_volume_step</name>
+        <qualifiedname>AudioDecoderMidi::delta_volume_step</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="186" column="7" bodyfile="audio_decoder_midi.h" bodystart="186" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_midi_1a8701077322abfb0b825df9c7a737d85b" prot="private" static="no" mutable="no">
+        <type>std::chrono::microseconds</type>
+        <definition>std::chrono::microseconds AudioDecoderMidi::last_fade_mtime</definition>
+        <argsstring></argsstring>
+        <name>last_fade_mtime</name>
+        <qualifiedname>AudioDecoderMidi::last_fade_mtime</qualifiedname>
+        <initializer>= std::chrono::microseconds(0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="187" column="27" bodyfile="audio_decoder_midi.h" bodystart="187" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_midi_1a67e23e524260144581b6d7bbf69a6135" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int AudioDecoderMidi::frequency</definition>
+        <argsstring></argsstring>
+        <name>frequency</name>
+        <qualifiedname>AudioDecoderMidi::frequency</qualifiedname>
+        <initializer>= <ref refid="audio__midi_8h_1aa1740baf814b8b9c73fbff097a8eb521" kindref="member">EP_MIDI_FREQ</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="189" column="5" bodyfile="audio_decoder_midi.h" bodystart="189" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_midi_1a0c37fec35f393a8caf6782ff32fbf54b" prot="private" static="no" mutable="no">
+        <type>std::array&lt; uint8_t, 16 &gt;</type>
+        <definition>std::array&lt;uint8_t, 16&gt; AudioDecoderMidi::channel_volumes</definition>
+        <argsstring></argsstring>
+        <name>channel_volumes</name>
+        <qualifiedname>AudioDecoderMidi::channel_volumes</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="191" column="12" bodyfile="audio_decoder_midi.h" bodystart="191" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_midi_1abe3e1085333075cced58bb994626ba05" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="classmidisequencer_1_1sequencer" kindref="compound">midisequencer::sequencer</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;midisequencer::sequencer&gt; AudioDecoderMidi::seq</definition>
+        <argsstring></argsstring>
+        <name>seq</name>
+        <qualifiedname>AudioDecoderMidi::seq</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="207" column="17" bodyfile="audio_decoder_midi.h" bodystart="207" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_midi_1ac55d55bf182cf2830f31044c77d45430" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_midi_decoder" kindref="compound">MidiDecoder</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;MidiDecoder&gt; AudioDecoderMidi::mididec</definition>
+        <argsstring></argsstring>
+        <name>mididec</name>
+        <qualifiedname>AudioDecoderMidi::mididec</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="209" column="17" bodyfile="audio_decoder_midi.h" bodystart="209" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_decoder_midi_1aaa90d9d5f160640416ce3d456b35a95a" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; MidiTempoData &gt;</type>
+        <definition>std::vector&lt;MidiTempoData&gt; AudioDecoderMidi::tempo</definition>
+        <argsstring></argsstring>
+        <name>tempo</name>
+        <qualifiedname>AudioDecoderMidi::tempo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="213" column="13" bodyfile="audio_decoder_midi.h" bodystart="213" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_audio_decoder_midi_1a324d5aee54d0ab0bf2325ba781090659" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AudioDecoderMidi::AudioDecoderMidi</definition>
+        <argsstring>(std::unique_ptr&lt; MidiDecoder &gt; mididec)</argsstring>
+        <name>AudioDecoderMidi</name>
+        <qualifiedname>AudioDecoderMidi::AudioDecoderMidi</qualifiedname>
+        <param>
+          <type>std::unique_ptr&lt; <ref refid="class_midi_decoder" kindref="compound">MidiDecoder</ref> &gt;</type>
+          <declname>mididec</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="32" column="1" bodyfile="audio_decoder_midi.cpp" bodystart="111" bodyend="116"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1aaea023b7a68ee8acf4ee5e4e256dd86e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AudioDecoderMidi::~AudioDecoderMidi</definition>
+        <argsstring>()</argsstring>
+        <name>~AudioDecoderMidi</name>
+        <qualifiedname>AudioDecoderMidi::~AudioDecoderMidi</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="33" column="1" bodyfile="audio_decoder_midi.cpp" bodystart="118" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1a5a6d143398f644c36161241d1de6dbfa" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool AudioDecoderMidi::Open</definition>
+        <argsstring>(Filesystem_Stream::InputStream stream) override</argsstring>
+        <name>Open</name>
+        <qualifiedname>AudioDecoderMidi::Open</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a572f94aa66fe630a45cbe1c500c55213">Open</reimplements>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+          <declname>stream</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Assigns a stream to the midi decoder. Open should be only called once per audio decoder instance.</para>
+<para><simplesect kind="return"><para>true if initializing was successful, false otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="41" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="132" bodyend="160"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1ab8c699453c527ff80a30d823210c5197" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioDecoderMidi::Pause</definition>
+        <argsstring>() override</argsstring>
+        <name>Pause</name>
+        <qualifiedname>AudioDecoderMidi::Pause</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a0fe6d62d12d7be7a508d8dc42723470e">Pause</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Pauses the MIDI sequencer. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="46" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="162" bodyend="168"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1a32c9b07bc5c77c6090d40bb225065851" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioDecoderMidi::Resume</definition>
+        <argsstring>() override</argsstring>
+        <name>Resume</name>
+        <qualifiedname>AudioDecoderMidi::Resume</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a34e9b2c022adabcc0ce4788b3fe6e9b6">Resume</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Resumes the MIDI sequencer. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="51" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="170" bodyend="176"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1a3c0d04688fbb19c27739bc4695cff4aa" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int AudioDecoderMidi::GetVolume</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetVolume</name>
+        <qualifiedname>AudioDecoderMidi::GetVolume</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a4845bd23893eb58d00839e30f683ad20">GetVolume</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the volume of the MIDI device. Volume changes will not really modify the volume but are only helper functions for retrieving the volume information for the audio hardware.</para>
+<para><simplesect kind="return"><para>current volume (from 0 - 100) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="60" column="5" bodyfile="audio_decoder_midi.cpp" bodystart="178" bodyend="186"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1aa439cd91a0e8dfdebfce30e2a8e26f5f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioDecoderMidi::SetVolume</definition>
+        <argsstring>(int volume) override</argsstring>
+        <name>SetVolume</name>
+        <qualifiedname>AudioDecoderMidi::SetVolume</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a06aa42fb66d0f633dd5e853de757ff07">SetVolume</reimplements>
+        <param>
+          <type>int</type>
+          <declname>volume</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the volume of the MIDI devices by sending MIDI messages</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>volume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(from 0-100) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="67" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="188" bodyend="201"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1a80275b5e8bd42b3b8e871228585ad46c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioDecoderMidi::SetFade</definition>
+        <argsstring>(int end, std::chrono::milliseconds duration) override</argsstring>
+        <name>SetFade</name>
+        <qualifiedname>AudioDecoderMidi::SetFade</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a3fd6f74451d83233449a2eab1ddc636e">SetFade</reimplements>
+        <param>
+          <type>int</type>
+          <declname>end</declname>
+        </param>
+        <param>
+          <type>std::chrono::milliseconds</type>
+          <declname>duration</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Prepares a volume fade in/out effect. To do a fade out begin must be larger then end. Call Update to do the fade.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>end</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>End volume (from 0-100) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>duration</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Fade duration in ms </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="77" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="203" bodyend="215"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1ad136ae54bc7296dd38baacd54eb6aad1" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool AudioDecoderMidi::Seek</definition>
+        <argsstring>(std::streamoff offset, std::ios_base::seekdir origin) override</argsstring>
+        <name>Seek</name>
+        <qualifiedname>AudioDecoderMidi::Seek</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a5edd0cdbf8114d680a94c269b24e79f8">Seek</reimplements>
+        <param>
+          <type>std::streamoff</type>
+          <declname>offset</declname>
+        </param>
+        <param>
+          <type>std::ios_base::seekdir</type>
+          <declname>origin</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Seeks in the midi stream. The value of offset is in Midi ticks.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>offset</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Offset to seek to </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>origin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Position to seek from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether seek was successful </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="86" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="217" bodyend="236"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1adcf3132755c620f798df97d2d7ff06ae" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool AudioDecoderMidi::IsFinished</definition>
+        <argsstring>() const override</argsstring>
+        <name>IsFinished</name>
+        <qualifiedname>AudioDecoderMidi::IsFinished</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a6dc473563b9edccf21d07a39fae4fc2d">IsFinished</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines whether the stream is finished.</para>
+<para><simplesect kind="return"><para>true stream ended </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="93" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="238" bodyend="244"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1a5cad867890bd6c40b9dfbabf53a30be3" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioDecoderMidi::Update</definition>
+        <argsstring>(std::chrono::microseconds delta) override</argsstring>
+        <name>Update</name>
+        <qualifiedname>AudioDecoderMidi::Update</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1aafccb01cf3ca20cc79941ac8a31e6c22">Update</reimplements>
+        <param>
+          <type>std::chrono::microseconds</type>
+          <declname>delta</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the volume for the fade in/out effect.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>delta</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time in us since the last call of this function. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="100" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="246" bodyend="264"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1ad32e14f9ea9ae0c074e3655cfb2a5273" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioDecoderMidi::UpdateMidi</definition>
+        <argsstring>(std::chrono::microseconds delta) override</argsstring>
+        <name>UpdateMidi</name>
+        <qualifiedname>AudioDecoderMidi::UpdateMidi</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a11f5c509ee0dbc2e9e49505c27a8caf7">UpdateMidi</reimplements>
+        <param>
+          <type>std::chrono::microseconds</type>
+          <declname>delta</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates Midi output. Only used by Midi out devices. For Midi out devices this must be called at least once per ms.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>delta</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time in us since the last call of this function. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="108" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="266" bodyend="292"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1a2763e4651c3f0e12cd0075ca603d0456" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioDecoderMidi::GetFormat</definition>
+        <argsstring>(int &amp;frequency, AudioDecoderBase::Format &amp;format, int &amp;channels) const override</argsstring>
+        <name>GetFormat</name>
+        <qualifiedname>AudioDecoderMidi::GetFormat</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a1710868b1111bf6e33e43156958e0d57">GetFormat</reimplements>
+        <param>
+          <type>int &amp;</type>
+          <declname>frequency</declname>
+        </param>
+        <param>
+          <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">AudioDecoderBase::Format</ref> &amp;</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>channels</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieves the format of the Midi decoder. It is guaranteed that these settings will stay constant the whole time.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>frequency</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the audio frequency </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the audio format </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>channels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the amount of channels </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="118" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="294" bodyend="296"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1a30d855cb540f9441b54d0b67fe7399f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool AudioDecoderMidi::SetFormat</definition>
+        <argsstring>(int frequency, AudioDecoderBase::Format format, int channels) override</argsstring>
+        <name>SetFormat</name>
+        <qualifiedname>AudioDecoderMidi::SetFormat</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1acabfabe4f0b75482cc967b19133288c2">SetFormat</reimplements>
+        <param>
+          <type>int</type>
+          <declname>frequency</declname>
+        </param>
+        <param>
+          <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">AudioDecoderBase::Format</ref></type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>channels</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Requests a preferred format from the audio decoder. Not all decoders support everything and it&apos;s recommended to use the audio hardware for audio processing. When false is returned use GetFormat to get the real format of the output data.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>frequency</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Audio frequency </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Audio format </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>channels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of channels </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true when all settings were set, otherwise false (use GetFormat) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="132" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="298" bodyend="301"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1a0e8d404c388e0c85a962f0a2db1bf223" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool AudioDecoderMidi::SetPitch</definition>
+        <argsstring>(int pitch) override</argsstring>
+        <name>SetPitch</name>
+        <qualifiedname>AudioDecoderMidi::SetPitch</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a81ca81aceceef4b9cc8a6818d3d199ca">SetPitch</reimplements>
+        <param>
+          <type>int</type>
+          <declname>pitch</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the pitch multiplier. 100 = normal speed 200 = double speed and so on</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pitch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pitch multiplier to use </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if pitch was set, false otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="142" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="303" bodyend="313"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1a41860bbb411069be35cf2698f9468e55" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int AudioDecoderMidi::GetTicks</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetTicks</name>
+        <qualifiedname>AudioDecoderMidi::GetTicks</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1acecf36942396a6f78a9839b2dc2315db">GetTicks</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Position in the stream in midi ticks. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="147" column="5" bodyfile="audio_decoder_midi.cpp" bodystart="315" bodyend="319"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1addd017b567edf7dd98751d62d8ad555a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AudioDecoderMidi::Reset</definition>
+        <argsstring>()</argsstring>
+        <name>Reset</name>
+        <qualifiedname>AudioDecoderMidi::Reset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Generate a MIDI reset event so the device doesn&apos;t leave notes playing or keeps any state. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="153" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="321" bodyend="328"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1acd33c1f514771f19370918335c292c57" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool AudioDecoderMidi::IsPaused</definition>
+        <argsstring>() const</argsstring>
+        <name>IsPaused</name>
+        <qualifiedname>AudioDecoderMidi::IsPaused</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Whether the MIDI playback is paused </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="158" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="330" bodyend="332"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_audio_decoder_midi_1aae017121b1cf5d5f5c75386fe5dd6875" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int AudioDecoderMidi::FillBuffer</definition>
+        <argsstring>(uint8_t *buffer, int length) override</argsstring>
+        <name>FillBuffer</name>
+        <qualifiedname>AudioDecoderMidi::FillBuffer</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1aa06a5130b4b45e44a364162230953636">FillBuffer</reimplements>
+        <param>
+          <type>uint8_t *</type>
+          <declname>buffer</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called by the Decode functions to fill the buffer.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>buffer</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Buffer to fill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Buffer size </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>number of bytes read or -1 on error </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="165" column="5" bodyfile="audio_decoder_midi.cpp" bodystart="334" bodyend="374"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1a1ea5d2ce749fe25c3ccd13204629c62e" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AudioDecoderMidi::SendMessageToAllChannels</definition>
+        <argsstring>(uint32_t midi_msg)</argsstring>
+        <name>SendMessageToAllChannels</name>
+        <qualifiedname>AudioDecoderMidi::SendMessageToAllChannels</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>midi_msg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="167" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="376" bodyend="382"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1a84cf46ba53178cdeef01ba99c720dbe0" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioDecoderMidi::midi_message</definition>
+        <argsstring>(int, uint_least32_t message) override</argsstring>
+        <name>midi_message</name>
+        <qualifiedname>AudioDecoderMidi::midi_message</qualifiedname>
+        <reimplements refid="classmidisequencer_1_1output_1a5296a8eab74c523cba3072158777ef97">midi_message</reimplements>
+        <param>
+          <type>int</type>
+        </param>
+        <param>
+          <type>uint_least32_t</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="170" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="384" bodyend="399"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1a9a9efc44e211cc0f83d8d59c09fbfec9" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioDecoderMidi::sysex_message</definition>
+        <argsstring>(int, const void *data, std::size_t size) override</argsstring>
+        <name>sysex_message</name>
+        <qualifiedname>AudioDecoderMidi::sysex_message</qualifiedname>
+        <reimplements refid="classmidisequencer_1_1output_1a015fed410423611559440a0046501ac1">sysex_message</reimplements>
+        <param>
+          <type>int</type>
+        </param>
+        <param>
+          <type>const void *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="171" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="401" bodyend="403"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1a61452030bdb0fb8699fc25cc8e0c7377" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioDecoderMidi::meta_event</definition>
+        <argsstring>(int, const void *, std::size_t) override</argsstring>
+        <name>meta_event</name>
+        <qualifiedname>AudioDecoderMidi::meta_event</qualifiedname>
+        <reimplements refid="classmidisequencer_1_1output_1a232ba8f79db59b14bcd7f870cd8d559a">meta_event</reimplements>
+        <param>
+          <type>int</type>
+          <defname>event</defname>
+        </param>
+        <param>
+          <type>const void *</type>
+          <defname>data</defname>
+        </param>
+        <param>
+          <type>std::size_t</type>
+          <defname>size</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="172" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="405" bodyend="415"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1ac4507aec194efae1fdf90f6113f6f990" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioDecoderMidi::reset</definition>
+        <argsstring>() override</argsstring>
+        <name>reset</name>
+        <qualifiedname>AudioDecoderMidi::reset</qualifiedname>
+        <reimplements refid="classmidisequencer_1_1output_1ab0a77944817bba99243b8556a4371462">reset</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="173" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="417" bodyend="444"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_decoder_midi_1a70050ae7a69c2ab9cab0960210189ed5" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AudioDecoderMidi::reset_tempos_after_loop</definition>
+        <argsstring>()</argsstring>
+        <name>reset_tempos_after_loop</name>
+        <qualifiedname>AudioDecoderMidi::reset_tempos_after_loop</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder_midi.h" line="174" column="6" bodyfile="audio_decoder_midi.cpp" bodystart="446" bodyend="458"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Manages sequencing MIDI files and emitting MIDI events </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>AudioDecoderBase</label>
+        <link refid="class_audio_decoder_base"/>
+      </node>
+      <node id="1">
+        <label>AudioDecoderMidi</label>
+        <link refid="class_audio_decoder_midi"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>midisequencer::output</label>
+        <link refid="classmidisequencer_1_1output"/>
+        <childnode refid="4" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>midisequencer::uncopyable</label>
+        <link refid="classmidisequencer_1_1uncopyable"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>AudioDecoderBase</label>
+        <link refid="class_audio_decoder_base"/>
+      </node>
+      <node id="1">
+        <label>AudioDecoderMidi</label>
+        <link refid="class_audio_decoder_midi"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>midisequencer::output</label>
+        <link refid="classmidisequencer_1_1output"/>
+        <childnode refid="4" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>midisequencer::uncopyable</label>
+        <link refid="classmidisequencer_1_1uncopyable"/>
+      </node>
+    </collaborationgraph>
+    <location file="audio_decoder_midi.h" line="30" column="1" bodyfile="audio_decoder_midi.h" bodystart="30" bodyend="214"/>
+    <listofallmembers>
+      <member refid="class_audio_decoder_base_1ad75c2fadcdccc9bdf89626e9689dc73d" prot="public" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>AdjustVolume</name></member>
+      <member refid="class_audio_decoder_midi_1a324d5aee54d0ab0bf2325ba781090659" prot="public" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>AudioDecoderMidi</name></member>
+      <member refid="class_audio_decoder_midi_1a0c37fec35f393a8caf6782ff32fbf54b" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>channel_volumes</name></member>
+      <member refid="class_audio_decoder_base_1a176c25bf79b3e978665d01f649741dca" prot="public" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>Decode</name></member>
+      <member refid="class_audio_decoder_base_1aaec31de02d5329099c26005f8c365fff" prot="protected" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>Decode</name></member>
+      <member refid="class_audio_decoder_base_1a675f8d5337b547549b2c11ad63acffbd" prot="public" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>DecodeAll</name></member>
+      <member refid="class_audio_decoder_midi_1a36fb724571e59ea52ccf0f1b0d82ec5a" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>delta_volume_step</name></member>
+      <member refid="class_audio_decoder_base_1ad2ce3dacf661c0849a08d1cad2e598d8" prot="protected" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>error_message</name></member>
+      <member refid="class_audio_decoder_midi_1a2257f8365d42fa24d2af4771ddbce9de" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>fade_steps</name></member>
+      <member refid="class_audio_decoder_midi_1a94881cc5c6e5f6ae03b273d0abfb77d5" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>fade_volume_end</name></member>
+      <member refid="class_audio_decoder_midi_1a2af192ff1bd8d4eb40d09d4311907f0b" prot="public" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>file_buffer</name></member>
+      <member refid="class_audio_decoder_midi_1a5af204dc7c9d0c42a89aa66dbfc7a7d2" prot="public" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>file_buffer_pos</name></member>
+      <member refid="class_audio_decoder_midi_1aae017121b1cf5d5f5c75386fe5dd6875" prot="private" virt="virtual"><scope>AudioDecoderMidi</scope><name>FillBuffer</name></member>
+      <member refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" prot="public" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>Format</name></member>
+      <member refid="class_audio_decoder_midi_1a67e23e524260144581b6d7bbf69a6135" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>frequency</name></member>
+      <member refid="class_audio_decoder_base_1a6459a4a6bbef9a3c1e114687e1ee38a7" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>GetError</name></member>
+      <member refid="class_audio_decoder_midi_1a2763e4651c3f0e12cd0075ca603d0456" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>GetFormat</name></member>
+      <member refid="class_audio_decoder_base_1ada062070c78b1298131fc11bfb84e4b3" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>GetLoopCount</name></member>
+      <member refid="class_audio_decoder_base_1a0dc76b0664e5db6bbf08f15feac0b2f7" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>GetLooping</name></member>
+      <member refid="class_audio_decoder_base_1a2296a26d68cfe1f139cf82aa27c38019" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>GetPitch</name></member>
+      <member refid="class_audio_decoder_midi_1a41860bbb411069be35cf2698f9468e55" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>GetTicks</name></member>
+      <member refid="class_audio_decoder_base_1ad6fee4301b53a5891a4b37e6cab958f1" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>GetType</name></member>
+      <member refid="class_audio_decoder_midi_1a3c0d04688fbb19c27739bc4695cff4aa" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>GetVolume</name></member>
+      <member refid="class_audio_decoder_midi_1a73436d8d7d9db13ca4d0bb7bfe62587d" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>global_volume</name></member>
+      <member refid="class_audio_decoder_midi_1adcf3132755c620f798df97d2d7ff06ae" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>IsFinished</name></member>
+      <member refid="class_audio_decoder_midi_1acd33c1f514771f19370918335c292c57" prot="public" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>IsPaused</name></member>
+      <member refid="class_audio_decoder_midi_1a8701077322abfb0b825df9c7a737d85b" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>last_fade_mtime</name></member>
+      <member refid="class_audio_decoder_midi_1a9ecb566d8112860bf0c5071df11aa5d9" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>log_volume</name></member>
+      <member refid="class_audio_decoder_base_1ab8feafa866394875dc7c538b79021025" prot="protected" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>loop_count</name></member>
+      <member refid="class_audio_decoder_base_1a31c8df4d0267b8363daa9da00d2ed2f3" prot="protected" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>looping</name></member>
+      <member refid="class_audio_decoder_midi_1a0ae734d9ee5b1cce3b545c69f340dc4e" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>loops_to_end</name></member>
+      <member refid="class_audio_decoder_midi_1a61452030bdb0fb8699fc25cc8e0c7377" prot="private" virt="virtual"><scope>AudioDecoderMidi</scope><name>meta_event</name></member>
+      <member refid="class_audio_decoder_midi_1a8285a0aa34889efa8cb8d6e1a8a49c76" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>midi_default_tempo</name></member>
+      <member refid="class_audio_decoder_midi_1a84cf46ba53178cdeef01ba99c720dbe0" prot="private" virt="virtual"><scope>AudioDecoderMidi</scope><name>midi_message</name></member>
+      <member refid="class_audio_decoder_midi_1ac55d55bf182cf2830f31044c77d45430" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>mididec</name></member>
+      <member refid="class_audio_decoder_midi_1ae87158e4cdb348508aa456a519401dbf" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>mtime</name></member>
+      <member refid="class_audio_decoder_base_1a0735cf7d77356fbc1a2735804211a9c8" prot="protected" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>music_type</name></member>
+      <member refid="class_audio_decoder_midi_1a5a6d143398f644c36161241d1de6dbfa" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>Open</name></member>
+      <member refid="class_audio_decoder_midi_1ab8c699453c527ff80a30d823210c5197" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>Pause</name></member>
+      <member refid="class_audio_decoder_midi_1a196696f55a9650a68f82efbe9a854d26" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>paused</name></member>
+      <member refid="class_audio_decoder_midi_1a3ab011041244ae2fbc1e6d55a4fb5ba0" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>pitch</name></member>
+      <member refid="class_audio_decoder_midi_1addd017b567edf7dd98751d62d8ad555a" prot="public" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>Reset</name></member>
+      <member refid="class_audio_decoder_midi_1ac4507aec194efae1fdf90f6113f6f990" prot="private" virt="virtual"><scope>AudioDecoderMidi</scope><name>reset</name></member>
+      <member refid="class_audio_decoder_midi_1a70050ae7a69c2ab9cab0960210189ed5" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>reset_tempos_after_loop</name></member>
+      <member refid="class_audio_decoder_midi_1a32c9b07bc5c77c6090d40bb225065851" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>Resume</name></member>
+      <member refid="class_audio_decoder_base_1a2c9d165295deeb0cd12fea13cdd60467" prot="public" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>Rewind</name></member>
+      <member refid="class_audio_decoder_midi_1ad136ae54bc7296dd38baacd54eb6aad1" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>Seek</name></member>
+      <member refid="class_audio_decoder_midi_1a1ea5d2ce749fe25c3ccd13204629c62e" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>SendMessageToAllChannels</name></member>
+      <member refid="class_audio_decoder_midi_1abe3e1085333075cced58bb994626ba05" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>seq</name></member>
+      <member refid="class_audio_decoder_midi_1a80275b5e8bd42b3b8e871228585ad46c" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>SetFade</name></member>
+      <member refid="class_audio_decoder_midi_1a30d855cb540f9441b54d0b67fe7399f9" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>SetFormat</name></member>
+      <member refid="class_audio_decoder_base_1a840273aa05f6b6619863f9b7af142034" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>SetLooping</name></member>
+      <member refid="class_audio_decoder_midi_1a0e8d404c388e0c85a962f0a2db1bf223" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>SetPitch</name></member>
+      <member refid="class_audio_decoder_midi_1aa439cd91a0e8dfdebfce30e2a8e26f5f" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>SetVolume</name></member>
+      <member refid="class_audio_decoder_midi_1a9a9efc44e211cc0f83d8d59c09fbfec9" prot="private" virt="virtual"><scope>AudioDecoderMidi</scope><name>sysex_message</name></member>
+      <member refid="class_audio_decoder_base_1a786745c4d49ed9146579c72a8b63ddd7" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>Tell</name></member>
+      <member refid="class_audio_decoder_midi_1aaa90d9d5f160640416ce3d456b35a95a" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>tempo</name></member>
+      <member refid="class_audio_decoder_midi_1a5cad867890bd6c40b9dfbabf53a30be3" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>Update</name></member>
+      <member refid="class_audio_decoder_midi_1ad32e14f9ea9ae0c074e3655cfb2a5273" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>UpdateMidi</name></member>
+      <member refid="class_audio_decoder_midi_1a6d9cf10addf0943b5df3f182b8432c9f" prot="private" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>volume</name></member>
+      <member refid="class_audio_decoder_base_1ab939d02c28d911d06a0c68087afa90aa" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>WasInited</name></member>
+      <member refid="class_audio_decoder_base_1a9b7f3034af094a9d71e48ac220b4ca6a" prot="public" virt="virtual"><scope>AudioDecoderMidi</scope><name>~AudioDecoderBase</name></member>
+      <member refid="class_audio_decoder_midi_1aaea023b7a68ee8acf4ee5e4e256dd86e" prot="public" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>~AudioDecoderMidi</name></member>
+      <member refid="classmidisequencer_1_1output_1a4aadd64c0c016c380a277d19357e552e" prot="protected" virt="non-virtual"><scope>AudioDecoderMidi</scope><name>~output</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

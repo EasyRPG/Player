@@ -1,0 +1,456 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_rect" kind="class" language="C++" prot="public">
+    <compoundname>Rect</compoundname>
+    <includes refid="rect_8h" local="no">rect.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_rect_1a64d1ef14e429e1816539de4c54361e55" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Rect::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <qualifiedname>Rect::x</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>X coordinate. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rect.h" line="94" column="5" bodyfile="rect.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_rect_1a1e37b6f8a4fb0d68ba22c8fffffab0a4" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Rect::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <qualifiedname>Rect::y</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Y coordinate. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rect.h" line="97" column="5" bodyfile="rect.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_rect_1a367714e71d566668addb140c7981b5bc" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Rect::width</definition>
+        <argsstring></argsstring>
+        <name>width</name>
+        <qualifiedname>Rect::width</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Width. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rect.h" line="100" column="5" bodyfile="rect.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_rect_1ad79d7bf12771a81627a672452437011d" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Rect::height</definition>
+        <argsstring></argsstring>
+        <name>height</name>
+        <qualifiedname>Rect::height</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Height. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rect.h" line="103" column="5" bodyfile="rect.h" bodystart="103" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_rect_1aa2f7a625dfe45788037571d87ab17839" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>Rect::Rect</definition>
+        <argsstring>()=default</argsstring>
+        <name>Rect</name>
+        <qualifiedname>Rect::Rect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor. All values are set to 0. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rect.h" line="33" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="class_rect_1a8871b6df2dea25cdca982134c75e3d23" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>Rect::Rect</definition>
+        <argsstring>(int x, int y, int width, int height)</argsstring>
+        <name>Rect</name>
+        <qualifiedname>Rect::Rect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>initial x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>initial y. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>width</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>initial width. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>height</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>initial height. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rect.h" line="43" column="11" bodyfile="rect.h" bodystart="151" bodyend="152"/>
+      </memberdef>
+      <memberdef kind="function" id="class_rect_1a933d2c348e23b66a5be7a01d152e5da8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Rect::Adjust</definition>
+        <argsstring>(int width, int height)</argsstring>
+        <name>Adjust</name>
+        <qualifiedname>Rect::Adjust</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adjusts rect bounds, trimming it so it is contained inside the given size.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>width</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>max width. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>height</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>max height. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rect.h" line="52" column="6" bodyfile="rect.cpp" bodystart="21" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="class_rect_1ab2f6e24cdee5db4fce52a7791e85dd4b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Rect::Adjust</definition>
+        <argsstring>(const Rect &amp;rect)</argsstring>
+        <name>Adjust</name>
+        <qualifiedname>Rect::Adjust</qualifiedname>
+        <param>
+          <type>const <ref refid="class_rect" kindref="compound">Rect</ref> &amp;</type>
+          <declname>rect</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adjusts rect bounds, trimming it so it is contained inside the given rectangle.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>bounding rectangle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rect.h" line="60" column="6" bodyfile="rect.cpp" bodystart="36" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="class_rect_1af70a8c1e997360c6a2b38bb4739919ee" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Rect::IsEmpty</definition>
+        <argsstring>() const</argsstring>
+        <name>IsEmpty</name>
+        <qualifiedname>Rect::IsEmpty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if rect is empty.</para>
+<para><simplesect kind="return"><para>whether the rect is empty. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rect.h" line="67" column="6" bodyfile="rect.cpp" bodystart="54" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="class_rect_1acac996cb9fcdf8cd1f7f3ecc3936d534" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Rect::IsOutOfBounds</definition>
+        <argsstring>(int width, int height) const</argsstring>
+        <name>IsOutOfBounds</name>
+        <qualifiedname>Rect::IsOutOfBounds</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if rect is totally outside the given size.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>width</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>max width. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>height</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>max height. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether the rect is outside of the scope. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rect.h" line="76" column="6" bodyfile="rect.cpp" bodystart="58" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="class_rect_1a94273f0749eaefe85a12b2d8a3335a31" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Rect::IsOutOfBounds</definition>
+        <argsstring>(Rect const &amp;rect) const</argsstring>
+        <name>IsOutOfBounds</name>
+        <qualifiedname>Rect::IsOutOfBounds</qualifiedname>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> const &amp;</type>
+          <declname>rect</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if rect is totally outside the given rect.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>rect. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether the rect is outside of the scope. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rect.h" line="84" column="6" bodyfile="rect.cpp" bodystart="65" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="class_rect_1a2d011a67f2992217b7141f2511de71da" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect Rect::GetSubRect</definition>
+        <argsstring>(Rect rect) const</argsstring>
+        <name>GetSubRect</name>
+        <qualifiedname>Rect::GetSubRect</qualifiedname>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+          <declname>rect</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets a sub rect from a given rect.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>rect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>rect. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rect.h" line="91" column="6" bodyfile="rect.cpp" bodystart="72" bodyend="97"/>
+      </memberdef>
+      <memberdef kind="function" id="class_rect_1a9a2b6f45cc9561bbe97843b7622f490e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Rect::Double</definition>
+        <argsstring>()</argsstring>
+        <name>Double</name>
+        <qualifiedname>Rect::Double</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Doubles the coordinates of a rectangle. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rect.h" line="121" column="6" bodyfile="rect.h" bodystart="154" bodyend="159"/>
+      </memberdef>
+      <memberdef kind="function" id="class_rect_1a36aaeaeb1f17d73210dcf6324fe89e6e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Rect::Halve</definition>
+        <argsstring>()</argsstring>
+        <name>Halve</name>
+        <qualifiedname>Rect::Halve</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Halves the coordinates of a rectangle. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rect.h" line="126" column="6" bodyfile="rect.h" bodystart="161" bodyend="166"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_rect_1ab73e4112dd185671324f041549d63110" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Rect::AdjustRectangles</definition>
+        <argsstring>(Rect &amp;src, Rect &amp;dst, const Rect &amp;ref)</argsstring>
+        <name>AdjustRectangles</name>
+        <qualifiedname>Rect::AdjustRectangles</qualifiedname>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> &amp;</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_rect" kindref="compound">Rect</ref> &amp;</type>
+          <declname>ref</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adjusts a source/destination pair of rectangles. src is adjusted to fit within ref. dst will have the same width and height as src. Any adjustments made to src are also made to dst.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dst</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>rect. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ref</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>rect. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if the rectangles are non-empty. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rect.h" line="116" column="13" bodyfile="rect.cpp" bodystart="99" bodyend="128"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_rect" kindref="compound">Rect</ref>. </para>
+    </detaileddescription>
+    <location file="rect.h" line="28" column="1" bodyfile="rect.h" bodystart="28" bodyend="127"/>
+    <listofallmembers>
+      <member refid="class_rect_1a933d2c348e23b66a5be7a01d152e5da8" prot="public" virt="non-virtual"><scope>Rect</scope><name>Adjust</name></member>
+      <member refid="class_rect_1ab2f6e24cdee5db4fce52a7791e85dd4b" prot="public" virt="non-virtual"><scope>Rect</scope><name>Adjust</name></member>
+      <member refid="class_rect_1ab73e4112dd185671324f041549d63110" prot="public" virt="non-virtual"><scope>Rect</scope><name>AdjustRectangles</name></member>
+      <member refid="class_rect_1a9a2b6f45cc9561bbe97843b7622f490e" prot="public" virt="non-virtual"><scope>Rect</scope><name>Double</name></member>
+      <member refid="class_rect_1a2d011a67f2992217b7141f2511de71da" prot="public" virt="non-virtual"><scope>Rect</scope><name>GetSubRect</name></member>
+      <member refid="class_rect_1a36aaeaeb1f17d73210dcf6324fe89e6e" prot="public" virt="non-virtual"><scope>Rect</scope><name>Halve</name></member>
+      <member refid="class_rect_1ad79d7bf12771a81627a672452437011d" prot="public" virt="non-virtual"><scope>Rect</scope><name>height</name></member>
+      <member refid="class_rect_1af70a8c1e997360c6a2b38bb4739919ee" prot="public" virt="non-virtual"><scope>Rect</scope><name>IsEmpty</name></member>
+      <member refid="class_rect_1acac996cb9fcdf8cd1f7f3ecc3936d534" prot="public" virt="non-virtual"><scope>Rect</scope><name>IsOutOfBounds</name></member>
+      <member refid="class_rect_1a94273f0749eaefe85a12b2d8a3335a31" prot="public" virt="non-virtual"><scope>Rect</scope><name>IsOutOfBounds</name></member>
+      <member refid="class_rect_1aa2f7a625dfe45788037571d87ab17839" prot="public" virt="non-virtual"><scope>Rect</scope><name>Rect</name></member>
+      <member refid="class_rect_1a8871b6df2dea25cdca982134c75e3d23" prot="public" virt="non-virtual"><scope>Rect</scope><name>Rect</name></member>
+      <member refid="class_rect_1a367714e71d566668addb140c7981b5bc" prot="public" virt="non-virtual"><scope>Rect</scope><name>width</name></member>
+      <member refid="class_rect_1a64d1ef14e429e1816539de4c54361e55" prot="public" virt="non-virtual"><scope>Rect</scope><name>x</name></member>
+      <member refid="class_rect_1a1e37b6f8a4fb0d68ba22c8fffffab0a4" prot="public" virt="non-virtual"><scope>Rect</scope><name>y</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

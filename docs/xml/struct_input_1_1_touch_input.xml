@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_input_1_1_touch_input" kind="struct" language="C++" prot="public">
+    <compoundname>Input::TouchInput</compoundname>
+    <includes refid="input__source_8h" local="no">input_source.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_input_1_1_touch_input_1a92cef9f15be1f6aae6e72d233fa02f86" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Input::TouchInput::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <qualifiedname>Input::TouchInput::id</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="67" column="5" bodyfile="input_source.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_input_1_1_touch_input_1a32529385691c0b98ae57b531a16395a1" prot="public" static="no" mutable="no">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Input::TouchInput::position</definition>
+        <argsstring></argsstring>
+        <name>position</name>
+        <qualifiedname>Input::TouchInput::position</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="68" column="7" bodyfile="input_source.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_input_1_1_touch_input_1a5c3ddb68364c79cbd221c8c697570f32" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Input::TouchInput::pressed</definition>
+        <argsstring></argsstring>
+        <name>pressed</name>
+        <qualifiedname>Input::TouchInput::pressed</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="69" column="6" bodyfile="input_source.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_input_1_1_touch_input_1ad27f150cd2821633c441a752888f9392" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Input::TouchInput::prev_frame_pressed</definition>
+        <argsstring></argsstring>
+        <name>prev_frame_pressed</name>
+        <qualifiedname>Input::TouchInput::prev_frame_pressed</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="70" column="6" bodyfile="input_source.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_input_1_1_touch_input_1a4fe9e65fc2e460c5c699d00d7467f92c" prot="public" static="no" mutable="no">
+        <type><ref refid="class_game___clock_1a7da5a97294e9d1b3dddb617d90eea63e" kindref="member">Game_Clock::time_point</ref></type>
+        <definition>Game_Clock::time_point Input::TouchInput::touch_begin</definition>
+        <argsstring></argsstring>
+        <name>touch_begin</name>
+        <qualifiedname>Input::TouchInput::touch_begin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="71" column="24" bodyfile="input_source.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_input_1_1_touch_input_1a411b629706eebd73484690acfc4c2351" prot="public" static="no" mutable="no">
+        <type><ref refid="class_game___clock_1a7da5a97294e9d1b3dddb617d90eea63e" kindref="member">Game_Clock::time_point</ref></type>
+        <definition>Game_Clock::time_point Input::TouchInput::touch_end</definition>
+        <argsstring></argsstring>
+        <name>touch_end</name>
+        <qualifiedname>Input::TouchInput::touch_end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="72" column="24" bodyfile="input_source.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_input_1_1_touch_input_1a5372bf4670a7dbd6482fd98bbb7d0376" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::TouchInput::Down</definition>
+        <argsstring>(int id, int x, int y)</argsstring>
+        <name>Down</name>
+        <qualifiedname>Input::TouchInput::Down</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="63" column="6" bodyfile="input_source.cpp" bodystart="342" bodyend="346"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_input_1_1_touch_input_1ae73884edb590858fd34e5c8652eb2ba7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::TouchInput::Up</definition>
+        <argsstring>()</argsstring>
+        <name>Up</name>
+        <qualifiedname>Input::TouchInput::Up</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="64" column="6" bodyfile="input_source.cpp" bodystart="348" bodyend="351"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>Input::TouchInput</label>
+        <link refid="struct_input_1_1_touch_input"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+    </collaborationgraph>
+    <location file="input_source.h" line="62" column="1" bodyfile="input_source.h" bodystart="62" bodyend="73"/>
+    <listofallmembers>
+      <member refid="struct_input_1_1_touch_input_1a5372bf4670a7dbd6482fd98bbb7d0376" prot="public" virt="non-virtual"><scope>Input::TouchInput</scope><name>Down</name></member>
+      <member refid="struct_input_1_1_touch_input_1a92cef9f15be1f6aae6e72d233fa02f86" prot="public" virt="non-virtual"><scope>Input::TouchInput</scope><name>id</name></member>
+      <member refid="struct_input_1_1_touch_input_1a32529385691c0b98ae57b531a16395a1" prot="public" virt="non-virtual"><scope>Input::TouchInput</scope><name>position</name></member>
+      <member refid="struct_input_1_1_touch_input_1a5c3ddb68364c79cbd221c8c697570f32" prot="public" virt="non-virtual"><scope>Input::TouchInput</scope><name>pressed</name></member>
+      <member refid="struct_input_1_1_touch_input_1ad27f150cd2821633c441a752888f9392" prot="public" virt="non-virtual"><scope>Input::TouchInput</scope><name>prev_frame_pressed</name></member>
+      <member refid="struct_input_1_1_touch_input_1a4fe9e65fc2e460c5c699d00d7467f92c" prot="public" virt="non-virtual"><scope>Input::TouchInput</scope><name>touch_begin</name></member>
+      <member refid="struct_input_1_1_touch_input_1a411b629706eebd73484690acfc4c2351" prot="public" virt="non-virtual"><scope>Input::TouchInput</scope><name>touch_end</name></member>
+      <member refid="struct_input_1_1_touch_input_1ae73884edb590858fd34e5c8652eb2ba7" prot="public" virt="non-virtual"><scope>Input::TouchInput</scope><name>Up</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

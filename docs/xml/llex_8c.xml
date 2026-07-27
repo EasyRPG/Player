@@ -1,0 +1,1453 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="llex_8c" kind="file" language="C++">
+    <compoundname>llex.c</compoundname>
+    <includes refid="lprefix_8h" local="yes">lprefix.h</includes>
+    <includes local="no">locale.h</includes>
+    <includes local="no">string.h</includes>
+    <includes refid="lua_8h" local="yes">lua.h</includes>
+    <includes refid="lctype_8h" local="yes">lctype.h</includes>
+    <includes refid="ldebug_8h" local="yes">ldebug.h</includes>
+    <includes refid="ldo_8h" local="yes">ldo.h</includes>
+    <includes refid="lgc_8h" local="yes">lgc.h</includes>
+    <includes refid="llex_8h" local="yes">llex.h</includes>
+    <includes refid="lobject_8h" local="yes">lobject.h</includes>
+    <includes refid="lparser_8h" local="yes">lparser.h</includes>
+    <includes refid="lstate_8h" local="yes">lstate.h</includes>
+    <includes refid="lstring_8h" local="yes">lstring.h</includes>
+    <includes refid="ltable_8h" local="yes">ltable.h</includes>
+    <includes refid="lzio_8h" local="yes">lzio.h</includes>
+    <incdepgraph>
+      <node id="10">
+        <label>lctype.h</label>
+        <link refid="lctype_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>ldebug.h</label>
+        <link refid="ldebug_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>ldo.h</label>
+        <link refid="ldo_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>lgc.h</label>
+        <link refid="lgc_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/llex.c</label>
+        <link refid="llex_8c"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>llex.h</label>
+        <link refid="llex_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>lmem.h</label>
+        <link refid="lmem_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>lobject.h</label>
+        <link refid="lobject_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>lparser.h</label>
+        <link refid="lparser_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>lprefix.h</label>
+        <link refid="lprefix_8h"/>
+      </node>
+      <node id="13">
+        <label>lstate.h</label>
+        <link refid="lstate_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>lstring.h</label>
+        <link refid="lstring_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>ltable.h</label>
+        <link refid="ltable_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>ltm.h</label>
+        <link refid="ltm_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>lzio.h</label>
+        <link refid="lzio_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>limits.h</label>
+      </node>
+      <node id="3">
+        <label>locale.h</label>
+      </node>
+      <node id="18">
+        <label>signal.h</label>
+      </node>
+      <node id="6">
+        <label>stdarg.h</label>
+      </node>
+      <node id="7">
+        <label>stddef.h</label>
+      </node>
+      <node id="4">
+        <label>string.h</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="llex_8c_1a2e2a05c4292ce934408b59470a78472d" prot="public" static="no">
+        <name>llex_c</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="7" column="9" bodyfile="leasy/lua/llex.c" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llex_8c_1abf0b3947b59218777a8e928a10be205b" prot="public" static="no">
+        <name>LUA_CORE</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="8" column="9" bodyfile="leasy/lua/llex.c" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" prot="public" static="no">
+        <name>next</name>
+        <param><defname>ls</defname></param>
+        <initializer>(ls-&gt;current = <ref refid="lzio_8h_1aecca8ea1e6dc0c97b458f77c0e3491de" kindref="member">zgetc</ref>(ls-&gt;z))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="32" column="9" bodyfile="leasy/lua/llex.c" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llex_8c_1aa0320f75a72bf131ae24d39111ac9938" prot="public" static="no">
+        <name>LUA_MINBUFFER</name>
+        <initializer>32</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="37" column="9" bodyfile="leasy/lua/llex.c" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llex_8c_1aee0dbe3090a8bf4b0ecd633781c5a09a" prot="public" static="no">
+        <name>currIsNewline</name>
+        <param><defname>ls</defname></param>
+        <initializer>(ls-&gt;current == &apos;\n&apos; || ls-&gt;current == &apos;\r&apos;)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="41" column="9" bodyfile="leasy/lua/llex.c" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" prot="public" static="no">
+        <name>save_and_next</name>
+        <param><defname>ls</defname></param>
+        <initializer>(save(ls, ls-&gt;current), <ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="56" column="9" bodyfile="leasy/lua/llex.c" bodystart="56" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="llex_8c_1a257ea0c8a6651032b46ea8e5d4f8080f" prot="public" static="yes" mutable="no">
+        <type>const char *const</type>
+        <definition>const char* const luaX_tokens[]</definition>
+        <argsstring>[]</argsstring>
+        <name>luaX_tokens</name>
+        <initializer>                                     = {
+    &quot;and&quot;, &quot;break&quot;, &quot;do&quot;, &quot;else&quot;, &quot;elseif&quot;,
+    &quot;end&quot;, &quot;false&quot;, &quot;for&quot;, &quot;function&quot;, &quot;global&quot;, &quot;goto&quot;, &quot;if&quot;,
+    &quot;in&quot;, &quot;local&quot;, &quot;nil&quot;, &quot;not&quot;, &quot;or&quot;, &quot;repeat&quot;,
+    &quot;return&quot;, &quot;then&quot;, &quot;true&quot;, &quot;until&quot;, &quot;while&quot;,
+    &quot;//&quot;, &quot;..&quot;, &quot;...&quot;, &quot;==&quot;, &quot;&gt;=&quot;, &quot;&lt;=&quot;, &quot;~=&quot;,
+    &quot;&lt;&lt;&quot;, &quot;&gt;&gt;&quot;, &quot;::&quot;, &quot;&lt;eof&gt;&quot;,
+    &quot;&lt;number&gt;&quot;, &quot;&lt;integer&gt;&quot;, &quot;&lt;name&gt;&quot;, &quot;&lt;string&gt;&quot;
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="45" column="25" bodyfile="leasy/lua/llex.c" bodystart="45" bodyend="53"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="llex_8c_1a67bb1f3225ffe5738fef1c3d34879735" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref></type>
+        <definition>static l_noret lexerror</definition>
+        <argsstring>(LexState *ls, const char *msg, int token)</argsstring>
+        <name>lexerror</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>msg</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>token</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="116" column="16" bodyfile="leasy/lua/llex.c" bodystart="116" bodyend="121" declfile="leasy/lua/llex.c" declline="59" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1a3418da69613c587915ff780b0ec3744b" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void save</definition>
+        <argsstring>(LexState *ls, int c)</argsstring>
+        <name>save</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="62" column="13" bodyfile="leasy/lua/llex.c" bodystart="62" bodyend="72"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1a50834f7eb4b2ac79c8df048988749abe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void luaX_init</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaX_init</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="75" column="6" bodyfile="leasy/lua/llex.c" bodystart="75" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1ae0344e32c36c15c39ad59d97b428f8c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const char *</type>
+        <definition>const char * luaX_token2str</definition>
+        <argsstring>(LexState *ls, int token)</argsstring>
+        <name>luaX_token2str</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>token</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="87" column="12" bodyfile="leasy/lua/llex.c" bodystart="87" bodyend="101"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1adfca5a26da33d5e356bb37f702e8c809" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const char *</type>
+        <definition>static const char * txtToken</definition>
+        <argsstring>(LexState *ls, int token)</argsstring>
+        <name>txtToken</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>token</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="104" column="19" bodyfile="leasy/lua/llex.c" bodystart="104" bodyend="113"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1aa5303ae41cbf1a2d9ef2f422751f85be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref></type>
+        <definition>l_noret luaX_syntaxerror</definition>
+        <argsstring>(LexState *ls, const char *msg)</argsstring>
+        <name>luaX_syntaxerror</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>msg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="124" column="9" bodyfile="leasy/lua/llex.c" bodystart="124" bodyend="126"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1ae5a2855c02d4b50a85c4bd19244287b9" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>static TString * anchorstr</definition>
+        <argsstring>(LexState *ls, TString *ts)</argsstring>
+        <name>anchorstr</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+          <declname>ts</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="135" column="16" bodyfile="leasy/lua/llex.c" bodystart="135" bodyend="150"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1a51ec8735f32a452d48a77e71e9dd0a3b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>TString * luaX_newstring</definition>
+        <argsstring>(LexState *ls, const char *str, size_t l)</argsstring>
+        <name>luaX_newstring</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>str</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>l</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="156" column="9" bodyfile="leasy/lua/llex.c" bodystart="156" bodyend="158"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1ac030febfa2dc867e1b48f3328aec45b3" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void inclinenumber</definition>
+        <argsstring>(LexState *ls)</argsstring>
+        <name>inclinenumber</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="165" column="13" bodyfile="leasy/lua/llex.c" bodystart="165" bodyend="173"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1a169c85d08461f83e3f8a8c32dcb3d151" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void luaX_setinput</definition>
+        <argsstring>(lua_State *L, LexState *ls, ZIO *z, TString *source, int firstchar)</argsstring>
+        <name>luaX_setinput</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref> *</type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>firstchar</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="176" column="6" bodyfile="leasy/lua/llex.c" bodystart="176" bodyend="197"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1a7ffd3be1c90014b2b7645e9c7c9641ff" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int check_next1</definition>
+        <argsstring>(LexState *ls, int c)</argsstring>
+        <name>check_next1</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="208" column="12" bodyfile="leasy/lua/llex.c" bodystart="208" bodyend="214"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1a4f263e61ecf9ca2875bdc3348dfce822" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int check_next2</definition>
+        <argsstring>(LexState *ls, const char *set)</argsstring>
+        <name>check_next2</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>set</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="221" column="12" bodyfile="leasy/lua/llex.c" bodystart="221" bodyend="228"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1a6e3870206c0c321cccaf22d6c2772072" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int read_numeral</definition>
+        <argsstring>(LexState *ls, SemInfo *seminfo)</argsstring>
+        <name>read_numeral</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type><ref refid="union_sem_info" kindref="compound">SemInfo</ref> *</type>
+          <declname>seminfo</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="244" column="12" bodyfile="leasy/lua/llex.c" bodystart="244" bodyend="273"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1a9036c54b00ccc4e9781a6b7bafe93c5c" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>static size_t skip_sep</definition>
+        <argsstring>(LexState *ls)</argsstring>
+        <name>skip_sep</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="282" column="15" bodyfile="leasy/lua/llex.c" bodystart="282" bodyend="294"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1a87255185250aab5f03dafe716cdda273" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void read_long_string</definition>
+        <argsstring>(LexState *ls, SemInfo *seminfo, size_t sep)</argsstring>
+        <name>read_long_string</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type><ref refid="union_sem_info" kindref="compound">SemInfo</ref> *</type>
+          <declname>seminfo</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>sep</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="297" column="13" bodyfile="leasy/lua/llex.c" bodystart="297" bodyend="333"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1a7dedd6d9ea73e7276da6bcd0effa7cc0" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void esccheck</definition>
+        <argsstring>(LexState *ls, int c, const char *msg)</argsstring>
+        <name>esccheck</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>c</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>msg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="336" column="13" bodyfile="leasy/lua/llex.c" bodystart="336" bodyend="342"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1a3b597edba3bbea967a33f6e82463b2e7" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int gethexa</definition>
+        <argsstring>(LexState *ls)</argsstring>
+        <name>gethexa</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="345" column="12" bodyfile="leasy/lua/llex.c" bodystart="345" bodyend="349"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1a5887888b2f49f1350b047c9412422d25" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int readhexaesc</definition>
+        <argsstring>(LexState *ls)</argsstring>
+        <name>readhexaesc</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="352" column="12" bodyfile="leasy/lua/llex.c" bodystart="352" bodyend="357"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1a52c94b700629e93a911cc8d5a1f1a23d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" kindref="member">l_uint32</ref></type>
+        <definition>static l_uint32 readutf8esc</definition>
+        <argsstring>(LexState *ls)</argsstring>
+        <name>readutf8esc</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="365" column="17" bodyfile="leasy/lua/llex.c" bodystart="365" bodyend="380"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1ad753772a24bb842f984798034f62611e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void utf8esc</definition>
+        <argsstring>(LexState *ls)</argsstring>
+        <name>utf8esc</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="383" column="13" bodyfile="leasy/lua/llex.c" bodystart="383" bodyend="388"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1a860413546c7a3220a01e80c57389aa31" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int readdecesc</definition>
+        <argsstring>(LexState *ls)</argsstring>
+        <name>readdecesc</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="391" column="12" bodyfile="leasy/lua/llex.c" bodystart="391" bodyend="401"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1a5a2d8bb78e2b8e9ee25f901c811b2275" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void read_string</definition>
+        <argsstring>(LexState *ls, int del, SemInfo *seminfo)</argsstring>
+        <name>read_string</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>del</declname>
+        </param>
+        <param>
+          <type><ref refid="union_sem_info" kindref="compound">SemInfo</ref> *</type>
+          <declname>seminfo</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="404" column="13" bodyfile="leasy/lua/llex.c" bodystart="404" bodyend="464"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1a83faab0338a28c8b97ff1156725cc61b" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int llex</definition>
+        <argsstring>(LexState *ls, SemInfo *seminfo)</argsstring>
+        <name>llex</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type><ref refid="union_sem_info" kindref="compound">SemInfo</ref> *</type>
+          <declname>seminfo</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="467" column="12" bodyfile="leasy/lua/llex.c" bodystart="467" bodyend="585"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1a8b9f2aa3f74c4e2f814d860dc7f5a6a8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void luaX_next</definition>
+        <argsstring>(LexState *ls)</argsstring>
+        <name>luaX_next</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="588" column="6" bodyfile="leasy/lua/llex.c" bodystart="588" bodyend="596"/>
+      </memberdef>
+      <memberdef kind="function" id="llex_8c_1af44c274f4e9a24ac9bc41ff31bac5ffb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int luaX_lookahead</definition>
+        <argsstring>(LexState *ls)</argsstring>
+        <name>luaX_lookahead</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.c" line="599" column="5" bodyfile="leasy/lua/llex.c" bodystart="599" bodyend="603"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>llex.c<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Lexical<sp/>Analyzer</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="llex_8c_1a2e2a05c4292ce934408b59470a78472d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>llex_c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="llex_8c_1abf0b3947b59218777a8e928a10be205b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_CORE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lprefix_8h" kindref="compound">lprefix.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;locale.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lua_8h" kindref="compound">lua.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lctype_8h" kindref="compound">lctype.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ldebug_8h" kindref="compound">ldebug.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ldo_8h" kindref="compound">ldo.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lgc_8h" kindref="compound">lgc.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="llex_8h" kindref="compound">llex.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lobject_8h" kindref="compound">lobject.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lparser_8h" kindref="compound">lparser.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lstate_8h" kindref="compound">lstate.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lstring_8h" kindref="compound">lstring.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ltable_8h" kindref="compound">ltable.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lzio_8h" kindref="compound">lzio.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>next(ls)<sp/><sp/><sp/><sp/>(ls-&gt;current<sp/>=<sp/>zgetc(ls-&gt;z))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>minimum<sp/>size<sp/>for<sp/>string<sp/>buffer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(LUA_MINBUFFER)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="llex_8c_1aa0320f75a72bf131ae24d39111ac9938" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_MINBUFFER<sp/><sp/><sp/>32</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="llex_8c_1aee0dbe3090a8bf4b0ecd633781c5a09a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>currIsNewline(ls)<sp/><sp/><sp/>(ls-&gt;current<sp/>==<sp/>&apos;\n&apos;<sp/>||<sp/>ls-&gt;current<sp/>==<sp/>&apos;\r&apos;)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>ORDER<sp/>RESERVED<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>luaX_tokens<sp/>[]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;and&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;break&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;do&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;else&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;elseif&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;end&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;false&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;for&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;function&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;global&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;goto&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;if&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;in&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;local&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;nil&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;not&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;or&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;repeat&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;return&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;then&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;true&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;until&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;while&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;//&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;..&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;...&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;==&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&gt;=&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&lt;=&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;~=&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;&lt;&lt;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&gt;&gt;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;::&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&lt;eof&gt;&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;&lt;number&gt;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&lt;integer&gt;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&lt;name&gt;&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;&lt;string&gt;&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>save_and_next(ls)<sp/>(save(ls,<sp/>ls-&gt;current),<sp/>next(ls))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref><sp/>lexerror<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*msg,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>token);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>save<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>c)<sp/>{</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><ref refid="struct_mbuffer" kindref="compound">Mbuffer</ref><sp/>*b<sp/>=<sp/>ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lzio_8h_1a26c3aeb9ce93f8559b0a596cf7bb1031" kindref="member">luaZ_bufflen</ref>(b)<sp/>+<sp/>1<sp/>&gt;<sp/><ref refid="lzio_8h_1a072ede62ba384b9d5fdedbb80eaf3ee1" kindref="member">luaZ_sizebuffer</ref>(b))<sp/>{</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>newsize<sp/>=<sp/><ref refid="lzio_8h_1a072ede62ba384b9d5fdedbb80eaf3ee1" kindref="member">luaZ_sizebuffer</ref>(b);<sp/><sp/></highlight><highlight class="comment">/*<sp/>get<sp/>old<sp/>size<sp/>*/</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(newsize<sp/>&gt;=<sp/>(<ref refid="llimits_8h_1a0592dba56693fad79136250c11e5a7fe" kindref="member">MAX_SIZE</ref>/3<sp/>*<sp/>2))<sp/><sp/></highlight><highlight class="comment">/*<sp/>larger<sp/>than<sp/>MAX_SIZE/1.5<sp/>?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>lexerror(ls,<sp/></highlight><highlight class="stringliteral">&quot;lexical<sp/>element<sp/>too<sp/>long&quot;</highlight><highlight class="normal">,<sp/>0);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>newsize<sp/>+=<sp/>(newsize<sp/>&gt;&gt;<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>new<sp/>size<sp/>is<sp/>1.5<sp/>times<sp/>the<sp/>old<sp/>one<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lzio_8h_1ab158420acf019b3a45e8ae6e65b51fdb" kindref="member">luaZ_resizebuffer</ref>(ls-&gt;<ref refid="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" kindref="member">L</ref>,<sp/>b,<sp/>newsize);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/>b-&gt;<ref refid="struct_mbuffer_1a857012deb824b216c19d7e4d15be5561" kindref="member">buffer</ref>[<ref refid="lzio_8h_1a26c3aeb9ce93f8559b0a596cf7bb1031" kindref="member">luaZ_bufflen</ref>(b)++]<sp/>=<sp/><ref refid="llimits_8h_1a045e548576226e8c7e9ab5de8a59f4bc" kindref="member">cast_char</ref>(c);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75" refid="llex_8c_1a50834f7eb4b2ac79c8df048988749abe" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="llex_8c_1a50834f7eb4b2ac79c8df048988749abe" kindref="member">luaX_init</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L)<sp/>{</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*e<sp/>=<sp/><ref refid="lstring_8h_1a1cd2754b136ed096325a76c6d16a82f5" kindref="member">luaS_newliteral</ref>(L,<sp/><ref refid="llex_8h_1af868e4c2b4c8551dad769502e7c3ec32" kindref="member">LUA_ENV</ref>);<sp/><sp/></highlight><highlight class="comment">/*<sp/>create<sp/>env<sp/>name<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><ref refid="lgc_8c_1a77a9b70a49730bb007a8a9492687d0eb" kindref="member">luaC_fix</ref>(L,<sp/><ref refid="lstate_8h_1a254ca29aba03e47440082d4591a9734e" kindref="member">obj2gco</ref>(e));<sp/><sp/></highlight><highlight class="comment">/*<sp/>never<sp/>collect<sp/>this<sp/>name<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i=0;<sp/>i&lt;<ref refid="llex_8h_1a24f40ac0891b0d584c0e432b2c6e1c71" kindref="member">NUM_RESERVED</ref>;<sp/>i++)<sp/>{</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*ts<sp/>=<sp/><ref refid="lstring_8c_1ac9397504696e5cbc6c4cec7649c497ec" kindref="member">luaS_new</ref>(L,<sp/>luaX_tokens[i]);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lgc_8c_1a77a9b70a49730bb007a8a9492687d0eb" kindref="member">luaC_fix</ref>(L,<sp/><ref refid="lstate_8h_1a254ca29aba03e47440082d4591a9734e" kindref="member">obj2gco</ref>(ts));<sp/><sp/></highlight><highlight class="comment">/*<sp/>reserved<sp/>words<sp/>are<sp/>never<sp/>collected<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>ts-&gt;<ref refid="struct_t_string_1a11878b0fae7367ad203a0c470ee54fa1" kindref="member">extra</ref><sp/>=<sp/><ref refid="llimits_8h_1a596f5b6e992f53a5a4e5732083448dd4" kindref="member">cast_byte</ref>(i+1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>reserved<sp/>word<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="84"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87" refid="llex_8c_1ae0344e32c36c15c39ad59d97b428f8c9" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*<ref refid="llex_8c_1ae0344e32c36c15c39ad59d97b428f8c9" kindref="member">luaX_token2str</ref><sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>token)<sp/>{</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(token<sp/>&lt;<sp/><ref refid="llex_8h_1a6bc8e20ff15b7aa178aceea51e691e44" kindref="member">FIRST_RESERVED</ref>)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>single-byte<sp/>symbols?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lctype_8h_1a68562616d451f440d5c8e4e3d345c573" kindref="member">lisprint</ref>(token))</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lobject_8c_1a65ca3be2a1f862455baaedd6a2275238" kindref="member">luaO_pushfstring</ref>(ls-&gt;<ref refid="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" kindref="member">L</ref>,<sp/></highlight><highlight class="stringliteral">&quot;&apos;%c&apos;&quot;</highlight><highlight class="normal">,<sp/>token);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>control<sp/>character<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lobject_8c_1a65ca3be2a1f862455baaedd6a2275238" kindref="member">luaO_pushfstring</ref>(ls-&gt;<ref refid="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" kindref="member">L</ref>,<sp/></highlight><highlight class="stringliteral">&quot;&apos;&lt;\\%d&gt;&apos;&quot;</highlight><highlight class="normal">,<sp/>token);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s<sp/>=<sp/>luaX_tokens[token<sp/>-<sp/><ref refid="llex_8h_1a6bc8e20ff15b7aa178aceea51e691e44" kindref="member">FIRST_RESERVED</ref>];</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(token<sp/>&lt;<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a9fcd34e2e50a0afb82f0dae65836187b" kindref="member">TK_EOS</ref>)<sp/><sp/></highlight><highlight class="comment">/*<sp/>fixed<sp/>format<sp/>(symbols<sp/>and<sp/>reserved<sp/>words)?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lobject_8c_1a65ca3be2a1f862455baaedd6a2275238" kindref="member">luaO_pushfstring</ref>(ls-&gt;<ref refid="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" kindref="member">L</ref>,<sp/></highlight><highlight class="stringliteral">&quot;&apos;%s&apos;&quot;</highlight><highlight class="normal">,<sp/>s);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>names,<sp/>strings,<sp/>and<sp/>numerals<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>s;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*txtToken<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>token)<sp/>{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(token)<sp/>{</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a84e5aed35515b2881005d88dccaf0c30" kindref="member">TK_NAME</ref>:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a2f748d118b4a20e2b1dc12538ccd9876" kindref="member">TK_STRING</ref>:</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a81df881e62ebf1fe93b4820b7b54984d" kindref="member">TK_FLT</ref>:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a9f48ed12541fab691e25e3ca9e38ac9f" kindref="member">TK_INT</ref>:</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>save(ls,<sp/></highlight><highlight class="charliteral">&apos;\0&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lobject_8c_1a65ca3be2a1f862455baaedd6a2275238" kindref="member">luaO_pushfstring</ref>(ls-&gt;<ref refid="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" kindref="member">L</ref>,<sp/></highlight><highlight class="stringliteral">&quot;&apos;%s&apos;&quot;</highlight><highlight class="normal">,<sp/><ref refid="lzio_8h_1aa51f632cb0519368a65ada80b71ea1e3" kindref="member">luaZ_buffer</ref>(ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>));</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llex_8c_1ae0344e32c36c15c39ad59d97b428f8c9" kindref="member">luaX_token2str</ref>(ls,<sp/>token);</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="113"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref><sp/>lexerror<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*msg,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>token)<sp/>{</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/>msg<sp/>=<sp/><ref refid="ldebug_8c_1ab2f654440b1afd7315518c42e15c5c65" kindref="member">luaG_addinfo</ref>(ls-&gt;<ref refid="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" kindref="member">L</ref>,<sp/>msg,<sp/>ls-&gt;<ref refid="struct_lex_state_1a054af516711cc3d173a73a301497ff27" kindref="member">source</ref>,<sp/>ls-&gt;<ref refid="struct_lex_state_1a9047632ca93c760b66b6303c819099d5" kindref="member">linenumber</ref>);</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(token)</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lobject_8c_1a65ca3be2a1f862455baaedd6a2275238" kindref="member">luaO_pushfstring</ref>(ls-&gt;<ref refid="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" kindref="member">L</ref>,<sp/></highlight><highlight class="stringliteral">&quot;%s<sp/>near<sp/>%s&quot;</highlight><highlight class="normal">,<sp/>msg,<sp/>txtToken(ls,<sp/>token));</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><ref refid="ldo_8c_1a717a80f91a6e8dd85101173268d94eca" kindref="member">luaD_throw</ref>(ls-&gt;<ref refid="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" kindref="member">L</ref>,<sp/><ref refid="lua_8h_1a779d4c0fc1c9da41b7d983646267e11f" kindref="member">LUA_ERRSYNTAX</ref>);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124" refid="llex_8c_1aa5303ae41cbf1a2d9ef2f422751f85be" refkind="member"><highlight class="normal"><ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref><sp/><ref refid="llex_8c_1aa5303ae41cbf1a2d9ef2f422751f85be" kindref="member">luaX_syntaxerror</ref><sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*msg)<sp/>{</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/>lexerror(ls,<sp/>msg,<sp/>ls-&gt;<ref refid="struct_lex_state_1a597c734626136f4ddb8232e8fc3abfc4" kindref="member">t</ref>.<ref refid="struct_token_1a92d1dfeae343659449f1bc29d6731c5d" kindref="member">token</ref>);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="130"><highlight class="comment">**<sp/>Anchors<sp/>a<sp/>string<sp/>in<sp/>scanner&apos;s<sp/>table<sp/>so<sp/>that<sp/>it<sp/>will<sp/>not<sp/>be<sp/>collected</highlight></codeline>
+<codeline lineno="131"><highlight class="comment">**<sp/>until<sp/>the<sp/>end<sp/>of<sp/>the<sp/>compilation;<sp/>by<sp/>that<sp/>time<sp/>it<sp/>should<sp/>be<sp/>anchored</highlight></codeline>
+<codeline lineno="132"><highlight class="comment">**<sp/>somewhere.<sp/>It<sp/>also<sp/>internalizes<sp/>long<sp/>strings,<sp/>ensuring<sp/>there<sp/>is<sp/>only</highlight></codeline>
+<codeline lineno="133"><highlight class="comment">**<sp/>one<sp/>copy<sp/>of<sp/>each<sp/>unique<sp/>string.</highlight></codeline>
+<codeline lineno="134"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*anchorstr<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*ts)<sp/>{</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a076002258aeaaa674bb44896d5167c65" kindref="member">L</ref><sp/>=<sp/>ls-&gt;<ref refid="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" kindref="member">L</ref>;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>oldts;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>tag<sp/>=<sp/><ref refid="ltable_8c_1aac1e3a57fa057cd3c3a8fd8e96671e3c" kindref="member">luaH_getstr</ref>(ls-&gt;<ref refid="struct_lex_state_1a0fcd03e58c52d100bc9dcd52787724f4" kindref="member">h</ref>,<sp/>ts,<sp/>&amp;oldts);</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="lobject_8h_1aec4fc2bddf98a2fc76c443e0653aedf3" kindref="member">tagisempty</ref>(tag))<sp/><sp/></highlight><highlight class="comment">/*<sp/>string<sp/>already<sp/>present?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lobject_8h_1a8661397faed512ccc9c70a4661f1a83d" kindref="member">tsvalue</ref>(&amp;oldts);<sp/><sp/></highlight><highlight class="comment">/*<sp/>use<sp/>stored<sp/>value<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>create<sp/>a<sp/>new<sp/>entry<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*stv<sp/>=<sp/><ref refid="lobject_8h_1a8c21cbb67def90b23342840cd08a5cfd" kindref="member">s2v</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a076002258aeaaa674bb44896d5167c65" kindref="member">L</ref>-&gt;top.p++);<sp/><sp/></highlight><highlight class="comment">/*<sp/>reserve<sp/>stack<sp/>space<sp/>for<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lobject_8h_1a251a2d3bada66aaed6249a89a0afe5f0" kindref="member">setsvalue</ref>(L,<sp/>stv,<sp/>ts);<sp/><sp/></highlight><highlight class="comment">/*<sp/>push<sp/>(anchor)<sp/>the<sp/>string<sp/>on<sp/>the<sp/>stack<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ltable_8c_1a2ea4f5ea50911a03375ba4d22ef72419" kindref="member">luaH_set</ref>(L,<sp/>ls-&gt;<ref refid="struct_lex_state_1a0fcd03e58c52d100bc9dcd52787724f4" kindref="member">h</ref>,<sp/>stv,<sp/>stv);<sp/><sp/></highlight><highlight class="comment">/*<sp/>t[string]<sp/>=<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>table<sp/>is<sp/>not<sp/>a<sp/>metatable,<sp/>so<sp/>it<sp/>does<sp/>not<sp/>need<sp/>to<sp/>invalidate<sp/>cache<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lgc_8h_1ad013db5004ccc5fbe8a6450caa1f1ad9" kindref="member">luaC_checkGC</ref>(L);</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a076002258aeaaa674bb44896d5167c65" kindref="member">L</ref>-&gt;top.p--;<sp/><sp/></highlight><highlight class="comment">/*<sp/>remove<sp/>string<sp/>from<sp/>stack<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ts;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="150"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="154"><highlight class="comment">**<sp/>Creates<sp/>a<sp/>new<sp/>string<sp/>and<sp/>anchors<sp/>it<sp/>in<sp/>scanner&apos;s<sp/>table.</highlight></codeline>
+<codeline lineno="155"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156" refid="llex_8c_1a51ec8735f32a452d48a77e71e9dd0a3b" refkind="member"><highlight class="normal"><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="llex_8c_1a51ec8735f32a452d48a77e71e9dd0a3b" kindref="member">luaX_newstring</ref><sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*str,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>l)<sp/>{</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>anchorstr(ls,<sp/><ref refid="lstring_8c_1af922b364943afbe71e4da82a0c50188c" kindref="member">luaS_newlstr</ref>(ls-&gt;<ref refid="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" kindref="member">L</ref>,<sp/>str,<sp/>l));</highlight></codeline>
+<codeline lineno="158"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="162"><highlight class="comment">**<sp/>increment<sp/>line<sp/>number<sp/>and<sp/>skips<sp/>newline<sp/>sequence<sp/>(any<sp/>of</highlight></codeline>
+<codeline lineno="163"><highlight class="comment">**<sp/>\n,<sp/>\r,<sp/>\n\r,<sp/>or<sp/>\r\n)</highlight></codeline>
+<codeline lineno="164"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>inclinenumber<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls)<sp/>{</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>old<sp/>=<sp/>ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>;</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(<ref refid="llex_8c_1aee0dbe3090a8bf4b0ecd633781c5a09a" kindref="member">currIsNewline</ref>(ls));</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);<sp/><sp/></highlight><highlight class="comment">/*<sp/>skip<sp/>&apos;\n&apos;<sp/>or<sp/>&apos;\r&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="llex_8c_1aee0dbe3090a8bf4b0ecd633781c5a09a" kindref="member">currIsNewline</ref>(ls)<sp/>&amp;&amp;<sp/>ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref><sp/>!=<sp/>old)</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);<sp/><sp/></highlight><highlight class="comment">/*<sp/>skip<sp/>&apos;\n\r&apos;<sp/>or<sp/>&apos;\r\n&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(++ls-&gt;<ref refid="struct_lex_state_1a9047632ca93c760b66b6303c819099d5" kindref="member">linenumber</ref><sp/>&gt;=<sp/>INT_MAX)</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/>lexerror(ls,<sp/></highlight><highlight class="stringliteral">&quot;chunk<sp/>has<sp/>too<sp/>many<sp/>lines&quot;</highlight><highlight class="normal">,<sp/>0);</highlight></codeline>
+<codeline lineno="173"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight></codeline>
+<codeline lineno="176" refid="llex_8c_1a169c85d08461f83e3f8a8c32dcb3d151" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="llex_8c_1a169c85d08461f83e3f8a8c32dcb3d151" kindref="member">luaX_setinput</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref><sp/>*z,<sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*source,</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>firstchar)<sp/>{</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1a597c734626136f4ddb8232e8fc3abfc4" kindref="member">t</ref>.<ref refid="struct_token_1a92d1dfeae343659449f1bc29d6731c5d" kindref="member">token</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" kindref="member">L</ref><sp/>=<sp/>L;</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref><sp/>=<sp/>firstchar;</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1ad3c75c11dbbdae006057cb4b847a4f91" kindref="member">lookahead</ref>.<ref refid="struct_token_1a92d1dfeae343659449f1bc29d6731c5d" kindref="member">token</ref><sp/>=<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a9fcd34e2e50a0afb82f0dae65836187b" kindref="member">TK_EOS</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>no<sp/>look-ahead<sp/>token<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1a591ffaffa1f3c21653904dccf81a4377" kindref="member">z</ref><sp/>=<sp/>z;</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1a01999e4f68cc6a3bd0b9eb6ebd241f7b" kindref="member">fs</ref><sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1a9047632ca93c760b66b6303c819099d5" kindref="member">linenumber</ref><sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1aaadb237d4fc6b81d2242e666de885bf7" kindref="member">lastline</ref><sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1a054af516711cc3d173a73a301497ff27" kindref="member">source</ref><sp/>=<sp/>source;</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>all<sp/>three<sp/>strings<sp/>here<sp/>(&quot;_ENV&quot;,<sp/>&quot;break&quot;,<sp/>&quot;global&quot;)<sp/>were<sp/>fixed,</highlight></codeline>
+<codeline lineno="188"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>so<sp/>they<sp/>cannot<sp/>be<sp/>collected<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1a1f3368576038a65ab629da91de3edfaf" kindref="member">envn</ref><sp/>=<sp/><ref refid="lstring_8h_1a1cd2754b136ed096325a76c6d16a82f5" kindref="member">luaS_newliteral</ref>(L,<sp/><ref refid="llex_8h_1af868e4c2b4c8551dad769502e7c3ec32" kindref="member">LUA_ENV</ref>);<sp/><sp/></highlight><highlight class="comment">/*<sp/>get<sp/>env<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1a857e26bd0a34d69d72e98193f068be57" kindref="member">brkn</ref><sp/>=<sp/><ref refid="lstring_8h_1a1cd2754b136ed096325a76c6d16a82f5" kindref="member">luaS_newliteral</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;break&quot;</highlight><highlight class="normal">);<sp/><sp/></highlight><highlight class="comment">/*<sp/>get<sp/>&quot;break&quot;<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(LUA_COMPAT_GLOBAL)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>compatibility<sp/>mode:<sp/>&quot;global&quot;<sp/>is<sp/>not<sp/>a<sp/>reserved<sp/>word<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1a13134d7e5b4ef8430baee3284bd41068" kindref="member">glbn</ref><sp/>=<sp/><ref refid="lstring_8h_1a1cd2754b136ed096325a76c6d16a82f5" kindref="member">luaS_newliteral</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;global&quot;</highlight><highlight class="normal">);<sp/><sp/></highlight><highlight class="comment">/*<sp/>get<sp/>&quot;global&quot;<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1a13134d7e5b4ef8430baee3284bd41068" kindref="member">glbn</ref>-&gt;<ref refid="struct_t_string_1a11878b0fae7367ad203a0c470ee54fa1" kindref="member">extra</ref><sp/>=<sp/>0;<sp/><sp/></highlight><highlight class="comment">/*<sp/>mark<sp/>it<sp/>as<sp/>not<sp/>reserved<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><ref refid="lzio_8h_1ab158420acf019b3a45e8ae6e65b51fdb" kindref="member">luaZ_resizebuffer</ref>(ls-&gt;<ref refid="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" kindref="member">L</ref>,<sp/>ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>,<sp/><ref refid="llex_8c_1aa0320f75a72bf131ae24d39111ac9938" kindref="member">LUA_MINBUFFER</ref>);<sp/><sp/></highlight><highlight class="comment">/*<sp/>initialize<sp/>buffer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="202"><highlight class="comment">**<sp/>=======================================================</highlight></codeline>
+<codeline lineno="203"><highlight class="comment">**<sp/>LEXICAL<sp/>ANALYZER</highlight></codeline>
+<codeline lineno="204"><highlight class="comment">**<sp/>=======================================================</highlight></codeline>
+<codeline lineno="205"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>check_next1<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>c)<sp/>{</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref><sp/>==<sp/>c)<sp/>{</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="214"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="218"><highlight class="comment">**<sp/>Check<sp/>whether<sp/>current<sp/>char<sp/>is<sp/>in<sp/>set<sp/>&apos;set&apos;<sp/>(with<sp/>two<sp/>chars)<sp/>and</highlight></codeline>
+<codeline lineno="219"><highlight class="comment">**<sp/>saves<sp/>it</highlight></codeline>
+<codeline lineno="220"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>check_next2<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*set)<sp/>{</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(set[2]<sp/>==<sp/></highlight><highlight class="charliteral">&apos;\0&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref><sp/>==<sp/>set[0]<sp/>||<sp/>ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref><sp/>==<sp/>set[1])<sp/>{</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="228"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight></codeline>
+<codeline lineno="230"><highlight class="normal"></highlight></codeline>
+<codeline lineno="231"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>LUA_NUMBER<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="233"><highlight class="comment">**<sp/>This<sp/>function<sp/>is<sp/>quite<sp/>liberal<sp/>in<sp/>what<sp/>it<sp/>accepts,<sp/>as<sp/>&apos;luaO_str2num&apos;</highlight></codeline>
+<codeline lineno="234"><highlight class="comment">**<sp/>will<sp/>reject<sp/>ill-formed<sp/>numerals.<sp/>Roughly,<sp/>it<sp/>accepts<sp/>the<sp/>following</highlight></codeline>
+<codeline lineno="235"><highlight class="comment">**<sp/>pattern:</highlight></codeline>
+<codeline lineno="236"><highlight class="comment">**</highlight></codeline>
+<codeline lineno="237"><highlight class="comment">**<sp/><sp/><sp/>%d(%x|%.|([Ee][+-]?))*<sp/>|<sp/>0[Xx](%x|%.|([Pp][+-]?))*</highlight></codeline>
+<codeline lineno="238"><highlight class="comment">**</highlight></codeline>
+<codeline lineno="239"><highlight class="comment">**<sp/>The<sp/>only<sp/>tricky<sp/>part<sp/>is<sp/>to<sp/>accept<sp/>[+-]<sp/>only<sp/>after<sp/>a<sp/>valid<sp/>exponent</highlight></codeline>
+<codeline lineno="240"><highlight class="comment">**<sp/>mark,<sp/>to<sp/>avoid<sp/>reading<sp/>&apos;3-4&apos;<sp/>or<sp/>&apos;0xe+1&apos;<sp/>as<sp/>a<sp/>single<sp/>number.</highlight></codeline>
+<codeline lineno="241"><highlight class="comment">**</highlight></codeline>
+<codeline lineno="242"><highlight class="comment">**<sp/>The<sp/>caller<sp/>might<sp/>have<sp/>already<sp/>read<sp/>an<sp/>initial<sp/>dot.</highlight></codeline>
+<codeline lineno="243"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>read_numeral<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/><ref refid="union_sem_info" kindref="compound">SemInfo</ref><sp/>*seminfo)<sp/>{</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>obj;</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*expo<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Ee&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1kits_1ab6eeff31a8434c0c2d15609bd247a1ff" kindref="member">first</ref><sp/>=<sp/>ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>;</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(<ref refid="lctype_8h_1aee1d27a5eac398ec2c9c8b80281041e6" kindref="member">lisdigit</ref>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>));</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(first<sp/>==<sp/></highlight><highlight class="charliteral">&apos;0&apos;</highlight><highlight class="normal"><sp/>&amp;&amp;<sp/>check_next2(ls,<sp/></highlight><highlight class="stringliteral">&quot;xX&quot;</highlight><highlight class="normal">))<sp/><sp/></highlight><highlight class="comment">/*<sp/>hexadecimal?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/>expo<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;Pp&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;;)<sp/>{</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(check_next2(ls,<sp/>expo))<sp/><sp/></highlight><highlight class="comment">/*<sp/>exponent<sp/>mark?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>check_next2(ls,<sp/></highlight><highlight class="stringliteral">&quot;-+&quot;</highlight><highlight class="normal">);<sp/><sp/></highlight><highlight class="comment">/*<sp/>optional<sp/>exponent<sp/>sign<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lctype_8h_1a72e55b66d80325fb20cbc098d3448996" kindref="member">lisxdigit</ref>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>)<sp/>||<sp/>ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref><sp/>==<sp/></highlight><highlight class="charliteral">&apos;.&apos;</highlight><highlight class="normal">)<sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;%x|%.&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lctype_8h_1a7132e9f6daf30b344b74f51d64eadf7d" kindref="member">lislalpha</ref>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>))<sp/><sp/></highlight><highlight class="comment">/*<sp/>is<sp/>numeral<sp/>touching<sp/>a<sp/>letter?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);<sp/><sp/></highlight><highlight class="comment">/*<sp/>force<sp/>an<sp/>error<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/>save(ls,<sp/></highlight><highlight class="charliteral">&apos;\0&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lobject_8c_1ab1956c979ca7ff39b07534390714505d" kindref="member">luaO_str2num</ref>(<ref refid="lzio_8h_1aa51f632cb0519368a65ada80b71ea1e3" kindref="member">luaZ_buffer</ref>(ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>),<sp/>&amp;obj)<sp/>==<sp/>0)<sp/><sp/></highlight><highlight class="comment">/*<sp/>format<sp/>error?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/>lexerror(ls,<sp/></highlight><highlight class="stringliteral">&quot;malformed<sp/>number&quot;</highlight><highlight class="normal">,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a81df881e62ebf1fe93b4820b7b54984d" kindref="member">TK_FLT</ref>);</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lobject_8h_1abade243295a9140f7b86838fbb049054" kindref="member">ttisinteger</ref>(&amp;obj))<sp/>{</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/>seminfo-&gt;<ref refid="union_sem_info_1a6ed52b8a8b415d8f16089445f93e5391" kindref="member">i</ref><sp/>=<sp/><ref refid="lobject_8h_1af1a59636db050b842a791cd19086d925" kindref="member">ivalue</ref>(&amp;obj);</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a9f48ed12541fab691e25e3ca9e38ac9f" kindref="member">TK_INT</ref>;</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(<ref refid="lobject_8h_1ac1338b5ac67cadf27489f5ae7e939c29" kindref="member">ttisfloat</ref>(&amp;obj));</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/>seminfo-&gt;<ref refid="union_sem_info_1a43b00f784510a2d500550b81578177d8" kindref="member">r</ref><sp/>=<sp/><ref refid="lobject_8h_1a7d7d6b08f40350c9e7364e9cb984d744" kindref="member">fltvalue</ref>(&amp;obj);</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a81df881e62ebf1fe93b4820b7b54984d" kindref="member">TK_FLT</ref>;</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="273"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"></highlight></codeline>
+<codeline lineno="275"><highlight class="normal"></highlight></codeline>
+<codeline lineno="276"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="277"><highlight class="comment">**<sp/>read<sp/>a<sp/>sequence<sp/>&apos;[=*[&apos;<sp/>or<sp/>&apos;]=*]&apos;,<sp/>leaving<sp/>the<sp/>last<sp/>bracket.<sp/>If</highlight></codeline>
+<codeline lineno="278"><highlight class="comment">**<sp/>sequence<sp/>is<sp/>well<sp/>formed,<sp/>return<sp/>its<sp/>number<sp/>of<sp/>&apos;=&apos;s<sp/>+<sp/>2;<sp/>otherwise,</highlight></codeline>
+<codeline lineno="279"><highlight class="comment">**<sp/>return<sp/>1<sp/>if<sp/>it<sp/>is<sp/>a<sp/>single<sp/>bracket<sp/>(no<sp/>&apos;=&apos;s<sp/>and<sp/>no<sp/>2nd<sp/>bracket);</highlight></codeline>
+<codeline lineno="280"><highlight class="comment">**<sp/>otherwise<sp/>(an<sp/>unfinished<sp/>&apos;[==...&apos;)<sp/>return<sp/>0.</highlight></codeline>
+<codeline lineno="281"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="282"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>skip_sep<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls)<sp/>{</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1kits_1ac073b732e1ab38cb688134327301d6cc" kindref="member">count</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>s<sp/>=<sp/>ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>;</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(s<sp/>==<sp/></highlight><highlight class="charliteral">&apos;[&apos;</highlight><highlight class="normal"><sp/>||<sp/>s<sp/>==<sp/></highlight><highlight class="charliteral">&apos;]&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref><sp/>==<sp/></highlight><highlight class="charliteral">&apos;=&apos;</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1_1kits_1ac073b732e1ab38cb688134327301d6cc" kindref="member">count</ref>++;</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref><sp/>==<sp/>s)<sp/>?<sp/><ref refid="namespaceleasy_1_1kits_1ac073b732e1ab38cb688134327301d6cc" kindref="member">count</ref><sp/>+<sp/>2</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>(<ref refid="namespaceleasy_1_1kits_1ac073b732e1ab38cb688134327301d6cc" kindref="member">count</ref><sp/>==<sp/>0)<sp/>?<sp/>1</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>0;</highlight></codeline>
+<codeline lineno="294"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"></highlight></codeline>
+<codeline lineno="296"><highlight class="normal"></highlight></codeline>
+<codeline lineno="297"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>read_long_string<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/><ref refid="union_sem_info" kindref="compound">SemInfo</ref><sp/>*seminfo,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>sep)<sp/>{</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>line<sp/>=<sp/>ls-&gt;<ref refid="struct_lex_state_1a9047632ca93c760b66b6303c819099d5" kindref="member">linenumber</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>initial<sp/>line<sp/>(for<sp/>error<sp/>message)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);<sp/><sp/></highlight><highlight class="comment">/*<sp/>skip<sp/>2nd<sp/>&apos;[&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="llex_8c_1aee0dbe3090a8bf4b0ecd633781c5a09a" kindref="member">currIsNewline</ref>(ls))<sp/><sp/></highlight><highlight class="comment">/*<sp/>string<sp/>starts<sp/>with<sp/>a<sp/>newline?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/>inclinenumber(ls);<sp/><sp/></highlight><highlight class="comment">/*<sp/>skip<sp/>it<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;;)<sp/>{</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lzio_8h_1a8341bdc72db5a2f045e18440f9523008" kindref="member">EOZ</ref>:<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>error<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*what<sp/>=<sp/>(seminfo<sp/>?<sp/></highlight><highlight class="stringliteral">&quot;string&quot;</highlight><highlight class="normal"><sp/>:<sp/></highlight><highlight class="stringliteral">&quot;comment&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*msg<sp/>=<sp/><ref refid="lobject_8c_1a65ca3be2a1f862455baaedd6a2275238" kindref="member">luaO_pushfstring</ref>(ls-&gt;<ref refid="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" kindref="member">L</ref>,</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;unfinished<sp/>long<sp/>%s<sp/>(starting<sp/>at<sp/>line<sp/>%d)&quot;</highlight><highlight class="normal">,<sp/>what,<sp/>line);</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lexerror(ls,<sp/>msg,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a9fcd34e2e50a0afb82f0dae65836187b" kindref="member">TK_EOS</ref>);</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/><sp/></highlight><highlight class="comment">/*<sp/>to<sp/>avoid<sp/>warnings<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;]&apos;</highlight><highlight class="normal">:<sp/>{</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(skip_sep(ls)<sp/>==<sp/>sep)<sp/>{</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);<sp/><sp/></highlight><highlight class="comment">/*<sp/>skip<sp/>2nd<sp/>&apos;]&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">goto</highlight><highlight class="normal"><sp/>endloop;</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="317"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="318"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;\n&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;\r&apos;</highlight><highlight class="normal">:<sp/>{</highlight></codeline>
+<codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>save(ls,<sp/></highlight><highlight class="charliteral">&apos;\n&apos;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="320"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inclinenumber(ls);</highlight></codeline>
+<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!seminfo)<sp/><ref refid="lzio_8h_1a53c928283083a162c79e0152048affe2" kindref="member">luaZ_resetbuffer</ref>(ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>);<sp/><sp/></highlight><highlight class="comment">/*<sp/>avoid<sp/>wasting<sp/>space<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="322"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="324"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:<sp/>{</highlight></codeline>
+<codeline lineno="325"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(seminfo)<sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);</highlight></codeline>
+<codeline lineno="326"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="328"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="329"><highlight class="normal"><sp/><sp/>}<sp/>endloop:</highlight></codeline>
+<codeline lineno="330"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(seminfo)</highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><sp/>seminfo-&gt;<ref refid="union_sem_info_1a393ebb62432ff3e689283e54e113b33e" kindref="member">ts</ref><sp/>=<sp/><ref refid="llex_8c_1a51ec8735f32a452d48a77e71e9dd0a3b" kindref="member">luaX_newstring</ref>(ls,<sp/><ref refid="lzio_8h_1aa51f632cb0519368a65ada80b71ea1e3" kindref="member">luaZ_buffer</ref>(ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>)<sp/>+<sp/>sep,</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lzio_8h_1a26c3aeb9ce93f8559b0a596cf7bb1031" kindref="member">luaZ_bufflen</ref>(ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>)<sp/>-<sp/>2<sp/>*<sp/>sep);</highlight></codeline>
+<codeline lineno="333"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="334"><highlight class="normal"></highlight></codeline>
+<codeline lineno="335"><highlight class="normal"></highlight></codeline>
+<codeline lineno="336"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>esccheck<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>c,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*msg)<sp/>{</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!c)<sp/>{</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref><sp/>!=<sp/><ref refid="lzio_8h_1a8341bdc72db5a2f045e18440f9523008" kindref="member">EOZ</ref>)</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);<sp/><sp/></highlight><highlight class="comment">/*<sp/>add<sp/>current<sp/>to<sp/>buffer<sp/>for<sp/>error<sp/>message<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/>lexerror(ls,<sp/>msg,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a2f748d118b4a20e2b1dc12538ccd9876" kindref="member">TK_STRING</ref>);</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="342"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"></highlight></codeline>
+<codeline lineno="344"><highlight class="normal"></highlight></codeline>
+<codeline lineno="345"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>gethexa<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls)<sp/>{</highlight></codeline>
+<codeline lineno="346"><highlight class="normal"><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/>esccheck<sp/>(ls,<sp/><ref refid="lctype_8h_1a72e55b66d80325fb20cbc098d3448996" kindref="member">lisxdigit</ref>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>),<sp/></highlight><highlight class="stringliteral">&quot;hexadecimal<sp/>digit<sp/>expected&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lobject_8c_1a4b35840325c43848d5949e44f6c371a6" kindref="member">luaO_hexavalue</ref>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>);</highlight></codeline>
+<codeline lineno="349"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"></highlight></codeline>
+<codeline lineno="351"><highlight class="normal"></highlight></codeline>
+<codeline lineno="352"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>readhexaesc<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls)<sp/>{</highlight></codeline>
+<codeline lineno="353"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>r<sp/>=<sp/>gethexa(ls);</highlight></codeline>
+<codeline lineno="354"><highlight class="normal"><sp/><sp/>r<sp/>=<sp/>(r<sp/>&lt;&lt;<sp/>4)<sp/>+<sp/>gethexa(ls);</highlight></codeline>
+<codeline lineno="355"><highlight class="normal"><sp/><sp/><ref refid="lzio_8h_1ab9e4cabf75529d0c2f5a809f49a25281" kindref="member">luaZ_buffremove</ref>(ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>,<sp/>2);<sp/><sp/></highlight><highlight class="comment">/*<sp/>remove<sp/>saved<sp/>chars<sp/>from<sp/>buffer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="356"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>r;</highlight></codeline>
+<codeline lineno="357"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="358"><highlight class="normal"></highlight></codeline>
+<codeline lineno="359"><highlight class="normal"></highlight></codeline>
+<codeline lineno="360"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="361"><highlight class="comment">**<sp/>When<sp/>reading<sp/>a<sp/>UTF-8<sp/>escape<sp/>sequence,<sp/>save<sp/>everything<sp/>to<sp/>the<sp/>buffer</highlight></codeline>
+<codeline lineno="362"><highlight class="comment">**<sp/>for<sp/>error<sp/>reporting<sp/>in<sp/>case<sp/>of<sp/>errors;<sp/>&apos;i&apos;<sp/>counts<sp/>the<sp/>number<sp/>of</highlight></codeline>
+<codeline lineno="363"><highlight class="comment">**<sp/>saved<sp/>characters,<sp/>so<sp/>that<sp/>they<sp/>can<sp/>be<sp/>removed<sp/>if<sp/>case<sp/>of<sp/>success.</highlight></codeline>
+<codeline lineno="364"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="365"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" kindref="member">l_uint32</ref><sp/>readutf8esc<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls)<sp/>{</highlight></codeline>
+<codeline lineno="366"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" kindref="member">l_uint32</ref><sp/>r;</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>4;<sp/><sp/></highlight><highlight class="comment">/*<sp/>number<sp/>of<sp/>chars<sp/>to<sp/>be<sp/>removed:<sp/>start<sp/>with<sp/>#&quot;\u{X&quot;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="368"><highlight class="normal"><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);<sp/><sp/></highlight><highlight class="comment">/*<sp/>skip<sp/>&apos;u&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="369"><highlight class="normal"><sp/><sp/>esccheck(ls,<sp/>ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref><sp/>==<sp/></highlight><highlight class="charliteral">&apos;{&apos;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;missing<sp/>&apos;{&apos;&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="370"><highlight class="normal"><sp/><sp/>r<sp/>=<sp/><ref refid="llimits_8h_1a6ce2ddc5b419ed6f302573db3cc03e56" kindref="member">cast_uint</ref>(gethexa(ls));<sp/><sp/></highlight><highlight class="comment">/*<sp/>must<sp/>have<sp/>at<sp/>least<sp/>one<sp/>digit<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="371"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(<ref refid="llimits_8h_1a52a5166d7dc0590b63a9331cfc0f4564" kindref="member">cast_void</ref>(<ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls)),<sp/><ref refid="lctype_8h_1a72e55b66d80325fb20cbc098d3448996" kindref="member">lisxdigit</ref>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="372"><highlight class="normal"><sp/><sp/><sp/><sp/>i++;</highlight></codeline>
+<codeline lineno="373"><highlight class="normal"><sp/><sp/><sp/><sp/>esccheck(ls,<sp/>r<sp/>&lt;=<sp/>(0x7FFFFFFFu<sp/>&gt;&gt;<sp/>4),<sp/></highlight><highlight class="stringliteral">&quot;UTF-8<sp/>value<sp/>too<sp/>large&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="374"><highlight class="normal"><sp/><sp/><sp/><sp/>r<sp/>=<sp/>(r<sp/>&lt;&lt;<sp/>4)<sp/>+<sp/><ref refid="lobject_8c_1a4b35840325c43848d5949e44f6c371a6" kindref="member">luaO_hexavalue</ref>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>);</highlight></codeline>
+<codeline lineno="375"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="376"><highlight class="normal"><sp/><sp/>esccheck(ls,<sp/>ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref><sp/>==<sp/></highlight><highlight class="charliteral">&apos;}&apos;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;missing<sp/>&apos;}&apos;&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="377"><highlight class="normal"><sp/><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);<sp/><sp/></highlight><highlight class="comment">/*<sp/>skip<sp/>&apos;}&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="378"><highlight class="normal"><sp/><sp/><ref refid="lzio_8h_1ab9e4cabf75529d0c2f5a809f49a25281" kindref="member">luaZ_buffremove</ref>(ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>,<sp/>i);<sp/><sp/></highlight><highlight class="comment">/*<sp/>remove<sp/>saved<sp/>chars<sp/>from<sp/>buffer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="379"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>r;</highlight></codeline>
+<codeline lineno="380"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="381"><highlight class="normal"></highlight></codeline>
+<codeline lineno="382"><highlight class="normal"></highlight></codeline>
+<codeline lineno="383"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>utf8esc<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls)<sp/>{</highlight></codeline>
+<codeline lineno="384"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>buff[<ref refid="lobject_8h_1ae0741e99030a23e3c24b0eb828fbbe4b" kindref="member">UTF8BUFFSZ</ref>];</highlight></codeline>
+<codeline lineno="385"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n<sp/>=<sp/><ref refid="lobject_8c_1a685d166204b13aa36463f415c350ab4f" kindref="member">luaO_utf8esc</ref>(buff,<sp/>readutf8esc(ls));</highlight></codeline>
+<codeline lineno="386"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>n<sp/>&gt;<sp/>0;<sp/>n--)<sp/><sp/></highlight><highlight class="comment">/*<sp/>add<sp/>&apos;buff&apos;<sp/>to<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="387"><highlight class="normal"><sp/><sp/><sp/><sp/>save(ls,<sp/>buff[<ref refid="lobject_8h_1ae0741e99030a23e3c24b0eb828fbbe4b" kindref="member">UTF8BUFFSZ</ref><sp/>-<sp/>n]);</highlight></codeline>
+<codeline lineno="388"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="389"><highlight class="normal"></highlight></codeline>
+<codeline lineno="390"><highlight class="normal"></highlight></codeline>
+<codeline lineno="391"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>readdecesc<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls)<sp/>{</highlight></codeline>
+<codeline lineno="392"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i;</highlight></codeline>
+<codeline lineno="393"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>r<sp/>=<sp/>0;<sp/><sp/></highlight><highlight class="comment">/*<sp/>result<sp/>accumulator<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="394"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>3<sp/>&amp;&amp;<sp/><ref refid="lctype_8h_1aee1d27a5eac398ec2c9c8b80281041e6" kindref="member">lisdigit</ref>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>);<sp/>i++)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>read<sp/>up<sp/>to<sp/>3<sp/>digits<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="395"><highlight class="normal"><sp/><sp/><sp/><sp/>r<sp/>=<sp/>10*r<sp/>+<sp/>ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref><sp/>-<sp/></highlight><highlight class="charliteral">&apos;0&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="396"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);</highlight></codeline>
+<codeline lineno="397"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="398"><highlight class="normal"><sp/><sp/>esccheck(ls,<sp/>r<sp/>&lt;=<sp/>UCHAR_MAX,<sp/></highlight><highlight class="stringliteral">&quot;decimal<sp/>escape<sp/>too<sp/>large&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="399"><highlight class="normal"><sp/><sp/><ref refid="lzio_8h_1ab9e4cabf75529d0c2f5a809f49a25281" kindref="member">luaZ_buffremove</ref>(ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>,<sp/>i);<sp/><sp/></highlight><highlight class="comment">/*<sp/>remove<sp/>read<sp/>digits<sp/>from<sp/>buffer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="400"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>r;</highlight></codeline>
+<codeline lineno="401"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="402"><highlight class="normal"></highlight></codeline>
+<codeline lineno="403"><highlight class="normal"></highlight></codeline>
+<codeline lineno="404"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>read_string<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>del,<sp/><ref refid="union_sem_info" kindref="compound">SemInfo</ref><sp/>*seminfo)<sp/>{</highlight></codeline>
+<codeline lineno="405"><highlight class="normal"><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);<sp/><sp/></highlight><highlight class="comment">/*<sp/>keep<sp/>delimiter<sp/>(for<sp/>error<sp/>messages)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="406"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref><sp/>!=<sp/>del)<sp/>{</highlight></codeline>
+<codeline lineno="407"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="408"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lzio_8h_1a8341bdc72db5a2f045e18440f9523008" kindref="member">EOZ</ref>:</highlight></codeline>
+<codeline lineno="409"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lexerror(ls,<sp/></highlight><highlight class="stringliteral">&quot;unfinished<sp/>string&quot;</highlight><highlight class="normal">,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a9fcd34e2e50a0afb82f0dae65836187b" kindref="member">TK_EOS</ref>);</highlight></codeline>
+<codeline lineno="410"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/><sp/></highlight><highlight class="comment">/*<sp/>to<sp/>avoid<sp/>warnings<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="411"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;\n&apos;</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="412"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;\r&apos;</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="413"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lexerror(ls,<sp/></highlight><highlight class="stringliteral">&quot;unfinished<sp/>string&quot;</highlight><highlight class="normal">,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a2f748d118b4a20e2b1dc12538ccd9876" kindref="member">TK_STRING</ref>);</highlight></codeline>
+<codeline lineno="414"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/><sp/></highlight><highlight class="comment">/*<sp/>to<sp/>avoid<sp/>warnings<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="415"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;\\&apos;</highlight><highlight class="normal">:<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>escape<sp/>sequences<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="416"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>c;<sp/><sp/></highlight><highlight class="comment">/*<sp/>final<sp/>character<sp/>to<sp/>be<sp/>saved<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="417"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);<sp/><sp/></highlight><highlight class="comment">/*<sp/>keep<sp/>&apos;\\&apos;<sp/>for<sp/>error<sp/>messages<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="418"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="419"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;a&apos;</highlight><highlight class="normal">:<sp/>c<sp/>=<sp/></highlight><highlight class="charliteral">&apos;\a&apos;</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">goto</highlight><highlight class="normal"><sp/>read_save;</highlight></codeline>
+<codeline lineno="420"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;b&apos;</highlight><highlight class="normal">:<sp/>c<sp/>=<sp/></highlight><highlight class="charliteral">&apos;\b&apos;</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">goto</highlight><highlight class="normal"><sp/>read_save;</highlight></codeline>
+<codeline lineno="421"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;f&apos;</highlight><highlight class="normal">:<sp/>c<sp/>=<sp/></highlight><highlight class="charliteral">&apos;\f&apos;</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">goto</highlight><highlight class="normal"><sp/>read_save;</highlight></codeline>
+<codeline lineno="422"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;n&apos;</highlight><highlight class="normal">:<sp/>c<sp/>=<sp/></highlight><highlight class="charliteral">&apos;\n&apos;</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">goto</highlight><highlight class="normal"><sp/>read_save;</highlight></codeline>
+<codeline lineno="423"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;r&apos;</highlight><highlight class="normal">:<sp/>c<sp/>=<sp/></highlight><highlight class="charliteral">&apos;\r&apos;</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">goto</highlight><highlight class="normal"><sp/>read_save;</highlight></codeline>
+<codeline lineno="424"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;t&apos;</highlight><highlight class="normal">:<sp/>c<sp/>=<sp/></highlight><highlight class="charliteral">&apos;\t&apos;</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">goto</highlight><highlight class="normal"><sp/>read_save;</highlight></codeline>
+<codeline lineno="425"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;v&apos;</highlight><highlight class="normal">:<sp/>c<sp/>=<sp/></highlight><highlight class="charliteral">&apos;\v&apos;</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">goto</highlight><highlight class="normal"><sp/>read_save;</highlight></codeline>
+<codeline lineno="426"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;x&apos;</highlight><highlight class="normal">:<sp/>c<sp/>=<sp/>readhexaesc(ls);<sp/></highlight><highlight class="keywordflow">goto</highlight><highlight class="normal"><sp/>read_save;</highlight></codeline>
+<codeline lineno="427"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;u&apos;</highlight><highlight class="normal">:<sp/>utf8esc(ls);<sp/><sp/></highlight><highlight class="keywordflow">goto</highlight><highlight class="normal"><sp/>no_save;</highlight></codeline>
+<codeline lineno="428"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;\n&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;\r&apos;</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="429"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inclinenumber(ls);<sp/>c<sp/>=<sp/></highlight><highlight class="charliteral">&apos;\n&apos;</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">goto</highlight><highlight class="normal"><sp/>only_save;</highlight></codeline>
+<codeline lineno="430"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;\\&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;\&quot;&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;\&apos;&apos;</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="431"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>c<sp/>=<sp/>ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>;<sp/></highlight><highlight class="keywordflow">goto</highlight><highlight class="normal"><sp/>read_save;</highlight></codeline>
+<codeline lineno="432"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lzio_8h_1a8341bdc72db5a2f045e18440f9523008" kindref="member">EOZ</ref>:<sp/></highlight><highlight class="keywordflow">goto</highlight><highlight class="normal"><sp/>no_save;<sp/><sp/></highlight><highlight class="comment">/*<sp/>will<sp/>raise<sp/>an<sp/>error<sp/>next<sp/>loop<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="433"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;z&apos;</highlight><highlight class="normal">:<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>zap<sp/>following<sp/>span<sp/>of<sp/>spaces<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="434"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lzio_8h_1ab9e4cabf75529d0c2f5a809f49a25281" kindref="member">luaZ_buffremove</ref>(ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>,<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>remove<sp/>&apos;\\&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="435"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);<sp/><sp/></highlight><highlight class="comment">/*<sp/>skip<sp/>the<sp/>&apos;z&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="436"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(<ref refid="lctype_8h_1a768801f115261ae5ad51fdf6e54904e2" kindref="member">lisspace</ref>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>))<sp/>{</highlight></codeline>
+<codeline lineno="437"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="llex_8c_1aee0dbe3090a8bf4b0ecd633781c5a09a" kindref="member">currIsNewline</ref>(ls))<sp/>inclinenumber(ls);</highlight></codeline>
+<codeline lineno="438"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);</highlight></codeline>
+<codeline lineno="439"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="440"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">goto</highlight><highlight class="normal"><sp/>no_save;</highlight></codeline>
+<codeline lineno="441"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="442"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:<sp/>{</highlight></codeline>
+<codeline lineno="443"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>esccheck(ls,<sp/><ref refid="lctype_8h_1aee1d27a5eac398ec2c9c8b80281041e6" kindref="member">lisdigit</ref>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>),<sp/></highlight><highlight class="stringliteral">&quot;invalid<sp/>escape<sp/>sequence&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="444"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>c<sp/>=<sp/>readdecesc(ls);<sp/><sp/></highlight><highlight class="comment">/*<sp/>digital<sp/>escape<sp/>&apos;\ddd&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="445"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">goto</highlight><highlight class="normal"><sp/>only_save;</highlight></codeline>
+<codeline lineno="446"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="447"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="448"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/>read_save:</highlight></codeline>
+<codeline lineno="449"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);</highlight></codeline>
+<codeline lineno="450"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>go<sp/>through<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="451"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/>only_save:</highlight></codeline>
+<codeline lineno="452"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lzio_8h_1ab9e4cabf75529d0c2f5a809f49a25281" kindref="member">luaZ_buffremove</ref>(ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>,<sp/>1);<sp/><sp/></highlight><highlight class="comment">/*<sp/>remove<sp/>&apos;\\&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="453"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>save(ls,<sp/>c);</highlight></codeline>
+<codeline lineno="454"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>go<sp/>through<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="455"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/>no_save:<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="456"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="457"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="458"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);</highlight></codeline>
+<codeline lineno="459"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="460"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="461"><highlight class="normal"><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);<sp/><sp/></highlight><highlight class="comment">/*<sp/>skip<sp/>delimiter<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="462"><highlight class="normal"><sp/><sp/>seminfo-&gt;<ref refid="union_sem_info_1a393ebb62432ff3e689283e54e113b33e" kindref="member">ts</ref><sp/>=<sp/><ref refid="llex_8c_1a51ec8735f32a452d48a77e71e9dd0a3b" kindref="member">luaX_newstring</ref>(ls,<sp/><ref refid="lzio_8h_1aa51f632cb0519368a65ada80b71ea1e3" kindref="member">luaZ_buffer</ref>(ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>)<sp/>+<sp/>1,</highlight></codeline>
+<codeline lineno="463"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lzio_8h_1a26c3aeb9ce93f8559b0a596cf7bb1031" kindref="member">luaZ_bufflen</ref>(ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>)<sp/>-<sp/>2);</highlight></codeline>
+<codeline lineno="464"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="465"><highlight class="normal"></highlight></codeline>
+<codeline lineno="466"><highlight class="normal"></highlight></codeline>
+<codeline lineno="467"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>llex<sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/><ref refid="union_sem_info" kindref="compound">SemInfo</ref><sp/>*seminfo)<sp/>{</highlight></codeline>
+<codeline lineno="468"><highlight class="normal"><sp/><sp/><ref refid="lzio_8h_1a53c928283083a162c79e0152048affe2" kindref="member">luaZ_resetbuffer</ref>(ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>);</highlight></codeline>
+<codeline lineno="469"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;;)<sp/>{</highlight></codeline>
+<codeline lineno="470"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="471"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;\n&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;\r&apos;</highlight><highlight class="normal">:<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>line<sp/>breaks<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="472"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inclinenumber(ls);</highlight></codeline>
+<codeline lineno="473"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="474"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="475"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;<sp/>&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;\f&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;\t&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;\v&apos;</highlight><highlight class="normal">:<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>spaces<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="476"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);</highlight></codeline>
+<codeline lineno="477"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="478"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="479"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;-&apos;</highlight><highlight class="normal">:<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;-&apos;<sp/>or<sp/>&apos;--&apos;<sp/>(comment)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="480"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);</highlight></codeline>
+<codeline lineno="481"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref><sp/>!=<sp/></highlight><highlight class="charliteral">&apos;-&apos;</highlight><highlight class="normal">)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;-&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="482"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>else<sp/>is<sp/>a<sp/>comment<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="483"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);</highlight></codeline>
+<codeline lineno="484"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref><sp/>==<sp/></highlight><highlight class="charliteral">&apos;[&apos;</highlight><highlight class="normal">)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>long<sp/>comment?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="485"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>sep<sp/>=<sp/>skip_sep(ls);</highlight></codeline>
+<codeline lineno="486"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lzio_8h_1a53c928283083a162c79e0152048affe2" kindref="member">luaZ_resetbuffer</ref>(ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>);<sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;skip_sep&apos;<sp/>may<sp/>dirty<sp/>the<sp/>buffer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="487"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sep<sp/>&gt;=<sp/>2)<sp/>{</highlight></codeline>
+<codeline lineno="488"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>read_long_string(ls,<sp/>NULL,<sp/>sep);<sp/><sp/></highlight><highlight class="comment">/*<sp/>skip<sp/>long<sp/>comment<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="489"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lzio_8h_1a53c928283083a162c79e0152048affe2" kindref="member">luaZ_resetbuffer</ref>(ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>);<sp/><sp/></highlight><highlight class="comment">/*<sp/>previous<sp/>call<sp/>may<sp/>dirty<sp/>the<sp/>buff.<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="490"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="491"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="492"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="493"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>else<sp/>short<sp/>comment<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="494"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(!<ref refid="llex_8c_1aee0dbe3090a8bf4b0ecd633781c5a09a" kindref="member">currIsNewline</ref>(ls)<sp/>&amp;&amp;<sp/>ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref><sp/>!=<sp/><ref refid="lzio_8h_1a8341bdc72db5a2f045e18440f9523008" kindref="member">EOZ</ref>)</highlight></codeline>
+<codeline lineno="495"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);<sp/><sp/></highlight><highlight class="comment">/*<sp/>skip<sp/>until<sp/>end<sp/>of<sp/>line<sp/>(or<sp/>end<sp/>of<sp/>file)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="496"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="497"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="498"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;[&apos;</highlight><highlight class="normal">:<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>long<sp/>string<sp/>or<sp/>simply<sp/>&apos;[&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="499"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>sep<sp/>=<sp/>skip_sep(ls);</highlight></codeline>
+<codeline lineno="500"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sep<sp/>&gt;=<sp/>2)<sp/>{</highlight></codeline>
+<codeline lineno="501"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>read_long_string(ls,<sp/>seminfo,<sp/>sep);</highlight></codeline>
+<codeline lineno="502"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a2f748d118b4a20e2b1dc12538ccd9876" kindref="member">TK_STRING</ref>;</highlight></codeline>
+<codeline lineno="503"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="504"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sep<sp/>==<sp/>0)<sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;[=...&apos;<sp/>missing<sp/>second<sp/>bracket?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="505"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lexerror(ls,<sp/></highlight><highlight class="stringliteral">&quot;invalid<sp/>long<sp/>string<sp/>delimiter&quot;</highlight><highlight class="normal">,<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a2f748d118b4a20e2b1dc12538ccd9876" kindref="member">TK_STRING</ref>);</highlight></codeline>
+<codeline lineno="506"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;[&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="507"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="508"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;=&apos;</highlight><highlight class="normal">:<sp/>{</highlight></codeline>
+<codeline lineno="509"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);</highlight></codeline>
+<codeline lineno="510"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(check_next1(ls,<sp/></highlight><highlight class="charliteral">&apos;=&apos;</highlight><highlight class="normal">))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04ae9b97178246db483138ab3d18039bfb2" kindref="member">TK_EQ</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;==&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="511"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;=&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="512"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="513"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;&lt;&apos;</highlight><highlight class="normal">:<sp/>{</highlight></codeline>
+<codeline lineno="514"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);</highlight></codeline>
+<codeline lineno="515"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(check_next1(ls,<sp/></highlight><highlight class="charliteral">&apos;=&apos;</highlight><highlight class="normal">))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04ace38c3f7b08d6ffe00acdd0706ba35de" kindref="member">TK_LE</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;&lt;=&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="516"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(check_next1(ls,<sp/></highlight><highlight class="charliteral">&apos;&lt;&apos;</highlight><highlight class="normal">))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04afe39400ab62457e9a823aa8521d0610b" kindref="member">TK_SHL</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;&lt;&lt;&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="517"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;&lt;&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="518"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="519"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;&gt;&apos;</highlight><highlight class="normal">:<sp/>{</highlight></codeline>
+<codeline lineno="520"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);</highlight></codeline>
+<codeline lineno="521"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(check_next1(ls,<sp/></highlight><highlight class="charliteral">&apos;=&apos;</highlight><highlight class="normal">))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a39306a802115256cf2099f6c724a95b0" kindref="member">TK_GE</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;&gt;=&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="522"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(check_next1(ls,<sp/></highlight><highlight class="charliteral">&apos;&gt;&apos;</highlight><highlight class="normal">))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04ad15c43ae39b99d8f834419ec74183185" kindref="member">TK_SHR</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;&gt;&gt;&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="523"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;&gt;&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="524"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="525"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;/&apos;</highlight><highlight class="normal">:<sp/>{</highlight></codeline>
+<codeline lineno="526"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);</highlight></codeline>
+<codeline lineno="527"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(check_next1(ls,<sp/></highlight><highlight class="charliteral">&apos;/&apos;</highlight><highlight class="normal">))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a7f7c69f2e524e3ab183318cf52575ba8" kindref="member">TK_IDIV</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;//&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="528"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;/&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="529"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="530"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;~&apos;</highlight><highlight class="normal">:<sp/>{</highlight></codeline>
+<codeline lineno="531"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);</highlight></codeline>
+<codeline lineno="532"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(check_next1(ls,<sp/></highlight><highlight class="charliteral">&apos;=&apos;</highlight><highlight class="normal">))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a6897243f49a32e90ca094af33c16374b" kindref="member">TK_NE</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;~=&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="533"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;~&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="534"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="535"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;:&apos;</highlight><highlight class="normal">:<sp/>{</highlight></codeline>
+<codeline lineno="536"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);</highlight></codeline>
+<codeline lineno="537"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(check_next1(ls,<sp/></highlight><highlight class="charliteral">&apos;:&apos;</highlight><highlight class="normal">))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a3a767e0c4ce0407785d87a1a56980de2" kindref="member">TK_DBCOLON</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;::&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="538"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;:&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="539"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="540"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;&quot;&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;\&apos;&apos;</highlight><highlight class="normal">:<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>short<sp/>literal<sp/>strings<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="541"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>read_string(ls,<sp/>ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>,<sp/>seminfo);</highlight></codeline>
+<codeline lineno="542"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a2f748d118b4a20e2b1dc12538ccd9876" kindref="member">TK_STRING</ref>;</highlight></codeline>
+<codeline lineno="543"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="544"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;.&apos;</highlight><highlight class="normal">:<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;.&apos;,<sp/>&apos;..&apos;,<sp/>&apos;...&apos;,<sp/>or<sp/>number<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="545"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);</highlight></codeline>
+<codeline lineno="546"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(check_next1(ls,<sp/></highlight><highlight class="charliteral">&apos;.&apos;</highlight><highlight class="normal">))<sp/>{</highlight></codeline>
+<codeline lineno="547"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(check_next1(ls,<sp/></highlight><highlight class="charliteral">&apos;.&apos;</highlight><highlight class="normal">))</highlight></codeline>
+<codeline lineno="548"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a500efed658259c56ef30938c20c3b6c4" kindref="member">TK_DOTS</ref>;<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;...&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="549"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a8367a7a9a88e9ea3cef16ab15887a278" kindref="member">TK_CONCAT</ref>;<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>&apos;..&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="550"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="551"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="lctype_8h_1aee1d27a5eac398ec2c9c8b80281041e6" kindref="member">lisdigit</ref>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;.&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="552"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>read_numeral(ls,<sp/>seminfo);</highlight></codeline>
+<codeline lineno="553"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="554"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;0&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;1&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;2&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;3&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;4&apos;</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="555"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;5&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;6&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;7&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;8&apos;</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/></highlight><highlight class="charliteral">&apos;9&apos;</highlight><highlight class="normal">:<sp/>{</highlight></codeline>
+<codeline lineno="556"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>read_numeral(ls,<sp/>seminfo);</highlight></codeline>
+<codeline lineno="557"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="558"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="lzio_8h_1a8341bdc72db5a2f045e18440f9523008" kindref="member">EOZ</ref>:<sp/>{</highlight></codeline>
+<codeline lineno="559"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a9fcd34e2e50a0afb82f0dae65836187b" kindref="member">TK_EOS</ref>;</highlight></codeline>
+<codeline lineno="560"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="561"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:<sp/>{</highlight></codeline>
+<codeline lineno="562"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lctype_8h_1a7132e9f6daf30b344b74f51d64eadf7d" kindref="member">lislalpha</ref>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>))<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>identifier<sp/>or<sp/>reserved<sp/>word?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="563"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*ts;</highlight></codeline>
+<codeline lineno="564"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">do</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="565"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1ac4c2ebdfa66caf9c1ef124c30e9d68a5" kindref="member">save_and_next</ref>(ls);</highlight></codeline>
+<codeline lineno="566"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(<ref refid="lctype_8h_1a9c0dc6a934853b8ab5e7d65a3ca8abcd" kindref="member">lislalnum</ref>(ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>));</highlight></codeline>
+<codeline lineno="567"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>find<sp/>or<sp/>create<sp/>string<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="568"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ts<sp/>=<sp/><ref refid="lstring_8c_1af922b364943afbe71e4da82a0c50188c" kindref="member">luaS_newlstr</ref>(ls-&gt;<ref refid="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" kindref="member">L</ref>,<sp/><ref refid="lzio_8h_1aa51f632cb0519368a65ada80b71ea1e3" kindref="member">luaZ_buffer</ref>(ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>),</highlight></codeline>
+<codeline lineno="569"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lzio_8h_1a26c3aeb9ce93f8559b0a596cf7bb1031" kindref="member">luaZ_bufflen</ref>(ls-&gt;<ref refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" kindref="member">buff</ref>));</highlight></codeline>
+<codeline lineno="570"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lstring_8h_1a7b490cd8212260e1cf975f59a16fb745" kindref="member">isreserved</ref>(ts))<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>reserved<sp/>word?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="571"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ts-&gt;<ref refid="struct_t_string_1a11878b0fae7367ad203a0c470ee54fa1" kindref="member">extra</ref><sp/>-<sp/>1<sp/>+<sp/><ref refid="llex_8h_1a6bc8e20ff15b7aa178aceea51e691e44" kindref="member">FIRST_RESERVED</ref>;</highlight></codeline>
+<codeline lineno="572"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="573"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>seminfo-&gt;<ref refid="union_sem_info_1a393ebb62432ff3e689283e54e113b33e" kindref="member">ts</ref><sp/>=<sp/>anchorstr(ls,<sp/>ts);</highlight></codeline>
+<codeline lineno="574"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a84e5aed35515b2881005d88dccaf0c30" kindref="member">TK_NAME</ref>;</highlight></codeline>
+<codeline lineno="575"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="576"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="577"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>single-char<sp/>tokens<sp/>(&apos;+&apos;,<sp/>&apos;*&apos;,<sp/>&apos;%&apos;,<sp/>&apos;{&apos;,<sp/>&apos;}&apos;,<sp/>...)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="578"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>c<sp/>=<sp/>ls-&gt;<ref refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" kindref="member">current</ref>;</highlight></codeline>
+<codeline lineno="579"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>(ls);</highlight></codeline>
+<codeline lineno="580"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>c;</highlight></codeline>
+<codeline lineno="581"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="582"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="583"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="584"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="585"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="586"><highlight class="normal"></highlight></codeline>
+<codeline lineno="587"><highlight class="normal"></highlight></codeline>
+<codeline lineno="588" refid="llex_8c_1a8b9f2aa3f74c4e2f814d860dc7f5a6a8" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="llex_8c_1a8b9f2aa3f74c4e2f814d860dc7f5a6a8" kindref="member">luaX_next</ref><sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls)<sp/>{</highlight></codeline>
+<codeline lineno="589"><highlight class="normal"><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1aaadb237d4fc6b81d2242e666de885bf7" kindref="member">lastline</ref><sp/>=<sp/>ls-&gt;<ref refid="struct_lex_state_1a9047632ca93c760b66b6303c819099d5" kindref="member">linenumber</ref>;</highlight></codeline>
+<codeline lineno="590"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ls-&gt;<ref refid="struct_lex_state_1ad3c75c11dbbdae006057cb4b847a4f91" kindref="member">lookahead</ref>.<ref refid="struct_token_1a92d1dfeae343659449f1bc29d6731c5d" kindref="member">token</ref><sp/>!=<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a9fcd34e2e50a0afb82f0dae65836187b" kindref="member">TK_EOS</ref>)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>is<sp/>there<sp/>a<sp/>look-ahead<sp/>token?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="591"><highlight class="normal"><sp/><sp/><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1a597c734626136f4ddb8232e8fc3abfc4" kindref="member">t</ref><sp/>=<sp/>ls-&gt;<ref refid="struct_lex_state_1ad3c75c11dbbdae006057cb4b847a4f91" kindref="member">lookahead</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>use<sp/>this<sp/>one<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="592"><highlight class="normal"><sp/><sp/><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1ad3c75c11dbbdae006057cb4b847a4f91" kindref="member">lookahead</ref>.<ref refid="struct_token_1a92d1dfeae343659449f1bc29d6731c5d" kindref="member">token</ref><sp/>=<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a9fcd34e2e50a0afb82f0dae65836187b" kindref="member">TK_EOS</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>and<sp/>discharge<sp/>it<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="593"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="594"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="595"><highlight class="normal"><sp/><sp/><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1a597c734626136f4ddb8232e8fc3abfc4" kindref="member">t</ref>.<ref refid="struct_token_1a92d1dfeae343659449f1bc29d6731c5d" kindref="member">token</ref><sp/>=<sp/>llex(ls,<sp/>&amp;ls-&gt;<ref refid="struct_lex_state_1a597c734626136f4ddb8232e8fc3abfc4" kindref="member">t</ref>.<ref refid="struct_token_1a87067a25b1e511befc45d56cf535ef59" kindref="member">seminfo</ref>);<sp/><sp/></highlight><highlight class="comment">/*<sp/>read<sp/>next<sp/>token<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="596"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="597"><highlight class="normal"></highlight></codeline>
+<codeline lineno="598"><highlight class="normal"></highlight></codeline>
+<codeline lineno="599" refid="llex_8c_1af44c274f4e9a24ac9bc41ff31bac5ffb" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="llex_8c_1af44c274f4e9a24ac9bc41ff31bac5ffb" kindref="member">luaX_lookahead</ref><sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls)<sp/>{</highlight></codeline>
+<codeline lineno="600"><highlight class="normal"><sp/><sp/><ref refid="llimits_8h_1a5978f5fda715bd80e845df1e16ad7780" kindref="member">lua_assert</ref>(ls-&gt;<ref refid="struct_lex_state_1ad3c75c11dbbdae006057cb4b847a4f91" kindref="member">lookahead</ref>.<ref refid="struct_token_1a92d1dfeae343659449f1bc29d6731c5d" kindref="member">token</ref><sp/>==<sp/><ref refid="llex_8h_1ae5bd761f37716726f95e4be16a08ac04a9fcd34e2e50a0afb82f0dae65836187b" kindref="member">TK_EOS</ref>);</highlight></codeline>
+<codeline lineno="601"><highlight class="normal"><sp/><sp/>ls-&gt;<ref refid="struct_lex_state_1ad3c75c11dbbdae006057cb4b847a4f91" kindref="member">lookahead</ref>.<ref refid="struct_token_1a92d1dfeae343659449f1bc29d6731c5d" kindref="member">token</ref><sp/>=<sp/>llex(ls,<sp/>&amp;ls-&gt;<ref refid="struct_lex_state_1ad3c75c11dbbdae006057cb4b847a4f91" kindref="member">lookahead</ref>.<ref refid="struct_token_1a87067a25b1e511befc45d56cf535ef59" kindref="member">seminfo</ref>);</highlight></codeline>
+<codeline lineno="602"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ls-&gt;<ref refid="struct_lex_state_1ad3c75c11dbbdae006057cb4b847a4f91" kindref="member">lookahead</ref>.<ref refid="struct_token_1a92d1dfeae343659449f1bc29d6731c5d" kindref="member">token</ref>;</highlight></codeline>
+<codeline lineno="603"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="604"><highlight class="normal"></highlight></codeline>
+<codeline lineno="605"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/llex.c"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,1168 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_filesystem" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Filesystem</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::enable_shared_from_this&lt; Filesystem &gt;</basecompoundref>
+    <derivedcompoundref refid="class_apk_filesystem" prot="public" virt="non-virtual">ApkFilesystem</derivedcompoundref>
+    <derivedcompoundref refid="class_hook_filesystem" prot="public" virt="non-virtual">HookFilesystem</derivedcompoundref>
+    <derivedcompoundref refid="class_native_filesystem" prot="public" virt="non-virtual">NativeFilesystem</derivedcompoundref>
+    <derivedcompoundref refid="class_root_filesystem" prot="public" virt="non-virtual">RootFilesystem</derivedcompoundref>
+    <derivedcompoundref refid="class_saf_filesystem" prot="public" virt="non-virtual">SafFilesystem</derivedcompoundref>
+    <derivedcompoundref refid="class_zip_filesystem" prot="public" virt="non-virtual">ZipFilesystem</derivedcompoundref>
+    <includes refid="filesystem_8h" local="no">filesystem.h</includes>
+    <sectiondef kind="user-defined">
+      <memberdef kind="function" id="class_filesystem_1a75033a685c27d9a04cd82ecc1611bc00" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool Filesystem::IsFile</definition>
+        <argsstring>(std::string_view path) const =0</argsstring>
+        <name>IsFile</name>
+        <qualifiedname>Filesystem::IsFile</qualifiedname>
+        <reimplementedby refid="class_apk_filesystem_1a5802c5dab759806b0e1d3cc8abc239a5">IsFile</reimplementedby>
+        <reimplementedby refid="class_hook_filesystem_1a32c6498daca743e83330ebdcfeec04cf">IsFile</reimplementedby>
+        <reimplementedby refid="class_native_filesystem_1a7401b983113730494d894a5da34e4f63">IsFile</reimplementedby>
+        <reimplementedby refid="class_root_filesystem_1a94f29b81e816f8b8daedb32f4a99c639">IsFile</reimplementedby>
+        <reimplementedby refid="class_saf_filesystem_1aa2772ff829a00e763a0507d87103c775">IsFile</reimplementedby>
+        <reimplementedby refid="class_zip_filesystem_1ad13e0648b1c882b6ababf0e000932a63">IsFile</reimplementedby>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Abstract methods to be implemented by filesystems. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="219" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1afbed80d8fefd923add5f839401eda2e3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool Filesystem::IsDirectory</definition>
+        <argsstring>(std::string_view path, bool follow_symlinks) const =0</argsstring>
+        <name>IsDirectory</name>
+        <qualifiedname>Filesystem::IsDirectory</qualifiedname>
+        <reimplementedby refid="class_apk_filesystem_1a352f5aa2d2f5fd2e226ca34907f1ed0f">IsDirectory</reimplementedby>
+        <reimplementedby refid="class_hook_filesystem_1a241c34ec685984708a5121d65127ab2a">IsDirectory</reimplementedby>
+        <reimplementedby refid="class_native_filesystem_1ac8e1f89717bff3deaf2357bcf8c8a974">IsDirectory</reimplementedby>
+        <reimplementedby refid="class_root_filesystem_1ae339e109c1b9b04033f68a64d5a8ecd0">IsDirectory</reimplementedby>
+        <reimplementedby refid="class_saf_filesystem_1a51c7b7bb00c1e69105a28d61ce67d6b5">IsDirectory</reimplementedby>
+        <reimplementedby refid="class_zip_filesystem_1aae523a4451585aa626739c1ffdc410ba">IsDirectory</reimplementedby>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>follow_symlinks</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="220" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1a8c65f9af44aefee4d3b6fb4357608cec" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool Filesystem::Exists</definition>
+        <argsstring>(std::string_view path) const =0</argsstring>
+        <name>Exists</name>
+        <qualifiedname>Filesystem::Exists</qualifiedname>
+        <reimplementedby refid="class_apk_filesystem_1abe34244d7e90d260893164837a882350">Exists</reimplementedby>
+        <reimplementedby refid="class_hook_filesystem_1a9a1483c0a2128edb9dc5df4f100377c3">Exists</reimplementedby>
+        <reimplementedby refid="class_native_filesystem_1acd956f2fee3a96ea2fe1088087afb355">Exists</reimplementedby>
+        <reimplementedby refid="class_root_filesystem_1a9ebe9b3699c18db73986748f1156059b">Exists</reimplementedby>
+        <reimplementedby refid="class_saf_filesystem_1ae90f42cd8b437f7d849bb60de2d96a1d">Exists</reimplementedby>
+        <reimplementedby refid="class_zip_filesystem_1a390fad6ea8e6c5ee0b19b40f0b7ce2d3">Exists</reimplementedby>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="221" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1a486585c3773c1ec18ee0154af3528eb0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int64_t</type>
+        <definition>virtual int64_t Filesystem::GetFilesize</definition>
+        <argsstring>(std::string_view path) const =0</argsstring>
+        <name>GetFilesize</name>
+        <qualifiedname>Filesystem::GetFilesize</qualifiedname>
+        <reimplementedby refid="class_apk_filesystem_1a8177f375de87679fd249b84fe671d64c">GetFilesize</reimplementedby>
+        <reimplementedby refid="class_hook_filesystem_1a4117351fd46529b6353b5550c5921063">GetFilesize</reimplementedby>
+        <reimplementedby refid="class_native_filesystem_1aef6dc01ea06b0fe3e90fbedaadcb6c22">GetFilesize</reimplementedby>
+        <reimplementedby refid="class_root_filesystem_1af7617699724286fc7e882ceed94d9641">GetFilesize</reimplementedby>
+        <reimplementedby refid="class_saf_filesystem_1a385511631a94fd4c8b0a724120642302">GetFilesize</reimplementedby>
+        <reimplementedby refid="class_zip_filesystem_1a56fb8255e92c106333c22adf10902372">GetFilesize</reimplementedby>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="222" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1a23468b198fbbc856fc2a378a715d3a1f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Filesystem::MakeDirectory</definition>
+        <argsstring>(std::string_view dir, bool follow_symlinks) const</argsstring>
+        <name>MakeDirectory</name>
+        <qualifiedname>Filesystem::MakeDirectory</qualifiedname>
+        <reimplementedby refid="class_hook_filesystem_1af1e7bee7f3a1adcf14b03e4177de6509">MakeDirectory</reimplementedby>
+        <reimplementedby refid="class_native_filesystem_1afb9fb93df74dc79fcf9d6ce6871ff090">MakeDirectory</reimplementedby>
+        <reimplementedby refid="class_root_filesystem_1a2caf5718959315beec440e9eea8e651a">MakeDirectory</reimplementedby>
+        <param>
+          <type>std::string_view</type>
+          <declname>dir</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>follow_symlinks</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="223" column="14" bodyfile="filesystem.cpp" bodystart="178" bodyend="180"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1a9e7223b57a3218c4ed39766cebd8e082" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>bool Filesystem::IsFeatureSupported</definition>
+        <argsstring>(Feature f) const</argsstring>
+        <name>IsFeatureSupported</name>
+        <qualifiedname>Filesystem::IsFeatureSupported</qualifiedname>
+        <reimplementedby refid="class_hook_filesystem_1a79a66018b53d3f40df90576e17d5c7cb">IsFeatureSupported</reimplementedby>
+        <reimplementedby refid="class_native_filesystem_1a6ba530257ce7eebb1319306c5dfcd45d">IsFeatureSupported</reimplementedby>
+        <reimplementedby refid="class_saf_filesystem_1a9abc2822dd8b7f286bf3a1d01e8604d4">IsFeatureSupported</reimplementedby>
+        <param>
+          <type><ref refid="class_filesystem_1a66f857cb70591532b9ce3869d6ebdd8f" kindref="member">Feature</ref></type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="224" column="14" bodyfile="filesystem.h" bodystart="505" bodyend="507"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1a9c4aacd54841726079b311972e0b3b45" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::string</type>
+        <definition>virtual std::string Filesystem::Describe</definition>
+        <argsstring>() const =0</argsstring>
+        <name>Describe</name>
+        <qualifiedname>Filesystem::Describe</qualifiedname>
+        <reimplementedby refid="class_apk_filesystem_1a21079ac842693c3a90733675f592a1bf">Describe</reimplementedby>
+        <reimplementedby refid="class_hook_filesystem_1a68574b2ef76a1458728311bbcfb29b1c">Describe</reimplementedby>
+        <reimplementedby refid="class_native_filesystem_1aacd19751a3500d63ecbf8a60dc16e0a2">Describe</reimplementedby>
+        <reimplementedby refid="class_root_filesystem_1ad6137bf4bf2dd8f26e404acfb661b27a">Describe</reimplementedby>
+        <reimplementedby refid="class_saf_filesystem_1ad92521211a81906ad53791024df98e57">Describe</reimplementedby>
+        <reimplementedby refid="class_zip_filesystem_1ad5e8ff903611baf2afbaee7c38db0775">Describe</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="225" column="21"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="user-defined">
+      <memberdef kind="function" id="class_filesystem_1a2c816e9dbd010079080cdbd6c3f16518" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool Filesystem::GetDirectoryContent</definition>
+        <argsstring>(std::string_view path, std::vector&lt; DirectoryTree::Entry &gt; &amp;entries) const =0</argsstring>
+        <name>GetDirectoryContent</name>
+        <qualifiedname>Filesystem::GetDirectoryContent</qualifiedname>
+        <reimplementedby refid="class_apk_filesystem_1ae79a16187becc7f5275118597f1a5aaa">GetDirectoryContent</reimplementedby>
+        <reimplementedby refid="class_hook_filesystem_1adf7b113b7094a5e8f834e504e5a0289c">GetDirectoryContent</reimplementedby>
+        <reimplementedby refid="class_native_filesystem_1a2e934ac7e822c773240ad3668027ccdd">GetDirectoryContent</reimplementedby>
+        <reimplementedby refid="class_root_filesystem_1aa5d96652805dd1a81eb89ca76091631e">GetDirectoryContent</reimplementedby>
+        <reimplementedby refid="class_saf_filesystem_1ac82c45ff094f3f14f2963a5a9f993c80">GetDirectoryContent</reimplementedby>
+        <reimplementedby refid="class_zip_filesystem_1a3547ce48d9adc1760e05a5b9ee087513">GetDirectoryContent</reimplementedby>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="struct_directory_tree_1_1_entry" kindref="compound">DirectoryTree::Entry</ref> &gt; &amp;</type>
+          <declname>entries</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Abstract methods to be implemented by filesystems. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="233" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1aef33876f56d776123196026867ef9361" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::streambuf *</type>
+        <definition>virtual std::streambuf * Filesystem::CreateInputStreambuffer</definition>
+        <argsstring>(std::string_view path, std::ios_base::openmode mode) const =0</argsstring>
+        <name>CreateInputStreambuffer</name>
+        <qualifiedname>Filesystem::CreateInputStreambuffer</qualifiedname>
+        <reimplementedby refid="class_apk_filesystem_1a434e2de8032289586845ef8b12c2c178">CreateInputStreambuffer</reimplementedby>
+        <reimplementedby refid="class_hook_filesystem_1a80d6efbf005b42c08f12e81e648ad259">CreateInputStreambuffer</reimplementedby>
+        <reimplementedby refid="class_native_filesystem_1a187092733ece6e5c77b85a45c38b7f60">CreateInputStreambuffer</reimplementedby>
+        <reimplementedby refid="class_root_filesystem_1ad71a7067eef6f4411d5e8c94876c172b">CreateInputStreambuffer</reimplementedby>
+        <reimplementedby refid="class_saf_filesystem_1ac8138c8e28286411b256eac9b93f3068">CreateInputStreambuffer</reimplementedby>
+        <reimplementedby refid="class_zip_filesystem_1a29b2a55cda3905ec2d901f093d00ce63">CreateInputStreambuffer</reimplementedby>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type>std::ios_base::openmode</type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="234" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1ad927487c8d499175f84b501cf55978e5" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::streambuf *</type>
+        <definition>std::streambuf * Filesystem::CreateOutputStreambuffer</definition>
+        <argsstring>(std::string_view path, std::ios_base::openmode mode) const</argsstring>
+        <name>CreateOutputStreambuffer</name>
+        <qualifiedname>Filesystem::CreateOutputStreambuffer</qualifiedname>
+        <reimplementedby refid="class_apk_filesystem_1a77cbe22d63f88709fb697c1199324394">CreateOutputStreambuffer</reimplementedby>
+        <reimplementedby refid="class_hook_filesystem_1ab0fa0059ef7a32d1f2ff78dbc05d2d47">CreateOutputStreambuffer</reimplementedby>
+        <reimplementedby refid="class_native_filesystem_1aea0e4331902daa335433ad8104f3f43b">CreateOutputStreambuffer</reimplementedby>
+        <reimplementedby refid="class_root_filesystem_1a3bbad0e30ea5a5570fd8b694bc8e417a">CreateOutputStreambuffer</reimplementedby>
+        <reimplementedby refid="class_saf_filesystem_1afc3083b6b143b811a46256af86282870">CreateOutputStreambuffer</reimplementedby>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type>std::ios_base::openmode</type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="235" column="24" bodyfile="filesystem.h" bodystart="509" bodyend="512"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_filesystem_1a66f857cb70591532b9ce3869d6ebdd8f" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>Feature</name>
+        <qualifiedname>Filesystem::Feature</qualifiedname>
+        <enumvalue id="class_filesystem_1a66f857cb70591532b9ce3869d6ebdd8fa1129c0e4d43f2d121652a7302712cff6" prot="public">
+          <name>Write</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para><ref refid="class_filesystem" kindref="compound">Filesystem</ref> supports Write operations </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Features provided by the filesystem </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="48" column="1" bodyfile="filesystem.h" bodystart="48" bodyend="51"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_filesystem_1a5f6d2b59075737de3e42fd9fd4b5c630" prot="protected" static="no" mutable="no">
+        <type>friend</type>
+        <definition>friend Filesystem::FilesystemView</definition>
+        <argsstring></argsstring>
+        <name>FilesystemView</name>
+        <qualifiedname>Filesystem::FilesystemView</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="246" column="8" bodyfile="filesystem.h" bodystart="246" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_filesystem_1a12cd9c6ef56e9c660e26638f9fbe32e8" prot="protected" static="no" mutable="no">
+        <type>friend</type>
+        <definition>friend Filesystem::DirectoryTree</definition>
+        <argsstring></argsstring>
+        <name>DirectoryTree</name>
+        <qualifiedname>Filesystem::DirectoryTree</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="247" column="8" bodyfile="filesystem.h" bodystart="247" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_filesystem_1ac13ad5f5406780861097715cdd850cca" prot="protected" static="no" mutable="no">
+        <type>friend</type>
+        <definition>friend Filesystem::RootFilesystem</definition>
+        <argsstring></argsstring>
+        <name>RootFilesystem</name>
+        <qualifiedname>Filesystem::RootFilesystem</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="248" column="8" bodyfile="filesystem.h" bodystart="248" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_filesystem_1a2bb5d8bd203dde6ff4a50f056458e380" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_directory_tree" kindref="compound">DirectoryTree</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;DirectoryTree&gt; Filesystem::tree</definition>
+        <argsstring></argsstring>
+        <name>tree</name>
+        <qualifiedname>Filesystem::tree</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="250" column="17" bodyfile="filesystem.h" bodystart="250" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_filesystem_1a50db690a19702d9c9979a12ce13a3585" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Filesystem::base_path</definition>
+        <argsstring></argsstring>
+        <name>base_path</name>
+        <qualifiedname>Filesystem::base_path</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="253" column="13" bodyfile="filesystem.h" bodystart="253" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_filesystem_1aaf197465fcd5a868199f7622052fb853" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;FilesystemView&gt; Filesystem::parent_fs</definition>
+        <argsstring></argsstring>
+        <name>parent_fs</name>
+        <qualifiedname>Filesystem::parent_fs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="254" column="17" bodyfile="filesystem.h" bodystart="254" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_filesystem_1a6004d02393974507891e1fb34c0dab93" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Filesystem::~Filesystem</definition>
+        <argsstring>()=default</argsstring>
+        <name>~Filesystem</name>
+        <qualifiedname>Filesystem::~Filesystem</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="53" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1a9134daaffbc1e9ce8777e82d6156c3a8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Filesystem::Filesystem</definition>
+        <argsstring>(const Filesystem &amp;)=delete</argsstring>
+        <name>Filesystem</name>
+        <qualifiedname>Filesystem::Filesystem</qualifiedname>
+        <param>
+          <type>const <ref refid="class_filesystem" kindref="compound">Filesystem</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="55" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1a8baf837224c837bd1c455205c653a9ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem" kindref="compound">Filesystem</ref> &amp;</type>
+        <definition>Filesystem &amp; Filesystem::operator=</definition>
+        <argsstring>(const Filesystem &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Filesystem::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_filesystem" kindref="compound">Filesystem</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="56" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1a786711e868cfeea684762fcced413dcd" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Filesystem::IsValid</definition>
+        <argsstring>() const</argsstring>
+        <name>IsValid</name>
+        <qualifiedname>Filesystem::IsValid</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks whether the path used to initialize the filesystem exists. Calling functions on an invalid filesystem is undefined.</para>
+<para><simplesect kind="return"><para>If the filesystem is valid </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="64" column="6" bodyfile="filesystem.cpp" bodystart="182" bodyend="185"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1a164f1d20f6f4d8b7417c110df12b2e5f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Filesystem::GetPath</definition>
+        <argsstring>() const</argsstring>
+        <name>GetPath</name>
+        <qualifiedname>Filesystem::GetPath</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return the path used to initialize the filesystem. Passing this string to Create of the parent filesystem must result in a filesystem pointing to the same folder/file as this filesystem.</para>
+<para><simplesect kind="return"><para>filesystem root path </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="73" column="13" bodyfile="filesystem.h" bodystart="497" bodyend="499"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1aa6a067c40a362f4b9dd12f7149f11d1f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+        <definition>FilesystemView Filesystem::GetParent</definition>
+        <argsstring>() const</argsstring>
+        <name>GetParent</name>
+        <qualifiedname>Filesystem::GetParent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the owner of this filesystem. When there is no owner an invalid <ref refid="class_filesystem" kindref="compound">Filesystem</ref> is returned.</para>
+<para><simplesect kind="return"><para>parent filesystem </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="81" column="16" bodyfile="filesystem.h" bodystart="501" bodyend="503"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1aad5bdaf652be46e2f0fd99b585dc578a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream Filesystem::OpenInputStream</definition>
+        <argsstring>(std::string_view name, std::ios_base::openmode m=std::ios_base::in|std::ios_base::binary) const</argsstring>
+        <name>OpenInputStream</name>
+        <qualifiedname>Filesystem::OpenInputStream</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>std::ios_base::openmode</type>
+          <declname>m</declname>
+          <defval>std::ios_base::in|std::ios_base::binary</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates stream from filename for reading.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>filename. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>stream mode. Default is binary. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Stream. The stream is invalid when the open failed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="90" column="32" bodyfile="filesystem.cpp" bodystart="37" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1a7686c171a7f426944546a18fec0bf82e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream Filesystem::OpenOrCreateInputStream</definition>
+        <argsstring>(std::string_view name, std::ios_base::openmode m=std::ios_base::in|std::ios_base::binary) const</argsstring>
+        <name>OpenOrCreateInputStream</name>
+        <qualifiedname>Filesystem::OpenOrCreateInputStream</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>std::ios_base::openmode</type>
+          <declname>m</declname>
+          <defval>std::ios_base::in|std::ios_base::binary</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates stream from filename for reading. When the file is missing it is created.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>filename. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>stream mode. Default is binary. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Stream. The stream is invalid when the open failed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="101" column="32" bodyfile="filesystem.cpp" bodystart="52" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1a51a0e53b3c17e0faaa8739abb8be55e3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_output_stream" kindref="compound">Filesystem_Stream::OutputStream</ref></type>
+        <definition>Filesystem_Stream::OutputStream Filesystem::OpenOutputStream</definition>
+        <argsstring>(std::string_view name, std::ios_base::openmode m=std::ios_base::out|std::ios_base::binary) const</argsstring>
+        <name>OpenOutputStream</name>
+        <qualifiedname>Filesystem::OpenOutputStream</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>std::ios_base::openmode</type>
+          <declname>m</declname>
+          <defval>std::ios_base::out|std::ios_base::binary</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates stream from filename for writing.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>filename. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>stream mode. Default is binary. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Stream. The stream is invalid when the open failed or write is not supported. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="111" column="33" bodyfile="filesystem.cpp" bodystart="65" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1a94f9fe077344ed5e76266a9cd1147a70" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_directory_tree_1a656e188f1ce2bd38f963744de360d627" kindref="member">DirectoryTree::DirectoryListType</ref> *</type>
+        <definition>DirectoryTree::DirectoryListType * Filesystem::ListDirectory</definition>
+        <argsstring>(std::string_view path) const</argsstring>
+        <name>ListDirectory</name>
+        <qualifiedname>Filesystem::ListDirectory</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns a directory listing of the given path.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a path relative to the filesystems root </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>List of directory entries </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="120" column="34" bodyfile="filesystem.h" bodystart="514" bodyend="516"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1a331ca9b0aa193dbe2b840efead198cf6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Filesystem::ClearCache</definition>
+        <argsstring>(std::string_view path) const</argsstring>
+        <name>ClearCache</name>
+        <qualifiedname>Filesystem::ClearCache</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Clears the filesystem cache. Changes in the filesystem become visible to the FindFile functions. This is automatically called when an output stream is closed.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to flush </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="129" column="6" bodyfile="filesystem.cpp" bodystart="83" bodyend="85"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1abff967a12cdc171e62f1d7b2c23dda7e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+        <definition>FilesystemView Filesystem::Create</definition>
+        <argsstring>(std::string_view p) const</argsstring>
+        <name>Create</name>
+        <qualifiedname>Filesystem::Create</qualifiedname>
+        <reimplementedby refid="class_root_filesystem_1a7cde2644e57d1b8eac0ca339ae98350d">Create</reimplementedby>
+        <param>
+          <type>std::string_view</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates a new appropriate filesystem from the specified path. The path is processed to initialize the proper virtual filesystem handler.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>p</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Virtual path to use </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Valid <ref refid="class_filesystem" kindref="compound">Filesystem</ref> when the parsing was successful, otherwise invalid </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="138" column="24" bodyfile="filesystem.cpp" bodystart="87" bodyend="172"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1a19b0c31c587829e25299194149c2dac0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+        <definition>FilesystemView Filesystem::Subtree</definition>
+        <argsstring>(std::string sub_path) const</argsstring>
+        <name>Subtree</name>
+        <qualifiedname>Filesystem::Subtree</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>sub_path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates a subview into the filesystem tree. This function is much faster than Create and should be preferred because it does not attempt to create new virtual filesystems.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sub_path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>sub path to view </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Valid <ref refid="class_filesystem" kindref="compound">Filesystem</ref> when the path exists, otherwise invalid </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="148" column="16" bodyfile="filesystem.cpp" bodystart="174" bodyend="176"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1ab0cef94a40e9c3c509930f3cf891140d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Filesystem::FindFile</definition>
+        <argsstring>(std::string_view filename, const Span&lt; const std::string_view &gt; exts={}) const</argsstring>
+        <name>FindFile</name>
+        <qualifiedname>Filesystem::FindFile</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>const Span&lt; const std::string_view &gt;</type>
+          <declname>exts</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Does a case insensitive search for the file.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a path relative to the filesystem root </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>exts</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>List of file extensions to probe </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Path to file or empty string when not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="158" column="13" bodyfile="filesystem.cpp" bodystart="187" bodyend="189"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1acc956bb84dd1c943ce8e0bba62994f87" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Filesystem::FindFile</definition>
+        <argsstring>(std::string_view directory, std::string_view filename, const Span&lt; const std::string_view &gt; exts={}) const</argsstring>
+        <name>FindFile</name>
+        <qualifiedname>Filesystem::FindFile</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>directory</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>const Span&lt; const std::string_view &gt;</type>
+          <declname>exts</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Does a case insensitive search for the file in a specific directory.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>directory</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a path relative to the filesystem root </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the file to search </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>exts</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>List of file extensions to probe </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Path to file or empty string when not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="169" column="13" bodyfile="filesystem.cpp" bodystart="191" bodyend="193"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1ab9f928ab9e50f752bc1f5a94b644a353" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Filesystem::FindFile</definition>
+        <argsstring>(const DirectoryTree::Args &amp;args) const</argsstring>
+        <name>FindFile</name>
+        <qualifiedname>Filesystem::FindFile</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_directory_tree_1_1_args" kindref="compound">DirectoryTree::Args</ref> &amp;</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Does a case insensitive search for a file. Advanced version for special purposes searches. Usually not needed.</para>
+<para><simplesect kind="see"><para><ref refid="struct_directory_tree_1_1_args" kindref="compound">DirectoryTree::Args</ref> </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>args</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>See documentation of <ref refid="struct_directory_tree_1_1_args" kindref="compound">DirectoryTree::Args</ref> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Path to file or empty string when not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="179" column="13" bodyfile="filesystem.cpp" bodystart="195" bodyend="197"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1a9f5c63aa6a89cf4f3ce8a38e4788f286" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream Filesystem::OpenFile</definition>
+        <argsstring>(std::string_view filename, const Span&lt; const std::string_view &gt; exts={}) const</argsstring>
+        <name>OpenFile</name>
+        <qualifiedname>Filesystem::OpenFile</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>const Span&lt; const std::string_view &gt;</type>
+          <declname>exts</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Does a case insensitive search for the file and opens a read handle.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a path relative to the filesystem root </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>exts</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>List of file extensions to probe </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Handle to the file if found, otherwise an invalid handle </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="189" column="32" bodyfile="filesystem.cpp" bodystart="199" bodyend="201"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1a2528354a2ed91a680d0d6776294e9485" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream Filesystem::OpenFile</definition>
+        <argsstring>(std::string_view directory, std::string_view filename, const Span&lt; const std::string_view &gt; exts={}) const</argsstring>
+        <name>OpenFile</name>
+        <qualifiedname>Filesystem::OpenFile</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>directory</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>const Span&lt; const std::string_view &gt;</type>
+          <declname>exts</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Does a case insensitive search for the file in a specific directory and opens a read handle.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>directory</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a path relative to the filesystem root </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the file to search </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>exts</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>List of file extensions to probe </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Handle to the file if found, otherwise an invalid handle </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="200" column="32" bodyfile="filesystem.cpp" bodystart="203" bodyend="205"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1abc4360ad939f1f4db35e72a7f3bfc37c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream Filesystem::OpenFile</definition>
+        <argsstring>(const DirectoryTree::Args &amp;args) const</argsstring>
+        <name>OpenFile</name>
+        <qualifiedname>Filesystem::OpenFile</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_directory_tree_1_1_args" kindref="compound">DirectoryTree::Args</ref> &amp;</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Does a case insensitive search for the file and opens a read handle. Advanced version for special purposes searches. Usually not needed.</para>
+<para><simplesect kind="see"><para><ref refid="struct_directory_tree_1_1_args" kindref="compound">DirectoryTree::Args</ref> </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>args</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>See documentation of <ref refid="struct_directory_tree_1_1_args" kindref="compound">DirectoryTree::Args</ref> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Handle to the file if found, otherwise an invalid handle </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="210" column="32" bodyfile="filesystem.cpp" bodystart="207" bodyend="209"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem_1aee47c25d22263f76e02b6fc355511f1c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Filesystem::operator FilesystemView</definition>
+        <argsstring>()</argsstring>
+        <name>operator FilesystemView</name>
+        <qualifiedname>Filesystem::operator FilesystemView</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Implicit conversion to <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="213" column="1" bodyfile="filesystem.h" bodystart="518" bodyend="518"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_filesystem_1a08cda41273632a4295e3ff067b3aff13" prot="protected" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Filesystem::Filesystem</definition>
+        <argsstring>(std::string base_path, FilesystemView parent_fs)</argsstring>
+        <name>Filesystem</name>
+        <qualifiedname>Filesystem::Filesystem</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>base_path</declname>
+        </param>
+        <param>
+          <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+          <declname>parent_fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates a new filesystem</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>base_path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path the filesystem is rooted at </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>parent_fs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>parent filesystem </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem.h" line="244" column="10" bodyfile="filesystem.cpp" bodystart="32" bodyend="35"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>The base class for a filesystem abstraction. A virtual filesystem provides ways to open files and read directories even if they are not real filesystem structures in terms of the operating system e.g. ZIP archives or internet resources. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>ApkFilesystem</label>
+        <link refid="class_apk_filesystem"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Filesystem</label>
+        <link refid="class_filesystem"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>HookFilesystem</label>
+        <link refid="class_hook_filesystem"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>NativeFilesystem</label>
+        <link refid="class_native_filesystem"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>RootFilesystem</label>
+        <link refid="class_root_filesystem"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>SafFilesystem</label>
+        <link refid="class_saf_filesystem"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>ZipFilesystem</label>
+        <link refid="class_zip_filesystem"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::enable_shared_from_this&lt; Filesystem &gt;</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Filesystem</label>
+        <link refid="class_filesystem"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::enable_shared_from_this&lt; Filesystem &gt;</label>
+      </node>
+    </collaborationgraph>
+    <location file="filesystem.h" line="45" column="1" bodyfile="filesystem.h" bodystart="45" bodyend="255"/>
+    <listofallmembers>
+      <member refid="class_filesystem_1a50db690a19702d9c9979a12ce13a3585" prot="private" virt="non-virtual"><scope>Filesystem</scope><name>base_path</name></member>
+      <member refid="class_filesystem_1a331ca9b0aa193dbe2b840efead198cf6" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>ClearCache</name></member>
+      <member refid="class_filesystem_1abff967a12cdc171e62f1d7b2c23dda7e" prot="public" virt="virtual"><scope>Filesystem</scope><name>Create</name></member>
+      <member refid="class_filesystem_1aef33876f56d776123196026867ef9361" prot="protected" virt="pure-virtual"><scope>Filesystem</scope><name>CreateInputStreambuffer</name></member>
+      <member refid="class_filesystem_1ad927487c8d499175f84b501cf55978e5" prot="protected" virt="virtual"><scope>Filesystem</scope><name>CreateOutputStreambuffer</name></member>
+      <member refid="class_filesystem_1a9c4aacd54841726079b311972e0b3b45" prot="public" virt="pure-virtual"><scope>Filesystem</scope><name>Describe</name></member>
+      <member refid="class_filesystem_1a12cd9c6ef56e9c660e26638f9fbe32e8" prot="protected" virt="non-virtual"><scope>Filesystem</scope><name>DirectoryTree</name></member>
+      <member refid="class_filesystem_1a8c65f9af44aefee4d3b6fb4357608cec" prot="public" virt="pure-virtual"><scope>Filesystem</scope><name>Exists</name></member>
+      <member refid="class_filesystem_1a66f857cb70591532b9ce3869d6ebdd8f" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>Feature</name></member>
+      <member refid="class_filesystem_1a9134daaffbc1e9ce8777e82d6156c3a8" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>Filesystem</name></member>
+      <member refid="class_filesystem_1a08cda41273632a4295e3ff067b3aff13" prot="protected" virt="non-virtual"><scope>Filesystem</scope><name>Filesystem</name></member>
+      <member refid="class_filesystem_1a5f6d2b59075737de3e42fd9fd4b5c630" prot="protected" virt="non-virtual"><scope>Filesystem</scope><name>FilesystemView</name></member>
+      <member refid="class_filesystem_1ab0cef94a40e9c3c509930f3cf891140d" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>FindFile</name></member>
+      <member refid="class_filesystem_1acc956bb84dd1c943ce8e0bba62994f87" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>FindFile</name></member>
+      <member refid="class_filesystem_1ab9f928ab9e50f752bc1f5a94b644a353" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>FindFile</name></member>
+      <member refid="class_filesystem_1a2c816e9dbd010079080cdbd6c3f16518" prot="protected" virt="pure-virtual"><scope>Filesystem</scope><name>GetDirectoryContent</name></member>
+      <member refid="class_filesystem_1a486585c3773c1ec18ee0154af3528eb0" prot="public" virt="pure-virtual"><scope>Filesystem</scope><name>GetFilesize</name></member>
+      <member refid="class_filesystem_1aa6a067c40a362f4b9dd12f7149f11d1f" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>GetParent</name></member>
+      <member refid="class_filesystem_1a164f1d20f6f4d8b7417c110df12b2e5f" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>GetPath</name></member>
+      <member refid="class_filesystem_1afbed80d8fefd923add5f839401eda2e3" prot="public" virt="pure-virtual"><scope>Filesystem</scope><name>IsDirectory</name></member>
+      <member refid="class_filesystem_1a9e7223b57a3218c4ed39766cebd8e082" prot="public" virt="virtual"><scope>Filesystem</scope><name>IsFeatureSupported</name></member>
+      <member refid="class_filesystem_1a75033a685c27d9a04cd82ecc1611bc00" prot="public" virt="pure-virtual"><scope>Filesystem</scope><name>IsFile</name></member>
+      <member refid="class_filesystem_1a786711e868cfeea684762fcced413dcd" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>IsValid</name></member>
+      <member refid="class_filesystem_1a94f9fe077344ed5e76266a9cd1147a70" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>ListDirectory</name></member>
+      <member refid="class_filesystem_1a23468b198fbbc856fc2a378a715d3a1f" prot="public" virt="virtual"><scope>Filesystem</scope><name>MakeDirectory</name></member>
+      <member refid="class_filesystem_1a9f5c63aa6a89cf4f3ce8a38e4788f286" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>OpenFile</name></member>
+      <member refid="class_filesystem_1a2528354a2ed91a680d0d6776294e9485" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>OpenFile</name></member>
+      <member refid="class_filesystem_1abc4360ad939f1f4db35e72a7f3bfc37c" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>OpenFile</name></member>
+      <member refid="class_filesystem_1aad5bdaf652be46e2f0fd99b585dc578a" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>OpenInputStream</name></member>
+      <member refid="class_filesystem_1a7686c171a7f426944546a18fec0bf82e" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>OpenOrCreateInputStream</name></member>
+      <member refid="class_filesystem_1a51a0e53b3c17e0faaa8739abb8be55e3" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>OpenOutputStream</name></member>
+      <member refid="class_filesystem_1aee47c25d22263f76e02b6fc355511f1c" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>operator FilesystemView</name></member>
+      <member refid="class_filesystem_1a8baf837224c837bd1c455205c653a9ce" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>operator=</name></member>
+      <member refid="class_filesystem_1aaf197465fcd5a868199f7622052fb853" prot="private" virt="non-virtual"><scope>Filesystem</scope><name>parent_fs</name></member>
+      <member refid="class_filesystem_1ac13ad5f5406780861097715cdd850cca" prot="protected" virt="non-virtual"><scope>Filesystem</scope><name>RootFilesystem</name></member>
+      <member refid="class_filesystem_1a19b0c31c587829e25299194149c2dac0" prot="public" virt="non-virtual"><scope>Filesystem</scope><name>Subtree</name></member>
+      <member refid="class_filesystem_1a2bb5d8bd203dde6ff4a50f056458e380" prot="protected" virt="non-virtual"><scope>Filesystem</scope><name>tree</name></member>
+      <member refid="class_filesystem_1a6004d02393974507891e1fb34c0dab93" prot="public" virt="virtual"><scope>Filesystem</scope><name>~Filesystem</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

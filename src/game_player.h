@@ -254,3 +254,4 @@ inline int Game_Player::GetVehicleType() const {
 
 
 #endif
+

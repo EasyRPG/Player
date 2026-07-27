@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___windows" kind="class" language="C++" prot="public">
+    <compoundname>Game_Windows</compoundname>
+    <includes refid="game__windows_8h" local="no">game_windows.h</includes>
+    <innerclass refid="struct_game___windows_1_1_window_text" prot="public">Game_Windows::WindowText</innerclass>
+    <innerclass refid="struct_game___windows_1_1_window_params" prot="public">Game_Windows::WindowParams</innerclass>
+    <innerclass refid="struct_game___windows_1_1_window___user" prot="public">Game_Windows::Window_User</innerclass>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___windows_1ad76825627f817e948029ff79497a6656" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="struct_game___windows_1_1_window___user" kindref="compound">Window_User</ref> &gt;</type>
+        <definition>std::vector&lt;Window_User&gt; Game_Windows::windows</definition>
+        <argsstring></argsstring>
+        <name>windows</name>
+        <qualifiedname>Game_Windows::windows</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="101" column="13" bodyfile="game_windows.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___windows_1a0ec6e9d9ff554d946b3865304234e8d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Windows::Game_Windows</definition>
+        <argsstring>()=default</argsstring>
+        <name>Game_Windows</name>
+        <qualifiedname>Game_Windows::Game_Windows</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="43" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___windows_1af8d2f0b3a8006e81edfecaae4fb841e0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Windows::SetSaveData</definition>
+        <argsstring>(std::vector&lt; lcf::rpg::SaveEasyRpgWindow &gt; save)</argsstring>
+        <name>SetSaveData</name>
+        <qualifiedname>Game_Windows::SetSaveData</qualifiedname>
+        <param>
+          <type>std::vector&lt; lcf::rpg::SaveEasyRpgWindow &gt;</type>
+          <declname>save</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="45" column="6" bodyfile="game_windows.cpp" bodystart="49" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___windows_1acd08f07e1939cb92124d281bf0b13e2b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; lcf::rpg::SaveEasyRpgWindow &gt;</type>
+        <definition>std::vector&lt; lcf::rpg::SaveEasyRpgWindow &gt; Game_Windows::GetSaveData</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSaveData</name>
+        <qualifiedname>Game_Windows::GetSaveData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="46" column="13" bodyfile="game_windows.cpp" bodystart="69" bodyend="89"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___windows_1a5e545b24a43334cd6c1d60bfa5b09753" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Windows::Create</definition>
+        <argsstring>(int id, const WindowParams &amp;params, bool &amp;async_wait)</argsstring>
+        <name>Create</name>
+        <qualifiedname>Game_Windows::Create</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_game___windows_1_1_window_params" kindref="compound">WindowParams</ref> &amp;</type>
+          <declname>params</declname>
+        </param>
+        <param>
+          <type>bool &amp;</type>
+          <declname>async_wait</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="72" column="6" bodyfile="game_windows.cpp" bodystart="137" bodyend="151"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___windows_1a05d169a30fa79acdc9652ec58b21d33b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Windows::Erase</definition>
+        <argsstring>(int id)</argsstring>
+        <name>Erase</name>
+        <qualifiedname>Game_Windows::Erase</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="73" column="6" bodyfile="game_windows.cpp" bodystart="540" bodyend="545"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___windows_1ab12a880a30129a29ee5f7359c3e29cc4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_game___windows_1_1_window___user" kindref="compound">Window_User</ref> &amp;</type>
+        <definition>Game_Windows::Window_User &amp; Game_Windows::GetWindow</definition>
+        <argsstring>(int id)</argsstring>
+        <name>GetWindow</name>
+        <qualifiedname>Game_Windows::GetWindow</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="97" column="13" bodyfile="game_windows.cpp" bodystart="91" bodyend="99"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___windows_1a29ee3ac3f42e07b67d3a57a7260afc8c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_game___windows_1_1_window___user" kindref="compound">Window_User</ref> *</type>
+        <definition>Game_Windows::Window_User * Game_Windows::GetWindowPtr</definition>
+        <argsstring>(int id)</argsstring>
+        <name>GetWindowPtr</name>
+        <qualifiedname>Game_Windows::GetWindowPtr</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_windows.h" line="98" column="13" bodyfile="game_windows.cpp" bodystart="101" bodyend="104"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Manages user generated windows. </para>
+    </detaileddescription>
+    <location file="game_windows.h" line="41" column="1" bodyfile="game_windows.h" bodystart="41" bodyend="102"/>
+    <listofallmembers>
+      <member refid="class_game___windows_1a5e545b24a43334cd6c1d60bfa5b09753" prot="public" virt="non-virtual"><scope>Game_Windows</scope><name>Create</name></member>
+      <member refid="class_game___windows_1a05d169a30fa79acdc9652ec58b21d33b" prot="public" virt="non-virtual"><scope>Game_Windows</scope><name>Erase</name></member>
+      <member refid="class_game___windows_1a0ec6e9d9ff554d946b3865304234e8d2" prot="public" virt="non-virtual"><scope>Game_Windows</scope><name>Game_Windows</name></member>
+      <member refid="class_game___windows_1acd08f07e1939cb92124d281bf0b13e2b" prot="public" virt="non-virtual"><scope>Game_Windows</scope><name>GetSaveData</name></member>
+      <member refid="class_game___windows_1ab12a880a30129a29ee5f7359c3e29cc4" prot="public" virt="non-virtual"><scope>Game_Windows</scope><name>GetWindow</name></member>
+      <member refid="class_game___windows_1a29ee3ac3f42e07b67d3a57a7260afc8c" prot="public" virt="non-virtual"><scope>Game_Windows</scope><name>GetWindowPtr</name></member>
+      <member refid="class_game___windows_1af8d2f0b3a8006e81edfecaae4fb841e0" prot="public" virt="non-virtual"><scope>Game_Windows</scope><name>SetSaveData</name></member>
+      <member refid="class_game___windows_1ad76825627f817e948029ff79497a6656" prot="private" virt="non-virtual"><scope>Game_Windows</scope><name>windows</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

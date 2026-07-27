@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_directory_tree_1_1_entry" kind="struct" language="C++" prot="public">
+    <compoundname>DirectoryTree::Entry</compoundname>
+    <includes refid="directory__tree_8h" local="no">directory_tree.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_directory_tree_1_1_entry_1ad8faaad01e0749ca424eefd11c96671f" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string DirectoryTree::Entry::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>DirectoryTree::Entry::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Unmodified filename </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="54" column="13" bodyfile="directory_tree.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_directory_tree_1_1_entry_1a409f26d54cb02b0651f33fac71bc37b1" prot="public" static="no" mutable="no">
+        <type><ref refid="class_directory_tree_1a5125eceb043bf8c21630d6e90b7f46c4" kindref="member">FileType</ref></type>
+        <definition>FileType DirectoryTree::Entry::type</definition>
+        <argsstring></argsstring>
+        <name>type</name>
+        <qualifiedname>DirectoryTree::Entry::type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>File type </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="56" column="10" bodyfile="directory_tree.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_directory_tree_1_1_entry_1af1b18185d872eee178316fa30b1bd256" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>DirectoryTree::Entry::Entry</definition>
+        <argsstring>(std::string name, FileType type)</argsstring>
+        <name>Entry</name>
+        <qualifiedname>DirectoryTree::Entry::Entry</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type><ref refid="class_directory_tree_1a5125eceb043bf8c21630d6e90b7f46c4" kindref="member">FileType</ref></type>
+          <declname>type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="58" column="1" bodyfile="directory_tree.h" bodystart="58" bodyend="58"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>A entry of a directory (eg. file or subdirectory) </para>
+    </detaileddescription>
+    <location file="directory_tree.h" line="52" column="1" bodyfile="directory_tree.h" bodystart="52" bodyend="59"/>
+    <listofallmembers>
+      <member refid="struct_directory_tree_1_1_entry_1af1b18185d872eee178316fa30b1bd256" prot="public" virt="non-virtual"><scope>DirectoryTree::Entry</scope><name>Entry</name></member>
+      <member refid="struct_directory_tree_1_1_entry_1ad8faaad01e0749ca424eefd11c96671f" prot="public" virt="non-virtual"><scope>DirectoryTree::Entry</scope><name>name</name></member>
+      <member refid="struct_directory_tree_1_1_entry_1a409f26d54cb02b0651f33fac71bc37b1" prot="public" virt="non-virtual"><scope>DirectoryTree::Entry</scope><name>type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

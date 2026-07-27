@@ -72,3 +72,4 @@ void Game_Actors::ReloadActors() {
 		actor.ReloadDbActor();
 	}
 }
+

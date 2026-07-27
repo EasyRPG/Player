@@ -127,3 +127,4 @@ bool SetStateRestrictedAction(Game_Enemy& source);
 } // namespace AutoBattle
 
 #endif
+

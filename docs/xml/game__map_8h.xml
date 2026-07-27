@@ -1,0 +1,1477 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="game__map_8h" kind="file" language="C++">
+    <compoundname>game_map.h</compoundname>
+    <includes local="no">cstdint</includes>
+    <includes local="no">initializer_list</includes>
+    <includes local="no">vector</includes>
+    <includes local="no">string</includes>
+    <includes local="no">unordered_map</includes>
+    <includes local="no">unordered_set</includes>
+    <includes refid="async__op_8h" local="yes">async_op.h</includes>
+    <includes refid="system_8h" local="yes">system.h</includes>
+    <includes refid="game__commonevent_8h" local="yes">game_commonevent.h</includes>
+    <includes refid="game__event_8h" local="yes">game_event.h</includes>
+    <includes refid="game__vehicle_8h" local="yes">game_vehicle.h</includes>
+    <includes refid="game__player_8h" local="yes">game_player.h</includes>
+    <includes local="no">lcf/rpg/fwd.h</includes>
+    <includes local="no">lcf/rpg/encounter.h</includes>
+    <includes local="no">lcf/rpg/map.h</includes>
+    <includes local="no">lcf/rpg/mapinfo.h</includes>
+    <includes local="no">lcf/rpg/savemapinfo.h</includes>
+    <includes local="no">lcf/rpg/savepanorama.h</includes>
+    <includes local="no">lcf/rpg/savepartylocation.h</includes>
+    <includes local="no">lcf/rpg/savevehiclelocation.h</includes>
+    <includes local="no">lcf/rpg/savecommonevent.h</includes>
+    <includedby refid="battle__animation_8cpp" local="yes">battle_animation.cpp</includedby>
+    <includedby refid="dynrpg__easyrpg_8h" local="yes">dynrpg_easyrpg.h</includedby>
+    <includedby refid="dynrpg__textplugin_8cpp" local="yes">dynrpg_textplugin.cpp</includedby>
+    <includedby refid="game__character_8cpp" local="yes">game_character.cpp</includedby>
+    <includedby refid="game__commonevent_8cpp" local="yes">game_commonevent.cpp</includedby>
+    <includedby refid="game__event_8cpp" local="yes">game_event.cpp</includedby>
+    <includedby refid="game__interpreter_8cpp" local="yes">game_interpreter.cpp</includedby>
+    <includedby refid="game__interpreter__battle_8cpp" local="yes">game_interpreter_battle.cpp</includedby>
+    <includedby refid="game__interpreter__map_8cpp" local="yes">game_interpreter_map.cpp</includedby>
+    <includedby refid="game__interpreter__shared_8cpp" local="yes">game_interpreter_shared.cpp</includedby>
+    <includedby refid="game__map_8cpp" local="yes">game_map.cpp</includedby>
+    <includedby refid="game__party_8cpp" local="yes">game_party.cpp</includedby>
+    <includedby refid="game__pictures_8cpp" local="yes">game_pictures.cpp</includedby>
+    <includedby refid="game__player_8cpp" local="yes">game_player.cpp</includedby>
+    <includedby refid="game__screen_8cpp" local="yes">game_screen.cpp</includedby>
+    <includedby refid="game__strings_8cpp" local="yes">game_strings.cpp</includedby>
+    <includedby refid="game__vehicle_8cpp" local="yes">game_vehicle.cpp</includedby>
+    <includedby refid="main__data_8cpp" local="yes">main_data.cpp</includedby>
+    <includedby refid="maniac__patch_8cpp" local="yes">maniac_patch.cpp</includedby>
+    <includedby refid="plane_8cpp" local="yes">plane.cpp</includedby>
+    <includedby refid="player_8cpp" local="yes">player.cpp</includedby>
+    <includedby refid="scene_8cpp" local="yes">scene.cpp</includedby>
+    <includedby refid="scene__debug_8cpp" local="yes">scene_debug.cpp</includedby>
+    <includedby refid="scene__item_8cpp" local="yes">scene_item.cpp</includedby>
+    <includedby refid="scene__map_8cpp" local="yes">scene_map.cpp</includedby>
+    <includedby refid="scene__map_8h" local="yes">scene_map.h</includedby>
+    <includedby refid="scene__save_8cpp" local="yes">scene_save.cpp</includedby>
+    <includedby refid="scene__skill_8cpp" local="yes">scene_skill.cpp</includedby>
+    <includedby refid="sprite__airshipshadow_8cpp" local="yes">sprite_airshipshadow.cpp</includedby>
+    <includedby refid="sprite__character_8cpp" local="yes">sprite_character.cpp</includedby>
+    <includedby refid="spriteset__map_8cpp" local="yes">spriteset_map.cpp</includedby>
+    <includedby refid="tilemap__layer_8cpp" local="yes">tilemap_layer.cpp</includedby>
+    <includedby refid="translation_8cpp" local="yes">translation.cpp</includedby>
+    <includedby refid="window__interpreter_8cpp" local="yes">window_interpreter.cpp</includedby>
+    <includedby refid="window__message_8cpp" local="yes">window_message.cpp</includedby>
+    <includedby refid="window__settings_8cpp" local="yes">window_settings.cpp</includedby>
+    <includedby refid="window__teleport_8cpp" local="yes">window_teleport.cpp</includedby>
+    <includedby refid="window__varlist_8cpp" local="yes">window_varlist.cpp</includedby>
+    <incdepgraph>
+      <node id="40">
+        <label>async_handler.h</label>
+        <link refid="async__handler_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>async_op.h</label>
+        <link refid="async__op_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="62">
+        <label>compiler.h</label>
+        <link refid="compiler_8h"/>
+      </node>
+      <node id="30">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>flash.h</label>
+        <link refid="flash_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>game_actor.h</label>
+        <link refid="game__actor_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>game_battler.h</label>
+        <link refid="game__battler_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>game_character.h</label>
+        <link refid="game__character_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>game_commonevent.h</label>
+        <link refid="game__commonevent_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="67">
+        <label>game_event.h</label>
+        <link refid="game__event_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>game_interpreter.h</label>
+        <link refid="game__interpreter_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>game_interpreter_map.h</label>
+        <link refid="game__interpreter__map_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="59">
+        <label>game_interpreter_shared.h</label>
+        <link refid="game__interpreter__shared_8h"/>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>game_map.h</label>
+        <link refid="game__map_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+      </node>
+      <node id="73">
+        <label>game_player.h</label>
+        <link refid="game__player_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+      </node>
+      <node id="70">
+        <label>game_vehicle.h</label>
+        <link refid="game__vehicle_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="51">
+        <label>point.h</label>
+        <link refid="point_8h"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>rect.h</label>
+        <link refid="rect_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>sprite.h</label>
+        <link refid="sprite_8h"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+      </node>
+      <node id="58">
+        <label>sprite_actor.h</label>
+        <link refid="sprite__actor_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>sprite_battler.h</label>
+        <link refid="sprite__battler_8h"/>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>sprite_weapon.h</label>
+        <link refid="sprite__weapon_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>state.h</label>
+        <link refid="state_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="74">
+        <label>teleport_target.h</label>
+        <link refid="teleport__target_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="55">
+        <label>tone.h</label>
+        <link refid="tone_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>algorithm</label>
+      </node>
+      <node id="15">
+        <label>cassert</label>
+      </node>
+      <node id="2">
+        <label>cstdint</label>
+      </node>
+      <node id="32">
+        <label>ctime</label>
+      </node>
+      <node id="12">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="13">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="33">
+        <label>functional</label>
+      </node>
+      <node id="3">
+        <label>initializer_list</label>
+      </node>
+      <node id="64">
+        <label>lcf/dbarray.h</label>
+      </node>
+      <node id="49">
+        <label>lcf/dbbitarray.h</label>
+      </node>
+      <node id="11">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="65">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="44">
+        <label>lcf/rpg/actor.h</label>
+      </node>
+      <node id="66">
+        <label>lcf/rpg/commonevent.h</label>
+      </node>
+      <node id="76">
+        <label>lcf/rpg/encounter.h</label>
+      </node>
+      <node id="68">
+        <label>lcf/rpg/event.h</label>
+      </node>
+      <node id="36">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="28">
+        <label>lcf/rpg/eventpage.h</label>
+      </node>
+      <node id="42">
+        <label>lcf/rpg/fwd.h</label>
+      </node>
+      <node id="45">
+        <label>lcf/rpg/learning.h</label>
+      </node>
+      <node id="77">
+        <label>lcf/rpg/map.h</label>
+      </node>
+      <node id="78">
+        <label>lcf/rpg/mapinfo.h</label>
+      </node>
+      <node id="60">
+        <label>lcf/rpg/movecommand.h</label>
+      </node>
+      <node id="27">
+        <label>lcf/rpg/moveroute.h</label>
+      </node>
+      <node id="71">
+        <label>lcf/rpg/music.h</label>
+      </node>
+      <node id="43">
+        <label>lcf/rpg/saveactor.h</label>
+      </node>
+      <node id="81">
+        <label>lcf/rpg/savecommonevent.h</label>
+      </node>
+      <node id="61">
+        <label>lcf/rpg/saveeventexecframe.h</label>
+      </node>
+      <node id="37">
+        <label>lcf/rpg/saveeventexecstate.h</label>
+      </node>
+      <node id="69">
+        <label>lcf/rpg/savemapevent.h</label>
+      </node>
+      <node id="29">
+        <label>lcf/rpg/savemapeventbase.h</label>
+      </node>
+      <node id="79">
+        <label>lcf/rpg/savemapinfo.h</label>
+      </node>
+      <node id="80">
+        <label>lcf/rpg/savepanorama.h</label>
+      </node>
+      <node id="75">
+        <label>lcf/rpg/savepartylocation.h</label>
+      </node>
+      <node id="72">
+        <label>lcf/rpg/savevehiclelocation.h</label>
+      </node>
+      <node id="48">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="35">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="10">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="47">
+        <label>limits</label>
+      </node>
+      <node id="39">
+        <label>map</label>
+      </node>
+      <node id="19">
+        <label>memory</label>
+      </node>
+      <node id="63">
+        <label>optional</label>
+      </node>
+      <node id="25">
+        <label>ostream</label>
+      </node>
+      <node id="5">
+        <label>string</label>
+      </node>
+      <node id="24">
+        <label>tuple</label>
+      </node>
+      <node id="6">
+        <label>unordered_map</label>
+      </node>
+      <node id="7">
+        <label>unordered_set</label>
+      </node>
+      <node id="14">
+        <label>utility</label>
+      </node>
+      <node id="4">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>battle_animation.cpp</label>
+        <link refid="battle__animation_8cpp"/>
+      </node>
+      <node id="4">
+        <label>dynrpg_easyrpg.cpp</label>
+        <link refid="dynrpg__easyrpg_8cpp"/>
+      </node>
+      <node id="3">
+        <label>dynrpg_easyrpg.h</label>
+        <link refid="dynrpg__easyrpg_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>dynrpg_textplugin.cpp</label>
+        <link refid="dynrpg__textplugin_8cpp"/>
+      </node>
+      <node id="7">
+        <label>game_character.cpp</label>
+        <link refid="game__character_8cpp"/>
+      </node>
+      <node id="8">
+        <label>game_commonevent.cpp</label>
+        <link refid="game__commonevent_8cpp"/>
+      </node>
+      <node id="5">
+        <label>game_dynrpg.cpp</label>
+        <link refid="game__dynrpg_8cpp"/>
+      </node>
+      <node id="9">
+        <label>game_event.cpp</label>
+        <link refid="game__event_8cpp"/>
+      </node>
+      <node id="10">
+        <label>game_interpreter.cpp</label>
+        <link refid="game__interpreter_8cpp"/>
+      </node>
+      <node id="11">
+        <label>game_interpreter_battle.cpp</label>
+        <link refid="game__interpreter__battle_8cpp"/>
+      </node>
+      <node id="12">
+        <label>game_interpreter_map.cpp</label>
+        <link refid="game__interpreter__map_8cpp"/>
+      </node>
+      <node id="13">
+        <label>game_interpreter_shared.cpp</label>
+        <link refid="game__interpreter__shared_8cpp"/>
+      </node>
+      <node id="14">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="1">
+        <label>game_map.h</label>
+        <link refid="game__map_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>game_party.cpp</label>
+        <link refid="game__party_8cpp"/>
+      </node>
+      <node id="16">
+        <label>game_pictures.cpp</label>
+        <link refid="game__pictures_8cpp"/>
+      </node>
+      <node id="17">
+        <label>game_player.cpp</label>
+        <link refid="game__player_8cpp"/>
+      </node>
+      <node id="18">
+        <label>game_screen.cpp</label>
+        <link refid="game__screen_8cpp"/>
+      </node>
+      <node id="19">
+        <label>game_strings.cpp</label>
+        <link refid="game__strings_8cpp"/>
+      </node>
+      <node id="30">
+        <label>game_system.cpp</label>
+        <link refid="game__system_8cpp"/>
+      </node>
+      <node id="20">
+        <label>game_vehicle.cpp</label>
+        <link refid="game__vehicle_8cpp"/>
+      </node>
+      <node id="21">
+        <label>main_data.cpp</label>
+        <link refid="main__data_8cpp"/>
+      </node>
+      <node id="22">
+        <label>maniac_patch.cpp</label>
+        <link refid="maniac__patch_8cpp"/>
+      </node>
+      <node id="23">
+        <label>plane.cpp</label>
+        <link refid="plane_8cpp"/>
+      </node>
+      <node id="24">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="25">
+        <label>scene.cpp</label>
+        <link refid="scene_8cpp"/>
+      </node>
+      <node id="26">
+        <label>scene_debug.cpp</label>
+        <link refid="scene__debug_8cpp"/>
+      </node>
+      <node id="27">
+        <label>scene_item.cpp</label>
+        <link refid="scene__item_8cpp"/>
+      </node>
+      <node id="31">
+        <label>scene_load.cpp</label>
+        <link refid="scene__load_8cpp"/>
+      </node>
+      <node id="28">
+        <label>scene_map.cpp</label>
+        <link refid="scene__map_8cpp"/>
+      </node>
+      <node id="29">
+        <label>scene_map.h</label>
+        <link refid="scene__map_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>scene_order.cpp</label>
+        <link refid="scene__order_8cpp"/>
+      </node>
+      <node id="34">
+        <label>scene_save.cpp</label>
+        <link refid="scene__save_8cpp"/>
+      </node>
+      <node id="35">
+        <label>scene_skill.cpp</label>
+        <link refid="scene__skill_8cpp"/>
+      </node>
+      <node id="36">
+        <label>sprite_airshipshadow.cpp</label>
+        <link refid="sprite__airshipshadow_8cpp"/>
+      </node>
+      <node id="37">
+        <label>sprite_character.cpp</label>
+        <link refid="sprite__character_8cpp"/>
+      </node>
+      <node id="38">
+        <label>spriteset_map.cpp</label>
+        <link refid="spriteset__map_8cpp"/>
+      </node>
+      <node id="39">
+        <label>tilemap_layer.cpp</label>
+        <link refid="tilemap__layer_8cpp"/>
+      </node>
+      <node id="33">
+        <label>transition.cpp</label>
+        <link refid="transition_8cpp"/>
+      </node>
+      <node id="40">
+        <label>translation.cpp</label>
+        <link refid="translation_8cpp"/>
+      </node>
+      <node id="41">
+        <label>window_interpreter.cpp</label>
+        <link refid="window__interpreter_8cpp"/>
+      </node>
+      <node id="42">
+        <label>window_message.cpp</label>
+        <link refid="window__message_8cpp"/>
+      </node>
+      <node id="43">
+        <label>window_settings.cpp</label>
+        <link refid="window__settings_8cpp"/>
+      </node>
+      <node id="44">
+        <label>window_teleport.cpp</label>
+        <link refid="window__teleport_8cpp"/>
+      </node>
+      <node id="45">
+        <label>window_varlist.cpp</label>
+        <link refid="window__varlist_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_map_update_async_context" prot="public">MapUpdateAsyncContext</innerclass>
+    <innerclass refid="class_game___map_1_1_caching_1_1_map_event_cache" prot="public">Game_Map::Caching::MapEventCache</innerclass>
+    <innerclass refid="class_game___map_1_1_caching_1_1_map_cache" prot="public">Game_Map::Caching::MapCache</innerclass>
+    <innerclass refid="struct_game___map_1_1_parallax_1_1_params" prot="public">Game_Map::Parallax::Params</innerclass>
+    <innernamespace refid="namespace_game___map">Game_Map</innernamespace>
+    <innernamespace refid="namespace_game___map_1_1_caching">Game_Map::Caching</innernamespace>
+    <innernamespace refid="namespace_game___map_1_1_parallax">Game_Map::Parallax</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="game__map_8h_1a642a37fe89a65d1ed0351360b6d44bd4" prot="public" static="no">
+        <name>EP_GAME_MAP_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="20" column="9" bodyfile="game_map.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="game__map_8h_1aff4e686c52316b005dd31dec614ef500" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int SCREEN_TILE_SIZE</definition>
+        <argsstring></argsstring>
+        <name>SCREEN_TILE_SIZE</name>
+        <initializer>= 256</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="49" column="15" bodyfile="game_map.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_GAME_MAP_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="game__map_8h_1a642a37fe89a65d1ed0351360b6d44bd4" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_GAME_MAP_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstdint&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;initializer_list&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;unordered_map&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;unordered_set&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="async__op_8h" kindref="compound">async_op.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="system_8h" kindref="compound">system.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__commonevent_8h" kindref="compound">game_commonevent.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__event_8h" kindref="compound">game_event.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__vehicle_8h" kindref="compound">game_vehicle.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__player_8h" kindref="compound">game_player.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/fwd.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/encounter.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/map.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/mapinfo.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/savemapinfo.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/savepanorama.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/savepartylocation.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/savevehiclelocation.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/savecommonevent.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_file_request_async" kindref="compound">FileRequestAsync</ref>;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_battle_args" kindref="compound">BattleArgs</ref>;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight><highlight class="comment">//<sp/>These<sp/>are<sp/>in<sp/>sixteenths<sp/>of<sp/>a<sp/>pixel.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="game__map_8h_1aff4e686c52316b005dd31dec614ef500" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="game__map_8h_1aff4e686c52316b005dd31dec614ef500" kindref="member">SCREEN_TILE_SIZE</ref><sp/>=<sp/>256;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="class_map_update_async_context" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_map_update_async_context_1aa2b0a8fecfed09bd6741045e8d83f356" kindref="member">MapUpdateAsyncContext</ref><sp/>{</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="53" refid="class_map_update_async_context_1aa2b0a8fecfed09bd6741045e8d83f356" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_map_update_async_context_1aa2b0a8fecfed09bd6741045e8d83f356" kindref="member">MapUpdateAsyncContext</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1aa2b0a8fecfed09bd6741045e8d83f356" kindref="member">MapUpdateAsyncContext</ref><sp/><ref refid="class_map_update_async_context_1a28916ea0501cc296d80d2d342282f90b" kindref="member">FromCommonEvent</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ce,<sp/><ref refid="class_async_op" kindref="compound">AsyncOp</ref><sp/>aop);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1aa2b0a8fecfed09bd6741045e8d83f356" kindref="member">MapUpdateAsyncContext</ref><sp/><ref refid="class_map_update_async_context_1a31730e8ed1d2e445b6fc8e42b78874c6" kindref="member">FromMapEvent</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ce,<sp/><ref refid="class_async_op" kindref="compound">AsyncOp</ref><sp/>aop);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1aa2b0a8fecfed09bd6741045e8d83f356" kindref="member">MapUpdateAsyncContext</ref><sp/><ref refid="class_map_update_async_context_1aa41f63f1f86b92d314e1fa2bf10b81eb" kindref="member">FromForegroundEvent</ref>(<ref refid="class_async_op" kindref="compound">AsyncOp</ref><sp/>aop);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1aa2b0a8fecfed09bd6741045e8d83f356" kindref="member">MapUpdateAsyncContext</ref><sp/><ref refid="class_map_update_async_context_1a4544973acef75752aa651dbfbc3ad9ba" kindref="member">FromMessage</ref>(<ref refid="class_async_op" kindref="compound">AsyncOp</ref><sp/>aop);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_async_op" kindref="compound">AsyncOp</ref><sp/><ref refid="class_map_update_async_context_1a19433aa2a44d51fdf503faa96f20b897" kindref="member">GetAsyncOp</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1a70b32b8b0cfb0330f282612607679f06" kindref="member">GetParallelCommonEvent</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1aca6b94625e29bc4def1c39ce3c31c9fc" kindref="member">GetParallelMapEvent</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1a90b036789dd7af5baf67ce5a62678e6c" kindref="member">IsForegroundEvent</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1a16af607061bdda2d0aa7c231ac5ddca1" kindref="member">IsParallelCommonEvent</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1a0d05b141572e42a06d99f1d6bc9dc175" kindref="member">IsParallelMapEvent</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1ae41be6a8a4aa779d0189515bdaede65e" kindref="member">IsMessage</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1a46f4bf5a0c896f80cfe485f153a4ef25" kindref="member">IsActive</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_async_op" kindref="compound">AsyncOp</ref><sp/>async_op<sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>common_event<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>map_event<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>foreground_event<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>message<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_game___map" kindref="compound">Game_Map</ref><sp/>{</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a6b0e067620f3f99ffa00376ad4f79294" kindref="member">Init</ref>();</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1ac905eacbb6a4e3fb6f4b31901890736f" kindref="member">InitCommonEvents</ref>();</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1ab28a94eed3790a504adf0a94a9174702" kindref="member">Quit</ref>();</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a1c1e22cf5435734e79694dfff0c71446" kindref="member">Dispose</ref>();</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a4ce325e163a74d199ab1a27bb21407ba" kindref="member">CloneMapEvent</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>src_map_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>src_event_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>target_x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>target_y,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>target_event_id,<sp/>std::string_view<sp/>target_name);</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a56e5b666761794bf42043a01457b40d6" kindref="member">DestroyMapEvent</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>event_id,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>from_clone<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a7682dde07bba54160d0042a571a407cc" kindref="member">TranslateMapMessages</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mapId,<sp/>lcf::rpg::Map&amp;<sp/>map);</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a8c1164208efa2a2f6556c42ae1905be7" kindref="member">CreateMapEvents</ref>();</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a297484e7cfc284904610f0397450872f" kindref="member">UpdateUnderlyingEventReferences</ref>();</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1ac14da91d32790f8623edffae1ee0b8a7" kindref="member">AddEventToCache</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Event&amp;<sp/>ev);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a7652bca0e231885793fa2eb053ec1cb9" kindref="member">RemoveEventFromCache</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Event&amp;<sp/>ev);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Event*<sp/><ref refid="namespace_game___map_1a8d9969dae13c85850fa1acd9ca8d9519" kindref="member">FindEventById</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;lcf::rpg::Event&gt;&amp;<sp/>events,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>event_id);</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1af365ab80a269e3de2d4033fae6bbf885" kindref="member">GetNextAvailableEventId</ref>();</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;lcf::rpg::Map&gt;<sp/><ref refid="namespace_game___map_1a3fd74fb41d73a5711d6b1b3c50ec611e" kindref="member">LoadMapFile</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>map_id);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1af87b5ad6b5a23540c81428a56dab9d8d" kindref="member">Setup</ref>(std::unique_ptr&lt;lcf::rpg::Map&gt;<sp/>map);</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1aa066f5a9152bc4a6ae9a06a22cf3e35a" kindref="member">SetupFromSave</ref>(</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::unique_ptr&lt;lcf::rpg::Map&gt;<sp/>map,</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lcf::rpg::SaveMapInfo<sp/>save_map,</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lcf::rpg::SaveVehicleLocation<sp/>save_boat,</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lcf::rpg::SaveVehicleLocation<sp/>save_ship,</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lcf::rpg::SaveVehicleLocation<sp/>save_airship,</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lcf::rpg::SaveEventExecState<sp/>save_fg_exec,</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lcf::rpg::SavePanorama<sp/>save_pan,</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;lcf::rpg::SaveCommonEvent&gt;<sp/>save_ce);</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1af9ac6ad1ab66b2d6e5a5f9b059c69109" kindref="member">PrepareSave</ref>(lcf::rpg::Save&amp;<sp/>save);</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1ab9a74bcdea6f61ac5e4053ef32ee4798" kindref="member">PlayBgm</ref>();</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a14348915c999196588b888d503b45c37" kindref="member">Refresh</ref>();</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a506621b314e50e73069e5fee02d913bf" kindref="member">OnContinueFromBattle</ref>();</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a1134d3d00ccbd2d5746a87b110f86b12" kindref="member">Scroll</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>dx,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>dy);</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a8bc7a5d01bde2486108cfd04c614db11" kindref="member">AddScreenX</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/>screen_x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/>inc);</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1ac706658e30b6fd2716558ed9a4c4e208" kindref="member">AddScreenY</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/>screen_y,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/>inc);</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1ab410be7e70209e56e6a7e37ab8a2bb03" kindref="member">IsValid</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y);</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a25dc19711261eca40662b234aa380ef7" kindref="member">MakeWay</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Character&amp;<sp/>self,</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>from_x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>from_y,</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>to_x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>to_y);</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"></highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1af2a10a94b6f3be47ba3765f2bd860f40" kindref="member">CheckWay</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Character&amp;<sp/>self,</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>from_x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>from_y,</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>to_x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>to_y,</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>check_events_and_vehicles,</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Span&lt;int&gt;<sp/>ignore_some_events_by_id);</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"></highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1af2a10a94b6f3be47ba3765f2bd860f40" kindref="member">CheckWay</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Character&amp;<sp/>self,</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>from_x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>from_y,</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>to_x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>to_y);</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"></highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a390c0305cff703d1854c9ce67fa33952" kindref="member">CheckOrMakeWayEx</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Character&amp;<sp/>self,</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>from_x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>from_y,</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>to_x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>to_y,</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>check_events_and_vehicles,</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Span&lt;int&gt;<sp/>ignore_some_events_by_id,</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>make_way);</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"></highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1ab486a88161f7f78b05c48199341ee4e4" kindref="member">CanLandAirship</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y);</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"></highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a6433aa4d8fba878f111badd728a5c13e" kindref="member">CanEmbarkShip</ref>(Game_Player&amp;<sp/>player,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y);</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"></highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a0a7b68a8bf35b872a77840dd4b4a2e9a" kindref="member">CanDisembarkShip</ref>(Game_Player&amp;<sp/>player,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y);</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"></highlight></codeline>
+<codeline lineno="322"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;uint8_t&gt;<sp/><ref refid="namespace_game___map_1ac086c217576eded3978da8f2c426ecf4" kindref="member">GetTilesLayer</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>layer);</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"></highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a34248e966d1c6546967f554c3f532bb1" kindref="member">GetBushDepth</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y);</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"></highlight></codeline>
+<codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a422156bdc0715db9d4e97d254396d0d6" kindref="member">IsCounter</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y);</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"></highlight></codeline>
+<codeline lineno="349"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a09a5d133183d855a23f2ed3559db59df" kindref="member">GetTerrainTag</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y);</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"></highlight></codeline>
+<codeline lineno="358"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a8d690c80b4f17e4d2486c667f90ae9e1" kindref="member">CheckEvent</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y);</highlight></codeline>
+<codeline lineno="359"><highlight class="normal"></highlight></codeline>
+<codeline lineno="368"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a095cbdfec8a465690c7a4ab4865a1d3b" kindref="member">Update</ref>(MapUpdateAsyncContext&amp;<sp/>actx,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_preupdate<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="369"><highlight class="normal"></highlight></codeline>
+<codeline lineno="375"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::MapInfo&amp;<sp/><ref refid="namespace_game___map_1a24a0aed528bb59f0fa8730946bbcce16" kindref="member">GetMapInfo</ref>();</highlight></codeline>
+<codeline lineno="376"><highlight class="normal"></highlight></codeline>
+<codeline lineno="383"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::MapInfo&amp;<sp/><ref refid="namespace_game___map_1a24a0aed528bb59f0fa8730946bbcce16" kindref="member">GetMapInfo</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>map_id);</highlight></codeline>
+<codeline lineno="384"><highlight class="normal"></highlight></codeline>
+<codeline lineno="391"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::MapInfo&amp;<sp/><ref refid="namespace_game___map_1ac07bdc2a121bc523c5c06bc9a9cefabb" kindref="member">GetParentMapInfo</ref>();</highlight></codeline>
+<codeline lineno="392"><highlight class="normal"></highlight></codeline>
+<codeline lineno="400"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::MapInfo&amp;<sp/><ref refid="namespace_game___map_1ac07bdc2a121bc523c5c06bc9a9cefabb" kindref="member">GetParentMapInfo</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::MapInfo&amp;<sp/>map_info);</highlight></codeline>
+<codeline lineno="401"><highlight class="normal"></highlight></codeline>
+<codeline lineno="407"><highlight class="normal"><sp/><sp/><sp/><sp/>lcf::rpg::Map<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/><ref refid="namespace_game___map_1a81c2d7be0f1add314f0a1a18dfe1852b" kindref="member">GetMap</ref>();</highlight></codeline>
+<codeline lineno="408"><highlight class="normal"></highlight></codeline>
+<codeline lineno="414"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1aba8fa8714eb265f2136427344e659135" kindref="member">GetMapId</ref>();</highlight></codeline>
+<codeline lineno="415"><highlight class="normal"></highlight></codeline>
+<codeline lineno="419"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1aed51434b822ce6da48262e9e9e7d150d" kindref="member">PrintPathToMap</ref>();</highlight></codeline>
+<codeline lineno="420"><highlight class="normal"></highlight></codeline>
+<codeline lineno="422"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a32528c63a99484a79d2af61fe9a43a95" kindref="member">GetTilesX</ref>();</highlight></codeline>
+<codeline lineno="423"><highlight class="normal"></highlight></codeline>
+<codeline lineno="425"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1ad5d875e291d4492eaa37a9ba77dd55d7" kindref="member">GetTilesY</ref>();</highlight></codeline>
+<codeline lineno="426"><highlight class="normal"></highlight></codeline>
+<codeline lineno="428"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a18973dcff35e3c7524a08f3e51f7f553" kindref="member">GetOriginalEncounterSteps</ref>();</highlight></codeline>
+<codeline lineno="429"><highlight class="normal"></highlight></codeline>
+<codeline lineno="431"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a84a23b3c164b58755e0453eef29de053" kindref="member">GetEncounterSteps</ref>();</highlight></codeline>
+<codeline lineno="432"><highlight class="normal"></highlight></codeline>
+<codeline lineno="438"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a9c5faf768be5eac814d16fff9d271210" kindref="member">SetEncounterSteps</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>step);</highlight></codeline>
+<codeline lineno="439"><highlight class="normal"></highlight></codeline>
+<codeline lineno="448"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/><ref refid="namespace_game___map_1af07ee1cc228672f3a0b0c96b55f9c86a" kindref="member">GetEncountersAt</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y);</highlight></codeline>
+<codeline lineno="449"><highlight class="normal"></highlight></codeline>
+<codeline lineno="459"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a8faad8491f7fdf1a1bb2593889b6182e" kindref="member">PrepareEncounter</ref>(BattleArgs&amp;<sp/>args);</highlight></codeline>
+<codeline lineno="460"><highlight class="normal"></highlight></codeline>
+<codeline lineno="466"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1aeb6fb42eb6896c79b057241807d114f5" kindref="member">SetupBattle</ref>(BattleArgs&amp;<sp/>args);</highlight></codeline>
+<codeline lineno="467"><highlight class="normal"></highlight></codeline>
+<codeline lineno="473"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;short&gt;&amp;<sp/><ref refid="namespace_game___map_1a9169219ec54dc69facb77381e5b45307" kindref="member">GetMapDataDown</ref>();</highlight></codeline>
+<codeline lineno="474"><highlight class="normal"></highlight></codeline>
+<codeline lineno="480"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;short&gt;&amp;<sp/><ref refid="namespace_game___map_1a3bceaa1fce3c6b579c87a79f22844bb0" kindref="member">GetMapDataUp</ref>();</highlight></codeline>
+<codeline lineno="481"><highlight class="normal"></highlight></codeline>
+<codeline lineno="483"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a1d0a973e7f49881a886003f6f769551a" kindref="member">GetOriginalChipset</ref>();</highlight></codeline>
+<codeline lineno="484"><highlight class="normal"></highlight></codeline>
+<codeline lineno="486"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1aa478bb56c99d7470fe9d4439d543e774" kindref="member">GetChipset</ref>();</highlight></codeline>
+<codeline lineno="487"><highlight class="normal"></highlight></codeline>
+<codeline lineno="489"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string_view<sp/><ref refid="namespace_game___map_1ae3835d789224cc226a22e284128968db" kindref="member">GetChipsetName</ref>();</highlight></codeline>
+<codeline lineno="490"><highlight class="normal"></highlight></codeline>
+<codeline lineno="495"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a3c9d68a804b0cf5d8a3d4eba1ed7220d" kindref="member">GetPositionX</ref>();</highlight></codeline>
+<codeline lineno="496"><highlight class="normal"></highlight></codeline>
+<codeline lineno="501"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a76433ded7bd9da4b2caaa96f33b0edb9" kindref="member">GetDisplayX</ref>();</highlight></codeline>
+<codeline lineno="502"><highlight class="normal"></highlight></codeline>
+<codeline lineno="510"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a6dd0257e7bd6edbfb8842a4c1d2e62ed" kindref="member">SetPositionX</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>new_position_x,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>reset_panorama<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="511"><highlight class="normal"></highlight></codeline>
+<codeline lineno="515"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1aaeaf8d72f69b28ff73aa64351f56b056" kindref="member">GetPositionY</ref>();</highlight></codeline>
+<codeline lineno="516"><highlight class="normal"></highlight></codeline>
+<codeline lineno="520"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1aa3dc012489de1bd33dc721628ac2b786" kindref="member">GetDisplayY</ref>();</highlight></codeline>
+<codeline lineno="521"><highlight class="normal"></highlight></codeline>
+<codeline lineno="529"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a52384804f1751b8d67f9d37e2415ed33" kindref="member">SetPositionY</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>new_position_y,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>reset_panorama<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="530"><highlight class="normal"></highlight></codeline>
+<codeline lineno="534"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1ad4be71a416775377c05fbc0dc837ff8d" kindref="member">GetNeedRefresh</ref>();</highlight></codeline>
+<codeline lineno="535"><highlight class="normal"></highlight></codeline>
+<codeline lineno="541"><highlight class="normal"><sp/><sp/><sp/><sp/>Game_Interpreter_Map&amp;<sp/><ref refid="namespace_game___map_1a93aff6e28b5fe2334503361ac0cd2099" kindref="member">GetInterpreter</ref>();</highlight></codeline>
+<codeline lineno="542"><highlight class="normal"></highlight></codeline>
+<codeline lineno="548"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a0bcd2bf3130209584409c4a2cf156716" kindref="member">SetNeedRefresh</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>refresh);</highlight></codeline>
+<codeline lineno="549"><highlight class="normal"></highlight></codeline>
+<codeline lineno="555"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;unsigned<sp/>char&gt;&amp;<sp/><ref refid="namespace_game___map_1a8f1ccdc4198fadfeeab62f925fdc0785" kindref="member">GetPassagesDown</ref>();</highlight></codeline>
+<codeline lineno="556"><highlight class="normal"></highlight></codeline>
+<codeline lineno="562"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;unsigned<sp/>char&gt;&amp;<sp/><ref refid="namespace_game___map_1ae16bbb8f8bd5f5fac19c4b1bf52510be" kindref="member">GetPassagesUp</ref>();</highlight></codeline>
+<codeline lineno="563"><highlight class="normal"></highlight></codeline>
+<codeline lineno="569"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a2348ab12f0ce633b3ec741bf91684b57" kindref="member">GetAnimationType</ref>();</highlight></codeline>
+<codeline lineno="570"><highlight class="normal"></highlight></codeline>
+<codeline lineno="576"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a7360568e2a7b7784ac42aa624ba249b0" kindref="member">GetAnimationSpeed</ref>();</highlight></codeline>
+<codeline lineno="577"><highlight class="normal"></highlight></codeline>
+<codeline lineno="583"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;Game_Event&gt;&amp;<sp/><ref refid="namespace_game___map_1a80ae659eb33b5a70f869612d8525286e" kindref="member">GetEvents</ref>();</highlight></codeline>
+<codeline lineno="584"><highlight class="normal"></highlight></codeline>
+<codeline lineno="586"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a7cbe055fa5c9d9688c9614ec7e406452" kindref="member">GetHighestEventId</ref>();</highlight></codeline>
+<codeline lineno="587"><highlight class="normal"></highlight></codeline>
+<codeline lineno="594"><highlight class="normal"><sp/><sp/><sp/><sp/>Game_Event*<sp/><ref refid="namespace_game___map_1aff6a46e0fecd4d389ec665536b43fb07" kindref="member">GetEvent</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>event_id);</highlight></codeline>
+<codeline lineno="595"><highlight class="normal"></highlight></codeline>
+<codeline lineno="601"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;Game_CommonEvent&gt;&amp;<sp/><ref refid="namespace_game___map_1ae5b76f21ff97cb0f6017b44e0aa3740f" kindref="member">GetCommonEvents</ref>();</highlight></codeline>
+<codeline lineno="602"><highlight class="normal"></highlight></codeline>
+<codeline lineno="609"><highlight class="normal"><sp/><sp/><sp/><sp/>Game_Event*<sp/><ref refid="namespace_game___map_1a3bf824ff4644e7e421b9164d2567d088" kindref="member">GetEventAt</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>require_active);</highlight></codeline>
+<codeline lineno="610"><highlight class="normal"></highlight></codeline>
+<codeline lineno="611"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1ad16754efdc20be6ae4a9290cbd4fe4c3" kindref="member">LoopHorizontal</ref>();</highlight></codeline>
+<codeline lineno="612"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a4a5b311672c2a47a2408b3a5660a2036" kindref="member">LoopVertical</ref>();</highlight></codeline>
+<codeline lineno="613"><highlight class="normal"></highlight></codeline>
+<codeline lineno="614"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a002d9b91a3eaff857efb3beee7ddfaff" kindref="member">RoundX</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>units<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="615"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a692e56c6d8dd9482edfec08b8086355e" kindref="member">RoundY</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>units<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="616"><highlight class="normal"></highlight></codeline>
+<codeline lineno="617"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a30b634d78f3574a5bb692d2da1ead592" kindref="member">RoundDx</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>units<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="618"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1aeef77d56232872204c2eed31738945c4" kindref="member">RoundDy</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>units<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="619"><highlight class="normal"></highlight></codeline>
+<codeline lineno="620"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1aa2aa31e9d54ff8ce763292bf3ddb0c4b" kindref="member">XwithDirection</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>direction);</highlight></codeline>
+<codeline lineno="621"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1ad255cb120e97996f23a441a506c19286" kindref="member">YwithDirection</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>direction);</highlight></codeline>
+<codeline lineno="622"><highlight class="normal"></highlight></codeline>
+<codeline lineno="629"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string_view<sp/><ref refid="namespace_game___map_1a4cd0e573425b0f8754c94d28ea2982b3" kindref="member">GetMapName</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="630"><highlight class="normal"></highlight></codeline>
+<codeline lineno="636"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a8de888e90832de41c81f3cfed68b53af" kindref="member">SetChipset</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="637"><highlight class="normal"></highlight></codeline>
+<codeline lineno="638"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a7123ab5c8608a6ae566434661d5e2645" kindref="member">ReloadChipset</ref>();</highlight></codeline>
+<codeline lineno="639"><highlight class="normal"></highlight></codeline>
+<codeline lineno="640"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1af45245565ebb14b0b94bba85e93a4173" kindref="member">OnTranslationChanged</ref>();</highlight></codeline>
+<codeline lineno="641"><highlight class="normal"></highlight></codeline>
+<codeline lineno="642"><highlight class="normal"><sp/><sp/><sp/><sp/>Game_Vehicle*<sp/><ref refid="namespace_game___map_1ad067ff782cc56c2e2d2a02c28503b16d" kindref="member">GetVehicle</ref>(<ref refid="class_game___vehicle_1a9c3a795cbe2144dd4ebf289c95e815a5" kindref="member">Game_Vehicle::Type</ref><sp/>which);</highlight></codeline>
+<codeline lineno="643"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a0bee8509a67d0799b108dca8eba6095f" kindref="member">SubstituteDown</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>old_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>new_id);</highlight></codeline>
+<codeline lineno="644"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a43d22836edf32c77e6656344d982cb5d" kindref="member">SubstituteUp</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>old_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>new_id);</highlight></codeline>
+<codeline lineno="645"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a8340df6c2f18accbbd8e636d78929099" kindref="member">ReplaceTileAt</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>new_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>layer);</highlight></codeline>
+<codeline lineno="646"><highlight class="normal"></highlight></codeline>
+<codeline lineno="647"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1af876fa98b91256acd7bec79dd609db46" kindref="member">GetTileIdAt</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>layer,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>chip_id_or_index<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="648"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/><ref refid="namespace_game___map_1afb9b0c1d10df0cecde473a62885c1638" kindref="member">GetTilesIdAt</ref>(Rect<sp/>coords,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>layer,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>chip_id_or_index<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="649"><highlight class="normal"></highlight></codeline>
+<codeline lineno="665"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a89a1cee4e877adefca377b0636fe85a9" kindref="member">IsPassableTile</ref>(</highlight></codeline>
+<codeline lineno="666"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Character*<sp/>self,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bit,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y,</highlight></codeline>
+<codeline lineno="667"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>check_events_and_vehicles,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>check_map_geometry</highlight></codeline>
+<codeline lineno="668"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="669"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a89a1cee4e877adefca377b0636fe85a9" kindref="member">IsPassableTile</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Character*<sp/>self,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bit,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y);</highlight></codeline>
+<codeline lineno="670"><highlight class="normal"></highlight></codeline>
+<codeline lineno="680"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a51048580620a4c43837525bb82401a0c" kindref="member">IsPassableLowerTile</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>bit,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>tile_index);</highlight></codeline>
+<codeline lineno="681"><highlight class="normal"></highlight></codeline>
+<codeline lineno="688"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a10cd221cf23962b0b2fa472d12d0531b" kindref="member">IsAnyEventStarting</ref>();</highlight></codeline>
+<codeline lineno="689"><highlight class="normal"></highlight></codeline>
+<codeline lineno="691"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1af2122fb25c4366f9a3371a45f069ff3a" kindref="member">GetMapSaveCount</ref>();</highlight></codeline>
+<codeline lineno="692"><highlight class="normal"></highlight></codeline>
+<codeline lineno="694"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1acc28ee28092b1a1f5fe521c5dbb79825" kindref="member">IsAnyMovePending</ref>();</highlight></codeline>
+<codeline lineno="695"><highlight class="normal"></highlight></codeline>
+<codeline lineno="697"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a0af59c3ab16fed8f4d7971ead03f8d84" kindref="member">RemoveAllPendingMoves</ref>();</highlight></codeline>
+<codeline lineno="698"><highlight class="normal"></highlight></codeline>
+<codeline lineno="699"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a907a35077baf89f44080dcef0e9a9630" kindref="member">UpdateProcessedFlags</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_preupdate);</highlight></codeline>
+<codeline lineno="700"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1ae2f45fc8bb68dddd6b1e575429a7877b" kindref="member">UpdateCommonEvents</ref>(MapUpdateAsyncContext&amp;<sp/>actx);</highlight></codeline>
+<codeline lineno="701"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a4807f62a2cac4ffb42e92ced2df8f301" kindref="member">UpdateMapEvents</ref>(MapUpdateAsyncContext&amp;<sp/>actx);</highlight></codeline>
+<codeline lineno="702"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1ad6feca574be23dd88beb7f64b85737fb" kindref="member">UpdateMessage</ref>(MapUpdateAsyncContext&amp;<sp/>actx);</highlight></codeline>
+<codeline lineno="703"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a0c2e3b0586113f09a0e6f5c01b69e5d1" kindref="member">UpdateForegroundEvents</ref>(MapUpdateAsyncContext&amp;<sp/>actx);</highlight></codeline>
+<codeline lineno="704"><highlight class="normal"></highlight></codeline>
+<codeline lineno="712"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="namespace_game___map_1a9d4e6a186e2ed6fd61a2819a805e4882" kindref="member">ConstructMapName</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>map_id,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>is_easyrpg);</highlight></codeline>
+<codeline lineno="713"><highlight class="normal"></highlight></codeline>
+<codeline lineno="714"><highlight class="normal"><sp/><sp/><sp/><sp/>FileRequestAsync*<sp/><ref refid="namespace_game___map_1a9d34ce01de2cfe76291d7472b30cc7ab" kindref="member">RequestMap</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>map_id);</highlight></codeline>
+<codeline lineno="715"><highlight class="normal"></highlight></codeline>
+<codeline lineno="716" refid="namespace_game___map_1_1_caching" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_game___map_1_1_caching" kindref="compound">Caching</ref><sp/>{</highlight></codeline>
+<codeline lineno="717" refid="class_game___map_1_1_caching_1_1_map_event_cache" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_game___map_1_1_caching_1_1_map_event_cache" kindref="compound">MapEventCache</ref><sp/>{</highlight></codeline>
+<codeline lineno="718"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="719"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___map_1_1_caching_1_1_map_event_cache_1a4154f3a1b4e1e7f215a265d2f97224ef" kindref="member">AddEvent</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Event&amp;<sp/>ev);</highlight></codeline>
+<codeline lineno="720"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___map_1_1_caching_1_1_map_event_cache_1a51a9c149e00545cd40167d013b27a4f4" kindref="member">RemoveEvent</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Event&amp;<sp/>ev);</highlight></codeline>
+<codeline lineno="721"><highlight class="normal"></highlight></codeline>
+<codeline lineno="722"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="723"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/>event_ids;</highlight></codeline>
+<codeline lineno="724"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="725"><highlight class="normal"></highlight></codeline>
+<codeline lineno="726" refid="namespace_game___map_1_1_caching_1afa392799bae1f4c3f9193ebeb582eb53" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="namespace_game___map_1_1_caching_1afa392799bae1f4c3f9193ebeb582eb53" kindref="member">MapEventCacheData_t</ref><sp/>=<sp/>std::unordered_map&lt;int,<sp/>MapEventCache&gt;;</highlight></codeline>
+<codeline lineno="727"><highlight class="normal"></highlight></codeline>
+<codeline lineno="728" refid="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2" kindref="member">ObservedVarOps</ref><sp/>{</highlight></codeline>
+<codeline lineno="729" refid="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2aebfda7f2d7bb1b9391e1ebb8c3367a19" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2aebfda7f2d7bb1b9391e1ebb8c3367a19" kindref="member">SwitchSet</ref><sp/>=<sp/>0,</highlight></codeline>
+<codeline lineno="730" refid="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2aced951152185aefed2e74b258752348a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2aced951152185aefed2e74b258752348a" kindref="member">VarSet</ref>,</highlight></codeline>
+<codeline lineno="731"><highlight class="normal"></highlight></codeline>
+<codeline lineno="732" refid="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2aa8afcb4c2dad78ff09125effab787870" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2aa8afcb4c2dad78ff09125effab787870" kindref="member">ObservedVarOps_END</ref></highlight></codeline>
+<codeline lineno="733"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="734"><highlight class="normal"></highlight></codeline>
+<codeline lineno="735" refid="class_game___map_1_1_caching_1_1_map_cache" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_game___map_1_1_caching_1_1_map_cache" kindref="compound">MapCache</ref><sp/>{</highlight></codeline>
+<codeline lineno="736"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="737"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;ObservedVarOps<sp/>Op&gt;</highlight></codeline>
+<codeline lineno="738"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___map_1_1_caching_1_1_map_cache_1ade63591a5190eddd9fe2c3a628cb24eb" kindref="member">AddEventAsRefreshTarget</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Event&amp;<sp/>ev);</highlight></codeline>
+<codeline lineno="739"><highlight class="normal"></highlight></codeline>
+<codeline lineno="740"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;ObservedVarOps<sp/>Op&gt;</highlight></codeline>
+<codeline lineno="741"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___map_1_1_caching_1_1_map_cache_1a2ec1a504f2969002519931139042e331" kindref="member">RemoveEventAsRefreshTarget</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Event&amp;<sp/>ev);</highlight></codeline>
+<codeline lineno="742"><highlight class="normal"></highlight></codeline>
+<codeline lineno="743"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;ObservedVarOps<sp/>Op&gt;</highlight></codeline>
+<codeline lineno="744"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1ad4be71a416775377c05fbc0dc837ff8d" kindref="member">GetNeedRefresh</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="745"><highlight class="normal"></highlight></codeline>
+<codeline lineno="746"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___map_1_1_caching_1_1_map_cache_1abbeb58f79d9a394f79e5fe8f3c0de116" kindref="member">Clear</ref>();</highlight></codeline>
+<codeline lineno="747"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="748"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_game___map_1_1_caching_1afa392799bae1f4c3f9193ebeb582eb53" kindref="member">MapEventCacheData_t</ref><sp/>refresh_targets_by_varid[<ref refid="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2aa8afcb4c2dad78ff09125effab787870" kindref="member">ObservedVarOps_END</ref>];</highlight></codeline>
+<codeline lineno="749"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="750"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="751"><highlight class="normal"></highlight></codeline>
+<codeline lineno="752"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1aad13382345e1a51071ab387bcf4694ce" kindref="member">SetNeedRefreshForSwitchChange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>switch_id);</highlight></codeline>
+<codeline lineno="753"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a055bff3558ebc72eeac29cdf12a202d9" kindref="member">SetNeedRefreshForVarChange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id);</highlight></codeline>
+<codeline lineno="754"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1aad13382345e1a51071ab387bcf4694ce" kindref="member">SetNeedRefreshForSwitchChange</ref>(std::initializer_list&lt;int&gt;<sp/>switch_ids);</highlight></codeline>
+<codeline lineno="755"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1a055bff3558ebc72eeac29cdf12a202d9" kindref="member">SetNeedRefreshForVarChange</ref>(std::initializer_list&lt;int&gt;<sp/>var_ids);</highlight></codeline>
+<codeline lineno="756"><highlight class="normal"></highlight></codeline>
+<codeline lineno="757" refid="namespace_game___map_1_1_parallax" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_game___map_1_1_parallax" kindref="compound">Parallax</ref><sp/>{</highlight></codeline>
+<codeline lineno="758" refid="struct_game___map_1_1_parallax_1_1_params" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_game___map_1_1_parallax_1_1_params" kindref="compound">Params</ref><sp/>{</highlight></codeline>
+<codeline lineno="759" refid="struct_game___map_1_1_parallax_1_1_params_1a5fc581dae59a3dbd53360fe56dd9bddc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="struct_game___map_1_1_parallax_1_1_params_1a5fc581dae59a3dbd53360fe56dd9bddc" kindref="member">name</ref>;</highlight></codeline>
+<codeline lineno="760" refid="struct_game___map_1_1_parallax_1_1_params_1a4ff356219b11f262993b3dccec75db83" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___map_1_1_parallax_1_1_params_1a4ff356219b11f262993b3dccec75db83" kindref="member">scroll_horz</ref>;</highlight></codeline>
+<codeline lineno="761" refid="struct_game___map_1_1_parallax_1_1_params_1abfd07a638a588743a57be46fd1bb492a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___map_1_1_parallax_1_1_params_1abfd07a638a588743a57be46fd1bb492a" kindref="member">scroll_horz_auto</ref>;</highlight></codeline>
+<codeline lineno="762" refid="struct_game___map_1_1_parallax_1_1_params_1acb83d9c5c0e02e0471d585a63a38fc93" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___map_1_1_parallax_1_1_params_1acb83d9c5c0e02e0471d585a63a38fc93" kindref="member">scroll_horz_speed</ref>;</highlight></codeline>
+<codeline lineno="763" refid="struct_game___map_1_1_parallax_1_1_params_1a14871b9006c3663165b218563e572887" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___map_1_1_parallax_1_1_params_1a14871b9006c3663165b218563e572887" kindref="member">scroll_vert</ref>;</highlight></codeline>
+<codeline lineno="764" refid="struct_game___map_1_1_parallax_1_1_params_1a5a3d2d9c9ebe7e664cd588047ba14b60" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___map_1_1_parallax_1_1_params_1a5a3d2d9c9ebe7e664cd588047ba14b60" kindref="member">scroll_vert_auto</ref>;</highlight></codeline>
+<codeline lineno="765" refid="struct_game___map_1_1_parallax_1_1_params_1afc7ebe560b799a7f076f76cb8dec5196" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___map_1_1_parallax_1_1_params_1afc7ebe560b799a7f076f76cb8dec5196" kindref="member">scroll_vert_speed</ref>;</highlight></codeline>
+<codeline lineno="766"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="767"><highlight class="normal"></highlight></codeline>
+<codeline lineno="772"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="namespace_game___map_1_1_parallax_1ad38d7d58f0a81782747aa45814126547" kindref="member">GetName</ref>();</highlight></codeline>
+<codeline lineno="773"><highlight class="normal"></highlight></codeline>
+<codeline lineno="779"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1_1_parallax_1a10e6041cd295fb1ab1bb5dff34f33336" kindref="member">GetX</ref>();</highlight></codeline>
+<codeline lineno="780"><highlight class="normal"></highlight></codeline>
+<codeline lineno="782"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1_1_parallax_1a90ae18909dc18de0d02df2a012c2a519" kindref="member">GetY</ref>();</highlight></codeline>
+<codeline lineno="783"><highlight class="normal"></highlight></codeline>
+<codeline lineno="785"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1_1_parallax_1aa56afe44b22dc0fabd4f9b19b83957ef" kindref="member">Initialize</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>width,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>height);</highlight></codeline>
+<codeline lineno="786"><highlight class="normal"></highlight></codeline>
+<codeline lineno="788"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1_1_parallax_1a459b3b2d8b4817eca9bd158f4fec69a0" kindref="member">AddPositionX</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x);</highlight></codeline>
+<codeline lineno="789"><highlight class="normal"></highlight></codeline>
+<codeline lineno="791"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1_1_parallax_1afcefb5d593fe393a3e59cc8cbdfbe3ad" kindref="member">AddPositionY</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y);</highlight></codeline>
+<codeline lineno="792"><highlight class="normal"></highlight></codeline>
+<codeline lineno="794"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1_1_parallax_1aa37782f9c0077c3217d6beeb9fc38c4c" kindref="member">SetPositionX</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x);</highlight></codeline>
+<codeline lineno="795"><highlight class="normal"></highlight></codeline>
+<codeline lineno="797"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1_1_parallax_1ad4ff30c4ce6bec77e68b4bb0208e7a47" kindref="member">SetPositionY</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y);</highlight></codeline>
+<codeline lineno="798"><highlight class="normal"></highlight></codeline>
+<codeline lineno="800"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1_1_parallax_1a5133fc6c13613f3fc35adfbaa67daa44" kindref="member">ResetPositionX</ref>();</highlight></codeline>
+<codeline lineno="801"><highlight class="normal"></highlight></codeline>
+<codeline lineno="803"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1_1_parallax_1a3e0a9a53625929a1dc92d2ec3168d7f4" kindref="member">ResetPositionY</ref>();</highlight></codeline>
+<codeline lineno="804"><highlight class="normal"></highlight></codeline>
+<codeline lineno="810"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1_1_parallax_1a910311b30ceb219d7ede35888ab41a42" kindref="member">ScrollRight</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>distance);</highlight></codeline>
+<codeline lineno="811"><highlight class="normal"></highlight></codeline>
+<codeline lineno="817"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1_1_parallax_1a5bfa662e646aa9785bc438743cdd5575" kindref="member">ScrollDown</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>distance);</highlight></codeline>
+<codeline lineno="818"><highlight class="normal"></highlight></codeline>
+<codeline lineno="820"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1_1_parallax_1ad8c127e2d9d356268fedb4de2a48a7c9" kindref="member">Update</ref>();</highlight></codeline>
+<codeline lineno="821"><highlight class="normal"></highlight></codeline>
+<codeline lineno="823"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1_1_parallax_1a7fab48b758cbd6736e6892a8b846bc9f" kindref="member">ChangeBG</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_game___map_1_1_parallax_1_1_params" kindref="compound">Params</ref>&amp;<sp/>params);</highlight></codeline>
+<codeline lineno="824"><highlight class="normal"></highlight></codeline>
+<codeline lineno="829"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1_1_parallax_1a31321103085ec635b132b76d2e9c2117" kindref="member">ClearChangedBG</ref>();</highlight></codeline>
+<codeline lineno="830"><highlight class="normal"></highlight></codeline>
+<codeline lineno="832"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1_1_parallax_1a5056e897d92eb2f66b222e095ee1f265" kindref="member">FakeXPosition</ref>();</highlight></codeline>
+<codeline lineno="833"><highlight class="normal"></highlight></codeline>
+<codeline lineno="835"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespace_game___map_1_1_parallax_1a9cf1c1453a240271ada3e4ea978bd90d" kindref="member">FakeYPosition</ref>();</highlight></codeline>
+<codeline lineno="836"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="837"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="838"><highlight class="normal"></highlight></codeline>
+<codeline lineno="839" refid="class_map_update_async_context_1a19433aa2a44d51fdf503faa96f20b897" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_async_op" kindref="compound">AsyncOp</ref><sp/><ref refid="class_map_update_async_context_1a19433aa2a44d51fdf503faa96f20b897" kindref="member">MapUpdateAsyncContext::GetAsyncOp</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="840"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>async_op;</highlight></codeline>
+<codeline lineno="841"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="842"><highlight class="normal"></highlight></codeline>
+<codeline lineno="843" refid="class_map_update_async_context_1a28916ea0501cc296d80d2d342282f90b" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1aa2b0a8fecfed09bd6741045e8d83f356" kindref="member">MapUpdateAsyncContext</ref><sp/><ref refid="class_map_update_async_context_1a28916ea0501cc296d80d2d342282f90b" kindref="member">MapUpdateAsyncContext::FromCommonEvent</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ce,<sp/><ref refid="class_async_op" kindref="compound">AsyncOp</ref><sp/>aop)<sp/>{</highlight></codeline>
+<codeline lineno="844"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_map_update_async_context_1aa2b0a8fecfed09bd6741045e8d83f356" kindref="member">MapUpdateAsyncContext</ref><sp/>actx;</highlight></codeline>
+<codeline lineno="845"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(aop.<ref refid="class_async_op_1a3d65d393ff06aa398504d251e28a2ddf" kindref="member">IsActive</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="846"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>actx.async_op<sp/>=<sp/>aop;</highlight></codeline>
+<codeline lineno="847"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>actx.common_event<sp/>=<sp/>ce;</highlight></codeline>
+<codeline lineno="848"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="849"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>actx;</highlight></codeline>
+<codeline lineno="850"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="851"><highlight class="normal"></highlight></codeline>
+<codeline lineno="852" refid="class_map_update_async_context_1a31730e8ed1d2e445b6fc8e42b78874c6" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1aa2b0a8fecfed09bd6741045e8d83f356" kindref="member">MapUpdateAsyncContext</ref><sp/><ref refid="class_map_update_async_context_1a31730e8ed1d2e445b6fc8e42b78874c6" kindref="member">MapUpdateAsyncContext::FromMapEvent</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ev,<sp/><ref refid="class_async_op" kindref="compound">AsyncOp</ref><sp/>aop)<sp/>{</highlight></codeline>
+<codeline lineno="853"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_map_update_async_context_1aa2b0a8fecfed09bd6741045e8d83f356" kindref="member">MapUpdateAsyncContext</ref><sp/>actx;</highlight></codeline>
+<codeline lineno="854"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(aop.<ref refid="class_async_op_1a3d65d393ff06aa398504d251e28a2ddf" kindref="member">IsActive</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="855"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>actx.async_op<sp/>=<sp/>aop;</highlight></codeline>
+<codeline lineno="856"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>actx.map_event<sp/>=<sp/>ev;</highlight></codeline>
+<codeline lineno="857"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="858"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>actx;</highlight></codeline>
+<codeline lineno="859"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="860"><highlight class="normal"></highlight></codeline>
+<codeline lineno="861" refid="class_map_update_async_context_1aa41f63f1f86b92d314e1fa2bf10b81eb" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1aa2b0a8fecfed09bd6741045e8d83f356" kindref="member">MapUpdateAsyncContext</ref><sp/><ref refid="class_map_update_async_context_1aa41f63f1f86b92d314e1fa2bf10b81eb" kindref="member">MapUpdateAsyncContext::FromForegroundEvent</ref>(<ref refid="class_async_op" kindref="compound">AsyncOp</ref><sp/>aop)<sp/>{</highlight></codeline>
+<codeline lineno="862"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_map_update_async_context_1aa2b0a8fecfed09bd6741045e8d83f356" kindref="member">MapUpdateAsyncContext</ref><sp/>actx;</highlight></codeline>
+<codeline lineno="863"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(aop.<ref refid="class_async_op_1a3d65d393ff06aa398504d251e28a2ddf" kindref="member">IsActive</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="864"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>actx.async_op<sp/>=<sp/>aop;</highlight></codeline>
+<codeline lineno="865"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>actx.foreground_event<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="866"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="867"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>actx;</highlight></codeline>
+<codeline lineno="868"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="869"><highlight class="normal"></highlight></codeline>
+<codeline lineno="870" refid="class_map_update_async_context_1a4544973acef75752aa651dbfbc3ad9ba" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1aa2b0a8fecfed09bd6741045e8d83f356" kindref="member">MapUpdateAsyncContext</ref><sp/><ref refid="class_map_update_async_context_1a4544973acef75752aa651dbfbc3ad9ba" kindref="member">MapUpdateAsyncContext::FromMessage</ref>(<ref refid="class_async_op" kindref="compound">AsyncOp</ref><sp/>aop)<sp/>{</highlight></codeline>
+<codeline lineno="871"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_map_update_async_context_1aa2b0a8fecfed09bd6741045e8d83f356" kindref="member">MapUpdateAsyncContext</ref><sp/>actx;</highlight></codeline>
+<codeline lineno="872"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(aop.<ref refid="class_async_op_1a3d65d393ff06aa398504d251e28a2ddf" kindref="member">IsActive</ref>())<sp/>{</highlight></codeline>
+<codeline lineno="873"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>actx.async_op<sp/>=<sp/>aop;</highlight></codeline>
+<codeline lineno="874"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>actx.message<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="875"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="876"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>actx;</highlight></codeline>
+<codeline lineno="877"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="878"><highlight class="normal"></highlight></codeline>
+<codeline lineno="879" refid="class_map_update_async_context_1a70b32b8b0cfb0330f282612607679f06" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1a70b32b8b0cfb0330f282612607679f06" kindref="member">MapUpdateAsyncContext::GetParallelCommonEvent</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="880"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>common_event;</highlight></codeline>
+<codeline lineno="881"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="882"><highlight class="normal"></highlight></codeline>
+<codeline lineno="883" refid="class_map_update_async_context_1aca6b94625e29bc4def1c39ce3c31c9fc" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1aca6b94625e29bc4def1c39ce3c31c9fc" kindref="member">MapUpdateAsyncContext::GetParallelMapEvent</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="884"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>map_event;</highlight></codeline>
+<codeline lineno="885"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="886"><highlight class="normal"></highlight></codeline>
+<codeline lineno="887" refid="class_map_update_async_context_1a90b036789dd7af5baf67ce5a62678e6c" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1a90b036789dd7af5baf67ce5a62678e6c" kindref="member">MapUpdateAsyncContext::IsForegroundEvent</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="888"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>foreground_event;</highlight></codeline>
+<codeline lineno="889"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="890"><highlight class="normal"></highlight></codeline>
+<codeline lineno="891" refid="class_map_update_async_context_1a16af607061bdda2d0aa7c231ac5ddca1" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1a16af607061bdda2d0aa7c231ac5ddca1" kindref="member">MapUpdateAsyncContext::IsParallelCommonEvent</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="892"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>common_event<sp/>&gt;<sp/>0;</highlight></codeline>
+<codeline lineno="893"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="894"><highlight class="normal"></highlight></codeline>
+<codeline lineno="895" refid="class_map_update_async_context_1a0d05b141572e42a06d99f1d6bc9dc175" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1a0d05b141572e42a06d99f1d6bc9dc175" kindref="member">MapUpdateAsyncContext::IsParallelMapEvent</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="896"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>map_event<sp/>&gt;<sp/>0;</highlight></codeline>
+<codeline lineno="897"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="898"><highlight class="normal"></highlight></codeline>
+<codeline lineno="899" refid="class_map_update_async_context_1ae41be6a8a4aa779d0189515bdaede65e" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1ae41be6a8a4aa779d0189515bdaede65e" kindref="member">MapUpdateAsyncContext::IsMessage</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="900"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>message;</highlight></codeline>
+<codeline lineno="901"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="902"><highlight class="normal"></highlight></codeline>
+<codeline lineno="903" refid="class_map_update_async_context_1a46f4bf5a0c896f80cfe485f153a4ef25" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1a46f4bf5a0c896f80cfe485f153a4ef25" kindref="member">MapUpdateAsyncContext::IsActive</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="904"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_map_update_async_context_1a19433aa2a44d51fdf503faa96f20b897" kindref="member">GetAsyncOp</ref>().<ref refid="class_async_op_1a3d65d393ff06aa398504d251e28a2ddf" kindref="member">IsActive</ref>();</highlight></codeline>
+<codeline lineno="905"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="906"><highlight class="normal"></highlight></codeline>
+<codeline lineno="907"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;Game_Map::Caching::ObservedVarOps<sp/>Op&gt;</highlight></codeline>
+<codeline lineno="908" refid="class_game___map_1_1_caching_1_1_map_cache_1ade63591a5190eddd9fe2c3a628cb24eb" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___map_1_1_caching_1_1_map_cache_1ade63591a5190eddd9fe2c3a628cb24eb" kindref="member">Game_Map::Caching::MapCache::AddEventAsRefreshTarget</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Event&amp;<sp/>ev)<sp/>{</highlight></codeline>
+<codeline lineno="909"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static_assert</highlight><highlight class="normal">(</highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(Op)<sp/>&gt;=<sp/>0<sp/>&amp;&amp;<sp/>Op<sp/>&lt;<sp/><ref refid="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2aa8afcb4c2dad78ff09125effab787870" kindref="member">ObservedVarOps_END</ref>);</highlight></codeline>
+<codeline lineno="910"><highlight class="normal"></highlight></codeline>
+<codeline lineno="911"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>events_cache<sp/>=<sp/>refresh_targets_by_varid[</highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(Op)];</highlight></codeline>
+<codeline lineno="912"><highlight class="normal"><sp/><sp/><sp/><sp/>events_cache[var_id].AddEvent(ev);</highlight></codeline>
+<codeline lineno="913"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="914"><highlight class="normal"></highlight></codeline>
+<codeline lineno="915"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;Game_Map::Caching::ObservedVarOps<sp/>Op&gt;</highlight></codeline>
+<codeline lineno="916" refid="class_game___map_1_1_caching_1_1_map_cache_1a2ec1a504f2969002519931139042e331" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___map_1_1_caching_1_1_map_cache_1a2ec1a504f2969002519931139042e331" kindref="member">Game_Map::Caching::MapCache::RemoveEventAsRefreshTarget</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Event&amp;<sp/>ev)<sp/>{</highlight></codeline>
+<codeline lineno="917"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static_assert</highlight><highlight class="normal">(</highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(Op)<sp/>&gt;=<sp/>0<sp/>&amp;&amp;<sp/>Op<sp/>&lt;<sp/><ref refid="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2aa8afcb4c2dad78ff09125effab787870" kindref="member">ObservedVarOps_END</ref>);</highlight></codeline>
+<codeline lineno="918"><highlight class="normal"></highlight></codeline>
+<codeline lineno="919"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>events_cache<sp/>=<sp/>refresh_targets_by_varid[</highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(Op)];</highlight></codeline>
+<codeline lineno="920"><highlight class="normal"><sp/><sp/><sp/><sp/>events_cache[var_id].RemoveEvent(ev);</highlight></codeline>
+<codeline lineno="921"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="922"><highlight class="normal"></highlight></codeline>
+<codeline lineno="923"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;Game_Map::Caching::ObservedVarOps<sp/>Op&gt;</highlight></codeline>
+<codeline lineno="924" refid="class_game___map_1_1_caching_1_1_map_cache_1acbbe9b403488a664f1faaa98c991a9b4" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___map_1_1_caching_1_1_map_cache_1acbbe9b403488a664f1faaa98c991a9b4" kindref="member">Game_Map::Caching::MapCache::GetNeedRefresh</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="925"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static_assert</highlight><highlight class="normal">(</highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(Op)<sp/>&gt;=<sp/>0<sp/>&amp;&amp;<sp/>Op<sp/>&lt;<sp/><ref refid="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2aa8afcb4c2dad78ff09125effab787870" kindref="member">ObservedVarOps_END</ref>);</highlight></codeline>
+<codeline lineno="926"><highlight class="normal"></highlight></codeline>
+<codeline lineno="927"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>events_cache<sp/>=<sp/>refresh_targets_by_varid[</highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(Op)];</highlight></codeline>
+<codeline lineno="928"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>events_cache.find(var_id)<sp/>!=<sp/>events_cache.end();</highlight></codeline>
+<codeline lineno="929"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="930"><highlight class="normal"></highlight></codeline>
+<codeline lineno="931"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="932"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="game_map.h"/>
+  </compounddef>
+</doxygen>

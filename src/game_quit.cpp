@@ -65,3 +65,4 @@ void Game_Quit::Reset() {
 	window.SetVisible(false);
 	time_left = DEFAULT_FPS * num_seconds;
 }
+

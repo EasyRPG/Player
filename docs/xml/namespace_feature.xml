@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_feature" kind="namespace" language="C++">
+    <compoundname>Feature</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_feature_1a245917955c43084f997fbfd486d4cf6c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Feature::HasRpg2kBattleSystem</definition>
+        <argsstring>()</argsstring>
+        <name>HasRpg2kBattleSystem</name>
+        <qualifiedname>Feature::HasRpg2kBattleSystem</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if the RPG Maker 2000 battle system is used </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="feature.h" line="29" column="6" bodyfile="feature.cpp" bodystart="24" bodyend="35" declfile="feature.h" declline="29" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_feature_1a480f9fee772806a85cd44a90ca7e7c3b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Feature::HasRpg2k3BattleSystem</definition>
+        <argsstring>()</argsstring>
+        <name>HasRpg2k3BattleSystem</name>
+        <qualifiedname>Feature::HasRpg2k3BattleSystem</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if the RPG Maker 2003 battle system is used </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="feature.h" line="34" column="6" bodyfile="feature.cpp" bodystart="37" bodyend="39" declfile="feature.h" declline="34" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_feature_1a17789cf0a5735503389c6bf43c74e1dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Feature::HasRow</definition>
+        <argsstring>()</argsstring>
+        <name>HasRow</name>
+        <qualifiedname>Feature::HasRow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if the row feature is enabled </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="feature.h" line="39" column="6" bodyfile="feature.cpp" bodystart="41" bodyend="47" declfile="feature.h" declline="39" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_feature_1a6b64992538281a97892c0e2917e21128" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Feature::HasPlaceholders</definition>
+        <argsstring>()</argsstring>
+        <name>HasPlaceholders</name>
+        <qualifiedname>Feature::HasPlaceholders</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if text placeholders are used </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="feature.h" line="44" column="6" bodyfile="feature.cpp" bodystart="49" bodyend="55" declfile="feature.h" declline="44" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_feature_1aa304552268a3613ae08141351d3539b7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Feature::HasFixedActorFacingDirection</definition>
+        <argsstring>()</argsstring>
+        <name>HasFixedActorFacingDirection</name>
+        <qualifiedname>Feature::HasFixedActorFacingDirection</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if fixed actor facing direction is used </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="feature.h" line="49" column="6" bodyfile="feature.cpp" bodystart="57" bodyend="59" declfile="feature.h" declline="49" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_feature_1ab5d44c3115cfdf6ec26cdff718da4d98" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Feature::HasFixedEnemyFacingDirection</definition>
+        <argsstring>()</argsstring>
+        <name>HasFixedEnemyFacingDirection</name>
+        <qualifiedname>Feature::HasFixedEnemyFacingDirection</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if fixed enemy facing direction is used </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="feature.h" line="54" column="6" bodyfile="feature.cpp" bodystart="61" bodyend="63" declfile="feature.h" declline="54" declcolumn="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="namespace_feature" kindref="compound">Feature</ref> namespace. </para>
+    </detaileddescription>
+    <location file="feature.h" line="25" column="1"/>
+  </compounddef>
+</doxygen>

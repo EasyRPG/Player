@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_397d9aeee4af8edecac90968d93b57df" kind="dir">
+    <compoundname>external</compoundname>
+    <innerfile refid="dr__wav_8h">dr_wav.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="external/"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_opacity" kind="struct" language="C++" prot="public">
+    <compoundname>Opacity</compoundname>
+    <includes refid="opacity_8h" local="no">opacity.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_opacity_1a23cdb002f022308c3cc145f8ccb7c16b" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Opacity::top</definition>
+        <argsstring></argsstring>
+        <name>top</name>
+        <qualifiedname>Opacity::top</qualifiedname>
+        <initializer>= 255</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="31" column="5" bodyfile="opacity.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_opacity_1add8ec7713e4a747021b69cac43242de7" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Opacity::bottom</definition>
+        <argsstring></argsstring>
+        <name>bottom</name>
+        <qualifiedname>Opacity::bottom</qualifiedname>
+        <initializer>= 255</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="32" column="5" bodyfile="opacity.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_opacity_1abff0b593129cc1bfdea6d31018a8281f" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Opacity::split</definition>
+        <argsstring></argsstring>
+        <name>split</name>
+        <qualifiedname>Opacity::split</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="33" column="5" bodyfile="opacity.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="struct_opacity_1ac5b02f85f47672fcd1662125ef760c3a" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="struct_opacity" kindref="compound">Opacity</ref></type>
+        <definition>static constexpr Opacity Opacity::Opaque</definition>
+        <argsstring>()</argsstring>
+        <name>Opaque</name>
+        <qualifiedname>Opacity::Opaque</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="29" column="26" bodyfile="opacity.h" bodystart="29" bodyend="29"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_opacity_1a5fe60ee7727fc11963287fc55f572f01" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>Opacity::Opacity</definition>
+        <argsstring>()=default</argsstring>
+        <name>Opacity</name>
+        <qualifiedname>Opacity::Opacity</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="35" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_opacity_1ac05fc04446341f456922e0c8cdf68f20" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>Opacity::Opacity</definition>
+        <argsstring>(int opacity)</argsstring>
+        <name>Opacity</name>
+        <qualifiedname>Opacity::Opacity</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>opacity</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="37" column="11" bodyfile="opacity.h" bodystart="37" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_opacity_1a72a61075b8a02baf01931212bd18c5c2" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>Opacity::Opacity</definition>
+        <argsstring>(int top_opacity, int bottom_opacity, int split)</argsstring>
+        <name>Opacity</name>
+        <qualifiedname>Opacity::Opacity</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>top_opacity</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>bottom_opacity</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>split</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="40" column="11" bodyfile="opacity.h" bodystart="40" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_opacity_1a301fd0d0f441336efe1a7fe73d49f268" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Opacity::Value</definition>
+        <argsstring>() const</argsstring>
+        <name>Value</name>
+        <qualifiedname>Opacity::Value</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="43" column="5" bodyfile="opacity.h" bodystart="43" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_opacity_1a9059281ec23514fe0823629b5df4ecd8" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Opacity::IsSplit</definition>
+        <argsstring>() const</argsstring>
+        <name>IsSplit</name>
+        <qualifiedname>Opacity::IsSplit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="48" column="16" bodyfile="opacity.h" bodystart="48" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_opacity_1af01dc1a949fa018aeb95186e185759a2" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Opacity::IsTransparent</definition>
+        <argsstring>() const</argsstring>
+        <name>IsTransparent</name>
+        <qualifiedname>Opacity::IsTransparent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="52" column="16" bodyfile="opacity.h" bodystart="52" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_opacity_1af885d0f1f2eb8f93c4a819b47def0976" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Opacity::IsOpaque</definition>
+        <argsstring>() const</argsstring>
+        <name>IsOpaque</name>
+        <qualifiedname>Opacity::IsOpaque</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="opacity.h" line="56" column="16" bodyfile="opacity.h" bodystart="56" bodyend="58"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="struct_opacity" kindref="compound">Opacity</ref> class. </para>
+    </detaileddescription>
+    <location file="opacity.h" line="28" column="1" bodyfile="opacity.h" bodystart="28" bodyend="61"/>
+    <listofallmembers>
+      <member refid="struct_opacity_1add8ec7713e4a747021b69cac43242de7" prot="public" virt="non-virtual"><scope>Opacity</scope><name>bottom</name></member>
+      <member refid="struct_opacity_1af885d0f1f2eb8f93c4a819b47def0976" prot="public" virt="non-virtual"><scope>Opacity</scope><name>IsOpaque</name></member>
+      <member refid="struct_opacity_1a9059281ec23514fe0823629b5df4ecd8" prot="public" virt="non-virtual"><scope>Opacity</scope><name>IsSplit</name></member>
+      <member refid="struct_opacity_1af01dc1a949fa018aeb95186e185759a2" prot="public" virt="non-virtual"><scope>Opacity</scope><name>IsTransparent</name></member>
+      <member refid="struct_opacity_1a5fe60ee7727fc11963287fc55f572f01" prot="public" virt="non-virtual"><scope>Opacity</scope><name>Opacity</name></member>
+      <member refid="struct_opacity_1ac05fc04446341f456922e0c8cdf68f20" prot="public" virt="non-virtual"><scope>Opacity</scope><name>Opacity</name></member>
+      <member refid="struct_opacity_1a72a61075b8a02baf01931212bd18c5c2" prot="public" virt="non-virtual"><scope>Opacity</scope><name>Opacity</name></member>
+      <member refid="struct_opacity_1ac5b02f85f47672fcd1662125ef760c3a" prot="public" virt="non-virtual"><scope>Opacity</scope><name>Opaque</name></member>
+      <member refid="struct_opacity_1abff0b593129cc1bfdea6d31018a8281f" prot="public" virt="non-virtual"><scope>Opacity</scope><name>split</name></member>
+      <member refid="struct_opacity_1a23cdb002f022308c3cc145f8ccb7c16b" prot="public" virt="non-virtual"><scope>Opacity</scope><name>top</name></member>
+      <member refid="struct_opacity_1a301fd0d0f441336efe1a7fe73d49f268" prot="public" virt="non-virtual"><scope>Opacity</scope><name>Value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -430,3 +430,4 @@ Game_Ineluki::CheatItem::CheatItem(const std::string& code, int value) : value(v
 		}
 	}
 }
+

@@ -76,3 +76,4 @@ constexpr Color MakeColor(int r, int g, int b, double current_level) {
 } //namespace Flash
 
 #endif
+

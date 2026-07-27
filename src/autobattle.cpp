@@ -373,3 +373,4 @@ void SelectAutoBattleAction(Game_Actor& source,
 }
 
 } // namespace AutoBattle
+

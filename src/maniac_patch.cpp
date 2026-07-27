@@ -941,3 +941,4 @@ std::string_view ManiacPatch::GetLcfDescription(int data_type, int id, bool is_d
 	Output::Warning("GetLcfDescription: Unsupported data_type {} {}", data_type, id);
 	return {};
 }
+

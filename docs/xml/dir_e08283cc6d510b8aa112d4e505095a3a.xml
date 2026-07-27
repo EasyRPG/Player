@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_e08283cc6d510b8aa112d4e505095a3a" kind="dir">
+    <compoundname>platform/windows</compoundname>
+    <innerfile refid="midiout__device__win32_8cpp">midiout_device_win32.cpp</innerfile>
+    <innerfile refid="midiout__device__win32_8h">midiout_device_win32.h</innerfile>
+    <innerfile refid="platform_2windows_2utils_8cpp">utils.cpp</innerfile>
+    <innerfile refid="platform_2windows_2utils_8h">utils.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/windows/"/>
+  </compounddef>
+</doxygen>

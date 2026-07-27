@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap" kind="struct" language="C++" prot="public">
+    <compoundname>FileExtGuesser::RPG2KFileExtRemap</compoundname>
+    <includes refid="fileext__guesser_8h" local="no">fileext_guesser.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a34c067b238249242d74560c58792b1ce" prot="public" static="no" mutable="no">
+        <type>std::unordered_map&lt; std::string, std::string &gt;</type>
+        <definition>std::unordered_map&lt;std::string, std::string&gt; FileExtGuesser::RPG2KFileExtRemap::extMap</definition>
+        <argsstring></argsstring>
+        <name>extMap</name>
+        <qualifiedname>FileExtGuesser::RPG2KFileExtRemap::extMap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fileext_guesser.h" line="47" column="20" bodyfile="fileext_guesser.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a29489fb0acf8fdeb3a1c204ad69fe45c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string FileExtGuesser::RPG2KFileExtRemap::MakeFilename</definition>
+        <argsstring>(std::string_view prefix, std::string_view suffix)</argsstring>
+        <name>MakeFilename</name>
+        <qualifiedname>FileExtGuesser::RPG2KFileExtRemap::MakeFilename</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>prefix</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>suffix</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Construct a filename from a given prefix and suffix. Performs extension substitution based on the values stored in extMap</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>prefix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The prefix (e.g., &apos;Map0001&apos;) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>suffix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The suffix (e.g., &apos;lmu&apos;) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The joined filename (e.g., &apos;Map0001.lmu&apos;, OR &apos;Map0001.xyz&apos;) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="fileext_guesser.h" line="45" column="13" bodyfile="fileext_guesser.cpp" bodystart="151" bodyend="163"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="fileext_guesser.h" line="36" column="1" bodyfile="fileext_guesser.h" bodystart="36" bodyend="48"/>
+    <listofallmembers>
+      <member refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a34c067b238249242d74560c58792b1ce" prot="public" virt="non-virtual"><scope>FileExtGuesser::RPG2KFileExtRemap</scope><name>extMap</name></member>
+      <member refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap_1a29489fb0acf8fdeb3a1c204ad69fe45c" prot="public" virt="non-virtual"><scope>FileExtGuesser::RPG2KFileExtRemap</scope><name>MakeFilename</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1metadata_1_1_array" kind="class" language="C++" prot="public">
+    <compoundname>leasy::metadata::Array</compoundname>
+    <includes refid="object_8hpp" local="no">object.hpp</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classleasy_1_1metadata_1_1_array_1a34e013701f25b6a91c7e7e1592166034" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; std::shared_ptr&lt; <ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref> &gt; &gt;</type>
+        <definition>std::vector&lt;std::shared_ptr&lt;Object&gt; &gt; leasy::metadata::Array::values_</definition>
+        <argsstring></argsstring>
+        <name>values_</name>
+        <qualifiedname>leasy::metadata::Array::values_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/object.hpp" line="44" column="17" bodyfile="leasy/metadata/object.hpp" bodystart="44" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_array_1a109e494ff03bd3151cdbbe11475d55ac" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::metadata::Array::Array</definition>
+        <argsstring>()</argsstring>
+        <name>Array</name>
+        <qualifiedname>leasy::metadata::Array::Array</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/object.hpp" line="47" column="12" bodyfile="leasy/metadata/object.hpp" bodystart="47" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_array_1a263b91723cf1291283a97f4ea8c358f1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::metadata::Array::Array</definition>
+        <argsstring>(const std::vector&lt; Object &gt; &amp;)</argsstring>
+        <name>Array</name>
+        <qualifiedname>leasy::metadata::Array::Array</qualifiedname>
+        <param>
+          <type>const std::vector&lt; <ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref> &gt; &amp;</type>
+          <defname>objs</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/object.hpp" line="48" column="12" bodyfile="leasy/metadata/object.hpp" bodystart="76" bodyend="80"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_array_1a36d8c3b86fa22c4dd1f7a346f305ccb8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref> &gt;</type>
+        <definition>std::vector&lt; Object &gt; leasy::metadata::Array::values</definition>
+        <argsstring>() const</argsstring>
+        <name>values</name>
+        <qualifiedname>leasy::metadata::Array::values</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/object.hpp" line="49" column="24" bodyfile="leasy/metadata/object.hpp" bodystart="82" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_array_1a1571f65f0177af8eed93e43433af07b7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classleasy_1_1metadata_1_1_array_1a109e494ff03bd3151cdbbe11475d55ac" kindref="member">Array</ref> &amp;</type>
+        <definition>Array &amp; leasy::metadata::Array::add</definition>
+        <argsstring>(const Object &amp;)</argsstring>
+        <name>add</name>
+        <qualifiedname>leasy::metadata::Array::add</qualifiedname>
+        <param>
+          <type>const <ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref> &amp;</type>
+          <defname>val</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/object.hpp" line="50" column="18" bodyfile="leasy/metadata/object.hpp" bodystart="93" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_array_1aaa8cdff4315f8e40077f2237cb8ffc22" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref> &amp;</type>
+        <definition>Object &amp; leasy::metadata::Array::operator[]</definition>
+        <argsstring>(size_t pos)</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>leasy::metadata::Array::operator[]</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>pos</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/object.hpp" line="51" column="19" bodyfile="leasy/metadata/object.hpp" bodystart="98" bodyend="101"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1_array_1af99a8b6284ca38c8c96af03feea6737b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref> &amp;</type>
+        <definition>const Object &amp; leasy::metadata::Array::operator[]</definition>
+        <argsstring>(size_t pos) const</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>leasy::metadata::Array::operator[]</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>pos</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/object.hpp" line="52" column="18" bodyfile="leasy/metadata/object.hpp" bodystart="103" bodyend="105"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/metadata/object.hpp" line="42" column="3" bodyfile="leasy/metadata/object.hpp" bodystart="42" bodyend="53"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1metadata_1_1_array_1a1571f65f0177af8eed93e43433af07b7" prot="public" virt="non-virtual"><scope>leasy::metadata::Array</scope><name>add</name></member>
+      <member refid="classleasy_1_1metadata_1_1_array_1a109e494ff03bd3151cdbbe11475d55ac" prot="public" virt="non-virtual"><scope>leasy::metadata::Array</scope><name>Array</name></member>
+      <member refid="classleasy_1_1metadata_1_1_array_1a263b91723cf1291283a97f4ea8c358f1" prot="public" virt="non-virtual"><scope>leasy::metadata::Array</scope><name>Array</name></member>
+      <member refid="classleasy_1_1metadata_1_1_array_1aaa8cdff4315f8e40077f2237cb8ffc22" prot="public" virt="non-virtual"><scope>leasy::metadata::Array</scope><name>operator[]</name></member>
+      <member refid="classleasy_1_1metadata_1_1_array_1af99a8b6284ca38c8c96af03feea6737b" prot="public" virt="non-virtual"><scope>leasy::metadata::Array</scope><name>operator[]</name></member>
+      <member refid="classleasy_1_1metadata_1_1_array_1a36d8c3b86fa22c4dd1f7a346f305ccb8" prot="public" virt="non-virtual"><scope>leasy::metadata::Array</scope><name>values</name></member>
+      <member refid="classleasy_1_1metadata_1_1_array_1a34e013701f25b6a91c7e7e1592166034" prot="protected" virt="non-virtual"><scope>leasy::metadata::Array</scope><name>values_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

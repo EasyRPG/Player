@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_rand64" kind="struct" language="C++" prot="public">
+    <compoundname>Rand64</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_rand64_1a645866c25bd7600fbe2a12e1a99cca98" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" kindref="member">l_uint32</ref></type>
+        <definition>l_uint32 Rand64::h</definition>
+        <argsstring></argsstring>
+        <name>h</name>
+        <qualifiedname>Rand64::h</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmathlib.c" line="401" column="12" bodyfile="leasy/lua/lmathlib.c" bodystart="401" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_rand64_1ac3416b035623f05c2d8bddf86175fa6c" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1abeb00a444eb1dc99a4a2baee15bd898a" kindref="member">l_uint32</ref></type>
+        <definition>l_uint32 Rand64::l</definition>
+        <argsstring></argsstring>
+        <name>l</name>
+        <qualifiedname>Rand64::l</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lmathlib.c" line="402" column="12" bodyfile="leasy/lua/lmathlib.c" bodystart="402" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/lua/lmathlib.c" line="400" column="1" bodyfile="leasy/lua/lmathlib.c" bodystart="400" bodyend="403"/>
+    <listofallmembers>
+      <member refid="struct_rand64_1a645866c25bd7600fbe2a12e1a99cca98" prot="public" virt="non-virtual"><scope>Rand64</scope><name>h</name></member>
+      <member refid="struct_rand64_1ac3416b035623f05c2d8bddf86175fa6c" prot="public" virt="non-virtual"><scope>Rand64</scope><name>l</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

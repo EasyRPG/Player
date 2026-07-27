@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_game___map_1_1_caching" kind="namespace" language="C++">
+    <compoundname>Game_Map::Caching</compoundname>
+    <innerclass refid="class_game___map_1_1_caching_1_1_map_event_cache" prot="public">Game_Map::Caching::MapEventCache</innerclass>
+    <innerclass refid="class_game___map_1_1_caching_1_1_map_cache" prot="public">Game_Map::Caching::MapCache</innerclass>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2" prot="public" static="no" strong="no">
+        <type></type>
+        <name>ObservedVarOps</name>
+        <qualifiedname>Game_Map::Caching::ObservedVarOps</qualifiedname>
+        <enumvalue id="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2aebfda7f2d7bb1b9391e1ebb8c3367a19" prot="public">
+          <name>SwitchSet</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2aced951152185aefed2e74b258752348a" prot="public">
+          <name>VarSet</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2aa8afcb4c2dad78ff09125effab787870" prot="public">
+          <name>ObservedVarOps_END</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="728" column="1" bodyfile="game_map.h" bodystart="728" bodyend="733"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespace_game___map_1_1_caching_1afa392799bae1f4c3f9193ebeb582eb53" prot="public" static="no">
+        <type>std::unordered_map&lt; int, <ref refid="class_game___map_1_1_caching_1_1_map_event_cache" kindref="compound">MapEventCache</ref> &gt;</type>
+        <definition>using Game_Map::Caching::MapEventCacheData_t = std::unordered_map&lt;int, MapEventCache&gt;</definition>
+        <argsstring></argsstring>
+        <name>MapEventCacheData_t</name>
+        <qualifiedname>Game_Map::Caching::MapEventCacheData_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="726" column="1" bodyfile="game_map.h" bodystart="726" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_map.h" line="716" column="1"/>
+  </compounddef>
+</doxygen>

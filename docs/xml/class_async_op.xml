@@ -1,0 +1,871 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_async_op" kind="class" language="C++" prot="public">
+    <compoundname>AsyncOp</compoundname>
+    <includes refid="async__op_8h" local="no">async_op.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_async_op_1a084fe9a30b6eb75c27840074466139f4" prot="public" static="no" strong="no">
+        <type></type>
+        <name>Type</name>
+        <qualifiedname>AsyncOp::Type</qualifiedname>
+        <enumvalue id="class_async_op_1a084fe9a30b6eb75c27840074466139f4ae8b5ea825dcf322f368ecbd1aa359ce4" prot="public">
+          <name>eNone</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_async_op_1a084fe9a30b6eb75c27840074466139f4ad8d6ef2d8d62faf1316a857ec91bf4d1" prot="public">
+          <name>eShowScreen</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_async_op_1a084fe9a30b6eb75c27840074466139f4a51ee4d465fa0b8040b6232bc88ddca8e" prot="public">
+          <name>eEraseScreen</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_async_op_1a084fe9a30b6eb75c27840074466139f4aec22158bec4828b81d1bd07a4ff3733a" prot="public">
+          <name>eCallInn</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_async_op_1a084fe9a30b6eb75c27840074466139f4a9df9c4a503c610a5723afc4128372586" prot="public">
+          <name>eQuickTeleport</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_async_op_1a084fe9a30b6eb75c27840074466139f4a216ee9a1e4a717decbce5e4a899a0722" prot="public">
+          <name>eToTitle</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_async_op_1a084fe9a30b6eb75c27840074466139f4a82a12ef353cd857e9d11da4fc95bb391" prot="public">
+          <name>eExitGame</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_async_op_1a084fe9a30b6eb75c27840074466139f4a340a4e28a8f98fa0f0b4d92844e61ad1" prot="public">
+          <name>eTerminateBattle</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_async_op_1a084fe9a30b6eb75c27840074466139f4a446bd2663acf34f407867641c30d23ee" prot="public">
+          <name>eSave</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_async_op_1a084fe9a30b6eb75c27840074466139f4a7901a9d9c9e897e6f0bbc2adc7b27e60" prot="public">
+          <name>eLoad</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_async_op_1a084fe9a30b6eb75c27840074466139f4a8f55ca131d66c46aa61c1ec661c07f5f" prot="public">
+          <name>eYield</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_async_op_1a084fe9a30b6eb75c27840074466139f4ab49625162ccd9c43421303745d1811db" prot="public">
+          <name>eYieldRepeat</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_async_op_1a084fe9a30b6eb75c27840074466139f4a3293c4c7db4aa6e4ce89faab0afcb011" prot="public">
+          <name>eCloneMapEvent</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_async_op_1a084fe9a30b6eb75c27840074466139f4ac0b87596ccd73081dcd2962090b1ad95" prot="public">
+          <name>eDestroyMapEvent</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The different types of async operations </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="36" column="1" bodyfile="async_op.h" bodystart="36" bodyend="51"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_async_op_1a84018dcecf3e33494cb257ec9dbb40fc" prot="private" static="no" mutable="no">
+        <type><ref refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4" kindref="member">Type</ref></type>
+        <definition>Type AsyncOp::_type</definition>
+        <argsstring></argsstring>
+        <name>_type</name>
+        <qualifiedname>AsyncOp::_type</qualifiedname>
+        <initializer>= <ref refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4ae8b5ea825dcf322f368ecbd1aa359ce4" kindref="member">eNone</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="179" column="6" bodyfile="async_op.h" bodystart="179" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_async_op_1a15a25f8e0ea9c455455039a972b662db" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int AsyncOp::_args[5]</definition>
+        <argsstring>[5]</argsstring>
+        <name>_args</name>
+        <qualifiedname>AsyncOp::_args</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="180" column="5" bodyfile="async_op.h" bodystart="180" bodyend="180"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_async_op_1abef5d8cdea947b4db6a5eb1ea200761e" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string AsyncOp::_str_arg</definition>
+        <argsstring></argsstring>
+        <name>_str_arg</name>
+        <qualifiedname>AsyncOp::_str_arg</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="181" column="13" bodyfile="async_op.h" bodystart="181" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_async_op_1a6f3c939e1c9d9b685489b710e9581785" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AsyncOp::AsyncOp</definition>
+        <argsstring>()=default</argsstring>
+        <name>AsyncOp</name>
+        <qualifiedname>AsyncOp::AsyncOp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="53" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a3e4de6e02fcc52ea49be6ef96ec0d978" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4" kindref="member">Type</ref></type>
+        <definition>AsyncOp::Type AsyncOp::GetType</definition>
+        <argsstring>() const</argsstring>
+        <name>GetType</name>
+        <qualifiedname>AsyncOp::GetType</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the type of async operation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="95" column="6" bodyfile="async_op.h" bodystart="190" bodyend="192"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a3d65d393ff06aa398504d251e28a2ddf" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool AsyncOp::IsActive</definition>
+        <argsstring>() const</argsstring>
+        <name>IsActive</name>
+        <qualifiedname>AsyncOp::IsActive</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if this <ref refid="class_async_op" kindref="compound">AsyncOp</ref> is active </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="98" column="6" bodyfile="async_op.h" bodystart="194" bodyend="196"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a9a53ad7014a3f46c27006032ffd641e4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int AsyncOp::GetTransitionType</definition>
+        <argsstring>() const</argsstring>
+        <name>GetTransitionType</name>
+        <qualifiedname>AsyncOp::GetTransitionType</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the type of screen transition to perform </para>
+</simplesect>
+<simplesect kind="pre"><para>If <ref refid="class_async_op_1a3e4de6e02fcc52ea49be6ef96ec0d978" kindref="member">GetType()</ref> is not eShowScreen or eEraseScreen, the return value is undefined. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="104" column="5" bodyfile="async_op.h" bodystart="198" bodyend="201"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a97e1b9f0177630d127481fa17d686726" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int AsyncOp::GetTeleportMapId</definition>
+        <argsstring>() const</argsstring>
+        <name>GetTeleportMapId</name>
+        <qualifiedname>AsyncOp::GetTeleportMapId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the map id to teleport to </para>
+</simplesect>
+<simplesect kind="pre"><para>If <ref refid="class_async_op_1a3e4de6e02fcc52ea49be6ef96ec0d978" kindref="member">GetType()</ref> is not eQuickTeleport, the return value is undefined. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="110" column="5" bodyfile="async_op.h" bodystart="203" bodyend="206"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a3b4bbf5116a851ed367a7d3173eb3dc8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int AsyncOp::GetTeleportX</definition>
+        <argsstring>() const</argsstring>
+        <name>GetTeleportX</name>
+        <qualifiedname>AsyncOp::GetTeleportX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the x coordinate to teleport to </para>
+</simplesect>
+<simplesect kind="pre"><para>If <ref refid="class_async_op_1a3e4de6e02fcc52ea49be6ef96ec0d978" kindref="member">GetType()</ref> is not eQuickTeleport, the return value is undefined. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="116" column="5" bodyfile="async_op.h" bodystart="208" bodyend="211"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a00a5bc6f4ad769aa23d17fa2c3d49556" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int AsyncOp::GetTeleportY</definition>
+        <argsstring>() const</argsstring>
+        <name>GetTeleportY</name>
+        <qualifiedname>AsyncOp::GetTeleportY</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the y coordinate teleport to </para>
+</simplesect>
+<simplesect kind="pre"><para>If <ref refid="class_async_op_1a3e4de6e02fcc52ea49be6ef96ec0d978" kindref="member">GetType()</ref> is not eQuickTeleport, the return value is undefined. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="122" column="5" bodyfile="async_op.h" bodystart="213" bodyend="216"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a3e02b873dc646e66b18ab423b7cbe002" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int AsyncOp::GetBattleResult</definition>
+        <argsstring>() const</argsstring>
+        <name>GetBattleResult</name>
+        <qualifiedname>AsyncOp::GetBattleResult</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the desired result of the battle to terminate. </para>
+</simplesect>
+<simplesect kind="pre"><para>If <ref refid="class_async_op_1a3e4de6e02fcc52ea49be6ef96ec0d978" kindref="member">GetType()</ref> is not eTerminateBattle, the return value is undefined. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="128" column="5" bodyfile="async_op.h" bodystart="218" bodyend="221"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1aa9ea1a22806cdeaf3b275f11dc03e9cb" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int AsyncOp::GetSaveSlot</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSaveSlot</name>
+        <qualifiedname>AsyncOp::GetSaveSlot</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the desired slot to save or load </para>
+</simplesect>
+<simplesect kind="pre"><para>If <ref refid="class_async_op_1a3e4de6e02fcc52ea49be6ef96ec0d978" kindref="member">GetType()</ref> is not eSave or eLoad, the return value is undefined. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="134" column="6" bodyfile="async_op.h" bodystart="223" bodyend="226"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1abc3a48dd873b03e6baf66b8b3cd8b3e9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int AsyncOp::GetSaveResultVar</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSaveResultVar</name>
+        <qualifiedname>AsyncOp::GetSaveResultVar</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the variable to set to 1 when the save was a success. </para>
+</simplesect>
+<simplesect kind="pre"><para>If <ref refid="class_async_op_1a3e4de6e02fcc52ea49be6ef96ec0d978" kindref="member">GetType()</ref> is not eSave, the return value is undefined. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="140" column="5" bodyfile="async_op.h" bodystart="228" bodyend="231"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a5d7c400aeb1b9e09d08abacd454f544b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int AsyncOp::GetSourceEventId</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSourceEventId</name>
+        <qualifiedname>AsyncOp::GetSourceEventId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the event id of the event being cloned </para>
+</simplesect>
+<simplesect kind="pre"><para>If <ref refid="class_async_op_1a3e4de6e02fcc52ea49be6ef96ec0d978" kindref="member">GetType()</ref> is not eCloneMapEvent, the return value is undefined. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="146" column="5" bodyfile="async_op.h" bodystart="233" bodyend="236"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1adda0cead1f1deb08c5bd20a708782e03" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int AsyncOp::GetTargetEventId</definition>
+        <argsstring>() const</argsstring>
+        <name>GetTargetEventId</name>
+        <qualifiedname>AsyncOp::GetTargetEventId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the event id of the event being created </para>
+</simplesect>
+<simplesect kind="pre"><para>If <ref refid="class_async_op_1a3e4de6e02fcc52ea49be6ef96ec0d978" kindref="member">GetType()</ref> is not eCloneMapEvent or eDestroyMapEvent, the return value is undefined. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="152" column="5" bodyfile="async_op.h" bodystart="238" bodyend="241"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a24fee40c1f669bea4bc905a0f1bda259" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int AsyncOp::GetMapId</definition>
+        <argsstring>() const</argsstring>
+        <name>GetMapId</name>
+        <qualifiedname>AsyncOp::GetMapId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the map id where the event is cloned from </para>
+</simplesect>
+<simplesect kind="pre"><para>If <ref refid="class_async_op_1a3e4de6e02fcc52ea49be6ef96ec0d978" kindref="member">GetType()</ref> is not eCloneMapEvent, the return value is undefined. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="158" column="5" bodyfile="async_op.h" bodystart="243" bodyend="246"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a13b0739602632c42e35bfc4786b5b6e9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int AsyncOp::GetX</definition>
+        <argsstring>() const</argsstring>
+        <name>GetX</name>
+        <qualifiedname>AsyncOp::GetX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the x coordinate where to spawn the event </para>
+</simplesect>
+<simplesect kind="pre"><para>If <ref refid="class_async_op_1a3e4de6e02fcc52ea49be6ef96ec0d978" kindref="member">GetType()</ref> is not eCloneMapEvent, the return value is undefined. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="164" column="5" bodyfile="async_op.h" bodystart="248" bodyend="251"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a50463196de940a2ccd71a3b2fa0fd404" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int AsyncOp::GetY</definition>
+        <argsstring>() const</argsstring>
+        <name>GetY</name>
+        <qualifiedname>AsyncOp::GetY</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the y coordinate where to spawn the event </para>
+</simplesect>
+<simplesect kind="pre"><para>If <ref refid="class_async_op_1a3e4de6e02fcc52ea49be6ef96ec0d978" kindref="member">GetType()</ref> is not eCloneMapEvent, the return value is undefined. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="170" column="5" bodyfile="async_op.h" bodystart="253" bodyend="256"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a0d90c2be2523bc8f352c61ed096e246e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view AsyncOp::GetEventName</definition>
+        <argsstring>() const</argsstring>
+        <name>GetEventName</name>
+        <qualifiedname>AsyncOp::GetEventName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the new name of the event </para>
+</simplesect>
+<simplesect kind="pre"><para>If <ref refid="class_async_op_1a3e4de6e02fcc52ea49be6ef96ec0d978" kindref="member">GetType()</ref> is not eCloneMapEvent, the return value is undefined. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="176" column="18" bodyfile="async_op.h" bodystart="258" bodyend="261"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_async_op_1a65d29561890d3bf3fca35e721e9d309f" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp AsyncOp::MakeShowScreen</definition>
+        <argsstring>(int transition_type)</argsstring>
+        <name>MakeShowScreen</name>
+        <qualifiedname>AsyncOp::MakeShowScreen</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>transition_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>a ShowScreen async operation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="56" column="16" bodyfile="async_op.h" bodystart="273" bodyend="275"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a63d94b7ebf41704bfa469178bacbc02e" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp AsyncOp::MakeEraseScreen</definition>
+        <argsstring>(int transition_type)</argsstring>
+        <name>MakeEraseScreen</name>
+        <qualifiedname>AsyncOp::MakeEraseScreen</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>transition_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>an EraseScreen async operation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="59" column="16" bodyfile="async_op.h" bodystart="277" bodyend="279"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1ae5fb132acf6289ffc2bf6a662265c246" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp AsyncOp::MakeCallInn</definition>
+        <argsstring>()</argsstring>
+        <name>MakeCallInn</name>
+        <qualifiedname>AsyncOp::MakeCallInn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>a CallInn async operation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="62" column="16" bodyfile="async_op.h" bodystart="281" bodyend="283"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a36e7a6cec542207ee2b90de033e90a1e" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp AsyncOp::MakeQuickTeleport</definition>
+        <argsstring>(int map_id, int x, int y)</argsstring>
+        <name>MakeQuickTeleport</name>
+        <qualifiedname>AsyncOp::MakeQuickTeleport</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>map_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>a QuickTeleport async operation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="65" column="16" bodyfile="async_op.h" bodystart="285" bodyend="287"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1ae46278ae340fb489ea57538515d760ec" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp AsyncOp::MakeToTitle</definition>
+        <argsstring>()</argsstring>
+        <name>MakeToTitle</name>
+        <qualifiedname>AsyncOp::MakeToTitle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>a ToTitle async operation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="68" column="16" bodyfile="async_op.h" bodystart="289" bodyend="291"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a0b8f14a2fa43fcc3558be83846b8fe33" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp AsyncOp::MakeExitGame</definition>
+        <argsstring>()</argsstring>
+        <name>MakeExitGame</name>
+        <qualifiedname>AsyncOp::MakeExitGame</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>an ExitGame async operation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="71" column="16" bodyfile="async_op.h" bodystart="293" bodyend="295"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a42d442b73dc9f17b1a210be30be5bc9e" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp AsyncOp::MakeTerminateBattle</definition>
+        <argsstring>(int result)</argsstring>
+        <name>MakeTerminateBattle</name>
+        <qualifiedname>AsyncOp::MakeTerminateBattle</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>a TerminateBattle async operation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="74" column="16" bodyfile="async_op.h" bodystart="297" bodyend="299"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a9519ac29d673b3740f665aabdaba4d01" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp AsyncOp::MakeSave</definition>
+        <argsstring>(int save_slot, int save_result_var)</argsstring>
+        <name>MakeSave</name>
+        <qualifiedname>AsyncOp::MakeSave</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>save_slot</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>save_result_var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>a Save async operation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="77" column="16" bodyfile="async_op.h" bodystart="301" bodyend="303"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a48d9c5d4c465f9e2a7c1a7b4c1e91f90" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp AsyncOp::MakeLoad</definition>
+        <argsstring>(int save_slot)</argsstring>
+        <name>MakeLoad</name>
+        <qualifiedname>AsyncOp::MakeLoad</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>save_slot</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>a Load async operation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="80" column="16" bodyfile="async_op.h" bodystart="305" bodyend="307"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a03a64eb4207851215ab2f1b2a3f61835" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp AsyncOp::MakeYield</definition>
+        <argsstring>()</argsstring>
+        <name>MakeYield</name>
+        <qualifiedname>AsyncOp::MakeYield</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>a Yield for one frame to e.g. fetch an important asset </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="83" column="16" bodyfile="async_op.h" bodystart="309" bodyend="311"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a7e50a14df83aeec83d246dde51303de7" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp AsyncOp::MakeYieldRepeat</definition>
+        <argsstring>()</argsstring>
+        <name>MakeYieldRepeat</name>
+        <qualifiedname>AsyncOp::MakeYieldRepeat</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>a Yield for one frame and repeat the command to e.g. fetch an important asset </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="86" column="16" bodyfile="async_op.h" bodystart="313" bodyend="315"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a89aed6acf39d242f85e7cade4faba39e" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp AsyncOp::MakeCloneMapEvent</definition>
+        <argsstring>(std::string name, int src_event_id, int target_event_id, int map_id, int x, int y)</argsstring>
+        <name>MakeCloneMapEvent</name>
+        <qualifiedname>AsyncOp::MakeCloneMapEvent</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>src_event_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>target_event_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>map_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>a clone map event async operation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="89" column="16" bodyfile="async_op.h" bodystart="317" bodyend="319"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a71719567d409a7d81f11dc5845c2b654" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp AsyncOp::MakeDestroyMapEvent</definition>
+        <argsstring>(int target_event_id)</argsstring>
+        <name>MakeDestroyMapEvent</name>
+        <qualifiedname>AsyncOp::MakeDestroyMapEvent</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>target_event_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>a destroy map event async operation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="92" column="16" bodyfile="async_op.h" bodystart="321" bodyend="323"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_async_op_1aefbc82bdd77d4b865a8803df688fb927" prot="private" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>AsyncOp::AsyncOp</definition>
+        <argsstring>(Type type, Args &amp;&amp;... args)</argsstring>
+        <name>AsyncOp</name>
+        <qualifiedname>AsyncOp::AsyncOp</qualifiedname>
+        <param>
+          <type><ref refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4" kindref="member">Type</ref></type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="184" column="10" bodyfile="async_op.h" bodystart="264" bodyend="266"/>
+      </memberdef>
+      <memberdef kind="function" id="class_async_op_1a601e54310c69db003a57fb56b1e35302" prot="private" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>AsyncOp::AsyncOp</definition>
+        <argsstring>(Type type, std::string str_arg, Args &amp;&amp;... args)</argsstring>
+        <name>AsyncOp</name>
+        <qualifiedname>AsyncOp::AsyncOp</qualifiedname>
+        <param>
+          <type><ref refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4" kindref="member">Type</ref></type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>str_arg</declname>
+        </param>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_op.h" line="187" column="10" bodyfile="async_op.h" bodystart="269" bodyend="271"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Represents an asynchronous game operation. These are usually created by event interpreters. When an async operation starts, the entire game loop is supposed to suspend, perform the async operation, and then resume from the suspension point. </para>
+    </detaileddescription>
+    <location file="async_op.h" line="33" column="1" bodyfile="async_op.h" bodystart="33" bodyend="188"/>
+    <listofallmembers>
+      <member refid="class_async_op_1a15a25f8e0ea9c455455039a972b662db" prot="private" virt="non-virtual"><scope>AsyncOp</scope><name>_args</name></member>
+      <member refid="class_async_op_1abef5d8cdea947b4db6a5eb1ea200761e" prot="private" virt="non-virtual"><scope>AsyncOp</scope><name>_str_arg</name></member>
+      <member refid="class_async_op_1a84018dcecf3e33494cb257ec9dbb40fc" prot="private" virt="non-virtual"><scope>AsyncOp</scope><name>_type</name></member>
+      <member refid="class_async_op_1a6f3c939e1c9d9b685489b710e9581785" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>AsyncOp</name></member>
+      <member refid="class_async_op_1aefbc82bdd77d4b865a8803df688fb927" prot="private" virt="non-virtual"><scope>AsyncOp</scope><name>AsyncOp</name></member>
+      <member refid="class_async_op_1a601e54310c69db003a57fb56b1e35302" prot="private" virt="non-virtual"><scope>AsyncOp</scope><name>AsyncOp</name></member>
+      <member refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4aec22158bec4828b81d1bd07a4ff3733a" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>eCallInn</name></member>
+      <member refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4a3293c4c7db4aa6e4ce89faab0afcb011" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>eCloneMapEvent</name></member>
+      <member refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4ac0b87596ccd73081dcd2962090b1ad95" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>eDestroyMapEvent</name></member>
+      <member refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4a51ee4d465fa0b8040b6232bc88ddca8e" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>eEraseScreen</name></member>
+      <member refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4a82a12ef353cd857e9d11da4fc95bb391" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>eExitGame</name></member>
+      <member refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4a7901a9d9c9e897e6f0bbc2adc7b27e60" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>eLoad</name></member>
+      <member refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4ae8b5ea825dcf322f368ecbd1aa359ce4" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>eNone</name></member>
+      <member refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4a9df9c4a503c610a5723afc4128372586" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>eQuickTeleport</name></member>
+      <member refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4a446bd2663acf34f407867641c30d23ee" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>eSave</name></member>
+      <member refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4ad8d6ef2d8d62faf1316a857ec91bf4d1" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>eShowScreen</name></member>
+      <member refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4a340a4e28a8f98fa0f0b4d92844e61ad1" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>eTerminateBattle</name></member>
+      <member refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4a216ee9a1e4a717decbce5e4a899a0722" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>eToTitle</name></member>
+      <member refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4a8f55ca131d66c46aa61c1ec661c07f5f" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>eYield</name></member>
+      <member refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4ab49625162ccd9c43421303745d1811db" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>eYieldRepeat</name></member>
+      <member refid="class_async_op_1a3e02b873dc646e66b18ab423b7cbe002" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>GetBattleResult</name></member>
+      <member refid="class_async_op_1a0d90c2be2523bc8f352c61ed096e246e" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>GetEventName</name></member>
+      <member refid="class_async_op_1a24fee40c1f669bea4bc905a0f1bda259" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>GetMapId</name></member>
+      <member refid="class_async_op_1abc3a48dd873b03e6baf66b8b3cd8b3e9" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>GetSaveResultVar</name></member>
+      <member refid="class_async_op_1aa9ea1a22806cdeaf3b275f11dc03e9cb" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>GetSaveSlot</name></member>
+      <member refid="class_async_op_1a5d7c400aeb1b9e09d08abacd454f544b" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>GetSourceEventId</name></member>
+      <member refid="class_async_op_1adda0cead1f1deb08c5bd20a708782e03" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>GetTargetEventId</name></member>
+      <member refid="class_async_op_1a97e1b9f0177630d127481fa17d686726" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>GetTeleportMapId</name></member>
+      <member refid="class_async_op_1a3b4bbf5116a851ed367a7d3173eb3dc8" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>GetTeleportX</name></member>
+      <member refid="class_async_op_1a00a5bc6f4ad769aa23d17fa2c3d49556" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>GetTeleportY</name></member>
+      <member refid="class_async_op_1a9a53ad7014a3f46c27006032ffd641e4" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>GetTransitionType</name></member>
+      <member refid="class_async_op_1a3e4de6e02fcc52ea49be6ef96ec0d978" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>GetType</name></member>
+      <member refid="class_async_op_1a13b0739602632c42e35bfc4786b5b6e9" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>GetX</name></member>
+      <member refid="class_async_op_1a50463196de940a2ccd71a3b2fa0fd404" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>GetY</name></member>
+      <member refid="class_async_op_1a3d65d393ff06aa398504d251e28a2ddf" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>IsActive</name></member>
+      <member refid="class_async_op_1ae5fb132acf6289ffc2bf6a662265c246" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>MakeCallInn</name></member>
+      <member refid="class_async_op_1a89aed6acf39d242f85e7cade4faba39e" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>MakeCloneMapEvent</name></member>
+      <member refid="class_async_op_1a71719567d409a7d81f11dc5845c2b654" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>MakeDestroyMapEvent</name></member>
+      <member refid="class_async_op_1a63d94b7ebf41704bfa469178bacbc02e" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>MakeEraseScreen</name></member>
+      <member refid="class_async_op_1a0b8f14a2fa43fcc3558be83846b8fe33" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>MakeExitGame</name></member>
+      <member refid="class_async_op_1a48d9c5d4c465f9e2a7c1a7b4c1e91f90" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>MakeLoad</name></member>
+      <member refid="class_async_op_1a36e7a6cec542207ee2b90de033e90a1e" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>MakeQuickTeleport</name></member>
+      <member refid="class_async_op_1a9519ac29d673b3740f665aabdaba4d01" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>MakeSave</name></member>
+      <member refid="class_async_op_1a65d29561890d3bf3fca35e721e9d309f" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>MakeShowScreen</name></member>
+      <member refid="class_async_op_1a42d442b73dc9f17b1a210be30be5bc9e" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>MakeTerminateBattle</name></member>
+      <member refid="class_async_op_1ae46278ae340fb489ea57538515d760ec" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>MakeToTitle</name></member>
+      <member refid="class_async_op_1a03a64eb4207851215ab2f1b2a3f61835" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>MakeYield</name></member>
+      <member refid="class_async_op_1a7e50a14df83aeec83d246dde51303de7" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>MakeYieldRepeat</name></member>
+      <member refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4" prot="public" virt="non-virtual"><scope>AsyncOp</scope><name>Type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

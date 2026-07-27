@@ -103,3 +103,4 @@ void Scene_End::CreateHelpWindow() {
 
 	command_window->SetHelpWindow(help_window.get());
 }
+

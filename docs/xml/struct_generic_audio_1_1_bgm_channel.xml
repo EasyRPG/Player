@@ -1,0 +1,318 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_generic_audio_1_1_bgm_channel" kind="struct" language="C++" prot="private">
+    <compoundname>GenericAudio::BgmChannel</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_generic_audio_1_1_bgm_channel_1a92f0208c278da872ce8511f76bdd2546" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int GenericAudio::BgmChannel::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <qualifiedname>GenericAudio::BgmChannel::id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="76" column="5" bodyfile="audio_generic.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_generic_audio_1_1_bgm_channel_1a09fd44b036abe6400eb3658cb15bb186" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_audio_decoder_base" kindref="compound">AudioDecoderBase</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;AudioDecoderBase&gt; GenericAudio::BgmChannel::decoder</definition>
+        <argsstring></argsstring>
+        <name>decoder</name>
+        <qualifiedname>GenericAudio::BgmChannel::decoder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="77" column="17" bodyfile="audio_generic.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_generic_audio_1_1_bgm_channel_1afc79baa0ea9fcebd0a6443b2ffd709ea" prot="public" static="no" mutable="no">
+        <type><ref refid="class_generic_audio" kindref="compound">GenericAudio</ref> *</type>
+        <definition>GenericAudio* GenericAudio::BgmChannel::instance</definition>
+        <argsstring></argsstring>
+        <name>instance</name>
+        <qualifiedname>GenericAudio::BgmChannel::instance</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="78" column="14" bodyfile="audio_generic.h" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_generic_audio_1_1_bgm_channel_1ade8456f3cd0dcd7994b16cd1aca5dfb4" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool GenericAudio::BgmChannel::paused</definition>
+        <argsstring></argsstring>
+        <name>paused</name>
+        <qualifiedname>GenericAudio::BgmChannel::paused</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="79" column="6" bodyfile="audio_generic.h" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_generic_audio_1_1_bgm_channel_1a508b01200812f64535e0a6ead7412f9b" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool GenericAudio::BgmChannel::stopped</definition>
+        <argsstring></argsstring>
+        <name>stopped</name>
+        <qualifiedname>GenericAudio::BgmChannel::stopped</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="80" column="6" bodyfile="audio_generic.h" bodystart="80" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_generic_audio_1_1_bgm_channel_1a4bbc11304e4fc34476daf97f64466d33" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool GenericAudio::BgmChannel::midi_out_used</definition>
+        <argsstring></argsstring>
+        <name>midi_out_used</name>
+        <qualifiedname>GenericAudio::BgmChannel::midi_out_used</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="81" column="6" bodyfile="audio_generic.h" bodystart="81" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_generic_audio_1_1_bgm_channel_1a666a61cc01d22e0520e2812739493631" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GenericAudio::BgmChannel::Stop</definition>
+        <argsstring>()</argsstring>
+        <name>Stop</name>
+        <qualifiedname>GenericAudio::BgmChannel::Stop</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="82" column="6" bodyfile="audio_generic.cpp" bodystart="486" bodyend="495"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_generic_audio_1_1_bgm_channel_1a56b79888e8e238cf0bafe185cbff42c1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GenericAudio::BgmChannel::SetPaused</definition>
+        <argsstring>(bool newPaused)</argsstring>
+        <name>SetPaused</name>
+        <qualifiedname>GenericAudio::BgmChannel::SetPaused</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>newPaused</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="83" column="6" bodyfile="audio_generic.cpp" bodystart="497" bodyend="506"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_generic_audio_1_1_bgm_channel_1a0c1bbd1eb6fa5f0bd267eb91ba3ce262" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int GenericAudio::BgmChannel::GetTicks</definition>
+        <argsstring>() const</argsstring>
+        <name>GetTicks</name>
+        <qualifiedname>GenericAudio::BgmChannel::GetTicks</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="84" column="5" bodyfile="audio_generic.cpp" bodystart="508" bodyend="515"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_generic_audio_1_1_bgm_channel_1abf9400816d8534ac9e98df2eba2503ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GenericAudio::BgmChannel::SetFade</definition>
+        <argsstring>(int fade)</argsstring>
+        <name>SetFade</name>
+        <qualifiedname>GenericAudio::BgmChannel::SetFade</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>fade</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="85" column="6" bodyfile="audio_generic.cpp" bodystart="517" bodyend="523"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_generic_audio_1_1_bgm_channel_1ad1257e344c03d6d51eb0bd1e3089491e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GenericAudio::BgmChannel::SetVolume</definition>
+        <argsstring>(int volume)</argsstring>
+        <name>SetVolume</name>
+        <qualifiedname>GenericAudio::BgmChannel::SetVolume</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>volume</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="86" column="6" bodyfile="audio_generic.cpp" bodystart="525" bodyend="531"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_generic_audio_1_1_bgm_channel_1a47e0b4caddf52ce3b3599dd8ede826f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void GenericAudio::BgmChannel::SetPitch</definition>
+        <argsstring>(int pitch)</argsstring>
+        <name>SetPitch</name>
+        <qualifiedname>GenericAudio::BgmChannel::SetPitch</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>pitch</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="87" column="6" bodyfile="audio_generic.cpp" bodystart="533" bodyend="539"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_generic_audio_1_1_bgm_channel_1ac5f1a4b7f0b5c9d38211385041e00339" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool GenericAudio::BgmChannel::IsUsed</definition>
+        <argsstring>() const</argsstring>
+        <name>IsUsed</name>
+        <qualifiedname>GenericAudio::BgmChannel::IsUsed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_generic.h" line="88" column="6" bodyfile="audio_generic.cpp" bodystart="541" bodyend="543"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="3">
+        <label>AudioInterface</label>
+        <link refid="struct_audio_interface"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>cfg</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>ConfigParam&lt; std::string &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="6">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="11">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="4">
+        <label>Game_ConfigAudio</label>
+        <link refid="struct_game___config_audio"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>music_volume</edgelabel>
+          <edgelabel>sound_volume</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>fluidsynth_midi</edgelabel>
+          <edgelabel>native_midi</edgelabel>
+          <edgelabel>wildmidi_midi</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>fmmidi_midi</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>soundfont</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>GenericAudio</label>
+        <link refid="class_generic_audio"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>GenericAudio::BgmChannel</label>
+        <childnode refid="2" relation="usage">
+          <edgelabel>instance</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>LockedConfigParam&lt; std::string &gt;</label>
+        <link refid="class_locked_config_param"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>PathConfigParam</label>
+        <link refid="class_path_config_param"/>
+        <childnode refid="13" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>StringConfigParam</label>
+        <link refid="class_config_param"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="audio_generic.h" line="75" column="1" bodyfile="audio_generic.h" bodystart="75" bodyend="89"/>
+    <listofallmembers>
+      <member refid="struct_generic_audio_1_1_bgm_channel_1a09fd44b036abe6400eb3658cb15bb186" prot="public" virt="non-virtual"><scope>GenericAudio::BgmChannel</scope><name>decoder</name></member>
+      <member refid="struct_generic_audio_1_1_bgm_channel_1a0c1bbd1eb6fa5f0bd267eb91ba3ce262" prot="public" virt="non-virtual"><scope>GenericAudio::BgmChannel</scope><name>GetTicks</name></member>
+      <member refid="struct_generic_audio_1_1_bgm_channel_1a92f0208c278da872ce8511f76bdd2546" prot="public" virt="non-virtual"><scope>GenericAudio::BgmChannel</scope><name>id</name></member>
+      <member refid="struct_generic_audio_1_1_bgm_channel_1afc79baa0ea9fcebd0a6443b2ffd709ea" prot="public" virt="non-virtual"><scope>GenericAudio::BgmChannel</scope><name>instance</name></member>
+      <member refid="struct_generic_audio_1_1_bgm_channel_1ac5f1a4b7f0b5c9d38211385041e00339" prot="public" virt="non-virtual"><scope>GenericAudio::BgmChannel</scope><name>IsUsed</name></member>
+      <member refid="struct_generic_audio_1_1_bgm_channel_1a4bbc11304e4fc34476daf97f64466d33" prot="public" virt="non-virtual"><scope>GenericAudio::BgmChannel</scope><name>midi_out_used</name></member>
+      <member refid="struct_generic_audio_1_1_bgm_channel_1ade8456f3cd0dcd7994b16cd1aca5dfb4" prot="public" virt="non-virtual"><scope>GenericAudio::BgmChannel</scope><name>paused</name></member>
+      <member refid="struct_generic_audio_1_1_bgm_channel_1abf9400816d8534ac9e98df2eba2503ab" prot="public" virt="non-virtual"><scope>GenericAudio::BgmChannel</scope><name>SetFade</name></member>
+      <member refid="struct_generic_audio_1_1_bgm_channel_1a56b79888e8e238cf0bafe185cbff42c1" prot="public" virt="non-virtual"><scope>GenericAudio::BgmChannel</scope><name>SetPaused</name></member>
+      <member refid="struct_generic_audio_1_1_bgm_channel_1a47e0b4caddf52ce3b3599dd8ede826f1" prot="public" virt="non-virtual"><scope>GenericAudio::BgmChannel</scope><name>SetPitch</name></member>
+      <member refid="struct_generic_audio_1_1_bgm_channel_1ad1257e344c03d6d51eb0bd1e3089491e" prot="public" virt="non-virtual"><scope>GenericAudio::BgmChannel</scope><name>SetVolume</name></member>
+      <member refid="struct_generic_audio_1_1_bgm_channel_1a666a61cc01d22e0520e2812739493631" prot="public" virt="non-virtual"><scope>GenericAudio::BgmChannel</scope><name>Stop</name></member>
+      <member refid="struct_generic_audio_1_1_bgm_channel_1a508b01200812f64535e0a6ead7412f9b" prot="public" virt="non-virtual"><scope>GenericAudio::BgmChannel</scope><name>stopped</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

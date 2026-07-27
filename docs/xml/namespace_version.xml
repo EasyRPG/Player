@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_version" kind="namespace" language="C++">
+    <compoundname>Version</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_version_1aa1306183eb54181a68e03a76960223ef" prot="public" static="no" mutable="no">
+        <type>const char</type>
+        <definition>const char Version::STRING</definition>
+        <argsstring>[]</argsstring>
+        <name>STRING</name>
+        <qualifiedname>Version::STRING</qualifiedname>
+        <initializer>= <ref refid="version_8cpp_1a15afb30f3cee74bbfcc32c50a8ff737c" kindref="member">EP_VERSION</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="58" column="12" bodyfile="version.cpp" bodystart="58" bodyend="-1" declfile="version.h" declline="34" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_version_1ab2bec3294bd2f71d45ca8c4ae42742f9" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Version::MAJOR</definition>
+        <argsstring></argsstring>
+        <name>MAJOR</name>
+        <qualifiedname>Version::MAJOR</qualifiedname>
+        <initializer>= <ref refid="version_8cpp_1add318c000b07a6d7ad022f6d24279261" kindref="member">EP_VERSION_MAJOR</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="59" column="11" bodyfile="version.cpp" bodystart="59" bodyend="-1" declfile="version.h" declline="30" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_version_1ac3b4a5708c4a7d331a6a3fa58fb2c3ee" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Version::MINOR</definition>
+        <argsstring></argsstring>
+        <name>MINOR</name>
+        <qualifiedname>Version::MINOR</qualifiedname>
+        <initializer>= <ref refid="version_8cpp_1a4dc29d7d47e18379de4ed174c0aa1ee6" kindref="member">EP_VERSION_MINOR</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="60" column="11" bodyfile="version.cpp" bodystart="60" bodyend="-1" declfile="version.h" declline="31" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_version_1a1b1cbf1d76c33e3bf8d319b9c2211e5c" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Version::PATCH</definition>
+        <argsstring></argsstring>
+        <name>PATCH</name>
+        <qualifiedname>Version::PATCH</qualifiedname>
+        <initializer>= <ref refid="version_8cpp_1aff14af5772b53f1976b81e137f801502" kindref="member">EP_VERSION_PATCH</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="61" column="11" bodyfile="version.cpp" bodystart="61" bodyend="-1" declfile="version.h" declline="32" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_version_1ac776edcd04f232b710b7fec181dd5f4e" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Version::TWEAK</definition>
+        <argsstring></argsstring>
+        <name>TWEAK</name>
+        <qualifiedname>Version::TWEAK</qualifiedname>
+        <initializer>= <ref refid="version_8cpp_1aa62fdb63081f66c4196c1cfb06262258" kindref="member">EP_VERSION_TWEAK</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="62" column="11" bodyfile="version.cpp" bodystart="62" bodyend="-1" declfile="version.h" declline="33" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_version_1a9044b69e005be6c8b995f6ff0c6e892c" prot="public" static="no" mutable="no">
+        <type>const char</type>
+        <definition>const char Version::GIT</definition>
+        <argsstring>[]</argsstring>
+        <name>GIT</name>
+        <qualifiedname>Version::GIT</qualifiedname>
+        <initializer>= <ref refid="version_8cpp_1aacb7d942dfa15e021af4ed816fce10c6" kindref="member">EP_VERSION_GIT</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="63" column="12" bodyfile="version.cpp" bodystart="63" bodyend="-1" declfile="version.h" declline="35" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_version_1a1116f3408ff2a1ac6151a6f18894170d" prot="public" static="no" mutable="no">
+        <type>const char</type>
+        <definition>const char Version::APPEND</definition>
+        <argsstring>[]</argsstring>
+        <name>APPEND</name>
+        <qualifiedname>Version::APPEND</qualifiedname>
+        <initializer>= <ref refid="version_8cpp_1a482f27ada76f022f9dff41caaccd1598" kindref="member">EP_VERSION_APPEND</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="64" column="12" bodyfile="version.cpp" bodystart="64" bodyend="-1" declfile="version.h" declline="36" declcolumn="19"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_version_1afb61e596a826b119307dae8938c87bc6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Version::GetVersionString</definition>
+        <argsstring>(bool with_git, bool with_append)</argsstring>
+        <name>GetVersionString</name>
+        <qualifiedname>Version::GetVersionString</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>with_git</declname>
+          <defval>true</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>with_append</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Generates a version string.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>with_git</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Append git information (if available) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>with_append</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Append additional information (if available, by default the build date) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="66" column="13" bodyfile="version.cpp" bodystart="66" bodyend="75" declfile="version.h" declline="44" declcolumn="13"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="namespace_version" kindref="compound">Version</ref> of <ref refid="namespace_player" kindref="compound">Player</ref>. </para>
+    </detaileddescription>
+    <location file="version.cpp" line="56" column="1"/>
+  </compounddef>
+</doxygen>

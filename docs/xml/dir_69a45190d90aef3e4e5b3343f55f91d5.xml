@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_69a45190d90aef3e4e5b3343f55f91d5" kind="dir">
+    <compoundname>leasy/lua</compoundname>
+    <innerfile refid="lapi_8c">lapi.c</innerfile>
+    <innerfile refid="lapi_8h">lapi.h</innerfile>
+    <innerfile refid="lauxlib_8c">lauxlib.c</innerfile>
+    <innerfile refid="lauxlib_8h">lauxlib.h</innerfile>
+    <innerfile refid="lbaselib_8c">lbaselib.c</innerfile>
+    <innerfile refid="lcode_8c">lcode.c</innerfile>
+    <innerfile refid="lcode_8h">lcode.h</innerfile>
+    <innerfile refid="lcorolib_8c">lcorolib.c</innerfile>
+    <innerfile refid="lctype_8c">lctype.c</innerfile>
+    <innerfile refid="lctype_8h">lctype.h</innerfile>
+    <innerfile refid="ldblib_8c">ldblib.c</innerfile>
+    <innerfile refid="ldebug_8c">ldebug.c</innerfile>
+    <innerfile refid="ldebug_8h">ldebug.h</innerfile>
+    <innerfile refid="ldo_8c">ldo.c</innerfile>
+    <innerfile refid="ldo_8h">ldo.h</innerfile>
+    <innerfile refid="ldump_8c">ldump.c</innerfile>
+    <innerfile refid="lfunc_8c">lfunc.c</innerfile>
+    <innerfile refid="lfunc_8h">lfunc.h</innerfile>
+    <innerfile refid="lgc_8c">lgc.c</innerfile>
+    <innerfile refid="lgc_8h">lgc.h</innerfile>
+    <innerfile refid="linit_8c">linit.c</innerfile>
+    <innerfile refid="liolib_8c">liolib.c</innerfile>
+    <innerfile refid="ljumptab_8h">ljumptab.h</innerfile>
+    <innerfile refid="llex_8c">llex.c</innerfile>
+    <innerfile refid="llex_8h">llex.h</innerfile>
+    <innerfile refid="llimits_8h">llimits.h</innerfile>
+    <innerfile refid="lmathlib_8c">lmathlib.c</innerfile>
+    <innerfile refid="lmem_8c">lmem.c</innerfile>
+    <innerfile refid="lmem_8h">lmem.h</innerfile>
+    <innerfile refid="loadlib_8c">loadlib.c</innerfile>
+    <innerfile refid="lobject_8c">lobject.c</innerfile>
+    <innerfile refid="lobject_8h">lobject.h</innerfile>
+    <innerfile refid="lopcodes_8c">lopcodes.c</innerfile>
+    <innerfile refid="lopcodes_8h">lopcodes.h</innerfile>
+    <innerfile refid="lopnames_8h">lopnames.h</innerfile>
+    <innerfile refid="loslib_8c">loslib.c</innerfile>
+    <innerfile refid="lparser_8c">lparser.c</innerfile>
+    <innerfile refid="lparser_8h">lparser.h</innerfile>
+    <innerfile refid="lprefix_8h">lprefix.h</innerfile>
+    <innerfile refid="lstate_8c">lstate.c</innerfile>
+    <innerfile refid="lstate_8h">lstate.h</innerfile>
+    <innerfile refid="lstring_8c">lstring.c</innerfile>
+    <innerfile refid="lstring_8h">lstring.h</innerfile>
+    <innerfile refid="lstrlib_8c">lstrlib.c</innerfile>
+    <innerfile refid="ltable_8c">ltable.c</innerfile>
+    <innerfile refid="ltable_8h">ltable.h</innerfile>
+    <innerfile refid="ltablib_8c">ltablib.c</innerfile>
+    <innerfile refid="ltm_8c">ltm.c</innerfile>
+    <innerfile refid="ltm_8h">ltm.h</innerfile>
+    <innerfile refid="lua_8h">lua.h</innerfile>
+    <innerfile refid="lua_2lua_8hpp">lua.hpp</innerfile>
+    <innerfile refid="luaconf_8h">luaconf.h</innerfile>
+    <innerfile refid="lualib_8h">lualib.h</innerfile>
+    <innerfile refid="lundump_8c">lundump.c</innerfile>
+    <innerfile refid="lundump_8h">lundump.h</innerfile>
+    <innerfile refid="lutf8lib_8c">lutf8lib.c</innerfile>
+    <innerfile refid="lvm_8c">lvm.c</innerfile>
+    <innerfile refid="lvm_8h">lvm.h</innerfile>
+    <innerfile refid="lzio_8c">lzio.c</innerfile>
+    <innerfile refid="lzio_8h">lzio.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/lua/"/>
+  </compounddef>
+</doxygen>

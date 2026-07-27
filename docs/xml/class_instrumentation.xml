@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_instrumentation" kind="class" language="C++" prot="public">
+    <compoundname>Instrumentation</compoundname>
+    <includes refid="instrumentation_8h" local="no">instrumentation.h</includes>
+    <innerclass refid="class_instrumentation_1_1_frame_scope" prot="public">Instrumentation::FrameScope</innerclass>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_instrumentation_1ab05bd0224b8178c60f13fe73463dedf7" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Instrumentation::Init</definition>
+        <argsstring>(const char *name)</argsstring>
+        <name>Init</name>
+        <qualifiedname>Instrumentation::Init</qualifiedname>
+        <param>
+          <type>const char *</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Must be called once on startup to initialize the instrumentation framework.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>name of instrumentation domain </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="instrumentation.h" line="38" column="13" bodyfile="instrumentation.cpp" bodystart="25" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="class_instrumentation_1aa1c99543543ff756b7044775863fcbac" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Instrumentation::FrameBegin</definition>
+        <argsstring>()</argsstring>
+        <name>FrameBegin</name>
+        <qualifiedname>Instrumentation::FrameBegin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Call at the beginning of a frame </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="instrumentation.h" line="41" column="13" bodyfile="instrumentation.h" bodystart="83" bodyend="88"/>
+      </memberdef>
+      <memberdef kind="function" id="class_instrumentation_1a39d8cd44d43905c1fcf85c309add09f0" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Instrumentation::FrameEnd</definition>
+        <argsstring>()</argsstring>
+        <name>FrameEnd</name>
+        <qualifiedname>Instrumentation::FrameEnd</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Call at the end of a frame </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="instrumentation.h" line="44" column="13" bodyfile="instrumentation.h" bodystart="89" bodyend="94"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="instrumentation.h" line="31" column="1" bodyfile="instrumentation.h" bodystart="31" bodyend="81"/>
+    <listofallmembers>
+      <member refid="class_instrumentation_1aa1c99543543ff756b7044775863fcbac" prot="public" virt="non-virtual"><scope>Instrumentation</scope><name>FrameBegin</name></member>
+      <member refid="class_instrumentation_1a39d8cd44d43905c1fcf85c309add09f0" prot="public" virt="non-virtual"><scope>Instrumentation</scope><name>FrameEnd</name></member>
+      <member refid="class_instrumentation_1ab05bd0224b8178c60f13fe73463dedf7" prot="public" virt="non-virtual"><scope>Instrumentation</scope><name>Init</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

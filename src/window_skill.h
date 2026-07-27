@@ -129,3 +129,4 @@ inline void Window_BattleSkill::RestoreActorIndex(int which_actor) {
 }
 
 #endif
+

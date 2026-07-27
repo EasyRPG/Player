@@ -381,3 +381,4 @@ bool SetStateRestrictedAction(Game_Enemy& source) {
 }
 
 } // namespace EnemyAi
+

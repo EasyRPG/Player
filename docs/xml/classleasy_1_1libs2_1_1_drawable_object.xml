@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1libs2_1_1_drawable_object" kind="class" language="C++" prot="public">
+    <compoundname>leasy::libs2::DrawableObject</compoundname>
+    <basecompoundref refid="class_drawable" prot="public" virt="non-virtual">Drawable</basecompoundref>
+    <includes refid="drawable__object_8hpp" local="no">drawable_object.hpp</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classleasy_1_1libs2_1_1_drawable_object_1a7f76682e192626428568822655dbe972" prot="protected" static="no" mutable="no">
+        <type><ref refid="structleasy_1_1ily3_1_1twin" kindref="compound">ily3::twin</ref>&lt; int &gt;</type>
+        <definition>ily3::twin&lt;int&gt; leasy::libs2::DrawableObject::pos</definition>
+        <argsstring></argsstring>
+        <name>pos</name>
+        <qualifiedname>leasy::libs2::DrawableObject::pos</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/libs2/drawable_object.hpp" line="34" column="24" bodyfile="leasy/libs2/drawable_object.hpp" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1libs2_1_1_drawable_object_1a24abf93a728a2fd7511cca8c2def9773" prot="protected" static="no" mutable="no">
+        <type><ref refid="structleasy_1_1ily3_1_1twin" kindref="compound">ily3::twin</ref>&lt; int &gt;</type>
+        <definition>ily3::twin&lt;int&gt; leasy::libs2::DrawableObject::siz</definition>
+        <argsstring></argsstring>
+        <name>siz</name>
+        <qualifiedname>leasy::libs2::DrawableObject::siz</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/libs2/drawable_object.hpp" line="35" column="24" bodyfile="leasy/libs2/drawable_object.hpp" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1libs2_1_1_drawable_object_1a5a17a96af10ae188569abb1d1f6cbb69" prot="protected" static="no" mutable="no">
+        <type><ref refid="struct_opacity" kindref="compound">Opacity</ref></type>
+        <definition>Opacity leasy::libs2::DrawableObject::opa</definition>
+        <argsstring></argsstring>
+        <name>opa</name>
+        <qualifiedname>leasy::libs2::DrawableObject::opa</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/libs2/drawable_object.hpp" line="36" column="29" bodyfile="leasy/libs2/drawable_object.hpp" bodystart="36" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1libs2_1_1_drawable_object_1a5e353c8e8dc30d5ceb705db3ec72a09f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_opacity" kindref="compound">Opacity</ref> *</type>
+        <definition>Opacity * leasy::libs2::DrawableObject::opacity</definition>
+        <argsstring>()</argsstring>
+        <name>opacity</name>
+        <qualifiedname>leasy::libs2::DrawableObject::opacity</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/libs2/drawable_object.hpp" line="40" column="13" bodyfile="leasy/libs2/drawable_object.cpp" bodystart="31" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1libs2_1_1_drawable_object_1ace19853419bf127ca29e06cd1ce910ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structleasy_1_1ily3_1_1twin" kindref="compound">ily3::twin</ref>&lt; int &gt; *</type>
+        <definition>ily3::twin&lt; int &gt; * leasy::libs2::DrawableObject::position</definition>
+        <argsstring>()</argsstring>
+        <name>position</name>
+        <qualifiedname>leasy::libs2::DrawableObject::position</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/libs2/drawable_object.hpp" line="41" column="16" bodyfile="leasy/libs2/drawable_object.cpp" bodystart="35" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1libs2_1_1_drawable_object_1a602a8e559743af4ad83fcf2943a9c5f6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structleasy_1_1ily3_1_1twin" kindref="compound">ily3::twin</ref>&lt; int &gt; *</type>
+        <definition>ily3::twin&lt; int &gt; * leasy::libs2::DrawableObject::size</definition>
+        <argsstring>()</argsstring>
+        <name>size</name>
+        <qualifiedname>leasy::libs2::DrawableObject::size</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/libs2/drawable_object.hpp" line="42" column="16" bodyfile="leasy/libs2/drawable_object.cpp" bodystart="39" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1libs2_1_1_drawable_object_1abf3ab8b419c81c9bc1e41f294b1e8716" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect leasy::libs2::DrawableObject::get_rect</definition>
+        <argsstring>()</argsstring>
+        <name>get_rect</name>
+        <qualifiedname>leasy::libs2::DrawableObject::get_rect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/libs2/drawable_object.hpp" line="43" column="10" bodyfile="leasy/libs2/drawable_object.cpp" bodystart="45" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1libs2_1_1_drawable_object_1a509afc745ace73154c1a1e241646bfb7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>leasy::libs2::DrawableObject::DrawableObject</definition>
+        <argsstring>()</argsstring>
+        <name>DrawableObject</name>
+        <qualifiedname>leasy::libs2::DrawableObject::DrawableObject</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/libs2/drawable_object.hpp" line="44" column="5" bodyfile="leasy/libs2/drawable_object.cpp" bodystart="43" bodyend="43"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>leasy::libs2::DrawableObject</label>
+        <link refid="classleasy_1_1libs2_1_1_drawable_object"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="4">
+        <label>Opacity</label>
+        <link refid="struct_opacity"/>
+      </node>
+      <node id="3">
+        <label>leasy::ily3::twin&lt; int &gt;</label>
+        <link refid="structleasy_1_1ily3_1_1twin"/>
+      </node>
+      <node id="1">
+        <label>leasy::libs2::DrawableObject</label>
+        <link refid="classleasy_1_1libs2_1_1_drawable_object"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>pos</edgelabel>
+          <edgelabel>siz</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>opa</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/libs2/drawable_object.hpp" line="32" column="3" bodyfile="leasy/libs2/drawable_object.hpp" bodystart="32" bodyend="45"/>
+    <listofallmembers>
+      <member refid="class_drawable_1aa8a9b151f40368331f6fd8bbdd20133f" prot="public" virt="pure-virtual"><scope>leasy::libs2::DrawableObject</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>Drawable</name></member>
+      <member refid="classleasy_1_1libs2_1_1_drawable_object_1a509afc745ace73154c1a1e241646bfb7" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>DrawableObject</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>Flags</name></member>
+      <member refid="classleasy_1_1libs2_1_1_drawable_object_1abf3ab8b419c81c9bc1e41f294b1e8716" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>get_rect</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>GetRenderOy</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>GetZ</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>IsGlobal</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>IsVisible</name></member>
+      <member refid="classleasy_1_1libs2_1_1_drawable_object_1a5a17a96af10ae188569abb1d1f6cbb69" prot="protected" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>opa</name></member>
+      <member refid="classleasy_1_1libs2_1_1_drawable_object_1a5e353c8e8dc30d5ceb705db3ec72a09f" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>opacity</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>operator=</name></member>
+      <member refid="classleasy_1_1libs2_1_1_drawable_object_1a7f76682e192626428568822655dbe972" prot="protected" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>pos</name></member>
+      <member refid="classleasy_1_1libs2_1_1_drawable_object_1ace19853419bf127ca29e06cd1ce910ed" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>position</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>SetRenderOy</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>SetVisible</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>SetZ</name></member>
+      <member refid="classleasy_1_1libs2_1_1_drawable_object_1a24abf93a728a2fd7511cca8c2def9773" prot="protected" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>siz</name></member>
+      <member refid="classleasy_1_1libs2_1_1_drawable_object_1a602a8e559743af4ad83fcf2943a9c5f6" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>size</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>leasy::libs2::DrawableObject</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>leasy::libs2::DrawableObject</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

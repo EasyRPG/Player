@@ -1,0 +1,593 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_lex_state" kind="struct" language="C++" prot="public">
+    <compoundname>LexState</compoundname>
+    <includes refid="llex_8h" local="no">llex.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int LexState::current</definition>
+        <argsstring></argsstring>
+        <name>current</name>
+        <qualifiedname>LexState::current</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="65" column="7" bodyfile="leasy/lua/llex.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_lex_state_1a9047632ca93c760b66b6303c819099d5" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int LexState::linenumber</definition>
+        <argsstring></argsstring>
+        <name>linenumber</name>
+        <qualifiedname>LexState::linenumber</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="66" column="7" bodyfile="leasy/lua/llex.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_lex_state_1aaadb237d4fc6b81d2242e666de885bf7" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int LexState::lastline</definition>
+        <argsstring></argsstring>
+        <name>lastline</name>
+        <qualifiedname>LexState::lastline</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="67" column="7" bodyfile="leasy/lua/llex.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_lex_state_1a597c734626136f4ddb8232e8fc3abfc4" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_token" kindref="compound">Token</ref></type>
+        <definition>Token LexState::t</definition>
+        <argsstring></argsstring>
+        <name>t</name>
+        <qualifiedname>LexState::t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="68" column="9" bodyfile="leasy/lua/llex.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_lex_state_1ad3c75c11dbbdae006057cb4b847a4f91" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_token" kindref="compound">Token</ref></type>
+        <definition>Token LexState::lookahead</definition>
+        <argsstring></argsstring>
+        <name>lookahead</name>
+        <qualifiedname>LexState::lookahead</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="69" column="9" bodyfile="leasy/lua/llex.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_lex_state_1a01999e4f68cc6a3bd0b9eb6ebd241f7b" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+        <definition>struct FuncState* LexState::fs</definition>
+        <argsstring></argsstring>
+        <name>fs</name>
+        <qualifiedname>LexState::fs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="70" column="18" bodyfile="leasy/lua/llex.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+        <definition>struct lua_State* LexState::L</definition>
+        <argsstring></argsstring>
+        <name>L</name>
+        <qualifiedname>LexState::L</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="71" column="18" bodyfile="leasy/lua/llex.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_lex_state_1a591ffaffa1f3c21653904dccf81a4377" prot="public" static="no" mutable="no">
+        <type><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref> *</type>
+        <definition>ZIO* LexState::z</definition>
+        <argsstring></argsstring>
+        <name>z</name>
+        <qualifiedname>LexState::z</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="72" column="7" bodyfile="leasy/lua/llex.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_mbuffer" kindref="compound">Mbuffer</ref> *</type>
+        <definition>Mbuffer* LexState::buff</definition>
+        <argsstring></argsstring>
+        <name>buff</name>
+        <qualifiedname>LexState::buff</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="73" column="11" bodyfile="leasy/lua/llex.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_lex_state_1a0fcd03e58c52d100bc9dcd52787724f4" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+        <definition>Table* LexState::h</definition>
+        <argsstring></argsstring>
+        <name>h</name>
+        <qualifiedname>LexState::h</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="74" column="9" bodyfile="leasy/lua/llex.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_lex_state_1a3275102e0a909a24d21e8dd183847a2b" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="struct_dyndata" kindref="compound">Dyndata</ref> *</type>
+        <definition>struct Dyndata* LexState::dyd</definition>
+        <argsstring></argsstring>
+        <name>dyd</name>
+        <qualifiedname>LexState::dyd</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="75" column="16" bodyfile="leasy/lua/llex.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_lex_state_1a054af516711cc3d173a73a301497ff27" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>TString* LexState::source</definition>
+        <argsstring></argsstring>
+        <name>source</name>
+        <qualifiedname>LexState::source</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="76" column="11" bodyfile="leasy/lua/llex.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_lex_state_1a1f3368576038a65ab629da91de3edfaf" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>TString* LexState::envn</definition>
+        <argsstring></argsstring>
+        <name>envn</name>
+        <qualifiedname>LexState::envn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="77" column="11" bodyfile="leasy/lua/llex.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_lex_state_1a857e26bd0a34d69d72e98193f068be57" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>TString* LexState::brkn</definition>
+        <argsstring></argsstring>
+        <name>brkn</name>
+        <qualifiedname>LexState::brkn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="78" column="11" bodyfile="leasy/lua/llex.h" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_lex_state_1a13134d7e5b4ef8430baee3284bd41068" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>TString* LexState::glbn</definition>
+        <argsstring></argsstring>
+        <name>glbn</name>
+        <qualifiedname>LexState::glbn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="79" column="11" bodyfile="leasy/lua/llex.h" bodystart="79" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="9">
+        <label>AbsLineInfo</label>
+        <link refid="struct_abs_line_info"/>
+      </node>
+      <node id="12">
+        <label>BlockCnt</label>
+        <link refid="struct_block_cnt"/>
+        <childnode refid="12" relation="usage">
+          <edgelabel>previous</edgelabel>
+        </childnode>
+      </node>
+      <node id="21">
+        <label>CallInfo</label>
+        <link refid="struct_call_info"/>
+        <childnode refid="16" relation="usage">
+          <edgelabel>func</edgelabel>
+          <edgelabel>top</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>next</edgelabel>
+          <edgelabel>previous</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>k</edgelabel>
+        </childnode>
+      </node>
+      <node id="28">
+        <label>Dyndata</label>
+        <link refid="struct_dyndata"/>
+        <childnode refid="29" relation="usage">
+          <edgelabel>arr</edgelabel>
+        </childnode>
+        <childnode refid="30" relation="usage">
+          <edgelabel>gt</edgelabel>
+          <edgelabel>label</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>FuncState</label>
+        <link refid="struct_func_state"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>f</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>prev</edgelabel>
+        </childnode>
+        <childnode refid="1" relation="usage">
+          <edgelabel>ls</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>bl</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>kcache</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>GCObject</label>
+        <link refid="struct_g_c_object"/>
+      </node>
+      <node id="20">
+        <label>LX</label>
+        <link refid="struct_l_x"/>
+        <childnode refid="15" relation="usage">
+          <edgelabel>l</edgelabel>
+        </childnode>
+      </node>
+      <node id="31">
+        <label>Labeldesc</label>
+        <link refid="struct_labeldesc"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>name</edgelabel>
+        </childnode>
+      </node>
+      <node id="30">
+        <label>Labellist</label>
+        <link refid="struct_labellist"/>
+        <childnode refid="31" relation="usage">
+          <edgelabel>arr</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>LexState</label>
+        <link refid="struct_lex_state"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>lookahead</edgelabel>
+          <edgelabel>t</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>fs</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>L</edgelabel>
+        </childnode>
+        <childnode refid="26" relation="usage">
+          <edgelabel>z</edgelabel>
+        </childnode>
+        <childnode refid="27" relation="usage">
+          <edgelabel>buff</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>h</edgelabel>
+        </childnode>
+        <childnode refid="28" relation="usage">
+          <edgelabel>dyd</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>brkn</edgelabel>
+          <edgelabel>envn</edgelabel>
+          <edgelabel>glbn</edgelabel>
+          <edgelabel>source</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>LocVar</label>
+        <link refid="struct_loc_var"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>varname</edgelabel>
+        </childnode>
+      </node>
+      <node id="27">
+        <label>Mbuffer</label>
+        <link refid="struct_mbuffer"/>
+      </node>
+      <node id="24">
+        <label>Node</label>
+        <link refid="union_node"/>
+        <childnode refid="25" relation="usage">
+          <edgelabel>u</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>i_val</edgelabel>
+        </childnode>
+      </node>
+      <node id="25">
+        <label>Node::NodeKey</label>
+        <link refid="struct_node_1_1_node_key"/>
+        <childnode refid="14" relation="usage">
+          <edgelabel>key_val</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Proto</label>
+        <link refid="struct_proto"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>k</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>p</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>upvalues</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>abslineinfo</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>locvars</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>source</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>gclist</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>SemInfo</label>
+        <link refid="union_sem_info"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>ts</edgelabel>
+        </childnode>
+      </node>
+      <node id="17">
+        <label>StackValue</label>
+        <link refid="union_stack_value"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>val</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>StkIdRel</label>
+        <link refid="union_stk_id_rel"/>
+        <childnode refid="17" relation="usage">
+          <edgelabel>p</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>TValue</label>
+        <link refid="struct_t_value"/>
+      </node>
+      <node id="13">
+        <label>Table</label>
+        <link refid="struct_table"/>
+        <childnode refid="14" relation="usage">
+          <edgelabel>array</edgelabel>
+        </childnode>
+        <childnode refid="24" relation="usage">
+          <edgelabel>node</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>metatable</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>gclist</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Token</label>
+        <link refid="struct_token"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>seminfo</edgelabel>
+        </childnode>
+      </node>
+      <node id="22">
+        <label>UpVal</label>
+        <link refid="struct_up_val"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>p</edgelabel>
+          <edgelabel>value</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>next</edgelabel>
+          <edgelabel>previous</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Upvaldesc</label>
+        <link refid="struct_upvaldesc"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>name</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>Value</label>
+        <link refid="union_value"/>
+        <childnode refid="11" relation="usage">
+          <edgelabel>gc</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>f</edgelabel>
+        </childnode>
+      </node>
+      <node id="29">
+        <label>Vardesc</label>
+        <link refid="union_vardesc"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>name</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>k</edgelabel>
+        </childnode>
+      </node>
+      <node id="26">
+        <label>Zio</label>
+        <link refid="struct_zio"/>
+        <childnode refid="15" relation="usage">
+          <edgelabel>L</edgelabel>
+          <edgelabel>reader</edgelabel>
+        </childnode>
+      </node>
+      <node id="18">
+        <label>global_State</label>
+        <link refid="structglobal___state"/>
+        <childnode refid="19" relation="usage">
+          <edgelabel>strt</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>l_registry</edgelabel>
+          <edgelabel>nilvalue</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>allgc</edgelabel>
+          <edgelabel>allweak</edgelabel>
+          <edgelabel>ephemeron</edgelabel>
+          <edgelabel>finobj</edgelabel>
+          <edgelabel>finobjold1</edgelabel>
+          <edgelabel>finobjrold</edgelabel>
+          <edgelabel>finobjsur</edgelabel>
+          <edgelabel>firstold1</edgelabel>
+          <edgelabel>fixedgc</edgelabel>
+          <edgelabel>gray</edgelabel>
+          <edgelabel>  ...</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>panic</edgelabel>
+          <edgelabel>twups</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>memerrmsg</edgelabel>
+          <edgelabel>strcache</edgelabel>
+          <edgelabel>tmname</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>mt</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>mainth</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>lua_State</label>
+        <link refid="structlua___state"/>
+        <childnode refid="16" relation="usage">
+          <edgelabel>stack</edgelabel>
+          <edgelabel>stack_last</edgelabel>
+          <edgelabel>tbclist</edgelabel>
+          <edgelabel>top</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>l_G</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>base_ci</edgelabel>
+          <edgelabel>ci</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>openupval</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>gclist</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>twups</edgelabel>
+        </childnode>
+        <childnode refid="23" relation="usage">
+          <edgelabel>errorJmp</edgelabel>
+        </childnode>
+      </node>
+      <node id="23">
+        <label>lua_longjmp</label>
+        <link refid="structlua__longjmp"/>
+        <childnode refid="23" relation="usage">
+          <edgelabel>previous</edgelabel>
+        </childnode>
+      </node>
+      <node id="19">
+        <label>stringtable</label>
+        <link refid="structstringtable"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>hash</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/llex.h" line="64" column="1" bodyfile="leasy/lua/llex.h" bodystart="64" bodyend="80"/>
+    <listofallmembers>
+      <member refid="struct_lex_state_1a857e26bd0a34d69d72e98193f068be57" prot="public" virt="non-virtual"><scope>LexState</scope><name>brkn</name></member>
+      <member refid="struct_lex_state_1aab00ebdc0eaf42caa098ecb6ca3c8389" prot="public" virt="non-virtual"><scope>LexState</scope><name>buff</name></member>
+      <member refid="struct_lex_state_1ad31cc4568332a48d22d37a13c8eae006" prot="public" virt="non-virtual"><scope>LexState</scope><name>current</name></member>
+      <member refid="struct_lex_state_1a3275102e0a909a24d21e8dd183847a2b" prot="public" virt="non-virtual"><scope>LexState</scope><name>dyd</name></member>
+      <member refid="struct_lex_state_1a1f3368576038a65ab629da91de3edfaf" prot="public" virt="non-virtual"><scope>LexState</scope><name>envn</name></member>
+      <member refid="struct_lex_state_1a01999e4f68cc6a3bd0b9eb6ebd241f7b" prot="public" virt="non-virtual"><scope>LexState</scope><name>fs</name></member>
+      <member refid="struct_lex_state_1a13134d7e5b4ef8430baee3284bd41068" prot="public" virt="non-virtual"><scope>LexState</scope><name>glbn</name></member>
+      <member refid="struct_lex_state_1a0fcd03e58c52d100bc9dcd52787724f4" prot="public" virt="non-virtual"><scope>LexState</scope><name>h</name></member>
+      <member refid="struct_lex_state_1af1ffd91f6684eee85e707a4b9927019b" prot="public" virt="non-virtual"><scope>LexState</scope><name>L</name></member>
+      <member refid="struct_lex_state_1aaadb237d4fc6b81d2242e666de885bf7" prot="public" virt="non-virtual"><scope>LexState</scope><name>lastline</name></member>
+      <member refid="struct_lex_state_1a9047632ca93c760b66b6303c819099d5" prot="public" virt="non-virtual"><scope>LexState</scope><name>linenumber</name></member>
+      <member refid="struct_lex_state_1ad3c75c11dbbdae006057cb4b847a4f91" prot="public" virt="non-virtual"><scope>LexState</scope><name>lookahead</name></member>
+      <member refid="struct_lex_state_1a054af516711cc3d173a73a301497ff27" prot="public" virt="non-virtual"><scope>LexState</scope><name>source</name></member>
+      <member refid="struct_lex_state_1a597c734626136f4ddb8232e8fc3abfc4" prot="public" virt="non-virtual"><scope>LexState</scope><name>t</name></member>
+      <member refid="struct_lex_state_1a591ffaffa1f3c21653904dccf81a4377" prot="public" virt="non-virtual"><scope>LexState</scope><name>z</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

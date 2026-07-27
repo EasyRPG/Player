@@ -369,3 +369,4 @@ Game_Message::ParseParamResult Game_Message::ParseSpeed(const char* iter, const 
 Game_Message::ParseParamResult Game_Message::ParseActor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
 	return ParseParam('N', 'n', iter, end, escape_char, skip_prefix, max_recursion);
 }
+

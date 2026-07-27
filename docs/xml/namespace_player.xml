@@ -1,0 +1,1739 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_player" kind="namespace" language="C++">
+    <compoundname>Player</compoundname>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_player_1afbeca3f385e2d061e8c0b4ca344db138" prot="public" static="no" strong="no">
+        <type></type>
+        <name>EngineType</name>
+        <qualifiedname>Player::EngineType</qualifiedname>
+        <enumvalue id="namespace_player_1afbeca3f385e2d061e8c0b4ca344db138a428f7f6d2ab839501afb8eea6e5c78e5" prot="public">
+          <name>EngineNone</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_player_1afbeca3f385e2d061e8c0b4ca344db138a5c41a32a48b8c27f7b06cb4a2da1aee7" prot="public">
+          <name>EngineRpg2k</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>All versions of RPG Maker 2000 </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_player_1afbeca3f385e2d061e8c0b4ca344db138a529b26d8cf38d7e1c9a717cb929ad544" prot="public">
+          <name>EngineRpg2k3</name>
+          <initializer>= 2</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>All versions of RPG Maker 2003 </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_player_1afbeca3f385e2d061e8c0b4ca344db138a15bac4f18aee6092b939cce65d403ebb" prot="public">
+          <name>EngineMajorUpdated</name>
+          <initializer>= 4</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>RPG Maker 2000 v1.50 or newer, 2003 v1.05 or newer </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_player_1afbeca3f385e2d061e8c0b4ca344db138a48198451c84684a24382c791aee0f548" prot="public">
+          <name>EngineEnglish</name>
+          <initializer>= 8</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Official English translation (RPG Maker 2003 v1.10 or newer, or RPG Maker 2000 v.1.61 or newer) </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Bitmask for type of emulated engine </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="40" column="1" bodyfile="player.h" bodystart="40" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_player_1a51490caf8c1562e9dd6e64e2f474dd1f" prot="public" static="no" strong="no">
+        <type></type>
+        <name>PatchType</name>
+        <qualifiedname>Player::PatchType</qualifiedname>
+        <enumvalue id="namespace_player_1a51490caf8c1562e9dd6e64e2f474dd1fa26896fc8b7c9362fb54528fc26900cbf" prot="public">
+          <name>PatchNone</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_player_1a51490caf8c1562e9dd6e64e2f474dd1fa58b7925a8b409041732c19e4015f0069" prot="public">
+          <name>PatchDynRpg</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>DynRPG </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_player_1a51490caf8c1562e9dd6e64e2f474dd1fa103c07640a77631ac0c7404628649fb8" prot="public">
+          <name>PatchManiac</name>
+          <initializer>= 1 &lt;&lt; 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para><ref refid="namespace_maniac_patch" kindref="compound">ManiacPatch</ref> </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_player_1a51490caf8c1562e9dd6e64e2f474dd1faf924985919df5f1c8a77f3bac66df320" prot="public">
+          <name>PatchOverride</name>
+          <initializer>= 1 &lt;&lt; 16</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Patches specified on command line, no autodetect </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Bitmask for activated patches </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="54" column="1" bodyfile="player.h" bodystart="54" bodyend="62"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_player_1a425e5dd4f451a22e3dae2dcf195f3b8d" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Player::screen_width</definition>
+        <argsstring></argsstring>
+        <name>screen_width</name>
+        <qualifiedname>Player::screen_width</qualifiedname>
+        <initializer>= <ref refid="options_8h_1aa7e6f32c04ceb13877d3a1689e9f63d2" kindref="member">SCREEN_TARGET_WIDTH</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The width of the screen </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="105" column="5" bodyfile="player.cpp" bodystart="105" bodyend="-1" declfile="player.h" declline="348" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a5aafc46e1566a41091e8acf119327267" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Player::screen_height</definition>
+        <argsstring></argsstring>
+        <name>screen_height</name>
+        <qualifiedname>Player::screen_height</qualifiedname>
+        <initializer>= <ref refid="options_8h_1a040f055d4d7dca20bf86984e86cf810a" kindref="member">SCREEN_TARGET_HEIGHT</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The height of the screen </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="106" column="5" bodyfile="player.cpp" bodystart="106" bodyend="-1" declfile="player.h" declline="351" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a6792adc4fef140f00049262f670d8db2" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Player::menu_offset_x</definition>
+        <argsstring></argsstring>
+        <name>menu_offset_x</name>
+        <qualifiedname>Player::menu_offset_x</qualifiedname>
+        <initializer>= (<ref refid="namespace_player_1a425e5dd4f451a22e3dae2dcf195f3b8d" kindref="member">screen_width</ref> - <ref refid="options_8h_1ae64f028be3d52d84433789a433ba4034" kindref="member">MENU_WIDTH</ref>) / 2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The X offset used to center UI in custom resolutions </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="107" column="5" bodyfile="player.cpp" bodystart="107" bodyend="-1" declfile="player.h" declline="354" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a608c5e18406217fb2c22f7c64437e6bc" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Player::menu_offset_y</definition>
+        <argsstring></argsstring>
+        <name>menu_offset_y</name>
+        <qualifiedname>Player::menu_offset_y</qualifiedname>
+        <initializer>= (<ref refid="namespace_player_1a5aafc46e1566a41091e8acf119327267" kindref="member">screen_height</ref> - <ref refid="options_8h_1aaa3f89d08a9fcf0af415b012b8138ebf" kindref="member">MENU_HEIGHT</ref>) / 2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The Y offset used to center UI in custom resolutions </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="108" column="5" bodyfile="player.cpp" bodystart="108" bodyend="-1" declfile="player.h" declline="357" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a1dba54b8542aee59947c023ba0031588" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Player::message_box_offset_x</definition>
+        <argsstring></argsstring>
+        <name>message_box_offset_x</name>
+        <qualifiedname>Player::message_box_offset_x</qualifiedname>
+        <initializer>= (<ref refid="namespace_player_1a425e5dd4f451a22e3dae2dcf195f3b8d" kindref="member">screen_width</ref> - <ref refid="options_8h_1ae64f028be3d52d84433789a433ba4034" kindref="member">MENU_WIDTH</ref>) / 2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The X offset used to center the MessageBox in custom resolutions </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="109" column="5" bodyfile="player.cpp" bodystart="109" bodyend="-1" declfile="player.h" declline="360" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a4a6934ed6f0c04003508cafecbbc047b" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Player::has_custom_resolution</definition>
+        <argsstring></argsstring>
+        <name>has_custom_resolution</name>
+        <qualifiedname>Player::has_custom_resolution</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Whether the game uses a custom WinW/WinH resolution </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="110" column="6" bodyfile="player.cpp" bodystart="110" bodyend="-1" declfile="player.h" declline="363" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a27b773d735aed1e799753b92299b6277" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Player::exit_code</definition>
+        <argsstring></argsstring>
+        <name>exit_code</name>
+        <qualifiedname>Player::exit_code</qualifiedname>
+        <initializer>= EXIT_SUCCESS</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Exit code (optionally indicting an error) when program terminates. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="111" column="5" bodyfile="player.cpp" bodystart="111" bodyend="-1" declfile="player.h" declline="333" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a4cb7afd83f8af3959c4127eda334fba4" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Player::exit_flag</definition>
+        <argsstring></argsstring>
+        <name>exit_flag</name>
+        <qualifiedname>Player::exit_flag</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Exit flag, if true will exit application on next <ref refid="namespace_player_1a9b5774e452ecd523753b964bc08c2984" kindref="member">Player::Update</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="112" column="6" bodyfile="player.cpp" bodystart="112" bodyend="-1" declfile="player.h" declline="336" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a15adec2824513a91177767628f47c84a" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Player::reset_flag</definition>
+        <argsstring></argsstring>
+        <name>reset_flag</name>
+        <qualifiedname>Player::reset_flag</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reset flag, if true will restart game on next <ref refid="namespace_player_1a9b5774e452ecd523753b964bc08c2984" kindref="member">Player::Update</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="113" column="6" bodyfile="player.cpp" bodystart="113" bodyend="-1" declfile="player.h" declline="339" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1aba45ae59d2ee62431220dd2446565529" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Player::debug_flag</definition>
+        <argsstring></argsstring>
+        <name>debug_flag</name>
+        <qualifiedname>Player::debug_flag</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Debug flag, if true will run game in debug mode. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="114" column="6" bodyfile="player.cpp" bodystart="114" bodyend="-1" declfile="player.h" declline="342" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a8996a3fcff3765c11c1935de2360ad58" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Player::hide_title_flag</definition>
+        <argsstring></argsstring>
+        <name>hide_title_flag</name>
+        <qualifiedname>Player::hide_title_flag</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Hide Title flag, if true title scene will run without image and music. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="115" column="6" bodyfile="player.cpp" bodystart="115" bodyend="-1" declfile="player.h" declline="345" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a18d9c43d0ffebfd82c997c4cc61f5e9b" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Player::load_game_id</definition>
+        <argsstring></argsstring>
+        <name>load_game_id</name>
+        <qualifiedname>Player::load_game_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>If set, savegame is loaded directly </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="116" column="5" bodyfile="player.cpp" bodystart="116" bodyend="-1" declfile="player.h" declline="378" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1ad5b82869921e5bf357dc31dfa7be4822" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Player::party_x_position</definition>
+        <argsstring></argsstring>
+        <name>party_x_position</name>
+        <qualifiedname>Player::party_x_position</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Overwrite party x position </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="117" column="5" bodyfile="player.cpp" bodystart="117" bodyend="-1" declfile="player.h" declline="366" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1aa4ae1b3f351f4d4b31d1fa8b879ae3e7" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Player::party_y_position</definition>
+        <argsstring></argsstring>
+        <name>party_y_position</name>
+        <qualifiedname>Player::party_y_position</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Overwrite party y position </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="118" column="5" bodyfile="player.cpp" bodystart="118" bodyend="-1" declfile="player.h" declline="369" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1ac05c84aed24cab42acb8c7d4becb5543" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt; int &gt; Player::party_members</definition>
+        <argsstring></argsstring>
+        <name>party_members</name>
+        <qualifiedname>Player::party_members</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Overwrite starting party members </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="119" column="13" bodyfile="player.cpp" bodystart="119" bodyend="-1" declfile="player.h" declline="372" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1aec7caa5c77f25a6d96132d6928ce1186" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Player::start_map_id</definition>
+        <argsstring></argsstring>
+        <name>start_map_id</name>
+        <qualifiedname>Player::start_map_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Overwrite start map </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="120" column="5" bodyfile="player.cpp" bodystart="120" bodyend="-1" declfile="player.h" declline="375" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a12e36af7d23d7b30126482c488880a76" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Player::no_rtp_flag</definition>
+        <argsstring></argsstring>
+        <name>no_rtp_flag</name>
+        <qualifiedname>Player::no_rtp_flag</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Prevent adding of <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> paths to the file finder </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="121" column="6" bodyfile="player.cpp" bodystart="121" bodyend="-1" declfile="player.h" declline="381" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a5e32a793bb62e7e2a93d0744a16cb2b7" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Player::rtp_path</definition>
+        <argsstring></argsstring>
+        <name>rtp_path</name>
+        <qualifiedname>Player::rtp_path</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="122" column="13" bodyfile="player.cpp" bodystart="122" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a7c92de1fb6acbff98411fd7fc480fd17" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Player::no_audio_flag</definition>
+        <argsstring></argsstring>
+        <name>no_audio_flag</name>
+        <qualifiedname>Player::no_audio_flag</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Mutes audio playback </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="123" column="6" bodyfile="player.cpp" bodystart="123" bodyend="-1" declfile="player.h" declline="384" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a9ebdb43ce87912a57890a79fb60ba23c" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Player::is_easyrpg_project</definition>
+        <argsstring></argsstring>
+        <name>is_easyrpg_project</name>
+        <qualifiedname>Player::is_easyrpg_project</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Is this project using EasyRPG files, or the RPG_RT format? </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="124" column="6" bodyfile="player.cpp" bodystart="124" bodyend="-1" declfile="player.h" declline="387" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a94c8dab462fe6c04595bb340861157c2" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Player::encoding</definition>
+        <argsstring></argsstring>
+        <name>encoding</name>
+        <qualifiedname>Player::encoding</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Encoding used </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="125" column="13" bodyfile="player.cpp" bodystart="125" bodyend="-1" declfile="player.h" declline="390" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a698134503593dd2c5e6f1f8fb567452f" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Player::escape_symbol</definition>
+        <argsstring></argsstring>
+        <name>escape_symbol</name>
+        <qualifiedname>Player::escape_symbol</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Backslash recoded to utf8 string </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="126" column="13" bodyfile="player.cpp" bodystart="126" bodyend="-1" declfile="player.h" declline="393" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a8a1df7619551552ccf3639363163d8c7" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t Player::escape_char</definition>
+        <argsstring></argsstring>
+        <name>escape_char</name>
+        <qualifiedname>Player::escape_char</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Backslash recoded to character </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="127" column="10" bodyfile="player.cpp" bodystart="127" bodyend="-1" declfile="player.h" declline="396" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1aea2eef97ac64432adb81c095dab376d9" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Player::game_title</definition>
+        <argsstring></argsstring>
+        <name>game_title</name>
+        <qualifiedname>Player::game_title</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Game title. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="128" column="13" bodyfile="player.cpp" bodystart="128" bodyend="-1" declfile="player.h" declline="408" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a96d18e059448631fa915ea278fce83bb" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Player::game_title_original</definition>
+        <argsstring></argsstring>
+        <name>game_title_original</name>
+        <qualifiedname>Player::game_title_original</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Original game title, in case it was overriden by a translation. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="129" column="13" bodyfile="player.cpp" bodystart="129" bodyend="-1" declfile="player.h" declline="411" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a3b86a0c715f99af94ee50935317021a2" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Player::shared_game_and_save_directory</definition>
+        <argsstring></argsstring>
+        <name>shared_game_and_save_directory</name>
+        <qualifiedname>Player::shared_game_and_save_directory</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Indicates whether <ref refid="namespace_file_finder_1a61591fb755d88f0c37a3bd804bf0af92" kindref="member">FileFinder::Game()</ref> and Save() point to the same directory. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="130" column="6" bodyfile="player.cpp" bodystart="130" bodyend="-1" declfile="player.h" declline="414" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a40407a7b65476ce24cee15a9d6d154c5" prot="public" static="no" mutable="no">
+        <type>std::shared_ptr&lt; <ref refid="class_meta" kindref="compound">Meta</ref> &gt;</type>
+        <definition>std::shared_ptr&lt; Meta &gt; Player::meta</definition>
+        <argsstring></argsstring>
+        <name>meta</name>
+        <qualifiedname>Player::meta</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_meta" kindref="compound">Meta</ref> class containing additional external data for this game. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="131" column="17" bodyfile="player.cpp" bodystart="131" bodyend="-1" declfile="player.h" declline="417" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a93be459c3cab969104e55401152ae643" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_file_ext_guesser_1_1_r_p_g2_k_file_ext_remap" kindref="compound">FileExtGuesser::RPG2KFileExtRemap</ref></type>
+        <definition>FileExtGuesser::RPG2KFileExtRemap Player::fileext_map</definition>
+        <argsstring></argsstring>
+        <name>fileext_map</name>
+        <qualifiedname>Player::fileext_map</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>File extension rewriter, for non-standard extensions. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="132" column="35" bodyfile="player.cpp" bodystart="132" bodyend="-1" declfile="player.h" declline="420" declcolumn="42"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a7b8b0e36e396da24782e2c37d244fe18" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Player::startup_language</definition>
+        <argsstring></argsstring>
+        <name>startup_language</name>
+        <qualifiedname>Player::startup_language</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="struct_language" kindref="compound">Language</ref> to use on game start (set via command line) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="133" column="13" bodyfile="player.cpp" bodystart="133" bodyend="-1" declfile="player.h" declline="423" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a1840a19f06595fb6dfac7efbe622b921" prot="public" static="no" mutable="no">
+        <type><ref refid="class_translation" kindref="compound">Translation</ref></type>
+        <definition>Translation Player::translation</definition>
+        <argsstring></argsstring>
+        <name>translation</name>
+        <qualifiedname>Player::translation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_translation" kindref="compound">Translation</ref> manager, including list of languages and current translation. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="134" column="13" bodyfile="player.cpp" bodystart="134" bodyend="-1" declfile="player.h" declline="426" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a326d368f42bda68cd66c997faa048a47" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Player::frames</definition>
+        <argsstring></argsstring>
+        <name>frames</name>
+        <qualifiedname>Player::frames</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="135" column="5" bodyfile="player.cpp" bodystart="135" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a6a7e42ac147f019b6634ba71031d4d07" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Player::replay_input_path</definition>
+        <argsstring></argsstring>
+        <name>replay_input_path</name>
+        <qualifiedname>Player::replay_input_path</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Path to replay input log from </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="136" column="13" bodyfile="player.cpp" bodystart="136" bodyend="-1" declfile="player.h" declline="399" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a2aceee9b3035c9bfeded646ceb1c8de1" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Player::record_input_path</definition>
+        <argsstring></argsstring>
+        <name>record_input_path</name>
+        <qualifiedname>Player::record_input_path</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Path to record input log to </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="137" column="13" bodyfile="player.cpp" bodystart="137" bodyend="-1" declfile="player.h" declline="402" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a9155aa01a158cb05b02f739f2060558c" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Player::command_line</definition>
+        <argsstring></argsstring>
+        <name>command_line</name>
+        <qualifiedname>Player::command_line</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The concatenated command line </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="138" column="13" bodyfile="player.cpp" bodystart="138" bodyend="-1" declfile="player.h" declline="405" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a21ba91792b84a5268beb46d2e4d16132" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Player::rng_seed</definition>
+        <argsstring></argsstring>
+        <name>rng_seed</name>
+        <qualifiedname>Player::rng_seed</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="139" column="5" bodyfile="player.cpp" bodystart="139" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a2fa263f42a616575d79f4c01456e6917" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_game___config_player" kindref="compound">Game_ConfigPlayer</ref></type>
+        <definition>Game_ConfigPlayer Player::player_config</definition>
+        <argsstring></argsstring>
+        <name>player_config</name>
+        <qualifiedname>Player::player_config</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The engine game logic configuration </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="140" column="19" bodyfile="player.cpp" bodystart="140" bodyend="-1" declfile="player.h" declline="431" declcolumn="26"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a9b8e5c0aed0a71920d8d240ab51aa273" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_game___config_game" kindref="compound">Game_ConfigGame</ref></type>
+        <definition>Game_ConfigGame Player::game_config</definition>
+        <argsstring></argsstring>
+        <name>game_config</name>
+        <qualifiedname>Player::game_config</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>game specific configuration </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="141" column="17" bodyfile="player.cpp" bodystart="141" bodyend="-1" declfile="player.h" declline="434" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a7bfd3112ee5aa2faf79a22f456390d7b" prot="public" static="no" mutable="no">
+        <type><ref refid="class_game___clock_1a7da5a97294e9d1b3dddb617d90eea63e" kindref="member">Game_Clock::time_point</ref></type>
+        <definition>Game_Clock::time_point Player::last_auto_screenshot</definition>
+        <argsstring></argsstring>
+        <name>last_auto_screenshot</name>
+        <qualifiedname>Player::last_auto_screenshot</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.cpp" line="145" column="24" bodyfile="player.cpp" bodystart="145" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1a6872d8f20b93a114c837f3ea10bf6d2f" prot="public" static="no" mutable="no">
+        <type>lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags</type>
+        <definition>lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags Player::interpreter_default_flags</definition>
+        <argsstring></argsstring>
+        <name>interpreter_default_flags</name>
+        <qualifiedname>Player::interpreter_default_flags</qualifiedname>
+        <initializer>{}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="442" column="64" bodyfile="player.h" bodystart="442" bodyend="442"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_player_1ac065b29e819c69e58af20f04c063da5d" prot="public" static="no" mutable="no">
+        <type>lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags *</type>
+        <definition>lcf::rpg::SaveEventExecState::EasyRpgStateRuntime_Flags* Player::active_interpreter_flags</definition>
+        <argsstring></argsstring>
+        <name>active_interpreter_flags</name>
+        <qualifiedname>Player::active_interpreter_flags</qualifiedname>
+        <initializer>= &amp;<ref refid="namespace_player_1a6872d8f20b93a114c837f3ea10bf6d2f" kindref="member">interpreter_default_flags</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="443" column="64" bodyfile="player.h" bodystart="443" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_player_1ab02c78f3a03a325f9f6bdc0c5f8c5e5e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::Init</definition>
+        <argsstring>(std::vector&lt; std::string &gt; arguments)</argsstring>
+        <name>Init</name>
+        <qualifiedname>Player::Init</qualifiedname>
+        <param>
+          <type>std::vector&lt; std::string &gt;</type>
+          <declname>arguments</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes EasyRPG <ref refid="namespace_player" kindref="compound">Player</ref>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>arguments</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Array of command line arguments </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="69" column="6" bodyfile="player.cpp" bodystart="159" bodyend="211" declfile="player.h" declline="69" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1af2475f5d5e1e676deb9762b2a0b0ecc1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::Run</definition>
+        <argsstring>()</argsstring>
+        <name>Run</name>
+        <qualifiedname>Player::Run</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Runs the game engine. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="74" column="6" bodyfile="player.cpp" bodystart="213" bodyend="232" declfile="player.h" declline="74" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1ae2a3be30462d0ca038f183131a655e1d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::MainLoop</definition>
+        <argsstring>()</argsstring>
+        <name>MainLoop</name>
+        <qualifiedname>Player::MainLoop</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Runs the game loop. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="79" column="6" bodyfile="player.cpp" bodystart="234" bodyend="301" declfile="player.h" declline="79" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1af36f2beab72be1c51c622e64a6955c95" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::Pause</definition>
+        <argsstring>()</argsstring>
+        <name>Pause</name>
+        <qualifiedname>Player::Pause</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Pauses the game engine. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="84" column="6" bodyfile="player.cpp" bodystart="303" bodyend="306" declfile="player.h" declline="84" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a3d893d2dd05fe51d0425bdf9225e2971" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::Resume</definition>
+        <argsstring>()</argsstring>
+        <name>Resume</name>
+        <qualifiedname>Player::Resume</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Resumes the game engine. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="89" column="6" bodyfile="player.cpp" bodystart="308" bodyend="313" declfile="player.h" declline="89" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a9b5774e452ecd523753b964bc08c2984" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::Update</definition>
+        <argsstring>(bool update_scene=true)</argsstring>
+        <name>Update</name>
+        <qualifiedname>Player::Update</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>update_scene</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates EasyRPG <ref refid="namespace_player" kindref="compound">Player</ref>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>update_scene</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to update the current scene. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="96" column="6" bodyfile="player.cpp" bodystart="344" bodyend="398" declfile="player.h" declline="96" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1aac8f0b10c1e85770a76f9def948f17c1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::UpdateInput</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateInput</name>
+        <qualifiedname>Player::UpdateInput</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Process input events </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="101" column="6" bodyfile="player.cpp" bodystart="315" bodyend="342" declfile="player.h" declline="101" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a00ae3ebe88af8f9cfabd819176516a73" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::Draw</definition>
+        <argsstring>()</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Player::Draw</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Renders EasyRPG <ref refid="namespace_player" kindref="compound">Player</ref> state to the screen </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="106" column="6" bodyfile="player.cpp" bodystart="400" bodyend="404" declfile="player.h" declline="106" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1af106d974fb48673306f1f0045aa618af" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Player::GetFrames</definition>
+        <argsstring>()</argsstring>
+        <name>GetFrames</name>
+        <qualifiedname>Player::GetFrames</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns executed game frames since player start. Should be 60 fps when game ran fast enough.</para>
+<para><simplesect kind="return"><para>Update frames since player start </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="114" column="5" bodyfile="player.cpp" bodystart="413" bodyend="415" declfile="player.h" declline="114" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a93e1091bf5c7b499379cde82da4b7094" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::IncFrame</definition>
+        <argsstring>()</argsstring>
+        <name>IncFrame</name>
+        <qualifiedname>Player::IncFrame</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Increment the frame counters. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="119" column="6" bodyfile="player.cpp" bodystart="406" bodyend="411" declfile="player.h" declline="119" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a0c4b91c31efa7ad78c0aaad36ec8ffec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::Exit</definition>
+        <argsstring>()</argsstring>
+        <name>Exit</name>
+        <qualifiedname>Player::Exit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Exits EasyRPG <ref refid="namespace_player" kindref="compound">Player</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="124" column="6" bodyfile="player.cpp" bodystart="417" bodyend="440" declfile="player.h" declline="124" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a1bdf629f6584e09dd44002df04df140a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_game___config" kindref="compound">Game_Config</ref></type>
+        <definition>Game_Config Player::ParseCommandLine</definition>
+        <argsstring>()</argsstring>
+        <name>ParseCommandLine</name>
+        <qualifiedname>Player::ParseCommandLine</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Parses the command line arguments. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="129" column="13" bodyfile="player.cpp" bodystart="442" bodyend="692" declfile="player.h" declline="129" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a1008973f0b9858ccb35650a776846cc8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::CreateGameObjects</definition>
+        <argsstring>()</argsstring>
+        <name>CreateGameObjects</name>
+        <qualifiedname>Player::CreateGameObjects</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes all game objects </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="134" column="6" bodyfile="player.cpp" bodystart="694" bodyend="867" declfile="player.h" declline="134" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1ac08d9f95c80b66892a2b826c81a80cb7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::ChangeResolution</definition>
+        <argsstring>(int width, int height)</argsstring>
+        <name>ChangeResolution</name>
+        <qualifiedname>Player::ChangeResolution</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Change the resolution of the <ref refid="namespace_player" kindref="compound">Player</ref></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>width</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new width </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>height</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new height </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the resolution change was successful </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="143" column="6" bodyfile="player.cpp" bodystart="892" bodyend="912" declfile="player.h" declline="143" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a456fc9fc2e39bcdbc75662b46eb509c0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::RestoreBaseResolution</definition>
+        <argsstring>()</argsstring>
+        <name>RestoreBaseResolution</name>
+        <qualifiedname>Player::RestoreBaseResolution</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Restore the resolution of the <ref refid="namespace_player" kindref="compound">Player</ref> on the base resolution (usually 320x240) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="148" column="6" bodyfile="player.cpp" bodystart="914" bodyend="923" declfile="player.h" declline="148" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a2042dd7a898d1c817e7b23f38e9f2496" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::ResetGameObjects</definition>
+        <argsstring>()</argsstring>
+        <name>ResetGameObjects</name>
+        <qualifiedname>Player::ResetGameObjects</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Resets all game objects. Faster then CreateGameObjects because the database is not reparsed. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="154" column="6" bodyfile="player.cpp" bodystart="925" bodyend="980" declfile="player.h" declline="154" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a079a6b84363cab437b6bf118015201e0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::GuessNonStandardExtensions</definition>
+        <argsstring>()</argsstring>
+        <name>GuessNonStandardExtensions</name>
+        <qualifiedname>Player::GuessNonStandardExtensions</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determine if the LDB and LMT files are not present, and if so, guess if they may have been renamed. Populates fileext_map. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="160" column="6" bodyfile="player.cpp" bodystart="991" bodyend="1021" declfile="player.h" declline="160" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a50c8a30703051ac6f300454495cc60ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::LoadDatabase</definition>
+        <argsstring>()</argsstring>
+        <name>LoadDatabase</name>
+        <qualifiedname>Player::LoadDatabase</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Loads all databases. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="165" column="6" bodyfile="player.cpp" bodystart="1023" bodyend="1107" declfile="player.h" declline="165" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1af8cc1b349e7ad449d75d7deeca6248ec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::LoadFonts</definition>
+        <argsstring>()</argsstring>
+        <name>LoadFonts</name>
+        <qualifiedname>Player::LoadFonts</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Loads the default fonts for text rendering. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="170" column="6" bodyfile="player.cpp" bodystart="1109" bodyend="1132" declfile="player.h" declline="170" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a8c4f3ace1ddf8426b62d90f8edcbb13e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::LoadSavegame</definition>
+        <argsstring>(const std::string &amp;save_file, int save_id=0)</argsstring>
+        <name>LoadSavegame</name>
+        <qualifiedname>Player::LoadSavegame</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>save_file</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>save_id</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Loads savegame data.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>save_file</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Savegame file to load </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>save_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of the savegame to load </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="178" column="6" bodyfile="player.cpp" bodystart="1147" bodyend="1252" declfile="player.h" declline="178" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1acc601b4402c40227b38207cb0e7c5297" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::SetupNewGame</definition>
+        <argsstring>()</argsstring>
+        <name>SetupNewGame</name>
+        <qualifiedname>Player::SetupNewGame</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Starts a new game </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="183" column="6" bodyfile="player.cpp" bodystart="1271" bodyend="1284" declfile="player.h" declline="183" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1abdcbff993a31c073756a73a3f39e32eb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::SetupBattleTest</definition>
+        <argsstring>()</argsstring>
+        <name>SetupBattleTest</name>
+        <qualifiedname>Player::SetupBattleTest</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Starts a new game </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="188" column="6" bodyfile="player.cpp" bodystart="1295" bodyend="1327" declfile="player.h" declline="188" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a87a3ab1d618c2c46461a103f69f7a630" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::SetupPlayerSpawn</definition>
+        <argsstring>()</argsstring>
+        <name>SetupPlayerSpawn</name>
+        <qualifiedname>Player::SetupPlayerSpawn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Moves the player to the start map. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="193" column="6" bodyfile="player.cpp" bodystart="1286" bodyend="1293" declfile="player.h" declline="193" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1ac817c6dea115a11be04a233f52309744" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Player::GetEncoding</definition>
+        <argsstring>()</argsstring>
+        <name>GetEncoding</name>
+        <qualifiedname>Player::GetEncoding</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets current codepage.</para>
+<para><simplesect kind="return"><para>current codepage </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="200" column="13" bodyfile="player.cpp" bodystart="1329" bodyend="1419" declfile="player.h" declline="200" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a0cb7a804ac9416a777f83383c8291df7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsRPG2k</definition>
+        <argsstring>()</argsstring>
+        <name>IsRPG2k</name>
+        <qualifiedname>Player::IsRPG2k</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>If engine is any version of RPG2k </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="203" column="6" bodyfile="player.h" bodystart="449" bodyend="451" declfile="player.h" declline="203" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a1ef9f3a271b883dbb5d37e257d63195d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsRPG2k3</definition>
+        <argsstring>()</argsstring>
+        <name>IsRPG2k3</name>
+        <qualifiedname>Player::IsRPG2k3</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>If engine is any version of RPG2k3 </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="206" column="6" bodyfile="player.h" bodystart="453" bodyend="455" declfile="player.h" declline="206" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1ae433a4385cbfffc9989ee2bdcae99c07" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsRPG2kLegacy</definition>
+        <argsstring>()</argsstring>
+        <name>IsRPG2kLegacy</name>
+        <qualifiedname>Player::IsRPG2kLegacy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>If engine is RPG2k &lt;= 1.10 </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="209" column="6" bodyfile="player.h" bodystart="457" bodyend="459" declfile="player.h" declline="209" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1acf55afb61f3cbc006cbdf75c486c6c2d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsRPG2k3Legacy</definition>
+        <argsstring>()</argsstring>
+        <name>IsRPG2k3Legacy</name>
+        <qualifiedname>Player::IsRPG2k3Legacy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>If engine is RPG2k3 &lt;= v1.04 </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="212" column="6" bodyfile="player.h" bodystart="461" bodyend="463" declfile="player.h" declline="212" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a081e47245979efd63f2e3c56f375d59e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsRPG2kUpdated</definition>
+        <argsstring>()</argsstring>
+        <name>IsRPG2kUpdated</name>
+        <qualifiedname>Player::IsRPG2kUpdated</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>If engine is RPG2k &gt;= 1.50 </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="215" column="6" bodyfile="player.h" bodystart="477" bodyend="479" declfile="player.h" declline="215" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a6bfdac1759f5cc2d6cb5c1a312b8e85d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsRPG2k3Updated</definition>
+        <argsstring>()</argsstring>
+        <name>IsRPG2k3Updated</name>
+        <qualifiedname>Player::IsRPG2k3Updated</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>If engine is RPG2k3 &gt;= 1.05 </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="218" column="6" bodyfile="player.h" bodystart="481" bodyend="483" declfile="player.h" declline="218" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a22735037081f56bdc67039b1f1ec5bcb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsRPG2kE</definition>
+        <argsstring>()</argsstring>
+        <name>IsRPG2kE</name>
+        <qualifiedname>Player::IsRPG2kE</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>If engine is the official English RM2k release v.1.61 or newer. False if engine is RM2k3, Japanese, unofficial or v.1.60. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="224" column="6" bodyfile="player.h" bodystart="485" bodyend="487" declfile="player.h" declline="224" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a3b44a0a682375ec2690c79ad603943b2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsRPG2k3E</definition>
+        <argsstring>()</argsstring>
+        <name>IsRPG2k3E</name>
+        <qualifiedname>Player::IsRPG2k3E</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>If engine is the official English RM2k3 release (v1.10) or newer. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="227" column="6" bodyfile="player.h" bodystart="489" bodyend="491" declfile="player.h" declline="227" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1aa14251a2d451a2be75b2a0f77b5af30c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsLegacy</definition>
+        <argsstring>()</argsstring>
+        <name>IsLegacy</name>
+        <qualifiedname>Player::IsLegacy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>If engine is RPG2kLegacy() or RPG2k3Legacy() </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="230" column="6" bodyfile="player.h" bodystart="465" bodyend="467" declfile="player.h" declline="230" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a3ff59209fa7abfd7b7a1b5d463739cc3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsMajorUpdatedVersion</definition>
+        <argsstring>()</argsstring>
+        <name>IsMajorUpdatedVersion</name>
+        <qualifiedname>Player::IsMajorUpdatedVersion</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>If engine is RPG2kUpdated() or RPG2k3Updated() </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="233" column="6" bodyfile="player.h" bodystart="469" bodyend="471" declfile="player.h" declline="233" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a3d8638fe53b8db328dbcdc8f6c8f2c03" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsEnglish</definition>
+        <argsstring>()</argsstring>
+        <name>IsEnglish</name>
+        <qualifiedname>Player::IsEnglish</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>If engine is the official English release (and not RM2k v.1.60, which is hard to detect). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="239" column="6" bodyfile="player.h" bodystart="473" bodyend="475" declfile="player.h" declline="239" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1af1b418ce993fa620268fec0b6e00d887" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsCP932</definition>
+        <argsstring>()</argsstring>
+        <name>IsCP932</name>
+        <qualifiedname>Player::IsCP932</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if encoding is CP932 (Shift-JIS, used for Japanese), false if not </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="245" column="6" bodyfile="player.cpp" bodystart="1430" bodyend="1436" declfile="player.h" declline="245" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a970216f0a07881d692f78854f67db0d3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsCP949</definition>
+        <argsstring>()</argsstring>
+        <name>IsCP949</name>
+        <qualifiedname>Player::IsCP949</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if encoding is CP949 (used for Korean), false if not </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="251" column="6" bodyfile="player.cpp" bodystart="1438" bodyend="1444" declfile="player.h" declline="251" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1ac24e7dadce7babb7c0060a73ae29cd73" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsBig5</definition>
+        <argsstring>()</argsstring>
+        <name>IsBig5</name>
+        <qualifiedname>Player::IsBig5</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if encoding is Big5 (CP950, used for Traditional Chinese), false if not </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="257" column="6" bodyfile="player.cpp" bodystart="1446" bodyend="1452" declfile="player.h" declline="257" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1aee99078dad3755453fca002431c7b0b5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsCP936</definition>
+        <argsstring>()</argsstring>
+        <name>IsCP936</name>
+        <qualifiedname>Player::IsCP936</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if encoding is CP936 (used for Simplified Chinese) or false if not </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="263" column="6" bodyfile="player.cpp" bodystart="1454" bodyend="1460" declfile="player.h" declline="263" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a30858fc9ee74143c3daa14a81ed56060" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsCJK</definition>
+        <argsstring>()</argsstring>
+        <name>IsCJK</name>
+        <qualifiedname>Player::IsCJK</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if game is in Chinese, Japanese, or Korean (based on the encoding), false otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="269" column="6" bodyfile="player.cpp" bodystart="1462" bodyend="1464" declfile="player.h" declline="269" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1af4a0ef9cba969074d341fbdf5b4dbc44" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsCP1251</definition>
+        <argsstring>()</argsstring>
+        <name>IsCP1251</name>
+        <qualifiedname>Player::IsCP1251</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if encoding is CP1251 (used for languages written in Cyrillic script) or false if not </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="275" column="6" bodyfile="player.cpp" bodystart="1466" bodyend="1472" declfile="player.h" declline="275" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a7f608a5cfd53d9d56e875e0268881c8e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsRPG2k3Commands</definition>
+        <argsstring>()</argsstring>
+        <name>IsRPG2k3Commands</name>
+        <qualifiedname>Player::IsRPG2k3Commands</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true when engine is 2k3 or the 2k3-commands patch is enabled </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="278" column="6" bodyfile="player.h" bodystart="493" bodyend="500" declfile="player.h" declline="278" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a6b1eeb62b758a81d43a84236ca77eab0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsRPG2k3ECommands</definition>
+        <argsstring>()</argsstring>
+        <name>IsRPG2k3ECommands</name>
+        <qualifiedname>Player::IsRPG2k3ECommands</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true when engine is 2k3e or the 2k3-commands patch is enabled </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="281" column="6" bodyfile="player.h" bodystart="502" bodyend="509" declfile="player.h" declline="281" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a5892b3aa8bc1948fb79322c74a637636" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsPatchDynRpg</definition>
+        <argsstring>()</argsstring>
+        <name>IsPatchDynRpg</name>
+        <qualifiedname>Player::IsPatchDynRpg</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True when the DynRPG patch is active </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="286" column="6" bodyfile="player.h" bodystart="511" bodyend="518" declfile="player.h" declline="286" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a47d79757ad7abde4837017350c76acdc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsPatchManiac</definition>
+        <argsstring>()</argsstring>
+        <name>IsPatchManiac</name>
+        <qualifiedname>Player::IsPatchManiac</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True when the Maniac Patch is active </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="291" column="6" bodyfile="player.h" bodystart="520" bodyend="527" declfile="player.h" declline="291" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a2c2f583a65c45b740ba712e3f47c3d33" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsPatchKeyPatch</definition>
+        <argsstring>()</argsstring>
+        <name>IsPatchKeyPatch</name>
+        <qualifiedname>Player::IsPatchKeyPatch</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True when Ineluki Key Patch is active </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="296" column="6" bodyfile="player.h" bodystart="529" bodyend="536" declfile="player.h" declline="296" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a04b6d4f4fc8592ae2eca091317e06396" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsPatchDestiny</definition>
+        <argsstring>()</argsstring>
+        <name>IsPatchDestiny</name>
+        <qualifiedname>Player::IsPatchDestiny</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True when <ref refid="namespace_destiny" kindref="compound">Destiny</ref> Patch is active </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="301" column="6" bodyfile="player.h" bodystart="538" bodyend="545" declfile="player.h" declline="301" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a2448f5cc9f604e53da94655d8847a938" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsPatchCommonThisEvent</definition>
+        <argsstring>()</argsstring>
+        <name>IsPatchCommonThisEvent</name>
+        <qualifiedname>Player::IsPatchCommonThisEvent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="303" column="6" bodyfile="player.h" bodystart="547" bodyend="554" declfile="player.h" declline="303" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1abb315c63468c16d1f7f0e2c9a9499d39" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::IsPatchUnlockPics</definition>
+        <argsstring>()</argsstring>
+        <name>IsPatchUnlockPics</name>
+        <qualifiedname>Player::IsPatchUnlockPics</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="305" column="6" bodyfile="player.h" bodystart="556" bodyend="563" declfile="player.h" declline="305" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1ad7770aeb3aa010db0dd97c01ca1cb3db" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Player::HasEasyRpgExtensions</definition>
+        <argsstring>()</argsstring>
+        <name>HasEasyRpgExtensions</name>
+        <qualifiedname>Player::HasEasyRpgExtensions</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True when EasyRpg extensions are on </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="310" column="6" bodyfile="player.h" bodystart="565" bodyend="567" declfile="player.h" declline="310" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a1dcf218769b7f1efbc7375883bb198d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::UpdateTitle</definition>
+        <argsstring>(std::string new_game_title)</argsstring>
+        <name>UpdateTitle</name>
+        <qualifiedname>Player::UpdateTitle</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>new_game_title</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Update the game title displayed in the <ref refid="namespace_player" kindref="compound">Player</ref>&apos;s UI </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="315" column="6" bodyfile="player.cpp" bodystart="869" bodyend="890" declfile="player.h" declline="315" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a5f41c54c65bb4f165ed8eeedabf07975" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Player::EngineVersion</definition>
+        <argsstring>()</argsstring>
+        <name>EngineVersion</name>
+        <qualifiedname>Player::EngineVersion</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Running engine version. 2000 for RPG2k and 2003 for RPG2k3 </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="320" column="5" bodyfile="player.cpp" bodystart="1474" bodyend="1478" declfile="player.h" declline="320" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a73575288af57f30a05cb532997f892bc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Player::GetEngineVersion</definition>
+        <argsstring>()</argsstring>
+        <name>GetEngineVersion</name>
+        <qualifiedname>Player::GetEngineVersion</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="321" column="13" bodyfile="player.cpp" bodystart="1480" bodyend="1483" declfile="player.h" declline="321" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1aaf6dba8b8f1291f58aec6732802e1aeb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Player::GetFullVersionString</definition>
+        <argsstring>()</argsstring>
+        <name>GetFullVersionString</name>
+        <qualifiedname>Player::GetFullVersionString</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>full version string </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="324" column="13" bodyfile="player.cpp" bodystart="1421" bodyend="1423" declfile="player.h" declline="324" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a6de8b997d308666c14f68857461ce309" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::PrintUsage</definition>
+        <argsstring>()</argsstring>
+        <name>PrintUsage</name>
+        <qualifiedname>Player::PrintUsage</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="namespace_output" kindref="compound">Output</ref> program usage information on stdout </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="327" column="6" bodyfile="player.cpp" bodystart="1425" bodyend="1428" declfile="player.h" declline="327" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a78d62d31a09182be0ec3b16dfbab7660" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Player::SetTargetFps</definition>
+        <argsstring>(int fps)</argsstring>
+        <name>SetTargetFps</name>
+        <qualifiedname>Player::SetTargetFps</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>fps</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the desired rendering frames per second </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="330" column="6" declfile="player.h" declline="330" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_player_1a6c0c0a5a417a0101773f6f60272c7ac4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::optional&lt; bool &gt;</type>
+        <definition>std::optional&lt; bool &gt; Player::GetRuntimeFlag</definition>
+        <argsstring>(Game_Interpreter_Shared::StateRuntimeFlagRef field_on, Game_Interpreter_Shared::StateRuntimeFlagRef field_off)</argsstring>
+        <name>GetRuntimeFlag</name>
+        <qualifiedname>Player::GetRuntimeFlag</qualifiedname>
+        <param>
+          <type><ref refid="namespace_game___interpreter___shared_1aa988fbaba0ebd6cdb28a6222e1ef2575" kindref="member">Game_Interpreter_Shared::StateRuntimeFlagRef</ref></type>
+          <declname>field_on</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_game___interpreter___shared_1aa988fbaba0ebd6cdb28a6222e1ef2575" kindref="member">Game_Interpreter_Shared::StateRuntimeFlagRef</ref></type>
+          <declname>field_off</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="player.h" line="445" column="15" bodyfile="player.h" bodystart="570" bodyend="576" declfile="player.h" declline="445" declcolumn="15"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="namespace_player" kindref="compound">Player</ref> namespace. </para>
+    </detaileddescription>
+    <location file="player.cpp" line="104" column="1"/>
+  </compounddef>
+</doxygen>

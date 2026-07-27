@@ -71,3 +71,4 @@ LUAI_FUNC size_t luaS_sizelngstr (size_t len, int kind);
 LUAI_FUNC TString *luaS_normstr (lua_State *L, TString *ts);
 
 #endif
+

@@ -1,0 +1,1316 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_input_1_1_keys" kind="namespace" language="C++">
+    <compoundname>Input::Keys</compoundname>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8" prot="public" static="no" strong="no">
+        <type>uint8_t</type>
+        <name>InputKey</name>
+        <qualifiedname>Input::Keys::InputKey</qualifiedname>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aed11ae1e742f6795f55d044e1af085d3" prot="public">
+          <name>NONE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ade5620fec17c6291c03bfcd663f724ec" prot="public">
+          <name>BACKSPACE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a050021f80bfcd5bf65bdf3a7f38be28e" prot="public">
+          <name>TAB</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a103cc12f15bdbe9125bf6ddda48c1286" prot="public">
+          <name>CLEAR</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92387aac0cb93cc33e3eed8617bc6a82" prot="public">
+          <name>RETURN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a78a9572c77d5e4fc04cdee09ff0837fb" prot="public">
+          <name>PAUSE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a165e162b99371ca6bc63722e1e3225dd" prot="public">
+          <name>ESCAPE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a5c9f8e2646dac6d820168a3d62284c8b" prot="public">
+          <name>SPACE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8abd8114d7e04881bf1010a6e8acaa1971" prot="public">
+          <name>PGUP</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ab3886ef864a10f402b51618d3d7dccd0" prot="public">
+          <name>PGDN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8af6c24e2f2706fba2b73d755b88c7f279" prot="public">
+          <name>ENDS</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ac04ecfbc4ebe17a8daadc7257de1e961" prot="public">
+          <name>HOME</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8acae220b3bb0eafdab52bd67dc1adfb8c" prot="public">
+          <name>LEFT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8adfe30ed664bd441ead4ce0a58568229a" prot="public">
+          <name>UP</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aa9e386af9f1781613ee282b27b1271ed" prot="public">
+          <name>RIGHT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a56a3d71e79cc18b213f0c10b088938d1" prot="public">
+          <name>DOWN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a11d07e36b167c2fbaa8e96917caf700a" prot="public">
+          <name>SNAPSHOT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ad132a219660497a5624793f5a78532d0" prot="public">
+          <name>INSERT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a294c7a291c08c1f022f939e65ca8b623" prot="public">
+          <name>DEL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a9038c7c210584cc4b9c5f29d93a92b1b" prot="public">
+          <name>SHIFT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a6d63a4fd7cfee4e6cb54603363597203" prot="public">
+          <name>LSHIFT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a80539fed7cadd97f8252adca90b11c23" prot="public">
+          <name>RSHIFT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a79569dacf2698bbe1c371b1839036480" prot="public">
+          <name>CTRL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a655f66c2b558192391d6415cf7951e01" prot="public">
+          <name>LCTRL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a429a166ce1b52f4cc46a9db350674a6f" prot="public">
+          <name>RCTRL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a02968e937390bf6083ca63e8b1dd95ff" prot="public">
+          <name>ALT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ad3cd01aacaa7301d9d8a6ea1136c6471" prot="public">
+          <name>LALT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a9ec2f4306c5c88b873fc6ad7a5239f1e" prot="public">
+          <name>RALT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ab01fcf5cd29736e138d2728453ae3693" prot="public">
+          <name>N0</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a10ab4aea461def15927995598fab138e" prot="public">
+          <name>N1</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a721b8bb4701f42cdaa87f52a8d56be15" prot="public">
+          <name>N2</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a87525d98257e11958652bd3b79bbe234" prot="public">
+          <name>N3</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ae874cd9e03f2a04bfb8a7577a7fe64d2" prot="public">
+          <name>N4</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a97c3bf525afdae3ccc56d560d52b376f" prot="public">
+          <name>N5</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a58e971712f62e8897aadcb6d371e20ff" prot="public">
+          <name>N6</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8acf39d119f9926d9bf1ec6abe27c16cbb" prot="public">
+          <name>N7</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a3f9e551805075ce72964129738d7887a" prot="public">
+          <name>N8</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a6288e5be0b7c202b107dd0e05df31227" prot="public">
+          <name>N9</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aa6ec79e1d8c5a2f6c17743f753458f32" prot="public">
+          <name>A</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a61185dd20d58a532880a1e7f2420895d" prot="public">
+          <name>B</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ace9eadfb979375527b9315ca7e3ca7a5" prot="public">
+          <name>C</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2f8d7f185272bc3b6821b17fe2079085" prot="public">
+          <name>D</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ab6dbc09d550eae3687559a4e7bc31ee9" prot="public">
+          <name>E</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a260da1cfd7726a3e09b7670babfba47c" prot="public">
+          <name>F</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2d7a31d54faf341245297dd25ad09c7b" prot="public">
+          <name>G</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a53770b8df77a26f958ace90aa6882dd8" prot="public">
+          <name>H</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a38a925acf5b97d6fb0ccdce684da279d" prot="public">
+          <name>I</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a4a93c6f59f8344fd967e1fb428d1ae6c" prot="public">
+          <name>J</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a7437a2a76b6765d13c75e62f8b7af819" prot="public">
+          <name>K</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a076002258aeaaa674bb44896d5167c65" prot="public">
+          <name>L</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8afb0eef1f3c62aa5811e93ce078089513" prot="public">
+          <name>M</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aada90ee0569caf13b34d855e46301ab5" prot="public">
+          <name>N</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a269dfc91d2bc2ab83d8ec6e291f27f04" prot="public">
+          <name>O</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8add67e858d4bc33372ca55ff6bcfd7ac6" prot="public">
+          <name>P</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a5ccee1c93129c3ff3728895e06a070e4" prot="public">
+          <name>Q</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aa1d869560fdde1ac0e0420c2771310f8" prot="public">
+          <name>R</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a92c46a9a9a915c10612f89ddc0484dce" prot="public">
+          <name>S</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a01b453e19b44a2e02bffd107d6e39574" prot="public">
+          <name>T</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aba44225304a9302fcf0db05cb95be6cf" prot="public">
+          <name>U</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aba5e35c61357ae9bb34a70dbbcc8eaa2" prot="public">
+          <name>V</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ad61f4d7712c55382a4fd8703e9bdc8cd" prot="public">
+          <name>W</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ac8718b7f930573dd1ea7884a0a055aa1" prot="public">
+          <name>X</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a010c30492424da76981f9266e69928e6" prot="public">
+          <name>Y</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a0462f75a2f3b905d33c238bed3947b88" prot="public">
+          <name>Z</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ad4f5a037f2dce5a9c304dec322818bcd" prot="public">
+          <name>LOS</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ab08112a303d1e0f30966f4d8c51a6470" prot="public">
+          <name>ROS</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8afcb116fac07adbf2e4d8116f866a8bbc" prot="public">
+          <name>MENU</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a9b13a5c54e87c63ced13cfa3acf483a9" prot="public">
+          <name>KP0</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aa824b62e3a87e4dd900d91182514cce3" prot="public">
+          <name>KP1</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8acfa5ab43175644ddad7f76d6a34ca24d" prot="public">
+          <name>KP2</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a4d4e8d880bdd78499d4b8ddf9f087007" prot="public">
+          <name>KP3</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a6367d6bc0afd007a5017b87ba804d96b" prot="public">
+          <name>KP4</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aac42265486c137cf259584060e7c2448" prot="public">
+          <name>KP5</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2aa3b67bda4a535dc3cdba38f36e869d" prot="public">
+          <name>KP6</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a690c99c91ea2412e71647a16cb1b77a3" prot="public">
+          <name>KP7</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a5b877252a370f1cf50305ee6a50aa358" prot="public">
+          <name>KP8</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8af19962c406fc928858610c20cf06e5a3" prot="public">
+          <name>KP9</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a0ffaa4d8dece3a063d6e2ec79465d842" prot="public">
+          <name>KP_MULTIPLY</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a811b6eae84be42cdea3ecd31d849505c" prot="public">
+          <name>KP_ADD</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a52e40a97d9a1d7ff5fc84a019a41af98" prot="public">
+          <name>KP_SUBTRACT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a159c1b66ea10e167e381baad5a6201bc" prot="public">
+          <name>KP_PERIOD</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8adabc9361c58345d5151bea02f29d2e41" prot="public">
+          <name>KP_DIVIDE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a8bafe5cfa0fc16b630562dd9f53d2f17" prot="public">
+          <name>COMMA</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a5c8b127e79f9f7ecb1156fd5e84930f2" prot="public">
+          <name>PERIOD</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a5447cff4824e08f208559637906d2b2c" prot="public">
+          <name>SLASH</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a25ac39b6cec3c19292a513ac69752384" prot="public">
+          <name>F1</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a1b59d092284a5cee111833046fc958fa" prot="public">
+          <name>F2</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a95a40c525dd06c1457256cbc3d2f61de" prot="public">
+          <name>F3</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a8405603c6b2f73f090b81365db3ea0ad" prot="public">
+          <name>F4</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a7002ad163bb737561a54f274b8ce2df8" prot="public">
+          <name>F5</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a0f468d6dd7ca7f3bcccfa0f0040667cf" prot="public">
+          <name>F6</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a4f153c1c1d91446b140d2b370666a4f1" prot="public">
+          <name>F7</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a7349318c6930472b555aa4b9d06a93e6" prot="public">
+          <name>F8</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ad0f5892a6a522355b09f695c04c5cb98" prot="public">
+          <name>F9</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8afda41db6d452c29a16e19c76c3893e88" prot="public">
+          <name>F10</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a13921b7c59aebcd5115294915b60061a" prot="public">
+          <name>F11</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a19a2c6c96289fd7dcb5a9c0d782f2ce1" prot="public">
+          <name>F12</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ad3c595d3d5a87f4f02a62844182e5e91" prot="public">
+          <name>CAPS_LOCK</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a59d281883702a2d586592a4e70a7bb9a" prot="public">
+          <name>NUM_LOCK</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a37c65561e0c43401e212a78f1d3a2fc4" prot="public">
+          <name>SCROLL_LOCK</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a1b312f6f3df32b787aca7b42fa21cd3e" prot="public">
+          <name>AC_BACK</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a078c465d8830079ca808d0f0c69ef4a3" prot="public">
+          <name>SELECT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aee352852d312e4f5b43eee15e8aba797" prot="public">
+          <name>LEFT_BRACKET</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ad72fef9d24822ae12a5d82373eda169c" prot="public">
+          <name>RIGHT_BRACKET</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ade90e31c8884f497210680e01e7bb12c" prot="public">
+          <name>BACKSLASH</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a41379887daab4fc730392e2ca6fb061f" prot="public">
+          <name>SEMICOLON</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ac36137fdce7555c316af13d0f7c77bcc" prot="public">
+          <name>APOSTROPH</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a48255c17f9b805e51334418e03c07f4d" prot="public">
+          <name>MOUSE_LEFT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2f0794b87011c8f9a59e940d9c63f8f1" prot="public">
+          <name>MOUSE_RIGHT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a3851c4aefc7a718808707d80a2365d43" prot="public">
+          <name>MOUSE_MIDDLE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8af29847b88c224d718e02e6f7577d6a71" prot="public">
+          <name>MOUSE_XBUTTON1</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a570d0f6ec57d647634810173445b1592" prot="public">
+          <name>MOUSE_XBUTTON2</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aaf7a73ec35053786c1b3644810be2e72" prot="public">
+          <name>MOUSE_SCROLLUP</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a5ef6447544b85a3f5ffc549ccceed535" prot="public">
+          <name>MOUSE_SCROLLDOWN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a9b16f90b0e96de766a9805e4282c9b4e" prot="public">
+          <name>JOY_DPAD_UP</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a4080ab1597e91499830cb190689d97bc" prot="public">
+          <name>JOY_DPAD_DOWN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a48aac5a4a264a0349672240d1adb57b2" prot="public">
+          <name>JOY_DPAD_LEFT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ad3972e9f5d1162f28922cae4b57e1846" prot="public">
+          <name>JOY_DPAD_RIGHT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8acaab2db18540ef47857735e6249622b1" prot="public">
+          <name>JOY_A</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a52b39290fbd2cf7f5a114f5250d8ecce" prot="public">
+          <name>JOY_B</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aedbfe3df3109a858a81a65366dca214f" prot="public">
+          <name>JOY_C</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a0aaa84d89bbf171554956d00ef18dbc0" prot="public">
+          <name>JOY_X</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8acff01434a60245a72055f8714e3aa121" prot="public">
+          <name>JOY_Y</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a91e5eba4e626787d172f3e9238bb91c1" prot="public">
+          <name>JOY_Z</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a8dde35d8c481a1b24d5d8fff7a36a6d7" prot="public">
+          <name>JOY_BACK</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aa3f30bf18af5deb97d61626866a27c41" prot="public">
+          <name>JOY_GUIDE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a579543a16ffdc04cd9ced20c4a3344d9" prot="public">
+          <name>JOY_START</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aaf26f48d46d2e9bf4b136c15e1e7e7ab" prot="public">
+          <name>JOY_TOUCH</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8afbf8a59d27a6f9944b11ac23978941a2" prot="public">
+          <name>JOY_LSTICK</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a4c16a210709b7fcdd214e010785859ac" prot="public">
+          <name>JOY_RSTICK</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2b66a84aff9b673ee655476fecdbd1b0" prot="public">
+          <name>JOY_SHOULDER_LEFT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a2541d497e871cb69989fb242be5f627a" prot="public">
+          <name>JOY_SHOULDER_RIGHT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a61d9c51338671342f535bc3115111a5c" prot="public">
+          <name>JOY_REAR_LEFT_1</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8abfc37c87524c151275a1adfa199833e3" prot="public">
+          <name>JOY_REAR_LEFT_2</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a5af48ff52ab2e2ab689e259039858ea1" prot="public">
+          <name>JOY_REAR_RIGHT_1</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8acbda6ddbe14f08ba6a476494b950354e" prot="public">
+          <name>JOY_REAR_RIGHT_2</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ae138a336c2142ff882a1d313eba7f903" prot="public">
+          <name>JOY_OTHER_0</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a1b92d658ef65adf9630c44695dc6812b" prot="public">
+          <name>JOY_OTHER_1</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a4fb611f5bcc968ba5726ad5bd5bb80cb" prot="public">
+          <name>JOY_OTHER_2</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a6c10764549b373fac614acbc93055a2b" prot="public">
+          <name>JOY_OTHER_3</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a1039b70a986c7e377e51fbdf96137ba9" prot="public">
+          <name>JOY_OTHER_4</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a1f50a18471728a43a6c03ad96400e88a" prot="public">
+          <name>JOY_OTHER_5</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a84f716aab9bbdd8d147a905c35d27064" prot="public">
+          <name>JOY_OTHER_6</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a1e30ca1185efefb8392a277d6e42b95c" prot="public">
+          <name>JOY_OTHER_7</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a236875fe7f4a7c5aae76b95c6b0a05a9" prot="public">
+          <name>JOY_OTHER_8</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a7acbe4614180cbc3d353b3d4baf0ebff" prot="public">
+          <name>JOY_OTHER_9</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aaeda0bf6acbd587b46c9681713172a33" prot="public">
+          <name>JOY_OTHER_10</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a8aed3fef908b8c1b2ad8da92887334c5" prot="public">
+          <name>JOY_OTHER_11</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a15150ce961182fe379550c4ffdb90554" prot="public">
+          <name>JOY_OTHER_12</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aa854a422733179843e239a8f830bb584" prot="public">
+          <name>JOY_OTHER_13</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a6cb582f016021e5ef54fa0b810622b83" prot="public">
+          <name>JOY_OTHER_14</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a253313d1d8feb58085c46bd6c420af8c" prot="public">
+          <name>JOY_OTHER_15</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a0ee8bc9b841204545fe2a383f38c77f0" prot="public">
+          <name>JOY_OTHER_16</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aab22f171c33f7ded35471dea6e4bd7db" prot="public">
+          <name>JOY_OTHER_17</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a3ec582c4b2e634ac8d361d5b46427475" prot="public">
+          <name>JOY_OTHER_18</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a8dee644b53999b66594b7b2f9cc340ac" prot="public">
+          <name>JOY_OTHER_19</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aa3850bc446b6b746b6fbb2acf6a5bca1" prot="public">
+          <name>JOY_OTHER_20</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aa9192ab106d8ac3b10d68c9454365049" prot="public">
+          <name>JOY_OTHER_21</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a4791c31cc81f5ec762e93da9b0546f35" prot="public">
+          <name>JOY_OTHER_22</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a9f83acf4de0f752cf9775cc701119f40" prot="public">
+          <name>JOY_OTHER_23</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a244287acac23253b5a67278dd5ae5a9d" prot="public">
+          <name>JOY_LSTICK_LEFT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ae20ef987d45a14f68d9cb425597f6fd4" prot="public">
+          <name>JOY_LSTICK_RIGHT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a5efb6d52016af93f8cfd87748d4c8263" prot="public">
+          <name>JOY_LSTICK_DOWN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a4b51b76dfc601546896f55b1be99f800" prot="public">
+          <name>JOY_LSTICK_UP</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a3eb938fe01397171ef3bdcad17bb5653" prot="public">
+          <name>JOY_RSTICK_LEFT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ae0f6b60a74201ff0f14df60f77f6d8c3" prot="public">
+          <name>JOY_RSTICK_RIGHT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a9a4fe387a3958f2bd9b8b30d539275ac" prot="public">
+          <name>JOY_RSTICK_DOWN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a8f4ee40d38310ea6900825659e4e72e5" prot="public">
+          <name>JOY_RSTICK_UP</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aa88a8bd8fbdb2cb9a26736489759ac47" prot="public">
+          <name>JOY_RSTICK_UP_RIGHT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a10a7a93aa339f1358ec3d22d5bd23911" prot="public">
+          <name>JOY_RSTICK_UP_LEFT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a676fb9bbeaa47120235282fb69fd97f0" prot="public">
+          <name>JOY_RSTICK_DOWN_LEFT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8afe3ebe153a0acc13af37f07b749556df" prot="public">
+          <name>JOY_RSTICK_DOWN_RIGHT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a78bd6131af04d2b9d3d9f72f1667e3ef" prot="public">
+          <name>JOY_LTRIGGER_SOFT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a0962c13b9f5cda075712477b3343c4b0" prot="public">
+          <name>JOY_LTRIGGER_FULL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a0525fab1f95547dd498195174ed9fc7b" prot="public">
+          <name>JOY_RTRIGGER_SOFT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8af6bc6ec87692af87cb8ade46f6663d23" prot="public">
+          <name>JOY_RTRIGGER_FULL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a59d6528f6a8a6c242fa5c942ed2e7faf" prot="public">
+          <name>ONE_FINGER</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a67ad88235f98370d967cf406780bee69" prot="public">
+          <name>TWO_FINGERS</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8afaa77f543c562689fb87d0e30ec68156" prot="public">
+          <name>THREE_FINGERS</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8abfa11284cd32211f30a194bd5b376fbd" prot="public">
+          <name>FOUR_FINGERS</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a29234102d31f66083580ff450f4a9868" prot="public">
+          <name>FIVE_FINGERS</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8abd075526b5c7e3bbe4e8853c17b66c28" prot="public">
+          <name>KEYS_COUNT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="keys.h" line="32" column="1" bodyfile="keys.h" bodystart="32" bodyend="228"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_input_1_1_keys_1a9e5da344bdab92f475e30b685cdb8ecd" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto Input::Keys::kInputKeyNames</definition>
+        <argsstring></argsstring>
+        <name>kInputKeyNames</name>
+        <qualifiedname>Input::Keys::kInputKeyNames</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="keys.h" line="230" column="16" bodyfile="keys.h" bodystart="230" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="namespace_input_1_1_keys" kindref="compound">Keys</ref> namespace </para>
+    </detaileddescription>
+    <location file="keys.h" line="31" column="1"/>
+  </compounddef>
+</doxygen>

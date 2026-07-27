@@ -518,3 +518,4 @@ inline DirectoryTree::DirectoryListType* Filesystem::ListDirectory(std::string_v
 inline Filesystem::operator FilesystemView() { return Subtree(""); }
 
 #endif
+

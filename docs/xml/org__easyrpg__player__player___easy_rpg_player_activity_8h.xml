@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="org__easyrpg__player__player___easy_rpg_player_activity_8h" kind="file" language="C++">
+    <compoundname>org_easyrpg_player_player_EasyRpgPlayerActivity.h</compoundname>
+    <includes local="no">jni.h</includes>
+    <includedby refid="org__easyrpg__player__player___easy_rpg_player_activity_8cpp" local="yes">platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h</label>
+        <link refid="org__easyrpg__player__player___easy_rpg_player_activity_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>jni.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp</label>
+        <link refid="org__easyrpg__player__player___easy_rpg_player_activity_8cpp"/>
+      </node>
+      <node id="1">
+        <label>platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h</label>
+        <link refid="org__easyrpg__player__player___easy_rpg_player_activity_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="org__easyrpg__player__player___easy_rpg_player_activity_8h_1aaf0a0c775f5a79f8c04520cc034d0d67" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>JNIEXPORT void JNICALL</type>
+        <definition>JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_endGame</definition>
+        <argsstring>(JNIEnv *, jclass)</argsstring>
+        <name>Java_org_easyrpg_player_player_EasyRpgPlayerActivity_endGame</name>
+        <param>
+          <type>JNIEnv *</type>
+        </param>
+        <param>
+          <type>jclass</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h" line="34" column="24" bodyfile="platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp" bodystart="37" bodyend="41" declfile="platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h" declline="34" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="function" id="org__easyrpg__player__player___easy_rpg_player_activity_8h_1ae2626e363d88b9c180a1a6d8d711ec08" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>JNIEXPORT void JNICALL</type>
+        <definition>JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_resetGame</definition>
+        <argsstring>(JNIEnv *, jclass)</argsstring>
+        <name>Java_org_easyrpg_player_player_EasyRpgPlayerActivity_resetGame</name>
+        <param>
+          <type>JNIEnv *</type>
+        </param>
+        <param>
+          <type>jclass</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h" line="36" column="24" bodyfile="platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp" bodystart="43" bodyend="47" declfile="platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h" declline="36" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="function" id="org__easyrpg__player__player___easy_rpg_player_activity_8h_1ab36efcd1580dac9507957ea15a5cd84f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>JNIEXPORT void JNICALL</type>
+        <definition>JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_toggleFps</definition>
+        <argsstring>(JNIEnv *, jclass)</argsstring>
+        <name>Java_org_easyrpg_player_player_EasyRpgPlayerActivity_toggleFps</name>
+        <param>
+          <type>JNIEnv *</type>
+        </param>
+        <param>
+          <type>jclass</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h" line="38" column="24" bodyfile="platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp" bodystart="49" bodyend="55" declfile="platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h" declline="38" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="function" id="org__easyrpg__player__player___easy_rpg_player_activity_8h_1a083c03e7789003446f31f1bede329de8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>JNIEXPORT void JNICALL</type>
+        <definition>JNIEXPORT void JNICALL Java_org_easyrpg_player_player_EasyRpgPlayerActivity_openSettings</definition>
+        <argsstring>(JNIEnv *, jclass)</argsstring>
+        <name>Java_org_easyrpg_player_player_EasyRpgPlayerActivity_openSettings</name>
+        <param>
+          <type>JNIEnv *</type>
+        </param>
+        <param>
+          <type>jclass</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h" line="41" column="1" bodyfile="platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.cpp" bodystart="58" bodyend="64" declfile="platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h" declline="41" declcolumn="1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>Copyright<sp/>(c)<sp/>EasyRPG<sp/>Project.<sp/>All<sp/>rights<sp/>reserved.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>Permission<sp/>is<sp/>hereby<sp/>granted,<sp/>free<sp/>of<sp/>charge,<sp/>to<sp/>any<sp/>person<sp/>obtaining<sp/>a</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>copy<sp/>of<sp/>this<sp/>software<sp/>and<sp/>associated<sp/>documentation<sp/>files<sp/>(the<sp/>&quot;Software&quot;),</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>to<sp/>deal<sp/>in<sp/>the<sp/>Software<sp/>without<sp/>restriction,<sp/>including<sp/>without<sp/>limitation</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>the<sp/>rights<sp/>to<sp/>use,<sp/>copy,<sp/>modify,<sp/>merge,<sp/>publish,<sp/>distribute,<sp/>sublicense,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>and/or<sp/>sell<sp/>copies<sp/>of<sp/>the<sp/>Software,<sp/>and<sp/>to<sp/>permit<sp/>persons<sp/>to<sp/>whom<sp/>the</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>Software<sp/>is<sp/>furnished<sp/>to<sp/>do<sp/>so,<sp/>subject<sp/>to<sp/>the<sp/>following<sp/>conditions:</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>The<sp/>above<sp/>copyright<sp/>notice<sp/>and<sp/>this<sp/>permission<sp/>notice<sp/>shall<sp/>be<sp/>included<sp/>in</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>all<sp/>copies<sp/>or<sp/>substantial<sp/>portions<sp/>of<sp/>the<sp/>Software.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>THE<sp/>SOFTWARE<sp/>IS<sp/>PROVIDED<sp/>&quot;AS<sp/>IS&quot;,<sp/>WITHOUT<sp/>WARRANTY<sp/>OF<sp/>ANY<sp/>KIND,<sp/>EXPRESS<sp/>OR</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>IMPLIED,<sp/>INCLUDING<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO<sp/>THE<sp/>WARRANTIES<sp/>OF<sp/>MERCHANTABILITY,</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE<sp/>AND<sp/>NONINFRINGEMENT.<sp/>IN<sp/>NO<sp/>EVENT<sp/>SHALL<sp/>THE</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>AUTHORS<sp/>OR<sp/>COPYRIGHT<sp/>HOLDERS<sp/>BE<sp/>LIABLE<sp/>FOR<sp/>ANY<sp/>CLAIM,<sp/>DAMAGES<sp/>OR<sp/>OTHER</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>LIABILITY,<sp/>WHETHER<sp/>IN<sp/>AN<sp/>ACTION<sp/>OF<sp/>CONTRACT,<sp/>TORT<sp/>OR<sp/>OTHERWISE,<sp/>ARISING</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>FROM,<sp/>OUT<sp/>OF<sp/>OR<sp/>IN<sp/>CONNECTION<sp/>WITH<sp/>THE<sp/>SOFTWARE<sp/>OR<sp/>THE<sp/>USE<sp/>OR<sp/>OTHER</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>DEALINGS<sp/>IN<sp/>THE<sp/>SOFTWARE.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;jni.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Header<sp/>for<sp/>class<sp/>org_easyrpg_player_EasyRpgPlayerActivity<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>_Included_org_easyrpg_player_player_EasyRpgPlayerActivity</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>_Included_org_easyrpg_player_player_EasyRpgPlayerActivity</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal">JNIEXPORT<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>JNICALL<sp/><ref refid="org__easyrpg__player__player___easy_rpg_player_activity_8h_1aaf0a0c775f5a79f8c04520cc034d0d67" kindref="member">Java_org_easyrpg_player_player_EasyRpgPlayerActivity_endGame</ref>(JNIEnv<sp/>*,<sp/>jclass);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal">JNIEXPORT<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>JNICALL<sp/><ref refid="org__easyrpg__player__player___easy_rpg_player_activity_8h_1ae2626e363d88b9c180a1a6d8d711ec08" kindref="member">Java_org_easyrpg_player_player_EasyRpgPlayerActivity_resetGame</ref>(JNIEnv<sp/>*,<sp/>jclass);</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal">JNIEXPORT<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>JNICALL<sp/><ref refid="org__easyrpg__player__player___easy_rpg_player_activity_8h_1ab36efcd1580dac9507957ea15a5cd84f" kindref="member">Java_org_easyrpg_player_player_EasyRpgPlayerActivity_toggleFps</ref>(JNIEnv<sp/>*,<sp/>jclass);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal">JNIEXPORT<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>JNICALL</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><ref refid="org__easyrpg__player__player___easy_rpg_player_activity_8h_1a083c03e7789003446f31f1bede329de8" kindref="member">Java_org_easyrpg_player_player_EasyRpgPlayerActivity_openSettings</ref>(JNIEnv<sp/>*,<sp/>jclass);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="platform/android/org_easyrpg_player_player_EasyRpgPlayerActivity.h"/>
+  </compounddef>
+</doxygen>

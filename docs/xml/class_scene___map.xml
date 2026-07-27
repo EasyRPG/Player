@@ -1,0 +1,835 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_scene___map" kind="class" language="C++" prot="public">
+    <compoundname>Scene_Map</compoundname>
+    <basecompoundref refid="class_scene" prot="public" virt="non-virtual">Scene</basecompoundref>
+    <includes refid="scene__map_8h" local="no">scene_map.h</includes>
+    <innerclass refid="struct_scene___map_1_1_teleport_params" prot="private">Scene_Map::TeleportParams</innerclass>
+    <sectiondef kind="private-type">
+      <memberdef kind="enum" id="class_scene___map_1a5718e21b1c53d7bae8a3b4585ad01ae0" prot="private" static="no" strong="no">
+        <type></type>
+        <name>TeleportTransitionRule</name>
+        <qualifiedname>Scene_Map::TeleportTransitionRule</qualifiedname>
+        <enumvalue id="class_scene___map_1a5718e21b1c53d7bae8a3b4585ad01ae0a4be640c8887bf8a18afb77285a945052" prot="private">
+          <name>eTransitionNormal</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___map_1a5718e21b1c53d7bae8a3b4585ad01ae0aa1391b9a8d26f6081280ab7a564e6d1c" prot="private">
+          <name>eTransitionFade</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___map_1a5718e21b1c53d7bae8a3b4585ad01ae0a9dd8cb87ef44ef0c8ca828c8cd0e6644" prot="private">
+          <name>eTransitionForceFade</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___map_1a5718e21b1c53d7bae8a3b4585ad01ae0acf23c0b990507e057aaafb69622d2243" prot="private">
+          <name>eTransitionNone</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="54" column="1" bodyfile="scene_map.h" bodystart="54" bodyend="59"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_scene___map_1a305a7c7afb02e3c810cfce0be2fc33f9" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_spriteset___map" kindref="compound">Spriteset_Map</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Spriteset_Map&gt; Scene_Map::spriteset</definition>
+        <argsstring></argsstring>
+        <name>spriteset</name>
+        <qualifiedname>Scene_Map::spriteset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="51" column="17" bodyfile="scene_map.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_scene___map_1abec8f1c070963102d9b41dd67e72870d" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___message" kindref="compound">Window_Message</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Message&gt; Scene_Map::message_window</definition>
+        <argsstring></argsstring>
+        <name>message_window</name>
+        <qualifiedname>Scene_Map::message_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="94" column="17" bodyfile="scene_map.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___map_1a012e6f8b2ef08b9badc7fcc28db18954" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Map::from_save_id</definition>
+        <argsstring></argsstring>
+        <name>from_save_id</name>
+        <qualifiedname>Scene_Map::from_save_id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="96" column="5" bodyfile="scene_map.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___map_1ac778e2a69ee2abac56e4970ed155434b" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Map::screen_erased_by_event</definition>
+        <argsstring></argsstring>
+        <name>screen_erased_by_event</name>
+        <qualifiedname>Scene_Map::screen_erased_by_event</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="97" column="6" bodyfile="scene_map.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___map_1a9e10359ef212ec63278e609d8e83e051" prot="private" static="no" mutable="no">
+        <type><ref refid="class_scene_1a30c5c46dd99e4825df2d69518748c8ac" kindref="member">AsyncContinuation</ref></type>
+        <definition>AsyncContinuation Scene_Map::map_async_continuation</definition>
+        <argsstring></argsstring>
+        <name>map_async_continuation</name>
+        <qualifiedname>Scene_Map::map_async_continuation</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="99" column="19" bodyfile="scene_map.h" bodystart="99" bodyend="99"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___map_1ad48c2d5991d5318992a34d5a5b54cb78" prot="private" static="no" mutable="no">
+        <type>lcf::rpg::Music</type>
+        <definition>lcf::rpg::Music Scene_Map::music_before_inn</definition>
+        <argsstring></argsstring>
+        <name>music_before_inn</name>
+        <qualifiedname>Scene_Map::music_before_inn</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="100" column="17" bodyfile="scene_map.h" bodystart="100" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___map_1a93d8fdc6a49f5025ba88c5b2a586cb15" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Map::activate_inn</definition>
+        <argsstring></argsstring>
+        <name>activate_inn</name>
+        <qualifiedname>Scene_Map::activate_inn</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="101" column="6" bodyfile="scene_map.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___map_1a358f2cad4dd0ed87fda63edf46984594" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Map::inn_started</definition>
+        <argsstring></argsstring>
+        <name>inn_started</name>
+        <qualifiedname>Scene_Map::inn_started</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="102" column="6" bodyfile="scene_map.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___map_1a70eef9769cd0cea76230eea5d80d5d6d" prot="private" static="no" mutable="no">
+        <type><ref refid="class_game___clock_1a7da5a97294e9d1b3dddb617d90eea63e" kindref="member">Game_Clock::time_point</ref></type>
+        <definition>Game_Clock::time_point Scene_Map::inn_timer</definition>
+        <argsstring></argsstring>
+        <name>inn_timer</name>
+        <qualifiedname>Scene_Map::inn_timer</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="103" column="24" bodyfile="scene_map.h" bodystart="103" bodyend="103"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_scene___map_1a717ad724fab5aec5cdf8defef6dc341f" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Scene_Map::Scene_Map</definition>
+        <argsstring>(int from_save_id)</argsstring>
+        <name>Scene_Map</name>
+        <qualifiedname>Scene_Map::Scene_Map</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>from_save_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="38" column="10" bodyfile="scene_map.cpp" bodystart="60" bodyend="69"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1a297735e19a227f9fe8ac88a75a9f93b6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Scene_Map::~Scene_Map</definition>
+        <argsstring>()</argsstring>
+        <name>~Scene_Map</name>
+        <qualifiedname>Scene_Map::~Scene_Map</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="40" column="1" bodyfile="scene_map.cpp" bodystart="71" bodyend="72"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1afe0b90e9f0dc9620928bddb1f3f0e391" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Map::Start</definition>
+        <argsstring>() override</argsstring>
+        <name>Start</name>
+        <qualifiedname>Scene_Map::Start</qualifiedname>
+        <reimplements refid="class_scene_1a31e0e1b9ce39bd9f5ec160835cc94d44">Start</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Start processing. This function is executed while the screen is faded out. All objects needed for the scene should be created here. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="42" column="6" bodyfile="scene_map.cpp" bodystart="74" bodyend="97"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1a18cbf17ac7d880c4e9a4885053790767" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Map::StartFromSave</definition>
+        <argsstring>(int from_save_id)</argsstring>
+        <name>StartFromSave</name>
+        <qualifiedname>Scene_Map::StartFromSave</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>from_save_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="43" column="6" bodyfile="scene_map.cpp" bodystart="99" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1a683ffacf90b66d97cbbd1cf061f4a014" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Map::Continue</definition>
+        <argsstring>(SceneType prev_scene) override</argsstring>
+        <name>Continue</name>
+        <qualifiedname>Scene_Map::Continue</qualifiedname>
+        <reimplements refid="class_scene_1ac612b681d0de7c100f580b4bc446887b">Continue</reimplements>
+        <param>
+          <type><ref refid="class_scene_1adf61561da781541f6b9ec5590756b09e" kindref="member">SceneType</ref></type>
+          <declname>prev_scene</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Continue processing. This function is executed when returning from a nested scene (instead of Start).</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>prev_scene</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The previous scene </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="44" column="6" bodyfile="scene_map.cpp" bodystart="134" bodyend="154"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1abf9a13fbe83badf101776b5bde45cbd1" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Map::vUpdate</definition>
+        <argsstring>() override</argsstring>
+        <name>vUpdate</name>
+        <qualifiedname>Scene_Map::vUpdate</qualifiedname>
+        <reimplements refid="class_scene_1a8111b81e59b90b6711e9a39a507a32eb">vUpdate</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called every frame from Update. The scene should redraw all elements. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="45" column="6" bodyfile="scene_map.cpp" bodystart="247" bodyend="255"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1a2c9b021618eb7399b7c413ebc625f49b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Map::TransitionIn</definition>
+        <argsstring>(SceneType prev_scene) override</argsstring>
+        <name>TransitionIn</name>
+        <qualifiedname>Scene_Map::TransitionIn</qualifiedname>
+        <reimplements refid="class_scene_1a4a594aefe6bd86e17042acf7c76eb0e6">TransitionIn</reimplements>
+        <param>
+          <type><ref refid="class_scene_1adf61561da781541f6b9ec5590756b09e" kindref="member">SceneType</ref></type>
+          <declname>prev_scene</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Used to configure the transition upon starting or resuming the scene.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>prev_scene</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the scene we transitioned from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="46" column="6" bodyfile="scene_map.cpp" bodystart="160" bodyend="179"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1adb9208bf09f6d45038e4b3091e06b050" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Map::TransitionOut</definition>
+        <argsstring>(SceneType next_scene) override</argsstring>
+        <name>TransitionOut</name>
+        <qualifiedname>Scene_Map::TransitionOut</qualifiedname>
+        <reimplements refid="class_scene_1a64d36508ee1971f89c7d5e8513d777b1">TransitionOut</reimplements>
+        <param>
+          <type><ref refid="class_scene_1adf61561da781541f6b9ec5590756b09e" kindref="member">SceneType</ref></type>
+          <declname>next_scene</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Used to configure the transition upon ending or suspending the scene.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>next_scene</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the scene we will transition to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="47" column="6" bodyfile="scene_map.cpp" bodystart="181" bodyend="223"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1a73d7ab6786ee33505f1f50bad71d5bfe" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Map::DrawBackground</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>DrawBackground</name>
+        <qualifiedname>Scene_Map::DrawBackground</qualifiedname>
+        <reimplements refid="class_scene_1a1fcc0d5308270cc967966da917957bdf">DrawBackground</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called by the graphic system to request drawing of a background, usually a system color background</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dst</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The bitmap to draw the background to. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="48" column="6" bodyfile="scene_map.cpp" bodystart="225" bodyend="229"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1abf0cd0790fca9e3b0b9460f8266f1708" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Map::OnTranslationChanged</definition>
+        <argsstring>() override</argsstring>
+        <name>OnTranslationChanged</name>
+        <qualifiedname>Scene_Map::OnTranslationChanged</qualifiedname>
+        <reimplements refid="class_scene_1ac6fa936fd2dc55f41889400d36d855e6">OnTranslationChanged</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="49" column="6" bodyfile="scene_map.cpp" bodystart="231" bodyend="235"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_scene___map_1aabc6dc82212d077a4349ee21e3c52c4c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Map::Start2</definition>
+        <argsstring>(MapUpdateAsyncContext actx)</argsstring>
+        <name>Start2</name>
+        <qualifiedname>Scene_Map::Start2</qualifiedname>
+        <param>
+          <type><ref refid="class_map_update_async_context" kindref="compound">MapUpdateAsyncContext</ref></type>
+          <declname>actx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="61" column="6" bodyfile="scene_map.cpp" bodystart="104" bodyend="132"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1a3b4694632f7b64cc1566526679e5cd06" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Map::StartPendingTeleport</definition>
+        <argsstring>(TeleportParams tp)</argsstring>
+        <name>StartPendingTeleport</name>
+        <qualifiedname>Scene_Map::StartPendingTeleport</qualifiedname>
+        <param>
+          <type>TeleportParams</type>
+          <declname>tp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="69" column="6" bodyfile="scene_map.cpp" bodystart="311" bodyend="319"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1a4a79015f110d4d5c9add1f1c6f2948ec" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Map::FinishPendingTeleport</definition>
+        <argsstring>(TeleportParams tp)</argsstring>
+        <name>FinishPendingTeleport</name>
+        <qualifiedname>Scene_Map::FinishPendingTeleport</qualifiedname>
+        <param>
+          <type>TeleportParams</type>
+          <declname>tp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="70" column="6" bodyfile="scene_map.cpp" bodystart="321" bodyend="329"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1a46c2fa8b297ff1b8b9281354101eee02" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Map::FinishPendingTeleport2</definition>
+        <argsstring>(MapUpdateAsyncContext actx, TeleportParams tp)</argsstring>
+        <name>FinishPendingTeleport2</name>
+        <qualifiedname>Scene_Map::FinishPendingTeleport2</qualifiedname>
+        <param>
+          <type><ref refid="class_map_update_async_context" kindref="compound">MapUpdateAsyncContext</ref></type>
+          <declname>actx</declname>
+        </param>
+        <param>
+          <type>TeleportParams</type>
+          <declname>tp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="71" column="6" bodyfile="scene_map.cpp" bodystart="331" bodyend="360"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1a6320d75746f44b05c5d3ed79d5e60113" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Map::FinishPendingTeleport3</definition>
+        <argsstring>(MapUpdateAsyncContext actx, TeleportParams tp)</argsstring>
+        <name>FinishPendingTeleport3</name>
+        <qualifiedname>Scene_Map::FinishPendingTeleport3</qualifiedname>
+        <param>
+          <type><ref refid="class_map_update_async_context" kindref="compound">MapUpdateAsyncContext</ref></type>
+          <declname>actx</declname>
+        </param>
+        <param>
+          <type>TeleportParams</type>
+          <declname>tp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="72" column="6" bodyfile="scene_map.cpp" bodystart="362" bodyend="385"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1a19a1ec307ab8bbf470e59fbb34bb0cbb" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Map::PerformAsyncTeleport</definition>
+        <argsstring>(TeleportTarget original_tt)</argsstring>
+        <name>PerformAsyncTeleport</name>
+        <qualifiedname>Scene_Map::PerformAsyncTeleport</qualifiedname>
+        <param>
+          <type><ref refid="class_teleport_target" kindref="compound">TeleportTarget</ref></type>
+          <declname>original_tt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="74" column="6" bodyfile="scene_map.cpp" bodystart="387" bodyend="394"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1a3812348c7883860aac676027cc758402" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Map::PreUpdate</definition>
+        <argsstring>(MapUpdateAsyncContext &amp;actx)</argsstring>
+        <name>PreUpdate</name>
+        <qualifiedname>Scene_Map::PreUpdate</qualifiedname>
+        <param>
+          <type><ref refid="class_map_update_async_context" kindref="compound">MapUpdateAsyncContext</ref> &amp;</type>
+          <declname>actx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="76" column="6" bodyfile="scene_map.cpp" bodystart="237" bodyend="240"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1aeea659656e3bedaca3b471cdf05c9295" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Map::PreUpdateForegroundEvents</definition>
+        <argsstring>(MapUpdateAsyncContext &amp;actx)</argsstring>
+        <name>PreUpdateForegroundEvents</name>
+        <qualifiedname>Scene_Map::PreUpdateForegroundEvents</qualifiedname>
+        <param>
+          <type><ref refid="class_map_update_async_context" kindref="compound">MapUpdateAsyncContext</ref> &amp;</type>
+          <declname>actx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="77" column="6" bodyfile="scene_map.cpp" bodystart="242" bodyend="245"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1a6d1d6b6533b0e39dcfd790ffc3ad6752" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Map::UpdateStage1</definition>
+        <argsstring>(MapUpdateAsyncContext actx)</argsstring>
+        <name>UpdateStage1</name>
+        <qualifiedname>Scene_Map::UpdateStage1</qualifiedname>
+        <param>
+          <type><ref refid="class_map_update_async_context" kindref="compound">MapUpdateAsyncContext</ref></type>
+          <declname>actx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="80" column="6" bodyfile="scene_map.cpp" bodystart="257" bodyend="270"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1acd443a6e1815ed603d22bcabd61e564c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Map::UpdateStage2</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateStage2</name>
+        <qualifiedname>Scene_Map::UpdateStage2</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="82" column="6" bodyfile="scene_map.cpp" bodystart="272" bodyend="285"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1a11d863c987fc03809592bd58f23117bc" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Map::UpdateSceneCalling</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateSceneCalling</name>
+        <qualifiedname>Scene_Map::UpdateSceneCalling</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="84" column="6" bodyfile="scene_map.cpp" bodystart="287" bodyend="309"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1a428b18350fcb786e1c07c23750ec5bae" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Map::StartInn</definition>
+        <argsstring>()</argsstring>
+        <name>StartInn</name>
+        <qualifiedname>Scene_Map::StartInn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="86" column="6" bodyfile="scene_map.cpp" bodystart="477" bodyend="485"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1a50e0b202485972637694cef4ac5a9a60" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Map::UpdateInn</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateInn</name>
+        <qualifiedname>Scene_Map::UpdateInn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="87" column="6" bodyfile="scene_map.cpp" bodystart="508" bodyend="531"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1aa96f5ed17dfa978028bf92f444f34d7a" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Map::FinishInn</definition>
+        <argsstring>()</argsstring>
+        <name>FinishInn</name>
+        <qualifiedname>Scene_Map::FinishInn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="88" column="6" bodyfile="scene_map.cpp" bodystart="487" bodyend="506"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1a9e8194f78ab9e4873d1e978271439869" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Scene_Map::OnAsyncSuspend</definition>
+        <argsstring>(F &amp;&amp;f, AsyncOp aop, bool is_preupdate)</argsstring>
+        <name>OnAsyncSuspend</name>
+        <qualifiedname>Scene_Map::OnAsyncSuspend</qualifiedname>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+          <declname>aop</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>is_preupdate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="90" column="18" bodyfile="scene_map.cpp" bodystart="397" bodyend="475"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___map_1a08e90b524fb8024a36064344efaa1d56" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Map::UpdateGraphics</definition>
+        <argsstring>() override</argsstring>
+        <name>UpdateGraphics</name>
+        <qualifiedname>Scene_Map::UpdateGraphics</qualifiedname>
+        <reimplements refid="class_scene_1affa07b015ecebcf18cc0d652ab9a2fd4">UpdateGraphics</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Update graphics in scene stack </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="92" column="6" bodyfile="scene_map.cpp" bodystart="156" bodyend="158"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_scene" kindref="compound">Scene</ref> Map class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="1">
+        <label>Scene_Map</label>
+        <link refid="class_scene___map"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="1">
+        <label>Scene_Map</label>
+        <link refid="class_scene___map"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="scene_map.h" line="33" column="1" bodyfile="scene_map.h" bodystart="33" bodyend="104"/>
+    <listofallmembers>
+      <member refid="class_scene___map_1a93d8fdc6a49f5025ba88c5b2a586cb15" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>activate_inn</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea525fafbc764da0de39c27dea3ffeb3d0" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>ActorTarget</name></member>
+      <member refid="class_scene_1a6091a98761b264c35a150bc28ee4a505" prot="protected" virt="non-virtual"><scope>Scene_Map</scope><name>async_continuation</name></member>
+      <member refid="class_scene_1a30c5c46dd99e4825df2d69518748c8ac" prot="protected" virt="non-virtual"><scope>Scene_Map</scope><name>AsyncContinuation</name></member>
+      <member refid="class_scene_1a40aec0ae8ed38526531911eea247398b" prot="protected" virt="non-virtual"><scope>Scene_Map</scope><name>AsyncNext</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea705f705b65bac2369f3cb10f5e89453a" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Battle</name></member>
+      <member refid="class_scene_1a91e354ab86259cd3bc94c094036280da" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>CheckSceneExit</name></member>
+      <member refid="class_scene___map_1a683ffacf90b66d97cbbd1cf061f4a014" prot="public" virt="virtual"><scope>Scene_Map</scope><name>Continue</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea418b00b4c130e675ac7512610ed3f473" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Debug</name></member>
+      <member refid="class_scene___map_1a73d7ab6786ee33505f1f50bad71d5bfe" prot="public" virt="virtual"><scope>Scene_Map</scope><name>DrawBackground</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaee9d4a8ee40ca6e8310597315e07b978" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>End</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea302637f5f0048f4433949f10fc6c8f58" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Equip</name></member>
+      <member refid="class_scene___map_1a5718e21b1c53d7bae8a3b4585ad01ae0aa1391b9a8d26f6081280ab7a564e6d1c" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>eTransitionFade</name></member>
+      <member refid="class_scene___map_1a5718e21b1c53d7bae8a3b4585ad01ae0a9dd8cb87ef44ef0c8ca828c8cd0e6644" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>eTransitionForceFade</name></member>
+      <member refid="class_scene___map_1a5718e21b1c53d7bae8a3b4585ad01ae0acf23c0b990507e057aaafb69622d2243" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>eTransitionNone</name></member>
+      <member refid="class_scene___map_1a5718e21b1c53d7bae8a3b4585ad01ae0a4be640c8887bf8a18afb77285a945052" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>eTransitionNormal</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea85a7c5a46a3ca806d41de80e68da80e1" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>File</name></member>
+      <member refid="class_scene_1aa8b96a758c0f1ea4cf28808089ff7123" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Find</name></member>
+      <member refid="class_scene___map_1aa96f5ed17dfa978028bf92f444f34d7a" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>FinishInn</name></member>
+      <member refid="class_scene___map_1a4a79015f110d4d5c9add1f1c6f2948ec" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>FinishPendingTeleport</name></member>
+      <member refid="class_scene___map_1a46c2fa8b297ff1b8b9281354101eee02" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>FinishPendingTeleport2</name></member>
+      <member refid="class_scene___map_1a6320d75746f44b05c5d3ed79d5e60113" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>FinishPendingTeleport3</name></member>
+      <member refid="class_scene___map_1a012e6f8b2ef08b9badc7fcc28db18954" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>from_save_id</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea895a9b137f215eee5613d6a546275f5b" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>GameBrowser</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ead885a8fd6d0f378a99ee56a676029bca" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Gameover</name></member>
+      <member refid="class_scene_1ad837b22dff59e9c21f31204d958a24d7" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>GetDrawableList</name></member>
+      <member refid="class_scene_1ab9edda06ab170512d308c0c9fb38056b" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>GetRequestedSceneType</name></member>
+      <member refid="class_scene_1a203eba321fedc8a26c8802f4b9a84e01" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>HasDelayFrames</name></member>
+      <member refid="class_scene_1a1acd1e4345dfecb30c7c35f6d3e8130b" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>HasRequestedScene</name></member>
+      <member refid="class_scene___map_1a358f2cad4dd0ed87fda63edf46984594" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>inn_started</name></member>
+      <member refid="class_scene___map_1a70eef9769cd0cea76230eea5d80d5d6d" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>inn_timer</name></member>
+      <member refid="class_scene_1ac348fc3b0beb12093144a1f03d81449d" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>instance</name></member>
+      <member refid="class_scene_1a5a8c37138fc3a2dda1e0e077b472ab7b" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>IsAsyncPending</name></member>
+      <member refid="class_scene_1a0e0d605d080b286e73a07587d72dfe70" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>IsInitialized</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea70390d274c6e9c167ac095faaa160c7c" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Item</name></member>
+      <member refid="class_scene_1a119de9e0876281a6eee15c7d15618d87" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>kReturnTitleDelayFrames</name></member>
+      <member refid="class_scene_1a563850d0f01381b76420c22ac335a103" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>kStartGameDelayFrames</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea16a3c57786ccf0d21f72a774d43957ab" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>LanguageMenu</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eac3db6576c8c7dc6e5d007d989f5022ea" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Load</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea4615e1aa6a92b7860d342a6aaf642611" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Logo</name></member>
+      <member refid="class_scene_1ae7f0f916c29e55b282dfe4ae522d2096" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>MainFunction</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eae39f3115e47e2cc1a161ab73db4819a6" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Map</name></member>
+      <member refid="class_scene___map_1a9e10359ef212ec63278e609d8e83e051" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>map_async_continuation</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea2412b59539890965aeb61a22141a781b" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Menu</name></member>
+      <member refid="class_scene___map_1abec8f1c070963102d9b41dd67e72870d" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>message_window</name></member>
+      <member refid="class_scene___map_1ad48c2d5991d5318992a34d5a5b54cb78" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>music_before_inn</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea05b82d049724f3ca8838b9800e8f3f3e" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Name</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea352ebbd390cdf4d31336a52af54fca32" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Null</name></member>
+      <member refid="class_scene_1a71555af047b54446dfc4fd2b0e6f78bd" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>old_instances</name></member>
+      <member refid="class_scene___map_1a9e8194f78ab9e4873d1e978271439869" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>OnAsyncSuspend</name></member>
+      <member refid="class_scene_1a7388cece257333bb2c98a202135adf51" prot="public" virt="virtual"><scope>Scene_Map</scope><name>OnEventHpChanged</name></member>
+      <member refid="class_scene_1a80c10e8f0c10921300be168e67ddf3ed" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>OnFinishAsync</name></member>
+      <member refid="class_scene_1a05be417a18748b38a3cd18566edd6d2d" prot="public" virt="virtual"><scope>Scene_Map</scope><name>OnPartyChanged</name></member>
+      <member refid="class_scene___map_1abf0cd0790fca9e3b0b9460f8266f1708" prot="public" virt="virtual"><scope>Scene_Map</scope><name>OnTranslationChanged</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea26ab4613edf5d94d74a5e1ad4ec37fa3" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Order</name></member>
+      <member refid="class_scene_1a29b08fddcde74b786ec01129847454ba" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Peek</name></member>
+      <member refid="class_scene___map_1a19a1ec307ab8bbf470e59fbb34bb0cbb" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>PerformAsyncTeleport</name></member>
+      <member refid="class_scene_1a713d07a297477318624fada11415f5e3" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Pop</name></member>
+      <member refid="class_scene_1ac657b33df6c856847d87aa976ae9a9eb" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>PopUntil</name></member>
+      <member refid="class_scene___map_1a3812348c7883860aac676027cc758402" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>PreUpdate</name></member>
+      <member refid="class_scene___map_1aeea659656e3bedaca3b471cdf05c9295" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>PreUpdateForegroundEvents</name></member>
+      <member refid="class_scene_1a61c10b38185eac9925da70d7fb915890" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Push</name></member>
+      <member refid="class_scene_1afb9e8385131d0524f0d9afa946096709" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>PushTitleScene</name></member>
+      <member refid="class_scene_1a5ecd59170e0a54d6216ccebd76702dd6" prot="public" virt="virtual"><scope>Scene_Map</scope><name>Refresh</name></member>
+      <member refid="class_scene_1a902f2993901187b05d8e42188b7e8156" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>ReturnToTitleScene</name></member>
+      <member refid="class_scene_1a495973012445184e00a31dd31e217b7e" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>rpgRtSceneFromSceneType</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc195dbdbaa61f7b6b3ecb3236592d17" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Save</name></member>
+      <member refid="class_scene_1ad10176d75a9cc0da56626f682d083507" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Scene</name></member>
+      <member refid="class_scene___map_1a717ad724fab5aec5cdf8defef6dc341f" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Scene_Map</name></member>
+      <member refid="class_scene_1a300d6b1274f226a1e69a552858414ba3" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>scene_names</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea7484d8e1128440652139839089e85604" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>SceneMax</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09e" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>SceneType</name></member>
+      <member refid="class_scene___map_1ac778e2a69ee2abac56e4970ed155434b" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>screen_erased_by_event</name></member>
+      <member refid="class_scene_1a40c9e3ffb2917b1e3880e2ff5733b1b6" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>SetDelayFrames</name></member>
+      <member refid="class_scene_1a9f641fa0061cebf4294009cb1d860cbe" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>SetRequestedScene</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc93e55e9b1ff9b798d1fb0ee22abab0" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Settings</name></member>
+      <member refid="class_scene_1a287b3a8a6fdaa0eb6e9b43ae7c774c8b" prot="protected" virt="non-virtual"><scope>Scene_Map</scope><name>SetUseSharedDrawables</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea40484f6fb0aae90d36b27e9f7abfee9c" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Shop</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafd156984a4436ea28706dc0c7873c8fc" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Skill</name></member>
+      <member refid="class_scene___map_1a305a7c7afb02e3c810cfce0be2fc33f9" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>spriteset</name></member>
+      <member refid="class_scene___map_1afe0b90e9f0dc9620928bddb1f3f0e391" prot="public" virt="virtual"><scope>Scene_Map</scope><name>Start</name></member>
+      <member refid="class_scene___map_1aabc6dc82212d077a4349ee21e3c52c4c" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>Start2</name></member>
+      <member refid="class_scene___map_1a18cbf17ac7d880c4e9a4885053790767" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>StartFromSave</name></member>
+      <member refid="class_scene___map_1a428b18350fcb786e1c07c23750ec5bae" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>StartInn</name></member>
+      <member refid="class_scene___map_1a3b4694632f7b64cc1566526679e5cd06" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>StartPendingTeleport</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eabe141c1b0922ac825b014da56774c2dc" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Status</name></member>
+      <member refid="class_scene_1ac6413c7a3e405e57e415bec3c3096f26" prot="public" virt="virtual"><scope>Scene_Map</scope><name>Suspend</name></member>
+      <member refid="class_scene_1a2ac1629e5d081accb6b3d2682c8aac18" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>TakeRequestedScene</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eadce8e1c84d0a06f5a005b24a6e602424" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Teleport</name></member>
+      <member refid="class_scene___map_1a5718e21b1c53d7bae8a3b4585ad01ae0" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>TeleportTransitionRule</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaf3446103059a7e7c2333b8e0f81377d0" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Title</name></member>
+      <member refid="class_scene_1a1e97664b3509e2eb64b1aa621634703c" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>TransferDrawablesFrom</name></member>
+      <member refid="class_scene___map_1a2c9b021618eb7399b7c413ebc625f49b" prot="public" virt="virtual"><scope>Scene_Map</scope><name>TransitionIn</name></member>
+      <member refid="class_scene___map_1adb9208bf09f6d45038e4b3091e06b050" prot="public" virt="virtual"><scope>Scene_Map</scope><name>TransitionOut</name></member>
+      <member refid="class_scene_1a8320189e28f3918a4f0200aedb97ccb5" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>type</name></member>
+      <member refid="class_scene_1a71a71b4f7752b853ff8032b0941a9d8d" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>Update</name></member>
+      <member refid="class_scene_1a85503cbb64a2f88b227d926768ed0100" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>UpdateDelayFrames</name></member>
+      <member refid="class_scene___map_1a08e90b524fb8024a36064344efaa1d56" prot="private" virt="virtual"><scope>Scene_Map</scope><name>UpdateGraphics</name></member>
+      <member refid="class_scene___map_1a50e0b202485972637694cef4ac5a9a60" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>UpdateInn</name></member>
+      <member refid="class_scene___map_1a11d863c987fc03809592bd58f23117bc" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>UpdateSceneCalling</name></member>
+      <member refid="class_scene___map_1a6d1d6b6533b0e39dcfd790ffc3ad6752" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>UpdateStage1</name></member>
+      <member refid="class_scene___map_1acd443a6e1815ed603d22bcabd61e564c" prot="private" virt="non-virtual"><scope>Scene_Map</scope><name>UpdateStage2</name></member>
+      <member refid="class_scene_1ac41adc09c7fed6609df594bf5bcdc1c5" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>UsesSharedDrawables</name></member>
+      <member refid="class_scene___map_1abf9a13fbe83badf101776b5bde45cbd1" prot="public" virt="virtual"><scope>Scene_Map</scope><name>vUpdate</name></member>
+      <member refid="class_scene_1aa0a5be58e2ee2d1fdafc5fb46b5e661e" prot="public" virt="virtual"><scope>Scene_Map</scope><name>~Scene</name></member>
+      <member refid="class_scene___map_1a297735e19a227f9fe8ac88a75a9f93b6" prot="public" virt="non-virtual"><scope>Scene_Map</scope><name>~Scene_Map</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

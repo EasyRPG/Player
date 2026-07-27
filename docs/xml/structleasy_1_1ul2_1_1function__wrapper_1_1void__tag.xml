@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ul2_1_1function__wrapper_1_1void__tag" kind="struct" language="C++" prot="private">
+    <compoundname>leasy::ul2::function_wrapper::void_tag</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ul2/function_wrapper.hpp" line="76" column="5" bodyfile="leasy/ul2/function_wrapper.hpp" bodystart="76" bodyend="76"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

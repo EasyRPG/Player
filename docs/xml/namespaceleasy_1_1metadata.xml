@@ -1,0 +1,326 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1metadata" kind="namespace" language="C++">
+    <compoundname>leasy::metadata</compoundname>
+    <innerclass refid="classleasy_1_1metadata_1_1_array" prot="public">leasy::metadata::Array</innerclass>
+    <innerclass refid="classleasy_1_1metadata_1_1_data" prot="public">leasy::metadata::Data</innerclass>
+    <innerclass refid="classleasy_1_1metadata_1_1function" prot="public">leasy::metadata::function</innerclass>
+    <innerclass refid="classleasy_1_1metadata_1_1function__base__t" prot="public">leasy::metadata::function_base_t</innerclass>
+    <innerclass refid="classleasy_1_1metadata_1_1_map" prot="public">leasy::metadata::Map</innerclass>
+    <innerclass refid="classleasy_1_1metadata_1_1_native_callable" prot="public">leasy::metadata::NativeCallable</innerclass>
+    <innerclass refid="structleasy_1_1metadata_1_1_native_class" prot="public">leasy::metadata::NativeClass</innerclass>
+    <innerclass refid="structleasy_1_1metadata_1_1_n_space" prot="public">leasy::metadata::NSpace</innerclass>
+    <innerclass refid="structleasy_1_1metadata_1_1null" prot="public">leasy::metadata::null</innerclass>
+    <innerclass refid="classleasy_1_1metadata_1_1_object" prot="public">leasy::metadata::Object</innerclass>
+    <innerclass refid="classleasy_1_1metadata_1_1overload__set" prot="public">leasy::metadata::overload_set</innerclass>
+    <innerclass refid="classleasy_1_1metadata_1_1_type_info" prot="public">leasy::metadata::TypeInfo</innerclass>
+    <innernamespace refid="namespaceleasy_1_1metadata_1_1builtin">leasy::metadata::builtin</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1metadata_1_1json">leasy::metadata::json</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1metadata_1_1lua">leasy::metadata::lua</innernamespace>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespaceleasy_1_1metadata_1ad7c79f0a49e3abe9c4b0107752c0c840" prot="public" static="no">
+        <type>int64_t</type>
+        <definition>using leasy::metadata::integer = int64_t</definition>
+        <argsstring></argsstring>
+        <name>integer</name>
+        <qualifiedname>leasy::metadata::integer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/object.hpp" line="34" column="3" bodyfile="leasy/metadata/object.hpp" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespaceleasy_1_1metadata_1a462b0465923a376d599e0119f1a74d79" prot="public" static="no">
+        <type>uint64_t</type>
+        <definition>using leasy::metadata::uinteger = uint64_t</definition>
+        <argsstring></argsstring>
+        <name>uinteger</name>
+        <qualifiedname>leasy::metadata::uinteger</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/object.hpp" line="35" column="3" bodyfile="leasy/metadata/object.hpp" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespaceleasy_1_1metadata_1affdf65821d784d93d499b552b2a19eb6" prot="public" static="no">
+        <type>long double</type>
+        <definition>using leasy::metadata::number = long double</definition>
+        <argsstring></argsstring>
+        <name>number</name>
+        <qualifiedname>leasy::metadata::number</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/object.hpp" line="36" column="3" bodyfile="leasy/metadata/object.hpp" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespaceleasy_1_1metadata_1a5803de397d9025be4225af8d1b4e29b5" prot="public" static="no">
+        <type>bool</type>
+        <definition>using leasy::metadata::boolean = bool</definition>
+        <argsstring></argsstring>
+        <name>boolean</name>
+        <qualifiedname>leasy::metadata::boolean</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/object.hpp" line="37" column="3" bodyfile="leasy/metadata/object.hpp" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespaceleasy_1_1metadata_1a6a91c63d6b7d38496def2d40cdf3463e" prot="public" static="no">
+        <type>std::string</type>
+        <definition>using leasy::metadata::string = std::string</definition>
+        <argsstring></argsstring>
+        <name>string</name>
+        <qualifiedname>leasy::metadata::string</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/object.hpp" line="38" column="3" bodyfile="leasy/metadata/object.hpp" bodystart="38" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceleasy_1_1metadata_1ad66024f20b23f9cd340ce42e117d2cb1" prot="public" static="no" extern="yes" mutable="no">
+        <type>std::vector&lt; std::function&lt; void(void)&gt; &gt;</type>
+        <definition>std::vector&lt;std::function&lt;void(void)&gt; &gt; leasy::metadata::preload_list</definition>
+        <argsstring></argsstring>
+        <name>preload_list</name>
+        <qualifiedname>leasy::metadata::preload_list</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/reflection.hpp" line="12" column="22" declfile="leasy/metadata/reflection.hpp" declline="12" declcolumn="22"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1metadata_1aec73ca1f9bd10c6c137ed0db3b6ba954" prot="public" static="no" mutable="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>const <ref refid="classleasy_1_1metadata_1_1_type_info" kindref="compound">TypeInfo</ref></type>
+        <definition>const TypeInfo leasy::metadata::typeinfo_v</definition>
+        <argsstring></argsstring>
+        <name>typeinfo_v</name>
+        <qualifiedname>leasy::metadata::typeinfo_v</qualifiedname>
+        <initializer>= <ref refid="classleasy_1_1metadata_1_1_type_info_1ab88095b69bf6b1f65a22459465d6076b" kindref="member">TypeInfo::from</ref>&lt;T&gt;()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="151" column="25" bodyfile="leasy/metadata/type.hpp" bodystart="151" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceleasy_1_1metadata_1a9fec32b100f83acb5fecf20626060db8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="structleasy_1_1metadata_1_1_native_class" kindref="compound">NativeClass</ref></type>
+        <definition>NativeClass leasy::metadata::make_class</definition>
+        <argsstring>()</argsstring>
+        <name>make_class</name>
+        <qualifiedname>leasy::metadata::make_class</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/class.hpp" line="86" column="15" bodyfile="leasy/metadata/class.hpp" bodystart="86" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1metadata_1a1ae9b6db76c99e10f2ebdb409649b56f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Fs</declname>
+            <defname>Fs</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="classleasy_1_1metadata_1_1_native_callable" kindref="compound">NativeCallable</ref></type>
+        <definition>NativeCallable leasy::metadata::make_function</definition>
+        <argsstring>(const std::string &amp;name, Fs &amp;&amp;... fs)</argsstring>
+        <name>make_function</name>
+        <qualifiedname>leasy::metadata::make_function</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>Fs &amp;&amp;...</type>
+          <declname>fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="229" column="18" bodyfile="leasy/metadata/function.hpp" bodystart="229" bodyend="237"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1metadata_1ab8665764b1ea0439cd6d58399ed2165a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structleasy_1_1metadata_1_1_n_space" kindref="compound">NSpace</ref></type>
+        <definition>NSpace leasy::metadata::make_namespace</definition>
+        <argsstring>(const std::string &amp;)</argsstring>
+        <name>make_namespace</name>
+        <qualifiedname>leasy::metadata::make_namespace</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <defname>name</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/namespace.hpp" line="114" column="17" bodyfile="leasy/metadata/namespace.hpp" bodystart="114" bodyend="116" declfile="leasy/metadata/namespace.hpp" declline="13" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1metadata_1adb1723ec288a7a9ff8efc2038c96a048" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structleasy_1_1metadata_1_1_n_space" kindref="compound">NSpace</ref> &amp;</type>
+        <definition>NSpace &amp; leasy::metadata::EasyRPG</definition>
+        <argsstring>()</argsstring>
+        <name>EasyRPG</name>
+        <qualifiedname>leasy::metadata::EasyRPG</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.cpp" line="54" column="10" bodyfile="leasy/metadata/type.cpp" bodystart="54" bodyend="57" declfile="leasy/metadata/namespace.hpp" declline="118" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1metadata_1afcb6334bebd9fe7e7a4152cfa3ccf1ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="structleasy_1_1kits_1_1preload__result" kindref="compound">kits::preload_result</ref></type>
+        <definition>kits::preload_result leasy::metadata::load</definition>
+        <argsstring>(const F &amp;f)</argsstring>
+        <name>load</name>
+        <qualifiedname>leasy::metadata::load</qualifiedname>
+        <param>
+          <type>const F &amp;</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/reflection.hpp" line="15" column="24" bodyfile="leasy/metadata/reflection.hpp" bodystart="15" bodyend="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1metadata_1a9bea2f97cbd3e405308ec57eb1ed22f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unordered_map&lt; std::type_index, <ref refid="classleasy_1_1metadata_1_1_type_info" kindref="compound">TypeInfo</ref> &gt; &amp;</type>
+        <definition>std::unordered_map&lt; std::type_index, TypeInfo &gt; &amp; leasy::metadata::registery</definition>
+        <argsstring>()</argsstring>
+        <name>registery</name>
+        <qualifiedname>leasy::metadata::registery</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.cpp" line="36" column="22" bodyfile="leasy/metadata/type.cpp" bodystart="36" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1metadata_1adb6e906d2acc0dc3d62084c8b5b25540" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classleasy_1_1metadata_1_1_type_info" kindref="compound">TypeInfo</ref></type>
+        <definition>TypeInfo leasy::metadata::make_metadata</definition>
+        <argsstring>(const std::type_index &amp;info)</argsstring>
+        <name>make_metadata</name>
+        <qualifiedname>leasy::metadata::make_metadata</qualifiedname>
+        <param>
+          <type>const std::type_index &amp;</type>
+          <declname>info</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.cpp" line="41" column="12" bodyfile="leasy/metadata/type.cpp" bodystart="41" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1metadata_1a9cdc34ddeae1af06daaf9b73060b90dc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::metadata::_register_metadata_type</definition>
+        <argsstring>(const std::type_info &amp;info, const TypeInfo &amp;metadata)</argsstring>
+        <name>_register_metadata_type</name>
+        <qualifiedname>leasy::metadata::_register_metadata_type</qualifiedname>
+        <param>
+          <type>const std::type_info &amp;</type>
+          <declname>info</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classleasy_1_1metadata_1_1_type_info" kindref="compound">TypeInfo</ref> &amp;</type>
+          <declname>metadata</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.cpp" line="50" column="8" bodyfile="leasy/metadata/type.cpp" bodystart="50" bodyend="52" declfile="leasy/metadata/type.hpp" declline="46" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1metadata_1ad9b30d6319e4ebd502adfd6cc9165762" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>unsigned long long</type>
+        <definition>unsigned long long leasy::metadata::safe_sizeof</definition>
+        <argsstring>()</argsstring>
+        <name>safe_sizeof</name>
+        <qualifiedname>leasy::metadata::safe_sizeof</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/type.hpp" line="39" column="22" bodyfile="leasy/metadata/type.hpp" bodystart="39" bodyend="44"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para>0xEF9087A</para>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para><ulink url="mailto:0xEF9087A@wys-prog.https">0xEF9087A@wys-prog.https</ulink>://github.com/wys-prog/leasy </para>
+    </detaileddescription>
+    <location file="algo.cpp" line="353" column="1"/>
+  </compounddef>
+</doxygen>

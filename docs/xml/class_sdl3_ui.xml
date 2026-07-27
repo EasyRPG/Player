@@ -1,0 +1,1199 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_sdl3_ui" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>Sdl3Ui</compoundname>
+    <basecompoundref refid="class_base_ui" prot="public" virt="non-virtual">BaseUi</basecompoundref>
+    <includes refid="sdl3__ui_8h" local="no">sdl3_ui.h</includes>
+    <sectiondef kind="user-defined">
+      <memberdef kind="function" id="class_sdl3_ui_1a54324cc1e7a3ed8a244ecf8dfbe5c3d1" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Sdl3Ui::vChangeDisplaySurfaceResolution</definition>
+        <argsstring>(int new_width, int new_height) override</argsstring>
+        <name>vChangeDisplaySurfaceResolution</name>
+        <qualifiedname>Sdl3Ui::vChangeDisplaySurfaceResolution</qualifiedname>
+        <reimplements refid="class_base_ui_1a58f5dc89bb89fae57b3d8512a5c5810a">vChangeDisplaySurfaceResolution</reimplements>
+        <param>
+          <type>int</type>
+          <declname>new_width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>new_height</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Inherited from <ref refid="class_base_ui" kindref="compound">BaseUi</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="62" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="183" bodyend="219"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1a691d733e412f2ec29e3add459ff643ff" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::ToggleFullscreen</definition>
+        <argsstring>() override</argsstring>
+        <name>ToggleFullscreen</name>
+        <qualifiedname>Sdl3Ui::ToggleFullscreen</qualifiedname>
+        <reimplements refid="class_base_ui_1a7cf7aa4d9d0c4c86bcec4ff6ef15c4f9">ToggleFullscreen</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Toggles fullscreen. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="63" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="428" bodyend="439"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1a826c84f7edfea75b8251d454f41efa5f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::ToggleZoom</definition>
+        <argsstring>() override</argsstring>
+        <name>ToggleZoom</name>
+        <qualifiedname>Sdl3Ui::ToggleZoom</qualifiedname>
+        <reimplements refid="class_base_ui_1abb92ae64151143bc0a186fa934ffafa6">ToggleZoom</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Toggles zoom. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="64" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="441" bodyend="470"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1ac00da0876af0a0a815d8245bbf8fb5c1" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::UpdateDisplay</definition>
+        <argsstring>() override</argsstring>
+        <name>UpdateDisplay</name>
+        <qualifiedname>Sdl3Ui::UpdateDisplay</qualifiedname>
+        <reimplements refid="class_base_ui_1ad0ac519b67b66dda5df6289a3f9e25c2">UpdateDisplay</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates video buffer. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="65" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="520" bodyend="626"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1aaf58c5482df9121a31ce1fa3eac04361" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::SetTitle</definition>
+        <argsstring>(const std::string &amp;title) override</argsstring>
+        <name>SetTitle</name>
+        <qualifiedname>Sdl3Ui::SetTitle</qualifiedname>
+        <reimplements refid="class_base_ui_1ac838b906c382e0bd53eae5f775ef5dfb">SetTitle</reimplements>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>title</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets display title.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>title</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>title string. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="66" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="628" bodyend="630"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1a61b487d9c8c642fea6d1fa792f34cc17" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Sdl3Ui::ShowCursor</definition>
+        <argsstring>(bool flag) override</argsstring>
+        <name>ShowCursor</name>
+        <qualifiedname>Sdl3Ui::ShowCursor</qualifiedname>
+        <reimplements refid="class_base_ui_1ae0d4c82612a9c1e8b76dcde91dd90217">ShowCursor</reimplements>
+        <param>
+          <type>bool</type>
+          <declname>flag</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets if the cursor should be shown.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>flag</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>cursor visibility flag. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>previous state. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="67" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="632" bodyend="641"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1afc0443d6fee3afb27b3ec743277ad3df" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Sdl3Ui::ProcessEvents</definition>
+        <argsstring>() override</argsstring>
+        <name>ProcessEvents</name>
+        <qualifiedname>Sdl3Ui::ProcessEvents</qualifiedname>
+        <reimplements refid="class_base_ui_1aa5adf73d350d9cf4635084df16849461">ProcessEvents</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Processes events queue.</para>
+<para><simplesect kind="return"><para>When false requests an immediate <ref refid="namespace_player" kindref="compound">Player</ref> shutdown </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="68" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="472" bodyend="496"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1a8b2d0396c994555127e4ff976650ec0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::SetScalingMode</definition>
+        <argsstring>(ConfigEnum::ScalingMode) override</argsstring>
+        <name>SetScalingMode</name>
+        <qualifiedname>Sdl3Ui::SetScalingMode</qualifiedname>
+        <reimplements refid="class_base_ui_1a1edf200ee8e139d481ed571c4705a31b">SetScalingMode</reimplements>
+        <param>
+          <type><ref refid="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000" kindref="member">ConfigEnum::ScalingMode</ref></type>
+          <defname>mode</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the scaling mode of the window </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="69" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="498" bodyend="501"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1a49c26ebae053ce1b8956f04f3494090e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::ToggleStretch</definition>
+        <argsstring>() override</argsstring>
+        <name>ToggleStretch</name>
+        <qualifiedname>Sdl3Ui::ToggleStretch</qualifiedname>
+        <reimplements refid="class_base_ui_1a16737efd977c20b828b477086915da89">ToggleStretch</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Toggles &quot;stretch to screen width&quot; on or off </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="70" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="503" bodyend="506"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1a96d0f5a9c07d44ab389afeea4e092fef" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::ToggleVsync</definition>
+        <argsstring>() override</argsstring>
+        <name>ToggleVsync</name>
+        <qualifiedname>Sdl3Ui::ToggleVsync</qualifiedname>
+        <reimplements refid="class_base_ui_1a4325b9a6266e1f202ea1f887a3c2f022">ToggleVsync</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Turns vsync on or off </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="71" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="508" bodyend="518"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1a48505a29a3473018305fc09280dc010b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::vGetConfig</definition>
+        <argsstring>(Game_ConfigVideo &amp;cfg) const override</argsstring>
+        <name>vGetConfig</name>
+        <qualifiedname>Sdl3Ui::vGetConfig</qualifiedname>
+        <reimplements refid="class_base_ui_1aef921da0d7b4ec1e7ee45f62097e2e5a">vGetConfig</reimplements>
+        <param>
+          <type><ref refid="struct_game___config_video" kindref="compound">Game_ConfigVideo</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="72" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="1198" bodyend="1242"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1a83094e15fc0880c4f77348c9c6b00039" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Sdl3Ui::OpenURL</definition>
+        <argsstring>(std::string_view url) override</argsstring>
+        <name>OpenURL</name>
+        <qualifiedname>Sdl3Ui::OpenURL</qualifiedname>
+        <reimplements refid="class_base_ui_1a1d3a2649b6ee63174afd8d8aff879658">OpenURL</reimplements>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Opens the specified URL through the operating system. Opens a file browser when <ulink url="file://">file://</ulink> is provided.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>url</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>URL to open </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true when successful </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="73" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="1255" bodyend="1266"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1ac96a6df6c24754a7798841b1998b3c0f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect Sdl3Ui::GetWindowMetrics</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetWindowMetrics</name>
+        <qualifiedname>Sdl3Ui::GetWindowMetrics</qualifiedname>
+        <reimplements refid="class_base_ui_1a8a6e1bfb68cd5283b9ba510eae44453c">GetWindowMetrics</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>dimensions of the window </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="74" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="1244" bodyend="1253"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1aeb1c3feb182c5b50dc856ca37b10b217" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Sdl3Ui::HandleErrorOutput</definition>
+        <argsstring>(const std::string &amp;message) override</argsstring>
+        <name>HandleErrorOutput</name>
+        <qualifiedname>Sdl3Ui::HandleErrorOutput</qualifiedname>
+        <reimplements refid="class_base_ui_1ad2f8960e9e9b562cf67d249557f6259a">HandleErrorOutput</reimplements>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Outputs the error message in a custom way depending on platform</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>message string. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>wether error has been handled </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="75" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="643" bodyend="659"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="user-defined">
+      <memberdef kind="function" id="class_sdl3_ui_1a418a0c1d957c7613a224e8c4e4b932dd" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::ProcessEvent</definition>
+        <argsstring>(SDL_Event &amp;sdl_event)</argsstring>
+        <name>ProcessEvent</name>
+        <qualifiedname>Sdl3Ui::ProcessEvent</qualifiedname>
+        <param>
+          <type>SDL_Event &amp;</type>
+          <declname>sdl_event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Processes a SDL Event. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="99" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="661" bodyend="715"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1adb41a2e269a1b8a80c43625af06a1678" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::ProcessWindowEvent</definition>
+        <argsstring>(SDL_Event &amp;evnt)</argsstring>
+        <name>ProcessWindowEvent</name>
+        <qualifiedname>Sdl3Ui::ProcessWindowEvent</qualifiedname>
+        <param>
+          <type>SDL_Event &amp;</type>
+          <declname>evnt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="101" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="717" bodyend="772"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1afd4edc4e469360c267d0e2df6bcef442" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::ProcessKeyDownEvent</definition>
+        <argsstring>(SDL_Event &amp;evnt)</argsstring>
+        <name>ProcessKeyDownEvent</name>
+        <qualifiedname>Sdl3Ui::ProcessKeyDownEvent</qualifiedname>
+        <param>
+          <type>SDL_Event &amp;</type>
+          <declname>evnt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="102" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="774" bodyend="794"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1ad39e3123281625c918e90225e99741cf" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::ProcessKeyUpEvent</definition>
+        <argsstring>(SDL_Event &amp;evnt)</argsstring>
+        <name>ProcessKeyUpEvent</name>
+        <qualifiedname>Sdl3Ui::ProcessKeyUpEvent</qualifiedname>
+        <param>
+          <type>SDL_Event &amp;</type>
+          <declname>evnt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="103" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="796" bodyend="803"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1ad0039a13f4be017284139afab5fdd7d4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::ProcessMouseMotionEvent</definition>
+        <argsstring>(SDL_Event &amp;evnt)</argsstring>
+        <name>ProcessMouseMotionEvent</name>
+        <qualifiedname>Sdl3Ui::ProcessMouseMotionEvent</qualifiedname>
+        <param>
+          <type>SDL_Event &amp;</type>
+          <declname>evnt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="104" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="805" bodyend="830"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1aafe0b05c50a8af7a09bb4770ee1f7415" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::ProcessMouseButtonEvent</definition>
+        <argsstring>(SDL_Event &amp;evnt)</argsstring>
+        <name>ProcessMouseButtonEvent</name>
+        <qualifiedname>Sdl3Ui::ProcessMouseButtonEvent</qualifiedname>
+        <param>
+          <type>SDL_Event &amp;</type>
+          <declname>evnt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="105" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="852" bodyend="873"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1acc9d33a46bd3a4c671c386f71602e433" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::ProcessMouseWheelEvent</definition>
+        <argsstring>(SDL_Event &amp;evnt)</argsstring>
+        <name>ProcessMouseWheelEvent</name>
+        <qualifiedname>Sdl3Ui::ProcessMouseWheelEvent</qualifiedname>
+        <param>
+          <type>SDL_Event &amp;</type>
+          <declname>evnt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="106" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="832" bodyend="850"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1a566cb301c384beca1bcb93af60f6de2f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::ProcessControllerAdded</definition>
+        <argsstring>(SDL_Event &amp;evnt)</argsstring>
+        <name>ProcessControllerAdded</name>
+        <qualifiedname>Sdl3Ui::ProcessControllerAdded</qualifiedname>
+        <param>
+          <type>SDL_Event &amp;</type>
+          <declname>evnt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="107" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="875" bodyend="885"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1aad5a3344bc10555fee98dc75e6987fcc" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::ProcessControllerRemoved</definition>
+        <argsstring>(SDL_Event &amp;evnt)</argsstring>
+        <name>ProcessControllerRemoved</name>
+        <qualifiedname>Sdl3Ui::ProcessControllerRemoved</qualifiedname>
+        <param>
+          <type>SDL_Event &amp;</type>
+          <declname>evnt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="108" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="887" bodyend="896"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1acfe8c17e9d280ff448a4dac097d0a186" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::ProcessControllerButtonEvent</definition>
+        <argsstring>(SDL_Event &amp;evnt)</argsstring>
+        <name>ProcessControllerButtonEvent</name>
+        <qualifiedname>Sdl3Ui::ProcessControllerButtonEvent</qualifiedname>
+        <param>
+          <type>SDL_Event &amp;</type>
+          <declname>evnt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="109" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="898" bodyend="902"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1aaf180fdf9ce32c452f07313a09b3f862" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::ProcessControllerAxisEvent</definition>
+        <argsstring>(SDL_Event &amp;evnt)</argsstring>
+        <name>ProcessControllerAxisEvent</name>
+        <qualifiedname>Sdl3Ui::ProcessControllerAxisEvent</qualifiedname>
+        <param>
+          <type>SDL_Event &amp;</type>
+          <declname>evnt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="110" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="904" bodyend="934"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1abdb0899e6429ddf303131d334e82f516" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::ProcessFingerEvent</definition>
+        <argsstring>(SDL_Event &amp;evnt)</argsstring>
+        <name>ProcessFingerEvent</name>
+        <qualifiedname>Sdl3Ui::ProcessFingerEvent</qualifiedname>
+        <param>
+          <type>SDL_Event &amp;</type>
+          <declname>evnt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="111" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="936" bodyend="981"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_sdl3_ui_1a5adca600155e6fb1b588a5b078bff412" prot="private" static="no" mutable="no">
+        <type><ref refid="struct_base_ui_1_1_display_mode" kindref="compound">DisplayMode</ref></type>
+        <definition>DisplayMode Sdl3Ui::last_display_mode</definition>
+        <argsstring></argsstring>
+        <name>last_display_mode</name>
+        <qualifiedname>Sdl3Ui::last_display_mode</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Last display mode. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="128" column="13" bodyfile="platform/sdl/sdl3_ui.h" bodystart="128" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sdl3_ui_1af041976ba2f54201004ffb17283e2447" prot="private" static="no" mutable="no">
+        <type>SDL_Texture *</type>
+        <definition>SDL_Texture* Sdl3Ui::sdl_texture_game</definition>
+        <argsstring></argsstring>
+        <name>sdl_texture_game</name>
+        <qualifiedname>Sdl3Ui::sdl_texture_game</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Main SDL window. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="131" column="13" bodyfile="platform/sdl/sdl3_ui.h" bodystart="131" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sdl3_ui_1ac2cc1227f4938e6da2fc581617d8b391" prot="private" static="no" mutable="no">
+        <type>SDL_Texture *</type>
+        <definition>SDL_Texture* Sdl3Ui::sdl_texture_scaled</definition>
+        <argsstring></argsstring>
+        <name>sdl_texture_scaled</name>
+        <qualifiedname>Sdl3Ui::sdl_texture_scaled</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="132" column="13" bodyfile="platform/sdl/sdl3_ui.h" bodystart="132" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sdl3_ui_1a2b254c99e73471c664b0c06ada2cbb2a" prot="private" static="no" mutable="no">
+        <type>SDL_Window *</type>
+        <definition>SDL_Window* Sdl3Ui::sdl_window</definition>
+        <argsstring></argsstring>
+        <name>sdl_window</name>
+        <qualifiedname>Sdl3Ui::sdl_window</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="133" column="12" bodyfile="platform/sdl/sdl3_ui.h" bodystart="133" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sdl3_ui_1adfd320a9ae2d28db3c6b4412478075c7" prot="private" static="no" mutable="no">
+        <type>SDL_Renderer *</type>
+        <definition>SDL_Renderer* Sdl3Ui::sdl_renderer</definition>
+        <argsstring></argsstring>
+        <name>sdl_renderer</name>
+        <qualifiedname>Sdl3Ui::sdl_renderer</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="134" column="14" bodyfile="platform/sdl/sdl3_ui.h" bodystart="134" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sdl3_ui_1a8780081b718f23d43be5730aaca7e797" prot="private" static="no" mutable="no">
+        <type>SDL_Joystick *</type>
+        <definition>SDL_Joystick* Sdl3Ui::sdl_joystick</definition>
+        <argsstring></argsstring>
+        <name>sdl_joystick</name>
+        <qualifiedname>Sdl3Ui::sdl_joystick</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="135" column="14" bodyfile="platform/sdl/sdl3_ui.h" bodystart="135" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sdl3_ui_1a3c6bde9131c0f1e41dd11040512a8a7b" prot="private" static="no" mutable="no">
+        <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+        <definition>Rect Sdl3Ui::window_mode_metrics</definition>
+        <argsstring></argsstring>
+        <name>window_mode_metrics</name>
+        <qualifiedname>Sdl3Ui::window_mode_metrics</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="137" column="6" bodyfile="platform/sdl/sdl3_ui.h" bodystart="137" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sdl3_ui_1a27865f7991a8803a2edd4927a95e967e" prot="private" static="no" mutable="no">
+        <type>SDL_Rect</type>
+        <definition>SDL_Rect Sdl3Ui::viewport</definition>
+        <argsstring></argsstring>
+        <name>viewport</name>
+        <qualifiedname>Sdl3Ui::viewport</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="138" column="10" bodyfile="platform/sdl/sdl3_ui.h" bodystart="138" bodyend="138"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sdl3_ui_1a6f38e3a8123c718396383d30e568857b" prot="private" static="no" mutable="no">
+        <type>struct Sdl3Ui::@207353142213305003142231362325262130010124367004</type>
+        <definition>struct Sdl3Ui::@207353142213305003142231362325262130010124367004 Sdl3Ui::window</definition>
+        <argsstring></argsstring>
+        <name>window</name>
+        <qualifiedname>Sdl3Ui::window</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="144" column="9"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sdl3_ui_1aa9c4ce154672686f3d9a5d3ee1345669" prot="private" static="no" mutable="no">
+        <type>SDL_PixelFormat</type>
+        <definition>SDL_PixelFormat Sdl3Ui::texture_format</definition>
+        <argsstring></argsstring>
+        <name>texture_format</name>
+        <qualifiedname>Sdl3Ui::texture_format</qualifiedname>
+        <initializer>= SDL_PIXELFORMAT_UNKNOWN</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="146" column="17" bodyfile="platform/sdl/sdl3_ui.h" bodystart="146" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_sdl3_ui_1af42c2deff3204efa2d36897383f1c62e" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sdl3Ui::width</definition>
+        <argsstring></argsstring>
+        <name>width</name>
+        <qualifiedname>Sdl3Ui::width</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="140" column="5" bodyfile="platform/sdl/sdl3_ui.h" bodystart="140" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sdl3_ui_1a0c7a22160163b87be7cabaec9c042db4" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sdl3Ui::height</definition>
+        <argsstring></argsstring>
+        <name>height</name>
+        <qualifiedname>Sdl3Ui::height</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="141" column="5" bodyfile="platform/sdl/sdl3_ui.h" bodystart="141" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sdl3_ui_1a50dcf240281ab5b7d9ede1d47809c762" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Sdl3Ui::size_changed</definition>
+        <argsstring></argsstring>
+        <name>size_changed</name>
+        <qualifiedname>Sdl3Ui::size_changed</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="142" column="6" bodyfile="platform/sdl/sdl3_ui.h" bodystart="142" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sdl3_ui_1aac76df529904642ba9341a947db9533a" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float Sdl3Ui::scale</definition>
+        <argsstring></argsstring>
+        <name>scale</name>
+        <qualifiedname>Sdl3Ui::scale</qualifiedname>
+        <initializer>= 0.f</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="143" column="7" bodyfile="platform/sdl/sdl3_ui.h" bodystart="143" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_sdl3_ui_1a64390c0fd7c864b3f3af5cc619c13784" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Sdl3Ui::Sdl3Ui</definition>
+        <argsstring>(long width, long height, const Game_Config &amp;cfg)</argsstring>
+        <name>Sdl3Ui</name>
+        <qualifiedname>Sdl3Ui::Sdl3Ui</qualifiedname>
+        <param>
+          <type>long</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>long</type>
+          <declname>height</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_game___config" kindref="compound">Game_Config</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>width</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>window client width. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>height</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>window client height. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cfg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>config options </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="51" column="1" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="110" bodyend="157"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1a1e234e51241f5b2ed31eef36b7965a39" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Sdl3Ui::~Sdl3Ui</definition>
+        <argsstring>() override</argsstring>
+        <name>~Sdl3Ui</name>
+        <qualifiedname>Sdl3Ui::~Sdl3Ui</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Destructor. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="56" column="1" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="159" bodyend="181"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_sdl3_ui_1a4a26c064cb35e00392b324181ed76f37" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Sdl3Ui::RefreshDisplayMode</definition>
+        <argsstring>()</argsstring>
+        <name>RefreshDisplayMode</name>
+        <qualifiedname>Sdl3Ui::RefreshDisplayMode</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Refreshes the display mode after it was changed.</para>
+<para><simplesect kind="return"><para>whether the change was successful. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="89" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="275" bodyend="426"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1a7b8648fdc73e9c9b5b04acf6299b2d94" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::BeginDisplayModeChange</definition>
+        <argsstring>()</argsstring>
+        <name>BeginDisplayModeChange</name>
+        <qualifiedname>Sdl3Ui::BeginDisplayModeChange</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="91" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="240" bodyend="243"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1a2042bb8041d87aec86de17d539ee65b3" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::EndDisplayModeChange</definition>
+        <argsstring>()</argsstring>
+        <name>EndDisplayModeChange</name>
+        <qualifiedname>Sdl3Ui::EndDisplayModeChange</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="92" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="245" bodyend="273"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1a20ffcdd4598b2ec47819a39c42db86b3" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::SetAppIcon</definition>
+        <argsstring>()</argsstring>
+        <name>SetAppIcon</name>
+        <qualifiedname>Sdl3Ui::SetAppIcon</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets app icon. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="118" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="983" bodyend="1037"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1a4322ee79956c3d98a999b86b22e3b966" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::ResetKeys</definition>
+        <argsstring>()</argsstring>
+        <name>ResetKeys</name>
+        <qualifiedname>Sdl3Ui::ResetKeys</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Resets keys states. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="123" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="1039" bodyend="1043"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sdl3_ui_1aee11fd4924ae361049622854411fca77" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sdl3Ui::RequestVideoMode</definition>
+        <argsstring>(int width, int height, int zoom, bool fullscreen, bool vsync)</argsstring>
+        <name>RequestVideoMode</name>
+        <qualifiedname>Sdl3Ui::RequestVideoMode</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>zoom</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>fullscreen</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>vsync</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/sdl/sdl3_ui.h" line="125" column="6" bodyfile="platform/sdl/sdl3_ui.cpp" bodystart="221" bodyend="238"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_sdl3_ui" kindref="compound">Sdl3Ui</ref> class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>BaseUi</label>
+        <link refid="class_base_ui"/>
+      </node>
+      <node id="1">
+        <label>Sdl3Ui</label>
+        <link refid="class_sdl3_ui"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>BaseUi</label>
+        <link refid="class_base_ui"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>vcfg</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>current_display_mode</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>mouse_pos</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>analog_input</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>back_color</edgelabel>
+        </childnode>
+      </node>
+      <node id="18">
+        <label>BaseUi::DisplayMode</label>
+        <link refid="struct_base_ui_1_1_display_mode"/>
+      </node>
+      <node id="7">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>Color</label>
+        <link refid="class_color"/>
+      </node>
+      <node id="13">
+        <label>ConfigParam&lt; int &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="12" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>ConfigParam&lt; std::string &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>ConfigParamBase&lt; ConfigEnum::GameResolution &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="15">
+        <label>ConfigParamBase&lt; ConfigEnum::ScalingMode &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="10">
+        <label>ConfigParamBase&lt; ConfigEnum::ShowFps &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="8">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="12">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="6">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="16">
+        <label>EnumConfigParam&lt; ConfigEnum::GameResolution, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="17" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>EnumConfigParam&lt; ConfigEnum::ScalingMode, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="15" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>EnumConfigParam&lt; ConfigEnum::ShowFps, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Game_ConfigVideo</label>
+        <link refid="struct_game___config_video"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>renderer</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>fullscreen</edgelabel>
+          <edgelabel>pause_when_focus_lost</edgelabel>
+          <edgelabel>stretch</edgelabel>
+          <edgelabel>touch_ui</edgelabel>
+          <edgelabel>vsync</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>fps</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>fps_limit</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>window_height</edgelabel>
+          <edgelabel>window_width</edgelabel>
+          <edgelabel>window_x</edgelabel>
+          <edgelabel>window_y</edgelabel>
+          <edgelabel>window_zoom</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>scaling_mode</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>game_resolution</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>Input::AnalogInput</label>
+        <link refid="struct_input_1_1_analog_input"/>
+        <childnode refid="21" relation="usage">
+          <edgelabel>primary</edgelabel>
+          <edgelabel>secondary</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>LockedConfigParam&lt; std::string &gt;</label>
+        <link refid="class_locked_config_param"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>PointT&lt; float &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="19">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="11">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="12" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Sdl3Ui</label>
+        <link refid="class_sdl3_ui"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="platform/sdl/sdl3_ui.h" line="42" column="1" bodyfile="platform/sdl/sdl3_ui.h" bodystart="42" bodyend="151"/>
+    <listofallmembers>
+      <member refid="class_base_ui_1a96512cebf65e9153cb3b377a1080eaef" prot="protected" virt="non-virtual"><scope>Sdl3Ui</scope><name>analog_input</name></member>
+      <member refid="class_base_ui_1ae38aec6a7306ee56bdd3c4a0d0bb76e6" prot="protected" virt="non-virtual"><scope>Sdl3Ui</scope><name>back_color</name></member>
+      <member refid="class_base_ui_1abc04d498f5fac11ee11f9c9122207c13" prot="protected" virt="non-virtual"><scope>Sdl3Ui</scope><name>BaseUi</name></member>
+      <member refid="class_sdl3_ui_1a7b8648fdc73e9c9b5b04acf6299b2d94" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>BeginDisplayModeChange</name></member>
+      <member refid="class_base_ui_1a6705177f2e26c41cd38aedf809b3ff96" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>CaptureScreen</name></member>
+      <member refid="class_base_ui_1ab3cb68a47aa7a742bd2aba62c3c93830" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>ChangeDisplaySurfaceResolution</name></member>
+      <member refid="class_base_ui_1a0c76ff69fe6792d43cdfefdad462c48a" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>CleanDisplay</name></member>
+      <member refid="class_base_ui_1a1259ecf0abbfeca8f798dc05ec7cf973" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>CreateUi</name></member>
+      <member refid="class_base_ui_1ad968d67d945a727f6be3556cb4e15dfb" prot="protected" virt="non-virtual"><scope>Sdl3Ui</scope><name>current_display_mode</name></member>
+      <member refid="class_base_ui_1a3fcf56158d2dbfa1a2dddf5b62dd8c86" prot="protected" virt="non-virtual"><scope>Sdl3Ui</scope><name>cursor_visible</name></member>
+      <member refid="class_sdl3_ui_1a2042bb8041d87aec86de17d539ee65b3" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>EndDisplayModeChange</name></member>
+      <member refid="class_base_ui_1aeae86a5ea89c8717b55692b023768373" prot="protected" virt="non-virtual"><scope>Sdl3Ui</scope><name>external_frame_rate</name></member>
+      <member refid="class_base_ui_1afbefd1cf3f059e1613cdb93a92ddfae2" prot="protected" virt="non-virtual"><scope>Sdl3Ui</scope><name>finger_input</name></member>
+      <member refid="class_base_ui_1a8277cb2800b716f1775d74a71a752ec7" prot="protected" virt="non-virtual"><scope>Sdl3Ui</scope><name>frame_limit</name></member>
+      <member refid="class_base_ui_1a1743a7957049618f9092313ef3643ff8" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>GetAnalogInput</name></member>
+      <member refid="class_base_ui_1a1d9ab96f32fc80f68ea299a56c588b48" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>GetConfig</name></member>
+      <member refid="class_base_ui_1ac58c799344c947f74f7680ac92b29f46" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>GetDisplaySurface</name></member>
+      <member refid="class_base_ui_1a6a12e3b17421efa5ab8be3789bba01d6" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>GetDisplaySurface</name></member>
+      <member refid="class_base_ui_1a29fb87f2f0bea382c9e07a4787546155" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>GetFrameLimit</name></member>
+      <member refid="class_base_ui_1acaea0726d275e4cfe660d450c15613ff" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>GetHeight</name></member>
+      <member refid="class_base_ui_1a26429a01230e03334c6d534b50aea481" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>GetKeyStates</name></member>
+      <member refid="class_base_ui_1a749ed505a2e01d7c3f09304ef8d66e27" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>GetMouseFocus</name></member>
+      <member refid="class_base_ui_1ab8e3ba8ce6415a4c706b628093d07d08" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>GetMousePosition</name></member>
+      <member refid="class_base_ui_1a665686e47cf5b94d8fe84b7fb255330a" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>GetTouchInput</name></member>
+      <member refid="class_base_ui_1afc0660dcf3b0a7c3e6354b215b409e2a" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>GetWidth</name></member>
+      <member refid="class_sdl3_ui_1ac96a6df6c24754a7798841b1998b3c0f" prot="public" virt="virtual"><scope>Sdl3Ui</scope><name>GetWindowMetrics</name></member>
+      <member refid="class_sdl3_ui_1aeb1c3feb182c5b50dc856ca37b10b217" prot="public" virt="virtual"><scope>Sdl3Ui</scope><name>HandleErrorOutput</name></member>
+      <member refid="class_sdl3_ui_1a0c7a22160163b87be7cabaec9c042db4" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>height</name></member>
+      <member refid="class_base_ui_1a783a7b0dbc389c5230011b4e7ba72fcf" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>IsFrameRateSynchronized</name></member>
+      <member refid="class_base_ui_1a1e7122e1da0ce80c92fc4bbd70ab3529" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>IsFullscreen</name></member>
+      <member refid="class_base_ui_1acb63c6d48a74e7c111a5d8d54eb9bc44" prot="protected" virt="non-virtual"><scope>Sdl3Ui</scope><name>keys</name></member>
+      <member refid="class_base_ui_1aa55d38974520aa1b75d19ac8fc78184b" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>KeyStatus</name></member>
+      <member refid="class_sdl3_ui_1a5adca600155e6fb1b588a5b078bff412" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>last_display_mode</name></member>
+      <member refid="class_base_ui_1a77e2002cc546f7326d1bf154192ec99c" prot="protected" virt="non-virtual"><scope>Sdl3Ui</scope><name>main_surface</name></member>
+      <member refid="class_base_ui_1a59b0524cf6d37e9d5ce7ff5c749e620c" prot="protected" virt="non-virtual"><scope>Sdl3Ui</scope><name>mouse_focus</name></member>
+      <member refid="class_base_ui_1ad40db5525bb26ed0fd1b5e258da45b7c" prot="protected" virt="non-virtual"><scope>Sdl3Ui</scope><name>mouse_pos</name></member>
+      <member refid="class_sdl3_ui_1a83094e15fc0880c4f77348c9c6b00039" prot="public" virt="virtual"><scope>Sdl3Ui</scope><name>OpenURL</name></member>
+      <member refid="class_base_ui_1abdffe1380198934a10588fd57081eba6" prot="protected" virt="non-virtual"><scope>Sdl3Ui</scope><name>original_fps_show_state</name></member>
+      <member refid="class_sdl3_ui_1a566cb301c384beca1bcb93af60f6de2f" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>ProcessControllerAdded</name></member>
+      <member refid="class_sdl3_ui_1aaf180fdf9ce32c452f07313a09b3f862" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>ProcessControllerAxisEvent</name></member>
+      <member refid="class_sdl3_ui_1acfe8c17e9d280ff448a4dac097d0a186" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>ProcessControllerButtonEvent</name></member>
+      <member refid="class_sdl3_ui_1aad5a3344bc10555fee98dc75e6987fcc" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>ProcessControllerRemoved</name></member>
+      <member refid="class_sdl3_ui_1a418a0c1d957c7613a224e8c4e4b932dd" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>ProcessEvent</name></member>
+      <member refid="class_sdl3_ui_1afc0443d6fee3afb27b3ec743277ad3df" prot="public" virt="virtual"><scope>Sdl3Ui</scope><name>ProcessEvents</name></member>
+      <member refid="class_sdl3_ui_1abdb0899e6429ddf303131d334e82f516" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>ProcessFingerEvent</name></member>
+      <member refid="class_sdl3_ui_1afd4edc4e469360c267d0e2df6bcef442" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>ProcessKeyDownEvent</name></member>
+      <member refid="class_sdl3_ui_1ad39e3123281625c918e90225e99741cf" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>ProcessKeyUpEvent</name></member>
+      <member refid="class_sdl3_ui_1aafe0b05c50a8af7a09bb4770ee1f7415" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>ProcessMouseButtonEvent</name></member>
+      <member refid="class_sdl3_ui_1ad0039a13f4be017284139afab5fdd7d4" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>ProcessMouseMotionEvent</name></member>
+      <member refid="class_sdl3_ui_1acc9d33a46bd3a4c671c386f71602e433" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>ProcessMouseWheelEvent</name></member>
+      <member refid="class_sdl3_ui_1adb41a2e269a1b8a80c43625af06a1678" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>ProcessWindowEvent</name></member>
+      <member refid="class_sdl3_ui_1a4a26c064cb35e00392b324181ed76f37" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>RefreshDisplayMode</name></member>
+      <member refid="class_base_ui_1ad7dcb52dbf687ea604d2c4994c0215c7" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>RenderFps</name></member>
+      <member refid="class_sdl3_ui_1aee11fd4924ae361049622854411fca77" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>RequestVideoMode</name></member>
+      <member refid="class_sdl3_ui_1a4322ee79956c3d98a999b86b22e3b966" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>ResetKeys</name></member>
+      <member refid="class_sdl3_ui_1aac76df529904642ba9341a947db9533a" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>scale</name></member>
+      <member refid="class_sdl3_ui_1a64390c0fd7c864b3f3af5cc619c13784" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>Sdl3Ui</name></member>
+      <member refid="class_sdl3_ui_1a8780081b718f23d43be5730aaca7e797" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>sdl_joystick</name></member>
+      <member refid="class_sdl3_ui_1adfd320a9ae2d28db3c6b4412478075c7" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>sdl_renderer</name></member>
+      <member refid="class_sdl3_ui_1af041976ba2f54201004ffb17283e2447" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>sdl_texture_game</name></member>
+      <member refid="class_sdl3_ui_1ac2cc1227f4938e6da2fc581617d8b391" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>sdl_texture_scaled</name></member>
+      <member refid="class_sdl3_ui_1a2b254c99e73471c664b0c06ada2cbb2a" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>sdl_window</name></member>
+      <member refid="class_sdl3_ui_1a20ffcdd4598b2ec47819a39c42db86b3" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>SetAppIcon</name></member>
+      <member refid="class_base_ui_1a9b36faf7ba0bdd8c0fb78a1b1241be4f" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>SetFrameLimit</name></member>
+      <member refid="class_base_ui_1a6f97cd92275f9c2a0bbe357171d7b9b7" prot="protected" virt="non-virtual"><scope>Sdl3Ui</scope><name>SetFrameRateSynchronized</name></member>
+      <member refid="class_base_ui_1aeaa4e3a8c3f70be2c7bbf18ba89d5a1a" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>SetGameResolution</name></member>
+      <member refid="class_base_ui_1aa4c8869422507e9d9b216eff0465413c" prot="protected" virt="non-virtual"><scope>Sdl3Ui</scope><name>SetIsFullscreen</name></member>
+      <member refid="class_base_ui_1a2b870c00dadecb6351d14dacca1d9b02" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>SetPauseWhenFocusLost</name></member>
+      <member refid="class_sdl3_ui_1a8b2d0396c994555127e4ff976650ec0b" prot="public" virt="virtual"><scope>Sdl3Ui</scope><name>SetScalingMode</name></member>
+      <member refid="class_base_ui_1a34ccc599af3eb7185a41f45f042d5d66" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>SetShowFps</name></member>
+      <member refid="class_sdl3_ui_1aaf58c5482df9121a31ce1fa3eac04361" prot="public" virt="virtual"><scope>Sdl3Ui</scope><name>SetTitle</name></member>
+      <member refid="class_sdl3_ui_1a61b487d9c8c642fea6d1fa792f34cc17" prot="public" virt="virtual"><scope>Sdl3Ui</scope><name>ShowCursor</name></member>
+      <member refid="class_base_ui_1acfec1d72d810c6b6adc2fecf6ef322cc" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>ShowFpsOnTitle</name></member>
+      <member refid="class_sdl3_ui_1a50dcf240281ab5b7d9ede1d47809c762" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>size_changed</name></member>
+      <member refid="class_sdl3_ui_1aa9c4ce154672686f3d9a5d3ee1345669" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>texture_format</name></member>
+      <member refid="class_sdl3_ui_1a691d733e412f2ec29e3add459ff643ff" prot="public" virt="virtual"><scope>Sdl3Ui</scope><name>ToggleFullscreen</name></member>
+      <member refid="class_base_ui_1abca78fd083436f0a9d036d949fc5e371" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>ToggleShowFps</name></member>
+      <member refid="class_sdl3_ui_1a49c26ebae053ce1b8956f04f3494090e" prot="public" virt="virtual"><scope>Sdl3Ui</scope><name>ToggleStretch</name></member>
+      <member refid="class_base_ui_1ad21fdbce0abcbd781791071dd7bb3bd1" prot="public" virt="virtual"><scope>Sdl3Ui</scope><name>ToggleTouchUi</name></member>
+      <member refid="class_sdl3_ui_1a96d0f5a9c07d44ab389afeea4e092fef" prot="public" virt="virtual"><scope>Sdl3Ui</scope><name>ToggleVsync</name></member>
+      <member refid="class_sdl3_ui_1a826c84f7edfea75b8251d454f41efa5f" prot="public" virt="virtual"><scope>Sdl3Ui</scope><name>ToggleZoom</name></member>
+      <member refid="class_base_ui_1a18ee3fdd88366c546ceb2daf3382f425" prot="protected" virt="non-virtual"><scope>Sdl3Ui</scope><name>touch_input</name></member>
+      <member refid="class_sdl3_ui_1ac00da0876af0a0a815d8245bbf8fb5c1" prot="public" virt="virtual"><scope>Sdl3Ui</scope><name>UpdateDisplay</name></member>
+      <member refid="class_base_ui_1a2d3af98fda6d7a8b33b71235bfe1bc62" prot="protected" virt="non-virtual"><scope>Sdl3Ui</scope><name>vcfg</name></member>
+      <member refid="class_sdl3_ui_1a54324cc1e7a3ed8a244ecf8dfbe5c3d1" prot="public" virt="virtual"><scope>Sdl3Ui</scope><name>vChangeDisplaySurfaceResolution</name></member>
+      <member refid="class_sdl3_ui_1a48505a29a3473018305fc09280dc010b" prot="public" virt="virtual"><scope>Sdl3Ui</scope><name>vGetConfig</name></member>
+      <member refid="class_sdl3_ui_1a27865f7991a8803a2edd4927a95e967e" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>viewport</name></member>
+      <member refid="class_sdl3_ui_1af42c2deff3204efa2d36897383f1c62e" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>width</name></member>
+      <member refid="class_sdl3_ui_1a6f38e3a8123c718396383d30e568857b" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>window</name></member>
+      <member refid="class_sdl3_ui_1a3c6bde9131c0f1e41dd11040512a8a7b" prot="private" virt="non-virtual"><scope>Sdl3Ui</scope><name>window_mode_metrics</name></member>
+      <member refid="class_base_ui_1acb710126bbe5950a70d4dd6348d4bed1" prot="public" virt="virtual"><scope>Sdl3Ui</scope><name>~BaseUi</name></member>
+      <member refid="class_sdl3_ui_1a1e234e51241f5b2ed31eef36b7965a39" prot="public" virt="non-virtual"><scope>Sdl3Ui</scope><name>~Sdl3Ui</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

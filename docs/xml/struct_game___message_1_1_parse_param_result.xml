@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___message_1_1_parse_param_result" kind="struct" language="C++" prot="public">
+    <compoundname>Game_Message::ParseParamResult</compoundname>
+    <includes refid="game__message_8h" local="no">game_message.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___message_1_1_parse_param_result_1a63fb86b5852c0f6f0cee3f5c67357918" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* Game_Message::ParseParamResult::next</definition>
+        <argsstring></argsstring>
+        <name>next</name>
+        <qualifiedname>Game_Message::ParseParamResult::next</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>iterator to the next character after parsed content </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="113" column="12" bodyfile="game_message.h" bodystart="113" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___message_1_1_parse_param_result_1adb3774b27186f9ec8b6d6c65c2c07f76" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Message::ParseParamResult::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>Game_Message::ParseParamResult::value</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>value that was parsed </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="115" column="5" bodyfile="game_message.h" bodystart="115" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Struct returned by parameter parsing methods </para>
+    </detaileddescription>
+    <location file="game_message.h" line="111" column="1" bodyfile="game_message.h" bodystart="111" bodyend="116"/>
+    <listofallmembers>
+      <member refid="struct_game___message_1_1_parse_param_result_1a63fb86b5852c0f6f0cee3f5c67357918" prot="public" virt="non-virtual"><scope>Game_Message::ParseParamResult</scope><name>next</name></member>
+      <member refid="struct_game___message_1_1_parse_param_result_1adb3774b27186f9ec8b6d6c65c2c07f76" prot="public" virt="non-virtual"><scope>Game_Message::ParseParamResult</scope><name>value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

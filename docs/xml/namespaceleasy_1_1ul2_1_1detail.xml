@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1ul2_1_1detail" kind="namespace" language="C++">
+    <compoundname>leasy::ul2::detail</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceleasy_1_1ul2_1_1detail_1a234c76938f0dfa835c5e164ef250fdea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool leasy::ul2::detail::try_get</definition>
+        <argsstring>(lua_State *L, int idx, T &amp;out)</argsstring>
+        <name>try_get</name>
+        <qualifiedname>leasy::ul2::detail::try_get</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>idx</declname>
+        </param>
+        <param>
+          <type>T &amp;</type>
+          <declname>out</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/lua_stack.hpp" line="263" column="10" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="263" bodyend="278"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ul2/lua_stack.hpp" line="261" column="3"/>
+  </compounddef>
+</doxygen>

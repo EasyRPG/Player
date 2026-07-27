@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lcf__data_8cpp" kind="file" language="C++">
+    <compoundname>lcf_data.cpp</compoundname>
+    <includes local="yes">lcf/rpg/database.h</includes>
+    <includes refid="data_8h" local="yes">lcf/data.h</includes>
+    <incdepgraph>
+      <node id="3">
+        <label>lcf/data.h</label>
+        <link refid="data_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>lcf_data.cpp</label>
+        <link refid="lcf__data_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>lcf/rpg/actor.h</label>
+      </node>
+      <node id="14">
+        <label>lcf/rpg/animation.h</label>
+      </node>
+      <node id="11">
+        <label>lcf/rpg/attribute.h</label>
+      </node>
+      <node id="20">
+        <label>lcf/rpg/battlecommand.h</label>
+      </node>
+      <node id="21">
+        <label>lcf/rpg/battleranimation.h</label>
+      </node>
+      <node id="15">
+        <label>lcf/rpg/chipset.h</label>
+      </node>
+      <node id="19">
+        <label>lcf/rpg/class.h</label>
+      </node>
+      <node id="18">
+        <label>lcf/rpg/commonevent.h</label>
+      </node>
+      <node id="2">
+        <label>lcf/rpg/database.h</label>
+      </node>
+      <node id="9">
+        <label>lcf/rpg/enemy.h</label>
+      </node>
+      <node id="24">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="8">
+        <label>lcf/rpg/item.h</label>
+      </node>
+      <node id="23">
+        <label>lcf/rpg/music.h</label>
+      </node>
+      <node id="7">
+        <label>lcf/rpg/skill.h</label>
+      </node>
+      <node id="22">
+        <label>lcf/rpg/sound.h</label>
+      </node>
+      <node id="12">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="17">
+        <label>lcf/rpg/system.h</label>
+      </node>
+      <node id="16">
+        <label>lcf/rpg/terms.h</label>
+      </node>
+      <node id="13">
+        <label>lcf/rpg/terrain.h</label>
+      </node>
+      <node id="25">
+        <label>lcf/rpg/treemap.h</label>
+      </node>
+      <node id="10">
+        <label>lcf/rpg/troop.h</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespacelcf">lcf</innernamespace>
+    <innernamespace refid="namespacelcf_1_1_data">lcf::Data</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>liblcf.<sp/>Copyright<sp/>(c)<sp/>2020<sp/>liblcf<sp/>authors.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>https://github.com/EasyRPG/liblcf<sp/>-<sp/>https://easyrpg.org</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>liblcf<sp/>is<sp/>Free/Libre<sp/>Open<sp/>Source<sp/>Software,<sp/>released<sp/>under<sp/>the<sp/>MIT<sp/>License.</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>For<sp/>the<sp/>full<sp/>copyright<sp/>and<sp/>license<sp/>information,<sp/>please<sp/>view<sp/>the<sp/>COPYING</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>file<sp/>that<sp/>was<sp/>distributed<sp/>with<sp/>this<sp/>source<sp/>code.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;lcf/rpg/database.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="data_8h" kindref="compound">lcf/data.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacelcf" kindref="compound">lcf</ref><sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacelcf_1_1_data" kindref="compound">Data</ref><sp/>{</highlight></codeline>
+<codeline lineno="16" refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>rpg::Database<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18" refid="namespacelcf_1_1_data_1a56bf8a2879c7c39ab78d607a7d5ab496" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;rpg::Actor&gt;&amp;<sp/><ref refid="namespacelcf_1_1_data_1a56bf8a2879c7c39ab78d607a7d5ab496" kindref="member">actors</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.actors;</highlight></codeline>
+<codeline lineno="19" refid="namespacelcf_1_1_data_1a5e0ab7850eec231c1a4462d2fdf491fe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;rpg::Skill&gt;&amp;<sp/><ref refid="namespacelcf_1_1_data_1a5e0ab7850eec231c1a4462d2fdf491fe" kindref="member">skills</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.skills;</highlight></codeline>
+<codeline lineno="20" refid="namespacelcf_1_1_data_1a19c954007507875e0136493ed52d470b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;rpg::Item&gt;&amp;<sp/><ref refid="namespacelcf_1_1_data_1a19c954007507875e0136493ed52d470b" kindref="member">items</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.items;</highlight></codeline>
+<codeline lineno="21" refid="namespacelcf_1_1_data_1aa3bb01f06639a77acb4daefc0290aef7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;rpg::Enemy&gt;&amp;<sp/><ref refid="namespacelcf_1_1_data_1aa3bb01f06639a77acb4daefc0290aef7" kindref="member">enemies</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.enemies;</highlight></codeline>
+<codeline lineno="22" refid="namespacelcf_1_1_data_1ada7bf67fe638431b16b39f156eab45ea" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;rpg::Troop&gt;&amp;<sp/><ref refid="namespacelcf_1_1_data_1ada7bf67fe638431b16b39f156eab45ea" kindref="member">troops</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.troops;</highlight></codeline>
+<codeline lineno="23" refid="namespacelcf_1_1_data_1a441528c0fd6cb0ca1226a82262c07ce0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;rpg::Terrain&gt;&amp;<sp/><ref refid="namespacelcf_1_1_data_1a441528c0fd6cb0ca1226a82262c07ce0" kindref="member">terrains</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.terrains;</highlight></codeline>
+<codeline lineno="24" refid="namespacelcf_1_1_data_1a19bc528191542a365b022ec88842a67d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;rpg::Attribute&gt;&amp;<sp/><ref refid="namespacelcf_1_1_data_1a19bc528191542a365b022ec88842a67d" kindref="member">attributes</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.attributes;</highlight></codeline>
+<codeline lineno="25" refid="namespacelcf_1_1_data_1ac5d91a447bb1178865898054be516527" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;rpg::State&gt;&amp;<sp/><ref refid="namespacelcf_1_1_data_1ac5d91a447bb1178865898054be516527" kindref="member">states</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.states;</highlight></codeline>
+<codeline lineno="26" refid="namespacelcf_1_1_data_1ad2c82a5c5c0c227d17137156160788a0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;rpg::Animation&gt;&amp;<sp/><ref refid="namespacelcf_1_1_data_1ad2c82a5c5c0c227d17137156160788a0" kindref="member">animations</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.animations;</highlight></codeline>
+<codeline lineno="27" refid="namespacelcf_1_1_data_1a920f3303eb95fcb1495671ad2866a491" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;rpg::Chipset&gt;&amp;<sp/><ref refid="namespacelcf_1_1_data_1a920f3303eb95fcb1495671ad2866a491" kindref="member">chipsets</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.chipsets;</highlight></codeline>
+<codeline lineno="28" refid="namespacelcf_1_1_data_1a918685c7e53ae0320393c97837f670e5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;rpg::CommonEvent&gt;&amp;<sp/><ref refid="namespacelcf_1_1_data_1a918685c7e53ae0320393c97837f670e5" kindref="member">commonevents</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.commonevents;</highlight></codeline>
+<codeline lineno="29" refid="namespacelcf_1_1_data_1a62e422dafb51d8bdc5d431bfd2205128" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>rpg::BattleCommands&amp;<sp/><ref refid="namespacelcf_1_1_data_1a62e422dafb51d8bdc5d431bfd2205128" kindref="member">battlecommands</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.battlecommands;</highlight></codeline>
+<codeline lineno="30" refid="namespacelcf_1_1_data_1a83fd4345ff537f98c9f7be1b8d67ec3f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;rpg::Class&gt;&amp;<sp/><ref refid="namespacelcf_1_1_data_1a83fd4345ff537f98c9f7be1b8d67ec3f" kindref="member">classes</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.classes;</highlight></codeline>
+<codeline lineno="31" refid="namespacelcf_1_1_data_1ae87cf2bc2f269b5d37ac725f9550f9c9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;rpg::BattlerAnimation&gt;&amp;<sp/><ref refid="namespacelcf_1_1_data_1ae87cf2bc2f269b5d37ac725f9550f9c9" kindref="member">battleranimations</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.battleranimations;</highlight></codeline>
+<codeline lineno="32" refid="namespacelcf_1_1_data_1a07a6be31fcebcdc64855c837e13b2ef3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>rpg::Terms&amp;<sp/><ref refid="namespacelcf_1_1_data_1a07a6be31fcebcdc64855c837e13b2ef3" kindref="member">terms</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.terms;</highlight></codeline>
+<codeline lineno="33" refid="namespacelcf_1_1_data_1a2e1c4ccfd795db103b3aaf028688e821" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>rpg::System&amp;<sp/><ref refid="namespacelcf_1_1_data_1a2e1c4ccfd795db103b3aaf028688e821" kindref="member">system</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.system;</highlight></codeline>
+<codeline lineno="34" refid="namespacelcf_1_1_data_1aa54e9734521dc4cf4c52c6e8448a0280" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;rpg::Switch&gt;&amp;<sp/><ref refid="namespacelcf_1_1_data_1aa54e9734521dc4cf4c52c6e8448a0280" kindref="member">switches</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.switches;</highlight></codeline>
+<codeline lineno="35" refid="namespacelcf_1_1_data_1a9784541bae96e2e9b4cc84a15214ec5e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;rpg::Variable&gt;&amp;<sp/><ref refid="namespacelcf_1_1_data_1a9784541bae96e2e9b4cc84a15214ec5e" kindref="member">variables</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.variables;</highlight></codeline>
+<codeline lineno="36" refid="namespacelcf_1_1_data_1a0080b75c62ae9adf5006eae0bd5e64c7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;rpg::StringVariable&gt;&amp;<sp/><ref refid="namespacelcf_1_1_data_1a0080b75c62ae9adf5006eae0bd5e64c7" kindref="member">maniac_string_variables</ref><sp/>=<sp/><ref refid="namespacelcf_1_1_data_1a2d788c59774350fa4c0eafc779010bfe" kindref="member">data</ref>.maniac_string_variables;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="namespacelcf_1_1_data_1a79d27a689d47adbc337554a28495d25c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>rpg::TreeMap<sp/><ref refid="namespacelcf_1_1_data_1a79d27a689d47adbc337554a28495d25c" kindref="member">treemap</ref>;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="namespacelcf_1_1_data_1afd56f65ad69b54740da97522f9905dae" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespacelcf_1_1_data_1afd56f65ad69b54740da97522f9905dae" kindref="member">Data::Clear</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1a56bf8a2879c7c39ab78d607a7d5ab496" kindref="member">actors</ref>.clear();</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1a5e0ab7850eec231c1a4462d2fdf491fe" kindref="member">skills</ref>.clear();</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1a19c954007507875e0136493ed52d470b" kindref="member">items</ref>.clear();</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1aa3bb01f06639a77acb4daefc0290aef7" kindref="member">enemies</ref>.clear();</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1ada7bf67fe638431b16b39f156eab45ea" kindref="member">troops</ref>.clear();</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1a441528c0fd6cb0ca1226a82262c07ce0" kindref="member">terrains</ref>.clear();</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1a19bc528191542a365b022ec88842a67d" kindref="member">attributes</ref>.clear();</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1ac5d91a447bb1178865898054be516527" kindref="member">states</ref>.clear();</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1ad2c82a5c5c0c227d17137156160788a0" kindref="member">animations</ref>.clear();</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1a920f3303eb95fcb1495671ad2866a491" kindref="member">chipsets</ref>.clear();</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1a918685c7e53ae0320393c97837f670e5" kindref="member">commonevents</ref>.clear();</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1a62e422dafb51d8bdc5d431bfd2205128" kindref="member">battlecommands</ref><sp/>=<sp/>rpg::BattleCommands();</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1a83fd4345ff537f98c9f7be1b8d67ec3f" kindref="member">classes</ref>.clear();</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1ae87cf2bc2f269b5d37ac725f9550f9c9" kindref="member">battleranimations</ref>.clear();</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1a07a6be31fcebcdc64855c837e13b2ef3" kindref="member">terms</ref><sp/>=<sp/>rpg::Terms();</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1a2e1c4ccfd795db103b3aaf028688e821" kindref="member">system</ref><sp/>=<sp/>rpg::System();</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1aa54e9734521dc4cf4c52c6e8448a0280" kindref="member">switches</ref>.clear();</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1a9784541bae96e2e9b4cc84a15214ec5e" kindref="member">variables</ref>.clear();</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1a0080b75c62ae9adf5006eae0bd5e64c7" kindref="member">maniac_string_variables</ref>.clear();</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1a79d27a689d47adbc337554a28495d25c" kindref="member">treemap</ref>.active_node<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1a79d27a689d47adbc337554a28495d25c" kindref="member">treemap</ref>.maps.clear();</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacelcf_1_1_data_1a79d27a689d47adbc337554a28495d25c" kindref="member">treemap</ref>.tree_order.clear();</highlight></codeline>
+<codeline lineno="64"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal">}<sp/></highlight><highlight class="comment">//namespace<sp/>lcf</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="lcf_data.cpp"/>
+  </compounddef>
+</doxygen>

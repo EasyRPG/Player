@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_enemy_ai_1_1_rpg_rt_compat" kind="class" language="C++" prot="public">
+    <compoundname>EnemyAi::RpgRtCompat</compoundname>
+    <basecompoundref refid="class_enemy_ai_1_1_algorithm_base" prot="public" virt="non-virtual">EnemyAi::AlgorithmBase</basecompoundref>
+    <includes refid="enemyai_8h" local="no">enemyai.h</includes>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_enemy_ai_1_1_rpg_rt_compat_1aca84f6858b707d2b0d6cd6c18a28a85b" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto EnemyAi::RpgRtCompat::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <qualifiedname>EnemyAi::RpgRtCompat::id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="enemyai.h" line="72" column="23" bodyfile="enemyai.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_enemy_ai_1_1_rpg_rt_compat_1aed717d6c1ba01ebfa8fff2495d180130" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto EnemyAi::RpgRtCompat::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>EnemyAi::RpgRtCompat::name</qualifiedname>
+        <initializer>= &quot;RPG_RT&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="enemyai.h" line="74" column="23" bodyfile="enemyai.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_enemy_ai_1_1_rpg_rt_compat_1a7949bb44fbfddad5f12b683262c5446e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int EnemyAi::RpgRtCompat::GetId</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetId</name>
+        <qualifiedname>EnemyAi::RpgRtCompat::GetId</qualifiedname>
+        <reimplements refid="class_enemy_ai_1_1_algorithm_base_1a549c4925dd6f6c07682c87ace7c9630f">GetId</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the id of this algorithm </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="enemyai.h" line="76" column="5" bodyfile="enemyai.h" bodystart="76" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="class_enemy_ai_1_1_rpg_rt_compat_1aaedc28cf22f4a42280fe0b95feef2eff" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view EnemyAi::RpgRtCompat::GetName</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetName</name>
+        <qualifiedname>EnemyAi::RpgRtCompat::GetName</qualifiedname>
+        <reimplements refid="class_enemy_ai_1_1_algorithm_base_1a132b6cb918093134644d6bdc7fdf9d6f">GetName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the name of this algorithm </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="enemyai.h" line="78" column="18" bodyfile="enemyai.h" bodystart="78" bodyend="78"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_enemy_ai_1_1_rpg_rt_compat_1a3d3a6c68b7b37530fd774de5c0bd08ce" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void EnemyAi::RpgRtCompat::vSetEnemyAiAction</definition>
+        <argsstring>(Game_Enemy &amp;source) override</argsstring>
+        <name>vSetEnemyAiAction</name>
+        <qualifiedname>EnemyAi::RpgRtCompat::vSetEnemyAiAction</qualifiedname>
+        <reimplements refid="class_enemy_ai_1_1_algorithm_base_1adf52024a923a266f1400423a7dd4c994">vSetEnemyAiAction</reimplements>
+        <param>
+          <type><ref refid="class_game___enemy" kindref="compound">Game_Enemy</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="enemyai.h" line="80" column="6" bodyfile="enemyai.cpp" bodystart="74" bodyend="76"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>The default autobattle algorithm which is strictly compatible with RPG_RT. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>EnemyAi::AlgorithmBase</label>
+        <link refid="class_enemy_ai_1_1_algorithm_base"/>
+      </node>
+      <node id="1">
+        <label>EnemyAi::RpgRtCompat</label>
+        <link refid="class_enemy_ai_1_1_rpg_rt_compat"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>EnemyAi::AlgorithmBase</label>
+        <link refid="class_enemy_ai_1_1_algorithm_base"/>
+      </node>
+      <node id="1">
+        <label>EnemyAi::RpgRtCompat</label>
+        <link refid="class_enemy_ai_1_1_rpg_rt_compat"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="enemyai.h" line="70" column="1" bodyfile="enemyai.h" bodystart="70" bodyend="81"/>
+    <listofallmembers>
+      <member refid="class_enemy_ai_1_1_rpg_rt_compat_1a7949bb44fbfddad5f12b683262c5446e" prot="public" virt="virtual"><scope>EnemyAi::RpgRtCompat</scope><name>GetId</name></member>
+      <member refid="class_enemy_ai_1_1_rpg_rt_compat_1aaedc28cf22f4a42280fe0b95feef2eff" prot="public" virt="virtual"><scope>EnemyAi::RpgRtCompat</scope><name>GetName</name></member>
+      <member refid="class_enemy_ai_1_1_rpg_rt_compat_1aca84f6858b707d2b0d6cd6c18a28a85b" prot="public" virt="non-virtual"><scope>EnemyAi::RpgRtCompat</scope><name>id</name></member>
+      <member refid="class_enemy_ai_1_1_rpg_rt_compat_1aed717d6c1ba01ebfa8fff2495d180130" prot="public" virt="non-virtual"><scope>EnemyAi::RpgRtCompat</scope><name>name</name></member>
+      <member refid="class_enemy_ai_1_1_algorithm_base_1ade74592d147bb2adb204598d1fd7053e" prot="public" virt="non-virtual"><scope>EnemyAi::RpgRtCompat</scope><name>SetEnemyAiAction</name></member>
+      <member refid="class_enemy_ai_1_1_rpg_rt_compat_1a3d3a6c68b7b37530fd774de5c0bd08ce" prot="private" virt="virtual"><scope>EnemyAi::RpgRtCompat</scope><name>vSetEnemyAiAction</name></member>
+      <member refid="class_enemy_ai_1_1_algorithm_base_1acd20fee2b691b49475b25e0e9e39254f" prot="public" virt="virtual"><scope>EnemyAi::RpgRtCompat</scope><name>~AlgorithmBase</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

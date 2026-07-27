@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_00df8b31b475d8f95fd33424403eb79b" kind="dir">
+    <compoundname>leasy/metadata</compoundname>
+    <innerfile refid="class_8hpp">class.hpp</innerfile>
+    <innerfile refid="function_8hpp">function.hpp</innerfile>
+    <innerfile refid="json_8hpp">json.hpp</innerfile>
+    <innerfile refid="metadata_2lua_8hpp">lua.hpp</innerfile>
+    <innerfile refid="metadata_8hpp">metadata.hpp</innerfile>
+    <innerfile refid="namespace_8hpp">namespace.hpp</innerfile>
+    <innerfile refid="object_8hpp">object.hpp</innerfile>
+    <innerfile refid="reflection_8hpp">reflection.hpp</innerfile>
+    <innerfile refid="type_8cpp">type.cpp</innerfile>
+    <innerfile refid="type_8hpp">type.hpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/metadata/"/>
+  </compounddef>
+</doxygen>

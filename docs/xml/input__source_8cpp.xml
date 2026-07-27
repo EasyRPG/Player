@@ -1,0 +1,1260 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="input__source_8cpp" kind="file" language="C++">
+    <compoundname>input_source.cpp</compoundname>
+    <includes local="no">algorithm</includes>
+    <includes local="no">cstring</includes>
+    <includes local="no">cerrno</includes>
+    <includes local="no">ctime</includes>
+    <includes local="no">cmath</includes>
+    <includes refid="baseui_8h" local="yes">baseui.h</includes>
+    <includes refid="input__source_8h" local="yes">input_source.h</includes>
+    <includes refid="player_8h" local="yes">player.h</includes>
+    <includes refid="output_8h" local="yes">output.h</includes>
+    <includes refid="game__system_8h" local="yes">game_system.h</includes>
+    <includes refid="main__data_8h" local="yes">main_data.h</includes>
+    <includes refid="version_8h" local="yes">version.h</includes>
+    <incdepgraph>
+      <node id="68">
+        <label>async_handler.h</label>
+        <link refid="async__handler_8h"/>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="88">
+        <label>async_op.h</label>
+        <link refid="async__op_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>baseui.h</label>
+        <link refid="baseui_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="75">
+        <label>compiler.h</label>
+        <link refid="compiler_8h"/>
+      </node>
+      <node id="41">
+        <label>config_param.h</label>
+        <link refid="config__param_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="86">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="89">
+        <label>drawable_list.h</label>
+        <link refid="drawable__list_8h"/>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+      </node>
+      <node id="63">
+        <label>fileext_guesser.h</label>
+        <link refid="fileext__guesser_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>flat_map.h</label>
+        <link refid="flat__map_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>font.h</label>
+        <link refid="font_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>game_clock.h</label>
+        <link refid="game__clock_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>game_config.h</label>
+        <link refid="game__config_8h"/>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="69">
+        <label>game_config_game.h</label>
+        <link refid="game__config__game_8h"/>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="70">
+        <label>game_interpreter_shared.h</label>
+        <link refid="game__interpreter__shared_8h"/>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+      </node>
+      <node id="79">
+        <label>game_system.h</label>
+        <link refid="game__system_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="59">
+        <label>input.h</label>
+        <link refid="input_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>input_buttons.h</label>
+        <link refid="input__buttons_8h"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>input_source.cpp</label>
+        <link refid="input__source_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+      </node>
+      <node id="60">
+        <label>input_source.h</label>
+        <link refid="input__source_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>keys.h</label>
+        <link refid="keys_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+      </node>
+      <node id="91">
+        <label>lcf/data.h</label>
+        <link refid="data_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="102" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="107" relation="include">
+        </childnode>
+      </node>
+      <node id="90">
+        <label>main_data.h</label>
+        <link refid="main__data_8h"/>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="64">
+        <label>meta.h</label>
+        <link refid="meta_8h"/>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="77">
+        <label>output.h</label>
+        <link refid="output_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>platform/clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+      </node>
+      <node id="62">
+        <label>player.h</label>
+        <link refid="player_8h"/>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>point.h</label>
+        <link refid="point_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>rect.h</label>
+        <link refid="rect_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="87">
+        <label>scene.h</label>
+        <link refid="scene_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="58">
+        <label>std_clock.h</label>
+        <link refid="std__clock_8h"/>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="85">
+        <label>transition.h</label>
+        <link refid="transition_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="66">
+        <label>translation.h</label>
+        <link refid="translation_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="108">
+        <label>version.h</label>
+        <link refid="version_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>algorithm</label>
+      </node>
+      <node id="45">
+        <label>array</label>
+      </node>
+      <node id="10">
+        <label>bitset</label>
+      </node>
+      <node id="20">
+        <label>cassert</label>
+      </node>
+      <node id="4">
+        <label>cerrno</label>
+      </node>
+      <node id="55">
+        <label>chrono</label>
+      </node>
+      <node id="6">
+        <label>cmath</label>
+      </node>
+      <node id="8">
+        <label>cstdint</label>
+      </node>
+      <node id="43">
+        <label>cstdio</label>
+      </node>
+      <node id="3">
+        <label>cstring</label>
+      </node>
+      <node id="5">
+        <label>ctime</label>
+      </node>
+      <node id="31">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="32">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="61">
+        <label>fstream</label>
+      </node>
+      <node id="34">
+        <label>functional</label>
+      </node>
+      <node id="51">
+        <label>initializer_list</label>
+      </node>
+      <node id="44">
+        <label>ios</label>
+      </node>
+      <node id="78">
+        <label>iosfwd</label>
+      </node>
+      <node id="21">
+        <label>istream</label>
+      </node>
+      <node id="30">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="39">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="49">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="46">
+        <label>lcf/inireader.h</label>
+      </node>
+      <node id="92">
+        <label>lcf/rpg/actor.h</label>
+      </node>
+      <node id="80">
+        <label>lcf/rpg/animation.h</label>
+      </node>
+      <node id="97">
+        <label>lcf/rpg/attribute.h</label>
+      </node>
+      <node id="104">
+        <label>lcf/rpg/battlecommand.h</label>
+      </node>
+      <node id="105">
+        <label>lcf/rpg/battleranimation.h</label>
+      </node>
+      <node id="100">
+        <label>lcf/rpg/chipset.h</label>
+      </node>
+      <node id="103">
+        <label>lcf/rpg/class.h</label>
+      </node>
+      <node id="102">
+        <label>lcf/rpg/commonevent.h</label>
+      </node>
+      <node id="107">
+        <label>lcf/rpg/database.h</label>
+      </node>
+      <node id="95">
+        <label>lcf/rpg/enemy.h</label>
+      </node>
+      <node id="71">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="94">
+        <label>lcf/rpg/item.h</label>
+      </node>
+      <node id="72">
+        <label>lcf/rpg/movecommand.h</label>
+      </node>
+      <node id="81">
+        <label>lcf/rpg/music.h</label>
+      </node>
+      <node id="74">
+        <label>lcf/rpg/saveeventexecframe.h</label>
+      </node>
+      <node id="73">
+        <label>lcf/rpg/saveeventexecstate.h</label>
+      </node>
+      <node id="84">
+        <label>lcf/rpg/savesystem.h</label>
+      </node>
+      <node id="93">
+        <label>lcf/rpg/skill.h</label>
+      </node>
+      <node id="82">
+        <label>lcf/rpg/sound.h</label>
+      </node>
+      <node id="98">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="83">
+        <label>lcf/rpg/system.h</label>
+      </node>
+      <node id="101">
+        <label>lcf/rpg/terms.h</label>
+      </node>
+      <node id="99">
+        <label>lcf/rpg/terrain.h</label>
+      </node>
+      <node id="106">
+        <label>lcf/rpg/treemap.h</label>
+      </node>
+      <node id="96">
+        <label>lcf/rpg/troop.h</label>
+      </node>
+      <node id="37">
+        <label>lcf/scope_guard.h</label>
+      </node>
+      <node id="27">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="29">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="47">
+        <label>limits</label>
+      </node>
+      <node id="65">
+        <label>map</label>
+      </node>
+      <node id="14">
+        <label>memory</label>
+      </node>
+      <node id="76">
+        <label>optional</label>
+      </node>
+      <node id="17">
+        <label>ostream</label>
+      </node>
+      <node id="67">
+        <label>sstream</label>
+      </node>
+      <node id="9">
+        <label>string</label>
+      </node>
+      <node id="57">
+        <label>thread</label>
+      </node>
+      <node id="16">
+        <label>tuple</label>
+      </node>
+      <node id="48">
+        <label>type_traits</label>
+      </node>
+      <node id="23">
+        <label>unordered_map</label>
+      </node>
+      <node id="53">
+        <label>utility</label>
+      </node>
+      <node id="24">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;algorithm&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstring&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cerrno&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;ctime&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cmath&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="baseui_8h" kindref="compound">baseui.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="input__source_8h" kindref="compound">input_source.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="player_8h" kindref="compound">player.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="output_8h" kindref="compound">output.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__system_8h" kindref="compound">game_system.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="main__data_8h" kindref="compound">main_data.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="version_8h" kindref="compound">version.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">std::chrono_literals;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="class_input_1_1_source_1ae5ab013140c27051f874b0ab79b9f305" refkind="member"><highlight class="normal">std::unique_ptr&lt;Input::Source&gt;<sp/><ref refid="class_input_1_1_source_1ae5ab013140c27051f874b0ab79b9f305" kindref="member">Input::Source::Create</ref>(</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_game___config_input" kindref="compound">Game_ConfigInput</ref>&amp;<sp/><ref refid="class_input_1_1_source_1a7d49f9da22d14d6f3633540da1d1d75d" kindref="member">cfg</ref>,</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_input_1a094b7fb423e80f346cde45eea8f19375" kindref="member">Input::DirectionMappingArray</ref><sp/>directions,</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>replay_from_path)</highlight></codeline>
+<codeline lineno="38"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!replay_from_path.empty())<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>path<sp/>=<sp/>replay_from_path.c_str();</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>log_src<sp/>=<sp/>std::make_unique&lt;Input::LogSource&gt;(path,<sp/><ref refid="class_input_1_1_source_1a7d49f9da22d14d6f3633540da1d1d75d" kindref="member">cfg</ref>,<sp/>std::move(directions));</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(*log_src)<sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>log_src;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1a15be3bb1abcecb6696cae716c208ed34" kindref="member">Output::Error</ref>(</highlight><highlight class="stringliteral">&quot;Failed<sp/>to<sp/>open<sp/>file<sp/>for<sp/>input<sp/>replaying:<sp/>{}&quot;</highlight><highlight class="normal">,<sp/>path);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::make_unique&lt;Input::UiSource&gt;(<ref refid="class_input_1_1_source_1a7d49f9da22d14d6f3633540da1d1d75d" kindref="member">cfg</ref>,<sp/>std::move(directions));</highlight></codeline>
+<codeline lineno="51"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Input::UiSource::DoUpdate(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>system_only)<sp/>{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>keystates<sp/>=<sp/><ref refid="baseui_8cpp_1a3b74cb0cc934537a6ed8716682be7778" kindref="member">DisplayUi</ref>-&gt;GetKeyStates();</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>pressed_buttons<sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>UpdateGamepad();</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>UpdateTouch();</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>bm:<sp/>cfg.buttons)<sp/>{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(keymask[bm.second])<sp/>{</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!system_only<sp/>||<sp/><ref refid="namespace_input_1a5e101f44367f2d790b0a38976dfbf593" kindref="member">Input::IsSystemButton</ref>(bm.first))<sp/>{</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pressed_buttons[bm.first]<sp/>=<sp/>pressed_buttons[bm.first]<sp/>||<sp/>keystates[bm.second]<sp/>||<sp/>keystates_virtual[bm.second];</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>keystates_virtual<sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>Record();</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>mouse_pos<sp/>=<sp/><ref refid="baseui_8cpp_1a3b74cb0cc934537a6ed8716682be7778" kindref="member">DisplayUi</ref>-&gt;GetMousePosition();</highlight></codeline>
+<codeline lineno="75"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77" refid="class_input_1_1_ui_source_1a96eb8393721ccfcb3a799083670eb0a6" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_input_1_1_ui_source_1a96eb8393721ccfcb3a799083670eb0a6" kindref="member">Input::UiSource::Update</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>DoUpdate(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81" refid="class_input_1_1_ui_source_1a6b36ae786b0d7dcffab3aee6e55ad27f" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_input_1_1_ui_source_1a6b36ae786b0d7dcffab3aee6e55ad27f" kindref="member">Input::UiSource::UpdateSystem</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>DoUpdate(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85" refid="class_input_1_1_log_source_1a5d4e397e9baf898228c5bffea41c28be" refkind="member"><highlight class="normal"><ref refid="class_input_1_1_log_source_1a5d4e397e9baf898228c5bffea41c28be" kindref="member">Input::LogSource::LogSource</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>log_path,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_game___config_input" kindref="compound">Game_ConfigInput</ref>&amp;<sp/><ref refid="class_input_1_1_source_1a7d49f9da22d14d6f3633540da1d1d75d" kindref="member">cfg</ref>,<sp/><ref refid="namespace_input_1a094b7fb423e80f346cde45eea8f19375" kindref="member">DirectionMappingArray</ref><sp/>directions)</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/><ref refid="class_input_1_1_source_1a41d404f825ce6c9e494c63d633a1d3a2" kindref="member">Source</ref>(<ref refid="class_input_1_1_source_1a7d49f9da22d14d6f3633540da1d1d75d" kindref="member">cfg</ref>,<sp/><ref refid="namespacestd" kindref="compound">std</ref>::move(directions)),</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>log_file(<ref refid="namespace_file_finder" kindref="compound">FileFinder</ref>::Root().OpenInputStream(log_path,<sp/><ref refid="namespacestd" kindref="compound">std</ref>::ios::in))</highlight></codeline>
+<codeline lineno="88"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!log_file)<sp/>{</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1a15be3bb1abcecb6696cae716c208ed34" kindref="member">Output::Error</ref>(</highlight><highlight class="stringliteral">&quot;Error<sp/>reading<sp/>input<sp/>logfile<sp/>{}&quot;</highlight><highlight class="normal">,<sp/>log_path);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>header;</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1ac6417a19b9c8a2ddc94d45eeb1a3c19a" kindref="member">Utils::ReadLine</ref>(log_file,<sp/>header);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(StartsWith(header,<sp/></highlight><highlight class="stringliteral">&quot;H<sp/>EasyRPG&quot;</highlight><highlight class="normal">))<sp/>{</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>ver;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_utils_1ac6417a19b9c8a2ddc94d45eeb1a3c19a" kindref="member">Utils::ReadLine</ref>(log_file,<sp/>ver);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(StartsWith(ver,<sp/></highlight><highlight class="stringliteral">&quot;V<sp/>2&quot;</highlight><highlight class="normal">))<sp/>{</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>version<sp/>=<sp/>2;</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1a15be3bb1abcecb6696cae716c208ed34" kindref="member">Output::Error</ref>(</highlight><highlight class="stringliteral">&quot;Unsupported<sp/>logfile<sp/>version<sp/>{}&quot;</highlight><highlight class="normal">,<sp/>ver);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1aec7bcd2124d7576a8b20873585de07cd" kindref="member">Output::Debug</ref>(</highlight><highlight class="stringliteral">&quot;Using<sp/>legacy<sp/>inputlog<sp/>format&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109" refid="class_input_1_1_log_source_1af054cafb74cb5df214962ff51a46e2c9" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_input_1_1_log_source_1af054cafb74cb5df214962ff51a46e2c9" kindref="member">Input::LogSource::Update</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(version<sp/>==<sp/>2)<sp/>{</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(last_read_frame<sp/>==<sp/>-1)<sp/>{</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1acc99a6137cd256dfa0d3b18ccac0c2e4" kindref="member">pressed_buttons</ref>.reset();</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>line;</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(<ref refid="namespace_utils_1ac6417a19b9c8a2ddc94d45eeb1a3c19a" kindref="member">Utils::ReadLine</ref>(log_file,<sp/>line)<sp/>&amp;&amp;<sp/>!StartsWith(line,<sp/></highlight><highlight class="stringliteral">&quot;F<sp/>&quot;</highlight><highlight class="normal">))<sp/>{</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>no-op</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!line.empty())<sp/>{</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>keys<sp/>=<sp/><ref refid="namespace_utils_1a062db69d426bf97996b1b760e58d6f2f" kindref="member">Utils::Tokenize</ref>(line.substr(2),<sp/>[](</highlight><highlight class="keywordtype">char32_t</highlight><highlight class="normal"><sp/>c)<sp/>{<sp/>return<sp/>c<sp/>==<sp/></highlight><highlight class="stringliteral">&apos;,&apos;</highlight><highlight class="normal">;<sp/>});</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!keys.empty())<sp/>{</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>last_read_frame<sp/>=<sp/>atoi(keys[0].c_str());</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;GetFrameCounter()<sp/>==<sp/>last_read_frame)<sp/>{</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref><sp/>:<sp/>keys)<sp/>{</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7" kindref="member">Input::InputButton</ref><sp/>btn;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespace_input_1aa4120b539dd0380d0ce22a7ec14aabbb" kindref="member">Input::kInputButtonNames</ref>.etag(<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>.c_str(),<sp/>btn))<sp/>{</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1acc99a6137cd256dfa0d3b18ccac0c2e4" kindref="member">pressed_buttons</ref>[(int)btn]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>last_read_frame<sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>log_file<sp/>&gt;&gt;<sp/><ref refid="class_input_1_1_source_1acc99a6137cd256dfa0d3b18ccac0c2e4" kindref="member">pressed_buttons</ref>;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!log_file)<sp/>{</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_player_1a4cb7afd83f8af3959c4127eda334fba4" kindref="member">Player::exit_flag</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1a8330a3b51f5d9aa49c41e60f0572a050" kindref="member">Record</ref>();</highlight></codeline>
+<codeline lineno="147"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150" refid="class_input_1_1_source_1af068911ebcf40e1cdf10d5998bc52dd9" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_input_1_1_source_1af068911ebcf40e1cdf10d5998bc52dd9" kindref="member">Input::Source::InitRecording</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>record_to_path)<sp/>{</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!record_to_path.empty())<sp/>{</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>path<sp/>=<sp/>record_to_path.c_str();</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1a2c381b04768233a026a8daf6b6c9530d" kindref="member">record_log</ref><sp/>=<sp/>std::make_unique&lt;Filesystem_Stream::OutputStream&gt;(<ref refid="namespace_file_finder_1a0cd8859916ec624e3c39672f3646cce2" kindref="member">FileFinder::Root</ref>().OpenOutputStream(path,<sp/>std::ios::out<sp/>|<sp/>std::ios::trunc));</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="class_input_1_1_source_1a2c381b04768233a026a8daf6b6c9530d" kindref="member">record_log</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1a15be3bb1abcecb6696cae716c208ed34" kindref="member">Output::Error</ref>(</highlight><highlight class="stringliteral">&quot;Failed<sp/>to<sp/>open<sp/>file<sp/>{}<sp/>for<sp/>input<sp/>recording<sp/>:<sp/>{}&quot;</highlight><highlight class="normal">,<sp/>path,<sp/>strerror(errno));</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="class_input_1_1_source_1a2c381b04768233a026a8daf6b6c9530d" kindref="member">record_log</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;H<sp/>EasyRPG<sp/>Player<sp/>Recording\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="class_input_1_1_source_1a2c381b04768233a026a8daf6b6c9530d" kindref="member">record_log</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;V<sp/>2<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="namespace_version_1aa1306183eb54181a68e03a76960223ef" kindref="member">Version::STRING</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::time_t<sp/>t<sp/>=<sp/>std::time(</highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>trigraph<sp/>?-escapes</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>date<sp/>=<sp/>R</highlight><highlight class="stringliteral">&quot;(????-??-??<sp/>??:??:??)&quot;;</highlight></codeline>
+<codeline lineno="167"><highlight class="stringliteral"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>timestr[100];</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(std::strftime(timestr,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(timestr),<sp/></highlight><highlight class="stringliteral">&quot;%Y-%m-%d<sp/>%H:%M:%S&quot;</highlight><highlight class="normal">,<sp/>std::localtime(&amp;t)))<sp/>{</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>date<sp/>=<sp/>std::string(timestr);</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="class_input_1_1_source_1a2c381b04768233a026a8daf6b6c9530d" kindref="member">record_log</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;D<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>date<sp/>&lt;&lt;<sp/></highlight><highlight class="charliteral">&apos;\n&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="175"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177" refid="class_input_1_1_source_1a8330a3b51f5d9aa49c41e60f0572a050" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_input_1_1_source_1a8330a3b51f5d9aa49c41e60f0572a050" kindref="member">Input::Source::Record</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_input_1_1_source_1a2c381b04768233a026a8daf6b6c9530d" kindref="member">record_log</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>buttons<sp/>=<sp/><ref refid="class_input_1_1_source_1adc07bfc874e8e9d86896ce66c1e18973" kindref="member">GetPressedNonSystemButtons</ref>();</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(buttons.any())<sp/>{</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>cur_frame<sp/>=<sp/><ref refid="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" kindref="member">Main_Data::game_system</ref>-&gt;GetFrameCounter();</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(cur_frame<sp/>==<sp/><ref refid="class_input_1_1_source_1aa3815c9c3f5b27e8d7a337aa458e3817" kindref="member">last_written_frame</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1aa3815c9c3f5b27e8d7a337aa458e3817" kindref="member">last_written_frame</ref><sp/>=<sp/>cur_frame;</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="class_input_1_1_source_1a2c381b04768233a026a8daf6b6c9530d" kindref="member">record_log</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;F<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>cur_frame;</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>buttons.size();<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!buttons[i])<sp/>{</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="class_input_1_1_source_1a2c381b04768233a026a8daf6b6c9530d" kindref="member">record_log</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="charliteral">&apos;,&apos;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/><ref refid="namespace_input_1aa4120b539dd0380d0ce22a7ec14aabbb" kindref="member">Input::kInputButtonNames</ref>[i];</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="class_input_1_1_source_1a2c381b04768233a026a8daf6b6c9530d" kindref="member">record_log</ref><sp/>&lt;&lt;<sp/></highlight><highlight class="charliteral">&apos;\n&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="203"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight></codeline>
+<codeline lineno="205" refid="class_input_1_1_source_1a28ae745813ef5cc169192da88a676f49" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_input_1_1_source_1a28ae745813ef5cc169192da88a676f49" kindref="member">Input::Source::UpdateGamepad</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Configuration</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_input_1_1_source_1a7d49f9da22d14d6f3633540da1d1d75d" kindref="member">cfg</ref>.gamepad_swap_analog.Get())<sp/>{</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::swap(<ref refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" kindref="member">analog_input</ref>.primary,<sp/><ref refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" kindref="member">analog_input</ref>.secondary);</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"></highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>bit_swap<sp/>=<sp/>[&amp;](<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8" kindref="member">Input::Keys::InputKey</ref><sp/>first,<sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8" kindref="member">Input::Keys::InputKey</ref><sp/>second)<sp/>{</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>No<sp/>std::swap<sp/>support<sp/>for<sp/>std::bitset</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>tmp<sp/>=<sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[first];</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[first]<sp/>=<sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[second];</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[second]<sp/>=<sp/>tmp;</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(USE_JOYSTICK)<sp/>&amp;&amp;<sp/>defined(SUPPORT_JOYSTICK)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_input_1_1_source_1a7d49f9da22d14d6f3633540da1d1d75d" kindref="member">cfg</ref>.gamepad_swap_dpad_with_buttons.Get())<sp/>{</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bit_swap(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a9b16f90b0e96de766a9805e4282c9b4e" kindref="member">Input::Keys::JOY_DPAD_UP</ref>,<sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8acff01434a60245a72055f8714e3aa121" kindref="member">Input::Keys::JOY_Y</ref>);</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bit_swap(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a4080ab1597e91499830cb190689d97bc" kindref="member">Input::Keys::JOY_DPAD_DOWN</ref>,<sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8acaab2db18540ef47857735e6249622b1" kindref="member">Input::Keys::JOY_A</ref>);</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bit_swap(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a48aac5a4a264a0349672240d1adb57b2" kindref="member">Input::Keys::JOY_DPAD_LEFT</ref>,<sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a0aaa84d89bbf171554956d00ef18dbc0" kindref="member">Input::Keys::JOY_X</ref>);</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bit_swap(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ad3972e9f5d1162f28922cae4b57e1846" kindref="member">Input::Keys::JOY_DPAD_RIGHT</ref>,<sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a52b39290fbd2cf7f5a114f5250d8ecce" kindref="member">Input::Keys::JOY_B</ref>);</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"></highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_input_1_1_source_1a7d49f9da22d14d6f3633540da1d1d75d" kindref="member">cfg</ref>.gamepad_swap_ab_and_xy.Get())<sp/>{</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bit_swap(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8acaab2db18540ef47857735e6249622b1" kindref="member">Input::Keys::JOY_A</ref>,<sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a52b39290fbd2cf7f5a114f5250d8ecce" kindref="member">Input::Keys::JOY_B</ref>);</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bit_swap(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a0aaa84d89bbf171554956d00ef18dbc0" kindref="member">Input::Keys::JOY_X</ref>,<sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8acff01434a60245a72055f8714e3aa121" kindref="member">Input::Keys::JOY_Y</ref>);</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="231"><highlight class="normal"></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(USE_JOYSTICK_AXIS)<sp/>&amp;&amp;<sp/>defined(SUPPORT_JOYSTICK_AXIS)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Primary<sp/>Analog<sp/>Stick<sp/>(For<sp/>directions,<sp/>does<sp/>not<sp/>support<sp/>diagonals)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ae20ef987d45a14f68d9cb425597f6fd4" kindref="member">Input::Keys::JOY_LSTICK_RIGHT</ref>]<sp/>=<sp/><ref refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" kindref="member">analog_input</ref>.primary.x<sp/>&gt;<sp/><ref refid="system_8h_1ab438cdd5b3ebcb61d6fbbab6dbdf0f63" kindref="member">JOYSTICK_STICK_SENSIBILITY</ref>;</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a244287acac23253b5a67278dd5ae5a9d" kindref="member">Input::Keys::JOY_LSTICK_LEFT</ref>]<sp/>=<sp/><ref refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" kindref="member">analog_input</ref>.primary.x<sp/>&lt;<sp/>-<ref refid="system_8h_1ab438cdd5b3ebcb61d6fbbab6dbdf0f63" kindref="member">JOYSTICK_STICK_SENSIBILITY</ref>;</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a4b51b76dfc601546896f55b1be99f800" kindref="member">Input::Keys::JOY_LSTICK_UP</ref>]<sp/>=<sp/><ref refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" kindref="member">analog_input</ref>.primary.y<sp/>&lt;<sp/>-<ref refid="system_8h_1ab438cdd5b3ebcb61d6fbbab6dbdf0f63" kindref="member">JOYSTICK_STICK_SENSIBILITY</ref>;</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a5efb6d52016af93f8cfd87748d4c8263" kindref="member">Input::Keys::JOY_LSTICK_DOWN</ref>]<sp/>=<sp/><ref refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" kindref="member">analog_input</ref>.primary.y<sp/>&gt;<sp/><ref refid="system_8h_1ab438cdd5b3ebcb61d6fbbab6dbdf0f63" kindref="member">JOYSTICK_STICK_SENSIBILITY</ref>;</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"></highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Secondary<sp/>Analog<sp/>Stick<sp/>(For<sp/>other<sp/>things,<sp/>supports<sp/>diagonals)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" kindref="member">analog_input</ref>.secondary.x<sp/>&gt;<sp/><ref refid="system_8h_1ab438cdd5b3ebcb61d6fbbab6dbdf0f63" kindref="member">JOYSTICK_STICK_SENSIBILITY</ref><sp/>||<sp/><ref refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" kindref="member">analog_input</ref>.secondary.x<sp/>&lt;<sp/>-<ref refid="system_8h_1ab438cdd5b3ebcb61d6fbbab6dbdf0f63" kindref="member">JOYSTICK_STICK_SENSIBILITY</ref><sp/>||</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" kindref="member">analog_input</ref>.secondary.y<sp/>&gt;<sp/><ref refid="system_8h_1ab438cdd5b3ebcb61d6fbbab6dbdf0f63" kindref="member">JOYSTICK_STICK_SENSIBILITY</ref><sp/>||<sp/><ref refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" kindref="member">analog_input</ref>.secondary.y<sp/>&lt;<sp/>-<ref refid="system_8h_1ab438cdd5b3ebcb61d6fbbab6dbdf0f63" kindref="member">JOYSTICK_STICK_SENSIBILITY</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"></highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>angle<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(std::atan2(<ref refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" kindref="member">analog_input</ref>.secondary.y,<sp/><ref refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" kindref="member">analog_input</ref>.secondary.x)<sp/>*<sp/>180.0f<sp/>/<sp/>M_PI);</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(angle<sp/>&gt;=<sp/>-22<sp/>&amp;&amp;<sp/>angle<sp/>&lt;=<sp/>22)<sp/>{</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8ae0f6b60a74201ff0f14df60f77f6d8c3" kindref="member">Input::Keys::JOY_RSTICK_RIGHT</ref>]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(angle<sp/>&gt;=<sp/>23<sp/>&amp;&amp;<sp/>angle<sp/>&lt;=<sp/>67)<sp/>{</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8afe3ebe153a0acc13af37f07b749556df" kindref="member">Input::Keys::JOY_RSTICK_DOWN_RIGHT</ref>]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(angle<sp/>&gt;=<sp/>68<sp/>&amp;&amp;<sp/>angle<sp/>&lt;=<sp/>112)<sp/>{</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a9a4fe387a3958f2bd9b8b30d539275ac" kindref="member">Input::Keys::JOY_RSTICK_DOWN</ref>]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(angle<sp/>&gt;=<sp/>113<sp/>&amp;&amp;<sp/>angle<sp/>&lt;=<sp/>157)<sp/>{</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a676fb9bbeaa47120235282fb69fd97f0" kindref="member">Input::Keys::JOY_RSTICK_DOWN_LEFT</ref>]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(angle<sp/>&gt;=<sp/>158<sp/>||<sp/>angle<sp/>&lt;=<sp/>-158)<sp/>{</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a3eb938fe01397171ef3bdcad17bb5653" kindref="member">Input::Keys::JOY_RSTICK_LEFT</ref>]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(angle<sp/>&gt;=<sp/>-157<sp/>&amp;&amp;<sp/>angle<sp/>&lt;=<sp/>-113)<sp/>{</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a10a7a93aa339f1358ec3d22d5bd23911" kindref="member">Input::Keys::JOY_RSTICK_UP_LEFT</ref>]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(angle<sp/>&gt;=<sp/>-112<sp/>&amp;&amp;<sp/>angle<sp/>&lt;=<sp/>-68)<sp/>{</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a8f4ee40d38310ea6900825659e4e72e5" kindref="member">Input::Keys::JOY_RSTICK_UP</ref>]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(angle<sp/>&gt;=<sp/>-67<sp/>&amp;&amp;<sp/>angle<sp/>&lt;=<sp/>-23)<sp/>{</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aa88a8bd8fbdb2cb9a26736489759ac47" kindref="member">Input::Keys::JOY_RSTICK_UP_RIGHT</ref>]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Trigger</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" kindref="member">analog_input</ref><sp/>=<sp/><ref refid="baseui_8cpp_1a3b74cb0cc934537a6ed8716682be7778" kindref="member">DisplayUi</ref>-&gt;GetAnalogInput();</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a0962c13b9f5cda075712477b3343c4b0" kindref="member">Input::Keys::JOY_LTRIGGER_FULL</ref>]<sp/>=<sp/>(<ref refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" kindref="member">analog_input</ref>.trigger_left<sp/>&gt;<sp/><ref refid="struct_input_1_1_analog_input_1a18d65ec5cf8c37d468eb5a86660ccd31" kindref="member">AnalogInput::kMaxValue</ref><sp/>*<sp/>0.9);</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a78bd6131af04d2b9d3d9f72f1667e3ef" kindref="member">Input::Keys::JOY_LTRIGGER_SOFT</ref>]<sp/>=</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(<ref refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" kindref="member">analog_input</ref>.trigger_left<sp/>&gt;<sp/><ref refid="system_8h_1ab96163acba7d0a34419ca68c3c60a037" kindref="member">JOYSTICK_TRIGGER_SENSIBILITY</ref>)<sp/>&amp;&amp;</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>!<ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a0962c13b9f5cda075712477b3343c4b0" kindref="member">Input::Keys::JOY_LTRIGGER_FULL</ref>];</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8af6bc6ec87692af87cb8ade46f6663d23" kindref="member">Input::Keys::JOY_RTRIGGER_FULL</ref>]<sp/>=<sp/>(<ref refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" kindref="member">analog_input</ref>.trigger_right<sp/>&gt;<sp/><ref refid="struct_input_1_1_analog_input_1a18d65ec5cf8c37d468eb5a86660ccd31" kindref="member">AnalogInput::kMaxValue</ref><sp/>*<sp/>0.9);</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a0525fab1f95547dd498195174ed9fc7b" kindref="member">Input::Keys::JOY_RTRIGGER_SOFT</ref>]<sp/>=</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(<ref refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" kindref="member">analog_input</ref>.trigger_right<sp/>&gt;<sp/><ref refid="system_8h_1ab96163acba7d0a34419ca68c3c60a037" kindref="member">JOYSTICK_TRIGGER_SENSIBILITY</ref>)<sp/>&amp;&amp;</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>!<ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8af6bc6ec87692af87cb8ade46f6663d23" kindref="member">Input::Keys::JOY_RTRIGGER_FULL</ref>];</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="274"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"></highlight></codeline>
+<codeline lineno="276" refid="class_input_1_1_source_1a1ed54e82804b5e7c53d899e0146d97ce" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_input_1_1_source_1a1ed54e82804b5e7c53d899e0146d97ce" kindref="member">Input::Source::UpdateTouch</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(_MSC_VER)<sp/>||<sp/>_MSC_VER<sp/>&gt;=<sp/>1930</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="278"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(USE_TOUCH)<sp/>&amp;&amp;<sp/>defined(SUPPORT_TOUCH)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>process<sp/>touch<sp/>input</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>only<sp/>the<sp/>exact<sp/>finger<sp/>count<sp/>is<sp/>true,<sp/>e.g.<sp/>when<sp/>&quot;3<sp/>fingers&quot;<sp/>then<sp/>&quot;2&quot;<sp/>and<sp/>&quot;1&quot;<sp/>are<sp/>false</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a59d6528f6a8a6c242fa5c942ed2e7faf" kindref="member">Input::Keys::ONE_FINGER</ref>]<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a67ad88235f98370d967cf406780bee69" kindref="member">Input::Keys::TWO_FINGERS</ref>]<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8afaa77f543c562689fb87d0e30ec68156" kindref="member">Input::Keys::THREE_FINGERS</ref>]<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8abfa11284cd32211f30a194bd5b376fbd" kindref="member">Input::Keys::FOUR_FINGERS</ref>]<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a29234102d31f66083580ff450f4a9868" kindref="member">Input::Keys::FIVE_FINGERS</ref>]<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"></highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>touch<sp/>=<sp/><ref refid="baseui_8cpp_1a3b74cb0cc934537a6ed8716682be7778" kindref="member">DisplayUi</ref>-&gt;GetTouchInput();</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"></highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>finger:<sp/>touch)<sp/>{</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!finger.prev_frame_pressed<sp/>&amp;&amp;<sp/>finger.pressed)<sp/>{</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Touch<sp/>just<sp/>started</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>finger.prev_frame_pressed<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>finger.touch_begin<sp/>=<sp/><ref refid="class_game___clock_1afeeada1eba54aecb6490418714bc51d9" kindref="member">Game_Clock::now</ref>();</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"></highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(finger.prev_frame_pressed<sp/>&amp;&amp;<sp/>!finger.pressed)<sp/>{</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Touch<sp/>just<sp/>ended</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>finger.prev_frame_pressed<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>finger.touch_end<sp/>=<sp/><ref refid="class_game___clock_1afeeada1eba54aecb6490418714bc51d9" kindref="member">Game_Clock::now</ref>();</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="302"><highlight class="normal"></highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>How<sp/>many<sp/>fingers<sp/>pressed<sp/>is<sp/>evaluated<sp/>after<sp/>all<sp/>fingers<sp/>left<sp/>the<sp/>screen</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="304"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>While<sp/>they<sp/>are<sp/>on<sp/>screen<sp/>it<sp/>is<sp/>handled<sp/>like<sp/>motion<sp/>/<sp/>mouse</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!std::any_of(touch.begin(),<sp/>touch.end(),<sp/>[](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>finger)<sp/>{<sp/>return<sp/>finger.pressed;<sp/>}))<sp/>{</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>now<sp/>=<sp/><ref refid="class_game___clock_1afeeada1eba54aecb6490418714bc51d9" kindref="member">Game_Clock::now</ref>();</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>time<sp/>limits<sp/>are<sp/>arbitrary.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="308"><highlight class="normal"></highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>fingers<sp/>do<sp/>not<sp/>leave<sp/>the<sp/>touchpad<sp/>at<sp/>the<sp/>exact<sp/>same<sp/>millisecond</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>To<sp/>prevent<sp/>wrong<sp/>detections<sp/>(e.g.<sp/>one<sp/>finger<sp/>when<sp/>two<sp/>fingers<sp/>left)<sp/>wait,<sp/>until<sp/>one<sp/>finger<sp/>left<sp/>for<sp/>50ms</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(std::count_if(touch.begin(),<sp/>touch.end(),<sp/>[now](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>finger)<sp/>{</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>now<sp/>-<sp/>finger.touch_end<sp/>&gt;=<sp/>50ms;</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>})<sp/>&gt;=<sp/>1)<sp/>{</highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Count<sp/>every<sp/>finger<sp/>that<sp/>recently<sp/>left<sp/>and<sp/>wasn&apos;t<sp/>a<sp/>long<sp/>press</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>fingers<sp/>=<sp/>std::count_if(touch.begin(),<sp/>touch.end(),<sp/>[now](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>finger)<sp/>{</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>now<sp/>-<sp/>finger.touch_end<sp/>&lt;=<sp/>200ms<sp/>&amp;&amp;<sp/>finger.touch_end<sp/>-<sp/>finger.touch_begin<sp/>&lt;=<sp/>500ms;</highlight></codeline>
+<codeline lineno="317"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>});</highlight></codeline>
+<codeline lineno="318"><highlight class="normal"></highlight></codeline>
+<codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(fingers<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="320"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" kindref="member">keystates</ref>[<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8a59d6528f6a8a6c242fa5c942ed2e7faf" kindref="member">Input::Keys::ONE_FINGER</ref><sp/>+<sp/>fingers<sp/>-<sp/>1]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="322"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="324"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="325"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="326"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"></highlight></codeline>
+<codeline lineno="328" refid="class_input_1_1_source_1a5b289173d39509170fb4943264d7e980" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_input_1_1_source_1a5b289173d39509170fb4943264d7e980" kindref="member">Input::Source::AddRecordingData</ref>(<ref refid="namespace_input_1adb5ed8536be0280ad0de1f6c0b7d057f" kindref="member">Input::RecordingData</ref><sp/>type,<sp/>std::string_view<sp/>data)<sp/>{</highlight></codeline>
+<codeline lineno="329"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_input_1_1_source_1a2c381b04768233a026a8daf6b6c9530d" kindref="member">record_log</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="330"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*record_log<sp/>&lt;&lt;<sp/>static_cast&lt;char&gt;(type)<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>data<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;\n&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="332"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"></highlight></codeline>
+<codeline lineno="334" refid="class_input_1_1_source_1a247a838e52667aa5e73847f7390b0361" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_input_1_1_source_1a247a838e52667aa5e73847f7390b0361" kindref="member">Input::Source::SimulateKeyPress</ref>(<ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8" kindref="member">Input::Keys::InputKey</ref><sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_input_1_1_source_1aae308b32662d7101d5fec61fa70f4cb1" kindref="member">keystates_virtual</ref>[<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="336"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"></highlight></codeline>
+<codeline lineno="338" refid="class_input_1_1_log_source_1aaf2e77cac64b1b2239c20665f4a69572" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_input_1_1_log_source_1aaf2e77cac64b1b2239c20665f4a69572" kindref="member">Input::LogSource::UpdateSystem</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>input<sp/>log<sp/>does<sp/>not<sp/>record<sp/>actions<sp/>outside<sp/>of<sp/>logical<sp/>frames.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="340"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"></highlight></codeline>
+<codeline lineno="342" refid="struct_input_1_1_touch_input_1a5372bf4670a7dbd6482fd98bbb7d0376" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_input_1_1_touch_input_1a5372bf4670a7dbd6482fd98bbb7d0376" kindref="member">Input::TouchInput::Down</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y)<sp/>{</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"><sp/><sp/><sp/><sp/>this-&gt;</highlight><highlight class="keywordtype">id</highlight><highlight class="normal"><sp/>=<sp/>id;</highlight></codeline>
+<codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/>this-&gt;<ref refid="struct_input_1_1_touch_input_1a32529385691c0b98ae57b531a16395a1" kindref="member">position</ref><sp/>=<sp/>{<sp/>x,<sp/>y<sp/>};</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"><sp/><sp/><sp/><sp/>this-&gt;<ref refid="struct_input_1_1_touch_input_1a5c3ddb68364c79cbd221c8c697570f32" kindref="member">pressed</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="346"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"></highlight></codeline>
+<codeline lineno="348" refid="struct_input_1_1_touch_input_1ae73884edb590858fd34e5c8652eb2ba7" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_input_1_1_touch_input_1ae73884edb590858fd34e5c8652eb2ba7" kindref="member">Input::TouchInput::Up</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="349"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal"><sp/>=<sp/>-1;</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_input_1_1_touch_input_1a5c3ddb68364c79cbd221c8c697570f32" kindref="member">pressed</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="351"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="input_source.cpp"/>
+  </compounddef>
+</doxygen>

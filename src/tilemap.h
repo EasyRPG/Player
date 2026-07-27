@@ -117,3 +117,4 @@ inline void Tilemap::SetPassableUp(std::vector<unsigned char> up) {
 }
 
 #endif
+

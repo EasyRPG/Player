@@ -1,0 +1,993 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="game__variables_8cpp" kind="file" language="C++">
+    <compoundname>game_variables.cpp</compoundname>
+    <includes refid="game__variables_8h" local="yes">game_variables.h</includes>
+    <includes refid="output_8h" local="yes">output.h</includes>
+    <includes local="no">lcf/reader_util.h</includes>
+    <includes refid="data_8h" local="no">lcf/data.h</includes>
+    <includes refid="utils_8h" local="yes">utils.h</includes>
+    <includes refid="rand_8h" local="yes">rand.h</includes>
+    <includes local="no">cmath</includes>
+    <incdepgraph>
+      <node id="27">
+        <label>compiler.h</label>
+        <link refid="compiler_8h"/>
+      </node>
+      <node id="43">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>game_variables.cpp</label>
+        <link refid="game__variables_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>game_variables.h</label>
+        <link refid="game__variables_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>lcf/data.h</label>
+        <link refid="data_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="34">
+        <label>output.h</label>
+        <link refid="output_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>rand.h</label>
+        <link refid="rand_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="45" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>cassert</label>
+      </node>
+      <node id="56">
+        <label>cmath</label>
+      </node>
+      <node id="33">
+        <label>cstdint</label>
+      </node>
+      <node id="47">
+        <label>ctime</label>
+      </node>
+      <node id="31">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="32">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="48">
+        <label>functional</label>
+      </node>
+      <node id="35">
+        <label>iosfwd</label>
+      </node>
+      <node id="38">
+        <label>istream</label>
+      </node>
+      <node id="30">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="52">
+        <label>lcf/reader_util.h</label>
+      </node>
+      <node id="6">
+        <label>lcf/rpg/actor.h</label>
+      </node>
+      <node id="14">
+        <label>lcf/rpg/animation.h</label>
+      </node>
+      <node id="11">
+        <label>lcf/rpg/attribute.h</label>
+      </node>
+      <node id="20">
+        <label>lcf/rpg/battlecommand.h</label>
+      </node>
+      <node id="21">
+        <label>lcf/rpg/battleranimation.h</label>
+      </node>
+      <node id="15">
+        <label>lcf/rpg/chipset.h</label>
+      </node>
+      <node id="19">
+        <label>lcf/rpg/class.h</label>
+      </node>
+      <node id="18">
+        <label>lcf/rpg/commonevent.h</label>
+      </node>
+      <node id="26">
+        <label>lcf/rpg/database.h</label>
+      </node>
+      <node id="9">
+        <label>lcf/rpg/enemy.h</label>
+      </node>
+      <node id="24">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="8">
+        <label>lcf/rpg/item.h</label>
+      </node>
+      <node id="23">
+        <label>lcf/rpg/music.h</label>
+      </node>
+      <node id="7">
+        <label>lcf/rpg/skill.h</label>
+      </node>
+      <node id="22">
+        <label>lcf/rpg/sound.h</label>
+      </node>
+      <node id="12">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="17">
+        <label>lcf/rpg/system.h</label>
+      </node>
+      <node id="16">
+        <label>lcf/rpg/terms.h</label>
+      </node>
+      <node id="13">
+        <label>lcf/rpg/terrain.h</label>
+      </node>
+      <node id="25">
+        <label>lcf/rpg/treemap.h</label>
+      </node>
+      <node id="10">
+        <label>lcf/rpg/troop.h</label>
+      </node>
+      <node id="45">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="29">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="41">
+        <label>memory</label>
+      </node>
+      <node id="39">
+        <label>ostream</label>
+      </node>
+      <node id="55">
+        <label>random</label>
+      </node>
+      <node id="54">
+        <label>sstream</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="42">
+        <label>unordered_map</label>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__variables_8h" kindref="compound">game_variables.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="output_8h" kindref="compound">output.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/reader_util.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="data_8h" kindref="compound">lcf/data.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="utils_8h" kindref="compound">utils.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="rand_8h" kindref="compound">rand.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cmath&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">Var_t<sp/>=<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Game_Variables::Var_t</ref>;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>Var_t<sp/><ref refid="namespace_game___map_1_1_caching_1abb83ab47cb9161cf96141a0fb29a7ad2aced951152185aefed2e74b258752348a" kindref="member">VarSet</ref>(Var_t<sp/>o,<sp/>Var_t<sp/>n)<sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>(void)o;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>n;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>Var_t<sp/>VarAdd(Var_t<sp/>l,<sp/>Var_t<sp/>r)<sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>Var_t<sp/>res<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>_MSC_VER</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>res<sp/>=<sp/>l<sp/>+<sp/>r;</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(res<sp/>&lt;<sp/>0<sp/>&amp;&amp;<sp/>l<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>r<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::numeric_limits&lt;Var_t&gt;::max();</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(res<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>l<sp/>&lt;<sp/>0<sp/>&amp;&amp;<sp/>r<sp/>&lt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::numeric_limits&lt;Var_t&gt;::min();</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="compiler_8h_1a6193ed68030ec53b5e6be36887041873" kindref="member">EP_UNLIKELY</ref>(__builtin_add_overflow(l,<sp/>r,<sp/>&amp;res)))<sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(l<sp/>&gt;=<sp/>0<sp/>&amp;&amp;<sp/>r<sp/>&gt;=<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::numeric_limits&lt;Var_t&gt;::max();</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::numeric_limits&lt;Var_t&gt;::min();</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>res;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>Var_t<sp/>VarSub(Var_t<sp/>l,<sp/>Var_t<sp/>r)<sp/>{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>Var_t<sp/>res<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>_MSC_VER</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>res<sp/>=<sp/>l<sp/>-<sp/>r;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(res<sp/>&lt;<sp/>0<sp/>&amp;&amp;<sp/>l<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>r<sp/>&lt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::numeric_limits&lt;Var_t&gt;::max();</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(res<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>l<sp/>&lt;<sp/>0<sp/>&amp;&amp;<sp/>r<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::numeric_limits&lt;Var_t&gt;::min();</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="compiler_8h_1a6193ed68030ec53b5e6be36887041873" kindref="member">EP_UNLIKELY</ref>(__builtin_sub_overflow(l,<sp/>r,<sp/>&amp;res)))<sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(r<sp/>&lt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::numeric_limits&lt;Var_t&gt;::max();</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::numeric_limits&lt;Var_t&gt;::min();</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>res;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>Var_t<sp/>VarMult(Var_t<sp/>l,<sp/>Var_t<sp/>r)<sp/>{</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>Var_t<sp/>res<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>_MSC_VER</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>res<sp/>=<sp/>l<sp/>*<sp/>r;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(l<sp/>!=<sp/>0<sp/>&amp;&amp;<sp/>res<sp/>/<sp/>l<sp/>!=<sp/>r)<sp/>{</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((l<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>r<sp/>&gt;<sp/>0)<sp/>||<sp/>(l<sp/>&lt;<sp/>0<sp/>&amp;&amp;<sp/>r<sp/>&lt;<sp/>0))<sp/>{</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::numeric_limits&lt;Var_t&gt;::max();</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::numeric_limits&lt;Var_t&gt;::min();</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="compiler_8h_1a6193ed68030ec53b5e6be36887041873" kindref="member">EP_UNLIKELY</ref>(__builtin_mul_overflow(l,<sp/>r,<sp/>&amp;res)))<sp/>{</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((l<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>r<sp/>&gt;<sp/>0)<sp/>||<sp/>(l<sp/>&lt;<sp/>0<sp/>&amp;&amp;<sp/>r<sp/>&lt;<sp/>0))<sp/>{</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::numeric_limits&lt;Var_t&gt;::max();</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::numeric_limits&lt;Var_t&gt;::min();</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>res;</highlight></codeline>
+<codeline lineno="101"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>Var_t<sp/>VarDiv(Var_t<sp/>n,<sp/>Var_t<sp/>d)<sp/>{</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="compiler_8h_1a36c2fb268727b414963f8917808aa46f" kindref="member">EP_LIKELY</ref>(d<sp/>!=<sp/>0)<sp/>?<sp/>n<sp/>/<sp/>d<sp/>:<sp/>n;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>Var_t<sp/>VarMod(Var_t<sp/>n,<sp/>Var_t<sp/>d)<sp/>{</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="compiler_8h_1a36c2fb268727b414963f8917808aa46f" kindref="member">EP_LIKELY</ref>(d<sp/>!=<sp/>0)<sp/>?<sp/>n<sp/>%<sp/>d<sp/>:<sp/>0;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>Var_t<sp/>VarBitOr(Var_t<sp/>n,<sp/>Var_t<sp/>d)<sp/>{</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>n<sp/>|<sp/>d;</highlight></codeline>
+<codeline lineno="113"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>Var_t<sp/>VarBitAnd(Var_t<sp/>n,<sp/>Var_t<sp/>d)<sp/>{</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>n<sp/>&amp;<sp/>d;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>Var_t<sp/>VarBitXor(Var_t<sp/>n,<sp/>Var_t<sp/>d)<sp/>{</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>n<sp/>^<sp/>d;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>Var_t<sp/>VarBitShiftLeft(Var_t<sp/>n,<sp/>Var_t<sp/>d)<sp/>{</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>n<sp/>&lt;&lt;<sp/>d;</highlight></codeline>
+<codeline lineno="125"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>Var_t<sp/>VarBitShiftRight(Var_t<sp/>n,<sp/>Var_t<sp/>d)<sp/>{</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>n<sp/>&gt;&gt;<sp/>d;</highlight></codeline>
+<codeline lineno="129"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133" refid="class_game___variables_1ae00d6f1d42d1ddbb9850a6b8107045f1" refkind="member"><highlight class="normal"><ref refid="class_game___variables_1ae00d6f1d42d1ddbb9850a6b8107045f1" kindref="member">Game_Variables::Game_Variables</ref>(<ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval)</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>_min(minval),<sp/>_max(maxval)</highlight></codeline>
+<codeline lineno="135"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(minval<sp/>&gt;=<sp/>maxval)<sp/>{</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1a15be3bb1abcecb6696cae716c208ed34" kindref="member">Output::Error</ref>(</highlight><highlight class="stringliteral">&quot;Variables:<sp/>Invalid<sp/>var<sp/>range:<sp/>[{},<sp/>{}]&quot;</highlight><highlight class="normal">,<sp/>minval,<sp/>maxval);</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="139"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Game_Variables::WarnGet(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespace_output_1aec7bcd2124d7576a8b20873585de07cd" kindref="member">Output::Debug</ref>(</highlight><highlight class="stringliteral">&quot;Invalid<sp/>read<sp/>var[{}]!&quot;</highlight><highlight class="normal">,<sp/>variable_id);</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>--_warnings;</highlight></codeline>
+<codeline lineno="144"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>F&gt;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Game_Variables::Var_t</ref><sp/>Game_Variables::SetOp(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/>Var_t<sp/>value,<sp/>F&amp;&amp;<sp/>op,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>warn)<sp/>{</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="compiler_8h_1a6193ed68030ec53b5e6be36887041873" kindref="member">EP_UNLIKELY</ref>(ShouldWarn(variable_id,<sp/>variable_id)))<sp/>{</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1aec7bcd2124d7576a8b20873585de07cd" kindref="member">Output::Debug</ref>(warn,<sp/>variable_id,<sp/>value);</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>--_warnings;</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(variable_id<sp/>&lt;=<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="compiler_8h_1a6193ed68030ec53b5e6be36887041873" kindref="member">EP_UNLIKELY</ref>(variable_id<sp/>&gt;<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(_variables.size())))<sp/>{</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_variables.resize(variable_id,<sp/>0);</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>v<sp/>=<sp/>_variables[variable_id<sp/>-<sp/>1];</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/>value<sp/>=<sp/>op(v,<sp/>value);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/>v<sp/>=<sp/><ref refid="namespace_utils_1a805d2bcdaa90b0f02e1806941e8e9cd2" kindref="member">Utils::Clamp</ref>(value,<sp/>_min,<sp/>_max);</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>v;</highlight></codeline>
+<codeline lineno="162"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Game_Variables::PrepareRange(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>warn,<sp/>Args...<sp/>args)<sp/>{</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="compiler_8h_1a6193ed68030ec53b5e6be36887041873" kindref="member">EP_UNLIKELY</ref>(ShouldWarn(first_id,<sp/>last_id)))<sp/>{</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1aec7bcd2124d7576a8b20873585de07cd" kindref="member">Output::Debug</ref>(warn,<sp/>first_id,<sp/>last_id,<sp/>args...);</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>--_warnings;</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>vv<sp/>=<sp/>_variables;</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="compiler_8h_1a6193ed68030ec53b5e6be36887041873" kindref="member">EP_UNLIKELY</ref>(last_id<sp/>&gt;<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(vv.size())))<sp/>{</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vv.resize(last_id,<sp/>0);</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="174"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Game_Variables::PrepareArray(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>warn,<sp/>Args...<sp/>args)<sp/>{</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_b<sp/>=<sp/>first_id_b<sp/>+<sp/>last_id_a<sp/>-<sp/>first_id_a;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="compiler_8h_1a6193ed68030ec53b5e6be36887041873" kindref="member">EP_UNLIKELY</ref>(ShouldWarn(first_id_a,<sp/>last_id_a)<sp/>||<sp/>ShouldWarn(first_id_b,<sp/>last_id_b)))<sp/>{</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_output_1aec7bcd2124d7576a8b20873585de07cd" kindref="member">Output::Debug</ref>(warn,<sp/>first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/>last_id_b,<sp/>args...);</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>--_warnings;</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>vv<sp/>=<sp/>_variables;</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="compiler_8h_1a6193ed68030ec53b5e6be36887041873" kindref="member">EP_UNLIKELY</ref>(last_id_a<sp/>&gt;<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(vv.size())))<sp/>{</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vv.resize(last_id_a,<sp/>0);</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="compiler_8h_1a6193ed68030ec53b5e6be36887041873" kindref="member">EP_UNLIKELY</ref>(last_id_b<sp/>&gt;<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(vv.size())))<sp/>{</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vv.resize(last_id_b,<sp/>0);</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="190"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>V,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>F&gt;</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Game_Variables::WriteRange(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/>V&amp;&amp;<sp/>value,<sp/>F&amp;&amp;<sp/>op)<sp/>{</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>vv<sp/>=<sp/>_variables;</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>std::max(0,<sp/>first_id<sp/>-<sp/>1);<sp/>i<sp/>&lt;<sp/>last_id;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>v<sp/>=<sp/>vv[i];</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v<sp/>=<sp/><ref refid="namespace_utils_1a805d2bcdaa90b0f02e1806941e8e9cd2" kindref="member">Utils::Clamp</ref>(op(v,<sp/>value()),<sp/>_min,<sp/>_max);</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="199"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>F&gt;</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Game_Variables::WriteArray(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b,<sp/>F&amp;&amp;<sp/>op)<sp/>{</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>vv<sp/>=<sp/>_variables;</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>out_b<sp/>=<sp/>std::max(0,<sp/>first_id_b<sp/>-<sp/>1);</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>std::max(0,<sp/>first_id_a<sp/>-<sp/>1);<sp/>i<sp/>&lt;<sp/>last_id_a;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>v_a<sp/>=<sp/>vv[i];</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>v_b<sp/>=<sp/>vv[out_b++];</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v_a<sp/>=<sp/><ref refid="namespace_utils_1a805d2bcdaa90b0f02e1806941e8e9cd2" kindref="member">Utils::Clamp</ref>(op(v_a,<sp/>v_b),<sp/>_min,<sp/>_max);</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="210"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"></highlight></codeline>
+<codeline lineno="212" refid="class_game___variables_1a7c52dd3cc5f4fe93788c3fcd0125c3a1" refkind="member"><highlight class="normal">std::vector&lt;Var_t&gt;<sp/><ref refid="class_game___variables_1a7c52dd3cc5f4fe93788c3fcd0125c3a1" kindref="member">Game_Variables::GetRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>length)<sp/>{</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;Var_t&gt;<sp/>vars;</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>length;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vars.push_back(<ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(variable_id<sp/>+<sp/>i));</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>vars;</highlight></codeline>
+<codeline lineno="218"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight></codeline>
+<codeline lineno="220" refid="class_game___variables_1ac9b7db3b0a9a0721cde0fe06fa90337d" refkind="member"><highlight class="normal"><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Game_Variables::Var_t</ref><sp/><ref refid="class_game___variables_1ac9b7db3b0a9a0721cde0fe06fa90337d" kindref="member">Game_Variables::Set</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SetOp(variable_id,<sp/>value,<sp/>VarSet,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{}]<sp/>=<sp/>{}!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="222"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"></highlight></codeline>
+<codeline lineno="224" refid="class_game___variables_1a00d10ea75a5affe7ce4ff600417b8fd8" refkind="member"><highlight class="normal"><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Game_Variables::Var_t</ref><sp/><ref refid="class_game___variables_1a00d10ea75a5affe7ce4ff600417b8fd8" kindref="member">Game_Variables::Add</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SetOp(variable_id,<sp/>value,<sp/>VarAdd,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{}]<sp/>+=<sp/>{}!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="226"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"></highlight></codeline>
+<codeline lineno="228" refid="class_game___variables_1adc853fd7bfd9fa745d3d46f169844639" refkind="member"><highlight class="normal"><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Game_Variables::Var_t</ref><sp/><ref refid="class_game___variables_1adc853fd7bfd9fa745d3d46f169844639" kindref="member">Game_Variables::Sub</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SetOp(variable_id,<sp/>value,<sp/>VarSub,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{}]<sp/>-=<sp/>{}!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="230"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"></highlight></codeline>
+<codeline lineno="232" refid="class_game___variables_1a034568be935750066a31521221dc34ae" refkind="member"><highlight class="normal"><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Game_Variables::Var_t</ref><sp/><ref refid="class_game___variables_1a034568be935750066a31521221dc34ae" kindref="member">Game_Variables::Mult</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SetOp(variable_id,<sp/>value,<sp/>VarMult,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{}]<sp/>*=<sp/>{}!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="234"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"></highlight></codeline>
+<codeline lineno="236" refid="class_game___variables_1aef56c165efd318ab06e982398c7abcaa" refkind="member"><highlight class="normal"><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Game_Variables::Var_t</ref><sp/><ref refid="class_game___variables_1aef56c165efd318ab06e982398c7abcaa" kindref="member">Game_Variables::Div</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SetOp(variable_id,<sp/>value,<sp/>VarDiv,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{}]<sp/>/=<sp/>{}!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="238"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"></highlight></codeline>
+<codeline lineno="240" refid="class_game___variables_1aa5945bec38938f3653f1f7079faae0ec" refkind="member"><highlight class="normal"><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Game_Variables::Var_t</ref><sp/><ref refid="class_game___variables_1aa5945bec38938f3653f1f7079faae0ec" kindref="member">Game_Variables::Mod</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SetOp(variable_id,<sp/>value,<sp/>VarMod,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{}]<sp/>%=<sp/>{}!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="242"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"></highlight></codeline>
+<codeline lineno="244" refid="class_game___variables_1adb0d0c63186d24ceda676e747003f3c8" refkind="member"><highlight class="normal"><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Game_Variables::Var_t</ref><sp/><ref refid="class_game___variables_1adb0d0c63186d24ceda676e747003f3c8" kindref="member">Game_Variables::BitOr</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SetOp(variable_id,<sp/>value,<sp/>VarBitOr,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{}]<sp/>|=<sp/>{}!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="246"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"></highlight></codeline>
+<codeline lineno="248" refid="class_game___variables_1ae2e5e4d9c7df9487ae4f4fd553f7eeb0" refkind="member"><highlight class="normal"><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Game_Variables::Var_t</ref><sp/><ref refid="class_game___variables_1ae2e5e4d9c7df9487ae4f4fd553f7eeb0" kindref="member">Game_Variables::BitAnd</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SetOp(variable_id,<sp/>value,<sp/>VarBitAnd,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{}]<sp/>&amp;=<sp/>{}!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="250"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"></highlight></codeline>
+<codeline lineno="252" refid="class_game___variables_1a382d8c60ad840d494c9c714707bda598" refkind="member"><highlight class="normal"><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Game_Variables::Var_t</ref><sp/><ref refid="class_game___variables_1a382d8c60ad840d494c9c714707bda598" kindref="member">Game_Variables::BitXor</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SetOp(variable_id,<sp/>value,<sp/>VarBitXor,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{}]<sp/>^=<sp/>{}!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="254"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight></codeline>
+<codeline lineno="256" refid="class_game___variables_1ad4f12ae690debe5098b6ee9a9060f58d" refkind="member"><highlight class="normal"><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Game_Variables::Var_t</ref><sp/><ref refid="class_game___variables_1ad4f12ae690debe5098b6ee9a9060f58d" kindref="member">Game_Variables::BitShiftLeft</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SetOp(variable_id,<sp/>value,<sp/>VarBitShiftLeft,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{}]<sp/>&lt;&lt;=<sp/>{}!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="258"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"></highlight></codeline>
+<codeline lineno="260" refid="class_game___variables_1acd8d7c060b13db9b26d636805fbac4d6" refkind="member"><highlight class="normal"><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Game_Variables::Var_t</ref><sp/><ref refid="class_game___variables_1acd8d7c060b13db9b26d636805fbac4d6" kindref="member">Game_Variables::BitShiftRight</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>variable_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>SetOp(variable_id,<sp/>value,<sp/>VarBitShiftRight,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{}]<sp/>&gt;&gt;=<sp/>{}!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="262"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"></highlight></codeline>
+<codeline lineno="264" refid="class_game___variables_1a8771f393181b303ec2c59323414f6fb5" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a8771f393181b303ec2c59323414f6fb5" kindref="member">Game_Variables::SetRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>=<sp/>{}!&quot;</highlight><highlight class="normal">,<sp/>value);</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[value](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value;<sp/>},<sp/>VarSet);</highlight></codeline>
+<codeline lineno="267"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"></highlight></codeline>
+<codeline lineno="269" refid="class_game___variables_1ab9dbad38f6dd6ed9bc5d0bb2c54f0a2b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1ab9dbad38f6dd6ed9bc5d0bb2c54f0a2b" kindref="member">Game_Variables::AddRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>+=<sp/>{}!&quot;</highlight><highlight class="normal">,<sp/>value);</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[value](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value;<sp/>},<sp/>VarAdd);</highlight></codeline>
+<codeline lineno="272"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"></highlight></codeline>
+<codeline lineno="274" refid="class_game___variables_1a999bb61982ff43db1cd0319b4eb66682" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a999bb61982ff43db1cd0319b4eb66682" kindref="member">Game_Variables::SubRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>-=<sp/>{}!&quot;</highlight><highlight class="normal">,<sp/>value);</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[value](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value;<sp/>},<sp/>VarSub);</highlight></codeline>
+<codeline lineno="277"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"></highlight></codeline>
+<codeline lineno="279" refid="class_game___variables_1a32f1ea14cacefe857213029378d2d3e2" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a32f1ea14cacefe857213029378d2d3e2" kindref="member">Game_Variables::MultRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>*=<sp/>{}!&quot;</highlight><highlight class="normal">,<sp/>value);</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[value](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value;<sp/>},<sp/>VarMult);</highlight></codeline>
+<codeline lineno="282"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"></highlight></codeline>
+<codeline lineno="284" refid="class_game___variables_1a07e3178bdbf70577c3f77604b9a3a9b3" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a07e3178bdbf70577c3f77604b9a3a9b3" kindref="member">Game_Variables::DivRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>/=<sp/>{}!&quot;</highlight><highlight class="normal">,<sp/>value);</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[value](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value;<sp/>},<sp/>VarDiv);</highlight></codeline>
+<codeline lineno="287"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"></highlight></codeline>
+<codeline lineno="289" refid="class_game___variables_1af89d7b219756a35638fc6f8b0c45a560" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1af89d7b219756a35638fc6f8b0c45a560" kindref="member">Game_Variables::ModRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>%=<sp/>{}!&quot;</highlight><highlight class="normal">,<sp/>value);</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[value](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value;<sp/>},<sp/>VarMod);</highlight></codeline>
+<codeline lineno="292"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"></highlight></codeline>
+<codeline lineno="294" refid="class_game___variables_1a743ef50637db15b7bbea453841a3a2f4" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a743ef50637db15b7bbea453841a3a2f4" kindref="member">Game_Variables::BitOrRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>|=<sp/>{}!&quot;</highlight><highlight class="normal">,<sp/>value);</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[value](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value;<sp/>},<sp/>VarBitOr);</highlight></codeline>
+<codeline lineno="297"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"></highlight></codeline>
+<codeline lineno="299" refid="class_game___variables_1a6b76072fd7ca2172b5dc25d424e4e9a2" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a6b76072fd7ca2172b5dc25d424e4e9a2" kindref="member">Game_Variables::BitAndRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>&amp;=<sp/>{}!&quot;</highlight><highlight class="normal">,<sp/>value);</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[value](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value;<sp/>},<sp/>VarBitAnd);</highlight></codeline>
+<codeline lineno="302"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"></highlight></codeline>
+<codeline lineno="304" refid="class_game___variables_1a20660296fae0a8b75996a49f1df86633" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a20660296fae0a8b75996a49f1df86633" kindref="member">Game_Variables::BitXorRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>^=<sp/>{}!&quot;</highlight><highlight class="normal">,<sp/>value);</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[value](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value;<sp/>},<sp/>VarBitXor);</highlight></codeline>
+<codeline lineno="307"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"></highlight></codeline>
+<codeline lineno="309" refid="class_game___variables_1a113a7c1e1aa93d31b6fcf03b83a5eb8c" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a113a7c1e1aa93d31b6fcf03b83a5eb8c" kindref="member">Game_Variables::BitShiftLeftRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>&lt;&lt;=<sp/>{}!&quot;</highlight><highlight class="normal">,<sp/>value);</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[value](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value;<sp/>},<sp/>VarBitShiftLeft);</highlight></codeline>
+<codeline lineno="312"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"></highlight></codeline>
+<codeline lineno="314" refid="class_game___variables_1aff121b414a62dc3605771ff5b8a397db" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1aff121b414a62dc3605771ff5b8a397db" kindref="member">Game_Variables::BitShiftRightRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>&gt;&gt;=<sp/>{}!&quot;</highlight><highlight class="normal">,<sp/>value);</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[value](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value;<sp/>},<sp/>VarBitShiftRight);</highlight></codeline>
+<codeline lineno="317"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="318"><highlight class="normal"></highlight></codeline>
+<codeline lineno="319"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>F&gt;</highlight></codeline>
+<codeline lineno="320"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>Game_Variables::WriteRangeVariable(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id,<sp/>F&amp;&amp;<sp/>op)<sp/>{</highlight></codeline>
+<codeline lineno="321"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(var_id<sp/>&gt;=<sp/>first_id<sp/>&amp;&amp;<sp/>var_id<sp/>&lt;=<sp/>last_id)<sp/>{</highlight></codeline>
+<codeline lineno="322"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>value<sp/>=<sp/><ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(var_id);</highlight></codeline>
+<codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>var_id,<sp/>[value](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value;<sp/>},<sp/>std::forward&lt;F&gt;(op));</highlight></codeline>
+<codeline lineno="324"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>first_id<sp/>=<sp/>var_id<sp/>+<sp/>1;</highlight></codeline>
+<codeline lineno="325"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="326"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>value<sp/>=<sp/><ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(var_id);</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[value](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value;<sp/>},<sp/>std::forward&lt;F&gt;(op));</highlight></codeline>
+<codeline lineno="328"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="329"><highlight class="normal"></highlight></codeline>
+<codeline lineno="330"><highlight class="normal"></highlight></codeline>
+<codeline lineno="331" refid="class_game___variables_1a36cb9db44a1a1c774ed38e124810ee08" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a36cb9db44a1a1c774ed38e124810ee08" kindref="member">Game_Variables::SetRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>=<sp/>Var({})!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRangeVariable(first_id,<sp/>last_id,<sp/>var_id,<sp/>VarSet);</highlight></codeline>
+<codeline lineno="334"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"></highlight></codeline>
+<codeline lineno="336" refid="class_game___variables_1adf3c33f74a348f56f500a683fb2d2bcf" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1adf3c33f74a348f56f500a683fb2d2bcf" kindref="member">Game_Variables::AddRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>+=<sp/>var[{}]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRangeVariable(first_id,<sp/>last_id,<sp/>var_id,<sp/>VarAdd);</highlight></codeline>
+<codeline lineno="339"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="340"><highlight class="normal"></highlight></codeline>
+<codeline lineno="341" refid="class_game___variables_1a02e361d9b9ff261325eb2e702ef3e128" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a02e361d9b9ff261325eb2e702ef3e128" kindref="member">Game_Variables::SubRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>-=<sp/>var[{}]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRangeVariable(first_id,<sp/>last_id,<sp/>var_id,<sp/>VarSub);</highlight></codeline>
+<codeline lineno="344"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"></highlight></codeline>
+<codeline lineno="346" refid="class_game___variables_1a3fb348c119e20bd3bc2554e6855c3aba" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a3fb348c119e20bd3bc2554e6855c3aba" kindref="member">Game_Variables::MultRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>*=<sp/>var[{}]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRangeVariable(first_id,<sp/>last_id,<sp/>var_id,<sp/>VarMult);</highlight></codeline>
+<codeline lineno="349"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"></highlight></codeline>
+<codeline lineno="351" refid="class_game___variables_1aacb103546cd1c4335a9f5b8470336356" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1aacb103546cd1c4335a9f5b8470336356" kindref="member">Game_Variables::DivRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="352"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>/=<sp/>var[{}]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="353"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRangeVariable(first_id,<sp/>last_id,<sp/>var_id,<sp/>VarDiv);</highlight></codeline>
+<codeline lineno="354"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="355"><highlight class="normal"></highlight></codeline>
+<codeline lineno="356" refid="class_game___variables_1aafccf406a869d2266c5e93e2bad8292f" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1aafccf406a869d2266c5e93e2bad8292f" kindref="member">Game_Variables::ModRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="357"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>/=<sp/>var[{}]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="358"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRangeVariable(first_id,<sp/>last_id,<sp/>var_id,<sp/>VarMod);</highlight></codeline>
+<codeline lineno="359"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="360"><highlight class="normal"></highlight></codeline>
+<codeline lineno="361" refid="class_game___variables_1af8177238bb0345e8074cc9f5cb8a4b5e" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1af8177238bb0345e8074cc9f5cb8a4b5e" kindref="member">Game_Variables::BitOrRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="362"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>|=<sp/>var[{}]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="363"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRangeVariable(first_id,<sp/>last_id,<sp/>var_id,<sp/>VarBitOr);</highlight></codeline>
+<codeline lineno="364"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="365"><highlight class="normal"></highlight></codeline>
+<codeline lineno="366" refid="class_game___variables_1a49d17d50ed574c6eb9533d59ce7a038e" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a49d17d50ed574c6eb9533d59ce7a038e" kindref="member">Game_Variables::BitAndRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>&amp;=<sp/>var[{}]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="368"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRangeVariable(first_id,<sp/>last_id,<sp/>var_id,<sp/>VarBitAnd);</highlight></codeline>
+<codeline lineno="369"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="370"><highlight class="normal"></highlight></codeline>
+<codeline lineno="371" refid="class_game___variables_1a78368a02a32bc074f009dea2d8c4f31f" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a78368a02a32bc074f009dea2d8c4f31f" kindref="member">Game_Variables::BitXorRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="372"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>^=<sp/>var[{}]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="373"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRangeVariable(first_id,<sp/>last_id,<sp/>var_id,<sp/>VarBitXor);</highlight></codeline>
+<codeline lineno="374"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="375"><highlight class="normal"></highlight></codeline>
+<codeline lineno="376" refid="class_game___variables_1ac752fe9250bf40bee424507d48d4f90f" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1ac752fe9250bf40bee424507d48d4f90f" kindref="member">Game_Variables::BitShiftLeftRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="377"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>&lt;&lt;=<sp/>var[{}]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="378"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRangeVariable(first_id,<sp/>last_id,<sp/>var_id,<sp/>VarBitShiftLeft);</highlight></codeline>
+<codeline lineno="379"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="380"><highlight class="normal"></highlight></codeline>
+<codeline lineno="381" refid="class_game___variables_1a442a211ef8af3a7abf4b466b720da06f" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a442a211ef8af3a7abf4b466b720da06f" kindref="member">Game_Variables::BitShiftRightRangeVariable</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="382"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>&gt;&gt;=<sp/>var[{}]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="383"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRangeVariable(first_id,<sp/>last_id,<sp/>var_id,<sp/>VarBitShiftRight);</highlight></codeline>
+<codeline lineno="384"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="385"><highlight class="normal"></highlight></codeline>
+<codeline lineno="386" refid="class_game___variables_1aec0396c3279b4269cad3f6606e7a5123" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1aec0396c3279b4269cad3f6606e7a5123" kindref="member">Game_Variables::SetRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="387"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>=<sp/>var[var[{}]]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="388"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[</highlight><highlight class="keyword">this</highlight><highlight class="normal">,var_id](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(<ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(var_id));<sp/>},<sp/>VarSet);</highlight></codeline>
+<codeline lineno="389"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="390"><highlight class="normal"></highlight></codeline>
+<codeline lineno="391" refid="class_game___variables_1a6ce58e6cdf7c8e561093f1ae6a22a3ed" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a6ce58e6cdf7c8e561093f1ae6a22a3ed" kindref="member">Game_Variables::AddRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="392"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>+=<sp/>var[var[{}]]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="393"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[</highlight><highlight class="keyword">this</highlight><highlight class="normal">,var_id](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(<ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(var_id));<sp/>},<sp/>VarAdd);</highlight></codeline>
+<codeline lineno="394"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="395"><highlight class="normal"></highlight></codeline>
+<codeline lineno="396" refid="class_game___variables_1a459fdf87a543aea60bfd7f18b0769dd2" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a459fdf87a543aea60bfd7f18b0769dd2" kindref="member">Game_Variables::SubRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="397"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>-=<sp/>var[var[{}]]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="398"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[</highlight><highlight class="keyword">this</highlight><highlight class="normal">,var_id](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(<ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(var_id));<sp/>},<sp/>VarSub);</highlight></codeline>
+<codeline lineno="399"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="400"><highlight class="normal"></highlight></codeline>
+<codeline lineno="401" refid="class_game___variables_1ae3c8729779ed0e3d9985e59dfd1685ed" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1ae3c8729779ed0e3d9985e59dfd1685ed" kindref="member">Game_Variables::MultRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="402"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>*=<sp/>var[var[{}]]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="403"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[</highlight><highlight class="keyword">this</highlight><highlight class="normal">,var_id](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(<ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(var_id));<sp/>},<sp/>VarMult);</highlight></codeline>
+<codeline lineno="404"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="405"><highlight class="normal"></highlight></codeline>
+<codeline lineno="406" refid="class_game___variables_1a306d962116db88b195c8330e412b6732" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a306d962116db88b195c8330e412b6732" kindref="member">Game_Variables::DivRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="407"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>/=<sp/>var[var[{}]]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="408"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[</highlight><highlight class="keyword">this</highlight><highlight class="normal">,var_id](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(<ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(var_id));<sp/>},<sp/>VarDiv);</highlight></codeline>
+<codeline lineno="409"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="410"><highlight class="normal"></highlight></codeline>
+<codeline lineno="411" refid="class_game___variables_1a9700839c839cbfd2ef82f67ce5967ffd" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a9700839c839cbfd2ef82f67ce5967ffd" kindref="member">Game_Variables::ModRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="412"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>%=<sp/>var[var[{}]]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="413"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[</highlight><highlight class="keyword">this</highlight><highlight class="normal">,var_id](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(<ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(var_id));<sp/>},<sp/>VarMod);</highlight></codeline>
+<codeline lineno="414"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="415"><highlight class="normal"></highlight></codeline>
+<codeline lineno="416" refid="class_game___variables_1a3d53130e992e0ddfc6697bfe45c1152a" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a3d53130e992e0ddfc6697bfe45c1152a" kindref="member">Game_Variables::BitOrRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="417"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>|=<sp/>var[var[{}]]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="418"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[</highlight><highlight class="keyword">this</highlight><highlight class="normal">,var_id](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(<ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(var_id));<sp/>},<sp/>VarBitOr);</highlight></codeline>
+<codeline lineno="419"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="420"><highlight class="normal"></highlight></codeline>
+<codeline lineno="421" refid="class_game___variables_1ad14f83c9d5d8ea9f42b76d8ee666e302" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1ad14f83c9d5d8ea9f42b76d8ee666e302" kindref="member">Game_Variables::BitAndRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="422"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>&amp;=<sp/>var[var[{}]]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="423"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[</highlight><highlight class="keyword">this</highlight><highlight class="normal">,var_id](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(<ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(var_id));<sp/>},<sp/>VarBitAnd);</highlight></codeline>
+<codeline lineno="424"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="425"><highlight class="normal"></highlight></codeline>
+<codeline lineno="426" refid="class_game___variables_1a5a1bc63b6a2d8d5a31ecf389a8bc05f5" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a5a1bc63b6a2d8d5a31ecf389a8bc05f5" kindref="member">Game_Variables::BitXorRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="427"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>^=<sp/>var[var[{}]]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="428"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[</highlight><highlight class="keyword">this</highlight><highlight class="normal">,var_id](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(<ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(var_id));<sp/>},<sp/>VarBitXor);</highlight></codeline>
+<codeline lineno="429"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="430"><highlight class="normal"></highlight></codeline>
+<codeline lineno="431" refid="class_game___variables_1a92a2b15e02fee42f732cb808aa012a1e" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a92a2b15e02fee42f732cb808aa012a1e" kindref="member">Game_Variables::BitShiftLeftRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="432"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>&lt;&lt;=<sp/>var[var[{}]]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="433"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[</highlight><highlight class="keyword">this</highlight><highlight class="normal">,var_id](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(<ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(var_id));<sp/>},<sp/>VarBitShiftLeft);</highlight></codeline>
+<codeline lineno="434"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="435"><highlight class="normal"></highlight></codeline>
+<codeline lineno="436" refid="class_game___variables_1a2211cd901f1eb5ac5d00bfb3d9cb5bf4" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a2211cd901f1eb5ac5d00bfb3d9cb5bf4" kindref="member">Game_Variables::BitShiftRightRangeVariableIndirect</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>var_id)<sp/>{</highlight></codeline>
+<codeline lineno="437"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>&gt;&gt;=<sp/>var[var[{}]]!&quot;</highlight><highlight class="normal">,<sp/>var_id);</highlight></codeline>
+<codeline lineno="438"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[</highlight><highlight class="keyword">this</highlight><highlight class="normal">,var_id](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(<ref refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" kindref="member">Get</ref>(var_id));<sp/>},<sp/>VarBitShiftRight);</highlight></codeline>
+<codeline lineno="439"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="440"><highlight class="normal"></highlight></codeline>
+<codeline lineno="441" refid="class_game___variables_1a39dd2daf1c29afb808b6034e30c88af9" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a39dd2daf1c29afb808b6034e30c88af9" kindref="member">Game_Variables::SetRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval)<sp/>{</highlight></codeline>
+<codeline lineno="442"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>=<sp/>rand({},{})!&quot;</highlight><highlight class="normal">,<sp/>minval,<sp/>maxval);</highlight></codeline>
+<codeline lineno="443"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[minval,maxval](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1a1c0fe37f0d80509213973f2b5765931f" kindref="member">Rand::GetRandomNumber</ref>(minval,<sp/>maxval);<sp/>},<sp/>VarSet);</highlight></codeline>
+<codeline lineno="444"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="445"><highlight class="normal"></highlight></codeline>
+<codeline lineno="446" refid="class_game___variables_1af56f456e58efc86f3f56db1517c8fb6c" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1af56f456e58efc86f3f56db1517c8fb6c" kindref="member">Game_Variables::AddRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval)<sp/>{</highlight></codeline>
+<codeline lineno="447"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>+=<sp/>rand({},{})!&quot;</highlight><highlight class="normal">,<sp/>minval,<sp/>maxval);</highlight></codeline>
+<codeline lineno="448"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[minval,maxval](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1a1c0fe37f0d80509213973f2b5765931f" kindref="member">Rand::GetRandomNumber</ref>(minval,<sp/>maxval);<sp/>},<sp/>VarAdd);</highlight></codeline>
+<codeline lineno="449"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="450"><highlight class="normal"></highlight></codeline>
+<codeline lineno="451" refid="class_game___variables_1abd960410d5c1d5d9b5370225ba39cdcc" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1abd960410d5c1d5d9b5370225ba39cdcc" kindref="member">Game_Variables::SubRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval)<sp/>{</highlight></codeline>
+<codeline lineno="452"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>-=<sp/>rand({},{})!&quot;</highlight><highlight class="normal">,<sp/>minval,<sp/>maxval);</highlight></codeline>
+<codeline lineno="453"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[minval,maxval](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1a1c0fe37f0d80509213973f2b5765931f" kindref="member">Rand::GetRandomNumber</ref>(minval,<sp/>maxval);<sp/>},<sp/>VarSub);</highlight></codeline>
+<codeline lineno="454"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="455"><highlight class="normal"></highlight></codeline>
+<codeline lineno="456" refid="class_game___variables_1a21fcbe9fd45906f6ce4bdfb3150d9bdc" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a21fcbe9fd45906f6ce4bdfb3150d9bdc" kindref="member">Game_Variables::MultRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval)<sp/>{</highlight></codeline>
+<codeline lineno="457"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>*=<sp/>rand({},{})!&quot;</highlight><highlight class="normal">,<sp/>minval,<sp/>maxval);</highlight></codeline>
+<codeline lineno="458"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[minval,maxval](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1a1c0fe37f0d80509213973f2b5765931f" kindref="member">Rand::GetRandomNumber</ref>(minval,<sp/>maxval);<sp/>},<sp/>VarMult);</highlight></codeline>
+<codeline lineno="459"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="460"><highlight class="normal"></highlight></codeline>
+<codeline lineno="461" refid="class_game___variables_1a0577545ab4beea2bc1a194eb9a0b4ef8" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a0577545ab4beea2bc1a194eb9a0b4ef8" kindref="member">Game_Variables::DivRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval)<sp/>{</highlight></codeline>
+<codeline lineno="462"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>/=<sp/>rand({},{})!&quot;</highlight><highlight class="normal">,<sp/>minval,<sp/>maxval);</highlight></codeline>
+<codeline lineno="463"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[minval,maxval](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1a1c0fe37f0d80509213973f2b5765931f" kindref="member">Rand::GetRandomNumber</ref>(minval,<sp/>maxval);<sp/>},<sp/>VarDiv);</highlight></codeline>
+<codeline lineno="464"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="465"><highlight class="normal"></highlight></codeline>
+<codeline lineno="466" refid="class_game___variables_1a4be5f633e61ac859249bdbe80535ad9e" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a4be5f633e61ac859249bdbe80535ad9e" kindref="member">Game_Variables::ModRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval)<sp/>{</highlight></codeline>
+<codeline lineno="467"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>%=<sp/>rand({},{})!&quot;</highlight><highlight class="normal">,<sp/>minval,<sp/>maxval);</highlight></codeline>
+<codeline lineno="468"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[minval,maxval](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1a1c0fe37f0d80509213973f2b5765931f" kindref="member">Rand::GetRandomNumber</ref>(minval,<sp/>maxval);<sp/>},<sp/>VarMod);</highlight></codeline>
+<codeline lineno="469"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="470"><highlight class="normal"></highlight></codeline>
+<codeline lineno="471" refid="class_game___variables_1a52ad4c4ec798634a13e697c3ed007a44" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a52ad4c4ec798634a13e697c3ed007a44" kindref="member">Game_Variables::BitOrRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval)<sp/>{</highlight></codeline>
+<codeline lineno="472"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>|=<sp/>rand({},{})!&quot;</highlight><highlight class="normal">,<sp/>minval,<sp/>maxval);</highlight></codeline>
+<codeline lineno="473"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[minval,maxval](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1a1c0fe37f0d80509213973f2b5765931f" kindref="member">Rand::GetRandomNumber</ref>(minval,<sp/>maxval);<sp/>},<sp/>VarBitOr);</highlight></codeline>
+<codeline lineno="474"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="475"><highlight class="normal"></highlight></codeline>
+<codeline lineno="476" refid="class_game___variables_1a6a5cb5ba40898d8c99f178355a4385ea" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a6a5cb5ba40898d8c99f178355a4385ea" kindref="member">Game_Variables::BitAndRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval)<sp/>{</highlight></codeline>
+<codeline lineno="477"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>&amp;=<sp/>rand({},{})!&quot;</highlight><highlight class="normal">,<sp/>minval,<sp/>maxval);</highlight></codeline>
+<codeline lineno="478"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[minval,maxval](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1a1c0fe37f0d80509213973f2b5765931f" kindref="member">Rand::GetRandomNumber</ref>(minval,<sp/>maxval);<sp/>},<sp/>VarBitAnd);</highlight></codeline>
+<codeline lineno="479"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="480"><highlight class="normal"></highlight></codeline>
+<codeline lineno="481" refid="class_game___variables_1a30f7b0ff2d374de7bf34d598f27f2a5d" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a30f7b0ff2d374de7bf34d598f27f2a5d" kindref="member">Game_Variables::BitXorRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval)<sp/>{</highlight></codeline>
+<codeline lineno="482"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>^=<sp/>rand({},{})!&quot;</highlight><highlight class="normal">,<sp/>minval,<sp/>maxval);</highlight></codeline>
+<codeline lineno="483"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[minval,maxval](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1a1c0fe37f0d80509213973f2b5765931f" kindref="member">Rand::GetRandomNumber</ref>(minval,<sp/>maxval);<sp/>},<sp/>VarBitXor);</highlight></codeline>
+<codeline lineno="484"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="485"><highlight class="normal"></highlight></codeline>
+<codeline lineno="486" refid="class_game___variables_1a95eea66b1e0f564a7642c400da4c3efc" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a95eea66b1e0f564a7642c400da4c3efc" kindref="member">Game_Variables::BitShiftLeftRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval)<sp/>{</highlight></codeline>
+<codeline lineno="487"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>&lt;&lt;=<sp/>rand({},{})!&quot;</highlight><highlight class="normal">,<sp/>minval,<sp/>maxval);</highlight></codeline>
+<codeline lineno="488"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[minval,maxval](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1a1c0fe37f0d80509213973f2b5765931f" kindref="member">Rand::GetRandomNumber</ref>(minval,<sp/>maxval);<sp/>},<sp/>VarBitShiftLeft);</highlight></codeline>
+<codeline lineno="489"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="490"><highlight class="normal"></highlight></codeline>
+<codeline lineno="491" refid="class_game___variables_1a64dd68701474160ef67f492d2ddb2202" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a64dd68701474160ef67f492d2ddb2202" kindref="member">Game_Variables::BitShiftRightRangeRandom</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>minval,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>maxval)<sp/>{</highlight></codeline>
+<codeline lineno="492"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>&gt;&gt;=<sp/>rand({},{})!&quot;</highlight><highlight class="normal">,<sp/>minval,<sp/>maxval);</highlight></codeline>
+<codeline lineno="493"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[minval,maxval](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespace_rand_1a1c0fe37f0d80509213973f2b5765931f" kindref="member">Rand::GetRandomNumber</ref>(minval,<sp/>maxval);<sp/>},<sp/>VarBitShiftRight);</highlight></codeline>
+<codeline lineno="494"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="495"><highlight class="normal"></highlight></codeline>
+<codeline lineno="496" refid="class_game___variables_1a0f9fa43e3802ab8ed5600504f0827bc0" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a0f9fa43e3802ab8ed5600504f0827bc0" kindref="member">Game_Variables::EnumerateRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="497"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>enumerate(var[{},{}])!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="498"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref><sp/>out_value<sp/>=<sp/>value;</highlight></codeline>
+<codeline lineno="499"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteRange(first_id,<sp/>last_id,<sp/>[&amp;out_value](){<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>out_value++;<sp/>},<sp/>VarSet);</highlight></codeline>
+<codeline lineno="500"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="501"><highlight class="normal"></highlight></codeline>
+<codeline lineno="502" refid="class_game___variables_1a9e97a615b492e75b6a2f45079eba1b96" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a9e97a615b492e75b6a2f45079eba1b96" kindref="member">Game_Variables::SortRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>asc)<sp/>{</highlight></codeline>
+<codeline lineno="503"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>sort(var[{},{}])!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="504"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>vv<sp/>=<sp/>_variables;</highlight></codeline>
+<codeline lineno="505"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>std::max(0,<sp/>first_id<sp/>-<sp/>1);</highlight></codeline>
+<codeline lineno="506"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(i<sp/>&lt;<sp/>last_id)<sp/>{</highlight></codeline>
+<codeline lineno="507"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>sorter<sp/>=<sp/>[&amp;](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;&amp;<sp/>fn)<sp/>{</highlight></codeline>
+<codeline lineno="508"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::stable_sort(vv.begin()<sp/>+<sp/>i,<sp/>vv.begin()<sp/>+<sp/>last_id,<sp/>fn);</highlight></codeline>
+<codeline lineno="509"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="510"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(asc)<sp/>{</highlight></codeline>
+<codeline lineno="511"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sorter(std::less&lt;&gt;());</highlight></codeline>
+<codeline lineno="512"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="513"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sorter(std::greater&lt;&gt;());</highlight></codeline>
+<codeline lineno="514"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="515"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="516"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="517"><highlight class="normal"></highlight></codeline>
+<codeline lineno="518" refid="class_game___variables_1a802be8f55c0c81c07dfb76357150086b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a802be8f55c0c81c07dfb76357150086b" kindref="member">Game_Variables::ShuffleRange</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id)<sp/>{</highlight></codeline>
+<codeline lineno="519"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareRange(first_id,<sp/>last_id,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>shuffle(var[{},{}])!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="520"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>vv<sp/>=<sp/>_variables;</highlight></codeline>
+<codeline lineno="521"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>std::max(0,<sp/>first_id<sp/>-<sp/>1);<sp/>i<sp/>&lt;<sp/>last_id;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="522"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>rnd_num<sp/>=<sp/><ref refid="namespace_rand_1a1c0fe37f0d80509213973f2b5765931f" kindref="member">Rand::GetRandomNumber</ref>(first_id,<sp/>last_id)<sp/>-<sp/>1;</highlight></codeline>
+<codeline lineno="523"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::swap(vv[i],<sp/>vv[rnd_num]);</highlight></codeline>
+<codeline lineno="524"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="525"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="526"><highlight class="normal"></highlight></codeline>
+<codeline lineno="527" refid="class_game___variables_1a16db8e4c60a57d5beecdff0deb20896e" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a16db8e4c60a57d5beecdff0deb20896e" kindref="member">Game_Variables::SetArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b)<sp/>{</highlight></codeline>
+<codeline lineno="528"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>=<sp/>var[{},{}]!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="529"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Maniac<sp/>Patch<sp/>uses<sp/>memcpy<sp/>which<sp/>is<sp/>actually<sp/>a<sp/>memmove</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="530"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>This<sp/>ensures<sp/>overlapping<sp/>areas<sp/>are<sp/>copied<sp/>properly</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="531"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(first_id_a<sp/>&lt;<sp/>first_id_b)<sp/>{</highlight></codeline>
+<codeline lineno="532"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>WriteArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/>VarSet);</highlight></codeline>
+<codeline lineno="533"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="534"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>vv<sp/>=<sp/>_variables;</highlight></codeline>
+<codeline lineno="535"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>steps<sp/>=<sp/>std::max(0,<sp/>last_id_a<sp/>-<sp/>first_id_a<sp/>+<sp/>1);</highlight></codeline>
+<codeline lineno="536"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>out_b<sp/>=<sp/>std::max(0,<sp/>first_id_b<sp/>+<sp/>steps<sp/>-<sp/>2);</highlight></codeline>
+<codeline lineno="537"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>out_a<sp/>=<sp/>std::max(0,<sp/>last_id_a<sp/>-<sp/>1);</highlight></codeline>
+<codeline lineno="538"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>steps;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="539"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>v_a<sp/>=<sp/>vv[out_a--];</highlight></codeline>
+<codeline lineno="540"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>v_b<sp/>=<sp/>vv[out_b--];</highlight></codeline>
+<codeline lineno="541"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v_a<sp/>=<sp/><ref refid="namespace_utils_1a805d2bcdaa90b0f02e1806941e8e9cd2" kindref="member">Utils::Clamp</ref>(VarSet(v_a,<sp/>v_b),<sp/>_min,<sp/>_max);</highlight></codeline>
+<codeline lineno="542"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="543"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="544"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="545"><highlight class="normal"></highlight></codeline>
+<codeline lineno="546" refid="class_game___variables_1a318abd91a37634ed4d1e6c6bee8c5512" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a318abd91a37634ed4d1e6c6bee8c5512" kindref="member">Game_Variables::AddArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b)<sp/>{</highlight></codeline>
+<codeline lineno="547"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>+=<sp/>var[{},{}]!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="548"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/>VarAdd);</highlight></codeline>
+<codeline lineno="549"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="550"><highlight class="normal"></highlight></codeline>
+<codeline lineno="551" refid="class_game___variables_1ae6928d10967d8cd596ef13ac815368bc" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1ae6928d10967d8cd596ef13ac815368bc" kindref="member">Game_Variables::SubArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b)<sp/>{</highlight></codeline>
+<codeline lineno="552"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>-=<sp/>var[{},{}]!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="553"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/>VarSub);</highlight></codeline>
+<codeline lineno="554"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="555"><highlight class="normal"></highlight></codeline>
+<codeline lineno="556" refid="class_game___variables_1a436d75867c17edc363bf1afffe0c2e8d" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a436d75867c17edc363bf1afffe0c2e8d" kindref="member">Game_Variables::MultArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b)<sp/>{</highlight></codeline>
+<codeline lineno="557"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>*=<sp/>var[{},{}]!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="558"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/>VarMult);</highlight></codeline>
+<codeline lineno="559"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="560"><highlight class="normal"></highlight></codeline>
+<codeline lineno="561" refid="class_game___variables_1a6ffa87aea2298579fa9f674bca371079" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a6ffa87aea2298579fa9f674bca371079" kindref="member">Game_Variables::DivArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b)<sp/>{</highlight></codeline>
+<codeline lineno="562"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>/=<sp/>var[{},{}]!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="563"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/>VarDiv);</highlight></codeline>
+<codeline lineno="564"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="565"><highlight class="normal"></highlight></codeline>
+<codeline lineno="566" refid="class_game___variables_1a6176115b3c3efed66fa4b89bbf695918" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a6176115b3c3efed66fa4b89bbf695918" kindref="member">Game_Variables::ModArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b)<sp/>{</highlight></codeline>
+<codeline lineno="567"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>%=<sp/>var[{},{}]!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="568"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/>VarMod);</highlight></codeline>
+<codeline lineno="569"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="570"><highlight class="normal"></highlight></codeline>
+<codeline lineno="571" refid="class_game___variables_1a390751e8d23810679507cd93326f7733" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a390751e8d23810679507cd93326f7733" kindref="member">Game_Variables::BitOrArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b)<sp/>{</highlight></codeline>
+<codeline lineno="572"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>|=<sp/>var[{},{}]!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="573"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/>VarBitOr);</highlight></codeline>
+<codeline lineno="574"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="575"><highlight class="normal"></highlight></codeline>
+<codeline lineno="576" refid="class_game___variables_1a13fbd1bb9afa7e4125ad4c6e09bf67eb" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a13fbd1bb9afa7e4125ad4c6e09bf67eb" kindref="member">Game_Variables::BitAndArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b)<sp/>{</highlight></codeline>
+<codeline lineno="577"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>&amp;=<sp/>var[{},{}]!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="578"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/>VarBitAnd);</highlight></codeline>
+<codeline lineno="579"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="580"><highlight class="normal"></highlight></codeline>
+<codeline lineno="581" refid="class_game___variables_1a59bddba20cea80d1a7c5baabf288f23d" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a59bddba20cea80d1a7c5baabf288f23d" kindref="member">Game_Variables::BitXorArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b)<sp/>{</highlight></codeline>
+<codeline lineno="582"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>^=<sp/>var[{},{}]!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="583"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/>VarBitXor);</highlight></codeline>
+<codeline lineno="584"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="585"><highlight class="normal"></highlight></codeline>
+<codeline lineno="586" refid="class_game___variables_1a426c8c1c224af0b74d7665f5eb40aac2" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a426c8c1c224af0b74d7665f5eb40aac2" kindref="member">Game_Variables::BitShiftLeftArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b)<sp/>{</highlight></codeline>
+<codeline lineno="587"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>&lt;&lt;=<sp/>var[{},{}]!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="588"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/>VarBitShiftLeft);</highlight></codeline>
+<codeline lineno="589"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="590"><highlight class="normal"></highlight></codeline>
+<codeline lineno="591" refid="class_game___variables_1a809600c99d7b84fb90b2527d09a40c38" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a809600c99d7b84fb90b2527d09a40c38" kindref="member">Game_Variables::BitShiftRightArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b)<sp/>{</highlight></codeline>
+<codeline lineno="592"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>&gt;&gt;=<sp/>var[{},{}]!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="593"><highlight class="normal"><sp/><sp/><sp/><sp/>WriteArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/>VarBitShiftRight);</highlight></codeline>
+<codeline lineno="594"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="595"><highlight class="normal"></highlight></codeline>
+<codeline lineno="596" refid="class_game___variables_1a70b42e2d7cecc40b14a3502664aa4063" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a70b42e2d7cecc40b14a3502664aa4063" kindref="member">Game_Variables::SwapArray</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>last_id_a,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first_id_b)<sp/>{</highlight></codeline>
+<codeline lineno="597"><highlight class="normal"><sp/><sp/><sp/><sp/>PrepareArray(first_id_a,<sp/>last_id_a,<sp/>first_id_b,<sp/></highlight><highlight class="stringliteral">&quot;Invalid<sp/>write<sp/>var[{},{}]<sp/>&lt;-&gt;<sp/>var[{},{}]!&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="598"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>vv<sp/>=<sp/>_variables;</highlight></codeline>
+<codeline lineno="599"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>steps<sp/>=<sp/>std::max(0,<sp/>last_id_a<sp/>-<sp/>first_id_a<sp/>+<sp/>1);</highlight></codeline>
+<codeline lineno="600"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>out_b<sp/>=<sp/>std::max(0,<sp/>first_id_b<sp/>+<sp/>steps<sp/>-<sp/>2);</highlight></codeline>
+<codeline lineno="601"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>out_a<sp/>=<sp/>std::max(0,<sp/>last_id_a<sp/>-<sp/>1);</highlight></codeline>
+<codeline lineno="602"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>steps;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="603"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::swap(vv[out_a--],<sp/>vv[out_b--]);</highlight></codeline>
+<codeline lineno="604"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="605"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="606"><highlight class="normal"></highlight></codeline>
+<codeline lineno="607" refid="class_game___variables_1aad50284b378cecb51d27d4d4a1d8a602" refkind="member"><highlight class="normal">std::string_view<sp/><ref refid="class_game___variables_1aad50284b378cecb51d27d4d4a1d8a602" kindref="member">Game_Variables::GetName</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>_id)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="608"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>var<sp/>=<sp/>lcf::ReaderUtil::GetElement(<ref refid="namespacelcf_1_1_data_1a9784541bae96e2e9b4cc84a15214ec5e" kindref="member">lcf::Data::variables</ref>,<sp/>_id);</highlight></codeline>
+<codeline lineno="609"><highlight class="normal"></highlight></codeline>
+<codeline lineno="610"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!var)<sp/>{</highlight></codeline>
+<codeline lineno="611"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>No<sp/>warning,<sp/>is<sp/>valid<sp/>because<sp/>the<sp/>variable<sp/>array<sp/>resizes<sp/>dynamic<sp/>during<sp/>runtime</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="612"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{};</highlight></codeline>
+<codeline lineno="613"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="614"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>var-&gt;name;</highlight></codeline>
+<codeline lineno="615"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="616"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="617"><highlight class="normal"></highlight></codeline>
+<codeline lineno="618" refid="class_game___variables_1a0d4db7f16c886480296008b9b4ea3305" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___variables_1a0d4db7f16c886480296008b9b4ea3305" kindref="member">Game_Variables::GetMaxDigits</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="619"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>val<sp/>=<sp/>std::max(std::llabs(_max),<sp/>std::llabs(_min));</highlight></codeline>
+<codeline lineno="620"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(std::log10(val)<sp/>+<sp/>1);</highlight></codeline>
+<codeline lineno="621"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="622"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="game_variables.cpp"/>
+  </compounddef>
+</doxygen>

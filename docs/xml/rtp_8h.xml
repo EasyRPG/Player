@@ -1,0 +1,370 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="rtp_8h" kind="file" language="C++">
+    <compoundname>rtp.h</compoundname>
+    <includes local="no">string</includes>
+    <includes local="no">vector</includes>
+    <includes local="no">lcf/enum_tags.h</includes>
+    <includes refid="filefinder_8h" local="yes">filefinder.h</includes>
+    <includedby refid="filefinder__rtp_8h" local="yes">filefinder_rtp.h</includedby>
+    <includedby refid="rtp_8cpp" local="yes">rtp.cpp</includedby>
+    <includedby refid="rtp__table_8cpp" local="yes">rtp_table.cpp</includedby>
+    <incdepgraph>
+      <node id="17">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="1">
+        <label>rtp.h</label>
+        <link refid="rtp_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>cassert</label>
+      </node>
+      <node id="15">
+        <label>cstdint</label>
+      </node>
+      <node id="28">
+        <label>cstdio</label>
+      </node>
+      <node id="26">
+        <label>ctime</label>
+      </node>
+      <node id="23">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="24">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="27">
+        <label>functional</label>
+      </node>
+      <node id="29">
+        <label>ios</label>
+      </node>
+      <node id="12">
+        <label>istream</label>
+      </node>
+      <node id="22">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="4">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="19">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="21">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="9">
+        <label>memory</label>
+      </node>
+      <node id="13">
+        <label>ostream</label>
+      </node>
+      <node id="2">
+        <label>string</label>
+      </node>
+      <node id="16">
+        <label>unordered_map</label>
+      </node>
+      <node id="3">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="3">
+        <label>filefinder.cpp</label>
+        <link refid="filefinder_8cpp"/>
+      </node>
+      <node id="4">
+        <label>filefinder_rtp.cpp</label>
+        <link refid="filefinder__rtp_8cpp"/>
+      </node>
+      <node id="2">
+        <label>filefinder_rtp.h</label>
+        <link refid="filefinder__rtp_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>main_data.cpp</label>
+        <link refid="main__data_8cpp"/>
+      </node>
+      <node id="6">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="7">
+        <label>rtp.cpp</label>
+        <link refid="rtp_8cpp"/>
+      </node>
+      <node id="1">
+        <label>rtp.h</label>
+        <link refid="rtp_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>rtp_table.cpp</label>
+        <link refid="rtp__table_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="struct_r_t_p_1_1_rtp_hit_info" prot="public">RTP::RtpHitInfo</innerclass>
+    <innernamespace refid="namespace_r_t_p">RTP</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="rtp_8h_1ae361f9bb6d8266a2e0379fa4f650e6ad" prot="public" static="no">
+        <name>EP_RTP_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.h" line="20" column="9" bodyfile="rtp.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_RTP_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="rtp_8h_1ae361f9bb6d8266a2e0379fa4f650e6ad" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_RTP_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/enum_tags.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="filefinder_8h" kindref="compound">filefinder.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="namespace_r_t_p" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_r_t_p" kindref="compound">RTP</ref><sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>adjust<sp/>these<sp/>numbers<sp/>when<sp/>a<sp/>new<sp/>RTP<sp/>is<sp/>added</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="namespace_r_t_p_1aaa1bf98e558c12d19982a1d065d610e7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_r_t_p_1aaa1bf98e558c12d19982a1d065d610e7" kindref="member">num_2k_rtps</ref><sp/>=<sp/>4;</highlight></codeline>
+<codeline lineno="34" refid="namespace_r_t_p_1a0b9eb45cd96abde77d58243834a97c2a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_r_t_p_1a0b9eb45cd96abde77d58243834a97c2a" kindref="member">num_2k3_rtps</ref><sp/>=<sp/>7;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespace_r_t_p_1aab9225024ac1d40fe3a3d4261e481f3b" kindref="member">rtp_table_2k</ref>[][<ref refid="namespace_r_t_p_1aaa1bf98e558c12d19982a1d065d610e7" kindref="member">num_2k_rtps</ref><sp/>+<sp/>1];</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespace_r_t_p_1aa1477350016612f749fd9a3d0d8383c0" kindref="member">rtp_table_2k3</ref>[][<ref refid="namespace_r_t_p_1a0b9eb45cd96abde77d58243834a97c2a" kindref="member">num_2k3_rtps</ref><sp/>+<sp/>1];</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespace_r_t_p_1a4e20b856bdb2a727a5b1112958914d90" kindref="member">rtp_table_2k_categories</ref>[15];</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespace_r_t_p_1a090b17c1e2cd7ffb58c6487e7f214625" kindref="member">rtp_table_2k3_categories</ref>[16];</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_r_t_p_1a9c68654b1eb380201a10ca6b3199b8aa" kindref="member">rtp_table_2k_categories_idx</ref>[15];</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_r_t_p_1a391856c3d719eb45aec72043e8d1c772" kindref="member">rtp_table_2k3_categories_idx</ref>[16];</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0a" kindref="member">Type</ref><sp/>{</highlight></codeline>
+<codeline lineno="44" refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aaf85433ed800839d169fd106eae634f17" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aaf85433ed800839d169fd106eae634f17" kindref="member">RPG2000_OfficialJapanese</ref>,</highlight></codeline>
+<codeline lineno="45" refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa0d1d61d807b4f88f4d7421173b4048c7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa0d1d61d807b4f88f4d7421173b4048c7" kindref="member">RPG2000_OfficialEnglish</ref>,</highlight></codeline>
+<codeline lineno="46" refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aad1616556f085fabad5ca7a4bad222128" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aad1616556f085fabad5ca7a4bad222128" kindref="member">RPG2000_DonMiguelEnglish</ref>,</highlight></codeline>
+<codeline lineno="47" refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aad3d2a9cf100b89612cb7c4ff3a3078aa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aad3d2a9cf100b89612cb7c4ff3a3078aa" kindref="member">RPG2000_DonMiguelAddon</ref>,</highlight></codeline>
+<codeline lineno="48" refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa1c6c8246425a9df9d19d4882d962a0ad" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa1c6c8246425a9df9d19d4882d962a0ad" kindref="member">RPG2003_OfficialJapanese</ref>,</highlight></codeline>
+<codeline lineno="49" refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa1f742045534f5f88ddea42cd062a253c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa1f742045534f5f88ddea42cd062a253c" kindref="member">RPG2003_OfficialEnglish</ref>,</highlight></codeline>
+<codeline lineno="50" refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa722a9d9158d99465e06fc69f5b07acab" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa722a9d9158d99465e06fc69f5b07acab" kindref="member">RPG2003_RpgAdvocateEnglish</ref>,</highlight></codeline>
+<codeline lineno="51" refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa4634a6c40c8cc9e2f0b4e7a9eaee3f31" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa4634a6c40c8cc9e2f0b4e7a9eaee3f31" kindref="member">RPG2003_VladRussian</ref>,</highlight></codeline>
+<codeline lineno="52" refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aab3c05dab7859cf11829b8e5be10abed1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aab3c05dab7859cf11829b8e5be10abed1" kindref="member">RPG2003_RpgUniverseSpanishPortuguese</ref>,</highlight></codeline>
+<codeline lineno="53" refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa0e1577000015931b32ccac863c3fcf6d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa0e1577000015931b32ccac863c3fcf6d" kindref="member">RPG2003_Korean</ref>,</highlight></codeline>
+<codeline lineno="54" refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa130780b372f23ef986f1bfddd4ca65a1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa130780b372f23ef986f1bfddd4ca65a1" kindref="member">RPG2003_OfficialTraditionalChinese</ref></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57" refid="namespace_r_t_p_1a0797cb8a6ebcf7a1d9567e4d4511a7cf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="namespace_r_t_p_1a0797cb8a6ebcf7a1d9567e4d4511a7cf" kindref="member">kTypes</ref><sp/>=<sp/>lcf::makeEnumTags&lt;Type&gt;(</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Official<sp/>Japanese&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Official<sp/>English&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Don<sp/>Miguel<sp/>English<sp/>Translation&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Don<sp/>Miguel<sp/>RTP<sp/>Addon&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Official<sp/>Japanese&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Official<sp/>English&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;RPG<sp/>Advocate<sp/>English<sp/>Translation&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Vlad<sp/>Russian<sp/>Translation&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;RPG<sp/>Universe<sp/>Spanish/Portuguese<sp/>Translation&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Korean<sp/>Translation&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Official<sp/>Traditional<sp/>Chinese&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71" refid="struct_r_t_p_1_1_rtp_hit_info" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_r_t_p_1_1_rtp_hit_info" kindref="compound">RtpHitInfo</ref><sp/>{</highlight></codeline>
+<codeline lineno="72" refid="struct_r_t_p_1_1_rtp_hit_info_1a182d1b1e9a9cca5119653877c21814dc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0a" kindref="member">RTP::Type</ref><sp/><ref refid="struct_r_t_p_1_1_rtp_hit_info_1a182d1b1e9a9cca5119653877c21814dc" kindref="member">type</ref>;</highlight></codeline>
+<codeline lineno="73" refid="struct_r_t_p_1_1_rtp_hit_info_1a5ba6576b694f4fa9f71ba9dd54e1baa8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="struct_r_t_p_1_1_rtp_hit_info_1a5ba6576b694f4fa9f71ba9dd54e1baa8" kindref="member">name</ref>;</highlight></codeline>
+<codeline lineno="74" refid="struct_r_t_p_1_1_rtp_hit_info_1ac44244a0434a4ec516eba3f3f6afd53f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_r_t_p_1_1_rtp_hit_info_1ac44244a0434a4ec516eba3f3f6afd53f" kindref="member">version</ref>;</highlight></codeline>
+<codeline lineno="75" refid="struct_r_t_p_1_1_rtp_hit_info_1a304ae8ab37c777149025792203461b4d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_r_t_p_1_1_rtp_hit_info_1a304ae8ab37c777149025792203461b4d" kindref="member">hits</ref>;</highlight></codeline>
+<codeline lineno="76" refid="struct_r_t_p_1_1_rtp_hit_info_1a66e6c8c66913419ae11b6fd1f3ca1288" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_r_t_p_1_1_rtp_hit_info_1a66e6c8c66913419ae11b6fd1f3ca1288" kindref="member">max</ref>;</highlight></codeline>
+<codeline lineno="77" refid="struct_r_t_p_1_1_rtp_hit_info_1af3b53a7c6b0e2f9933f234f1f8a98e43" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref><sp/><ref refid="struct_r_t_p_1_1_rtp_hit_info_1af3b53a7c6b0e2f9933f234f1f8a98e43" kindref="member">tree</ref>;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;RtpHitInfo&gt;<sp/><ref refid="namespace_r_t_p_1a24f8665166e3663272fafcab581d56c1" kindref="member">Detect</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref>&amp;<sp/>fs,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>version,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>miss_limit<sp/>=<sp/>10);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;RTP::Type&gt;<sp/><ref refid="namespace_r_t_p_1acee4cf136ed4259c2e64fc84b563545d" kindref="member">LookupAnyToRtp</ref>(std::string_view<sp/>src_category,<sp/>std::string_view<sp/>src_name,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>version);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="namespace_r_t_p_1a57b0857704928d8503e0ee6274195d06" kindref="member">LookupRtpToRtp</ref>(std::string_view<sp/>src_category,<sp/>std::string_view<sp/>src_name,</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0a" kindref="member">RTP::Type</ref><sp/>src_rtp,<sp/><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0a" kindref="member">RTP::Type</ref><sp/>target_rtp,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">*<sp/>is_rtp_asset<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="113"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="rtp.h"/>
+  </compounddef>
+</doxygen>

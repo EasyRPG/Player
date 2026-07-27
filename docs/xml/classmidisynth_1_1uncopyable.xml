@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classmidisynth_1_1uncopyable" kind="class" language="C++" prot="public">
+    <compoundname>midisynth::uncopyable</compoundname>
+    <derivedcompoundref refid="classmidisynth_1_1channel" prot="private" virt="non-virtual">midisynth::channel</derivedcompoundref>
+    <derivedcompoundref refid="classmidisynth_1_1note" prot="private" virt="non-virtual">midisynth::note</derivedcompoundref>
+    <derivedcompoundref refid="classmidisynth_1_1note__factory" prot="private" virt="non-virtual">midisynth::note_factory</derivedcompoundref>
+    <derivedcompoundref refid="classmidisynth_1_1synthesizer" prot="private" virt="non-virtual">midisynth::synthesizer</derivedcompoundref>
+    <includes refid="midisynth_8h" local="no">midisynth.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classmidisynth_1_1uncopyable_1abf66d1fb2edef2872a3351ea9eff93d1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>midisynth::uncopyable::uncopyable</definition>
+        <argsstring>()</argsstring>
+        <name>uncopyable</name>
+        <qualifiedname>midisynth::uncopyable::uncopyable</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="54" column="9" bodyfile="midisynth.h" bodystart="54" bodyend="54"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classmidisynth_1_1uncopyable_1a8bcdf81b92dde9837b60e7a89192393a" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>midisynth::uncopyable::uncopyable</definition>
+        <argsstring>(const uncopyable &amp;)</argsstring>
+        <name>uncopyable</name>
+        <qualifiedname>midisynth::uncopyable::uncopyable</qualifiedname>
+        <param>
+          <type>const uncopyable &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="56" column="9" bodyfile="midisynth.h" bodystart="56" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1uncopyable_1a47d6101d1c904bccf34288aeae72f117" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::uncopyable::operator=</definition>
+        <argsstring>(const uncopyable &amp;)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>midisynth::uncopyable::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="classmidisynth_1_1uncopyable_1abf66d1fb2edef2872a3351ea9eff93d1" kindref="member">uncopyable</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="57" column="14" bodyfile="midisynth.h" bodystart="57" bodyend="57"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>midisynth::channel</label>
+        <link refid="classmidisynth_1_1channel"/>
+        <childnode refid="1" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>midisynth::fm_note</label>
+        <link refid="classmidisynth_1_1fm__note"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>midisynth::fm_note_factory</label>
+        <link refid="classmidisynth_1_1fm__note__factory"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>midisynth::note</label>
+        <link refid="classmidisynth_1_1note"/>
+        <childnode refid="1" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>midisynth::note_factory</label>
+        <link refid="classmidisynth_1_1note__factory"/>
+        <childnode refid="1" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>midisynth::synthesizer</label>
+        <link refid="classmidisynth_1_1synthesizer"/>
+        <childnode refid="1" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>midisynth::uncopyable</label>
+        <link refid="classmidisynth_1_1uncopyable"/>
+      </node>
+    </inheritancegraph>
+    <location file="midisynth.h" line="52" column="5" bodyfile="midisynth.h" bodystart="52" bodyend="58"/>
+    <listofallmembers>
+      <member refid="classmidisynth_1_1uncopyable_1a47d6101d1c904bccf34288aeae72f117" prot="private" virt="non-virtual"><scope>midisynth::uncopyable</scope><name>operator=</name></member>
+      <member refid="classmidisynth_1_1uncopyable_1abf66d1fb2edef2872a3351ea9eff93d1" prot="public" virt="non-virtual"><scope>midisynth::uncopyable</scope><name>uncopyable</name></member>
+      <member refid="classmidisynth_1_1uncopyable_1a8bcdf81b92dde9837b60e7a89192393a" prot="private" virt="non-virtual"><scope>midisynth::uncopyable</scope><name>uncopyable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

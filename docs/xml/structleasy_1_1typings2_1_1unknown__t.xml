@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1typings2_1_1unknown__t" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::typings2::unknown_t</compoundname>
+    <includes refid="metatypes_8hpp" local="no">metatypes.hpp</includes>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/typings/metatypes.hpp" line="31" column="3" bodyfile="leasy/typings/metatypes.hpp" bodystart="31" bodyend="31"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

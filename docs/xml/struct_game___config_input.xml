@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___config_input" kind="struct" language="C++" prot="public">
+    <compoundname>Game_ConfigInput</compoundname>
+    <includes refid="game__config_8h" local="no">game_config.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___config_input_1ab6cb28ac523f7a95e449a6987bb665f2" prot="public" static="no" mutable="no">
+        <type><ref refid="class_range_config_param" kindref="compound">RangeConfigParam</ref>&lt; int &gt;</type>
+        <definition>RangeConfigParam&lt;int&gt; Game_ConfigInput::speed_modifier_a</definition>
+        <argsstring></argsstring>
+        <name>speed_modifier_a</name>
+        <qualifiedname>Game_ConfigInput::speed_modifier_a</qualifiedname>
+        <initializer>{ &quot;Fast Forward A: Speed&quot;, &quot;Set fast forward A speed&quot;, &quot;Input&quot;, &quot;SpeedModifierA&quot;, 3, 2, 100 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="161" column="18" bodyfile="game_config.h" bodystart="161" bodyend="161"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_input_1ae9aa7c9d2adc1fe28045ddf7aef5f630" prot="public" static="no" mutable="no">
+        <type><ref refid="class_range_config_param" kindref="compound">RangeConfigParam</ref>&lt; int &gt;</type>
+        <definition>RangeConfigParam&lt;int&gt; Game_ConfigInput::speed_modifier_b</definition>
+        <argsstring></argsstring>
+        <name>speed_modifier_b</name>
+        <qualifiedname>Game_ConfigInput::speed_modifier_b</qualifiedname>
+        <initializer>{ &quot;Fast Forward B: Speed&quot;, &quot;Set fast forward B speed&quot;, &quot;Input&quot;, &quot;SpeedModifierB&quot;, 10, 2, 100 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="162" column="18" bodyfile="game_config.h" bodystart="162" bodyend="162"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_input_1a4cf750c71cf31910ec3adedd964359ce" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigInput::gamepad_swap_analog</definition>
+        <argsstring></argsstring>
+        <name>gamepad_swap_analog</name>
+        <qualifiedname>Game_ConfigInput::gamepad_swap_analog</qualifiedname>
+        <initializer>{ &quot;Gamepad: Swap Analog Sticks&quot;, &quot;Swap <ref refid="lparser_8c_1a3584754acc5e91c03d6fc91359eefd78" kindref="member">left</ref> and <ref refid="lparser_8c_1a34b07942956eb7acd9d02c5b75177ae6" kindref="member">right</ref> stick&quot;, &quot;Input&quot;, &quot;GamepadSwapAnalog&quot;, false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="163" column="17" bodyfile="game_config.h" bodystart="163" bodyend="163"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_input_1aa963f9e797f853d2096a30432ed8db80" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigInput::gamepad_swap_dpad_with_buttons</definition>
+        <argsstring></argsstring>
+        <name>gamepad_swap_dpad_with_buttons</name>
+        <qualifiedname>Game_ConfigInput::gamepad_swap_dpad_with_buttons</qualifiedname>
+        <initializer>{ &quot;Gamepad: Swap D-Pad with buttons&quot;, &quot;Swap D-Pad with ABXY-Buttons&quot;, &quot;Input&quot;, &quot;GamepadSwapDpad&quot;, false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="164" column="17" bodyfile="game_config.h" bodystart="164" bodyend="164"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_input_1a2f8a2bed8014773f22fcfe047e08a3c5" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigInput::gamepad_swap_ab_and_xy</definition>
+        <argsstring></argsstring>
+        <name>gamepad_swap_ab_and_xy</name>
+        <qualifiedname>Game_ConfigInput::gamepad_swap_ab_and_xy</qualifiedname>
+        <initializer>{ &quot;Gamepad: Swap AB and XY&quot;, &quot;Swap A and B with X and Y&quot;, &quot;Input&quot;, &quot;GamepadSwapAbxy&quot;, false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="165" column="17" bodyfile="game_config.h" bodystart="165" bodyend="165"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_input_1ac3db689eaad1b83e8075f10576a60ecc" prot="public" static="no" mutable="no">
+        <type><ref refid="namespace_input_1a6c58920837b877254184fff33f735e9f" kindref="member">Input::ButtonMappingArray</ref></type>
+        <definition>Input::ButtonMappingArray Game_ConfigInput::buttons</definition>
+        <argsstring></argsstring>
+        <name>buttons</name>
+        <qualifiedname>Game_ConfigInput::buttons</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="166" column="27" bodyfile="game_config.h" bodystart="166" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_game___config_input_1aa9fdebd8abf0e82f172b629f3a8948e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_ConfigInput::Hide</definition>
+        <argsstring>()</argsstring>
+        <name>Hide</name>
+        <qualifiedname>Game_ConfigInput::Hide</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="168" column="6" bodyfile="game_config.cpp" bodystart="94" bodyend="100"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="4">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="3">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="6">
+        <label>FlatUniqueMultiMap&lt; InputButton, Keys::InputKey &gt;</label>
+        <link refid="class_flat_unique_multi_map"/>
+      </node>
+      <node id="1">
+        <label>Game_ConfigInput</label>
+        <link refid="struct_game___config_input"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>speed_modifier_a</edgelabel>
+          <edgelabel>speed_modifier_b</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>gamepad_swap_ab_and_xy</edgelabel>
+          <edgelabel>gamepad_swap_analog</edgelabel>
+          <edgelabel>gamepad_swap_dpad_with_buttons</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>buttons</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="game_config.h" line="160" column="1" bodyfile="game_config.h" bodystart="160" bodyend="169"/>
+    <listofallmembers>
+      <member refid="struct_game___config_input_1ac3db689eaad1b83e8075f10576a60ecc" prot="public" virt="non-virtual"><scope>Game_ConfigInput</scope><name>buttons</name></member>
+      <member refid="struct_game___config_input_1a2f8a2bed8014773f22fcfe047e08a3c5" prot="public" virt="non-virtual"><scope>Game_ConfigInput</scope><name>gamepad_swap_ab_and_xy</name></member>
+      <member refid="struct_game___config_input_1a4cf750c71cf31910ec3adedd964359ce" prot="public" virt="non-virtual"><scope>Game_ConfigInput</scope><name>gamepad_swap_analog</name></member>
+      <member refid="struct_game___config_input_1aa963f9e797f853d2096a30432ed8db80" prot="public" virt="non-virtual"><scope>Game_ConfigInput</scope><name>gamepad_swap_dpad_with_buttons</name></member>
+      <member refid="struct_game___config_input_1aa9fdebd8abf0e82f172b629f3a8948e1" prot="public" virt="non-virtual"><scope>Game_ConfigInput</scope><name>Hide</name></member>
+      <member refid="struct_game___config_input_1ab6cb28ac523f7a95e449a6987bb665f2" prot="public" virt="non-virtual"><scope>Game_ConfigInput</scope><name>speed_modifier_a</name></member>
+      <member refid="struct_game___config_input_1ae9aa7c9d2adc1fe28045ddf7aef5f630" prot="public" virt="non-virtual"><scope>Game_ConfigInput</scope><name>speed_modifier_b</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

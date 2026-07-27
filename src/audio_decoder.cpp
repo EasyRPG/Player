@@ -217,3 +217,4 @@ int AudioDecoder::GetSamplesizeForFormat(AudioDecoderBase::Format format) {
 	assert(false && "Bad format");
 	return -1;
 }
+

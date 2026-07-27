@@ -1,0 +1,1420 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_tilemap_layer" kind="class" language="C++" prot="public">
+    <compoundname>TilemapLayer</compoundname>
+    <includes refid="tilemap__layer_8h" local="no">tilemap_layer.h</includes>
+    <innerclass refid="struct_tilemap_layer_1_1_tile_x_y" prot="private">TilemapLayer::TileXY</innerclass>
+    <innerclass refid="struct_tilemap_layer_1_1_tile_data" prot="private">TilemapLayer::TileData</innerclass>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_tilemap_layer_1a2df612465d90ea36569dbcb27eae0a4b" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t TilemapLayer::TileBelow</definition>
+        <argsstring></argsstring>
+        <name>TileBelow</name>
+        <qualifiedname>TilemapLayer::TileBelow</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="59" column="26" bodyfile="tilemap_layer.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1a77568993ce6d48f95c92da08dd9c36b7" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t TilemapLayer::TileAbove</definition>
+        <argsstring></argsstring>
+        <name>TileAbove</name>
+        <qualifiedname>TilemapLayer::TileAbove</qualifiedname>
+        <initializer>= 100</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="60" column="26" bodyfile="tilemap_layer.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_tilemap_layer_1a3ca5637b8a6bc32389eeae7fb72ed7cb" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef TilemapLayer::chipset</definition>
+        <argsstring></argsstring>
+        <name>chipset</name>
+        <qualifiedname>TilemapLayer::chipset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="104" column="11" bodyfile="tilemap_layer.h" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1aaded825294b333d06b33a5978d1de260" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef TilemapLayer::chipset_effect</definition>
+        <argsstring></argsstring>
+        <name>chipset_effect</name>
+        <qualifiedname>TilemapLayer::chipset_effect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="105" column="11" bodyfile="tilemap_layer.h" bodystart="105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1ac35cea5ae461a8e79a9cdec07a80471d" prot="private" static="no" mutable="no">
+        <type>std::unordered_set&lt; uint32_t &gt;</type>
+        <definition>std::unordered_set&lt;uint32_t&gt; TilemapLayer::chipset_tone_tiles</definition>
+        <argsstring></argsstring>
+        <name>chipset_tone_tiles</name>
+        <qualifiedname>TilemapLayer::chipset_tone_tiles</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="106" column="20" bodyfile="tilemap_layer.h" bodystart="106" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1a837e2921dddc78379e4bdf9437eefae6" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; short &gt;</type>
+        <definition>std::vector&lt;short&gt; TilemapLayer::map_data</definition>
+        <argsstring></argsstring>
+        <name>map_data</name>
+        <qualifiedname>TilemapLayer::map_data</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="107" column="13" bodyfile="tilemap_layer.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1aea6f410bb8a43b03094f852636cda8a1" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; uint8_t &gt;</type>
+        <definition>std::vector&lt;uint8_t&gt; TilemapLayer::passable</definition>
+        <argsstring></argsstring>
+        <name>passable</name>
+        <qualifiedname>TilemapLayer::passable</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="108" column="13" bodyfile="tilemap_layer.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1ab52c0b842db87cde38cc11bfbe5b839c" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; uint8_t &gt;</type>
+        <definition>std::vector&lt;uint8_t&gt; TilemapLayer::substitutions</definition>
+        <argsstring></argsstring>
+        <name>substitutions</name>
+        <qualifiedname>TilemapLayer::substitutions</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="109" column="13" bodyfile="tilemap_layer.h" bodystart="109" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1adc18febf053289b35eba4f39131302fa" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int TilemapLayer::ox</definition>
+        <argsstring></argsstring>
+        <name>ox</name>
+        <qualifiedname>TilemapLayer::ox</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="110" column="5" bodyfile="tilemap_layer.h" bodystart="110" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1ae187da56640b710215ef0fd3ae2fa1b7" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int TilemapLayer::oy</definition>
+        <argsstring></argsstring>
+        <name>oy</name>
+        <qualifiedname>TilemapLayer::oy</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="111" column="5" bodyfile="tilemap_layer.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1af6000dfe9d7bf54c97f55a320d0d3cec" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int TilemapLayer::width</definition>
+        <argsstring></argsstring>
+        <name>width</name>
+        <qualifiedname>TilemapLayer::width</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="112" column="5" bodyfile="tilemap_layer.h" bodystart="112" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1a03ea56e8526ca665b4cf25099ad46b63" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int TilemapLayer::height</definition>
+        <argsstring></argsstring>
+        <name>height</name>
+        <qualifiedname>TilemapLayer::height</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="113" column="5" bodyfile="tilemap_layer.h" bodystart="113" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1a9248d156999d97cf50fd312561b12cfd" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int TilemapLayer::animation_speed</definition>
+        <argsstring></argsstring>
+        <name>animation_speed</name>
+        <qualifiedname>TilemapLayer::animation_speed</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="114" column="5" bodyfile="tilemap_layer.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1ae06467a3b1bd04e68dc097e73bf1283f" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int TilemapLayer::animation_type</definition>
+        <argsstring></argsstring>
+        <name>animation_type</name>
+        <qualifiedname>TilemapLayer::animation_type</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="115" column="5" bodyfile="tilemap_layer.h" bodystart="115" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1ae40c46344f4658cc57d931ee89062efc" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int TilemapLayer::layer</definition>
+        <argsstring></argsstring>
+        <name>layer</name>
+        <qualifiedname>TilemapLayer::layer</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="116" column="5" bodyfile="tilemap_layer.h" bodystart="116" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1a1e5e3d2af943765c4b94a32af40f88bf" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool TilemapLayer::fast_blit</definition>
+        <argsstring></argsstring>
+        <name>fast_blit</name>
+        <qualifiedname>TilemapLayer::fast_blit</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="117" column="6" bodyfile="tilemap_layer.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1a57a2d09a5af628fb4408298d4d779261" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef TilemapLayer::autotiles_ab_screen</definition>
+        <argsstring></argsstring>
+        <name>autotiles_ab_screen</name>
+        <qualifiedname>TilemapLayer::autotiles_ab_screen</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="142" column="11" bodyfile="tilemap_layer.h" bodystart="142" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1a01778be15eda2e39b48d4df3839837e4" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef TilemapLayer::autotiles_ab_screen_effect</definition>
+        <argsstring></argsstring>
+        <name>autotiles_ab_screen_effect</name>
+        <qualifiedname>TilemapLayer::autotiles_ab_screen_effect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="143" column="11" bodyfile="tilemap_layer.h" bodystart="143" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1a33245ca9a8592c72881c80596c3cd369" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef TilemapLayer::autotiles_d_screen</definition>
+        <argsstring></argsstring>
+        <name>autotiles_d_screen</name>
+        <qualifiedname>TilemapLayer::autotiles_d_screen</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="144" column="11" bodyfile="tilemap_layer.h" bodystart="144" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1ab1d99d33bc1db0a51ed78df7a43df2b4" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef TilemapLayer::autotiles_d_screen_effect</definition>
+        <argsstring></argsstring>
+        <name>autotiles_d_screen_effect</name>
+        <qualifiedname>TilemapLayer::autotiles_d_screen_effect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="145" column="11" bodyfile="tilemap_layer.h" bodystart="145" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1ac4eff1d65df44fb4b6f40b5295701cee" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int TilemapLayer::autotiles_ab_next</definition>
+        <argsstring></argsstring>
+        <name>autotiles_ab_next</name>
+        <qualifiedname>TilemapLayer::autotiles_ab_next</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="147" column="5" bodyfile="tilemap_layer.h" bodystart="147" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1a9fb7c1f0e58f33c4c88805e10b3ff10a" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int TilemapLayer::autotiles_d_next</definition>
+        <argsstring></argsstring>
+        <name>autotiles_d_next</name>
+        <qualifiedname>TilemapLayer::autotiles_d_next</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="148" column="5" bodyfile="tilemap_layer.h" bodystart="148" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1a8c5df08d7d75324b6cc88795064faac6" prot="private" static="no" mutable="no">
+        <type>TileXY</type>
+        <definition>TileXY TilemapLayer::autotiles_ab[3][3][16][47]</definition>
+        <argsstring>[3][3][16][47]</argsstring>
+        <name>autotiles_ab</name>
+        <qualifiedname>TilemapLayer::autotiles_ab</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="150" column="8" bodyfile="tilemap_layer.h" bodystart="150" bodyend="150"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1ac1b42384cd0600b05e566042d94eb4fa" prot="private" static="no" mutable="no">
+        <type>TileXY</type>
+        <definition>TileXY TilemapLayer::autotiles_d[12][50]</definition>
+        <argsstring>[12][50]</argsstring>
+        <name>autotiles_d</name>
+        <qualifiedname>TilemapLayer::autotiles_d</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="151" column="8" bodyfile="tilemap_layer.h" bodystart="151" bodyend="151"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1abdce228084e07f7f387aac9b65e8ff24" prot="private" static="no" mutable="no">
+        <type>std::unordered_map&lt; uint32_t, TileXY &gt;</type>
+        <definition>std::unordered_map&lt;uint32_t, TileXY&gt; TilemapLayer::autotiles_ab_map</definition>
+        <argsstring></argsstring>
+        <name>autotiles_ab_map</name>
+        <qualifiedname>TilemapLayer::autotiles_ab_map</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="153" column="20" bodyfile="tilemap_layer.h" bodystart="153" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1a7522e53797e6df5458349638a8cae8df" prot="private" static="no" mutable="no">
+        <type>std::unordered_map&lt; uint32_t, TileXY &gt;</type>
+        <definition>std::unordered_map&lt;uint32_t, TileXY&gt; TilemapLayer::autotiles_d_map</definition>
+        <argsstring></argsstring>
+        <name>autotiles_d_map</name>
+        <qualifiedname>TilemapLayer::autotiles_d_map</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="154" column="20" bodyfile="tilemap_layer.h" bodystart="154" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1a243667ddfb4fb0d04198ab59179cbbed" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; TileData &gt;</type>
+        <definition>std::vector&lt;TileData&gt; TilemapLayer::data_cache_vec</definition>
+        <argsstring></argsstring>
+        <name>data_cache_vec</name>
+        <qualifiedname>TilemapLayer::data_cache_vec</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="163" column="13" bodyfile="tilemap_layer.h" bodystart="163" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1a3936e17d847e6f322ecb078b2fc102a2" prot="private" static="no" mutable="no">
+        <type><ref refid="class_tilemap_sub_layer" kindref="compound">TilemapSubLayer</ref></type>
+        <definition>TilemapSubLayer TilemapLayer::lower_layer</definition>
+        <argsstring></argsstring>
+        <name>lower_layer</name>
+        <qualifiedname>TilemapLayer::lower_layer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="165" column="17" bodyfile="tilemap_layer.h" bodystart="165" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1a6603795463f1a0c918813d939ac9d1cd" prot="private" static="no" mutable="no">
+        <type><ref refid="class_tilemap_sub_layer" kindref="compound">TilemapSubLayer</ref></type>
+        <definition>TilemapSubLayer TilemapLayer::upper_layer</definition>
+        <argsstring></argsstring>
+        <name>upper_layer</name>
+        <qualifiedname>TilemapLayer::upper_layer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="166" column="17" bodyfile="tilemap_layer.h" bodystart="166" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_tilemap_layer_1aa8515633bb4c1c1d84d1a676d8b214da" prot="private" static="no" mutable="no">
+        <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+        <definition>Tone TilemapLayer::tone</definition>
+        <argsstring></argsstring>
+        <name>tone</name>
+        <qualifiedname>TilemapLayer::tone</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="168" column="6" bodyfile="tilemap_layer.h" bodystart="168" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="class_tilemap_layer_1abf5d36f8bae178ddd88611e7ad3342de" prot="private" static="yes" mutable="no">
+        <type>const int</type>
+        <definition>const int TilemapLayer::TILES_PER_ROW</definition>
+        <argsstring></argsstring>
+        <name>TILES_PER_ROW</name>
+        <qualifiedname>TilemapLayer::TILES_PER_ROW</qualifiedname>
+        <initializer>= 64</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="128" column="18" bodyfile="tilemap_layer.h" bodystart="128" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_tilemap_layer_1a6ee75de4e02dd5579e19e0b415e08aa3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>TilemapLayer::TilemapLayer</definition>
+        <argsstring>(int ilayer)</argsstring>
+        <name>TilemapLayer</name>
+        <qualifiedname>TilemapLayer::TilemapLayer</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>ilayer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="62" column="1" bodyfile="tilemap_layer.cpp" bodystart="196" bodyend="206"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1aeac9da60e4f9e89aa36cc5797dcef24c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::Draw</definition>
+        <argsstring>(Bitmap &amp;dst, uint8_t z_order, int render_ox, int render_oy)</argsstring>
+        <name>Draw</name>
+        <qualifiedname>TilemapLayer::Draw</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>z_order</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>render_ox</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>render_oy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="64" column="6" bodyfile="tilemap_layer.cpp" bodystart="261" bodyend="413"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a56b5228ebc38bb734132f8016dc567f7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref> const &amp;</type>
+        <definition>BitmapRef const  &amp; TilemapLayer::GetChipset</definition>
+        <argsstring>() const</argsstring>
+        <name>GetChipset</name>
+        <qualifiedname>TilemapLayer::GetChipset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="66" column="17" bodyfile="tilemap_layer.h" bodystart="173" bodyend="175"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a74d887cfcabfff8ed0a625b091864806" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::SetChipset</definition>
+        <argsstring>(BitmapRef const &amp;nchipset)</argsstring>
+        <name>SetChipset</name>
+        <qualifiedname>TilemapLayer::SetChipset</qualifiedname>
+        <param>
+          <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref> const &amp;</type>
+          <declname>nchipset</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="67" column="6" bodyfile="tilemap_layer.cpp" bodystart="672" bodyend="684"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a380dc4e3836319ec9df63abb9b3501d5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::vector&lt; short &gt; &amp;</type>
+        <definition>const std::vector&lt; short &gt; &amp; TilemapLayer::GetMapData</definition>
+        <argsstring>() const</argsstring>
+        <name>GetMapData</name>
+        <qualifiedname>TilemapLayer::GetMapData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="68" column="19" bodyfile="tilemap_layer.h" bodystart="177" bodyend="179"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a91c4758f6091659b4f9e07b9ec2494b9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::SetMapData</definition>
+        <argsstring>(std::vector&lt; short &gt; nmap_data)</argsstring>
+        <name>SetMapData</name>
+        <qualifiedname>TilemapLayer::SetMapData</qualifiedname>
+        <param>
+          <type>std::vector&lt; short &gt;</type>
+          <declname>nmap_data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="69" column="6" bodyfile="tilemap_layer.cpp" bodystart="686" bodyend="723"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a27d43f638218260f4c6e35bbbdfe30fe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::SetMapTileDataAt</definition>
+        <argsstring>(int x, int y, int tile_id, bool disable_autotile)</argsstring>
+        <name>SetMapTileDataAt</name>
+        <qualifiedname>TilemapLayer::SetMapTileDataAt</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>tile_id</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>disable_autotile</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="70" column="6" bodyfile="tilemap_layer.cpp" bodystart="737" bodyend="768"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1aafd546fbce209bef2ce02e7933e36202" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::vector&lt; unsigned char &gt; &amp;</type>
+        <definition>const std::vector&lt; unsigned char &gt; &amp; TilemapLayer::GetPassable</definition>
+        <argsstring>() const</argsstring>
+        <name>GetPassable</name>
+        <qualifiedname>TilemapLayer::GetPassable</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="71" column="19" bodyfile="tilemap_layer.h" bodystart="181" bodyend="183"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a01dde5b5974f9f73f95fed19a889e283" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::SetPassable</definition>
+        <argsstring>(std::vector&lt; unsigned char &gt; npassable)</argsstring>
+        <name>SetPassable</name>
+        <qualifiedname>TilemapLayer::SetPassable</qualifiedname>
+        <param>
+          <type>std::vector&lt; unsigned char &gt;</type>
+          <declname>npassable</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="72" column="6" bodyfile="tilemap_layer.cpp" bodystart="860" bodyend="865"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1abfa4f7ae717fa41fdc58e08f1bc94314" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool TilemapLayer::IsVisible</definition>
+        <argsstring>() const</argsstring>
+        <name>IsVisible</name>
+        <qualifiedname>TilemapLayer::IsVisible</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="73" column="6" bodyfile="tilemap_layer.h" bodystart="185" bodyend="188"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a77f1643844ab7d0cc7bd378deee105e2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::SetVisible</definition>
+        <argsstring>(bool nvisible)</argsstring>
+        <name>SetVisible</name>
+        <qualifiedname>TilemapLayer::SetVisible</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>nvisible</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="74" column="6" bodyfile="tilemap_layer.h" bodystart="190" bodyend="193"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a2386fe505c406cc3debcbb0394eeb11e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int TilemapLayer::GetOx</definition>
+        <argsstring>() const</argsstring>
+        <name>GetOx</name>
+        <qualifiedname>TilemapLayer::GetOx</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="75" column="5" bodyfile="tilemap_layer.h" bodystart="195" bodyend="197"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a597c78a773a61a9d6338216a0ecaaea5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::SetOx</definition>
+        <argsstring>(int nox)</argsstring>
+        <name>SetOx</name>
+        <qualifiedname>TilemapLayer::SetOx</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>nox</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="76" column="6" bodyfile="tilemap_layer.h" bodystart="199" bodyend="201"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a1b61e3179133c357ac3586b40d1f949a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int TilemapLayer::GetOy</definition>
+        <argsstring>() const</argsstring>
+        <name>GetOy</name>
+        <qualifiedname>TilemapLayer::GetOy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="77" column="5" bodyfile="tilemap_layer.h" bodystart="203" bodyend="205"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1ad4bbebcb37e1853328303444575e1107" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::SetOy</definition>
+        <argsstring>(int noy)</argsstring>
+        <name>SetOy</name>
+        <qualifiedname>TilemapLayer::SetOy</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>noy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="78" column="6" bodyfile="tilemap_layer.h" bodystart="207" bodyend="209"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1af1dce80c3dee28299e8fd8001a5a108e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int TilemapLayer::GetRenderOx</definition>
+        <argsstring>() const</argsstring>
+        <name>GetRenderOx</name>
+        <qualifiedname>TilemapLayer::GetRenderOx</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="79" column="5" bodyfile="tilemap_layer.h" bodystart="211" bodyend="213"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1ae389428982d612f87b4c274031f754c9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::SetRenderOx</definition>
+        <argsstring>(int offset_x)</argsstring>
+        <name>SetRenderOx</name>
+        <qualifiedname>TilemapLayer::SetRenderOx</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>offset_x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="80" column="6" bodyfile="tilemap_layer.h" bodystart="215" bodyend="218"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a440608aa0303f58e5061e9a4d77d5862" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int TilemapLayer::GetRenderOy</definition>
+        <argsstring>() const</argsstring>
+        <name>GetRenderOy</name>
+        <qualifiedname>TilemapLayer::GetRenderOy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="81" column="5" bodyfile="tilemap_layer.h" bodystart="220" bodyend="222"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a11d39d25216e4fa89ff61502121721d5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::SetRenderOy</definition>
+        <argsstring>(int offset_y)</argsstring>
+        <name>SetRenderOy</name>
+        <qualifiedname>TilemapLayer::SetRenderOy</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>offset_y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="82" column="6" bodyfile="tilemap_layer.h" bodystart="224" bodyend="227"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a55e6cbaf460626ded3ff80a2caae527e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int TilemapLayer::GetWidth</definition>
+        <argsstring>() const</argsstring>
+        <name>GetWidth</name>
+        <qualifiedname>TilemapLayer::GetWidth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="83" column="5" bodyfile="tilemap_layer.h" bodystart="229" bodyend="231"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a9acdcaba6d7f432066ed214a8dc68763" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::SetWidth</definition>
+        <argsstring>(int nwidth)</argsstring>
+        <name>SetWidth</name>
+        <qualifiedname>TilemapLayer::SetWidth</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>nwidth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="84" column="6" bodyfile="tilemap_layer.h" bodystart="233" bodyend="235"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a0a4bee9a665235e44784e089f69169d7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int TilemapLayer::GetHeight</definition>
+        <argsstring>() const</argsstring>
+        <name>GetHeight</name>
+        <qualifiedname>TilemapLayer::GetHeight</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="85" column="5" bodyfile="tilemap_layer.h" bodystart="237" bodyend="239"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a24df34dfcb590e0fe6e3bcbbf5c6fe30" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::SetHeight</definition>
+        <argsstring>(int nheight)</argsstring>
+        <name>SetHeight</name>
+        <qualifiedname>TilemapLayer::SetHeight</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>nheight</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="86" column="6" bodyfile="tilemap_layer.h" bodystart="241" bodyend="243"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1abceda5bf124fb96d7c292312ff370714" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int TilemapLayer::GetAnimationSpeed</definition>
+        <argsstring>() const</argsstring>
+        <name>GetAnimationSpeed</name>
+        <qualifiedname>TilemapLayer::GetAnimationSpeed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="87" column="5" bodyfile="tilemap_layer.h" bodystart="245" bodyend="247"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a50c8f162c0efc034ffd7fbdc5470ab6c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::SetAnimationSpeed</definition>
+        <argsstring>(int speed)</argsstring>
+        <name>SetAnimationSpeed</name>
+        <qualifiedname>TilemapLayer::SetAnimationSpeed</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>speed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="88" column="6" bodyfile="tilemap_layer.h" bodystart="249" bodyend="251"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1ae93c3e289ad7837d21b2a7a5926d6a05" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int TilemapLayer::GetAnimationType</definition>
+        <argsstring>() const</argsstring>
+        <name>GetAnimationType</name>
+        <qualifiedname>TilemapLayer::GetAnimationType</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="89" column="5" bodyfile="tilemap_layer.h" bodystart="253" bodyend="255"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1aa175d68065b18f06c7d30b00d4308dc1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::SetAnimationType</definition>
+        <argsstring>(int type)</argsstring>
+        <name>SetAnimationType</name>
+        <qualifiedname>TilemapLayer::SetAnimationType</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="90" column="6" bodyfile="tilemap_layer.h" bodystart="257" bodyend="259"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a5797b5dcd8dc67bd61bee3dfc67edc05" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::OnSubstitute</definition>
+        <argsstring>()</argsstring>
+        <name>OnSubstitute</name>
+        <qualifiedname>TilemapLayer::OnSubstitute</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="91" column="6" bodyfile="tilemap_layer.cpp" bodystart="867" bodyend="872"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1ac06d25782748e32baf5ab6bfdb9717b7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::SetFastBlit</definition>
+        <argsstring>(bool fast)</argsstring>
+        <name>SetFastBlit</name>
+        <qualifiedname>TilemapLayer::SetFastBlit</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>fast</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Influences how tiles of the tilemap are blitted. When enabled the opacity information of the tile is ignored and a opaque tile is assumed (Faster).</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fast</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>true: enable fast blit (ignores alpha) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="99" column="6" bodyfile="tilemap_layer.h" bodystart="261" bodyend="263"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a5dd521ed330bc1940c014657fd9622f2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::SetTone</definition>
+        <argsstring>(Tone tone)</argsstring>
+        <name>SetTone</name>
+        <qualifiedname>TilemapLayer::SetTone</qualifiedname>
+        <param>
+          <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+          <declname>tone</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="101" column="6" bodyfile="tilemap_layer.cpp" bodystart="890" bodyend="907"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_tilemap_layer_1a12daf6e21981222e440e0db5930f5246" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::CreateTileCache</definition>
+        <argsstring>(const std::vector&lt; short &gt; &amp;nmap_data)</argsstring>
+        <name>CreateTileCache</name>
+        <qualifiedname>TilemapLayer::CreateTileCache</qualifiedname>
+        <param>
+          <type>const std::vector&lt; short &gt; &amp;</type>
+          <declname>nmap_data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="119" column="6" bodyfile="tilemap_layer.cpp" bodystart="428" bodyend="436"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a151582af073518bc23a7d714f39c14ac" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::CreateTileCacheAt</definition>
+        <argsstring>(int x, int y, int tile_id)</argsstring>
+        <name>CreateTileCacheAt</name>
+        <qualifiedname>TilemapLayer::CreateTileCacheAt</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>tile_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="120" column="6" bodyfile="tilemap_layer.cpp" bodystart="438" bodyend="465"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a20cbd0f40780813c7d8f45ad13e7bcd2" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::RecreateTileDataAt</definition>
+        <argsstring>(int x, int y, int tile_id)</argsstring>
+        <name>RecreateTileDataAt</name>
+        <qualifiedname>TilemapLayer::RecreateTileDataAt</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>tile_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="121" column="6" bodyfile="tilemap_layer.cpp" bodystart="467" bodyend="471"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1aa34fe5ba70778df8db6adfcbbf62a58c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::GenerateAutotileAB</definition>
+        <argsstring>(short ID, short animID)</argsstring>
+        <name>GenerateAutotileAB</name>
+        <qualifiedname>TilemapLayer::GenerateAutotileAB</qualifiedname>
+        <param>
+          <type>short</type>
+          <declname>ID</declname>
+        </param>
+        <param>
+          <type>short</type>
+          <declname>animID</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="122" column="6" bodyfile="tilemap_layer.cpp" bodystart="473" bodyend="569"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a3f29d4d2a0af7d8457560f2370f6bd3d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::GenerateAutotileD</definition>
+        <argsstring>(short ID)</argsstring>
+        <name>GenerateAutotileD</name>
+        <qualifiedname>TilemapLayer::GenerateAutotileD</qualifiedname>
+        <param>
+          <type>short</type>
+          <declname>ID</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="123" column="6" bodyfile="tilemap_layer.cpp" bodystart="571" bodyend="632"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a1dc34ae4b9062732a2e24dca21f85922" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>EP_ALWAYS_INLINE void TilemapLayer::DrawTile</definition>
+        <argsstring>(Bitmap &amp;dst, Bitmap &amp;tile, Bitmap &amp;tone_tile, int x, int y, int row, int col, uint32_t tone_hash, bool allow_fast_blit=true)</argsstring>
+        <name>DrawTile</name>
+        <qualifiedname>TilemapLayer::DrawTile</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>tile</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>tone_tile</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>row</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>col</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>tone_hash</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>allow_fast_blit</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="124" column="6" bodyfile="tilemap_layer.cpp" bodystart="212" bodyend="217"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a318d2670a19fb22c7d3d7bb43ddce277" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::DrawTileImpl</definition>
+        <argsstring>(Bitmap &amp;dst, Bitmap &amp;tile, Bitmap &amp;tone_tile, int x, int y, int row, int col, uint32_t tone_hash, ImageOpacity op, bool allow_fast_blit)</argsstring>
+        <name>DrawTileImpl</name>
+        <qualifiedname>TilemapLayer::DrawTileImpl</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>tile</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>tone_tile</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>row</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>col</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>tone_hash</declname>
+        </param>
+        <param>
+          <type><ref refid="opacity_8h_1ae32dbd7fc9d6e0307c162debc4857907" kindref="member">ImageOpacity</ref></type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>allow_fast_blit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="125" column="6" bodyfile="tilemap_layer.cpp" bodystart="219" bodyend="239"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1acf91431fd74b736011e1fda1c8a98afe" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TilemapLayer::RecalculateAutotile</definition>
+        <argsstring>(int x, int y, int tile_id)</argsstring>
+        <name>RecalculateAutotile</name>
+        <qualifiedname>TilemapLayer::RecalculateAutotile</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>tile_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="126" column="6" bodyfile="tilemap_layer.cpp" bodystart="821" bodyend="859"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1ab31a5a58d784a1027867e220bcc3cff8" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef TilemapLayer::GenerateAutotiles</definition>
+        <argsstring>(int count, const std::unordered_map&lt; uint32_t, TileXY &gt; &amp;map)</argsstring>
+        <name>GenerateAutotiles</name>
+        <qualifiedname>TilemapLayer::GenerateAutotiles</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>count</declname>
+        </param>
+        <param>
+          <type>const std::unordered_map&lt; uint32_t, TileXY &gt; &amp;</type>
+          <declname>map</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="138" column="11" bodyfile="tilemap_layer.cpp" bodystart="634" bodyend="670"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1aeee00bbf36da8be79ff2c2c74fb17a9b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>TileXY</type>
+        <definition>TilemapLayer::TileXY TilemapLayer::GetCachedAutotileAB</definition>
+        <argsstring>(short ID, short animID)</argsstring>
+        <name>GetCachedAutotileAB</name>
+        <qualifiedname>TilemapLayer::GetCachedAutotileAB</qualifiedname>
+        <param>
+          <type>short</type>
+          <declname>ID</declname>
+        </param>
+        <param>
+          <type>short</type>
+          <declname>animID</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="140" column="8" bodyfile="tilemap_layer.cpp" bodystart="415" bodyend="420"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1abce6037bd4cf754633d44bb14d022dee" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>TileXY</type>
+        <definition>TilemapLayer::TileXY TilemapLayer::GetCachedAutotileD</definition>
+        <argsstring>(short ID)</argsstring>
+        <name>GetCachedAutotileD</name>
+        <qualifiedname>TilemapLayer::GetCachedAutotileD</qualifiedname>
+        <param>
+          <type>short</type>
+          <declname>ID</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="141" column="8" bodyfile="tilemap_layer.cpp" bodystart="422" bodyend="426"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a2474a68a6e148679228125d28957a9eb" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>TileData &amp;</type>
+        <definition>TilemapLayer::TileData &amp; TilemapLayer::GetDataCache</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>GetDataCache</name>
+        <qualifiedname>TilemapLayer::GetDataCache</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="161" column="10" bodyfile="tilemap_layer.h" bodystart="265" bodyend="267"/>
+      </memberdef>
+      <memberdef kind="function" id="class_tilemap_layer_1a7e6279ca644fa06bf90bb3ac517e8670" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool TilemapLayer::IsInMapBounds</definition>
+        <argsstring>(int x, int y) const</argsstring>
+        <name>IsInMapBounds</name>
+        <qualifiedname>TilemapLayer::IsInMapBounds</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="170" column="6" bodyfile="tilemap_layer.h" bodystart="269" bodyend="271"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_tilemap_layer" kindref="compound">TilemapLayer</ref> class. </para>
+    </detaileddescription>
+    <location file="tilemap_layer.h" line="55" column="1" bodyfile="tilemap_layer.h" bodystart="55" bodyend="171"/>
+    <listofallmembers>
+      <member refid="class_tilemap_layer_1a9248d156999d97cf50fd312561b12cfd" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>animation_speed</name></member>
+      <member refid="class_tilemap_layer_1ae06467a3b1bd04e68dc097e73bf1283f" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>animation_type</name></member>
+      <member refid="class_tilemap_layer_1a8c5df08d7d75324b6cc88795064faac6" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>autotiles_ab</name></member>
+      <member refid="class_tilemap_layer_1abdce228084e07f7f387aac9b65e8ff24" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>autotiles_ab_map</name></member>
+      <member refid="class_tilemap_layer_1ac4eff1d65df44fb4b6f40b5295701cee" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>autotiles_ab_next</name></member>
+      <member refid="class_tilemap_layer_1a57a2d09a5af628fb4408298d4d779261" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>autotiles_ab_screen</name></member>
+      <member refid="class_tilemap_layer_1a01778be15eda2e39b48d4df3839837e4" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>autotiles_ab_screen_effect</name></member>
+      <member refid="class_tilemap_layer_1ac1b42384cd0600b05e566042d94eb4fa" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>autotiles_d</name></member>
+      <member refid="class_tilemap_layer_1a7522e53797e6df5458349638a8cae8df" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>autotiles_d_map</name></member>
+      <member refid="class_tilemap_layer_1a9fb7c1f0e58f33c4c88805e10b3ff10a" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>autotiles_d_next</name></member>
+      <member refid="class_tilemap_layer_1a33245ca9a8592c72881c80596c3cd369" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>autotiles_d_screen</name></member>
+      <member refid="class_tilemap_layer_1ab1d99d33bc1db0a51ed78df7a43df2b4" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>autotiles_d_screen_effect</name></member>
+      <member refid="class_tilemap_layer_1a3ca5637b8a6bc32389eeae7fb72ed7cb" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>chipset</name></member>
+      <member refid="class_tilemap_layer_1aaded825294b333d06b33a5978d1de260" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>chipset_effect</name></member>
+      <member refid="class_tilemap_layer_1ac35cea5ae461a8e79a9cdec07a80471d" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>chipset_tone_tiles</name></member>
+      <member refid="class_tilemap_layer_1a12daf6e21981222e440e0db5930f5246" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>CreateTileCache</name></member>
+      <member refid="class_tilemap_layer_1a151582af073518bc23a7d714f39c14ac" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>CreateTileCacheAt</name></member>
+      <member refid="class_tilemap_layer_1a243667ddfb4fb0d04198ab59179cbbed" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>data_cache_vec</name></member>
+      <member refid="class_tilemap_layer_1aeac9da60e4f9e89aa36cc5797dcef24c" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>Draw</name></member>
+      <member refid="class_tilemap_layer_1a1dc34ae4b9062732a2e24dca21f85922" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>DrawTile</name></member>
+      <member refid="class_tilemap_layer_1a318d2670a19fb22c7d3d7bb43ddce277" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>DrawTileImpl</name></member>
+      <member refid="class_tilemap_layer_1a1e5e3d2af943765c4b94a32af40f88bf" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>fast_blit</name></member>
+      <member refid="class_tilemap_layer_1aa34fe5ba70778df8db6adfcbbf62a58c" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>GenerateAutotileAB</name></member>
+      <member refid="class_tilemap_layer_1a3f29d4d2a0af7d8457560f2370f6bd3d" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>GenerateAutotileD</name></member>
+      <member refid="class_tilemap_layer_1ab31a5a58d784a1027867e220bcc3cff8" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>GenerateAutotiles</name></member>
+      <member refid="class_tilemap_layer_1abceda5bf124fb96d7c292312ff370714" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>GetAnimationSpeed</name></member>
+      <member refid="class_tilemap_layer_1ae93c3e289ad7837d21b2a7a5926d6a05" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>GetAnimationType</name></member>
+      <member refid="class_tilemap_layer_1aeee00bbf36da8be79ff2c2c74fb17a9b" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>GetCachedAutotileAB</name></member>
+      <member refid="class_tilemap_layer_1abce6037bd4cf754633d44bb14d022dee" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>GetCachedAutotileD</name></member>
+      <member refid="class_tilemap_layer_1a56b5228ebc38bb734132f8016dc567f7" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>GetChipset</name></member>
+      <member refid="class_tilemap_layer_1a2474a68a6e148679228125d28957a9eb" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>GetDataCache</name></member>
+      <member refid="class_tilemap_layer_1a0a4bee9a665235e44784e089f69169d7" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>GetHeight</name></member>
+      <member refid="class_tilemap_layer_1a380dc4e3836319ec9df63abb9b3501d5" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>GetMapData</name></member>
+      <member refid="class_tilemap_layer_1a2386fe505c406cc3debcbb0394eeb11e" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>GetOx</name></member>
+      <member refid="class_tilemap_layer_1a1b61e3179133c357ac3586b40d1f949a" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>GetOy</name></member>
+      <member refid="class_tilemap_layer_1aafd546fbce209bef2ce02e7933e36202" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>GetPassable</name></member>
+      <member refid="class_tilemap_layer_1af1dce80c3dee28299e8fd8001a5a108e" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>GetRenderOx</name></member>
+      <member refid="class_tilemap_layer_1a440608aa0303f58e5061e9a4d77d5862" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>GetRenderOy</name></member>
+      <member refid="class_tilemap_layer_1a55e6cbaf460626ded3ff80a2caae527e" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>GetWidth</name></member>
+      <member refid="class_tilemap_layer_1a03ea56e8526ca665b4cf25099ad46b63" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>height</name></member>
+      <member refid="class_tilemap_layer_1a7e6279ca644fa06bf90bb3ac517e8670" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>IsInMapBounds</name></member>
+      <member refid="class_tilemap_layer_1abfa4f7ae717fa41fdc58e08f1bc94314" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>IsVisible</name></member>
+      <member refid="class_tilemap_layer_1ae40c46344f4658cc57d931ee89062efc" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>layer</name></member>
+      <member refid="class_tilemap_layer_1a3936e17d847e6f322ecb078b2fc102a2" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>lower_layer</name></member>
+      <member refid="class_tilemap_layer_1a837e2921dddc78379e4bdf9437eefae6" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>map_data</name></member>
+      <member refid="class_tilemap_layer_1a5797b5dcd8dc67bd61bee3dfc67edc05" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>OnSubstitute</name></member>
+      <member refid="class_tilemap_layer_1adc18febf053289b35eba4f39131302fa" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>ox</name></member>
+      <member refid="class_tilemap_layer_1ae187da56640b710215ef0fd3ae2fa1b7" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>oy</name></member>
+      <member refid="class_tilemap_layer_1aea6f410bb8a43b03094f852636cda8a1" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>passable</name></member>
+      <member refid="class_tilemap_layer_1acf91431fd74b736011e1fda1c8a98afe" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>RecalculateAutotile</name></member>
+      <member refid="class_tilemap_layer_1a20cbd0f40780813c7d8f45ad13e7bcd2" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>RecreateTileDataAt</name></member>
+      <member refid="class_tilemap_layer_1a50c8f162c0efc034ffd7fbdc5470ab6c" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>SetAnimationSpeed</name></member>
+      <member refid="class_tilemap_layer_1aa175d68065b18f06c7d30b00d4308dc1" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>SetAnimationType</name></member>
+      <member refid="class_tilemap_layer_1a74d887cfcabfff8ed0a625b091864806" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>SetChipset</name></member>
+      <member refid="class_tilemap_layer_1ac06d25782748e32baf5ab6bfdb9717b7" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>SetFastBlit</name></member>
+      <member refid="class_tilemap_layer_1a24df34dfcb590e0fe6e3bcbbf5c6fe30" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>SetHeight</name></member>
+      <member refid="class_tilemap_layer_1a91c4758f6091659b4f9e07b9ec2494b9" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>SetMapData</name></member>
+      <member refid="class_tilemap_layer_1a27d43f638218260f4c6e35bbbdfe30fe" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>SetMapTileDataAt</name></member>
+      <member refid="class_tilemap_layer_1a597c78a773a61a9d6338216a0ecaaea5" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>SetOx</name></member>
+      <member refid="class_tilemap_layer_1ad4bbebcb37e1853328303444575e1107" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>SetOy</name></member>
+      <member refid="class_tilemap_layer_1a01dde5b5974f9f73f95fed19a889e283" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>SetPassable</name></member>
+      <member refid="class_tilemap_layer_1ae389428982d612f87b4c274031f754c9" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>SetRenderOx</name></member>
+      <member refid="class_tilemap_layer_1a11d39d25216e4fa89ff61502121721d5" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>SetRenderOy</name></member>
+      <member refid="class_tilemap_layer_1a5dd521ed330bc1940c014657fd9622f2" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>SetTone</name></member>
+      <member refid="class_tilemap_layer_1a77f1643844ab7d0cc7bd378deee105e2" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>SetVisible</name></member>
+      <member refid="class_tilemap_layer_1a9acdcaba6d7f432066ed214a8dc68763" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>SetWidth</name></member>
+      <member refid="class_tilemap_layer_1ab52c0b842db87cde38cc11bfbe5b839c" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>substitutions</name></member>
+      <member refid="class_tilemap_layer_1a77568993ce6d48f95c92da08dd9c36b7" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>TileAbove</name></member>
+      <member refid="class_tilemap_layer_1a2df612465d90ea36569dbcb27eae0a4b" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>TileBelow</name></member>
+      <member refid="class_tilemap_layer_1a6ee75de4e02dd5579e19e0b415e08aa3" prot="public" virt="non-virtual"><scope>TilemapLayer</scope><name>TilemapLayer</name></member>
+      <member refid="class_tilemap_layer_1abf5d36f8bae178ddd88611e7ad3342de" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>TILES_PER_ROW</name></member>
+      <member refid="class_tilemap_layer_1aa8515633bb4c1c1d84d1a676d8b214da" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>tone</name></member>
+      <member refid="class_tilemap_layer_1a6603795463f1a0c918813d939ac9d1cd" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>upper_layer</name></member>
+      <member refid="class_tilemap_layer_1af6000dfe9d7bf54c97f55a320d0d3cec" prot="private" virt="non-virtual"><scope>TilemapLayer</scope><name>width</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

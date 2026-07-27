@@ -1,0 +1,1006 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_audio_resampler" kind="class" language="C++" prot="public">
+    <compoundname>AudioResampler</compoundname>
+    <basecompoundref refid="class_audio_decoder_base" prot="public" virt="non-virtual">AudioDecoderBase</basecompoundref>
+    <includes refid="audio__resampler_8h" local="no">audio_resampler.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_audio_resampler_1a08a517f67c13960fd12f09057d1754e1" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>Quality</name>
+        <qualifiedname>AudioResampler::Quality</qualifiedname>
+        <enumvalue id="class_audio_resampler_1a08a517f67c13960fd12f09057d1754e1a655d20c1ca69519ca647684edbb2db35" prot="public">
+          <name>High</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_audio_resampler_1a08a517f67c13960fd12f09057d1754e1a87f8a6ab85c9ced3702b4ea641ad4bb5" prot="public">
+          <name>Medium</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_audio_resampler_1a08a517f67c13960fd12f09057d1754e1a28d0edd045e05cf5af64e35ae0c4c6ef" prot="public">
+          <name>Low</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Resampling quality </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="42" column="1" bodyfile="audio_resampler.h" bodystart="42" bodyend="46"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_audio_resampler_1a611ea7104812c33ee350a0181d7f30a2" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_audio_decoder_base" kindref="compound">AudioDecoderBase</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;AudioDecoderBase&gt; AudioResampler::wrapped_decoder</definition>
+        <argsstring></argsstring>
+        <name>wrapped_decoder</name>
+        <qualifiedname>AudioResampler::wrapped_decoder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="237" column="17" bodyfile="audio_resampler.h" bodystart="237" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_resampler_1a35579d868b6964b0861012a4beb3c268" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool AudioResampler::pitch_handled_by_decoder</definition>
+        <argsstring></argsstring>
+        <name>pitch_handled_by_decoder</name>
+        <qualifiedname>AudioResampler::pitch_handled_by_decoder</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="238" column="6" bodyfile="audio_resampler.h" bodystart="238" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_resampler_1acf266349df775666a22403a450612abe" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int AudioResampler::pitch</definition>
+        <argsstring></argsstring>
+        <name>pitch</name>
+        <qualifiedname>AudioResampler::pitch</qualifiedname>
+        <initializer>= 100</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="239" column="5" bodyfile="audio_resampler.h" bodystart="239" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_resampler_1a7b8290c4597244097d2c7bfe8c581552" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int AudioResampler::sampling_quality</definition>
+        <argsstring></argsstring>
+        <name>sampling_quality</name>
+        <qualifiedname>AudioResampler::sampling_quality</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="240" column="5" bodyfile="audio_resampler.h" bodystart="240" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_resampler_1afcee9f56a01c063156a4c837645422cb" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int AudioResampler::lasterror</definition>
+        <argsstring></argsstring>
+        <name>lasterror</name>
+        <qualifiedname>AudioResampler::lasterror</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="241" column="5" bodyfile="audio_resampler.h" bodystart="241" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_resampler_1afd8f94a351f4e91adc5d3615e0ba732b" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool AudioResampler::finished</definition>
+        <argsstring></argsstring>
+        <name>finished</name>
+        <qualifiedname>AudioResampler::finished</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="242" column="6" bodyfile="audio_resampler.h" bodystart="242" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_resampler_1a0444943adbef501e941af961417c8e09" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int AudioResampler::nr_of_channels</definition>
+        <argsstring></argsstring>
+        <name>nr_of_channels</name>
+        <qualifiedname>AudioResampler::nr_of_channels</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="244" column="5" bodyfile="audio_resampler.h" bodystart="244" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_resampler_1a0d85888b86b8a3f966425b3dc7bbe6a1" prot="private" static="no" mutable="no">
+        <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">Format</ref></type>
+        <definition>Format AudioResampler::input_format</definition>
+        <argsstring></argsstring>
+        <name>input_format</name>
+        <qualifiedname>AudioResampler::input_format</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="245" column="8" bodyfile="audio_resampler.h" bodystart="245" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_resampler_1a9763ba1efc2d184bc379e4be1b42776a" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int AudioResampler::input_rate</definition>
+        <argsstring></argsstring>
+        <name>input_rate</name>
+        <qualifiedname>AudioResampler::input_rate</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="246" column="5" bodyfile="audio_resampler.h" bodystart="246" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_resampler_1aa0db06f547920ffca81e4281c47d0a4f" prot="private" static="no" mutable="no">
+        <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">Format</ref></type>
+        <definition>Format AudioResampler::output_format</definition>
+        <argsstring></argsstring>
+        <name>output_format</name>
+        <qualifiedname>AudioResampler::output_format</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="247" column="8" bodyfile="audio_resampler.h" bodystart="247" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_resampler_1a69d078d38699130c3b78ecafb166d1dc" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int AudioResampler::output_rate</definition>
+        <argsstring></argsstring>
+        <name>output_rate</name>
+        <qualifiedname>AudioResampler::output_rate</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="248" column="5" bodyfile="audio_resampler.h" bodystart="248" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_resampler_1aa670fce58741da6812a7cd9ae8f1d717" prot="private" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t AudioResampler::internal_buffer[256 *sizeof(float)]</definition>
+        <argsstring>[256 *sizeof(float)]</argsstring>
+        <name>internal_buffer</name>
+        <qualifiedname>AudioResampler::internal_buffer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>A buffer needed for operations which can&apos;t be performed in place (e.g resampling) The size of the buffer defines the number of calls to the resampling algorithmn (In the cpp file sizeof is used therefore it can be adjusted to fit the available memory) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="267" column="9" bodyfile="audio_resampler.h" bodystart="267" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_audio_resampler_1a45551fd7eab7953385937657e37eb461" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool AudioResampler::mono_to_stereo_resample</definition>
+        <argsstring></argsstring>
+        <name>mono_to_stereo_resample</name>
+        <qualifiedname>AudioResampler::mono_to_stereo_resample</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="269" column="6" bodyfile="audio_resampler.h" bodystart="269" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_audio_resampler_1a521e767fae45629c019932520581ec9b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AudioResampler::AudioResampler</definition>
+        <argsstring>(std::unique_ptr&lt; AudioDecoderBase &gt; decoder, Quality quality=Quality::Low)</argsstring>
+        <name>AudioResampler</name>
+        <qualifiedname>AudioResampler::AudioResampler</qualifiedname>
+        <param>
+          <type>std::unique_ptr&lt; <ref refid="class_audio_decoder_base" kindref="compound">AudioDecoderBase</ref> &gt;</type>
+          <declname>decoder</declname>
+        </param>
+        <param>
+          <type><ref refid="class_audio_resampler_1a08a517f67c13960fd12f09057d1754e1" kindref="member">Quality</ref></type>
+          <declname>quality</declname>
+          <defval><ref refid="class_audio_resampler_1a08a517f67c13960fd12f09057d1754e1a28d0edd045e05cf5af64e35ae0c4c6ef" kindref="member">Quality::Low</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructs a resampler</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">decoder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The decoder which provides samples to the resampler - will be owned by the resampler </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">quality</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Sets the quality rting of the resampler - higher quality implies slower filtering </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="54" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1ac726f5559e90fbd753b959a0030eacd2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>AudioResampler::~AudioResampler</definition>
+        <argsstring>()</argsstring>
+        <name>~AudioResampler</name>
+        <qualifiedname>AudioResampler::~AudioResampler</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Destroys the resampler as well as its owned ressources </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="59" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1a821df0323cf0160ce36f163b182d1d37" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool AudioResampler::WasInited</definition>
+        <argsstring>() const override</argsstring>
+        <name>WasInited</name>
+        <qualifiedname>AudioResampler::WasInited</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1ab939d02c28d911d06a0c68087afa90aa">WasInited</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Wraps the status querying of the contained decoder. Used to make sure the underlying library is properly initialized.</para>
+<para><simplesect kind="return"><para>true if initializing was succesful, false otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="67" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1a6e9751f18c2b06d72617180219855cbb" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool AudioResampler::Open</definition>
+        <argsstring>(Filesystem_Stream::InputStream stream) override</argsstring>
+        <name>Open</name>
+        <qualifiedname>AudioResampler::Open</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a572f94aa66fe630a45cbe1c500c55213">Open</reimplements>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+          <declname>stream</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Wraps the opening function of the contained decoder</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">file</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filepointer to a file readable by the wrapped decoder</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the operation was successful or not </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="76" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1a09f7dafe592f647f37a9b9b1808b86cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioResampler::Pause</definition>
+        <argsstring>() override</argsstring>
+        <name>Pause</name>
+        <qualifiedname>AudioResampler::Pause</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a0fe6d62d12d7be7a508d8dc42723470e">Pause</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Forwards a pause to the wrapped decoder. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="81" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1a442d8f004cbaa5f4b6a74625969f50cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioResampler::Resume</definition>
+        <argsstring>() override</argsstring>
+        <name>Resume</name>
+        <qualifiedname>AudioResampler::Resume</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a34e9b2c022adabcc0ce4788b3fe6e9b6">Resume</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Forwards a resume to the wrapped decoder. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="86" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1ac6a6b1d6514814503ad50fe1e2ea41f3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int AudioResampler::GetVolume</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetVolume</name>
+        <qualifiedname>AudioResampler::GetVolume</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a4845bd23893eb58d00839e30f683ad20">GetVolume</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Obtains the volume of the wrapped decoder.</para>
+<para><simplesect kind="return"><para>current volume (from 0 - 100) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="93" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1ab1b3daa873368d0fe4b08eb5587e1f7f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioResampler::SetVolume</definition>
+        <argsstring>(int volume) override</argsstring>
+        <name>SetVolume</name>
+        <qualifiedname>AudioResampler::SetVolume</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a06aa42fb66d0f633dd5e853de757ff07">SetVolume</reimplements>
+        <param>
+          <type>int</type>
+          <declname>volume</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the current volume of the wrapped decoder.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>volume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(from 0-100) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="100" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1ab87549ab6dd7a594b64df72384139793" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioResampler::SetFade</definition>
+        <argsstring>(int end, std::chrono::milliseconds duration) override</argsstring>
+        <name>SetFade</name>
+        <qualifiedname>AudioResampler::SetFade</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a3fd6f74451d83233449a2eab1ddc636e">SetFade</reimplements>
+        <param>
+          <type>int</type>
+          <declname>end</declname>
+        </param>
+        <param>
+          <type>std::chrono::milliseconds</type>
+          <declname>duration</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Prepares a volume fade in/out effect. To do a fade out begin must be larger then end. Call Update to do the fade.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>end</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>End volume (from 0-100) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>duration</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Fade duration in ms </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="110" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1a3c4fb7e0be336f7e5835fdb5864c9bf1" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool AudioResampler::Seek</definition>
+        <argsstring>(std::streamoff offset, std::ios_base::seekdir origin) override</argsstring>
+        <name>Seek</name>
+        <qualifiedname>AudioResampler::Seek</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a5edd0cdbf8114d680a94c269b24e79f8">Seek</reimplements>
+        <param>
+          <type>std::streamoff</type>
+          <declname>offset</declname>
+        </param>
+        <param>
+          <type>std::ios_base::seekdir</type>
+          <declname>origin</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Wraps the seek function of the contained decoder <simplesect kind="note"><para>If the seek function of the wrapped decoder is somewhat correlated to time the offset is not influenced by the resampling ratio</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>offset</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Offset to seek to </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>origin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Position to seek from</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether seek was successful </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="122" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1abf6d44364221c0c1c770a14ef314dbce" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool AudioResampler::GetLooping</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetLooping</name>
+        <qualifiedname>AudioResampler::GetLooping</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a0dc76b0664e5db6bbf08f15feac0b2f7">GetLooping</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if the audio stream will loop when the stream finishes.</para>
+<para><simplesect kind="return"><para>if looping </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="129" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1abe6bd32896c7aa7abbe29450b06d1aac" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioResampler::SetLooping</definition>
+        <argsstring>(bool enable) override</argsstring>
+        <name>SetLooping</name>
+        <qualifiedname>AudioResampler::SetLooping</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a840273aa05f6b6619863f9b7af142034">SetLooping</reimplements>
+        <param>
+          <type>bool</type>
+          <declname>enable</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Enables/Disables audio stream looping. When looping is enabled IsFinished will never return true and the stream auto-rewinds (assuming Rewind is supported)</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>enable</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Enable/Disable looping </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="138" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1af2b3767a911462457584786e72de31f0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int AudioResampler::GetLoopCount</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetLoopCount</name>
+        <qualifiedname>AudioResampler::GetLoopCount</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1ada062070c78b1298131fc11bfb84e4b3">GetLoopCount</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the number of loops</para>
+<para><simplesect kind="return"><para>loop count </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="145" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1a724dc3fb09b8bf891114a51a1334b4e9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::streampos</type>
+        <definition>std::streampos AudioResampler::Tell</definition>
+        <argsstring>() const override</argsstring>
+        <name>Tell</name>
+        <qualifiedname>AudioResampler::Tell</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a786745c4d49ed9146579c72a8b63ddd7">Tell</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Wraps the tell function of the contained decoder</para>
+<para><simplesect kind="return"><para>Position in the stream </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="152" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1a74b8fe9e6fbcef8ada0c542147fe6a97" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int AudioResampler::GetTicks</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetTicks</name>
+        <qualifiedname>AudioResampler::GetTicks</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1acecf36942396a6f78a9839b2dc2315db">GetTicks</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Wraps the GetTicks Function of the contained decoder</para>
+<para><simplesect kind="return"><para>Amount of MIDI ticks. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="159" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1a3baef7676840d58b096faef462de8909" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool AudioResampler::IsFinished</definition>
+        <argsstring>() const override</argsstring>
+        <name>IsFinished</name>
+        <qualifiedname>AudioResampler::IsFinished</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a6dc473563b9edccf21d07a39fae4fc2d">IsFinished</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns whether the resampled is exhausted and the audio stream is finished.</para>
+<para><simplesect kind="return"><para>true if the stream has reached it&apos;s end </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="166" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1abe2f64f6bfd3053a18c3c7cf305f014f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioResampler::Update</definition>
+        <argsstring>(std::chrono::microseconds delta) override</argsstring>
+        <name>Update</name>
+        <qualifiedname>AudioResampler::Update</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1aafccb01cf3ca20cc79941ac8a31e6c22">Update</reimplements>
+        <param>
+          <type>std::chrono::microseconds</type>
+          <declname>delta</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates timing related audio code of the wrapped decoder.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>delta</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time in us since the last call of this function. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="173" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1a8f7fcb2e2ef2aa102268d9cd54edaee5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AudioResampler::GetFormat</definition>
+        <argsstring>(int &amp;frequency, AudioDecoder::Format &amp;format, int &amp;channels) const override</argsstring>
+        <name>GetFormat</name>
+        <qualifiedname>AudioResampler::GetFormat</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a1710868b1111bf6e33e43156958e0d57">GetFormat</reimplements>
+        <param>
+          <type>int &amp;</type>
+          <declname>frequency</declname>
+        </param>
+        <param>
+          <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">AudioDecoder::Format</ref> &amp;</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>channels</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieves the format of the audio decoder.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>frequency</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the audio frequency </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the audio format </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>channels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the amount of channels </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="182" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1ac8108957e9a6cd9fa38da5a0a6b99efc" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool AudioResampler::SetFormat</definition>
+        <argsstring>(int frequency, AudioDecoder::Format format, int channels) override</argsstring>
+        <name>SetFormat</name>
+        <qualifiedname>AudioResampler::SetFormat</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1acabfabe4f0b75482cc967b19133288c2">SetFormat</reimplements>
+        <param>
+          <type>int</type>
+          <declname>frequency</declname>
+        </param>
+        <param>
+          <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">AudioDecoder::Format</ref></type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>channels</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Requests a certain frame format from the resampler. Supported formats are:<itemizedlist>
+<listitem><para>float,int16_t for libspeexdsp</para>
+</listitem><listitem><para>float for libsamplerate The channel setting is redirected to the wrapped decoder. The frequency setting controls the resampler.</para>
+</listitem></itemizedlist>
+</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>frequency</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Sample rate the resampler should output </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Audio format the resampler should output </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>channels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of channels </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true when all settings were set, otherwise false (use GetFormat) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="197" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1ade66838aab4aef735811a4ec23ed80bf" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int AudioResampler::GetPitch</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetPitch</name>
+        <qualifiedname>AudioResampler::GetPitch</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a2296a26d68cfe1f139cf82aa27c38019">GetPitch</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the pitch multiplier.</para>
+<para><simplesect kind="return"><para>pitch multiplier </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="204" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1ac703fcb23a238cd30adc87ac70165fb2" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool AudioResampler::SetPitch</definition>
+        <argsstring>(int pitch) override</argsstring>
+        <name>SetPitch</name>
+        <qualifiedname>AudioResampler::SetPitch</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a81ca81aceceef4b9cc8a6818d3d199ca">SetPitch</reimplements>
+        <param>
+          <type>int</type>
+          <declname>pitch</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the pitch multiplier. 100 = normal speed 200 = double speed and so on If the pitch is handled by the resampler this setting controls the resampling in conjunction with the frequency.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pitch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pitch multiplier to use </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if pitch was set, false otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="215" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_audio_resampler_1af83bb766a9138a2679f339ebfb7871d3" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int AudioResampler::FillBuffer</definition>
+        <argsstring>(uint8_t *buffer, int length) override</argsstring>
+        <name>FillBuffer</name>
+        <qualifiedname>AudioResampler::FillBuffer</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1aa06a5130b4b45e44a364162230953636">FillBuffer</reimplements>
+        <param>
+          <type>uint8_t *</type>
+          <declname>buffer</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>length</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called by the Decode functions to fill the buffer.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>buffer</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Buffer to fill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>length</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Buffer size </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>number of bytes read or -1 on error </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="225" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1af942f5f6d0f266c7ea6b2ac0e9a4ac46" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int AudioResampler::FillBufferSameRate</definition>
+        <argsstring>(uint8_t *buffer, int length)</argsstring>
+        <name>FillBufferSameRate</name>
+        <qualifiedname>AudioResampler::FillBufferSameRate</qualifiedname>
+        <param>
+          <type>uint8_t *</type>
+          <declname>buffer</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>length</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Internally used by the FillBuffer function if the output rate equals the input rate </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="230" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_audio_resampler_1ab6b204b5ff66702c9c919e1546b0750f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int AudioResampler::FillBufferDifferentRate</definition>
+        <argsstring>(uint8_t *buffer, int length)</argsstring>
+        <name>FillBufferDifferentRate</name>
+        <qualifiedname>AudioResampler::FillBufferDifferentRate</qualifiedname>
+        <param>
+          <type>uint8_t *</type>
+          <declname>buffer</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>length</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Internally used by the FillBuffer function if resampling is necessary </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_resampler.h" line="235" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Audio resampler powered by Libspeexdsp or Libsamplerate Wraps another decoder and provides resampling. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>AudioDecoderBase</label>
+        <link refid="class_audio_decoder_base"/>
+      </node>
+      <node id="1">
+        <label>AudioResampler</label>
+        <link refid="class_audio_resampler"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>AudioDecoderBase</label>
+        <link refid="class_audio_decoder_base"/>
+      </node>
+      <node id="1">
+        <label>AudioResampler</label>
+        <link refid="class_audio_resampler"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="audio_resampler.h" line="39" column="1" bodyfile="audio_resampler.h" bodystart="39" bodyend="270"/>
+    <listofallmembers>
+      <member refid="class_audio_decoder_base_1ad75c2fadcdccc9bdf89626e9689dc73d" prot="public" virt="non-virtual"><scope>AudioResampler</scope><name>AdjustVolume</name></member>
+      <member refid="class_audio_resampler_1a521e767fae45629c019932520581ec9b" prot="public" virt="non-virtual"><scope>AudioResampler</scope><name>AudioResampler</name></member>
+      <member refid="class_audio_decoder_base_1a176c25bf79b3e978665d01f649741dca" prot="public" virt="non-virtual"><scope>AudioResampler</scope><name>Decode</name></member>
+      <member refid="class_audio_decoder_base_1aaec31de02d5329099c26005f8c365fff" prot="protected" virt="non-virtual"><scope>AudioResampler</scope><name>Decode</name></member>
+      <member refid="class_audio_decoder_base_1a675f8d5337b547549b2c11ad63acffbd" prot="public" virt="non-virtual"><scope>AudioResampler</scope><name>DecodeAll</name></member>
+      <member refid="class_audio_decoder_base_1ad2ce3dacf661c0849a08d1cad2e598d8" prot="protected" virt="non-virtual"><scope>AudioResampler</scope><name>error_message</name></member>
+      <member refid="class_audio_resampler_1af83bb766a9138a2679f339ebfb7871d3" prot="private" virt="virtual"><scope>AudioResampler</scope><name>FillBuffer</name></member>
+      <member refid="class_audio_resampler_1ab6b204b5ff66702c9c919e1546b0750f" prot="private" virt="non-virtual"><scope>AudioResampler</scope><name>FillBufferDifferentRate</name></member>
+      <member refid="class_audio_resampler_1af942f5f6d0f266c7ea6b2ac0e9a4ac46" prot="private" virt="non-virtual"><scope>AudioResampler</scope><name>FillBufferSameRate</name></member>
+      <member refid="class_audio_resampler_1afd8f94a351f4e91adc5d3615e0ba732b" prot="private" virt="non-virtual"><scope>AudioResampler</scope><name>finished</name></member>
+      <member refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" prot="public" virt="non-virtual"><scope>AudioResampler</scope><name>Format</name></member>
+      <member refid="class_audio_decoder_base_1a6459a4a6bbef9a3c1e114687e1ee38a7" prot="public" virt="virtual"><scope>AudioResampler</scope><name>GetError</name></member>
+      <member refid="class_audio_resampler_1a8f7fcb2e2ef2aa102268d9cd54edaee5" prot="public" virt="virtual"><scope>AudioResampler</scope><name>GetFormat</name></member>
+      <member refid="class_audio_resampler_1af2b3767a911462457584786e72de31f0" prot="public" virt="virtual"><scope>AudioResampler</scope><name>GetLoopCount</name></member>
+      <member refid="class_audio_resampler_1abf6d44364221c0c1c770a14ef314dbce" prot="public" virt="virtual"><scope>AudioResampler</scope><name>GetLooping</name></member>
+      <member refid="class_audio_resampler_1ade66838aab4aef735811a4ec23ed80bf" prot="public" virt="virtual"><scope>AudioResampler</scope><name>GetPitch</name></member>
+      <member refid="class_audio_resampler_1a74b8fe9e6fbcef8ada0c542147fe6a97" prot="public" virt="virtual"><scope>AudioResampler</scope><name>GetTicks</name></member>
+      <member refid="class_audio_decoder_base_1ad6fee4301b53a5891a4b37e6cab958f1" prot="public" virt="virtual"><scope>AudioResampler</scope><name>GetType</name></member>
+      <member refid="class_audio_resampler_1ac6a6b1d6514814503ad50fe1e2ea41f3" prot="public" virt="virtual"><scope>AudioResampler</scope><name>GetVolume</name></member>
+      <member refid="class_audio_resampler_1a0d85888b86b8a3f966425b3dc7bbe6a1" prot="private" virt="non-virtual"><scope>AudioResampler</scope><name>input_format</name></member>
+      <member refid="class_audio_resampler_1a9763ba1efc2d184bc379e4be1b42776a" prot="private" virt="non-virtual"><scope>AudioResampler</scope><name>input_rate</name></member>
+      <member refid="class_audio_resampler_1aa670fce58741da6812a7cd9ae8f1d717" prot="private" virt="non-virtual"><scope>AudioResampler</scope><name>internal_buffer</name></member>
+      <member refid="class_audio_resampler_1a3baef7676840d58b096faef462de8909" prot="public" virt="virtual"><scope>AudioResampler</scope><name>IsFinished</name></member>
+      <member refid="class_audio_resampler_1afcee9f56a01c063156a4c837645422cb" prot="private" virt="non-virtual"><scope>AudioResampler</scope><name>lasterror</name></member>
+      <member refid="class_audio_decoder_base_1ab8feafa866394875dc7c538b79021025" prot="protected" virt="non-virtual"><scope>AudioResampler</scope><name>loop_count</name></member>
+      <member refid="class_audio_decoder_base_1a31c8df4d0267b8363daa9da00d2ed2f3" prot="protected" virt="non-virtual"><scope>AudioResampler</scope><name>looping</name></member>
+      <member refid="class_audio_resampler_1a45551fd7eab7953385937657e37eb461" prot="private" virt="non-virtual"><scope>AudioResampler</scope><name>mono_to_stereo_resample</name></member>
+      <member refid="class_audio_decoder_base_1a0735cf7d77356fbc1a2735804211a9c8" prot="protected" virt="non-virtual"><scope>AudioResampler</scope><name>music_type</name></member>
+      <member refid="class_audio_resampler_1a0444943adbef501e941af961417c8e09" prot="private" virt="non-virtual"><scope>AudioResampler</scope><name>nr_of_channels</name></member>
+      <member refid="class_audio_resampler_1a6e9751f18c2b06d72617180219855cbb" prot="public" virt="virtual"><scope>AudioResampler</scope><name>Open</name></member>
+      <member refid="class_audio_resampler_1aa0db06f547920ffca81e4281c47d0a4f" prot="private" virt="non-virtual"><scope>AudioResampler</scope><name>output_format</name></member>
+      <member refid="class_audio_resampler_1a69d078d38699130c3b78ecafb166d1dc" prot="private" virt="non-virtual"><scope>AudioResampler</scope><name>output_rate</name></member>
+      <member refid="class_audio_resampler_1a09f7dafe592f647f37a9b9b1808b86cd" prot="public" virt="virtual"><scope>AudioResampler</scope><name>Pause</name></member>
+      <member refid="class_audio_resampler_1acf266349df775666a22403a450612abe" prot="private" virt="non-virtual"><scope>AudioResampler</scope><name>pitch</name></member>
+      <member refid="class_audio_resampler_1a35579d868b6964b0861012a4beb3c268" prot="private" virt="non-virtual"><scope>AudioResampler</scope><name>pitch_handled_by_decoder</name></member>
+      <member refid="class_audio_resampler_1a08a517f67c13960fd12f09057d1754e1" prot="public" virt="non-virtual"><scope>AudioResampler</scope><name>Quality</name></member>
+      <member refid="class_audio_resampler_1a442d8f004cbaa5f4b6a74625969f50cd" prot="public" virt="virtual"><scope>AudioResampler</scope><name>Resume</name></member>
+      <member refid="class_audio_decoder_base_1a2c9d165295deeb0cd12fea13cdd60467" prot="public" virt="non-virtual"><scope>AudioResampler</scope><name>Rewind</name></member>
+      <member refid="class_audio_resampler_1a7b8290c4597244097d2c7bfe8c581552" prot="private" virt="non-virtual"><scope>AudioResampler</scope><name>sampling_quality</name></member>
+      <member refid="class_audio_resampler_1a3c4fb7e0be336f7e5835fdb5864c9bf1" prot="public" virt="virtual"><scope>AudioResampler</scope><name>Seek</name></member>
+      <member refid="class_audio_resampler_1ab87549ab6dd7a594b64df72384139793" prot="public" virt="virtual"><scope>AudioResampler</scope><name>SetFade</name></member>
+      <member refid="class_audio_resampler_1ac8108957e9a6cd9fa38da5a0a6b99efc" prot="public" virt="virtual"><scope>AudioResampler</scope><name>SetFormat</name></member>
+      <member refid="class_audio_resampler_1abe6bd32896c7aa7abbe29450b06d1aac" prot="public" virt="virtual"><scope>AudioResampler</scope><name>SetLooping</name></member>
+      <member refid="class_audio_resampler_1ac703fcb23a238cd30adc87ac70165fb2" prot="public" virt="virtual"><scope>AudioResampler</scope><name>SetPitch</name></member>
+      <member refid="class_audio_resampler_1ab1b3daa873368d0fe4b08eb5587e1f7f" prot="public" virt="virtual"><scope>AudioResampler</scope><name>SetVolume</name></member>
+      <member refid="class_audio_resampler_1a724dc3fb09b8bf891114a51a1334b4e9" prot="public" virt="virtual"><scope>AudioResampler</scope><name>Tell</name></member>
+      <member refid="class_audio_resampler_1abe2f64f6bfd3053a18c3c7cf305f014f" prot="public" virt="virtual"><scope>AudioResampler</scope><name>Update</name></member>
+      <member refid="class_audio_decoder_base_1a11f5c509ee0dbc2e9e49505c27a8caf7" prot="public" virt="virtual"><scope>AudioResampler</scope><name>UpdateMidi</name></member>
+      <member refid="class_audio_resampler_1a821df0323cf0160ce36f163b182d1d37" prot="public" virt="virtual"><scope>AudioResampler</scope><name>WasInited</name></member>
+      <member refid="class_audio_resampler_1a611ea7104812c33ee350a0181d7f30a2" prot="private" virt="non-virtual"><scope>AudioResampler</scope><name>wrapped_decoder</name></member>
+      <member refid="class_audio_decoder_base_1a9b7f3034af094a9d71e48ac220b4ca6a" prot="public" virt="virtual"><scope>AudioResampler</scope><name>~AudioDecoderBase</name></member>
+      <member refid="class_audio_resampler_1ac726f5559e90fbd753b959a0030eacd2" prot="public" virt="non-virtual"><scope>AudioResampler</scope><name>~AudioResampler</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

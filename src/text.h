@@ -129,3 +129,4 @@ namespace Text {
 	Rect GetSize(const Font& font, char32_t glyph, bool is_exfont);
 }
 #endif
+

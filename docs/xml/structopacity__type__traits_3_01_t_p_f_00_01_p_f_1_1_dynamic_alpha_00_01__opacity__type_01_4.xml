@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structopacity__type__traits_3_01_t_p_f_00_01_p_f_1_1_dynamic_alpha_00_01__opacity__type_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>opacity_type_traits&lt; TPF, PF::DynamicAlpha, _opacity_type &gt;</compoundname>
+    <includes refid="pixel__format_8h" local="no">pixel_format.h</includes>
+    <templateparamlist>
+      <param>
+        <type>class TPF</type>
+      </param>
+      <param>
+        <type><ref refid="namespace_p_f_1a323a70e21a8a35900f0d3e524d823fea" kindref="member">PF::OpacityType</ref></type>
+        <declname>_opacity_type</declname>
+        <defname>_opacity_type</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="structopacity__type__traits_3_01_t_p_f_00_01_p_f_1_1_dynamic_alpha_00_01__opacity__type_01_4_1a92f3e57a7fad83ce63c28843b6fd1164" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="namespace_p_f_1a323a70e21a8a35900f0d3e524d823fea" kindref="member">PF::OpacityType</ref></type>
+        <definition>static PF::OpacityType opacity_type_traits&lt; TPF, PF::DynamicAlpha, _opacity_type &gt;::opacity_type</definition>
+        <argsstring>(const TPF *pf)</argsstring>
+        <name>opacity_type</name>
+        <qualifiedname>opacity_type_traits&lt; TPF, PF::DynamicAlpha, _opacity_type &gt;::opacity_type</qualifiedname>
+        <param>
+          <type>const TPF *</type>
+          <declname>pf</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="319" column="31" bodyfile="pixel_format.h" bodystart="319" bodyend="321"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pixel_format.h" line="318" column="1" bodyfile="pixel_format.h" bodystart="318" bodyend="322"/>
+    <listofallmembers>
+      <member refid="structopacity__type__traits_3_01_t_p_f_00_01_p_f_1_1_dynamic_alpha_00_01__opacity__type_01_4_1a92f3e57a7fad83ce63c28843b6fd1164" prot="public" virt="non-virtual"><scope>opacity_type_traits&lt; TPF, PF::DynamicAlpha, _opacity_type &gt;</scope><name>opacity_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

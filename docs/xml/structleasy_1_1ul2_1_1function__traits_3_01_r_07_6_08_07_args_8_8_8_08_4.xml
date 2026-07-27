@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ul2_1_1function__traits_3_01_r_07_6_08_07_args_8_8_8_08_4" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ul2::function_traits&lt; R(&amp;)(Args...)&gt;</compoundname>
+    <basecompoundref refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4" prot="public" virt="non-virtual">leasy::ul2::function_traits&lt; R(Args...)&gt;</basecompoundref>
+    <includes refid="function__traits_8hpp" local="no">function_traits.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type>typename R</type>
+      </param>
+      <param>
+        <type>typename...</type>
+        <declname>Args</declname>
+        <defname>Args</defname>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>leasy::ul2::function_traits&lt; R(&amp;)(Args...)&gt;</label>
+        <link refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_6_08_07_args_8_8_8_08_4"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>leasy::ul2::function_traits&lt; R(Args...)&gt;</label>
+        <link refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>leasy::ul2::function_traits&lt; R(&amp;)(Args...)&gt;</label>
+        <link refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_6_08_07_args_8_8_8_08_4"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>leasy::ul2::function_traits&lt; R(Args...)&gt;</label>
+        <link refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4"/>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/ul2/function_traits.hpp" line="53" column="3" bodyfile="leasy/ul2/function_traits.hpp" bodystart="54" bodyend="54"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1ac82dfae487e119cb8bbbd75662612272" prot="public" virt="non-virtual"><scope>leasy::ul2::function_traits&lt; R(&amp;)(Args...)&gt;</scope><name>arg</name></member>
+      <member refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1af4b2e31cca0f3001cb290dd6d415ef34" prot="public" virt="non-virtual"><scope>leasy::ul2::function_traits&lt; R(&amp;)(Args...)&gt;</scope><name>args_tuple</name></member>
+      <member refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1ae6539b79cb3d7e16ccbf4e8f823df03b" prot="public" virt="non-virtual"><scope>leasy::ul2::function_traits&lt; R(&amp;)(Args...)&gt;</scope><name>arity</name></member>
+      <member refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1a832d2b1fad3caa28ff5c443cca83be6c" prot="public" virt="non-virtual"><scope>leasy::ul2::function_traits&lt; R(&amp;)(Args...)&gt;</scope><name>class_type</name></member>
+      <member refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1a84684b2edbbb219cea60bdb02af5dc33" prot="public" virt="non-virtual"><scope>leasy::ul2::function_traits&lt; R(&amp;)(Args...)&gt;</scope><name>functional</name></member>
+      <member refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1aa237f5b388b512112404c9d68186609a" prot="public" virt="non-virtual"><scope>leasy::ul2::function_traits&lt; R(&amp;)(Args...)&gt;</scope><name>return_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

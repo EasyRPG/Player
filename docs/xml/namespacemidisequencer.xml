@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespacemidisequencer" kind="namespace" language="C++">
+    <compoundname>midisequencer</compoundname>
+    <innerclass refid="structmidisequencer_1_1midi__message" prot="public">midisequencer::midi_message</innerclass>
+    <innerclass refid="classmidisequencer_1_1uncopyable" prot="public">midisequencer::uncopyable</innerclass>
+    <innerclass refid="classmidisequencer_1_1output" prot="public">midisequencer::output</innerclass>
+    <innerclass refid="classmidisequencer_1_1sequencer" prot="public">midisequencer::sequencer</innerclass>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespacemidisequencer_1a8e365533df33b350783da88907398ca0" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint_least32_t</type>
+        <definition>static uint_least32_t midisequencer::read_variable_value</definition>
+        <argsstring>(void *fp, int(*fgetc)(void *), uint_least32_t *track_length, const char *errtext)</argsstring>
+        <name>read_variable_value</name>
+        <qualifiedname>midisequencer::read_variable_value</qualifiedname>
+        <param>
+          <type>void *</type>
+          <declname>fp</declname>
+        </param>
+        <param>
+          <type>int(*)(void *)</type>
+          <declname>fgetc</declname>
+        </param>
+        <param>
+          <type>uint_least32_t *</type>
+          <declname>track_length</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>errtext</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.cpp" line="39" column="27" bodyfile="midisequencer.cpp" bodystart="39" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacemidisequencer_1a501a0d7bd918ce09a5674140594eb1e6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool midisequencer::operator&lt;</definition>
+        <argsstring>(const midi_message &amp;a, const midi_message &amp;b)</argsstring>
+        <name>operator&lt;</name>
+        <qualifiedname>midisequencer::operator&lt;</qualifiedname>
+        <param>
+          <type>const <ref refid="structmidisequencer_1_1midi__message" kindref="compound">midi_message</ref> &amp;</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structmidisequencer_1_1midi__message" kindref="compound">midi_message</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.cpp" line="55" column="12" bodyfile="midisequencer.cpp" bodystart="55" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacemidisequencer_1a1b08ac17811cffef3e3019f13e6fa254" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int midisequencer::fpfgetc</definition>
+        <argsstring>(void *fp)</argsstring>
+        <name>fpfgetc</name>
+        <qualifiedname>midisequencer::fpfgetc</qualifiedname>
+        <param>
+          <type>void *</type>
+          <declname>fp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.cpp" line="109" column="16" bodyfile="midisequencer.cpp" bodystart="109" bodyend="112"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacemidisequencer_1a51d70e355c974aec0e7711f99b8b9467" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool midisequencer::is_loop_start</definition>
+        <argsstring>(uint_least32_t msg)</argsstring>
+        <name>is_loop_start</name>
+        <qualifiedname>midisequencer::is_loop_start</qualifiedname>
+        <param>
+          <type>uint_least32_t</type>
+          <declname>msg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.cpp" line="113" column="17" bodyfile="midisequencer.cpp" bodystart="113" bodyend="119"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="midisequencer.cpp" line="38" column="1"/>
+  </compounddef>
+</doxygen>

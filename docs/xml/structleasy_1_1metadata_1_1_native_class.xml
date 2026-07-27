@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1metadata_1_1_native_class" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::metadata::NativeClass</compoundname>
+    <basecompoundref refid="classleasy_1_1metadata_1_1_data" prot="public" virt="non-virtual">leasy::metadata::Data</basecompoundref>
+    <includes refid="class_8hpp" local="no">class.hpp</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structleasy_1_1metadata_1_1_native_class_1af7ad903990f4608d2e7b0963bb1d20d9" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string leasy::metadata::NativeClass::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>leasy::metadata::NativeClass::name</qualifiedname>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/class.hpp" line="44" column="47" bodyfile="leasy/metadata/class.hpp" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1metadata_1_1_native_class_1a8b36a280aa796241bc13343ad3ad1375" prot="public" static="no" mutable="no">
+        <type>std::unordered_map&lt; std::string, <ref refid="classleasy_1_1metadata_1_1_native_callable" kindref="compound">NativeCallable</ref> &gt;</type>
+        <definition>std::unordered_map&lt;std::string, NativeCallable&gt; leasy::metadata::NativeClass::methods</definition>
+        <argsstring></argsstring>
+        <name>methods</name>
+        <qualifiedname>leasy::metadata::NativeClass::methods</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/class.hpp" line="45" column="26" bodyfile="leasy/metadata/class.hpp" bodystart="45" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1metadata_1_1_native_class_1ab0b08e71fc00af6ce1c7a47a55b8653e" prot="public" static="no" mutable="no">
+        <type><ref refid="classleasy_1_1metadata_1_1_type_info" kindref="compound">TypeInfo</ref></type>
+        <definition>TypeInfo leasy::metadata::NativeClass::type</definition>
+        <argsstring></argsstring>
+        <name>type</name>
+        <qualifiedname>leasy::metadata::NativeClass::type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/class.hpp" line="46" column="47" bodyfile="leasy/metadata/class.hpp" bodystart="46" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structleasy_1_1metadata_1_1_native_class_1a0ac70bcedb05db7680331537e9be2796" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::metadata::NativeClass::NativeClass</definition>
+        <argsstring>()</argsstring>
+        <name>NativeClass</name>
+        <qualifiedname>leasy::metadata::NativeClass::NativeClass</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/class.hpp" line="48" column="12" bodyfile="leasy/metadata/class.hpp" bodystart="48" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1metadata_1_1_native_class_1ad61b24fd2b5da65d2de40b13b417cf16" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::metadata::NativeClass::NativeClass</definition>
+        <argsstring>(const std::string &amp;_name, const std::unordered_map&lt; std::string, NativeCallable &gt; &amp;_methods={}, const TypeInfo &amp;idx={})</argsstring>
+        <name>NativeClass</name>
+        <qualifiedname>leasy::metadata::NativeClass::NativeClass</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>_name</declname>
+        </param>
+        <param>
+          <type>const std::unordered_map&lt; std::string, <ref refid="classleasy_1_1metadata_1_1_native_callable" kindref="compound">NativeCallable</ref> &gt; &amp;</type>
+          <declname>_methods</declname>
+          <defval>{}</defval>
+        </param>
+        <param>
+          <type>const <ref refid="classleasy_1_1metadata_1_1_type_info" kindref="compound">TypeInfo</ref> &amp;</type>
+          <declname>idx</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/class.hpp" line="49" column="12" bodyfile="leasy/metadata/class.hpp" bodystart="49" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1metadata_1_1_native_class_1a6cd08addc7d7a76d4f5ed3a81d92c6ed" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Fs</declname>
+            <defname>Fs</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="structleasy_1_1metadata_1_1_native_class_1a0ac70bcedb05db7680331537e9be2796" kindref="member">NativeClass</ref> &amp;</type>
+        <definition>NativeClass &amp; leasy::metadata::NativeClass::method</definition>
+        <argsstring>(const std::string &amp;name, Fs &amp;&amp;... fn)</argsstring>
+        <name>method</name>
+        <qualifiedname>leasy::metadata::NativeClass::method</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>Fs &amp;&amp;...</type>
+          <declname>fn</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/class.hpp" line="56" column="24" bodyfile="leasy/metadata/class.hpp" bodystart="56" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1metadata_1_1_native_class_1ab6729947fb1c7331ef8aa972cbb99e5b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref></type>
+        <definition>Object leasy::metadata::NativeClass::dump</definition>
+        <argsstring>() const override</argsstring>
+        <name>dump</name>
+        <qualifiedname>leasy::metadata::NativeClass::dump</qualifiedname>
+        <reimplements refid="classleasy_1_1metadata_1_1_data_1aa147e2dbf84c5b9edc0874e0492c8a5e">dump</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/class.hpp" line="63" column="19" bodyfile="leasy/metadata/class.hpp" bodystart="63" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1metadata_1_1_native_class_1a7a23c845af1b6e31de070cd921d5e226" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void leasy::metadata::NativeClass::bind</definition>
+        <argsstring>(ul2::lstate &amp;state) const override</argsstring>
+        <name>bind</name>
+        <qualifiedname>leasy::metadata::NativeClass::bind</qualifiedname>
+        <reimplements refid="classleasy_1_1metadata_1_1_data_1a8776e154751bda5ca9d54b684c2c5699">bind</reimplements>
+        <param>
+          <type><ref refid="classleasy_1_1ul2_1_1lstate" kindref="compound">ul2::lstate</ref> &amp;</type>
+          <declname>state</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/class.hpp" line="76" column="17" bodyfile="leasy/metadata/class.hpp" bodystart="76" bodyend="82"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>leasy::metadata::Data</label>
+        <link refid="classleasy_1_1metadata_1_1_data"/>
+      </node>
+      <node id="1">
+        <label>leasy::metadata::NativeClass</label>
+        <link refid="structleasy_1_1metadata_1_1_native_class"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>leasy::metadata::Data</label>
+        <link refid="classleasy_1_1metadata_1_1_data"/>
+      </node>
+      <node id="1">
+        <label>leasy::metadata::NativeClass</label>
+        <link refid="structleasy_1_1metadata_1_1_native_class"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>type</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>leasy::metadata::TypeInfo</label>
+        <link refid="classleasy_1_1metadata_1_1_type_info"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/metadata/class.hpp" line="43" column="3" bodyfile="leasy/metadata/class.hpp" bodystart="43" bodyend="83"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1metadata_1_1_native_class_1a7a23c845af1b6e31de070cd921d5e226" prot="public" virt="virtual"><scope>leasy::metadata::NativeClass</scope><name>bind</name></member>
+      <member refid="structleasy_1_1metadata_1_1_native_class_1ab6729947fb1c7331ef8aa972cbb99e5b" prot="public" virt="virtual"><scope>leasy::metadata::NativeClass</scope><name>dump</name></member>
+      <member refid="structleasy_1_1metadata_1_1_native_class_1a6cd08addc7d7a76d4f5ed3a81d92c6ed" prot="public" virt="non-virtual"><scope>leasy::metadata::NativeClass</scope><name>method</name></member>
+      <member refid="structleasy_1_1metadata_1_1_native_class_1a8b36a280aa796241bc13343ad3ad1375" prot="public" virt="non-virtual"><scope>leasy::metadata::NativeClass</scope><name>methods</name></member>
+      <member refid="structleasy_1_1metadata_1_1_native_class_1af7ad903990f4608d2e7b0963bb1d20d9" prot="public" virt="non-virtual"><scope>leasy::metadata::NativeClass</scope><name>name</name></member>
+      <member refid="structleasy_1_1metadata_1_1_native_class_1a0ac70bcedb05db7680331537e9be2796" prot="public" virt="non-virtual"><scope>leasy::metadata::NativeClass</scope><name>NativeClass</name></member>
+      <member refid="structleasy_1_1metadata_1_1_native_class_1ad61b24fd2b5da65d2de40b13b417cf16" prot="public" virt="non-virtual"><scope>leasy::metadata::NativeClass</scope><name>NativeClass</name></member>
+      <member refid="structleasy_1_1metadata_1_1_native_class_1ab0b08e71fc00af6ce1c7a47a55b8653e" prot="public" virt="non-virtual"><scope>leasy::metadata::NativeClass</scope><name>type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_config_enum" kind="namespace" language="C++">
+    <compoundname>ConfigEnum</compoundname>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>ScalingMode</name>
+        <qualifiedname>ConfigEnum::ScalingMode</qualifiedname>
+        <enumvalue id="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000a60494f02d440f316319dd0fad40ad007" prot="public">
+          <name>Nearest</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Nearest neighbour to fit screen </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000aa0faef0851b4294c06f2b94bb1cb2044" prot="public">
+          <name>Integer</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Like NN but only scales to integers </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000aaf17c98bbd83c27d6426d2ff3fa81d7f" prot="public">
+          <name>Bilinear</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Integer followed by Bilinear downscale to fit screen </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="38" column="1" bodyfile="game_config.h" bodystart="38" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_config_enum_1aed4f168068862c122f4b138e2a3c3897" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>GameResolution</name>
+        <qualifiedname>ConfigEnum::GameResolution</qualifiedname>
+        <enumvalue id="namespace_config_enum_1aed4f168068862c122f4b138e2a3c3897a0a52da7a03a6de3beefe54f8c03ad80d" prot="public">
+          <name>Original</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>320x240 </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_config_enum_1aed4f168068862c122f4b138e2a3c3897a9bc9d2fa721a4e855537c9c423285806" prot="public">
+          <name>Widescreen</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>416x240 </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_config_enum_1aed4f168068862c122f4b138e2a3c3897ad7842fe6f1601ee07f984d6c3cc5d6f8" prot="public">
+          <name>Ultrawide</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>560x240 </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="47" column="1" bodyfile="game_config.h" bodystart="47" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_config_enum_1afbe539eb659a120eac031060bcf0237b" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>StartupLogos</name>
+        <qualifiedname>ConfigEnum::StartupLogos</qualifiedname>
+        <enumvalue id="namespace_config_enum_1afbe539eb659a120eac031060bcf0237ba6adf97f83acf6453d4a6a4b1070f3754" prot="public">
+          <name>None</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_config_enum_1afbe539eb659a120eac031060bcf0237ba90589c47f06eb971d548591f23c285af" prot="public">
+          <name>Custom</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_config_enum_1afbe539eb659a120eac031060bcf0237bab1c94ca2fbc3e78fc30069c8d0f01680" prot="public">
+          <name>All</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="56" column="1" bodyfile="game_config.h" bodystart="56" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_config_enum_1ac1da8e22735a3ab19903bda7c0b7c76a" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>StartupLangSelect</name>
+        <qualifiedname>ConfigEnum::StartupLangSelect</qualifiedname>
+        <enumvalue id="namespace_config_enum_1ac1da8e22735a3ab19903bda7c0b7c76aa6e7b34fa59e1bd229b207892956dc41c" prot="public">
+          <name>Never</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_config_enum_1ac1da8e22735a3ab19903bda7c0b7c76aa965d87c4fa290286400dde2a615f76b9" prot="public">
+          <name>FirstStartup</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_config_enum_1ac1da8e22735a3ab19903bda7c0b7c76aa68eec46437c384d8dad18d5464ebc35c" prot="public">
+          <name>Always</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="62" column="1" bodyfile="game_config.h" bodystart="62" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4de" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>ShowFps</name>
+        <qualifiedname>ConfigEnum::ShowFps</qualifiedname>
+        <enumvalue id="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4dea88559a0cfd8250c9d65970cc145c92d4" prot="public">
+          <name>OFF</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Do not show </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4dea90651ebea9a35ec4e018c8157492e17c" prot="public">
+          <name>ON</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>When windowed: Title bar, fullscreen: Overlay </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_config_enum_1a757dd971e1bab0de9851dc0b9a22c4dea6b551379c3c0b59326abdaf3b4395bd3" prot="public">
+          <name>Overlay</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Always overlay </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="70" column="1" bodyfile="game_config.h" bodystart="70" bodyend="77"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_config.h" line="37" column="1"/>
+  </compounddef>
+</doxygen>

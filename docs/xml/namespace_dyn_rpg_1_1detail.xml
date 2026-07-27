@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_dyn_rpg_1_1detail" kind="namespace" language="C++">
+    <compoundname>DynRpg::detail</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_dyn_rpg_1_1detail_1a55d2bb308b8d2a28b499cb77911531dc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool DynRpg::detail::parse_arg</definition>
+        <argsstring>(std::string_view, dyn_arg_list, const int, T &amp;, bool &amp;)</argsstring>
+        <name>parse_arg</name>
+        <qualifiedname>DynRpg::detail::parse_arg</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+        </param>
+        <param>
+          <type><ref refid="game__dynrpg_8h_1a06857b7795496bb79087d64b6cd3b07e" kindref="member">dyn_arg_list</ref></type>
+        </param>
+        <param>
+          <type>const int</type>
+        </param>
+        <param>
+          <type>T &amp;</type>
+        </param>
+        <param>
+          <type>bool &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_dynrpg.h" line="52" column="13" bodyfile="game_dynrpg.h" bodystart="52" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_dyn_rpg_1_1detail_1ac561f2f7c25dedf976093d1c4d240277" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool DynRpg::detail::parse_arg</definition>
+        <argsstring>(std::string_view func_name, dyn_arg_list args, const int i, float &amp;value, bool &amp;parse_okay)</argsstring>
+        <name>parse_arg</name>
+        <qualifiedname>DynRpg::detail::parse_arg</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>func_name</declname>
+        </param>
+        <param>
+          <type><ref refid="game__dynrpg_8h_1a06857b7795496bb79087d64b6cd3b07e" kindref="member">dyn_arg_list</ref></type>
+          <declname>args</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>i</declname>
+        </param>
+        <param>
+          <type>float &amp;</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>bool &amp;</type>
+          <declname>parse_okay</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_dynrpg.h" line="60" column="13" bodyfile="game_dynrpg.h" bodystart="60" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_dyn_rpg_1_1detail_1a10aaaa6520d1e33b169806ad09ddfe87" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool DynRpg::detail::parse_arg</definition>
+        <argsstring>(std::string_view func_name, dyn_arg_list args, const int i, int &amp;value, bool &amp;parse_okay)</argsstring>
+        <name>parse_arg</name>
+        <qualifiedname>DynRpg::detail::parse_arg</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>func_name</declname>
+        </param>
+        <param>
+          <type><ref refid="game__dynrpg_8h_1a06857b7795496bb79087d64b6cd3b07e" kindref="member">dyn_arg_list</ref></type>
+          <declname>args</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>i</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>bool &amp;</type>
+          <declname>parse_okay</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_dynrpg.h" line="79" column="13" bodyfile="game_dynrpg.h" bodystart="79" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_dyn_rpg_1_1detail_1adbe3f9d90caa0e270d2f049901c39a08" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool DynRpg::detail::parse_arg</definition>
+        <argsstring>(std::string_view, dyn_arg_list args, const int i, std::string &amp;value, bool &amp;parse_okay)</argsstring>
+        <name>parse_arg</name>
+        <qualifiedname>DynRpg::detail::parse_arg</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+        </param>
+        <param>
+          <type><ref refid="game__dynrpg_8h_1a06857b7795496bb79087d64b6cd3b07e" kindref="member">dyn_arg_list</ref></type>
+          <declname>args</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>i</declname>
+        </param>
+        <param>
+          <type>std::string &amp;</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>bool &amp;</type>
+          <declname>parse_okay</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_dynrpg.h" line="97" column="13" bodyfile="game_dynrpg.h" bodystart="97" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_dyn_rpg_1_1detail_1ac51835524ca0be07d9d5db7ad8caaa31" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Tuple</type>
+          </param>
+          <param>
+            <type>std::size_t...</type>
+            <declname>I</declname>
+            <defname>I</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void DynRpg::detail::parse_args</definition>
+        <argsstring>(std::string_view func_name, dyn_arg_list in, Tuple &amp;value, bool &amp;parse_okay, std::index_sequence&lt; I... &gt;)</argsstring>
+        <name>parse_args</name>
+        <qualifiedname>DynRpg::detail::parse_args</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>func_name</declname>
+        </param>
+        <param>
+          <type><ref refid="game__dynrpg_8h_1a06857b7795496bb79087d64b6cd3b07e" kindref="member">dyn_arg_list</ref></type>
+          <declname>in</declname>
+        </param>
+        <param>
+          <type>Tuple &amp;</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>bool &amp;</type>
+          <declname>parse_okay</declname>
+        </param>
+        <param>
+          <type>std::index_sequence&lt; I... &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_dynrpg.h" line="105" column="13" bodyfile="game_dynrpg.h" bodystart="105" bodyend="107"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_dynrpg.h" line="50" column="1"/>
+  </compounddef>
+</doxygen>

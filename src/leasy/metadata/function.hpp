@@ -25,6 +25,7 @@
 #include <any>
 #include <vector>
 #include <typeindex>
+#include <functional>
 #include <type_traits>
 
 #include "../iky7/nameof.hpp"
@@ -235,3 +236,4 @@ namespace leasy::metadata {
     }
   }
 }
+

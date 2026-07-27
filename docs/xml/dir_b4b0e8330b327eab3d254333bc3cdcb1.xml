@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_b4b0e8330b327eab3d254333bc3cdcb1" kind="dir">
+    <compoundname>platform/emscripten</compoundname>
+    <innerfile refid="emscripten_2clock_8h">clock.h</innerfile>
+    <innerfile refid="interface_8cpp">interface.cpp</innerfile>
+    <innerfile refid="interface_8h">interface.h</innerfile>
+    <innerfile refid="emscripten_2main_8cpp">main.cpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/emscripten/"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_labellist" kind="struct" language="C++" prot="public">
+    <compoundname>Labellist</compoundname>
+    <includes refid="lparser_8h" local="no">lparser.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_labellist_1a330c4161f41ef91c4f4e730e50d75b34" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_labeldesc" kindref="compound">Labeldesc</ref> *</type>
+        <definition>Labeldesc* Labellist::arr</definition>
+        <argsstring></argsstring>
+        <name>arr</name>
+        <qualifiedname>Labellist::arr</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="143" column="13" bodyfile="leasy/lua/lparser.h" bodystart="143" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_labellist_1a68f90673b9dc53b9a816bc981525f2a8" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Labellist::n</definition>
+        <argsstring></argsstring>
+        <name>n</name>
+        <qualifiedname>Labellist::n</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="144" column="7" bodyfile="leasy/lua/lparser.h" bodystart="144" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_labellist_1a2d0f72da42c57cfdbf8a19b9929b50cc" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Labellist::size</definition>
+        <argsstring></argsstring>
+        <name>size</name>
+        <qualifiedname>Labellist::size</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.h" line="145" column="7" bodyfile="leasy/lua/lparser.h" bodystart="145" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>Labeldesc</label>
+        <link refid="struct_labeldesc"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>name</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Labellist</label>
+        <link refid="struct_labellist"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>arr</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lparser.h" line="142" column="1" bodyfile="leasy/lua/lparser.h" bodystart="142" bodyend="146"/>
+    <listofallmembers>
+      <member refid="struct_labellist_1a330c4161f41ef91c4f4e730e50d75b34" prot="public" virt="non-virtual"><scope>Labellist</scope><name>arr</name></member>
+      <member refid="struct_labellist_1a68f90673b9dc53b9a816bc981525f2a8" prot="public" virt="non-virtual"><scope>Labellist</scope><name>n</name></member>
+      <member refid="struct_labellist_1a2d0f72da42c57cfdbf8a19b9929b50cc" prot="public" virt="non-virtual"><scope>Labellist</scope><name>size</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

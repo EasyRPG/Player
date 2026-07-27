@@ -75,3 +75,4 @@ inline void Update(int32_t& position, int32_t& time_left, int32_t strength, int3
 } //namespace Shake
 
 #endif
+

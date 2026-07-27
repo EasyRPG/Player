@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_color_h_s_l" kind="struct" language="C++" prot="public">
+    <compoundname>ColorHSL</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_color_h_s_l_1a6aad22a05370fcf3b6f0ce6a31695808" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double ColorHSL::h</definition>
+        <argsstring></argsstring>
+        <name>h</name>
+        <qualifiedname>ColorHSL::h</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="hslrgb.cpp" line="23" column="8" bodyfile="hslrgb.cpp" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_color_h_s_l_1a4bc1532bb564bcafee5ff90a6528e7c8" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double ColorHSL::s</definition>
+        <argsstring></argsstring>
+        <name>s</name>
+        <qualifiedname>ColorHSL::s</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="hslrgb.cpp" line="24" column="8" bodyfile="hslrgb.cpp" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double ColorHSL::l</definition>
+        <argsstring></argsstring>
+        <name>l</name>
+        <qualifiedname>ColorHSL::l</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="hslrgb.cpp" line="25" column="8" bodyfile="hslrgb.cpp" bodystart="25" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="hslrgb.cpp" line="22" column="1" bodyfile="hslrgb.cpp" bodystart="22" bodyend="26"/>
+    <listofallmembers>
+      <member refid="struct_color_h_s_l_1a6aad22a05370fcf3b6f0ce6a31695808" prot="public" virt="non-virtual"><scope>ColorHSL</scope><name>h</name></member>
+      <member refid="struct_color_h_s_l_1ab47455491ea89f168880ecc95be1a99f" prot="public" virt="non-virtual"><scope>ColorHSL</scope><name>l</name></member>
+      <member refid="struct_color_h_s_l_1a4bc1532bb564bcafee5ff90a6528e7c8" prot="public" virt="non-virtual"><scope>ColorHSL</scope><name>s</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="easyfs_8cpp" kind="file" language="C++">
+    <compoundname>easyfs.cpp</compoundname>
+    <includes local="no">filesystem</includes>
+    <includes refid="filesystem__native_8h" local="yes">filesystem_native.h</includes>
+    <includes refid="easyfs_8hpp" local="yes">easyfs.hpp</includes>
+    <incdepgraph>
+      <node id="12">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>filesystem_native.h</label>
+        <link refid="filesystem__native_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/ily3/easyfs.cpp</label>
+        <link refid="easyfs_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>easyfs.hpp</label>
+        <link refid="easyfs_8hpp"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>cassert</label>
+      </node>
+      <node id="6">
+        <label>cstdint</label>
+      </node>
+      <node id="2">
+        <label>filesystem</label>
+      </node>
+      <node id="19">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="20">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="8">
+        <label>istream</label>
+      </node>
+      <node id="18">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="15">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="17">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="7">
+        <label>memory</label>
+      </node>
+      <node id="9">
+        <label>ostream</label>
+      </node>
+      <node id="13">
+        <label>string</label>
+      </node>
+      <node id="10">
+        <label>unordered_map</label>
+      </node>
+      <node id="11">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceleasy">leasy</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ily3">leasy::ily3</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ily3_1_1efs">leasy::ily3::efs</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;filesystem&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="filesystem__native_8h" kindref="compound">filesystem_native.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="easyfs_8hpp" kindref="compound">easyfs.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="namespaceleasy_1_1ily3_1_1efs" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1ily3_1_1efs" kindref="compound">leasy::ily3::efs</ref><sp/>{</highlight></codeline>
+<codeline lineno="27" refid="namespaceleasy_1_1ily3_1_1efs_1aeed19c98c32e177fb69c490661579bed" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="class_native_filesystem" kindref="compound">NativeFilesystem</ref><sp/><ref refid="namespaceleasy_1_1ily3_1_1efs_1aeed19c98c32e177fb69c490661579bed" kindref="member">nfs</ref><sp/>=<sp/><ref refid="class_native_filesystem" kindref="compound">NativeFilesystem</ref>(std::filesystem::current_path().</highlight><highlight class="keywordtype">string</highlight><highlight class="normal">(),<sp/><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref>());</highlight></codeline>
+<codeline lineno="28" refid="namespaceleasy_1_1ily3_1_1efs_1a9dc3ee2211b2488cc29ad9737a58e804" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structleasy_1_1ily3_1_1efs_1_1app__fs__ctx" kindref="compound">app_fs_ctx</ref><sp/><ref refid="namespaceleasy_1_1ily3_1_1efs_1a9dc3ee2211b2488cc29ad9737a58e804" kindref="member">glob</ref><sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="29"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="leasy/ily3/easyfs.cpp"/>
+  </compounddef>
+</doxygen>

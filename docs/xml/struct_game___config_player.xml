@@ -1,0 +1,410 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___config_player" kind="struct" language="C++" prot="public">
+    <compoundname>Game_ConfigPlayer</compoundname>
+    <includes refid="game__config_8h" local="no">game_config.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___config_player_1a949a8e7e56570a805625567f5a68ec98" prot="public" static="no" mutable="no">
+        <type><ref refid="config__param_8h_1ac508820ef5654cf916f7e0901ce5ca11" kindref="member">StringConfigParam</ref></type>
+        <definition>StringConfigParam Game_ConfigPlayer::autobattle_algo</definition>
+        <argsstring></argsstring>
+        <name>autobattle_algo</name>
+        <qualifiedname>Game_ConfigPlayer::autobattle_algo</qualifiedname>
+        <initializer>{ &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot; }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="87" column="19" bodyfile="game_config.h" bodystart="87" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_player_1adf87d1e81046cc688022bc60151cf6e1" prot="public" static="no" mutable="no">
+        <type><ref refid="config__param_8h_1ac508820ef5654cf916f7e0901ce5ca11" kindref="member">StringConfigParam</ref></type>
+        <definition>StringConfigParam Game_ConfigPlayer::enemyai_algo</definition>
+        <argsstring></argsstring>
+        <name>enemyai_algo</name>
+        <qualifiedname>Game_ConfigPlayer::enemyai_algo</qualifiedname>
+        <initializer>{ &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot; }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="88" column="19" bodyfile="game_config.h" bodystart="88" bodyend="88"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_player_1ac494f90930eae509e07f6c150a44d890" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigPlayer::settings_autosave</definition>
+        <argsstring></argsstring>
+        <name>settings_autosave</name>
+        <qualifiedname>Game_ConfigPlayer::settings_autosave</qualifiedname>
+        <initializer>{ &quot;Save settings on exit&quot;, &quot;Automatically save the settings on exit&quot;, &quot;Player&quot;, &quot;SettingsAutosave&quot;, false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="89" column="17" bodyfile="game_config.h" bodystart="89" bodyend="89"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_player_1ac557f3b177e0574c4c7915304f42a1f1" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigPlayer::settings_in_title</definition>
+        <argsstring></argsstring>
+        <name>settings_in_title</name>
+        <qualifiedname>Game_ConfigPlayer::settings_in_title</qualifiedname>
+        <initializer>{ &quot;Show settings on title screen&quot;, &quot;Display settings menu item on the title screen&quot;, &quot;Player&quot;, &quot;SettingsInTitle&quot;, false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="90" column="17" bodyfile="game_config.h" bodystart="90" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_player_1a5d375a74ce5142d6e42e06241c96765c" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigPlayer::settings_in_menu</definition>
+        <argsstring></argsstring>
+        <name>settings_in_menu</name>
+        <qualifiedname>Game_ConfigPlayer::settings_in_menu</qualifiedname>
+        <initializer>{ &quot;Show settings in menu&quot;, &quot;Display settings menu item on the menu screen&quot;, &quot;Player&quot;, &quot;SettingsInMenu&quot;, false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="91" column="17" bodyfile="game_config.h" bodystart="91" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_player_1aa754cff3ae463ccdbcd04dc144facf75" prot="public" static="no" mutable="no">
+        <type><ref refid="class_enum_config_param" kindref="compound">EnumConfigParam</ref>&lt; <ref refid="namespace_config_enum_1afbe539eb659a120eac031060bcf0237b" kindref="member">ConfigEnum::StartupLogos</ref>, 3 &gt;</type>
+        <definition>EnumConfigParam&lt;ConfigEnum::StartupLogos, 3&gt; Game_ConfigPlayer::show_startup_logos</definition>
+        <argsstring></argsstring>
+        <name>show_startup_logos</name>
+        <qualifiedname>Game_ConfigPlayer::show_startup_logos</qualifiedname>
+        <initializer>{
+        &quot;Startup Logos&quot;, &quot;Logos that are displayed on startup&quot;, &quot;Player&quot;, &quot;StartupLogos&quot;, <ref refid="namespace_config_enum_1afbe539eb659a120eac031060bcf0237ba90589c47f06eb971d548591f23c285af" kindref="member">ConfigEnum::StartupLogos::Custom</ref>,
+        <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(&quot;None&quot;, &quot;Custom&quot;, &quot;All&quot;),
+        <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(&quot;none&quot;, &quot;custom&quot;, &quot;all&quot;),
+        <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(&quot;Do not show any additional logos&quot;, &quot;Show custom logos bundled with the game&quot;, &quot;Show all logos, including the original from RPG Maker&quot;)}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="92" column="17" bodyfile="game_config.h" bodystart="92" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_player_1ae53dc5686e96ab982fa3f88325642bd0" prot="public" static="no" mutable="no">
+        <type><ref refid="class_path_config_param" kindref="compound">PathConfigParam</ref></type>
+        <definition>PathConfigParam Game_ConfigPlayer::font1</definition>
+        <argsstring></argsstring>
+        <name>font1</name>
+        <qualifiedname>Game_ConfigPlayer::font1</qualifiedname>
+        <initializer>{ &quot;Font 1&quot;, &quot;The game chooses whether it wants font 1 or 2&quot;, &quot;Player&quot;, &quot;Font1&quot;, &quot;&quot; }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="97" column="17" bodyfile="game_config.h" bodystart="97" bodyend="97"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_player_1a378049638b72cada83050a31583a130a" prot="public" static="no" mutable="no">
+        <type><ref refid="class_range_config_param" kindref="compound">RangeConfigParam</ref>&lt; int &gt;</type>
+        <definition>RangeConfigParam&lt;int&gt; Game_ConfigPlayer::font1_size</definition>
+        <argsstring></argsstring>
+        <name>font1_size</name>
+        <qualifiedname>Game_ConfigPlayer::font1_size</qualifiedname>
+        <initializer>{ &quot;Font 1 Size&quot;, &quot;&quot;, &quot;Player&quot;, &quot;Font1Size&quot;, 12, 6, 16}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="98" column="18" bodyfile="game_config.h" bodystart="98" bodyend="98"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_player_1ae058863dfce310957dbab39d9e3f5b6b" prot="public" static="no" mutable="no">
+        <type><ref refid="class_path_config_param" kindref="compound">PathConfigParam</ref></type>
+        <definition>PathConfigParam Game_ConfigPlayer::font2</definition>
+        <argsstring></argsstring>
+        <name>font2</name>
+        <qualifiedname>Game_ConfigPlayer::font2</qualifiedname>
+        <initializer>{ &quot;Font 2&quot;, &quot;The game chooses whether it wants font 1 or 2&quot;, &quot;Player&quot;, &quot;Font2&quot;, &quot;&quot; }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="99" column="17" bodyfile="game_config.h" bodystart="99" bodyend="99"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_player_1a80fbaa9a7a88dcb840fa009166511212" prot="public" static="no" mutable="no">
+        <type><ref refid="class_range_config_param" kindref="compound">RangeConfigParam</ref>&lt; int &gt;</type>
+        <definition>RangeConfigParam&lt;int&gt; Game_ConfigPlayer::font2_size</definition>
+        <argsstring></argsstring>
+        <name>font2_size</name>
+        <qualifiedname>Game_ConfigPlayer::font2_size</qualifiedname>
+        <initializer>{ &quot;Font 2 Size&quot;, &quot;&quot;, &quot;Player&quot;, &quot;Font2Size&quot;, 12, 6, 16}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="100" column="18" bodyfile="game_config.h" bodystart="100" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_player_1a459ddadc26abe8a80ae1b1844b249cbe" prot="public" static="no" mutable="no">
+        <type><ref refid="class_enum_config_param" kindref="compound">EnumConfigParam</ref>&lt; <ref refid="namespace_config_enum_1ac1da8e22735a3ab19903bda7c0b7c76a" kindref="member">ConfigEnum::StartupLangSelect</ref>, 3 &gt;</type>
+        <definition>EnumConfigParam&lt;ConfigEnum::StartupLangSelect, 3&gt; Game_ConfigPlayer::lang_select_on_start</definition>
+        <argsstring></argsstring>
+        <name>lang_select_on_start</name>
+        <qualifiedname>Game_ConfigPlayer::lang_select_on_start</qualifiedname>
+        <initializer>{
+        &quot;Startup <ref refid="struct_language" kindref="compound">Language</ref> Menu&quot;, &quot;Show language menu before booting up a game&quot;, &quot;Player&quot;, &quot;StartupLangSelect&quot;, <ref refid="namespace_config_enum_1ac1da8e22735a3ab19903bda7c0b7c76aa965d87c4fa290286400dde2a615f76b9" kindref="member">ConfigEnum::StartupLangSelect::FirstStartup</ref>,
+        <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(&quot;Never&quot;, &quot;First Start&quot;, &quot;Always&quot;),
+        <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(&quot;never&quot;, &quot;FirstStartup&quot;, &quot;always&quot;),
+        <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(&quot;Never show language menu on start&quot;, &quot;Show on first start (when no save files are found)&quot;, &quot;Always show language menu prior to the title screen&quot;) }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="101" column="17" bodyfile="game_config.h" bodystart="101" bodyend="105"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_player_1a2996d9da11e28d728b3963917c6ea0e3" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigPlayer::lang_select_in_title</definition>
+        <argsstring></argsstring>
+        <name>lang_select_in_title</name>
+        <qualifiedname>Game_ConfigPlayer::lang_select_in_title</qualifiedname>
+        <initializer>{ &quot;Show language menu on title screen&quot;, &quot;Display language menu item on the title screen&quot;, &quot;Player&quot;, &quot;LanguageInTitle&quot;, true }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="106" column="17" bodyfile="game_config.h" bodystart="106" bodyend="106"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_player_1a35d4a91db6b1ea9ed9200fac850a0def" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigPlayer::log_enabled</definition>
+        <argsstring></argsstring>
+        <name>log_enabled</name>
+        <qualifiedname>Game_ConfigPlayer::log_enabled</qualifiedname>
+        <initializer>{ &quot;Logging&quot;, &quot;Write diagnostic messages into a logfile&quot;, &quot;Player&quot;, &quot;Logging&quot;, true }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="107" column="17" bodyfile="game_config.h" bodystart="107" bodyend="107"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_player_1a2f6a5f903604c8ae5ad5b2af257151b5" prot="public" static="no" mutable="no">
+        <type><ref refid="class_range_config_param" kindref="compound">RangeConfigParam</ref>&lt; int &gt;</type>
+        <definition>RangeConfigParam&lt;int&gt; Game_ConfigPlayer::screenshot_scale</definition>
+        <argsstring></argsstring>
+        <name>screenshot_scale</name>
+        <qualifiedname>Game_ConfigPlayer::screenshot_scale</qualifiedname>
+        <initializer>{ &quot;Screenshot scaling factor&quot;, &quot;Scale screenshots by the given factor&quot;, &quot;Player&quot;, &quot;ScreenshotScale&quot;, 1, 1, 24}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="108" column="18" bodyfile="game_config.h" bodystart="108" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_player_1a7b8c69f6e228da9d36baca6dc6adf420" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigPlayer::screenshot_timestamp</definition>
+        <argsstring></argsstring>
+        <name>screenshot_timestamp</name>
+        <qualifiedname>Game_ConfigPlayer::screenshot_timestamp</qualifiedname>
+        <initializer>{ &quot;Screenshot timestamp&quot;, &quot;Add the current date and time to the file name&quot;, &quot;Player&quot;, &quot;ScreenshotTimestamp&quot;, true }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="109" column="17" bodyfile="game_config.h" bodystart="109" bodyend="109"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_player_1ae2b91f8246c36697bba89d85893b920c" prot="public" static="no" mutable="no">
+        <type><ref refid="class_bool_config_param" kindref="compound">BoolConfigParam</ref></type>
+        <definition>BoolConfigParam Game_ConfigPlayer::automatic_screenshots</definition>
+        <argsstring></argsstring>
+        <name>automatic_screenshots</name>
+        <qualifiedname>Game_ConfigPlayer::automatic_screenshots</qualifiedname>
+        <initializer>{ &quot;Automatic screenshots&quot;, &quot;Periodically take screenshots&quot;, &quot;Player&quot;, &quot;AutomaticScreenshots&quot;, false }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="110" column="17" bodyfile="game_config.h" bodystart="110" bodyend="110"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___config_player_1a36a11f969087729ff933024e62e8aab4" prot="public" static="no" mutable="no">
+        <type><ref refid="class_range_config_param" kindref="compound">RangeConfigParam</ref>&lt; int &gt;</type>
+        <definition>RangeConfigParam&lt;int&gt; Game_ConfigPlayer::automatic_screenshots_interval</definition>
+        <argsstring></argsstring>
+        <name>automatic_screenshots_interval</name>
+        <qualifiedname>Game_ConfigPlayer::automatic_screenshots_interval</qualifiedname>
+        <initializer>{ &quot;Screenshot interval&quot;, &quot;The interval between automatic screenshots (seconds)&quot;, &quot;Player&quot;, &quot;AutomaticScreenshotsInterval&quot;, 30, 1, 999999 }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="111" column="18" bodyfile="game_config.h" bodystart="111" bodyend="111"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_game___config_player_1ad72c1610d9e4c08652ea41fab3f3db7f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_ConfigPlayer::Hide</definition>
+        <argsstring>()</argsstring>
+        <name>Hide</name>
+        <qualifiedname>Game_ConfigPlayer::Hide</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_config.h" line="113" column="6" bodyfile="game_config.cpp" bodystart="58" bodyend="69"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="4">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>ConfigParam&lt; std::string &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>ConfigParamBase&lt; ConfigEnum::StartupLangSelect &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="7">
+        <label>ConfigParamBase&lt; ConfigEnum::StartupLogos &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="5">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="11">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="3">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="12">
+        <label>EnumConfigParam&lt; ConfigEnum::StartupLangSelect, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="13" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>EnumConfigParam&lt; ConfigEnum::StartupLogos, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Game_ConfigPlayer</label>
+        <link refid="struct_game___config_player"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>autobattle_algo</edgelabel>
+          <edgelabel>enemyai_algo</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>automatic_screenshots</edgelabel>
+          <edgelabel>lang_select_in_title</edgelabel>
+          <edgelabel>log_enabled</edgelabel>
+          <edgelabel>screenshot_timestamp</edgelabel>
+          <edgelabel>settings_autosave</edgelabel>
+          <edgelabel>settings_in_menu</edgelabel>
+          <edgelabel>settings_in_title</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>show_startup_logos</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>font1</edgelabel>
+          <edgelabel>font2</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>automatic_screenshots_interval</edgelabel>
+          <edgelabel>font1_size</edgelabel>
+          <edgelabel>font2_size</edgelabel>
+          <edgelabel>screenshot_scale</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>lang_select_on_start</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>PathConfigParam</label>
+        <link refid="class_path_config_param"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="11" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>StringConfigParam</label>
+        <link refid="class_config_param"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="game_config.h" line="86" column="1" bodyfile="game_config.h" bodystart="86" bodyend="114"/>
+    <listofallmembers>
+      <member refid="struct_game___config_player_1a949a8e7e56570a805625567f5a68ec98" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>autobattle_algo</name></member>
+      <member refid="struct_game___config_player_1ae2b91f8246c36697bba89d85893b920c" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>automatic_screenshots</name></member>
+      <member refid="struct_game___config_player_1a36a11f969087729ff933024e62e8aab4" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>automatic_screenshots_interval</name></member>
+      <member refid="struct_game___config_player_1adf87d1e81046cc688022bc60151cf6e1" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>enemyai_algo</name></member>
+      <member refid="struct_game___config_player_1ae53dc5686e96ab982fa3f88325642bd0" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>font1</name></member>
+      <member refid="struct_game___config_player_1a378049638b72cada83050a31583a130a" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>font1_size</name></member>
+      <member refid="struct_game___config_player_1ae058863dfce310957dbab39d9e3f5b6b" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>font2</name></member>
+      <member refid="struct_game___config_player_1a80fbaa9a7a88dcb840fa009166511212" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>font2_size</name></member>
+      <member refid="struct_game___config_player_1ad72c1610d9e4c08652ea41fab3f3db7f" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>Hide</name></member>
+      <member refid="struct_game___config_player_1a2996d9da11e28d728b3963917c6ea0e3" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>lang_select_in_title</name></member>
+      <member refid="struct_game___config_player_1a459ddadc26abe8a80ae1b1844b249cbe" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>lang_select_on_start</name></member>
+      <member refid="struct_game___config_player_1a35d4a91db6b1ea9ed9200fac850a0def" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>log_enabled</name></member>
+      <member refid="struct_game___config_player_1a2f6a5f903604c8ae5ad5b2af257151b5" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>screenshot_scale</name></member>
+      <member refid="struct_game___config_player_1a7b8c69f6e228da9d36baca6dc6adf420" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>screenshot_timestamp</name></member>
+      <member refid="struct_game___config_player_1ac494f90930eae509e07f6c150a44d890" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>settings_autosave</name></member>
+      <member refid="struct_game___config_player_1a5d375a74ce5142d6e42e06241c96765c" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>settings_in_menu</name></member>
+      <member refid="struct_game___config_player_1ac557f3b177e0574c4c7915304f42a1f1" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>settings_in_title</name></member>
+      <member refid="struct_game___config_player_1aa754cff3ae463ccdbcd04dc144facf75" prot="public" virt="non-virtual"><scope>Game_ConfigPlayer</scope><name>show_startup_logos</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

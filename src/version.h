@@ -51,3 +51,4 @@ namespace Version {
 #define PLAYER_SAVEGAME_VERSION (Version::MAJOR * 1000 + Version::MINOR * 100 + Version::PATCH * 10 + 0)
 
 #endif
+

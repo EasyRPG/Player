@@ -955,3 +955,4 @@ Font::GlyphRet ExFont::vRender(char32_t glyph) const {
 Rect ExFont::vGetSize(char32_t) const {
 	return Rect(0, 0, WIDTH, HEIGHT);
 }
+

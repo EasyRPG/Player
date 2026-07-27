@@ -1,0 +1,241 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdrwav__bext" kind="struct" language="C++" prot="public">
+    <compoundname>drwav_bext</compoundname>
+    <includes refid="dr__wav_8h" local="no">dr_wav.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdrwav__bext_1ab68417efb24352d9c5dd96e44d34a963" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* drwav_bext::pDescription</definition>
+        <argsstring></argsstring>
+        <name>pDescription</name>
+        <qualifiedname>drwav_bext::pDescription</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="719" column="10" bodyfile="external/dr_wav.h" bodystart="719" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__bext_1a0bf2f2e0411c9787fcd4ba4d1f69cf80" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* drwav_bext::pOriginatorName</definition>
+        <argsstring></argsstring>
+        <name>pOriginatorName</name>
+        <qualifiedname>drwav_bext::pOriginatorName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="720" column="10" bodyfile="external/dr_wav.h" bodystart="720" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__bext_1a8f612e473c9834d974f560ba34271c0f" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* drwav_bext::pOriginatorReference</definition>
+        <argsstring></argsstring>
+        <name>pOriginatorReference</name>
+        <qualifiedname>drwav_bext::pOriginatorReference</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="721" column="10" bodyfile="external/dr_wav.h" bodystart="721" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__bext_1a6e0a374971f46d5b12db3e6032527500" prot="public" static="no" mutable="no">
+        <type>char</type>
+        <definition>char drwav_bext::pOriginationDate[10]</definition>
+        <argsstring>[10]</argsstring>
+        <name>pOriginationDate</name>
+        <qualifiedname>drwav_bext::pOriginationDate</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="722" column="11" bodyfile="external/dr_wav.h" bodystart="722" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__bext_1a66e1ea3603010d95051e0799e405ecaa" prot="public" static="no" mutable="no">
+        <type>char</type>
+        <definition>char drwav_bext::pOriginationTime[8]</definition>
+        <argsstring>[8]</argsstring>
+        <name>pOriginationTime</name>
+        <qualifiedname>drwav_bext::pOriginationTime</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="723" column="11" bodyfile="external/dr_wav.h" bodystart="723" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__bext_1acff137b0920c2ce8038360a4d2f418ff" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ad25b608525a9683bf6eb2f7cb21dd783" kindref="member">drwav_uint64</ref></type>
+        <definition>drwav_uint64 drwav_bext::timeReference</definition>
+        <argsstring></argsstring>
+        <name>timeReference</name>
+        <qualifiedname>drwav_bext::timeReference</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="724" column="18" bodyfile="external/dr_wav.h" bodystart="724" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__bext_1a03fea9e786d2592f945ad9ccffbce6c7" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_bext::version</definition>
+        <argsstring></argsstring>
+        <name>version</name>
+        <qualifiedname>drwav_bext::version</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="725" column="18" bodyfile="external/dr_wav.h" bodystart="725" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__bext_1a1e253604972ed0a5f3dbb08de3026107" prot="public" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* drwav_bext::pCodingHistory</definition>
+        <argsstring></argsstring>
+        <name>pCodingHistory</name>
+        <qualifiedname>drwav_bext::pCodingHistory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="731" column="10" bodyfile="external/dr_wav.h" bodystart="731" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__bext_1ac6ea7a9ea00aa549062f7af94208d788" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1a89e2d93bb94b521bbd2aacb9c451a862" kindref="member">drwav_uint32</ref></type>
+        <definition>drwav_uint32 drwav_bext::codingHistorySize</definition>
+        <argsstring></argsstring>
+        <name>codingHistorySize</name>
+        <qualifiedname>drwav_bext::codingHistorySize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="732" column="18" bodyfile="external/dr_wav.h" bodystart="732" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__bext_1adffb839937b282ee8847d0b6e7deaca2" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1ae433204b3e47bded80161f89f5d52895" kindref="member">drwav_uint8</ref> *</type>
+        <definition>drwav_uint8* drwav_bext::pUMID</definition>
+        <argsstring></argsstring>
+        <name>pUMID</name>
+        <qualifiedname>drwav_bext::pUMID</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="735" column="17" bodyfile="external/dr_wav.h" bodystart="735" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__bext_1a5a013022f05f71c9131e071965ad1ea4" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_bext::loudnessValue</definition>
+        <argsstring></argsstring>
+        <name>loudnessValue</name>
+        <qualifiedname>drwav_bext::loudnessValue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="738" column="18" bodyfile="external/dr_wav.h" bodystart="738" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__bext_1acaea5e866df29da4cb42cf84e9df63ac" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_bext::loudnessRange</definition>
+        <argsstring></argsstring>
+        <name>loudnessRange</name>
+        <qualifiedname>drwav_bext::loudnessRange</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="739" column="18" bodyfile="external/dr_wav.h" bodystart="739" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__bext_1a412495fb073d42987c7fc2c193471ae8" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_bext::maxTruePeakLevel</definition>
+        <argsstring></argsstring>
+        <name>maxTruePeakLevel</name>
+        <qualifiedname>drwav_bext::maxTruePeakLevel</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="740" column="18" bodyfile="external/dr_wav.h" bodystart="740" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__bext_1aadb385acb3920f9887c90d4b56de51d4" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_bext::maxMomentaryLoudness</definition>
+        <argsstring></argsstring>
+        <name>maxMomentaryLoudness</name>
+        <qualifiedname>drwav_bext::maxMomentaryLoudness</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="741" column="18" bodyfile="external/dr_wav.h" bodystart="741" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav__bext_1aa3945200564d607fb439ea39a1611ea4" prot="public" static="no" mutable="no">
+        <type><ref refid="dr__wav_8h_1afacd6fbdb98898ede25250c9cacbcc35" kindref="member">drwav_uint16</ref></type>
+        <definition>drwav_uint16 drwav_bext::maxShortTermLoudness</definition>
+        <argsstring></argsstring>
+        <name>maxShortTermLoudness</name>
+        <qualifiedname>drwav_bext::maxShortTermLoudness</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="742" column="18" bodyfile="external/dr_wav.h" bodystart="742" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="external/dr_wav.h" line="712" column="1" bodyfile="external/dr_wav.h" bodystart="713" bodyend="743"/>
+    <listofallmembers>
+      <member refid="structdrwav__bext_1ac6ea7a9ea00aa549062f7af94208d788" prot="public" virt="non-virtual"><scope>drwav_bext</scope><name>codingHistorySize</name></member>
+      <member refid="structdrwav__bext_1acaea5e866df29da4cb42cf84e9df63ac" prot="public" virt="non-virtual"><scope>drwav_bext</scope><name>loudnessRange</name></member>
+      <member refid="structdrwav__bext_1a5a013022f05f71c9131e071965ad1ea4" prot="public" virt="non-virtual"><scope>drwav_bext</scope><name>loudnessValue</name></member>
+      <member refid="structdrwav__bext_1aadb385acb3920f9887c90d4b56de51d4" prot="public" virt="non-virtual"><scope>drwav_bext</scope><name>maxMomentaryLoudness</name></member>
+      <member refid="structdrwav__bext_1aa3945200564d607fb439ea39a1611ea4" prot="public" virt="non-virtual"><scope>drwav_bext</scope><name>maxShortTermLoudness</name></member>
+      <member refid="structdrwav__bext_1a412495fb073d42987c7fc2c193471ae8" prot="public" virt="non-virtual"><scope>drwav_bext</scope><name>maxTruePeakLevel</name></member>
+      <member refid="structdrwav__bext_1a1e253604972ed0a5f3dbb08de3026107" prot="public" virt="non-virtual"><scope>drwav_bext</scope><name>pCodingHistory</name></member>
+      <member refid="structdrwav__bext_1ab68417efb24352d9c5dd96e44d34a963" prot="public" virt="non-virtual"><scope>drwav_bext</scope><name>pDescription</name></member>
+      <member refid="structdrwav__bext_1a6e0a374971f46d5b12db3e6032527500" prot="public" virt="non-virtual"><scope>drwav_bext</scope><name>pOriginationDate</name></member>
+      <member refid="structdrwav__bext_1a66e1ea3603010d95051e0799e405ecaa" prot="public" virt="non-virtual"><scope>drwav_bext</scope><name>pOriginationTime</name></member>
+      <member refid="structdrwav__bext_1a0bf2f2e0411c9787fcd4ba4d1f69cf80" prot="public" virt="non-virtual"><scope>drwav_bext</scope><name>pOriginatorName</name></member>
+      <member refid="structdrwav__bext_1a8f612e473c9834d974f560ba34271c0f" prot="public" virt="non-virtual"><scope>drwav_bext</scope><name>pOriginatorReference</name></member>
+      <member refid="structdrwav__bext_1adffb839937b282ee8847d0b6e7deaca2" prot="public" virt="non-virtual"><scope>drwav_bext</scope><name>pUMID</name></member>
+      <member refid="structdrwav__bext_1acff137b0920c2ce8038360a4d2f418ff" prot="public" virt="non-virtual"><scope>drwav_bext</scope><name>timeReference</name></member>
+      <member refid="structdrwav__bext_1a03fea9e786d2592f945ad9ccffbce6c7" prot="public" virt="non-virtual"><scope>drwav_bext</scope><name>version</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

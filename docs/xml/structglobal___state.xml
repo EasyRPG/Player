@@ -1,0 +1,851 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structglobal___state" kind="struct" language="C++" prot="public">
+    <compoundname>global_State</compoundname>
+    <includes refid="lstate_8h" local="no">lstate.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structglobal___state_1aa26cfe7f3761fda56740a545d15001ea" prot="public" static="no" mutable="no">
+        <type><ref refid="lua_8h_1a2ba24df8972a4a52ebd3517c62e0830d" kindref="member">lua_Alloc</ref></type>
+        <definition>lua_Alloc global_State::frealloc</definition>
+        <argsstring></argsstring>
+        <name>frealloc</name>
+        <qualifiedname>global_State::frealloc</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="328" column="13" bodyfile="leasy/lua/lstate.h" bodystart="328" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1af12419c778ac134ece8e269bfcaf06ad" prot="public" static="no" mutable="no">
+        <type>void *</type>
+        <definition>void* global_State::ud</definition>
+        <argsstring></argsstring>
+        <name>ud</name>
+        <qualifiedname>global_State::ud</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="329" column="8" bodyfile="leasy/lua/lstate.h" bodystart="329" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1aaca0824b783d72bcbc3c14dddebe1f21" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1a24fc195087e262c99a4cf0f9b346a684" kindref="member">l_mem</ref></type>
+        <definition>l_mem global_State::GCtotalbytes</definition>
+        <argsstring></argsstring>
+        <name>GCtotalbytes</name>
+        <qualifiedname>global_State::GCtotalbytes</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="330" column="9" bodyfile="leasy/lua/lstate.h" bodystart="330" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a238d1f76279f013961d01abb93a74a47" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1a24fc195087e262c99a4cf0f9b346a684" kindref="member">l_mem</ref></type>
+        <definition>l_mem global_State::GCdebt</definition>
+        <argsstring></argsstring>
+        <name>GCdebt</name>
+        <qualifiedname>global_State::GCdebt</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="331" column="9" bodyfile="leasy/lua/lstate.h" bodystart="331" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a25849ffdfd13bf88aa73b2c80b7ba2ba" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1a24fc195087e262c99a4cf0f9b346a684" kindref="member">l_mem</ref></type>
+        <definition>l_mem global_State::GCmarked</definition>
+        <argsstring></argsstring>
+        <name>GCmarked</name>
+        <qualifiedname>global_State::GCmarked</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="332" column="9" bodyfile="leasy/lua/lstate.h" bodystart="332" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a2fd2bd7bafd42ee4b5668384f4c10aea" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1a24fc195087e262c99a4cf0f9b346a684" kindref="member">l_mem</ref></type>
+        <definition>l_mem global_State::GCmajorminor</definition>
+        <argsstring></argsstring>
+        <name>GCmajorminor</name>
+        <qualifiedname>global_State::GCmajorminor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="333" column="9" bodyfile="leasy/lua/lstate.h" bodystart="333" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a8cdea736db8d268e488aa9e9fa5c992c" prot="public" static="no" mutable="no">
+        <type><ref refid="structstringtable" kindref="compound">stringtable</ref></type>
+        <definition>stringtable global_State::strt</definition>
+        <argsstring></argsstring>
+        <name>strt</name>
+        <qualifiedname>global_State::strt</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="334" column="15" bodyfile="leasy/lua/lstate.h" bodystart="334" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a3e4eaa91bd14094bf3217073aa40b4f7" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_value" kindref="compound">TValue</ref></type>
+        <definition>TValue global_State::l_registry</definition>
+        <argsstring></argsstring>
+        <name>l_registry</name>
+        <qualifiedname>global_State::l_registry</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="335" column="10" bodyfile="leasy/lua/lstate.h" bodystart="335" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a112c02e74c5adda770367c8a120b1fdd" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_value" kindref="compound">TValue</ref></type>
+        <definition>TValue global_State::nilvalue</definition>
+        <argsstring></argsstring>
+        <name>nilvalue</name>
+        <qualifiedname>global_State::nilvalue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="336" column="10" bodyfile="leasy/lua/lstate.h" bodystart="336" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a3e1a9b3a2f2dd49f14a38726239494e2" prot="public" static="no" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int global_State::seed</definition>
+        <argsstring></argsstring>
+        <name>seed</name>
+        <qualifiedname>global_State::seed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="337" column="16" bodyfile="leasy/lua/lstate.h" bodystart="337" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a15336deb7defd1b096d875c3d16a6d15" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte global_State::gcparams[LUA_GCPN]</definition>
+        <argsstring>[LUA_GCPN]</argsstring>
+        <name>gcparams</name>
+        <qualifiedname>global_State::gcparams</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="338" column="11" bodyfile="leasy/lua/lstate.h" bodystart="338" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a31fbedd19538500531d49532226a001a" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte global_State::currentwhite</definition>
+        <argsstring></argsstring>
+        <name>currentwhite</name>
+        <qualifiedname>global_State::currentwhite</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="339" column="11" bodyfile="leasy/lua/lstate.h" bodystart="339" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1aea4d494b8b9accef389f2be8830f7a84" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte global_State::gcstate</definition>
+        <argsstring></argsstring>
+        <name>gcstate</name>
+        <qualifiedname>global_State::gcstate</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="340" column="11" bodyfile="leasy/lua/lstate.h" bodystart="340" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1acf4c834918cf4766f13dd91306360802" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte global_State::gckind</definition>
+        <argsstring></argsstring>
+        <name>gckind</name>
+        <qualifiedname>global_State::gckind</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="341" column="11" bodyfile="leasy/lua/lstate.h" bodystart="341" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a435de3a5495d7529fff62accc539a96d" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte global_State::gcstopem</definition>
+        <argsstring></argsstring>
+        <name>gcstopem</name>
+        <qualifiedname>global_State::gcstopem</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="342" column="11" bodyfile="leasy/lua/lstate.h" bodystart="342" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1ad8326cdab506c623a4daf1d91ef8981f" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte global_State::gcstp</definition>
+        <argsstring></argsstring>
+        <name>gcstp</name>
+        <qualifiedname>global_State::gcstp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="343" column="11" bodyfile="leasy/lua/lstate.h" bodystart="343" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a3caf542e40aca4f02d6cc6ff2008f467" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte global_State::gcemergency</definition>
+        <argsstring></argsstring>
+        <name>gcemergency</name>
+        <qualifiedname>global_State::gcemergency</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="344" column="11" bodyfile="leasy/lua/lstate.h" bodystart="344" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1aaba2570fb1444c6457a82df9fbad05ed" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* global_State::allgc</definition>
+        <argsstring></argsstring>
+        <name>allgc</name>
+        <qualifiedname>global_State::allgc</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="345" column="12" bodyfile="leasy/lua/lstate.h" bodystart="345" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a357ff5a5981fc6c64825508c7718fbbc" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> **</type>
+        <definition>GCObject** global_State::sweepgc</definition>
+        <argsstring></argsstring>
+        <name>sweepgc</name>
+        <qualifiedname>global_State::sweepgc</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="346" column="12" bodyfile="leasy/lua/lstate.h" bodystart="346" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1afa672a968752a31f2319d40deecfeecc" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* global_State::finobj</definition>
+        <argsstring></argsstring>
+        <name>finobj</name>
+        <qualifiedname>global_State::finobj</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="347" column="12" bodyfile="leasy/lua/lstate.h" bodystart="347" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a2d96e2afbc62ff832ab660ed4c357696" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* global_State::gray</definition>
+        <argsstring></argsstring>
+        <name>gray</name>
+        <qualifiedname>global_State::gray</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="348" column="12" bodyfile="leasy/lua/lstate.h" bodystart="348" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a2ccaa5d2e98c086489c04e2045082535" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* global_State::grayagain</definition>
+        <argsstring></argsstring>
+        <name>grayagain</name>
+        <qualifiedname>global_State::grayagain</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="349" column="12" bodyfile="leasy/lua/lstate.h" bodystart="349" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1ab84f67e3b1e863392e504e9d13787891" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* global_State::weak</definition>
+        <argsstring></argsstring>
+        <name>weak</name>
+        <qualifiedname>global_State::weak</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="350" column="12" bodyfile="leasy/lua/lstate.h" bodystart="350" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a291641a891457af2d199cb920d9d1a0d" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* global_State::ephemeron</definition>
+        <argsstring></argsstring>
+        <name>ephemeron</name>
+        <qualifiedname>global_State::ephemeron</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="351" column="12" bodyfile="leasy/lua/lstate.h" bodystart="351" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1ab092ebab0f825675b9e4861d4d4a4fb9" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* global_State::allweak</definition>
+        <argsstring></argsstring>
+        <name>allweak</name>
+        <qualifiedname>global_State::allweak</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="352" column="12" bodyfile="leasy/lua/lstate.h" bodystart="352" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a90da07dbcac2e16b87e559180ebbe852" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* global_State::tobefnz</definition>
+        <argsstring></argsstring>
+        <name>tobefnz</name>
+        <qualifiedname>global_State::tobefnz</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="353" column="12" bodyfile="leasy/lua/lstate.h" bodystart="353" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a429b525c636d5b268e03f1c10a85cf8f" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* global_State::fixedgc</definition>
+        <argsstring></argsstring>
+        <name>fixedgc</name>
+        <qualifiedname>global_State::fixedgc</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="354" column="12" bodyfile="leasy/lua/lstate.h" bodystart="354" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1aff359f11cdc555233f202a9cd03c0b8d" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* global_State::survival</definition>
+        <argsstring></argsstring>
+        <name>survival</name>
+        <qualifiedname>global_State::survival</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="356" column="12" bodyfile="leasy/lua/lstate.h" bodystart="356" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1ad26c972db49d6ae2befcdd842c21e59b" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* global_State::old1</definition>
+        <argsstring></argsstring>
+        <name>old1</name>
+        <qualifiedname>global_State::old1</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="357" column="12" bodyfile="leasy/lua/lstate.h" bodystart="357" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a3e26ca024b115b33c7af7c5c5c09edaa" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* global_State::reallyold</definition>
+        <argsstring></argsstring>
+        <name>reallyold</name>
+        <qualifiedname>global_State::reallyold</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="358" column="12" bodyfile="leasy/lua/lstate.h" bodystart="358" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a1519e03d08f4b7ec0d91d135a7ea3150" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* global_State::firstold1</definition>
+        <argsstring></argsstring>
+        <name>firstold1</name>
+        <qualifiedname>global_State::firstold1</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="359" column="12" bodyfile="leasy/lua/lstate.h" bodystart="359" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a13b646894c7b76cfe43c9d084e1a5634" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* global_State::finobjsur</definition>
+        <argsstring></argsstring>
+        <name>finobjsur</name>
+        <qualifiedname>global_State::finobjsur</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="360" column="12" bodyfile="leasy/lua/lstate.h" bodystart="360" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a3472d212085f38fb8b5e7aaf2800826f" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* global_State::finobjold1</definition>
+        <argsstring></argsstring>
+        <name>finobjold1</name>
+        <qualifiedname>global_State::finobjold1</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="361" column="12" bodyfile="leasy/lua/lstate.h" bodystart="361" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a237e6929ce1995e5ea10c2099899fd5e" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>GCObject* global_State::finobjrold</definition>
+        <argsstring></argsstring>
+        <name>finobjrold</name>
+        <qualifiedname>global_State::finobjrold</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="362" column="12" bodyfile="leasy/lua/lstate.h" bodystart="362" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a5e243c2a4646364e0507a5a6cf417eec" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+        <definition>struct lua_State* global_State::twups</definition>
+        <argsstring></argsstring>
+        <name>twups</name>
+        <qualifiedname>global_State::twups</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="363" column="18" bodyfile="leasy/lua/lstate.h" bodystart="363" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1aa925f5bcdedf55e5353e37cfe9e5d6d0" prot="public" static="no" mutable="no">
+        <type><ref refid="lua_8h_1a878b7e392e78661a374cf1c3073029b9" kindref="member">lua_CFunction</ref></type>
+        <definition>lua_CFunction global_State::panic</definition>
+        <argsstring></argsstring>
+        <name>panic</name>
+        <qualifiedname>global_State::panic</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="364" column="17" bodyfile="leasy/lua/lstate.h" bodystart="364" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a713375c43bd8b0b3016a97f173ce6992" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>TString* global_State::memerrmsg</definition>
+        <argsstring></argsstring>
+        <name>memerrmsg</name>
+        <qualifiedname>global_State::memerrmsg</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="365" column="11" bodyfile="leasy/lua/lstate.h" bodystart="365" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1ac1d80bd5bb3d4427b25054696eb1542c" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>TString* global_State::tmname[TM_N]</definition>
+        <argsstring>[TM_N]</argsstring>
+        <name>tmname</name>
+        <qualifiedname>global_State::tmname</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="366" column="11" bodyfile="leasy/lua/lstate.h" bodystart="366" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a9421b13533e373174ec5f62e974e2ee9" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="struct_table" kindref="compound">Table</ref> *</type>
+        <definition>struct Table* global_State::mt[LUA_NUMTYPES]</definition>
+        <argsstring>[LUA_NUMTYPES]</argsstring>
+        <name>mt</name>
+        <qualifiedname>global_State::mt</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="367" column="14" bodyfile="leasy/lua/lstate.h" bodystart="367" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a6a097f2df5d409e565d4a8270be00e13" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>TString* global_State::strcache[STRCACHE_N][STRCACHE_M]</definition>
+        <argsstring>[STRCACHE_N][STRCACHE_M]</argsstring>
+        <name>strcache</name>
+        <qualifiedname>global_State::strcache</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="368" column="11" bodyfile="leasy/lua/lstate.h" bodystart="368" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a31ea16cf1c2d0244112365de89e84b5d" prot="public" static="no" mutable="no">
+        <type><ref refid="lua_8h_1a01be53d7e053b2703a9a0ee91aff4974" kindref="member">lua_WarnFunction</ref></type>
+        <definition>lua_WarnFunction global_State::warnf</definition>
+        <argsstring></argsstring>
+        <name>warnf</name>
+        <qualifiedname>global_State::warnf</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="369" column="20" bodyfile="leasy/lua/lstate.h" bodystart="369" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a650d67aa8435f102fe0345f6c357db6f" prot="public" static="no" mutable="no">
+        <type>void *</type>
+        <definition>void* global_State::ud_warn</definition>
+        <argsstring></argsstring>
+        <name>ud_warn</name>
+        <qualifiedname>global_State::ud_warn</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="370" column="8" bodyfile="leasy/lua/lstate.h" bodystart="370" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structglobal___state_1a677d0dd20f4b87d93b0f7e6b224440f2" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_l_x" kindref="compound">LX</ref></type>
+        <definition>LX global_State::mainth</definition>
+        <argsstring></argsstring>
+        <name>mainth</name>
+        <qualifiedname>global_State::mainth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstate.h" line="371" column="6" bodyfile="leasy/lua/lstate.h" bodystart="371" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="9">
+        <label>CallInfo</label>
+        <link refid="struct_call_info"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>func</edgelabel>
+          <edgelabel>top</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>next</edgelabel>
+          <edgelabel>previous</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>k</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>GCObject</label>
+        <link refid="struct_g_c_object"/>
+      </node>
+      <node id="16">
+        <label>LX</label>
+        <link refid="struct_l_x"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>l</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>Node</label>
+        <link refid="union_node"/>
+        <childnode refid="15" relation="usage">
+          <edgelabel>u</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>i_val</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>Node::NodeKey</label>
+        <link refid="struct_node_1_1_node_key"/>
+        <childnode refid="13" relation="usage">
+          <edgelabel>key_val</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>StackValue</label>
+        <link refid="union_stack_value"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>val</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>StkIdRel</label>
+        <link refid="union_stk_id_rel"/>
+        <childnode refid="8" relation="usage">
+          <edgelabel>p</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>TValue</label>
+        <link refid="struct_t_value"/>
+      </node>
+      <node id="12">
+        <label>Table</label>
+        <link refid="struct_table"/>
+        <childnode refid="13" relation="usage">
+          <edgelabel>array</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>node</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>metatable</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>gclist</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>UpVal</label>
+        <link refid="struct_up_val"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>p</edgelabel>
+          <edgelabel>value</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>next</edgelabel>
+          <edgelabel>previous</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>Value</label>
+        <link refid="union_value"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>gc</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>f</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>global_State</label>
+        <link refid="structglobal___state"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>strt</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>l_registry</edgelabel>
+          <edgelabel>nilvalue</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>allgc</edgelabel>
+          <edgelabel>allweak</edgelabel>
+          <edgelabel>ephemeron</edgelabel>
+          <edgelabel>finobj</edgelabel>
+          <edgelabel>finobjold1</edgelabel>
+          <edgelabel>finobjrold</edgelabel>
+          <edgelabel>finobjsur</edgelabel>
+          <edgelabel>firstold1</edgelabel>
+          <edgelabel>fixedgc</edgelabel>
+          <edgelabel>gray</edgelabel>
+          <edgelabel>  ...</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>panic</edgelabel>
+          <edgelabel>twups</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>memerrmsg</edgelabel>
+          <edgelabel>strcache</edgelabel>
+          <edgelabel>tmname</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>mt</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>mainth</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>lua_State</label>
+        <link refid="structlua___state"/>
+        <childnode refid="7" relation="usage">
+          <edgelabel>stack</edgelabel>
+          <edgelabel>stack_last</edgelabel>
+          <edgelabel>tbclist</edgelabel>
+          <edgelabel>top</edgelabel>
+        </childnode>
+        <childnode refid="1" relation="usage">
+          <edgelabel>l_G</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>base_ci</edgelabel>
+          <edgelabel>ci</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>openupval</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>gclist</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>twups</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>errorJmp</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>lua_longjmp</label>
+        <link refid="structlua__longjmp"/>
+        <childnode refid="11" relation="usage">
+          <edgelabel>previous</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>stringtable</label>
+        <link refid="structstringtable"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>hash</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lstate.h" line="327" column="1" bodyfile="leasy/lua/lstate.h" bodystart="327" bodyend="372"/>
+    <listofallmembers>
+      <member refid="structglobal___state_1aaba2570fb1444c6457a82df9fbad05ed" prot="public" virt="non-virtual"><scope>global_State</scope><name>allgc</name></member>
+      <member refid="structglobal___state_1ab092ebab0f825675b9e4861d4d4a4fb9" prot="public" virt="non-virtual"><scope>global_State</scope><name>allweak</name></member>
+      <member refid="structglobal___state_1a31fbedd19538500531d49532226a001a" prot="public" virt="non-virtual"><scope>global_State</scope><name>currentwhite</name></member>
+      <member refid="structglobal___state_1a291641a891457af2d199cb920d9d1a0d" prot="public" virt="non-virtual"><scope>global_State</scope><name>ephemeron</name></member>
+      <member refid="structglobal___state_1afa672a968752a31f2319d40deecfeecc" prot="public" virt="non-virtual"><scope>global_State</scope><name>finobj</name></member>
+      <member refid="structglobal___state_1a3472d212085f38fb8b5e7aaf2800826f" prot="public" virt="non-virtual"><scope>global_State</scope><name>finobjold1</name></member>
+      <member refid="structglobal___state_1a237e6929ce1995e5ea10c2099899fd5e" prot="public" virt="non-virtual"><scope>global_State</scope><name>finobjrold</name></member>
+      <member refid="structglobal___state_1a13b646894c7b76cfe43c9d084e1a5634" prot="public" virt="non-virtual"><scope>global_State</scope><name>finobjsur</name></member>
+      <member refid="structglobal___state_1a1519e03d08f4b7ec0d91d135a7ea3150" prot="public" virt="non-virtual"><scope>global_State</scope><name>firstold1</name></member>
+      <member refid="structglobal___state_1a429b525c636d5b268e03f1c10a85cf8f" prot="public" virt="non-virtual"><scope>global_State</scope><name>fixedgc</name></member>
+      <member refid="structglobal___state_1aa26cfe7f3761fda56740a545d15001ea" prot="public" virt="non-virtual"><scope>global_State</scope><name>frealloc</name></member>
+      <member refid="structglobal___state_1a238d1f76279f013961d01abb93a74a47" prot="public" virt="non-virtual"><scope>global_State</scope><name>GCdebt</name></member>
+      <member refid="structglobal___state_1a3caf542e40aca4f02d6cc6ff2008f467" prot="public" virt="non-virtual"><scope>global_State</scope><name>gcemergency</name></member>
+      <member refid="structglobal___state_1acf4c834918cf4766f13dd91306360802" prot="public" virt="non-virtual"><scope>global_State</scope><name>gckind</name></member>
+      <member refid="structglobal___state_1a2fd2bd7bafd42ee4b5668384f4c10aea" prot="public" virt="non-virtual"><scope>global_State</scope><name>GCmajorminor</name></member>
+      <member refid="structglobal___state_1a25849ffdfd13bf88aa73b2c80b7ba2ba" prot="public" virt="non-virtual"><scope>global_State</scope><name>GCmarked</name></member>
+      <member refid="structglobal___state_1a15336deb7defd1b096d875c3d16a6d15" prot="public" virt="non-virtual"><scope>global_State</scope><name>gcparams</name></member>
+      <member refid="structglobal___state_1aea4d494b8b9accef389f2be8830f7a84" prot="public" virt="non-virtual"><scope>global_State</scope><name>gcstate</name></member>
+      <member refid="structglobal___state_1a435de3a5495d7529fff62accc539a96d" prot="public" virt="non-virtual"><scope>global_State</scope><name>gcstopem</name></member>
+      <member refid="structglobal___state_1ad8326cdab506c623a4daf1d91ef8981f" prot="public" virt="non-virtual"><scope>global_State</scope><name>gcstp</name></member>
+      <member refid="structglobal___state_1aaca0824b783d72bcbc3c14dddebe1f21" prot="public" virt="non-virtual"><scope>global_State</scope><name>GCtotalbytes</name></member>
+      <member refid="structglobal___state_1a2d96e2afbc62ff832ab660ed4c357696" prot="public" virt="non-virtual"><scope>global_State</scope><name>gray</name></member>
+      <member refid="structglobal___state_1a2ccaa5d2e98c086489c04e2045082535" prot="public" virt="non-virtual"><scope>global_State</scope><name>grayagain</name></member>
+      <member refid="structglobal___state_1a3e4eaa91bd14094bf3217073aa40b4f7" prot="public" virt="non-virtual"><scope>global_State</scope><name>l_registry</name></member>
+      <member refid="structglobal___state_1a677d0dd20f4b87d93b0f7e6b224440f2" prot="public" virt="non-virtual"><scope>global_State</scope><name>mainth</name></member>
+      <member refid="structglobal___state_1a713375c43bd8b0b3016a97f173ce6992" prot="public" virt="non-virtual"><scope>global_State</scope><name>memerrmsg</name></member>
+      <member refid="structglobal___state_1a9421b13533e373174ec5f62e974e2ee9" prot="public" virt="non-virtual"><scope>global_State</scope><name>mt</name></member>
+      <member refid="structglobal___state_1a112c02e74c5adda770367c8a120b1fdd" prot="public" virt="non-virtual"><scope>global_State</scope><name>nilvalue</name></member>
+      <member refid="structglobal___state_1ad26c972db49d6ae2befcdd842c21e59b" prot="public" virt="non-virtual"><scope>global_State</scope><name>old1</name></member>
+      <member refid="structglobal___state_1aa925f5bcdedf55e5353e37cfe9e5d6d0" prot="public" virt="non-virtual"><scope>global_State</scope><name>panic</name></member>
+      <member refid="structglobal___state_1a3e26ca024b115b33c7af7c5c5c09edaa" prot="public" virt="non-virtual"><scope>global_State</scope><name>reallyold</name></member>
+      <member refid="structglobal___state_1a3e1a9b3a2f2dd49f14a38726239494e2" prot="public" virt="non-virtual"><scope>global_State</scope><name>seed</name></member>
+      <member refid="structglobal___state_1a6a097f2df5d409e565d4a8270be00e13" prot="public" virt="non-virtual"><scope>global_State</scope><name>strcache</name></member>
+      <member refid="structglobal___state_1a8cdea736db8d268e488aa9e9fa5c992c" prot="public" virt="non-virtual"><scope>global_State</scope><name>strt</name></member>
+      <member refid="structglobal___state_1aff359f11cdc555233f202a9cd03c0b8d" prot="public" virt="non-virtual"><scope>global_State</scope><name>survival</name></member>
+      <member refid="structglobal___state_1a357ff5a5981fc6c64825508c7718fbbc" prot="public" virt="non-virtual"><scope>global_State</scope><name>sweepgc</name></member>
+      <member refid="structglobal___state_1ac1d80bd5bb3d4427b25054696eb1542c" prot="public" virt="non-virtual"><scope>global_State</scope><name>tmname</name></member>
+      <member refid="structglobal___state_1a90da07dbcac2e16b87e559180ebbe852" prot="public" virt="non-virtual"><scope>global_State</scope><name>tobefnz</name></member>
+      <member refid="structglobal___state_1a5e243c2a4646364e0507a5a6cf417eec" prot="public" virt="non-virtual"><scope>global_State</scope><name>twups</name></member>
+      <member refid="structglobal___state_1af12419c778ac134ece8e269bfcaf06ad" prot="public" virt="non-virtual"><scope>global_State</scope><name>ud</name></member>
+      <member refid="structglobal___state_1a650d67aa8435f102fe0345f6c357db6f" prot="public" virt="non-virtual"><scope>global_State</scope><name>ud_warn</name></member>
+      <member refid="structglobal___state_1a31ea16cf1c2d0244112365de89e84b5d" prot="public" virt="non-virtual"><scope>global_State</scope><name>warnf</name></member>
+      <member refid="structglobal___state_1ab84f67e3b1e863392e504e9d13787891" prot="public" virt="non-virtual"><scope>global_State</scope><name>weak</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

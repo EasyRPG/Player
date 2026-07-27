@@ -1306,3 +1306,4 @@ void Bitmap::EdgeMirrorBlit(int x, int y, Bitmap const& src, Rect const& src_rec
 	}
 }
 
+

@@ -721,3 +721,4 @@ inline int Bitmap::GetOriginalBpp() const {
 }
 
 #endif
+

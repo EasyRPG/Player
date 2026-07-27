@@ -1,0 +1,1309 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_window___base" kind="class" language="C++" prot="public">
+    <compoundname>Window_Base</compoundname>
+    <basecompoundref refid="class_window" prot="public" virt="non-virtual">Window</basecompoundref>
+    <derivedcompoundref refid="class_window___about" prot="public" virt="non-virtual">Window_About</derivedcompoundref>
+    <derivedcompoundref refid="class_window___actor_info" prot="public" virt="non-virtual">Window_ActorInfo</derivedcompoundref>
+    <derivedcompoundref refid="class_window___actor_sp" prot="public" virt="non-virtual">Window_ActorSp</derivedcompoundref>
+    <derivedcompoundref refid="class_window___actor_status" prot="public" virt="non-virtual">Window_ActorStatus</derivedcompoundref>
+    <derivedcompoundref refid="class_window___battle_message" prot="public" virt="non-virtual">Window_BattleMessage</derivedcompoundref>
+    <derivedcompoundref refid="class_window___equip_status" prot="public" virt="non-virtual">Window_EquipStatus</derivedcompoundref>
+    <derivedcompoundref refid="class_window___face" prot="public" virt="non-virtual">Window_Face</derivedcompoundref>
+    <derivedcompoundref refid="class_window___gold" prot="public" virt="non-virtual">Window_Gold</derivedcompoundref>
+    <derivedcompoundref refid="class_window___help" prot="public" virt="non-virtual">Window_Help</derivedcompoundref>
+    <derivedcompoundref refid="class_window___import_progress" prot="public" virt="non-virtual">Window_ImportProgress</derivedcompoundref>
+    <derivedcompoundref refid="class_window___keyboard" prot="public" virt="non-virtual">Window_Keyboard</derivedcompoundref>
+    <derivedcompoundref refid="class_window___name" prot="public" virt="non-virtual">Window_Name</derivedcompoundref>
+    <derivedcompoundref refid="class_window___param_status" prot="public" virt="non-virtual">Window_ParamStatus</derivedcompoundref>
+    <derivedcompoundref refid="class_window___save_file" prot="public" virt="non-virtual">Window_SaveFile</derivedcompoundref>
+    <derivedcompoundref refid="class_window___selectable" prot="public" virt="non-virtual">Window_Selectable</derivedcompoundref>
+    <derivedcompoundref refid="class_window___shop" prot="public" virt="non-virtual">Window_Shop</derivedcompoundref>
+    <derivedcompoundref refid="class_window___shop_number" prot="public" virt="non-virtual">Window_ShopNumber</derivedcompoundref>
+    <derivedcompoundref refid="class_window___shop_party" prot="public" virt="non-virtual">Window_ShopParty</derivedcompoundref>
+    <derivedcompoundref refid="class_window___shop_status" prot="public" virt="non-virtual">Window_ShopStatus</derivedcompoundref>
+    <derivedcompoundref refid="class_window___skill_status" prot="public" virt="non-virtual">Window_SkillStatus</derivedcompoundref>
+    <derivedcompoundref refid="class_window___target_status" prot="public" virt="non-virtual">Window_TargetStatus</derivedcompoundref>
+    <includes refid="window__base_8h" local="no">window_base.h</includes>
+    <sectiondef kind="user-defined">
+      <memberdef kind="function" id="class_window___base_1aef9378bbfb2d0a01c6e4e5e14e70db91" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawFace</definition>
+        <argsstring>(std::string_view face_name, int face_index, int cx, int cy, bool flip=false)</argsstring>
+        <name>DrawFace</name>
+        <qualifiedname>Window_Base::DrawFace</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>face_name</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>face_index</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>flip</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Draw helpers. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="56" column="6" bodyfile="window_base.cpp" bodystart="105" bodyend="112"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1a924448d5c6250588b8372e9e4fe7deb9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawActorFace</definition>
+        <argsstring>(const Game_Actor &amp;actor, int cx, int cy)</argsstring>
+        <name>DrawActorFace</name>
+        <qualifiedname>Window_Base::DrawActorFace</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="57" column="6" bodyfile="window_base.cpp" bodystart="114" bodyend="116"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1a6839752ce8f91032394dfa0216bafc99" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawActorName</definition>
+        <argsstring>(const Game_Battler &amp;actor, int cx, int cy) const</argsstring>
+        <name>DrawActorName</name>
+        <qualifiedname>Window_Base::DrawActorName</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="58" column="6" bodyfile="window_base.cpp" bodystart="118" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1a4280d1ba36defe563be65bb50c7dfe20" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawActorTitle</definition>
+        <argsstring>(const Game_Actor &amp;actor, int cx, int cy) const</argsstring>
+        <name>DrawActorTitle</name>
+        <qualifiedname>Window_Base::DrawActorTitle</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="59" column="6" bodyfile="window_base.cpp" bodystart="122" bodyend="124"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1a89865ce16d1053880ad635e4cf4ffca4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawActorClass</definition>
+        <argsstring>(const Game_Actor &amp;actor, int cx, int cy) const</argsstring>
+        <name>DrawActorClass</name>
+        <qualifiedname>Window_Base::DrawActorClass</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="60" column="6" bodyfile="window_base.cpp" bodystart="126" bodyend="128"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1ad05730fa6d45625484c06ed8aa2a2360" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawActorLevel</definition>
+        <argsstring>(const Game_Actor &amp;actor, int cx, int cy) const</argsstring>
+        <name>DrawActorLevel</name>
+        <qualifiedname>Window_Base::DrawActorLevel</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="61" column="6" bodyfile="window_base.cpp" bodystart="130" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1a318e9ce402c5d6e4594c377530ff928a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawActorState</definition>
+        <argsstring>(const Game_Battler &amp;actor, int cx, int cy) const</argsstring>
+        <name>DrawActorState</name>
+        <qualifiedname>Window_Base::DrawActorState</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="62" column="6" bodyfile="window_base.cpp" bodystart="138" bodyend="146"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1a7ead18f633dbfa23740626c4d310579c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawActorExp</definition>
+        <argsstring>(const Game_Actor &amp;actor, int cx, int cy) const</argsstring>
+        <name>DrawActorExp</name>
+        <qualifiedname>Window_Base::DrawActorExp</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="63" column="6" bodyfile="window_base.cpp" bodystart="148" bodyend="167"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1a1412eeb3d9ced66eef6b53fca5838d87" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawActorHp</definition>
+        <argsstring>(const Game_Battler &amp;actor, int cx, int cy, int digits, bool draw_max=true) const</argsstring>
+        <name>DrawActorHp</name>
+        <qualifiedname>Window_Base::DrawActorHp</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>digits</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>draw_max</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="64" column="6" bodyfile="window_base.cpp" bodystart="169" bodyend="190"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1a2386a07c558b5d5d0eb1f446a66e9c6c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawActorSp</definition>
+        <argsstring>(const Game_Battler &amp;actor, int cx, int cy, int digits, bool draw_max=true) const</argsstring>
+        <name>DrawActorSp</name>
+        <qualifiedname>Window_Base::DrawActorSp</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>digits</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>draw_max</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="65" column="6" bodyfile="window_base.cpp" bodystart="192" bodyend="213"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1a38f710cfc58ec6163ceed6b90ad5818a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawActorParameter</definition>
+        <argsstring>(const Game_Battler &amp;actor, int cx, int cy, int type) const</argsstring>
+        <name>DrawActorParameter</name>
+        <qualifiedname>Window_Base::DrawActorParameter</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="66" column="6" bodyfile="window_base.cpp" bodystart="215" bodyend="245"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1ae8953dd148fa5bdb8e8cc85adbed74bc" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawEquipmentType</definition>
+        <argsstring>(const Game_Actor &amp;actor, int cx, int cy, int type) const</argsstring>
+        <name>DrawEquipmentType</name>
+        <qualifiedname>Window_Base::DrawEquipmentType</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="67" column="6" bodyfile="window_base.cpp" bodystart="247" bodyend="275"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1a6a7cf28705a3033c8f28585000923358" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawItemName</definition>
+        <argsstring>(const lcf::rpg::Item &amp;item, int cx, int cy, bool enabled=true) const</argsstring>
+        <name>DrawItemName</name>
+        <qualifiedname>Window_Base::DrawItemName</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Item &amp;</type>
+          <declname>item</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>enabled</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="68" column="6" bodyfile="window_base.cpp" bodystart="277" bodyend="281"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1af2433d82fa056a8a7c6245df02cf2a8c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawSkillName</definition>
+        <argsstring>(const lcf::rpg::Skill &amp;skill, int cx, int cy, bool enabled=true) const</argsstring>
+        <name>DrawSkillName</name>
+        <qualifiedname>Window_Base::DrawSkillName</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>enabled</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="69" column="6" bodyfile="window_base.cpp" bodystart="283" bodyend="287"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1a4924d3b09574a5fce2c625c163098964" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawCurrencyValue</definition>
+        <argsstring>(int money, int cx, int cy) const</argsstring>
+        <name>DrawCurrencyValue</name>
+        <qualifiedname>Window_Base::DrawCurrencyValue</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>money</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="70" column="6" bodyfile="window_base.cpp" bodystart="289" bodyend="299"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1abb4753c1c25848976404a483bcc0061a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawGauge</definition>
+        <argsstring>(const Game_Battler &amp;actor, int cx, int cy, int alpha=255) const</argsstring>
+        <name>DrawGauge</name>
+        <qualifiedname>Window_Base::DrawGauge</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>alpha</declname>
+          <defval>255</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="71" column="6" bodyfile="window_base.cpp" bodystart="301" bodyend="331"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1ae5564745ecd1b7b2e8094cd2ff4a4d07" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawActorHpValue</definition>
+        <argsstring>(const Game_Battler &amp;actor, int cx, int cy) const</argsstring>
+        <name>DrawActorHpValue</name>
+        <qualifiedname>Window_Base::DrawActorHpValue</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="72" column="6" bodyfile="window_base.cpp" bodystart="333" bodyend="335"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1a5db54a54646082147def28bc6cc95ecb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::DrawActorSpValue</definition>
+        <argsstring>(const Game_Battler &amp;actor, int cx, int cy) const</argsstring>
+        <name>DrawActorSpValue</name>
+        <qualifiedname>Window_Base::DrawActorSpValue</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>actor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="73" column="6" bodyfile="window_base.cpp" bodystart="337" bodyend="339"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1ae53debcc40e44c05e05b0abedb2ac783" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Window_Base::GetValueFontColor</definition>
+        <argsstring>(int have, int max, bool can_knockout) const</argsstring>
+        <name>GetValueFontColor</name>
+        <qualifiedname>Window_Base::GetValueFontColor</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>have</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>max</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>can_knockout</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="74" column="5" bodyfile="window_base.cpp" bodystart="341" bodyend="345"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_window___base_1a1e5d623ae231c9e389f20df787b26605" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref> &gt;</type>
+        <definition>std::vector&lt;FileRequestBinding&gt; Window_Base::face_request_ids</definition>
+        <argsstring></argsstring>
+        <name>face_request_ids</name>
+        <qualifiedname>Window_Base::face_request_ids</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="90" column="13" bodyfile="window_base.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___base_1aae60c3e20ba6ad791731b1f9b62268df" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Base::current_frame</definition>
+        <argsstring></argsstring>
+        <name>current_frame</name>
+        <qualifiedname>Window_Base::current_frame</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="92" column="5" bodyfile="window_base.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___base_1ae56b601a7fef43d20d68bb08be8af46f" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Base::total_frames</definition>
+        <argsstring></argsstring>
+        <name>total_frames</name>
+        <qualifiedname>Window_Base::total_frames</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="93" column="5" bodyfile="window_base.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___base_1a39cdba2fb84fc798d564538c6f4fd580" prot="protected" static="no" mutable="no">
+        <type>std::array&lt; int, 2 &gt;</type>
+        <definition>std::array&lt;int, 2&gt; Window_Base::old_position</definition>
+        <argsstring></argsstring>
+        <name>old_position</name>
+        <qualifiedname>Window_Base::old_position</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="94" column="12" bodyfile="window_base.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___base_1abd5f1ac22be605f031f81b9ddfa33817" prot="protected" static="no" mutable="no">
+        <type>std::array&lt; int, 2 &gt;</type>
+        <definition>std::array&lt;int, 2&gt; Window_Base::new_position</definition>
+        <argsstring></argsstring>
+        <name>new_position</name>
+        <qualifiedname>Window_Base::new_position</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="95" column="12" bodyfile="window_base.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_window___base_1ab4bd342e1f0f125b9c823b0903979648" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Window_Base::Window_Base</definition>
+        <argsstring>(int x, int y, int width, int height, Drawable::Flags flags=Drawable::Flags::Default)</argsstring>
+        <name>Window_Base</name>
+        <qualifiedname>Window_Base::Window_Base</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <param>
+          <type><ref refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" kindref="member">Drawable::Flags</ref></type>
+          <declname>flags</declname>
+          <defval><ref refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85a7a1920d61156abc05a60135aefe8bc67" kindref="member">Drawable::Flags::Default</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>window x position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>window y position. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>width</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>window width. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>height</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>window height. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>flags</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>flags to pass to drawable base class </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="45" column="1" bodyfile="window_base.cpp" bodystart="29" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1acaae99eb154cc5e203c2fc87af953725" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Window_Base::Update</definition>
+        <argsstring>() override</argsstring>
+        <name>Update</name>
+        <qualifiedname>Window_Base::Update</qualifiedname>
+        <reimplements refid="class_window_1ab8d28dce3166c70eb5744466460795df">Update</reimplements>
+        <reimplementedby refid="class_window___battle_message_1a122be310b2cdf2bc57455f2829b18b60">Update</reimplementedby>
+        <reimplementedby refid="class_window___battle_status_1a2edae1c924c7127e2405b293183a3d1a">Update</reimplementedby>
+        <reimplementedby refid="class_window___help_1a4cdf4b7da0cb0320927336a7a74b46f5">Update</reimplementedby>
+        <reimplementedby refid="class_window___interpreter_1abea60f2202cd9fbabf0f526e29d4687a">Update</reimplementedby>
+        <reimplementedby refid="class_window___keyboard_1a067bae53c97ceab64f78aff9f9dfdef4">Update</reimplementedby>
+        <reimplementedby refid="class_window___message_1a68905c1b65b13fd4a644555ac5203e63">Update</reimplementedby>
+        <reimplementedby refid="class_window___name_1a3e565808cdfbc86582612cce5e236914">Update</reimplementedby>
+        <reimplementedby refid="class_window___number_input_1a5ca7aabc68a8e739a98339d678af8604">Update</reimplementedby>
+        <reimplementedby refid="class_window___save_file_1a9da0ffc236dddbaa854ecd375f043484">Update</reimplementedby>
+        <reimplementedby refid="class_window___selectable_1aff3576c095aee4a6de7851305389c628">Update</reimplementedby>
+        <reimplementedby refid="class_window___shop_1af34cb7c43d534e6406cb259d90af7f09">Update</reimplementedby>
+        <reimplementedby refid="class_window___shop_number_1a68a5685e30aacbe5da55bcae96142130">Update</reimplementedby>
+        <reimplementedby refid="class_window___shop_party_1a7098b7bd0c49713c00d2e0c5793179f3">Update</reimplementedby>
+        <reimplementedby refid="class_window___string_view_1a5d3a6b767d8d4b302d21cb1869d717b0">Update</reimplementedby>
+        <reimplementedby refid="class_window___var_list_1a4292967b5bb57653ace96486e92619a7">Update</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the window. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="50" column="6" bodyfile="window_base.cpp" bodystart="62" bodyend="69"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1ab163ecc97ae4663c3af07fa8d2488d7e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::CancelFace</definition>
+        <argsstring>()</argsstring>
+        <name>CancelFace</name>
+        <qualifiedname>Window_Base::CancelFace</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Cancels async loading of faces. Used to prevent rendering faces that are loaded too slow on the wrong page. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="81" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1a53052079af4d1e5566c481da04f6ad3d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Window_Base::InitMovement</definition>
+        <argsstring>(int old_x, int old_y, int new_x, int new_y, int duration)</argsstring>
+        <name>InitMovement</name>
+        <qualifiedname>Window_Base::InitMovement</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>old_x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>old_y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>new_x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>new_y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>duration</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="83" column="6" bodyfile="window_base.cpp" bodystart="42" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1a602dd22533d8d8a2752c085660440a70" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Window_Base::IsMovementActive</definition>
+        <argsstring>()</argsstring>
+        <name>IsMovementActive</name>
+        <qualifiedname>Window_Base::IsMovementActive</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="84" column="6" bodyfile="window_base.cpp" bodystart="58" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___base_1a7085158c5f55f9b74ddb6abfd601ec65" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::UpdateMovement</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateMovement</name>
+        <qualifiedname>Window_Base::UpdateMovement</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="85" column="6" bodyfile="window_base.cpp" bodystart="71" bodyend="83"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_window___base_1ad0e003956ea90e9705702b6dc4261324" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Base::OnFaceReady</definition>
+        <argsstring>(FileRequestResult *result, int face_index, int cx, int cy, bool flip)</argsstring>
+        <name>OnFaceReady</name>
+        <qualifiedname>Window_Base::OnFaceReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>face_index</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cy</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>flip</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_base.h" line="88" column="6" bodyfile="window_base.cpp" bodystart="85" bodyend="101"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_window" kindref="compound">Window</ref> Base class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="2">
+        <label>Window</label>
+        <link refid="class_window"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Window_About</label>
+        <link refid="class_window___about"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Window_ActorInfo</label>
+        <link refid="class_window___actor_info"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Window_ActorSp</label>
+        <link refid="class_window___actor_sp"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Window_ActorStatus</label>
+        <link refid="class_window___actor_status"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>Window_ActorTarget</label>
+        <link refid="class_window___actor_target"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Window_Base</label>
+        <link refid="class_window___base"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Window_BattleMessage</label>
+        <link refid="class_window___battle_message"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>Window_BattleSkill</label>
+        <link refid="class_window___battle_skill"/>
+        <childnode refid="35" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>Window_BattleStatus</label>
+        <link refid="class_window___battle_status"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>Window_Command</label>
+        <link refid="class_window___command"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>Window_Command_Horizontal</label>
+        <link refid="class_window___command___horizontal"/>
+        <childnode refid="21" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>Window_Equip</label>
+        <link refid="class_window___equip"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>Window_EquipItem</label>
+        <link refid="class_window___equip_item"/>
+        <childnode refid="27" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>Window_EquipStatus</label>
+        <link refid="class_window___equip_status"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>Window_Face</label>
+        <link refid="class_window___face"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>Window_GameList</label>
+        <link refid="class_window___game_list"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>Window_Gold</label>
+        <link refid="class_window___gold"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Window_Help</label>
+        <link refid="class_window___help"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>Window_ImportProgress</label>
+        <link refid="class_window___import_progress"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>Window_InputSettings</label>
+        <link refid="class_window___input_settings"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>Window_Interpreter</label>
+        <link refid="class_window___interpreter"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>Window_Item</label>
+        <link refid="class_window___item"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>Window_Keyboard</label>
+        <link refid="class_window___keyboard"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>Window_MenuStatus</label>
+        <link refid="class_window___menu_status"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>Window_Message</label>
+        <link refid="class_window___message"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>Window_Name</label>
+        <link refid="class_window___name"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>Window_NumberInput</label>
+        <link refid="class_window___number_input"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>Window_ParamStatus</label>
+        <link refid="class_window___param_status"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>Window_SaveFile</label>
+        <link refid="class_window___save_file"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>Window_Selectable</label>
+        <link refid="class_window___selectable"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>Window_Settings</label>
+        <link refid="class_window___settings"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>Window_Shop</label>
+        <link refid="class_window___shop"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>Window_ShopBuy</label>
+        <link refid="class_window___shop_buy"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>Window_ShopNumber</label>
+        <link refid="class_window___shop_number"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>Window_ShopParty</label>
+        <link refid="class_window___shop_party"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>Window_ShopSell</label>
+        <link refid="class_window___shop_sell"/>
+        <childnode refid="27" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>Window_ShopStatus</label>
+        <link refid="class_window___shop_status"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>Window_Skill</label>
+        <link refid="class_window___skill"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>Window_SkillStatus</label>
+        <link refid="class_window___skill_status"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>Window_StringView</label>
+        <link refid="class_window___string_view"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>Window_TargetStatus</label>
+        <link refid="class_window___target_status"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>Window_Teleport</label>
+        <link refid="class_window___teleport"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>Window_VarList</label>
+        <link refid="class_window___var_list"/>
+        <childnode refid="18" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="4">
+        <label>Rect</label>
+        <link refid="class_rect"/>
+      </node>
+      <node id="2">
+        <label>Window</label>
+        <link refid="class_window"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>cursor_rect</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Window_Base</label>
+        <link refid="class_window___base"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="window_base.h" line="34" column="1" bodyfile="window_base.h" bodystart="34" bodyend="97"/>
+    <listofallmembers>
+      <member refid="class_window_1a30d9a51374e74ae0a59da6bf9ae77d79" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>active</name></member>
+      <member refid="class_window_1a6840c54e5681e5f4109e6e53d538afff" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>animate_arrows</name></member>
+      <member refid="class_window_1a5fdc8f9bb6859159ceccc34b69ab4518" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>back_opacity</name></member>
+      <member refid="class_window_1a7783ccb4806cd474920af47bfb6e34de" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>border_x</name></member>
+      <member refid="class_window_1acfcd1e1710f455bc7e300a0e1969a819" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>border_y</name></member>
+      <member refid="class_window___base_1ab163ecc97ae4663c3af07fa8d2488d7e" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>CancelFace</name></member>
+      <member refid="class_window_1ad981b3a3e8815b7f3f4c6a4e895849d5" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>closing</name></member>
+      <member refid="class_window_1aa37669a94405b73515d5bd9b342e07c0" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>contents</name></member>
+      <member refid="class_window_1afea2c4631cc17e44d91eb26014d1ef85" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>contents_opacity</name></member>
+      <member refid="class_window___base_1aae60c3e20ba6ad791731b1f9b62268df" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>current_frame</name></member>
+      <member refid="class_window_1a4c35a2775b0ab60dd14ef07e4da3a92e" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>cursor_rect</name></member>
+      <member refid="class_window_1a1105a74f93c232d0caf4882ce1105d2b" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>down_arrow</name></member>
+      <member refid="class_window_1ae9b28a38c8c5f9dabb89335da45367d5" prot="public" virt="virtual"><scope>Window_Base</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>Drawable</name></member>
+      <member refid="class_window___base_1a89865ce16d1053880ad635e4cf4ffca4" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawActorClass</name></member>
+      <member refid="class_window___base_1a7ead18f633dbfa23740626c4d310579c" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawActorExp</name></member>
+      <member refid="class_window___base_1a924448d5c6250588b8372e9e4fe7deb9" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawActorFace</name></member>
+      <member refid="class_window___base_1a1412eeb3d9ced66eef6b53fca5838d87" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawActorHp</name></member>
+      <member refid="class_window___base_1ae5564745ecd1b7b2e8094cd2ff4a4d07" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawActorHpValue</name></member>
+      <member refid="class_window___base_1ad05730fa6d45625484c06ed8aa2a2360" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawActorLevel</name></member>
+      <member refid="class_window___base_1a6839752ce8f91032394dfa0216bafc99" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawActorName</name></member>
+      <member refid="class_window___base_1a38f710cfc58ec6163ceed6b90ad5818a" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawActorParameter</name></member>
+      <member refid="class_window___base_1a2386a07c558b5d5d0eb1f446a66e9c6c" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawActorSp</name></member>
+      <member refid="class_window___base_1a5db54a54646082147def28bc6cc95ecb" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawActorSpValue</name></member>
+      <member refid="class_window___base_1a318e9ce402c5d6e4594c377530ff928a" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawActorState</name></member>
+      <member refid="class_window___base_1a4280d1ba36defe563be65bb50c7dfe20" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawActorTitle</name></member>
+      <member refid="class_window___base_1a4924d3b09574a5fce2c625c163098964" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawCurrencyValue</name></member>
+      <member refid="class_window___base_1ae8953dd148fa5bdb8e8cc85adbed74bc" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawEquipmentType</name></member>
+      <member refid="class_window___base_1aef9378bbfb2d0a01c6e4e5e14e70db91" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawFace</name></member>
+      <member refid="class_window___base_1abb4753c1c25848976404a483bcc0061a" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawGauge</name></member>
+      <member refid="class_window___base_1a6a7cf28705a3033c8f28585000923358" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawItemName</name></member>
+      <member refid="class_window___base_1af2433d82fa056a8a7c6245df02cf2a8c" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>DrawSkillName</name></member>
+      <member refid="class_window___base_1a1e5d623ae231c9e389f20df787b26605" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>face_request_ids</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>Flags</name></member>
+      <member refid="class_window_1a1f1f44b1ffaef1e628bc8e798b72b2a3" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>font</name></member>
+      <member refid="class_window_1ae7f16566d53bd4e9b8d93f3bb2c706cf" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>frame_opacity</name></member>
+      <member refid="class_window_1a893355559f288910e0c7efe5ebf35e12" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetActive</name></member>
+      <member refid="class_window_1a5c12f9d9b4bc434d194f60920829e924" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetAnimateArrows</name></member>
+      <member refid="class_window_1ae9f575b4d9ee0e89c4f72fb1136b939e" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetBackOpacity</name></member>
+      <member refid="class_window_1a33418d5002643de22c01216ac4a68fab" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetBorderX</name></member>
+      <member refid="class_window_1a85d217a09432cba36ec9917cc9c9bab4" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetBorderY</name></member>
+      <member refid="class_window_1a08d183b2c505ef00895b907f692e3f47" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetBottomY</name></member>
+      <member refid="class_window_1ab7cc2352acb3934c40b7ed427c6e838f" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetContents</name></member>
+      <member refid="class_window_1a3a022f1a61ec8451d78ab8576d40e2c6" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetContentsOpacity</name></member>
+      <member refid="class_window_1aff81a34c4f6d0d9d89eec050a761c15a" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetCursorRect</name></member>
+      <member refid="class_window_1a748df6959ed2db74901f9bb695a43f17" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetDownArrow</name></member>
+      <member refid="class_window_1a31ef08e84da75105464631222e8d9b37" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetFont</name></member>
+      <member refid="class_window_1ab886657884794dd41b189c023ff52463" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetFrameOpacity</name></member>
+      <member refid="class_window_1a2196b5ae099037272cc85b223e80bd6d" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetHeight</name></member>
+      <member refid="class_window_1a706cc6e9c4247963d7516f8544f97136" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetLeftArrow</name></member>
+      <member refid="class_window_1ad01b3475eb063833bcecf776767120ae" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetOpacity</name></member>
+      <member refid="class_window_1ab5213da374f3de1ed749af5ff3147dd1" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetOx</name></member>
+      <member refid="class_window_1abbb96431e08ed99c32a87e654211cb09" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetOy</name></member>
+      <member refid="class_window_1a3a9441d1da4a9d4eb4ab5110aaf4a6af" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetPause</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetRenderOy</name></member>
+      <member refid="class_window_1a01e1ab6d941d3d78572ee1458e8bcd82" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetRightArrow</name></member>
+      <member refid="class_window_1a0b3f5d1df18939326ea793be41b2b1aa" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetRightX</name></member>
+      <member refid="class_window_1a449845fc5eb2daf2187c403d572fc344" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetStretch</name></member>
+      <member refid="class_window_1ad01a381061f12942dabc5382fb4c3610" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetUpArrow</name></member>
+      <member refid="class_window___base_1ae53debcc40e44c05e05b0abedb2ac783" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetValueFontColor</name></member>
+      <member refid="class_window_1a451bdfeab37afce97712f23f5c2492aa" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetWidth</name></member>
+      <member refid="class_window_1a2af54bbfd2ded9767a4370b5d9acadab" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetWindowskin</name></member>
+      <member refid="class_window_1a06a511c7b2101cb1c6f5d8125a345699" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetX</name></member>
+      <member refid="class_window_1af457e700afc28ddfebfcf92a23a99e6e" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetY</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>GetZ</name></member>
+      <member refid="class_window_1af0ac1732ca6b79a6f6b78aa344140514" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>height</name></member>
+      <member refid="class_window_1ad5dc18873173a138672e2f18978c4ef6" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>ID</name></member>
+      <member refid="class_window___base_1a53052079af4d1e5566c481da04f6ad3d" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>InitMovement</name></member>
+      <member refid="class_window_1af7fe8b2a199785b8c5540e060223865f" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>IsClosing</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>IsGlobal</name></member>
+      <member refid="class_window___base_1a602dd22533d8d8a2752c085660440a70" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>IsMovementActive</name></member>
+      <member refid="class_window_1a146f85a403fb76749a64fd6af5dec64c" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>IsOpening</name></member>
+      <member refid="class_window_1a7a79f00d39f0c83d2e86b7769e20cae9" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>IsOpeningOrClosing</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>IsShared</name></member>
+      <member refid="class_window_1a19febf0d464ca76f13a07f98c2f265fe" prot="protected" virt="virtual"><scope>Window_Base</scope><name>IsSystemGraphicUpdateAllowed</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>IsVisible</name></member>
+      <member refid="class_window_1a296f7ddd18340f78bb28ce7afee4127f" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>left_arrow</name></member>
+      <member refid="class_window___base_1abd5f1ac22be605f031f81b9ddfa33817" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>new_position</name></member>
+      <member refid="class_window___base_1a39cdba2fb84fc798d564538c6f4fd580" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>old_position</name></member>
+      <member refid="class_window___base_1ad0e003956ea90e9705702b6dc4261324" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>OnFaceReady</name></member>
+      <member refid="class_window_1adb5a945a66fa5707debc8a13fd8e8b1d" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>opacity</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>operator=</name></member>
+      <member refid="class_window_1a90d08c9529ad8afee5bb2f97a339f2a8" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>ox</name></member>
+      <member refid="class_window_1a8dde2b1118eb9b211156c78f95e82037" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>oy</name></member>
+      <member refid="class_window_1a3396ddbdbe617dd20d241075b15358e8" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>right_arrow</name></member>
+      <member refid="class_window_1afe506cb1f96195a7c07c504ad3846df5" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetActive</name></member>
+      <member refid="class_window_1a13c0012638f137008802abb9797bc7b1" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetAnimateArrows</name></member>
+      <member refid="class_window_1a4b20daad71f636d0cd23cc86a2a2930e" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetBackOpacity</name></member>
+      <member refid="class_window_1adaa5908b1c01ceab63344e4e69b8e2e0" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetBorderX</name></member>
+      <member refid="class_window_1adaf3968702c7a02b6bca586e70642246" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetBorderY</name></member>
+      <member refid="class_window_1accefc4c2da52c1fc1defddf7ccb4d445" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetCloseAnimation</name></member>
+      <member refid="class_window_1ade4932d29b75cdd8f14b474006210505" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetContents</name></member>
+      <member refid="class_window_1a3110b6e41b04b3c3f6fd118187eeba3d" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetContentsOpacity</name></member>
+      <member refid="class_window_1a60601365a7ade2022e7c1445ba04ff6c" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetCursorRect</name></member>
+      <member refid="class_window_1a620068c714ba998fac887fce18b89c38" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetDownArrow</name></member>
+      <member refid="class_window_1a3c7e82603bb2e26ff111fb2b6a2a7ef9" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetFont</name></member>
+      <member refid="class_window_1a08b70d6821e4f859e2c8292b28076028" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetFrameOpacity</name></member>
+      <member refid="class_window_1a0941f34765c08c3afc77709dbfcab5ca" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetHeight</name></member>
+      <member refid="class_window_1ad72edc704a92811efd71217db95efdb2" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetLeftArrow</name></member>
+      <member refid="class_window_1a256986c2f42bdc56604ceafa771f60a4" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetOpacity</name></member>
+      <member refid="class_window_1a3d95da1b7e47d332042ca263c31458af" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetOpenAnimation</name></member>
+      <member refid="class_window_1aea8bc4e6916566c627c2a3c7d2c2c0a5" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetOx</name></member>
+      <member refid="class_window_1a554315b28175a03de936f5f97cf5e4cd" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetOy</name></member>
+      <member refid="class_window_1ac23bd1bbebfc5f06961fecb26ea5c8fc" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetPause</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetRenderOy</name></member>
+      <member refid="class_window_1a8fd9a81ef3764efa0f467ef689a72d1e" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetRightArrow</name></member>
+      <member refid="class_window_1aacd4df16a8276284d1d5e98bbc7f8db3" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetStretch</name></member>
+      <member refid="class_window_1ab09359aa2d8084e2dadd5b854e24cff8" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetUpArrow</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetVisible</name></member>
+      <member refid="class_window_1a31699d268cf2806e2c488532493effbd" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetWidth</name></member>
+      <member refid="class_window_1af3ec086d2b5bb619a56cdd9d5f9780f9" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetWindowskin</name></member>
+      <member refid="class_window_1ac3e264eb65626c9acbd383522581ba58" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetX</name></member>
+      <member refid="class_window_1ab08def241a522babd7e8d8a77904488b" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetY</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>SetZ</name></member>
+      <member refid="class_window_1a9f58857036c9515d1aaaf231e61fbe63" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>stretch</name></member>
+      <member refid="class_window___base_1ae56b601a7fef43d20d68bb08be8af46f" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>total_frames</name></member>
+      <member refid="class_window_1a97292cce3dc8deccdbd6e553ae26b8e6" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>up_arrow</name></member>
+      <member refid="class_window___base_1acaae99eb154cc5e203c2fc87af953725" prot="public" virt="virtual"><scope>Window_Base</scope><name>Update</name></member>
+      <member refid="class_window___base_1a7085158c5f55f9b74ddb6abfd601ec65" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>UpdateMovement</name></member>
+      <member refid="class_window_1af5b1c436782cc9752d386493fbc5dc8c" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>width</name></member>
+      <member refid="class_window_1a370186a3a31940d608a8ed9f0d94659b" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>Window</name></member>
+      <member refid="class_window___base_1ab4bd342e1f0f125b9c823b0903979648" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>Window_Base</name></member>
+      <member refid="class_window_1a0f9b1a0aff6a2d1d0d6b13152e5d14fe" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>windowskin</name></member>
+      <member refid="class_window_1aa3be8f50b45a4f7b48ae66ae54885672" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>x</name></member>
+      <member refid="class_window_1a1da567c448323caf7873fe4f1d4cf4d6" prot="protected" virt="non-virtual"><scope>Window_Base</scope><name>y</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>Window_Base</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>Window_Base</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

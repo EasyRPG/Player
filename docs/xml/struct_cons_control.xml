@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_cons_control" kind="struct" language="C++" prot="public">
+    <compoundname>ConsControl</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_cons_control_1a870b3f1c8296439dc09993d20d9f6caa" prot="public" static="no" mutable="no">
+        <type><ref refid="structexpdesc" kindref="compound">expdesc</ref></type>
+        <definition>expdesc ConsControl::v</definition>
+        <argsstring></argsstring>
+        <name>v</name>
+        <qualifiedname>ConsControl::v</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.c" line="914" column="11" bodyfile="leasy/lua/lparser.c" bodystart="914" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_cons_control_1a48957892a93373c54f7baf9676f77587" prot="public" static="no" mutable="no">
+        <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+        <definition>expdesc* ConsControl::t</definition>
+        <argsstring></argsstring>
+        <name>t</name>
+        <qualifiedname>ConsControl::t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.c" line="915" column="11" bodyfile="leasy/lua/lparser.c" bodystart="915" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_cons_control_1a852370c0a8dc4a0ca21756191f170ac5" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ConsControl::nh</definition>
+        <argsstring></argsstring>
+        <name>nh</name>
+        <qualifiedname>ConsControl::nh</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.c" line="916" column="7" bodyfile="leasy/lua/lparser.c" bodystart="916" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_cons_control_1abb136d2c320d052e5a7dd5518f490c11" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ConsControl::na</definition>
+        <argsstring></argsstring>
+        <name>na</name>
+        <qualifiedname>ConsControl::na</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.c" line="917" column="7" bodyfile="leasy/lua/lparser.c" bodystart="917" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_cons_control_1a27afc7c4e0be2751c3c2c981a94f1948" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ConsControl::tostore</definition>
+        <argsstring></argsstring>
+        <name>tostore</name>
+        <qualifiedname>ConsControl::tostore</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.c" line="918" column="7" bodyfile="leasy/lua/lparser.c" bodystart="918" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_cons_control_1a71c010063d0116c151e07906db20fcf5" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int ConsControl::maxtostore</definition>
+        <argsstring></argsstring>
+        <name>maxtostore</name>
+        <qualifiedname>ConsControl::maxtostore</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lparser.c" line="919" column="7" bodyfile="leasy/lua/lparser.c" bodystart="919" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>ConsControl</label>
+        <link refid="struct_cons_control"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>t</edgelabel>
+          <edgelabel>v</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>expdesc</label>
+        <link refid="structexpdesc"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>strval</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lparser.c" line="913" column="1" bodyfile="leasy/lua/lparser.c" bodystart="913" bodyend="920"/>
+    <listofallmembers>
+      <member refid="struct_cons_control_1a71c010063d0116c151e07906db20fcf5" prot="public" virt="non-virtual"><scope>ConsControl</scope><name>maxtostore</name></member>
+      <member refid="struct_cons_control_1abb136d2c320d052e5a7dd5518f490c11" prot="public" virt="non-virtual"><scope>ConsControl</scope><name>na</name></member>
+      <member refid="struct_cons_control_1a852370c0a8dc4a0ca21756191f170ac5" prot="public" virt="non-virtual"><scope>ConsControl</scope><name>nh</name></member>
+      <member refid="struct_cons_control_1a48957892a93373c54f7baf9676f77587" prot="public" virt="non-virtual"><scope>ConsControl</scope><name>t</name></member>
+      <member refid="struct_cons_control_1a27afc7c4e0be2751c3c2c981a94f1948" prot="public" virt="non-virtual"><scope>ConsControl</scope><name>tostore</name></member>
+      <member refid="struct_cons_control_1a870b3f1c8296439dc09993d20d9f6caa" prot="public" virt="non-virtual"><scope>ConsControl</scope><name>v</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -402,3 +402,4 @@ bool FluidSynthDecoder::NeedsSoftReset() {
 }
 
 #endif
+

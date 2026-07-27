@@ -30,3 +30,4 @@ namespace MacOSUtils {
 	std::string GetBundleDir();
 }
 #endif
+

@@ -1,0 +1,232 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="bitmap__hslrgb_8h" kind="file" language="C++">
+    <compoundname>bitmap_hslrgb.h</compoundname>
+    <includedby refid="bitmap_8cpp" local="yes">bitmap.cpp</includedby>
+    <invincdepgraph>
+      <node id="2">
+        <label>bitmap.cpp</label>
+        <link refid="bitmap_8cpp"/>
+      </node>
+      <node id="1">
+        <label>bitmap_hslrgb.h</label>
+        <link refid="bitmap__hslrgb_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="bitmap__hslrgb_8h_1a4513af4ad9e0ff9152d6f3d247bd45c9" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void RGB_to_HSL</definition>
+        <argsstring>(const uint8_t &amp;r, const uint8_t &amp;g, const uint8_t &amp;b, int &amp;h, int &amp;s, int &amp;l)</argsstring>
+        <name>RGB_to_HSL</name>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>h</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>l</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap_hslrgb.h" line="3" column="20" bodyfile="bitmap_hslrgb.h" bodystart="3" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="bitmap__hslrgb_8h_1af694372aecd0b1b12b3e1d3b51939e8d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void HSL_to_RGB</definition>
+        <argsstring>(const int &amp;h, const int &amp;s, const int &amp;l, uint8_t &amp;r, uint8_t &amp;g, uint8_t &amp;b)</argsstring>
+        <name>HSL_to_RGB</name>
+        <param>
+          <type>const int &amp;</type>
+          <declname>h</declname>
+        </param>
+        <param>
+          <type>const int &amp;</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>const int &amp;</type>
+          <declname>l</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap_hslrgb.h" line="38" column="20" bodyfile="bitmap_hslrgb.h" bodystart="38" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="bitmap__hslrgb_8h_1a42732aa1eca70dde8493288304d36f3c" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void HSL_adjust</definition>
+        <argsstring>(int &amp;h, int &amp;s, int &amp;l, int hue)</argsstring>
+        <name>HSL_adjust</name>
+        <param>
+          <type>int &amp;</type>
+          <declname>h</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>l</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>hue</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap_hslrgb.h" line="58" column="20" bodyfile="bitmap_hslrgb.h" bodystart="58" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="bitmap__hslrgb_8h_1aed93d862b58228d2a991dbfc861eeec7" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void RGB_adjust_HSL</definition>
+        <argsstring>(uint8_t &amp;r, uint8_t &amp;g, uint8_t &amp;b, int hue)</argsstring>
+        <name>RGB_adjust_HSL</name>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>uint8_t &amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>hue</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmap_hslrgb.h" line="65" column="20" bodyfile="bitmap_hslrgb.h" bodystart="65" bodyend="71"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RGB_to_HSL(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t&amp;<sp/>r,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t&amp;<sp/>g,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t&amp;<sp/>b,</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;h,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;s,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>&amp;l)</highlight></codeline>
+<codeline lineno="5"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>RGBOrder<sp/>{</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>O_RGB,</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>O_RBG,</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>O_GRB,</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>O_GBR,</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>O_BRG,</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>O_BGR</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/>order<sp/>=<sp/>(r<sp/>&gt;<sp/>g)</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>?<sp/>((r<sp/>&gt;<sp/>b)<sp/>?<sp/>((g<sp/>&lt;<sp/>b)<sp/>?<sp/>O_RBG<sp/>:<sp/>O_RGB)<sp/>:<sp/>O_BRG)</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>((r<sp/>&lt;<sp/>b)<sp/>?<sp/>((g<sp/>&gt;<sp/>b)<sp/>?<sp/>O_GBR<sp/>:<sp/>O_BGR)<sp/>:<sp/>O_GRB);</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>c<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>l2<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(order)<sp/>{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>O_RGB:<sp/>c<sp/>=<sp/>(r<sp/>-<sp/>b);<sp/>h<sp/>=<sp/>(c<sp/>==<sp/>0)<sp/>?<sp/>0<sp/>:<sp/>0x100*(g<sp/>-<sp/>b)/c<sp/>+<sp/>0x000;<sp/>l2<sp/>=<sp/>(r<sp/>+<sp/>b);<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>O_RBG:<sp/>c<sp/>=<sp/>(r<sp/>-<sp/>g);<sp/>h<sp/>=<sp/>(c<sp/>==<sp/>0)<sp/>?<sp/>0<sp/>:<sp/>0x100*(g<sp/>-<sp/>b)/c<sp/>+<sp/>0x600;<sp/>l2<sp/>=<sp/>(r<sp/>+<sp/>g);<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>O_GRB:<sp/>c<sp/>=<sp/>(g<sp/>-<sp/>b);<sp/>h<sp/>=<sp/>(c<sp/>==<sp/>0)<sp/>?<sp/>0<sp/>:<sp/>0x100*(b<sp/>-<sp/>r)/c<sp/>+<sp/>0x200;<sp/>l2<sp/>=<sp/>(g<sp/>+<sp/>b);<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>O_GBR:<sp/>c<sp/>=<sp/>(g<sp/>-<sp/>r);<sp/>h<sp/>=<sp/>(c<sp/>==<sp/>0)<sp/>?<sp/>0<sp/>:<sp/>0x100*(b<sp/>-<sp/>r)/c<sp/>+<sp/>0x200;<sp/>l2<sp/>=<sp/>(g<sp/>+<sp/>r);<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>O_BRG:<sp/>c<sp/>=<sp/>(b<sp/>-<sp/>g);<sp/>h<sp/>=<sp/>(c<sp/>==<sp/>0)<sp/>?<sp/>0<sp/>:<sp/>0x100*(r<sp/>-<sp/>g)/c<sp/>+<sp/>0x400;<sp/>l2<sp/>=<sp/>(b<sp/>+<sp/>g);<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>O_BGR:<sp/>c<sp/>=<sp/>(b<sp/>-<sp/>r);<sp/>h<sp/>=<sp/>(c<sp/>==<sp/>0)<sp/>?<sp/>0<sp/>:<sp/>0x100*(r<sp/>-<sp/>g)/c<sp/>+<sp/>0x400;<sp/>l2<sp/>=<sp/>(b<sp/>+<sp/>r);<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(l2<sp/>==<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>s<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>l<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>s<sp/>=<sp/>0x100<sp/>*<sp/>c<sp/>/<sp/>((l2<sp/>&gt;<sp/>0xFF)<sp/>?<sp/>0x1FF<sp/>-<sp/>l2<sp/>:<sp/>l2);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>l<sp/>=<sp/>l2<sp/>/<sp/>2;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>HSL_to_RGB(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/>h,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/>s,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/>l,</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>&amp;r,<sp/>uint8_t<sp/>&amp;g,<sp/>uint8_t<sp/>&amp;b)</highlight></codeline>
+<codeline lineno="40"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>l2<sp/>=<sp/>2<sp/>*<sp/>l;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>c<sp/>=<sp/>s<sp/>*<sp/>((l2<sp/>&gt;<sp/>0xFF)<sp/>?<sp/>0x1FF<sp/>-<sp/>l2<sp/>:<sp/>l2)<sp/>/<sp/>0x100;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>m<sp/>=<sp/>(l2<sp/>-<sp/>c)<sp/>/<sp/>2;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>h0<sp/>=<sp/>h<sp/>&amp;<sp/>0xFF;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>h1<sp/>=<sp/>0xFF<sp/>-<sp/>h0;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal"><sp/>(h<sp/>&gt;&gt;<sp/>8)<sp/>{</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>0:<sp/>r<sp/>=<sp/>m<sp/>+<sp/>c;<sp/>g<sp/>=<sp/>m<sp/>+<sp/>h0*c/0x100;<sp/>b<sp/>=<sp/>m;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>1:<sp/>r<sp/>=<sp/>m<sp/>+<sp/>h1*c/0x100;<sp/>g<sp/>=<sp/>m<sp/>+<sp/>c;<sp/>b<sp/>=<sp/>m;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>2:<sp/>r<sp/>=<sp/>m;<sp/>g<sp/>=<sp/>m<sp/>+<sp/>c;<sp/>b<sp/>=<sp/>m<sp/>+<sp/>h0*c/0x100;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>3:<sp/>r<sp/>=<sp/>m;<sp/>g<sp/>=<sp/>m<sp/>+<sp/>h1*c/0x100;<sp/>b<sp/>=<sp/>m<sp/>+<sp/>c;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>4:<sp/>r<sp/>=<sp/>m<sp/>+<sp/>h0*c/0x100;<sp/>g<sp/>=<sp/>m;<sp/>b<sp/>=<sp/>m<sp/>+<sp/>c;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/>5:<sp/>r<sp/>=<sp/>m<sp/>+<sp/>c;<sp/>g<sp/>=<sp/>m;<sp/>b<sp/>=<sp/>m<sp/>+<sp/>h1*c/0x100;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>HSL_adjust(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/>h,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/>s,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/>l,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>hue)<sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>h<sp/>+=<sp/>hue;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(h<sp/>&gt;=<sp/>0x600)<sp/>h<sp/>-=<sp/>0x600;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(s<sp/>&gt;<sp/>0xFF)<sp/>s<sp/>=<sp/>0xFF;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>l<sp/>=<sp/>(l<sp/>&gt;<sp/>0xFF)<sp/>?<sp/>0xFF<sp/>:<sp/>(l<sp/>&lt;<sp/>0)<sp/>?<sp/>0<sp/>:<sp/>l;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>RGB_adjust_HSL(uint8_t&amp;<sp/>r,<sp/>uint8_t&amp;<sp/>g,<sp/>uint8_t&amp;<sp/>b,</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>hue)<sp/>{</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>h,<sp/>s,<sp/>l;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>RGB_to_HSL(r,<sp/>g,<sp/>b,<sp/>h,<sp/>s,<sp/>l);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>HSL_adjust(h,<sp/>s,<sp/>l,<sp/>hue);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>HSL_to_RGB(h,<sp/>s,<sp/>l,<sp/>r,<sp/>g,<sp/>b);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="bitmap_hslrgb.h"/>
+  </compounddef>
+</doxygen>

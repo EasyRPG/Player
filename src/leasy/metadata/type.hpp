@@ -29,6 +29,7 @@
 #include <string_view>
 
 #include "../iky7/nameof.hpp"
+#include "../kits/utils.hpp"
 #include "metadata.hpp"
 
 namespace leasy::metadata {
@@ -148,9 +149,6 @@ namespace leasy::metadata {
 
   template<typename T>
   inline const TypeInfo typeinfo_v = TypeInfo::from<T>();
-
-  TypeInfo make_metadata(const std::type_index&);
-
 } // namespace leasy::metadata
 
 template <typename T>

@@ -1,0 +1,241 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1kits_1_1variant" kind="class" language="C++" prot="public">
+    <compoundname>leasy::kits::variant</compoundname>
+    <includes refid="variant_8hpp" local="no">variant.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type>typename...</type>
+        <declname>Ts</declname>
+        <defname>Ts</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classleasy_1_1kits_1_1variant_1a23200f138a7f0d66e33226e0d16c1c72" prot="protected" static="no" mutable="no">
+        <type>std::variant&lt; Ts... &gt;</type>
+        <definition>std::variant&lt;Ts...&gt; leasy::kits::variant&lt; Ts &gt;::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>leasy::kits::variant::value</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/variant.hpp" line="32" column="18" bodyfile="leasy/kits/variant.hpp" bodystart="32" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1kits_1_1variant_1acee108c0f76474b2a2a2304ebe5b8ab9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::kits::variant&lt; Ts &gt;::variant</definition>
+        <argsstring>()</argsstring>
+        <name>variant</name>
+        <qualifiedname>leasy::kits::variant::variant</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/variant.hpp" line="35" column="5" bodyfile="leasy/kits/variant.hpp" bodystart="35" bodyend="35"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1kits_1_1variant_1af1cd225de68b3c46de8c49f8f9cbc435" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>leasy::kits::variant&lt; Ts &gt;::variant</definition>
+        <argsstring>(T &amp;&amp;v)</argsstring>
+        <name>variant</name>
+        <qualifiedname>leasy::kits::variant::variant</qualifiedname>
+        <param>
+          <type>T &amp;&amp;</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/variant.hpp" line="38" column="5" bodyfile="leasy/kits/variant.hpp" bodystart="38" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1kits_1_1variant_1a5d92e496e70f88a05d8541201a65bf9e" prot="public" static="no" const="no" explicit="no" inline="yes" refqual="lvalue" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="classleasy_1_1kits_1_1variant_1acee108c0f76474b2a2a2304ebe5b8ab9" kindref="member">variant</ref> &amp;</type>
+        <definition>variant &amp; leasy::kits::variant&lt; Ts &gt;::when</definition>
+        <argsstring>(F &amp;&amp;f) &amp;</argsstring>
+        <name>when</name>
+        <qualifiedname>leasy::kits::variant::when</qualifiedname>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/variant.hpp" line="42" column="13" bodyfile="leasy/kits/variant.hpp" bodystart="42" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1kits_1_1variant_1abb70ef8743fc60409c1bb5570d2107f9" prot="public" static="no" const="no" explicit="no" inline="yes" refqual="rvalue" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="classleasy_1_1kits_1_1variant_1acee108c0f76474b2a2a2304ebe5b8ab9" kindref="member">variant</ref> &amp;&amp;</type>
+        <definition>variant &amp;&amp; leasy::kits::variant&lt; Ts &gt;::when</definition>
+        <argsstring>(F &amp;&amp;f) &amp;&amp;</argsstring>
+        <name>when</name>
+        <qualifiedname>leasy::kits::variant::when</qualifiedname>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/variant.hpp" line="49" column="13" bodyfile="leasy/kits/variant.hpp" bodystart="49" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1kits_1_1variant_1a02ec36fd2ad211453ed8eaccf1b78f3c" prot="public" static="no" const="yes" explicit="no" inline="yes" refqual="lvalue" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>const <ref refid="classleasy_1_1kits_1_1variant_1acee108c0f76474b2a2a2304ebe5b8ab9" kindref="member">variant</ref> &amp;</type>
+        <definition>const variant &amp; leasy::kits::variant&lt; Ts &gt;::when</definition>
+        <argsstring>(F &amp;&amp;f) const &amp;</argsstring>
+        <name>when</name>
+        <qualifiedname>leasy::kits::variant::when</qualifiedname>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/variant.hpp" line="57" column="19" bodyfile="leasy/kits/variant.hpp" bodystart="57" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1kits_1_1variant_1aad8eb0695eb731038bae682e518451e3" prot="public" static="no" const="yes" explicit="no" inline="yes" refqual="rvalue" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>const <ref refid="classleasy_1_1kits_1_1variant_1acee108c0f76474b2a2a2304ebe5b8ab9" kindref="member">variant</ref> &amp;&amp;</type>
+        <definition>const variant &amp;&amp; leasy::kits::variant&lt; Ts &gt;::when</definition>
+        <argsstring>(F &amp;&amp;f) const &amp;&amp;</argsstring>
+        <name>when</name>
+        <qualifiedname>leasy::kits::variant::when</qualifiedname>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/variant.hpp" line="64" column="19" bodyfile="leasy/kits/variant.hpp" bodystart="64" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1kits_1_1variant_1ae6d568f4d7a6f48df75fbc059673fd97" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="classleasy_1_1kits_1_1variant_1acee108c0f76474b2a2a2304ebe5b8ab9" kindref="member">variant</ref> &amp;</type>
+        <definition>variant &amp; leasy::kits::variant&lt; Ts &gt;::set</definition>
+        <argsstring>(T &amp;&amp;v)</argsstring>
+        <name>set</name>
+        <qualifiedname>leasy::kits::variant::set</qualifiedname>
+        <param>
+          <type>T &amp;&amp;</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/variant.hpp" line="71" column="13" bodyfile="leasy/kits/variant.hpp" bodystart="71" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1kits_1_1variant_1ad793cbe3aa25bbbaa38007198fc89e35" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::variant&lt; Ts... &gt; &amp;</type>
+        <definition>const std::variant&lt; Ts... &gt; &amp; leasy::kits::variant&lt; Ts &gt;::internal</definition>
+        <argsstring>() const</argsstring>
+        <name>internal</name>
+        <qualifiedname>leasy::kits::variant::internal</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/variant.hpp" line="76" column="24" bodyfile="leasy/kits/variant.hpp" bodystart="76" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1kits_1_1variant_1a9317d8610fe93af318b6f04ed71e0b58" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::variant&lt; Ts... &gt; &amp;</type>
+        <definition>std::variant&lt; Ts... &gt; &amp; leasy::kits::variant&lt; Ts &gt;::internal</definition>
+        <argsstring>()</argsstring>
+        <name>internal</name>
+        <qualifiedname>leasy::kits::variant::internal</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/kits/variant.hpp" line="80" column="18" bodyfile="leasy/kits/variant.hpp" bodystart="80" bodyend="82"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/kits/variant.hpp" line="30" column="3" bodyfile="leasy/kits/variant.hpp" bodystart="30" bodyend="83"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1kits_1_1variant_1ad793cbe3aa25bbbaa38007198fc89e35" prot="public" virt="non-virtual"><scope>leasy::kits::variant</scope><name>internal</name></member>
+      <member refid="classleasy_1_1kits_1_1variant_1a9317d8610fe93af318b6f04ed71e0b58" prot="public" virt="non-virtual"><scope>leasy::kits::variant</scope><name>internal</name></member>
+      <member refid="classleasy_1_1kits_1_1variant_1ae6d568f4d7a6f48df75fbc059673fd97" prot="public" virt="non-virtual"><scope>leasy::kits::variant</scope><name>set</name></member>
+      <member refid="classleasy_1_1kits_1_1variant_1a23200f138a7f0d66e33226e0d16c1c72" prot="protected" virt="non-virtual"><scope>leasy::kits::variant</scope><name>value</name></member>
+      <member refid="classleasy_1_1kits_1_1variant_1acee108c0f76474b2a2a2304ebe5b8ab9" prot="public" virt="non-virtual"><scope>leasy::kits::variant</scope><name>variant</name></member>
+      <member refid="classleasy_1_1kits_1_1variant_1af1cd225de68b3c46de8c49f8f9cbc435" prot="public" virt="non-virtual"><scope>leasy::kits::variant</scope><name>variant</name></member>
+      <member refid="classleasy_1_1kits_1_1variant_1a5d92e496e70f88a05d8541201a65bf9e" prot="public" virt="non-virtual"><scope>leasy::kits::variant</scope><name>when</name></member>
+      <member refid="classleasy_1_1kits_1_1variant_1abb70ef8743fc60409c1bb5570d2107f9" prot="public" virt="non-virtual"><scope>leasy::kits::variant</scope><name>when</name></member>
+      <member refid="classleasy_1_1kits_1_1variant_1a02ec36fd2ad211453ed8eaccf1b78f3c" prot="public" virt="non-virtual"><scope>leasy::kits::variant</scope><name>when</name></member>
+      <member refid="classleasy_1_1kits_1_1variant_1aad8eb0695eb731038bae682e518451e3" prot="public" virt="non-virtual"><scope>leasy::kits::variant</scope><name>when</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

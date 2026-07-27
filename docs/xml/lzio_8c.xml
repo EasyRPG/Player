@@ -1,0 +1,369 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lzio_8c" kind="file" language="C++">
+    <compoundname>lzio.c</compoundname>
+    <includes refid="lprefix_8h" local="yes">lprefix.h</includes>
+    <includes local="no">string.h</includes>
+    <includes refid="lua_8h" local="yes">lua.h</includes>
+    <includes refid="lapi_8h" local="yes">lapi.h</includes>
+    <includes refid="llimits_8h" local="yes">llimits.h</includes>
+    <includes refid="lmem_8h" local="yes">lmem.h</includes>
+    <includes refid="lstate_8h" local="yes">lstate.h</includes>
+    <includes refid="lzio_8h" local="yes">lzio.h</includes>
+    <incdepgraph>
+      <node id="9">
+        <label>lapi.h</label>
+        <link refid="lapi_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>lmem.h</label>
+        <link refid="lmem_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>lobject.h</label>
+        <link refid="lobject_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>lprefix.h</label>
+        <link refid="lprefix_8h"/>
+      </node>
+      <node id="11">
+        <label>lstate.h</label>
+        <link refid="lstate_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>ltm.h</label>
+        <link refid="ltm_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lzio.c</label>
+        <link refid="lzio_8c"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>lzio.h</label>
+        <link refid="lzio_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>limits.h</label>
+      </node>
+      <node id="16">
+        <label>signal.h</label>
+      </node>
+      <node id="5">
+        <label>stdarg.h</label>
+      </node>
+      <node id="6">
+        <label>stddef.h</label>
+      </node>
+      <node id="3">
+        <label>string.h</label>
+      </node>
+    </incdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lzio_8c_1a5951afcafb16519a9de1dede747aefb8" prot="public" static="no">
+        <name>lzio_c</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lzio.c" line="7" column="9" bodyfile="leasy/lua/lzio.c" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lzio_8c_1abf0b3947b59218777a8e928a10be205b" prot="public" static="no">
+        <name>LUA_CORE</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lzio.c" line="8" column="9" bodyfile="leasy/lua/lzio.c" bodystart="8" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="lzio_8c_1a7d496b76e161e81d07f9200af4784cb2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int luaZ_fill</definition>
+        <argsstring>(ZIO *z)</argsstring>
+        <name>luaZ_fill</name>
+        <param>
+          <type><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref> *</type>
+          <declname>z</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lzio.c" line="24" column="5" bodyfile="leasy/lua/lzio.c" bodystart="24" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="lzio_8c_1aeac95715238190000a710e2c304133a2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void luaZ_init</definition>
+        <argsstring>(lua_State *L, ZIO *z, lua_Reader reader, void *data)</argsstring>
+        <name>luaZ_init</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref> *</type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a1708af7a68b7af536d43d126ca53b0f5" kindref="member">lua_Reader</ref></type>
+          <declname>reader</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lzio.c" line="39" column="6" bodyfile="leasy/lua/lzio.c" bodystart="39" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="lzio_8c_1a10bf97dd0a1e0ca5ec3bc674eeb510d9" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int checkbuffer</definition>
+        <argsstring>(ZIO *z)</argsstring>
+        <name>checkbuffer</name>
+        <param>
+          <type><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref> *</type>
+          <declname>z</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lzio.c" line="50" column="12" bodyfile="leasy/lua/lzio.c" bodystart="50" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="lzio_8c_1a8f724436a986edc42726b43aded0759a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t luaZ_read</definition>
+        <argsstring>(ZIO *z, void *b, size_t n)</argsstring>
+        <name>luaZ_read</name>
+        <param>
+          <type><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref> *</type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lzio.c" line="63" column="8" bodyfile="leasy/lua/lzio.c" bodystart="63" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="lzio_8c_1ab054e6d137f5b771cae0768766499ed4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const void *</type>
+        <definition>const void * luaZ_getaddr</definition>
+        <argsstring>(ZIO *z, size_t n)</argsstring>
+        <name>luaZ_getaddr</name>
+        <param>
+          <type><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref> *</type>
+          <declname>z</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lzio.c" line="79" column="12" bodyfile="leasy/lua/lzio.c" bodystart="79" bodyend="89"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lzio.c<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Buffered<sp/>streams</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="lzio_8c_1a5951afcafb16519a9de1dede747aefb8" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lzio_c</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="lzio_8c_1abf0b3947b59218777a8e928a10be205b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_CORE</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lprefix_8h" kindref="compound">lprefix.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lua_8h" kindref="compound">lua.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lapi_8h" kindref="compound">lapi.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="llimits_8h" kindref="compound">llimits.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lmem_8h" kindref="compound">lmem.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lstate_8h" kindref="compound">lstate.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lzio_8h" kindref="compound">lzio.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="lzio_8c_1a7d496b76e161e81d07f9200af4784cb2" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lzio_8c_1a7d496b76e161e81d07f9200af4784cb2" kindref="member">luaZ_fill</ref><sp/>(<ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref><sp/>*z)<sp/>{</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>size;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L<sp/>=<sp/>z-&gt;<ref refid="struct_zio_1a605b7ca7868887491196af34d9b7d765" kindref="member">L</ref>;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*buff;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><ref refid="lapi_8h_1a1781f2a7d9161848a246d475a9171875" kindref="member">lua_unlock</ref>(L);</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/>buff<sp/>=<sp/>z-&gt;<ref refid="struct_zio_1a543c6a2239f478a708e4549ee4453b56" kindref="member">reader</ref>(L,<sp/>z-&gt;<ref refid="struct_zio_1a78d84c6b39ee04b43be6638f2887915d" kindref="member">data</ref>,<sp/>&amp;size);</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><ref refid="lapi_8h_1aa68a48b9104aeadf4842c25c12a9b8c9" kindref="member">lua_lock</ref>(L);</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(buff<sp/>==<sp/>NULL<sp/>||<sp/>size<sp/>==<sp/>0)</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lzio_8h_1a8341bdc72db5a2f045e18440f9523008" kindref="member">EOZ</ref>;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/>z-&gt;<ref refid="struct_zio_1a7e086aa8f8c620f46c4697dc14c186ce" kindref="member">n</ref><sp/>=<sp/>size<sp/>-<sp/>1;<sp/><sp/></highlight><highlight class="comment">/*<sp/>discount<sp/>char<sp/>being<sp/>returned<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/>z-&gt;<ref refid="struct_zio_1a14ac73a363603164c07329d14063221b" kindref="member">p</ref><sp/>=<sp/>buff;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="llimits_8h_1aa0c49a2b32329cc39df5ccafd1f720e0" kindref="member">cast_uchar</ref>(*(z-&gt;<ref refid="struct_zio_1a14ac73a363603164c07329d14063221b" kindref="member">p</ref>++));</highlight></codeline>
+<codeline lineno="36"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="lzio_8c_1aeac95715238190000a710e2c304133a2" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lzio_8c_1aeac95715238190000a710e2c304133a2" kindref="member">luaZ_init</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref><sp/>*z,<sp/><ref refid="lua_8h_1a1708af7a68b7af536d43d126ca53b0f5" kindref="member">lua_Reader</ref><sp/>reader,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*data)<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/>z-&gt;<ref refid="struct_zio_1a605b7ca7868887491196af34d9b7d765" kindref="member">L</ref><sp/>=<sp/>L;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/>z-&gt;<ref refid="struct_zio_1a543c6a2239f478a708e4549ee4453b56" kindref="member">reader</ref><sp/>=<sp/>reader;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/>z-&gt;<ref refid="struct_zio_1a78d84c6b39ee04b43be6638f2887915d" kindref="member">data</ref><sp/>=<sp/>data;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/>z-&gt;<ref refid="struct_zio_1a7e086aa8f8c620f46c4697dc14c186ce" kindref="member">n</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/>z-&gt;<ref refid="struct_zio_1a14ac73a363603164c07329d14063221b" kindref="member">p</ref><sp/>=<sp/>NULL;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>---------------------------------------------------------------<sp/>read<sp/>---<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>checkbuffer<sp/>(<ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref><sp/>*z)<sp/>{</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(z-&gt;<ref refid="struct_zio_1a7e086aa8f8c620f46c4697dc14c186ce" kindref="member">n</ref><sp/>==<sp/>0)<sp/>{<sp/><sp/></highlight><highlight class="comment">/*<sp/>no<sp/>bytes<sp/>in<sp/>buffer?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lzio_8c_1a7d496b76e161e81d07f9200af4784cb2" kindref="member">luaZ_fill</ref>(z)<sp/>==<sp/><ref refid="lzio_8h_1a8341bdc72db5a2f045e18440f9523008" kindref="member">EOZ</ref>)<sp/><sp/></highlight><highlight class="comment">/*<sp/>try<sp/>to<sp/>read<sp/>more<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;<sp/><sp/></highlight><highlight class="comment">/*<sp/>no<sp/>more<sp/>input<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>z-&gt;<ref refid="struct_zio_1a7e086aa8f8c620f46c4697dc14c186ce" kindref="member">n</ref>++;<sp/><sp/></highlight><highlight class="comment">/*<sp/>luaZ_fill<sp/>consumed<sp/>first<sp/>byte;<sp/>put<sp/>it<sp/>back<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>z-&gt;<ref refid="struct_zio_1a14ac73a363603164c07329d14063221b" kindref="member">p</ref>--;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;<sp/><sp/></highlight><highlight class="comment">/*<sp/>now<sp/>buffer<sp/>has<sp/>something<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63" refid="lzio_8c_1a8f724436a986edc42726b43aded0759a" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="lzio_8c_1a8f724436a986edc42726b43aded0759a" kindref="member">luaZ_read</ref><sp/>(<ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref><sp/>*z,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*b,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>n)<sp/>{</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(n)<sp/>{</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>m;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!checkbuffer(z))</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>n;<sp/><sp/></highlight><highlight class="comment">/*<sp/>no<sp/>more<sp/>input;<sp/>return<sp/>number<sp/>of<sp/>missing<sp/>bytes<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>m<sp/>=<sp/>(n<sp/>&lt;=<sp/>z-&gt;<ref refid="struct_zio_1a7e086aa8f8c620f46c4697dc14c186ce" kindref="member">n</ref>)<sp/>?<sp/>n<sp/>:<sp/>z-&gt;<ref refid="struct_zio_1a7e086aa8f8c620f46c4697dc14c186ce" kindref="member">n</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>min.<sp/>between<sp/>n<sp/>and<sp/>z-&gt;n<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>memcpy(b,<sp/>z-&gt;<ref refid="struct_zio_1a14ac73a363603164c07329d14063221b" kindref="member">p</ref>,<sp/>m);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>z-&gt;<ref refid="struct_zio_1a7e086aa8f8c620f46c4697dc14c186ce" kindref="member">n</ref><sp/>-=<sp/>m;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>z-&gt;<ref refid="struct_zio_1a14ac73a363603164c07329d14063221b" kindref="member">p</ref><sp/>+=<sp/>m;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>b<sp/>=<sp/>(</highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*)b<sp/>+<sp/>m;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>n<sp/>-=<sp/>m;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79" refid="lzio_8c_1ab054e6d137f5b771cae0768766499ed4" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="lzio_8c_1ab054e6d137f5b771cae0768766499ed4" kindref="member">luaZ_getaddr</ref><sp/>(<ref refid="lzio_8h_1a3a6756c936bdfffa304b1d808ce7dc17" kindref="member">ZIO</ref>*<sp/>z,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>n)<sp/>{</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*res;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!checkbuffer(z))</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;<sp/><sp/></highlight><highlight class="comment">/*<sp/>no<sp/>more<sp/>input<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(z-&gt;<ref refid="struct_zio_1a7e086aa8f8c620f46c4697dc14c186ce" kindref="member">n</ref><sp/>&lt;<sp/>n)<sp/><sp/></highlight><highlight class="comment">/*<sp/>not<sp/>enough<sp/>bytes?<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>NULL;<sp/><sp/></highlight><highlight class="comment">/*<sp/>block<sp/>not<sp/>whole;<sp/>cannot<sp/>give<sp/>an<sp/>address<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/>res<sp/>=<sp/>z-&gt;<ref refid="struct_zio_1a14ac73a363603164c07329d14063221b" kindref="member">p</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>get<sp/>block<sp/>address<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/>z-&gt;<ref refid="struct_zio_1a7e086aa8f8c620f46c4697dc14c186ce" kindref="member">n</ref><sp/>-=<sp/>n;<sp/><sp/></highlight><highlight class="comment">/*<sp/>consume<sp/>these<sp/>bytes<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/>z-&gt;<ref refid="struct_zio_1a14ac73a363603164c07329d14063221b" kindref="member">p</ref><sp/>+=<sp/>n;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>res;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lzio.c"/>
+  </compounddef>
+</doxygen>

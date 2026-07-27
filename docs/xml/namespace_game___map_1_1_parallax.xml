@@ -1,0 +1,329 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_game___map_1_1_parallax" kind="namespace" language="C++">
+    <compoundname>Game_Map::Parallax</compoundname>
+    <innerclass refid="struct_game___map_1_1_parallax_1_1_params" prot="public">Game_Map::Parallax::Params</innerclass>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_game___map_1_1_parallax_1ad38d7d58f0a81782747aa45814126547" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Game_Map::Parallax::GetName</definition>
+        <argsstring>()</argsstring>
+        <name>GetName</name>
+        <qualifiedname>Game_Map::Parallax::GetName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The name of the current parallax graphic (or the empty string if none). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="772" column="13" bodyfile="game_map.cpp" bodystart="2058" bodyend="2060" declfile="game_map.h" declline="772" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1_1_parallax_1a10e6041cd295fb1ab1bb5dff34f33336" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::Parallax::GetX</definition>
+        <argsstring>()</argsstring>
+        <name>GetX</name>
+        <qualifiedname>Game_Map::Parallax::GetX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Offset in pixels of the bitmap at the top-left of the screen. (If the screen is shaking, at the top-left of where the screen would be if it weren&apos;t.) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="779" column="5" bodyfile="game_map.cpp" bodystart="2062" bodyend="2064" declfile="game_map.h" declline="779" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1_1_parallax_1a90ae18909dc18de0d02df2a012c2a519" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::Parallax::GetY</definition>
+        <argsstring>()</argsstring>
+        <name>GetY</name>
+        <qualifiedname>Game_Map::Parallax::GetY</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Same a <ref refid="namespace_game___map_1_1_parallax_1a10e6041cd295fb1ab1bb5dff34f33336" kindref="member">GetX()</ref>, but in the y-direction. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="782" column="5" bodyfile="game_map.cpp" bodystart="2066" bodyend="2068" declfile="game_map.h" declline="782" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1_1_parallax_1aa56afe44b22dc0fabd4f9b19b83957ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Parallax::Initialize</definition>
+        <argsstring>(int width, int height)</argsstring>
+        <name>Initialize</name>
+        <qualifiedname>Game_Map::Parallax::Initialize</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Call this when you find out the width and height of the BG. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="785" column="6" bodyfile="game_map.cpp" bodystart="2070" bodyend="2092" declfile="game_map.h" declline="785" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1_1_parallax_1a459b3b2d8b4817eca9bd158f4fec69a0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Parallax::AddPositionX</definition>
+        <argsstring>(int x)</argsstring>
+        <name>AddPositionX</name>
+        <qualifiedname>Game_Map::Parallax::AddPositionX</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adds x to the panorama x-position MOD parallax_width * TILE_SIZE * 2 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="788" column="6" bodyfile="game_map.cpp" bodystart="2094" bodyend="2096" declfile="game_map.h" declline="788" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1_1_parallax_1afcefb5d593fe393a3e59cc8cbdfbe3ad" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Parallax::AddPositionY</definition>
+        <argsstring>(int y)</argsstring>
+        <name>AddPositionY</name>
+        <qualifiedname>Game_Map::Parallax::AddPositionY</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adds y to the panorama y-position MOD parallax_width * TILE_SIZE * 2 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="791" column="6" bodyfile="game_map.cpp" bodystart="2098" bodyend="2100" declfile="game_map.h" declline="791" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1_1_parallax_1aa37782f9c0077c3217d6beeb9fc38c4c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Parallax::SetPositionX</definition>
+        <argsstring>(int x)</argsstring>
+        <name>SetPositionX</name>
+        <qualifiedname>Game_Map::Parallax::SetPositionX</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the panorama x-position MOD parallax_width * TILE_SIZE * 2 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="794" column="6" bodyfile="game_map.cpp" bodystart="2102" bodyend="2109" declfile="game_map.h" declline="794" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1_1_parallax_1ad4ff30c4ce6bec77e68b4bb0208e7a47" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Parallax::SetPositionY</definition>
+        <argsstring>(int y)</argsstring>
+        <name>SetPositionY</name>
+        <qualifiedname>Game_Map::Parallax::SetPositionY</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the panorama y-position MOD parallax_width * TILE_SIZE * 2 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="797" column="6" bodyfile="game_map.cpp" bodystart="2111" bodyend="2118" declfile="game_map.h" declline="797" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1_1_parallax_1a5133fc6c13613f3fc35adfbaa67daa44" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Parallax::ResetPositionX</definition>
+        <argsstring>()</argsstring>
+        <name>ResetPositionX</name>
+        <qualifiedname>Game_Map::Parallax::ResetPositionX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reset the x position of the BG. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="800" column="6" bodyfile="game_map.cpp" bodystart="2120" bodyend="2156" declfile="game_map.h" declline="800" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1_1_parallax_1a3e0a9a53625929a1dc92d2ec3168d7f4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Parallax::ResetPositionY</definition>
+        <argsstring>()</argsstring>
+        <name>ResetPositionY</name>
+        <qualifiedname>Game_Map::Parallax::ResetPositionY</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reset the x position of the BG. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="803" column="6" bodyfile="game_map.cpp" bodystart="2158" bodyend="2189" declfile="game_map.h" declline="803" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1_1_parallax_1a910311b30ceb219d7ede35888ab41a42" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Parallax::ScrollRight</definition>
+        <argsstring>(int distance)</argsstring>
+        <name>ScrollRight</name>
+        <qualifiedname>Game_Map::Parallax::ScrollRight</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>distance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>To be called when the map scrolls right.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>distance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Amount of scroll in 1/16th pixels. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="810" column="6" bodyfile="game_map.cpp" bodystart="2191" bodyend="2211" declfile="game_map.h" declline="810" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1_1_parallax_1a5bfa662e646aa9785bc438743cdd5575" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Parallax::ScrollDown</definition>
+        <argsstring>(int distance)</argsstring>
+        <name>ScrollDown</name>
+        <qualifiedname>Game_Map::Parallax::ScrollDown</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>distance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>To be called when the map scrolls down.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>distance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Amount of scroll in 1/16th pixels. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="817" column="6" bodyfile="game_map.cpp" bodystart="2213" bodyend="2233" declfile="game_map.h" declline="817" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1_1_parallax_1ad8c127e2d9d356268fedb4de2a48a7c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Parallax::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>Game_Map::Parallax::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Update autoscrolling BG (call every frame). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="820" column="6" bodyfile="game_map.cpp" bodystart="2235" bodyend="2258" declfile="game_map.h" declline="820" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1_1_parallax_1a7fab48b758cbd6736e6892a8b846bc9f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Parallax::ChangeBG</definition>
+        <argsstring>(const Params &amp;params)</argsstring>
+        <name>ChangeBG</name>
+        <qualifiedname>Game_Map::Parallax::ChangeBG</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_game___map_1_1_parallax_1_1_params" kindref="compound">Params</ref> &amp;</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Change BG (eg. with a &quot;Change Parallax BG&quot; command). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="823" column="6" bodyfile="game_map.cpp" bodystart="2260" bodyend="2276" declfile="game_map.h" declline="823" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1_1_parallax_1a31321103085ec635b132b76d2e9c2117" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Parallax::ClearChangedBG</definition>
+        <argsstring>()</argsstring>
+        <name>ClearChangedBG</name>
+        <qualifiedname>Game_Map::Parallax::ClearChangedBG</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Remove any changed BG. The BG goes back to what was set in the map properties. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="829" column="6" bodyfile="game_map.cpp" bodystart="2278" bodyend="2281" declfile="game_map.h" declline="829" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1_1_parallax_1a5056e897d92eb2f66b222e095ee1f265" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::Parallax::FakeXPosition</definition>
+        <argsstring>()</argsstring>
+        <name>FakeXPosition</name>
+        <qualifiedname>Game_Map::Parallax::FakeXPosition</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Whether ox adjustment is required for fake resolution mode </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="832" column="6" bodyfile="game_map.cpp" bodystart="2283" bodyend="2285" declfile="game_map.h" declline="832" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1_1_parallax_1a9cf1c1453a240271ada3e4ea978bd90d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::Parallax::FakeYPosition</definition>
+        <argsstring>()</argsstring>
+        <name>FakeYPosition</name>
+        <qualifiedname>Game_Map::Parallax::FakeYPosition</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Whether oy adjustment is required for fake resolution mode </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="835" column="6" bodyfile="game_map.cpp" bodystart="2287" bodyend="2289" declfile="game_map.h" declline="835" declcolumn="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_map.h" line="757" column="1"/>
+  </compounddef>
+</doxygen>

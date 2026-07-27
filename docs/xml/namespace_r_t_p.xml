@@ -1,0 +1,510 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_r_t_p" kind="namespace" language="C++">
+    <compoundname>RTP</compoundname>
+    <innerclass refid="struct_r_t_p_1_1_rtp_hit_info" prot="public">RTP::RtpHitInfo</innerclass>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0a" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>Type</name>
+        <qualifiedname>RTP::Type</qualifiedname>
+        <enumvalue id="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aaf85433ed800839d169fd106eae634f17" prot="public">
+          <name>RPG2000_OfficialJapanese</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa0d1d61d807b4f88f4d7421173b4048c7" prot="public">
+          <name>RPG2000_OfficialEnglish</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aad1616556f085fabad5ca7a4bad222128" prot="public">
+          <name>RPG2000_DonMiguelEnglish</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aad3d2a9cf100b89612cb7c4ff3a3078aa" prot="public">
+          <name>RPG2000_DonMiguelAddon</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa1c6c8246425a9df9d19d4882d962a0ad" prot="public">
+          <name>RPG2003_OfficialJapanese</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa1f742045534f5f88ddea42cd062a253c" prot="public">
+          <name>RPG2003_OfficialEnglish</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa722a9d9158d99465e06fc69f5b07acab" prot="public">
+          <name>RPG2003_RpgAdvocateEnglish</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa4634a6c40c8cc9e2f0b4e7a9eaee3f31" prot="public">
+          <name>RPG2003_VladRussian</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aab3c05dab7859cf11829b8e5be10abed1" prot="public">
+          <name>RPG2003_RpgUniverseSpanishPortuguese</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa0e1577000015931b32ccac863c3fcf6d" prot="public">
+          <name>RPG2003_Korean</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0aa130780b372f23ef986f1bfddd4ca65a1" prot="public">
+          <name>RPG2003_OfficialTraditionalChinese</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.h" line="43" column="1" bodyfile="rtp.h" bodystart="43" bodyend="55"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_r_t_p_1aaa1bf98e558c12d19982a1d065d610e7" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int RTP::num_2k_rtps</definition>
+        <argsstring></argsstring>
+        <name>num_2k_rtps</name>
+        <qualifiedname>RTP::num_2k_rtps</qualifiedname>
+        <initializer>= 4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.h" line="33" column="15" bodyfile="rtp.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_r_t_p_1a0b9eb45cd96abde77d58243834a97c2a" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int RTP::num_2k3_rtps</definition>
+        <argsstring></argsstring>
+        <name>num_2k3_rtps</name>
+        <qualifiedname>RTP::num_2k3_rtps</qualifiedname>
+        <initializer>= 7</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.h" line="34" column="15" bodyfile="rtp.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_r_t_p_1aab9225024ac1d40fe3a3d4261e481f3b" prot="public" static="no" mutable="no">
+        <type>const char *const</type>
+        <definition>const char *const RTP::rtp_table_2k</definition>
+        <argsstring>[][num_2k_rtps+1]</argsstring>
+        <name>rtp_table_2k</name>
+        <qualifiedname>RTP::rtp_table_2k</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp_table.cpp" line="38" column="18" bodyfile="rtp_table.cpp" bodystart="38" bodyend="1046" declfile="rtp.h" declline="36" declcolumn="25"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_r_t_p_1aa1477350016612f749fd9a3d0d8383c0" prot="public" static="no" mutable="no">
+        <type>const char *const</type>
+        <definition>const char *const RTP::rtp_table_2k3</definition>
+        <argsstring>[][num_2k3_rtps+1]</argsstring>
+        <name>rtp_table_2k3</name>
+        <qualifiedname>RTP::rtp_table_2k3</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp_table.cpp" line="1084" column="18" bodyfile="rtp_table.cpp" bodystart="1084" bodyend="1762" declfile="rtp.h" declline="37" declcolumn="25"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_r_t_p_1a4e20b856bdb2a727a5b1112958914d90" prot="public" static="no" mutable="no">
+        <type>const char *const</type>
+        <definition>const char *const RTP::rtp_table_2k_categories</definition>
+        <argsstring>[15]</argsstring>
+        <name>rtp_table_2k_categories</name>
+        <qualifiedname>RTP::rtp_table_2k_categories</qualifiedname>
+        <initializer>                                         = {
+    &quot;backdrop&quot;,
+    &quot;battle&quot;,
+    &quot;charset&quot;,
+    &quot;chipset&quot;,
+    &quot;faceset&quot;,
+    &quot;gameover&quot;,
+    &quot;monster&quot;,
+    &quot;movie&quot;,
+    &quot;music&quot;,
+    &quot;panorama&quot;,
+    &quot;picture&quot;,
+    &quot;sound&quot;,
+    &quot;system&quot;,
+    &quot;title&quot;,
+    nullptr
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp_table.cpp" line="1048" column="18" bodyfile="rtp_table.cpp" bodystart="1048" bodyend="1064" declfile="rtp.h" declline="38" declcolumn="25"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_r_t_p_1a090b17c1e2cd7ffb58c6487e7f214625" prot="public" static="no" mutable="no">
+        <type>const char *const</type>
+        <definition>const char *const RTP::rtp_table_2k3_categories</definition>
+        <argsstring>[16]</argsstring>
+        <name>rtp_table_2k3_categories</name>
+        <qualifiedname>RTP::rtp_table_2k3_categories</qualifiedname>
+        <initializer>                                          = {
+    &quot;backdrop&quot;,
+    &quot;battle&quot;,
+    &quot;battlecharset&quot;,
+    &quot;battleweapon&quot;,
+    &quot;charset&quot;,
+    &quot;chipset&quot;,
+    &quot;faceset&quot;,
+    &quot;gameover&quot;,
+    &quot;monster&quot;,
+    &quot;music&quot;,
+    &quot;panorama&quot;,
+    &quot;sound&quot;,
+    &quot;system&quot;,
+    &quot;system2&quot;,
+    &quot;title&quot;,
+    nullptr
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp_table.cpp" line="1764" column="18" bodyfile="rtp_table.cpp" bodystart="1764" bodyend="1781" declfile="rtp.h" declline="39" declcolumn="25"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_r_t_p_1a9c68654b1eb380201a10ca6b3199b8aa" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int RTP::rtp_table_2k_categories_idx</definition>
+        <argsstring>[15]</argsstring>
+        <name>rtp_table_2k_categories_idx</name>
+        <qualifiedname>RTP::rtp_table_2k_categories_idx</qualifiedname>
+        <initializer>                                      = {
+    0,
+    39,
+    69,
+    282,
+    418,
+    521,
+    522,
+    613,
+    614,
+    741,
+    755,
+    756,
+    978,
+    1002,
+    1006
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp_table.cpp" line="1066" column="11" bodyfile="rtp_table.cpp" bodystart="1066" bodyend="1082" declfile="rtp.h" declline="40" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_r_t_p_1a391856c3d719eb45aec72043e8d1c772" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int RTP::rtp_table_2k3_categories_idx</definition>
+        <argsstring>[16]</argsstring>
+        <name>rtp_table_2k3_categories_idx</name>
+        <qualifiedname>RTP::rtp_table_2k3_categories_idx</qualifiedname>
+        <initializer>                                       = {
+    0,
+    34,
+    88,
+    152,
+    153,
+    168,
+    173,
+    178,
+    180,
+    295,
+    446,
+    459,
+    665,
+    669,
+    672,
+    676
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp_table.cpp" line="1783" column="11" bodyfile="rtp_table.cpp" bodystart="1783" bodyend="1800" declfile="rtp.h" declline="41" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_r_t_p_1a0797cb8a6ebcf7a1d9567e4d4511a7cf" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto RTP::kTypes</definition>
+        <argsstring></argsstring>
+        <name>kTypes</name>
+        <qualifiedname>RTP::kTypes</qualifiedname>
+        <initializer>                  = lcf::makeEnumTags&lt;<ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0a" kindref="member">Type</ref>&gt;(
+    &quot;Official Japanese&quot;,
+    &quot;Official English&quot;,
+    &quot;Don Miguel English Translation&quot;,
+    &quot;Don Miguel <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> Addon&quot;,
+    &quot;Official Japanese&quot;,
+    &quot;Official English&quot;,
+    &quot;RPG Advocate English Translation&quot;,
+    &quot;Vlad Russian Translation&quot;,
+    &quot;RPG Universe Spanish/Portuguese Translation&quot;,
+    &quot;Korean Translation&quot;,
+    &quot;Official Traditional Chinese&quot;
+)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.h" line="57" column="16" bodyfile="rtp.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_r_t_p_1a24f8665166e3663272fafcab581d56c1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="struct_r_t_p_1_1_rtp_hit_info" kindref="compound">RtpHitInfo</ref> &gt;</type>
+        <definition>std::vector&lt; RTP::RtpHitInfo &gt; RTP::Detect</definition>
+        <argsstring>(const FilesystemView &amp;fs, int version, int miss_limit=10)</argsstring>
+        <name>Detect</name>
+        <qualifiedname>RTP::Detect</qualifiedname>
+        <param>
+          <type>const <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> &amp;</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>version</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>miss_limit</declname>
+          <defval>10</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Uses a file finder tree to detect the installed <ref refid="namespace_r_t_p" kindref="compound">RTP</ref>, the list is sorted from best to worst hit. <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> with zero hits are removed.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_filesystem" kindref="compound">Filesystem</ref> tree </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="namespace_r_t_p" kindref="compound">RTP</ref> version in the folder (2000 or 2003), use 0 to detect all </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>miss_limit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>How many <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> files required to be missing to stop scanning early. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>List of detected <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> types </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.h" line="89" column="13" bodyfile="rtp.cpp" bodystart="63" bodyend="127" declfile="rtp.h" declline="89" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_r_t_p_1acee4cf136ed4259c2e64fc84b563545d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0a" kindref="member">RTP::Type</ref> &gt;</type>
+        <definition>std::vector&lt; RTP::Type &gt; RTP::LookupAnyToRtp</definition>
+        <argsstring>(std::string_view src_category, std::string_view src_name, int version)</argsstring>
+        <name>LookupAnyToRtp</name>
+        <qualifiedname>RTP::LookupAnyToRtp</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>src_category</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>src_name</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Takes an asset name and returns all <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> that match</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>src_category</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Asset category </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Asset name </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>version</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>rtp version (2000 or 2003) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>List of possible <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.h" line="99" column="13" bodyfile="rtp.cpp" bodystart="146" bodyend="154" declfile="rtp.h" declline="99" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_r_t_p_1a57b0857704928d8503e0ee6274195d06" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string RTP::LookupRtpToRtp</definition>
+        <argsstring>(std::string_view src_category, std::string_view src_name, RTP::Type src_rtp, RTP::Type target_rtp, bool *is_rtp_asset=nullptr)</argsstring>
+        <name>LookupRtpToRtp</name>
+        <qualifiedname>RTP::LookupRtpToRtp</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>src_category</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>src_name</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0a" kindref="member">RTP::Type</ref></type>
+          <declname>src_rtp</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0a" kindref="member">RTP::Type</ref></type>
+          <declname>target_rtp</declname>
+        </param>
+        <param>
+          <type>bool *</type>
+          <declname>is_rtp_asset</declname>
+          <defval>nullptr</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Takes a source and a destination <ref refid="namespace_r_t_p" kindref="compound">RTP</ref>. Maps source name to destination name and returns it.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>src_category</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Asset category </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Asset name </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_rtp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="namespace_r_t_p_1a3cda4c63bebf92613006ca6c22d1ac0a" kindref="member">Type</ref> of the source <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> the asset name is from </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target_rtp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Target <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> the asset name is translated to </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>is_rtp_asset</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>When not null indicates if src_name is a known entry in the src_rtp but only when src_rtp != target_rtp </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The translated asset name or empty string when the mapping is unavailable </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="rtp.h" line="111" column="13" bodyfile="rtp.cpp" bodystart="180" bodyend="201" declfile="rtp.h" declline="111" declcolumn="13"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>The <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> namespace contains functions for working with the Runtime Package </para>
+    </detaileddescription>
+    <location file="rtp.h" line="31" column="1"/>
+  </compounddef>
+</doxygen>

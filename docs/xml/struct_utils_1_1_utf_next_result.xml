@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_utils_1_1_utf_next_result" kind="struct" language="C++" prot="public">
+    <compoundname>Utils::UtfNextResult</compoundname>
+    <includes refid="utils_8h" local="no">utils.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_utils_1_1_utf_next_result_1a127fd8bba8650d732bc0a70cc95a8164" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* Utils::UtfNextResult::next</definition>
+        <argsstring></argsstring>
+        <name>next</name>
+        <qualifiedname>Utils::UtfNextResult::next</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="120" column="12" bodyfile="utils.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_utils_1_1_utf_next_result_1a9f4a89f25f7a3ecef08e171ea0e32bfa" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t Utils::UtfNextResult::ch</definition>
+        <argsstring></argsstring>
+        <name>ch</name>
+        <qualifiedname>Utils::UtfNextResult::ch</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="121" column="10" bodyfile="utils.h" bodystart="121" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_utils_1_1_utf_next_result_1a3ef47268492f55bca9db308fc4876822" prot="public" static="no" const="yes" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Utils::UtfNextResult::operator bool</definition>
+        <argsstring>() const</argsstring>
+        <name>operator bool</name>
+        <qualifiedname>Utils::UtfNextResult::operator bool</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="utils.h" line="122" column="10" bodyfile="utils.h" bodystart="122" bodyend="122"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="utils.h" line="119" column="1" bodyfile="utils.h" bodystart="119" bodyend="123"/>
+    <listofallmembers>
+      <member refid="struct_utils_1_1_utf_next_result_1a9f4a89f25f7a3ecef08e171ea0e32bfa" prot="public" virt="non-virtual"><scope>Utils::UtfNextResult</scope><name>ch</name></member>
+      <member refid="struct_utils_1_1_utf_next_result_1a127fd8bba8650d732bc0a70cc95a8164" prot="public" virt="non-virtual"><scope>Utils::UtfNextResult</scope><name>next</name></member>
+      <member refid="struct_utils_1_1_utf_next_result_1a3ef47268492f55bca9db308fc4876822" prot="public" virt="non-virtual"><scope>Utils::UtfNextResult</scope><name>operator bool</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_95daaf1b8672d41b7dd5e9cf00442f8c" kind="dir">
+    <compoundname>leasy/ui</compoundname>
+    <innerfile refid="leasy_2ui_2window_8cpp">window.cpp</innerfile>
+    <innerfile refid="window_8hpp">window.hpp</innerfile>
+    <innerfile refid="winstream_8hpp">winstream.hpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ui/"/>
+  </compounddef>
+</doxygen>

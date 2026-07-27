@@ -1,0 +1,2202 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lauxlib_8h" kind="file" language="C++">
+    <compoundname>lauxlib.h</compoundname>
+    <includes local="no">stddef.h</includes>
+    <includes local="no">stdio.h</includes>
+    <includes refid="luaconf_8h" local="yes">luaconf.h</includes>
+    <includes refid="lua_8h" local="yes">lua.h</includes>
+    <includedby refid="lauxlib_8c" local="yes">leasy/lua/lauxlib.c</includedby>
+    <includedby refid="lbaselib_8c" local="yes">leasy/lua/lbaselib.c</includedby>
+    <includedby refid="lcorolib_8c" local="yes">leasy/lua/lcorolib.c</includedby>
+    <includedby refid="ldblib_8c" local="yes">leasy/lua/ldblib.c</includedby>
+    <includedby refid="linit_8c" local="yes">leasy/lua/linit.c</includedby>
+    <includedby refid="liolib_8c" local="yes">leasy/lua/liolib.c</includedby>
+    <includedby refid="lmathlib_8c" local="yes">leasy/lua/lmathlib.c</includedby>
+    <includedby refid="loadlib_8c" local="yes">leasy/lua/loadlib.c</includedby>
+    <includedby refid="loslib_8c" local="yes">leasy/lua/loslib.c</includedby>
+    <includedby refid="lstrlib_8c" local="yes">leasy/lua/lstrlib.c</includedby>
+    <includedby refid="ltablib_8c" local="yes">leasy/lua/ltablib.c</includedby>
+    <includedby refid="lua_2lua_8hpp" local="yes">leasy/lua/lua.hpp</includedby>
+    <includedby refid="lutf8lib_8c" local="yes">leasy/lua/lutf8lib.c</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/lua/lauxlib.h</label>
+        <link refid="lauxlib_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>limits.h</label>
+      </node>
+      <node id="7">
+        <label>stdarg.h</label>
+      </node>
+      <node id="2">
+        <label>stddef.h</label>
+      </node>
+      <node id="3">
+        <label>stdio.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="33">
+        <label>algo.cpp</label>
+        <link refid="algo_8cpp"/>
+      </node>
+      <node id="23">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="27">
+        <label>graphics.cpp</label>
+        <link refid="graphics_8cpp"/>
+      </node>
+      <node id="22">
+        <label>leasy/events.hpp</label>
+        <link refid="events_8hpp"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>leasy/iky7/anyf.hpp</label>
+        <link refid="anyf_8hpp"/>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>leasy/ily3/boot.cpp</label>
+        <link refid="boot_8cpp"/>
+      </node>
+      <node id="20">
+        <label>leasy/ily3/ily3.cpp</label>
+        <link refid="ily3_8cpp"/>
+      </node>
+      <node id="21">
+        <label>leasy/ily3/ily3.hpp</label>
+        <link refid="ily3_8hpp"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>leasy/ily3/libsys.cpp</label>
+        <link refid="libsys_8cpp"/>
+      </node>
+      <node id="16">
+        <label>leasy/ily3/libsys.hpp</label>
+        <link refid="libsys_8hpp"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>leasy/kits/rtt.hpp</label>
+        <link refid="rtt_8hpp"/>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>leasy/leasy.cpp</label>
+        <link refid="leasy_8cpp"/>
+      </node>
+      <node id="26">
+        <label>leasy/leasy.hpp</label>
+        <link refid="leasy_8hpp"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>leasy/lmain.cpp</label>
+        <link refid="lmain_8cpp"/>
+      </node>
+      <node id="2">
+        <label>leasy/lua/lauxlib.c</label>
+        <link refid="lauxlib_8c"/>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lauxlib.h</label>
+        <link refid="lauxlib_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>leasy/lua/lbaselib.c</label>
+        <link refid="lbaselib_8c"/>
+      </node>
+      <node id="4">
+        <label>leasy/lua/lcorolib.c</label>
+        <link refid="lcorolib_8c"/>
+      </node>
+      <node id="5">
+        <label>leasy/lua/ldblib.c</label>
+        <link refid="ldblib_8c"/>
+      </node>
+      <node id="6">
+        <label>leasy/lua/linit.c</label>
+        <link refid="linit_8c"/>
+      </node>
+      <node id="7">
+        <label>leasy/lua/liolib.c</label>
+        <link refid="liolib_8c"/>
+      </node>
+      <node id="8">
+        <label>leasy/lua/lmathlib.c</label>
+        <link refid="lmathlib_8c"/>
+      </node>
+      <node id="9">
+        <label>leasy/lua/loadlib.c</label>
+        <link refid="loadlib_8c"/>
+      </node>
+      <node id="10">
+        <label>leasy/lua/loslib.c</label>
+        <link refid="loslib_8c"/>
+      </node>
+      <node id="11">
+        <label>leasy/lua/lstrlib.c</label>
+        <link refid="lstrlib_8c"/>
+      </node>
+      <node id="12">
+        <label>leasy/lua/ltablib.c</label>
+        <link refid="ltablib_8c"/>
+      </node>
+      <node id="13">
+        <label>leasy/lua/lua.hpp</label>
+        <link refid="lua_2lua_8hpp"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>leasy/lua/lutf8lib.c</label>
+        <link refid="lutf8lib_8c"/>
+      </node>
+      <node id="31">
+        <label>leasy/metadata/class.hpp</label>
+        <link refid="class_8hpp"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>leasy/metadata/function.hpp</label>
+        <link refid="function_8hpp"/>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>leasy/metadata/metadata.hpp</label>
+        <link refid="metadata_8hpp"/>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>leasy/metadata/namespace.hpp</label>
+        <link refid="namespace_8hpp"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>leasy/metadata/reflection.hpp</label>
+        <link refid="reflection_8hpp"/>
+      </node>
+      <node id="35">
+        <label>leasy/metadata/type.cpp</label>
+        <link refid="type_8cpp"/>
+      </node>
+      <node id="38">
+        <label>leasy/metadata/type.hpp</label>
+        <link refid="type_8hpp"/>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>leasy/ui/winstream.hpp</label>
+        <link refid="winstream_8hpp"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>leasy/ul2/dispatcher.hpp</label>
+        <link refid="dispatcher_8hpp"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>leasy/ul2/function_wrapper.hpp</label>
+        <link refid="function__wrapper_8hpp"/>
+      </node>
+      <node id="17">
+        <label>leasy/ul2/lua_stack.hpp</label>
+        <link refid="lua__stack_8hpp"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>leasy/ul2/state.hpp</label>
+        <link refid="state_8hpp"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>platform/sdl/main.cpp</label>
+        <link refid="sdl_2main_8cpp"/>
+      </node>
+      <node id="25">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structlua_l___reg" prot="public">luaL_Reg</innerclass>
+    <innerclass refid="structlua_l___buffer" prot="public">luaL_Buffer</innerclass>
+    <innerclass refid="structlua_l___stream" prot="public">luaL_Stream</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lauxlib_8h_1a074d53b3afd2b899d4b986c9643fb41a" prot="public" static="no">
+        <name>LUA_GNAME</name>
+        <initializer>&quot;_G&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="20" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1ab8d4418d33cd59728435db95ac2caf5a" prot="public" static="no">
+        <name>LUA_ERRFILE</name>
+        <initializer>(<ref refid="lua_8h_1a295ea44b6036e266b06e5de0f8ff24e0" kindref="member">LUA_ERRERR</ref>+1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="27" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1a0fbee1a8156dc622618c9f6048281a73" prot="public" static="no">
+        <name>LUA_LOADED_TABLE</name>
+        <initializer>&quot;_LOADED&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="31" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1ab654a257ab8f9de4ba519a64a9a9ea91" prot="public" static="no">
+        <name>LUA_PRELOAD_TABLE</name>
+        <initializer>&quot;_PRELOAD&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="35" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1ae6c79b83e1d493d4ab680e74e5a85a6a" prot="public" static="no">
+        <name>LUAL_NUMSIZES</name>
+        <initializer>(sizeof(<ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref>)*16 + sizeof(<ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref>))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="44" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1aa538485cd28f143fabea2325b9ecd477" prot="public" static="no">
+        <name>luaL_checkversion</name>
+        <param><defname>L</defname></param>
+        <initializer><ref refid="lauxlib_8h_1a8ad94df78305955cad1c698ea9d1eee9" kindref="member">luaL_checkversion_</ref>(L, <ref refid="lua_8h_1a4c575ef5fb9bad1872613a9d832486a5" kindref="member">LUA_VERSION_NUM</ref>, <ref refid="lauxlib_8h_1ae6c79b83e1d493d4ab680e74e5a85a6a" kindref="member">LUAL_NUMSIZES</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="47" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="47" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1a3bfb758f2ac7c9ecb758e1aeaaa82d3d" prot="public" static="no">
+        <name>LUA_NOREF</name>
+        <initializer>(-2)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="89" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1a004a6b76c047f3b94890a08dbdcbbee7" prot="public" static="no">
+        <name>LUA_REFNIL</name>
+        <initializer>(-1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="90" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1a023c745560d0ed613efb6eada57a3c13" prot="public" static="no">
+        <name>luaL_loadfile</name>
+        <param><defname>L</defname></param>
+        <param><defname>f</defname></param>
+        <initializer><ref refid="lauxlib_8h_1a6ac3b2572d5ce635c4617aed2a0eb649" kindref="member">luaL_loadfilex</ref>(L,f,NULL)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="98" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1ad575a4fd1f53fa454b5d9745fedecdc4" prot="public" static="no">
+        <name>luaL_newlibtable</name>
+        <param><defname>L</defname></param>
+        <param><defname>l</defname></param>
+        <initializer><ref refid="lapi_8c_1a7f93e3baf3101cad59ec61b7744a55d8" kindref="member">lua_createtable</ref>(L, 0, sizeof(l)/sizeof((l)[0]) - 1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="132" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="132" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1a5088ff720ec66200d83eb78467b77239" prot="public" static="no">
+        <name>luaL_newlib</name>
+        <param><defname>L</defname></param>
+        <param><defname>l</defname></param>
+        <initializer>(<ref refid="lauxlib_8h_1aa538485cd28f143fabea2325b9ecd477" kindref="member">luaL_checkversion</ref>(L), <ref refid="lauxlib_8h_1ad575a4fd1f53fa454b5d9745fedecdc4" kindref="member">luaL_newlibtable</ref>(L,l), <ref refid="lauxlib_8h_1a4cab22d0cb403fa6b94f2542f4303096" kindref="member">luaL_setfuncs</ref>(L,l,0))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="135" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="135" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1a48ce6cd86a7448e97f258097a7abc44d" prot="public" static="no">
+        <name>luaL_argcheck</name>
+        <param><defname>L</defname></param>
+        <param><defname>cond</defname></param>
+        <param><defname>arg</defname></param>
+        <param><defname>extramsg</defname></param>
+        <initializer>((void)(<ref refid="luaconf_8h_1a80cfa8350edf303de263ca15e45acde3" kindref="member">luai_likely</ref>(cond) || <ref refid="lauxlib_8h_1ac607576dd107a3120cd51948989f1ed2" kindref="member">luaL_argerror</ref>(L, (arg), (extramsg))))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="138" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="138" bodyend="139"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1ad13737dbd230fffc0b9925b1c728c58e" prot="public" static="no">
+        <name>luaL_argexpected</name>
+        <param><defname>L</defname></param>
+        <param><defname>cond</defname></param>
+        <param><defname>arg</defname></param>
+        <param><defname>tname</defname></param>
+        <initializer>((void)(<ref refid="luaconf_8h_1a80cfa8350edf303de263ca15e45acde3" kindref="member">luai_likely</ref>(cond) || <ref refid="lauxlib_8h_1aaa48a92e16c27c06e9c56e526e70f111" kindref="member">luaL_typeerror</ref>(L, (arg), (tname))))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="141" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="141" bodyend="142"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1ad9917d22c79651fdd73d42c146b5056f" prot="public" static="no">
+        <name>luaL_checkstring</name>
+        <param><defname>L</defname></param>
+        <param><defname>n</defname></param>
+        <initializer>(<ref refid="lauxlib_8h_1afd30f08bd397c584ea503c124035103c" kindref="member">luaL_checklstring</ref>(L, (n), NULL))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="144" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="144" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1a732bc5882c4a5da46b236649ab6db47b" prot="public" static="no">
+        <name>luaL_optstring</name>
+        <param><defname>L</defname></param>
+        <param><defname>n</defname></param>
+        <param><defname>d</defname></param>
+        <initializer>(<ref refid="lauxlib_8h_1a3c6aea515eecf2037714697651d3b53e" kindref="member">luaL_optlstring</ref>(L, (n), (d), NULL))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="145" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="145" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1a2bee94954917c5bccb05d6578f3c675b" prot="public" static="no">
+        <name>luaL_typename</name>
+        <param><defname>L</defname></param>
+        <param><defname>i</defname></param>
+        <initializer><ref refid="lapi_8c_1ade1fd7b7ed1bd88ecdffbc025a1eaebd" kindref="member">lua_typename</ref>(L, <ref refid="lapi_8c_1a652b273947f0656686f998d8e90cd3ea" kindref="member">lua_type</ref>(L,(i)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="147" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="147" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1aa49a7a47a683d6e7868ede50ceb826be" prot="public" static="no">
+        <name>luaL_dofile</name>
+        <param><defname>L</defname></param>
+        <param><defname>fn</defname></param>
+        <initializer>(<ref refid="lauxlib_8h_1a023c745560d0ed613efb6eada57a3c13" kindref="member">luaL_loadfile</ref>(L, fn) || <ref refid="lua_8h_1a589d7e3fd4c388d64056c88bf4672431" kindref="member">lua_pcall</ref>(L, 0, <ref refid="lua_8h_1ace3545adc11664c2f2b152fbe8b6283c" kindref="member">LUA_MULTRET</ref>, 0))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="149" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="149" bodyend="150"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1a1a0639bfde6b1e2f6181af45b0137cf5" prot="public" static="no">
+        <name>luaL_dostring</name>
+        <param><defname>L</defname></param>
+        <param><defname>s</defname></param>
+        <initializer>(<ref refid="lauxlib_8h_1ac1503e3f7db09148f426164834c37a57" kindref="member">luaL_loadstring</ref>(L, s) || <ref refid="lua_8h_1a589d7e3fd4c388d64056c88bf4672431" kindref="member">lua_pcall</ref>(L, 0, <ref refid="lua_8h_1ace3545adc11664c2f2b152fbe8b6283c" kindref="member">LUA_MULTRET</ref>, 0))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="152" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="152" bodyend="153"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1a201407aa41ff74577c67308372a130d9" prot="public" static="no">
+        <name>luaL_getmetatable</name>
+        <param><defname>L</defname></param>
+        <param><defname>n</defname></param>
+        <initializer>(<ref refid="lapi_8c_1a8b47f1b5685c3f8018ba926abb99af24" kindref="member">lua_getfield</ref>(L, <ref refid="lua_8h_1a3524c2bbc8fcf847dc083246b62945dd" kindref="member">LUA_REGISTRYINDEX</ref>, (n)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="155" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="155" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1aca033280b0176012ef290131876f706e" prot="public" static="no">
+        <name>luaL_opt</name>
+        <param><defname>L</defname></param>
+        <param><defname>f</defname></param>
+        <param><defname>n</defname></param>
+        <param><defname>d</defname></param>
+        <initializer>(<ref refid="lua_8h_1af51702bb75a31bb4a279953ee386d533" kindref="member">lua_isnoneornil</ref>(L,(n)) ? (d) : f(L,(n)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="157" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="157" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1ae210c8b2a9a27ee62b2e846e93ae876f" prot="public" static="no">
+        <name>luaL_loadbuffer</name>
+        <param><defname>L</defname></param>
+        <param><defname>s</defname></param>
+        <param><defname>sz</defname></param>
+        <param><defname>n</defname></param>
+        <initializer><ref refid="lauxlib_8h_1a2db65a9ca6172ebe477811ca278f2e73" kindref="member">luaL_loadbufferx</ref>(L,s,sz,n,NULL)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="159" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="159" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1a4ee75eac6035f69679e51545457e5072" prot="public" static="no">
+        <name>luaL_intop</name>
+        <param><defname>op</defname></param>
+        <param><defname>v1</defname></param>
+        <param><defname>v2</defname></param>
+        <initializer>((<ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref>)((<ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref>)(v1) op (<ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref>)(v2)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="166" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="166" bodyend="167"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1a8666135f7a1412f5eaa14857aec279f0" prot="public" static="no">
+        <name>luaL_pushfail</name>
+        <param><defname>L</defname></param>
+        <initializer><ref refid="lapi_8c_1a1b4cd0d80f51e5545a97ca6c28c03c50" kindref="member">lua_pushnil</ref>(L)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="174" column="10" bodyfile="leasy/lua/lauxlib.h" bodystart="174" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1ab43380e8ecfabde7c32aec748df1cf59" prot="public" static="no">
+        <name>luaL_bufflen</name>
+        <param><defname>bf</defname></param>
+        <initializer>((bf)-&gt;n)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="197" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="197" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1a3328ae8405aac1707d4b400d0d2c26dd" prot="public" static="no">
+        <name>luaL_buffaddr</name>
+        <param><defname>bf</defname></param>
+        <initializer>((bf)-&gt;b)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="198" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="198" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1a63935c5b4cf5d45930c875f6cc5e1432" prot="public" static="no">
+        <name>luaL_addchar</name>
+        <param><defname>B</defname></param>
+        <param><defname>c</defname></param>
+        <initializer>((void)((B)-&gt;n &lt; (B)-&gt;size || <ref refid="lauxlib_8h_1a082637c5dec7407810f30dee5ff842b9" kindref="member">luaL_prepbuffsize</ref>((B), 1)), \
+ ((B)-&gt;b[(B)-&gt;n++] = (c)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="201" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="201" bodyend="203"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1a7c0adb7401e0be1a843946cee0556684" prot="public" static="no">
+        <name>luaL_addsize</name>
+        <param><defname>B</defname></param>
+        <param><defname>s</defname></param>
+        <initializer>((B)-&gt;n += (s))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="205" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="205" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1a1f4e8f07742faa5e6c25a971a53f1e7b" prot="public" static="no">
+        <name>luaL_buffsub</name>
+        <param><defname>B</defname></param>
+        <param><defname>s</defname></param>
+        <initializer>((B)-&gt;n -= (s))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="207" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="207" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1acc49fd35fabb25016f7de3256eb9bc6c" prot="public" static="no">
+        <name>luaL_prepbuffer</name>
+        <param><defname>B</defname></param>
+        <initializer><ref refid="lauxlib_8h_1a082637c5dec7407810f30dee5ff842b9" kindref="member">luaL_prepbuffsize</ref>(B, <ref refid="luaconf_8h_1af360ad37a770dfdc29291a99c398f42d" kindref="member">LUAL_BUFFERSIZE</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="218" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="218" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lauxlib_8h_1a36f3babeb54bee1ebba63fe4fa94189a" prot="public" static="no">
+        <name>LUA_FILEHANDLE</name>
+        <initializer>&quot;FILE*&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="236" column="9" bodyfile="leasy/lua/lauxlib.h" bodystart="236" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="lauxlib_8h_1aaed907641807460fcee0e1cb9a9e9ed6" prot="public" static="no">
+        <type>struct luaL_Buffer</type>
+        <definition>typedef struct luaL_Buffer luaL_Buffer</definition>
+        <argsstring></argsstring>
+        <name>luaL_Buffer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="23" column="26" bodyfile="leasy/lua/lauxlib.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="lauxlib_8h_1ab5ca0c51890e3970d0db1df2a1922b34" prot="public" static="no">
+        <type>struct luaL_Reg</type>
+        <definition>typedef struct luaL_Reg luaL_Reg</definition>
+        <argsstring></argsstring>
+        <name>luaL_Reg</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="41" column="10"/>
+      </memberdef>
+      <memberdef kind="typedef" id="lauxlib_8h_1a21bf593878812ad2cc1b962ae5efc064" prot="public" static="no">
+        <type>struct luaL_Stream</type>
+        <definition>typedef struct luaL_Stream luaL_Stream</definition>
+        <argsstring></argsstring>
+        <name>luaL_Stream</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="242" column="13"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="lauxlib_8h_1a8ad94df78305955cad1c698ea9d1eee9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_checkversion_</definition>
+        <argsstring>(lua_State *L, lua_Number ver, size_t sz)</argsstring>
+        <name>luaL_checkversion_</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref></type>
+          <declname>ver</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>sz</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="46" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="1194" bodyend="1201" declfile="leasy/lua/lauxlib.h" declline="46" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1ae01c86cfe3518580b473e089ba15b621" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> int</type>
+        <definition>LUALIB_API int luaL_getmetafield</definition>
+        <argsstring>(lua_State *L, int obj, const char *e)</argsstring>
+        <name>luaL_getmetafield</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>obj</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="50" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="884" bodyend="897" declfile="leasy/lua/lauxlib.h" declline="50" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1afda229e5f738702176f38feca764d264" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> int</type>
+        <definition>LUALIB_API int luaL_callmeta</definition>
+        <argsstring>(lua_State *L, int obj, const char *e)</argsstring>
+        <name>luaL_callmeta</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>obj</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="51" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="900" bodyend="907" declfile="leasy/lua/lauxlib.h" declline="51" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a64d366034d114de946f1b93199847dab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> const char *</type>
+        <definition>LUALIB_API const char * luaL_tolstring</definition>
+        <argsstring>(lua_State *L, int idx, size_t *len)</argsstring>
+        <name>luaL_tolstring</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>idx</declname>
+        </param>
+        <param>
+          <type>size_t *</type>
+          <declname>len</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="52" column="18" bodyfile="leasy/lua/lauxlib.c" bodystart="922" bodyend="957" declfile="leasy/lua/lauxlib.h" declline="52" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1ac607576dd107a3120cd51948989f1ed2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> int</type>
+        <definition>LUALIB_API int luaL_argerror</definition>
+        <argsstring>(lua_State *L, int arg, const char *extramsg)</argsstring>
+        <name>luaL_argerror</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>extramsg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="53" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="171" bodyend="194" declfile="leasy/lua/lauxlib.h" declline="53" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1aaa48a92e16c27c06e9c56e526e70f111" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> int</type>
+        <definition>LUALIB_API int luaL_typeerror</definition>
+        <argsstring>(lua_State *L, int arg, const char *tname)</argsstring>
+        <name>luaL_typeerror</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>tname</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="54" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="197" bodyend="208" declfile="leasy/lua/lauxlib.h" declline="54" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1afd30f08bd397c584ea503c124035103c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> const char *</type>
+        <definition>LUALIB_API const char * luaL_checklstring</definition>
+        <argsstring>(lua_State *L, int arg, size_t *l)</argsstring>
+        <name>luaL_checklstring</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg</declname>
+        </param>
+        <param>
+          <type>size_t *</type>
+          <declname>l</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="55" column="18" bodyfile="leasy/lua/lauxlib.c" bodystart="408" bodyend="412" declfile="leasy/lua/lauxlib.h" declline="55" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a3c6aea515eecf2037714697651d3b53e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> const char *</type>
+        <definition>LUALIB_API const char * luaL_optlstring</definition>
+        <argsstring>(lua_State *L, int arg, const char *def, size_t *l)</argsstring>
+        <name>luaL_optlstring</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>def</declname>
+        </param>
+        <param>
+          <type>size_t *</type>
+          <declname>l</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="57" column="18" bodyfile="leasy/lua/lauxlib.c" bodystart="415" bodyend="423" declfile="leasy/lua/lauxlib.h" declline="57" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a9f2c941bb5eb7d3a7746f35c4fe3cced" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> <ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref></type>
+        <definition>LUALIB_API lua_Number luaL_checknumber</definition>
+        <argsstring>(lua_State *L, int arg)</argsstring>
+        <name>luaL_checknumber</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="59" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="426" bodyend="432" declfile="leasy/lua/lauxlib.h" declline="59" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1afa696696945ee6215c0033656ee64e97" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> <ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref></type>
+        <definition>LUALIB_API lua_Number luaL_optnumber</definition>
+        <argsstring>(lua_State *L, int arg, lua_Number def)</argsstring>
+        <name>luaL_optnumber</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref></type>
+          <declname>def</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="60" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="435" bodyend="437" declfile="leasy/lua/lauxlib.h" declline="60" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1aa15bea412c49bfdee1f3dbff096ce7d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> <ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+        <definition>LUALIB_API lua_Integer luaL_checkinteger</definition>
+        <argsstring>(lua_State *L, int arg)</argsstring>
+        <name>luaL_checkinteger</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="62" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="448" bodyend="455" declfile="leasy/lua/lauxlib.h" declline="62" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1ab10ff110a5ba19b4385947de7834ee3c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> <ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+        <definition>LUALIB_API lua_Integer luaL_optinteger</definition>
+        <argsstring>(lua_State *L, int arg, lua_Integer def)</argsstring>
+        <name>luaL_optinteger</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+          <declname>def</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="63" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="458" bodyend="461" declfile="leasy/lua/lauxlib.h" declline="63" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a155357d9b5e6eb614b511bab6e3d0e73" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_checkstack</definition>
+        <argsstring>(lua_State *L, int sz, const char *msg)</argsstring>
+        <name>luaL_checkstack</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>sz</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>msg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="66" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="386" bodyend="393" declfile="leasy/lua/lauxlib.h" declline="66" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a0f8f78c4edc5cbf890690b3cf9615dc8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_checktype</definition>
+        <argsstring>(lua_State *L, int arg, int t)</argsstring>
+        <name>luaL_checktype</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="67" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="396" bodyend="399" declfile="leasy/lua/lauxlib.h" declline="67" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a8ebfe706b773eaaf50283e6583d4642e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_checkany</definition>
+        <argsstring>(lua_State *L, int arg)</argsstring>
+        <name>luaL_checkany</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="68" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="402" bodyend="405" declfile="leasy/lua/lauxlib.h" declline="68" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a2664eb7bcc85bbf6eeded2a81cf09b01" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> int</type>
+        <definition>LUALIB_API int luaL_newmetatable</definition>
+        <argsstring>(lua_State *L, const char *tname)</argsstring>
+        <name>luaL_newmetatable</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>tname</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="70" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="317" bodyend="327" declfile="leasy/lua/lauxlib.h" declline="70" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1ae3907fc11c3e2af69f00ab4a37872cae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_setmetatable</definition>
+        <argsstring>(lua_State *L, const char *tname)</argsstring>
+        <name>luaL_setmetatable</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>tname</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="71" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="330" bodyend="333" declfile="leasy/lua/lauxlib.h" declline="71" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a002893351c161d943c16a31ae957c6d0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void *</type>
+        <definition>LUALIB_API void * luaL_testudata</definition>
+        <argsstring>(lua_State *L, int ud, const char *tname)</argsstring>
+        <name>luaL_testudata</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>ud</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>tname</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="72" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="336" bodyend="348" declfile="leasy/lua/lauxlib.h" declline="72" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a4be5678b50e3688ce06f874b5bb14bce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void *</type>
+        <definition>LUALIB_API void * luaL_checkudata</definition>
+        <argsstring>(lua_State *L, int ud, const char *tname)</argsstring>
+        <name>luaL_checkudata</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>ud</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>tname</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="73" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="351" bodyend="355" declfile="leasy/lua/lauxlib.h" declline="73" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a5c4217e3b5b3ce9d51c6c5c01483e57f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_where</definition>
+        <argsstring>(lua_State *L, int lvl)</argsstring>
+        <name>luaL_where</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>lvl</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="75" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="220" bodyend="230" declfile="leasy/lua/lauxlib.h" declline="75" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a6c51d83d29244779392551388913e08a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> int</type>
+        <definition>LUALIB_API int luaL_error</definition>
+        <argsstring>(lua_State *L, const char *fmt,...)</argsstring>
+        <name>luaL_error</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>fmt</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="76" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="238" bodyend="246" declfile="leasy/lua/lauxlib.h" declline="76" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a7a3959469b5643d9ea2313eb11a3946f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> int</type>
+        <definition>LUALIB_API int luaL_checkoption</definition>
+        <argsstring>(lua_State *L, int arg, const char *def, const char *const lst[])</argsstring>
+        <name>luaL_checkoption</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>arg</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>def</declname>
+        </param>
+        <param>
+          <type>const char *const</type>
+          <declname>lst</declname>
+          <array>[]</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="78" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="366" bodyend="376" declfile="leasy/lua/lauxlib.h" declline="78" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a86309080a5d45b232bcc240b45d06942" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> int</type>
+        <definition>LUALIB_API int luaL_fileresult</definition>
+        <argsstring>(lua_State *L, int stat, const char *fname)</argsstring>
+        <name>luaL_fileresult</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>stat</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>fname</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="81" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="249" bodyend="266" declfile="leasy/lua/lauxlib.h" declline="81" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a3db3f3a0c7de522b5e494c3ad06186d8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> int</type>
+        <definition>LUALIB_API int luaL_execresult</definition>
+        <argsstring>(lua_State *L, int stat)</argsstring>
+        <name>luaL_execresult</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>stat</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="82" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="291" bodyend="305" declfile="leasy/lua/lauxlib.h" declline="82" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1adecf6b65f5f0b64474242cea355f7d10" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void *</type>
+        <definition>LUALIB_API void * luaL_alloc</definition>
+        <argsstring>(void *ud, void *ptr, size_t osize, size_t nsize)</argsstring>
+        <name>luaL_alloc</name>
+        <param>
+          <type>void *</type>
+          <declname>ud</declname>
+        </param>
+        <param>
+          <type>void *</type>
+          <declname>ptr</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>osize</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>nsize</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="84" column="17" bodyfile="leasy/lua/lauxlib.c" bodystart="1049" bodyend="1057" declfile="leasy/lua/lauxlib.h" declline="84" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a1adeae26be7c2e3001c3583f43f70720" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> int</type>
+        <definition>LUALIB_API int luaL_ref</definition>
+        <argsstring>(lua_State *L, int t)</argsstring>
+        <name>luaL_ref</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="92" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="689" bodyend="713" declfile="leasy/lua/lauxlib.h" declline="92" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1ad5e8303f3809d26c336c3e18879b7f4e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_unref</definition>
+        <argsstring>(lua_State *L, int t, int ref)</argsstring>
+        <name>luaL_unref</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>ref</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="93" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="716" bodyend="725" declfile="leasy/lua/lauxlib.h" declline="93" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a6ac3b2572d5ce635c4617aed2a0eb649" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> int</type>
+        <definition>LUALIB_API int luaL_loadfilex</definition>
+        <argsstring>(lua_State *L, const char *filename, const char *mode)</argsstring>
+        <name>luaL_loadfilex</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>filename</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="95" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="808" bodyend="848" declfile="leasy/lua/lauxlib.h" declline="95" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a2db65a9ca6172ebe477811ca278f2e73" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> int</type>
+        <definition>LUALIB_API int luaL_loadbufferx</definition>
+        <argsstring>(lua_State *L, const char *buff, size_t sz, const char *name, const char *mode)</argsstring>
+        <name>luaL_loadbufferx</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>buff</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>sz</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="100" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="867" bodyend="873" declfile="leasy/lua/lauxlib.h" declline="100" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1ac1503e3f7db09148f426164834c37a57" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> int</type>
+        <definition>LUALIB_API int luaL_loadstring</definition>
+        <argsstring>(lua_State *L, const char *s)</argsstring>
+        <name>luaL_loadstring</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="102" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="876" bodyend="878" declfile="leasy/lua/lauxlib.h" declline="102" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1abe0d4e1d9eb077cdeca0f58e80174f89" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> <ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+        <definition>LUALIB_API lua_State * luaL_newstate</definition>
+        <argsstring>(void)</argsstring>
+        <name>luaL_newstate</name>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="104" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="1184" bodyend="1191" declfile="leasy/lua/lauxlib.h" declline="104" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a70e1f6ad1af3b87eaca17f7104fb91d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> unsigned</type>
+        <definition>LUALIB_API unsigned luaL_makeseed</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaL_makeseed</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="106" column="21" bodyfile="leasy/lua/lauxlib.c" bodystart="1174" bodyend="1177" declfile="leasy/lua/lauxlib.h" declline="106" declcolumn="21"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1aa525c1b6aa90c90d684ef64cf2215e21" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> <ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+        <definition>LUALIB_API lua_Integer luaL_len</definition>
+        <argsstring>(lua_State *L, int idx)</argsstring>
+        <name>luaL_len</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>idx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="108" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="910" bodyend="919" declfile="leasy/lua/lauxlib.h" declline="108" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a5dcf12b98ab3ef52b7885a27f48fadea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_addgsub</definition>
+        <argsstring>(luaL_Buffer *b, const char *s, const char *p, const char *r)</argsstring>
+        <name>luaL_addgsub</name>
+        <param>
+          <type><ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref> *</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="110" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="1026" bodyend="1036" declfile="leasy/lua/lauxlib.h" declline="110" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1ac3eedb8425d056c08d479393ff14ad89" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> const char *</type>
+        <definition>LUALIB_API const char * luaL_gsub</definition>
+        <argsstring>(lua_State *L, const char *s, const char *p, const char *r)</argsstring>
+        <name>luaL_gsub</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="112" column="18" bodyfile="leasy/lua/lauxlib.c" bodystart="1039" bodyend="1046" declfile="leasy/lua/lauxlib.h" declline="112" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a4cab22d0cb403fa6b94f2542f4303096" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_setfuncs</definition>
+        <argsstring>(lua_State *L, const luaL_Reg *l, int nup)</argsstring>
+        <name>luaL_setfuncs</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structlua_l___reg" kindref="compound">luaL_Reg</ref> *</type>
+          <declname>l</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nup</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="115" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="965" bodyend="979" declfile="leasy/lua/lauxlib.h" declline="115" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a4cd66d7b986316711233243a268e8e04" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> int</type>
+        <definition>LUALIB_API int luaL_getsubtable</definition>
+        <argsstring>(lua_State *L, int idx, const char *fname)</argsstring>
+        <name>luaL_getsubtable</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>idx</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>fname</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="117" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="986" bodyend="997" declfile="leasy/lua/lauxlib.h" declline="117" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a67bf3728d34d2c9badb2bd2f57c75233" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_traceback</definition>
+        <argsstring>(lua_State *L, lua_State *L1, const char *msg, int level)</argsstring>
+        <name>luaL_traceback</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L1</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>msg</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>level</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="119" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="127" bodyend="160" declfile="leasy/lua/lauxlib.h" declline="119" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a3cb8205f86c838d8f82b7d2360b1b0f4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_requiref</definition>
+        <argsstring>(lua_State *L, const char *modname, lua_CFunction openf, int glb)</argsstring>
+        <name>luaL_requiref</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>modname</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a878b7e392e78661a374cf1c3073029b9" kindref="member">lua_CFunction</ref></type>
+          <declname>openf</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>glb</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="122" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="1006" bodyend="1023" declfile="leasy/lua/lauxlib.h" declline="122" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a0830ef75e335f6d7590b0e058f82a5eb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_buffinit</definition>
+        <argsstring>(lua_State *L, luaL_Buffer *B)</argsstring>
+        <name>luaL_buffinit</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref> *</type>
+          <declname>B</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="209" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="661" bodyend="667" declfile="leasy/lua/lauxlib.h" declline="209" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a082637c5dec7407810f30dee5ff842b9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> char *</type>
+        <definition>LUALIB_API char * luaL_prepbuffsize</definition>
+        <argsstring>(luaL_Buffer *B, size_t sz)</argsstring>
+        <name>luaL_prepbuffsize</name>
+        <param>
+          <type><ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref> *</type>
+          <declname>B</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>sz</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="210" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="592" bodyend="594" declfile="leasy/lua/lauxlib.h" declline="210" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a0d56993399c45ae61ebb9b448dc30538" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_addlstring</definition>
+        <argsstring>(luaL_Buffer *B, const char *s, size_t l)</argsstring>
+        <name>luaL_addlstring</name>
+        <param>
+          <type><ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref> *</type>
+          <declname>B</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>l</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="211" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="597" bodyend="603" declfile="leasy/lua/lauxlib.h" declline="211" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1aced031f9a3f68375e9f80315933d9a88" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_addstring</definition>
+        <argsstring>(luaL_Buffer *B, const char *s)</argsstring>
+        <name>luaL_addstring</name>
+        <param>
+          <type><ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref> *</type>
+          <declname>B</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="212" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="606" bodyend="608" declfile="leasy/lua/lauxlib.h" declline="212" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a59a8ac34826fee305ad56101d97aee18" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_addvalue</definition>
+        <argsstring>(luaL_Buffer *B)</argsstring>
+        <name>luaL_addvalue</name>
+        <param>
+          <type><ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref> *</type>
+          <declname>B</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="213" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="650" bodyend="658" declfile="leasy/lua/lauxlib.h" declline="213" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a3a1f80033814e2057583a7d24cee23b4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_pushresult</definition>
+        <argsstring>(luaL_Buffer *B)</argsstring>
+        <name>luaL_pushresult</name>
+        <param>
+          <type><ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref> *</type>
+          <declname>B</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="214" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="611" bodyend="632" declfile="leasy/lua/lauxlib.h" declline="214" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1aae36c3a2c184f1b2619ad7f99f2b4c16" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_pushresultsize</definition>
+        <argsstring>(luaL_Buffer *B, size_t sz)</argsstring>
+        <name>luaL_pushresultsize</name>
+        <param>
+          <type><ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref> *</type>
+          <declname>B</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>sz</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="215" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="635" bodyend="638" declfile="leasy/lua/lauxlib.h" declline="215" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lauxlib_8h_1a392923321d3058f7cdd17b60dfcfab41" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> char *</type>
+        <definition>LUALIB_API char * luaL_buffinitsize</definition>
+        <argsstring>(lua_State *L, luaL_Buffer *B, size_t sz)</argsstring>
+        <name>luaL_buffinitsize</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref> *</type>
+          <declname>B</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>sz</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lauxlib.h" line="216" column="12" bodyfile="leasy/lua/lauxlib.c" bodystart="670" bodyend="673" declfile="leasy/lua/lauxlib.h" declline="216" declcolumn="12"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lauxlib.h<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Auxiliary<sp/>functions<sp/>for<sp/>building<sp/>Lua<sp/>libraries</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>lauxlib_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lauxlib_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stddef.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdio.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="luaconf_8h" kindref="compound">luaconf.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lua_8h" kindref="compound">lua.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>global<sp/>table<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="lauxlib_8h_1a074d53b3afd2b899d4b986c9643fb41a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_GNAME<sp/><sp/><sp/>&quot;_G&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23" refid="lauxlib_8h_1aaed907641807460fcee0e1cb9a9e9ed6" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref><sp/><ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref>;</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>extra<sp/>error<sp/>code<sp/>for<sp/>&apos;luaL_loadfilex&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27" refid="lauxlib_8h_1ab8d4418d33cd59728435db95ac2caf5a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_ERRFILE<sp/><sp/><sp/><sp/><sp/>(LUA_ERRERR+1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>key,<sp/>in<sp/>the<sp/>registry,<sp/>for<sp/>table<sp/>of<sp/>loaded<sp/>modules<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="lauxlib_8h_1a0fbee1a8156dc622618c9f6048281a73" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_LOADED_TABLE<sp/><sp/><sp/><sp/>&quot;_LOADED&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>key,<sp/>in<sp/>the<sp/>registry,<sp/>for<sp/>table<sp/>of<sp/>preloaded<sp/>loaders<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="lauxlib_8h_1ab654a257ab8f9de4ba519a64a9a9ea91" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_PRELOAD_TABLE<sp/><sp/><sp/>&quot;_PRELOAD&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="structlua_l___reg" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structlua_l___reg" kindref="compound">luaL_Reg</ref><sp/>{</highlight></codeline>
+<codeline lineno="39" refid="structlua_l___reg_1a58b99f63b304e5c489b90d812f92cba2" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*<ref refid="structlua_l___reg_1a58b99f63b304e5c489b90d812f92cba2" kindref="member">name</ref>;</highlight></codeline>
+<codeline lineno="40" refid="structlua_l___reg_1a54aa8f9955870caf78148514e61196ce" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a878b7e392e78661a374cf1c3073029b9" kindref="member">lua_CFunction</ref><sp/><ref refid="structlua_l___reg_1a54aa8f9955870caf78148514e61196ce" kindref="member">func</ref>;</highlight></codeline>
+<codeline lineno="41" refid="lauxlib_8h_1ab5ca0c51890e3970d0db1df2a1922b34" refkind="member"><highlight class="normal">}<sp/><ref refid="structlua_l___reg" kindref="compound">luaL_Reg</ref>;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="lauxlib_8h_1ae6c79b83e1d493d4ab680e74e5a85a6a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUAL_NUMSIZES<sp/><sp/><sp/>(sizeof(lua_Integer)*16<sp/>+<sp/>sizeof(lua_Number))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/>(<ref refid="lauxlib_8c_1a8ad94df78305955cad1c698ea9d1eee9" kindref="member">luaL_checkversion_</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref><sp/>ver,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>sz);</highlight></codeline>
+<codeline lineno="47" refid="lauxlib_8h_1aa538485cd28f143fabea2325b9ecd477" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_checkversion(L)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="48"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/>luaL_checkversion_(L,<sp/>LUA_VERSION_NUM,<sp/>LUAL_NUMSIZES)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>int<sp/>(<ref refid="lauxlib_8c_1add7cea31816ff3f61014031248e0daa6" kindref="member">luaL_getmetafield</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>obj,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*e);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>int<sp/>(<ref refid="lauxlib_8c_1abfb23747df76e74d28ac48dabda0c3e1" kindref="member">luaL_callmeta</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>obj,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*e);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*(<ref refid="lauxlib_8c_1a64d366034d114de946f1b93199847dab" kindref="member">luaL_tolstring</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>idx,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>*len);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>int<sp/>(<ref refid="lauxlib_8c_1ac607576dd107a3120cd51948989f1ed2" kindref="member">luaL_argerror</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*extramsg);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>int<sp/>(<ref refid="lauxlib_8c_1aaa48a92e16c27c06e9c56e526e70f111" kindref="member">luaL_typeerror</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*tname);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*(<ref refid="lauxlib_8c_1a84f77c4f62b1f42748cabbfd875cb36f" kindref="member">luaL_checklstring</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg,</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>*l);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*(<ref refid="lauxlib_8c_1a01a929d867927a2ffb2ed558ccb761be" kindref="member">luaL_optlstring</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg,</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*def,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>*l);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref><sp/>(<ref refid="lauxlib_8c_1a9f2c941bb5eb7d3a7746f35c4fe3cced" kindref="member">luaL_checknumber</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref><sp/>(<ref refid="lauxlib_8c_1afa696696945ee6215c0033656ee64e97" kindref="member">luaL_optnumber</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg,<sp/><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref><sp/>def);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>(<ref refid="lauxlib_8c_1aa15bea412c49bfdee1f3dbff096ce7d2" kindref="member">luaL_checkinteger</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>(<ref refid="lauxlib_8c_1ab10ff110a5ba19b4385947de7834ee3c" kindref="member">luaL_optinteger</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg,</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>def);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/>(<ref refid="lauxlib_8c_1a7c46517055e0e8cb25e61b959709083a" kindref="member">luaL_checkstack</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>sz,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*msg);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/>(<ref refid="lauxlib_8c_1a0f8f78c4edc5cbf890690b3cf9615dc8" kindref="member">luaL_checktype</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>t);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/>(<ref refid="lauxlib_8c_1a8ebfe706b773eaaf50283e6583d4642e" kindref="member">luaL_checkany</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>int<sp/><sp/><sp/>(<ref refid="lauxlib_8c_1a2664eb7bcc85bbf6eeded2a81cf09b01" kindref="member">luaL_newmetatable</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*tname);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/><sp/>(<ref refid="lauxlib_8c_1ae3907fc11c3e2af69f00ab4a37872cae" kindref="member">luaL_setmetatable</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*tname);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*(<ref refid="lauxlib_8c_1a002893351c161d943c16a31ae957c6d0" kindref="member">luaL_testudata</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ud,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*tname);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*(<ref refid="lauxlib_8c_1a4be5678b50e3688ce06f874b5bb14bce" kindref="member">luaL_checkudata</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ud,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*tname);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/>(<ref refid="lauxlib_8c_1a0f4d3c30c07eae36aa25605df84279a0" kindref="member">luaL_where</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>lvl);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>int<sp/>(<ref refid="lauxlib_8c_1a6c51d83d29244779392551388913e08a" kindref="member">luaL_error</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*fmt,<sp/>...);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>int<sp/>(<ref refid="lauxlib_8c_1a7a3959469b5643d9ea2313eb11a3946f" kindref="member">luaL_checkoption</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>arg,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*def,</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lst[]);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>int<sp/>(<ref refid="lauxlib_8c_1a86309080a5d45b232bcc240b45d06942" kindref="member">luaL_fileresult</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>stat,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*fname);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>int<sp/>(<ref refid="lauxlib_8c_1a3db3f3a0c7de522b5e494c3ad06186d8" kindref="member">luaL_execresult</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>stat);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*<ref refid="lauxlib_8h_1adecf6b65f5f0b64474242cea355f7d10" kindref="member">luaL_alloc</ref><sp/>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*ud,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*ptr,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>osize,</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nsize);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>predefined<sp/>references<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89" refid="lauxlib_8h_1a3bfb758f2ac7c9ecb758e1aeaaa82d3d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_NOREF<sp/><sp/><sp/><sp/><sp/><sp/><sp/>(-2)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90" refid="lauxlib_8h_1a004a6b76c047f3b94890a08dbdcbbee7" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_REFNIL<sp/><sp/><sp/><sp/><sp/><sp/>(-1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>int<sp/>(<ref refid="lauxlib_8c_1a1adeae26be7c2e3001c3583f43f70720" kindref="member">luaL_ref</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>t);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/>(<ref refid="lauxlib_8c_1ad5e8303f3809d26c336c3e18879b7f4e" kindref="member">luaL_unref</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>t,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ref);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>int<sp/>(<ref refid="lauxlib_8c_1a6ac3b2572d5ce635c4617aed2a0eb649" kindref="member">luaL_loadfilex</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*filename,</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*mode);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98" refid="lauxlib_8h_1a023c745560d0ed613efb6eada57a3c13" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_loadfile(L,f)<sp/><sp/>luaL_loadfilex(L,f,NULL)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>int<sp/>(<ref refid="lauxlib_8c_1a867ca33afe2cb3d07bfc238cbb438f61" kindref="member">luaL_loadbufferx</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*buff,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>sz,</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*name,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*mode);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>int<sp/>(<ref refid="lauxlib_8c_1ac1503e3f7db09148f426164834c37a57" kindref="member">luaL_loadstring</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*(<ref refid="lauxlib_8c_1abe0d4e1d9eb077cdeca0f58e80174f89" kindref="member">luaL_newstate</ref>)<sp/>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/><ref refid="lauxlib_8h_1a70e1f6ad1af3b87eaca17f7104fb91d2" kindref="member">luaL_makeseed</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>(<ref refid="lauxlib_8c_1aa525c1b6aa90c90d684ef64cf2215e21" kindref="member">luaL_len</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>idx);</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/>(<ref refid="lauxlib_8c_1a5dcf12b98ab3ef52b7885a27f48fadea" kindref="member">luaL_addgsub</ref>)<sp/>(<ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref><sp/>*b,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s,</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*p,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*r);</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*(<ref refid="lauxlib_8c_1ac3eedb8425d056c08d479393ff14ad89" kindref="member">luaL_gsub</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s,</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*p,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*r);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/>(<ref refid="lauxlib_8c_1a4cab22d0cb403fa6b94f2542f4303096" kindref="member">luaL_setfuncs</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structlua_l___reg" kindref="compound">luaL_Reg</ref><sp/>*l,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nup);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>int<sp/>(<ref refid="lauxlib_8c_1a4cd66d7b986316711233243a268e8e04" kindref="member">luaL_getsubtable</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>idx,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*fname);</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/>(<ref refid="lauxlib_8c_1a67bf3728d34d2c9badb2bd2f57c75233" kindref="member">luaL_traceback</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L1,</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*msg,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>level);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/>(<ref refid="lauxlib_8c_1a3cb8205f86c838d8f82b7d2360b1b0f4" kindref="member">luaL_requiref</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*modname,</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lua_8h_1a878b7e392e78661a374cf1c3073029b9" kindref="member">lua_CFunction</ref><sp/>openf,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>glb);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="126"><highlight class="comment">**<sp/>===============================================================</highlight></codeline>
+<codeline lineno="127"><highlight class="comment">**<sp/>some<sp/>useful<sp/>macros</highlight></codeline>
+<codeline lineno="128"><highlight class="comment">**<sp/>===============================================================</highlight></codeline>
+<codeline lineno="129"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132" refid="lauxlib_8h_1ad575a4fd1f53fa454b5d9745fedecdc4" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_newlibtable(L,l)<sp/><sp/><sp/>\</highlight></codeline>
+<codeline lineno="133"><highlight class="preprocessor"><sp/><sp/>lua_createtable(L,<sp/>0,<sp/>sizeof(l)/sizeof((l)[0])<sp/>-<sp/>1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135" refid="lauxlib_8h_1a5088ff720ec66200d83eb78467b77239" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_newlib(L,l)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="136"><highlight class="preprocessor"><sp/><sp/>(luaL_checkversion(L),<sp/>luaL_newlibtable(L,l),<sp/>luaL_setfuncs(L,l,0))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138" refid="lauxlib_8h_1a48ce6cd86a7448e97f258097a7abc44d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_argcheck(L,<sp/>cond,arg,extramsg)<sp/>\</highlight></codeline>
+<codeline lineno="139"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>((void)(luai_likely(cond)<sp/>||<sp/>luaL_argerror(L,<sp/>(arg),<sp/>(extramsg))))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141" refid="lauxlib_8h_1ad13737dbd230fffc0b9925b1c728c58e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_argexpected(L,cond,arg,tname)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="142"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>((void)(luai_likely(cond)<sp/>||<sp/>luaL_typeerror(L,<sp/>(arg),<sp/>(tname))))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144" refid="lauxlib_8h_1ad9917d22c79651fdd73d42c146b5056f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_checkstring(L,n)<sp/><sp/><sp/>(luaL_checklstring(L,<sp/>(n),<sp/>NULL))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="145" refid="lauxlib_8h_1a732bc5882c4a5da46b236649ab6db47b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_optstring(L,n,d)<sp/><sp/><sp/>(luaL_optlstring(L,<sp/>(n),<sp/>(d),<sp/>NULL))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147" refid="lauxlib_8h_1a2bee94954917c5bccb05d6578f3c675b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_typename(L,i)<sp/><sp/>lua_typename(L,<sp/>lua_type(L,(i)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149" refid="lauxlib_8h_1aa49a7a47a683d6e7868ede50ceb826be" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_dofile(L,<sp/>fn)<sp/>\</highlight></codeline>
+<codeline lineno="150"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>(luaL_loadfile(L,<sp/>fn)<sp/>||<sp/>lua_pcall(L,<sp/>0,<sp/>LUA_MULTRET,<sp/>0))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight></codeline>
+<codeline lineno="152" refid="lauxlib_8h_1a1a0639bfde6b1e2f6181af45b0137cf5" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_dostring(L,<sp/>s)<sp/>\</highlight></codeline>
+<codeline lineno="153"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>(luaL_loadstring(L,<sp/>s)<sp/>||<sp/>lua_pcall(L,<sp/>0,<sp/>LUA_MULTRET,<sp/>0))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight></codeline>
+<codeline lineno="155" refid="lauxlib_8h_1a201407aa41ff74577c67308372a130d9" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_getmetatable(L,n)<sp/><sp/>(lua_getfield(L,<sp/>LUA_REGISTRYINDEX,<sp/>(n)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157" refid="lauxlib_8h_1aca033280b0176012ef290131876f706e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_opt(L,f,n,d)<sp/><sp/><sp/>(lua_isnoneornil(L,(n))<sp/>?<sp/>(d)<sp/>:<sp/>f(L,(n)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight></codeline>
+<codeline lineno="159" refid="lauxlib_8h_1ae210c8b2a9a27ee62b2e846e93ae876f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_loadbuffer(L,s,sz,n)<sp/><sp/><sp/>luaL_loadbufferx(L,s,sz,n,NULL)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="163"><highlight class="comment">**<sp/>Perform<sp/>arithmetic<sp/>operations<sp/>on<sp/>lua_Integer<sp/>values<sp/>with<sp/>wrap-around</highlight></codeline>
+<codeline lineno="164"><highlight class="comment">**<sp/>semantics,<sp/>as<sp/>the<sp/>Lua<sp/>core<sp/>does.</highlight></codeline>
+<codeline lineno="165"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166" refid="lauxlib_8h_1a4ee75eac6035f69679e51545457e5072" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_intop(op,v1,v2)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="167"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>((lua_Integer)((lua_Unsigned)(v1)<sp/>op<sp/>(lua_Unsigned)(v2)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>push<sp/>the<sp/>value<sp/>used<sp/>to<sp/>represent<sp/>failure/error<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(LUA_FAILISFALSE)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_pushfail(L)<sp/><sp/><sp/><sp/>lua_pushboolean(L,<sp/>0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="174" refid="lauxlib_8h_1a8666135f7a1412f5eaa14857aec279f0" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_pushfail(L)<sp/><sp/><sp/><sp/>lua_pushnil(L)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="180"><highlight class="comment">**<sp/>{======================================================</highlight></codeline>
+<codeline lineno="181"><highlight class="comment">**<sp/>Generic<sp/>Buffer<sp/>manipulation</highlight></codeline>
+<codeline lineno="182"><highlight class="comment">**<sp/>=======================================================</highlight></codeline>
+<codeline lineno="183"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"></highlight></codeline>
+<codeline lineno="185" refid="structlua_l___buffer" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref><sp/>{</highlight></codeline>
+<codeline lineno="186" refid="structlua_l___buffer_1ad519a6ef1557666cbdef35e5e8a4ef3b" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*<ref refid="structlua_l___buffer_1ad519a6ef1557666cbdef35e5e8a4ef3b" kindref="member">b</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>buffer<sp/>address<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="187" refid="structlua_l___buffer_1a2d0288dac89591516c834328beee71cf" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="structlua_l___buffer_1a2d0288dac89591516c834328beee71cf" kindref="member">size</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>buffer<sp/>size<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="188" refid="structlua_l___buffer_1a85c23e8716842c83ee8e9d80f1652812" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="structlua_l___buffer_1a85c23e8716842c83ee8e9d80f1652812" kindref="member">n</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>number<sp/>of<sp/>characters<sp/>in<sp/>buffer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="189" refid="structlua_l___buffer_1a66ae63716768952c74910da4351886fb" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*<ref refid="structlua_l___buffer_1a66ae63716768952c74910da4351886fb" kindref="member">L</ref>;</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">union<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="191" refid="structlua_l___buffer_1a27bb352f42e1d97ffe512c947542ad62" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structlua_l___buffer_1a27bb352f42e1d97ffe512c947542ad62" kindref="member">LUAI_MAXALIGN</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>ensure<sp/>maximum<sp/>alignment<sp/>for<sp/>buffer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="192" refid="structlua_l___buffer_1a9216b80b23dca5599b5dade85bed1298" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/><ref refid="structlua_l___buffer_1ad519a6ef1557666cbdef35e5e8a4ef3b" kindref="member">b</ref>[<ref refid="luaconf_8h_1af360ad37a770dfdc29291a99c398f42d" kindref="member">LUAL_BUFFERSIZE</ref>];<sp/><sp/></highlight><highlight class="comment">/*<sp/>initial<sp/>buffer<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="193" refid="structlua_l___buffer_1a65c17311ed8d90e26d929e4bcdac17b4" refkind="member"><highlight class="normal"><sp/><sp/>}<sp/><ref refid="structlua_l___buffer_1a65c17311ed8d90e26d929e4bcdac17b4" kindref="member">init</ref>;</highlight></codeline>
+<codeline lineno="194"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight></codeline>
+<codeline lineno="197" refid="lauxlib_8h_1ab43380e8ecfabde7c32aec748df1cf59" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_bufflen(bf)<sp/><sp/><sp/><sp/>((bf)-&gt;n)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="198" refid="lauxlib_8h_1a3328ae8405aac1707d4b400d0d2c26dd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_buffaddr(bf)<sp/><sp/><sp/>((bf)-&gt;b)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201" refid="lauxlib_8h_1a63935c5b4cf5d45930c875f6cc5e1432" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_addchar(B,c)<sp/>\</highlight></codeline>
+<codeline lineno="202"><highlight class="preprocessor"><sp/><sp/>((void)((B)-&gt;n<sp/>&lt;<sp/>(B)-&gt;size<sp/>||<sp/>luaL_prepbuffsize((B),<sp/>1)),<sp/>\</highlight></codeline>
+<codeline lineno="203"><highlight class="preprocessor"><sp/><sp/><sp/>((B)-&gt;b[(B)-&gt;n++]<sp/>=<sp/>(c)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight></codeline>
+<codeline lineno="205" refid="lauxlib_8h_1a7c0adb7401e0be1a843946cee0556684" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_addsize(B,s)<sp/><sp/><sp/>((B)-&gt;n<sp/>+=<sp/>(s))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight></codeline>
+<codeline lineno="207" refid="lauxlib_8h_1a1f4e8f07742faa5e6c25a971a53f1e7b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_buffsub(B,s)<sp/><sp/><sp/>((B)-&gt;n<sp/>-=<sp/>(s))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/>(<ref refid="lauxlib_8c_1a0830ef75e335f6d7590b0e058f82a5eb" kindref="member">luaL_buffinit</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref><sp/>*B);</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*(<ref refid="lauxlib_8c_1a082637c5dec7407810f30dee5ff842b9" kindref="member">luaL_prepbuffsize</ref>)<sp/>(<ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref><sp/>*B,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>sz);</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/>(<ref refid="lauxlib_8c_1a0d56993399c45ae61ebb9b448dc30538" kindref="member">luaL_addlstring</ref>)<sp/>(<ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref><sp/>*B,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>l);</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/>(<ref refid="lauxlib_8c_1aced031f9a3f68375e9f80315933d9a88" kindref="member">luaL_addstring</ref>)<sp/>(<ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref><sp/>*B,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*s);</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/>(<ref refid="lauxlib_8c_1a59a8ac34826fee305ad56101d97aee18" kindref="member">luaL_addvalue</ref>)<sp/>(<ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref><sp/>*B);</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/>(<ref refid="lauxlib_8c_1a3a1f80033814e2057583a7d24cee23b4" kindref="member">luaL_pushresult</ref>)<sp/>(<ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref><sp/>*B);</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/>(<ref refid="lauxlib_8c_1aae36c3a2c184f1b2619ad7f99f2b4c16" kindref="member">luaL_pushresultsize</ref>)<sp/>(<ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref><sp/>*B,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>sz);</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*(<ref refid="lauxlib_8c_1a392923321d3058f7cdd17b60dfcfab41" kindref="member">luaL_buffinitsize</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="structlua_l___buffer" kindref="compound">luaL_Buffer</ref><sp/>*B,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>sz);</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight></codeline>
+<codeline lineno="218" refid="lauxlib_8h_1acc49fd35fabb25016f7de3256eb9bc6c" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_prepbuffer(B)<sp/><sp/>luaL_prepbuffsize(B,<sp/>LUAL_BUFFERSIZE)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>}======================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"></highlight></codeline>
+<codeline lineno="222"><highlight class="normal"></highlight></codeline>
+<codeline lineno="223"><highlight class="normal"></highlight></codeline>
+<codeline lineno="224"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="225"><highlight class="comment">**<sp/>{======================================================</highlight></codeline>
+<codeline lineno="226"><highlight class="comment">**<sp/>File<sp/>handles<sp/>for<sp/>IO<sp/>library</highlight></codeline>
+<codeline lineno="227"><highlight class="comment">**<sp/>=======================================================</highlight></codeline>
+<codeline lineno="228"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight></codeline>
+<codeline lineno="230"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="231"><highlight class="comment">**<sp/>A<sp/>file<sp/>handle<sp/>is<sp/>a<sp/>userdata<sp/>with<sp/>metatable<sp/>&apos;LUA_FILEHANDLE&apos;<sp/>and</highlight></codeline>
+<codeline lineno="232"><highlight class="comment">**<sp/>initial<sp/>structure<sp/>&apos;luaL_Stream&apos;<sp/>(it<sp/>may<sp/>contain<sp/>other<sp/>fields</highlight></codeline>
+<codeline lineno="233"><highlight class="comment">**<sp/>after<sp/>that<sp/>initial<sp/>structure).</highlight></codeline>
+<codeline lineno="234"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="235"><highlight class="normal"></highlight></codeline>
+<codeline lineno="236" refid="lauxlib_8h_1a36f3babeb54bee1ebba63fe4fa94189a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_FILEHANDLE<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;FILE*&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="237"><highlight class="normal"></highlight></codeline>
+<codeline lineno="238"><highlight class="normal"></highlight></codeline>
+<codeline lineno="239" refid="structlua_l___stream" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structlua_l___stream" kindref="compound">luaL_Stream</ref><sp/>{</highlight></codeline>
+<codeline lineno="240" refid="structlua_l___stream_1a50fc81b2c6481ab7768e41bdd3793bab" refkind="member"><highlight class="normal"><sp/><sp/>FILE<sp/>*<ref refid="structlua_l___stream_1a50fc81b2c6481ab7768e41bdd3793bab" kindref="member">f</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>stream<sp/>(NULL<sp/>for<sp/>incompletely<sp/>created<sp/>streams)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="241" refid="structlua_l___stream_1a98731a1b0b1e28336d7206798895e62f" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lua_8h_1a878b7e392e78661a374cf1c3073029b9" kindref="member">lua_CFunction</ref><sp/><ref refid="structlua_l___stream_1a98731a1b0b1e28336d7206798895e62f" kindref="member">closef</ref>;<sp/><sp/></highlight><highlight class="comment">/*<sp/>to<sp/>close<sp/>stream<sp/>(NULL<sp/>for<sp/>closed<sp/>streams)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="242" refid="lauxlib_8h_1a21bf593878812ad2cc1b962ae5efc064" refkind="member"><highlight class="normal">}<sp/><ref refid="structlua_l___stream" kindref="compound">luaL_Stream</ref>;</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>}======================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="245"><highlight class="normal"></highlight></codeline>
+<codeline lineno="246"><highlight class="normal"></highlight></codeline>
+<codeline lineno="247"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="248"><highlight class="comment">**<sp/>{============================================================</highlight></codeline>
+<codeline lineno="249"><highlight class="comment">**<sp/>Compatibility<sp/>with<sp/>deprecated<sp/>conversions</highlight></codeline>
+<codeline lineno="250"><highlight class="comment">**<sp/>=============================================================</highlight></codeline>
+<codeline lineno="251"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="252"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(LUA_COMPAT_APIINTCASTS)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_checkunsigned(L,a)<sp/>((lua_Unsigned)luaL_checkinteger(L,a))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_optunsigned(L,a,d)<sp/>\</highlight></codeline>
+<codeline lineno="256"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>((lua_Unsigned)luaL_optinteger(L,a,(lua_Integer)(d)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="257"><highlight class="normal"></highlight></codeline>
+<codeline lineno="258"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_checkint(L,n)<sp/><sp/>((int)luaL_checkinteger(L,<sp/>(n)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="259"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_optint(L,n,d)<sp/><sp/>((int)luaL_optinteger(L,<sp/>(n),<sp/>(d)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="260"><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_checklong(L,n)<sp/>((long)luaL_checkinteger(L,<sp/>(n)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="262"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_optlong(L,n,d)<sp/>((long)luaL_optinteger(L,<sp/>(n),<sp/>(d)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"></highlight></codeline>
+<codeline lineno="264"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="265"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>}============================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="266"><highlight class="normal"></highlight></codeline>
+<codeline lineno="267"><highlight class="normal"></highlight></codeline>
+<codeline lineno="268"><highlight class="normal"></highlight></codeline>
+<codeline lineno="269"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="270"><highlight class="normal"></highlight></codeline>
+<codeline lineno="271"><highlight class="normal"></highlight></codeline>
+<codeline lineno="272"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lauxlib.h"/>
+  </compounddef>
+</doxygen>

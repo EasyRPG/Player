@@ -1,0 +1,483 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structlua___debug" kind="struct" language="C++" prot="public">
+    <compoundname>lua_Debug</compoundname>
+    <includes refid="lua_8h" local="no">lua.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structlua___debug_1a6578d385d2322429a0fe87b79f1ddec0" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int lua_Debug::event</definition>
+        <argsstring></argsstring>
+        <name>event</name>
+        <qualifiedname>lua_Debug::event</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="488" column="7" bodyfile="leasy/lua/lua.h" bodystart="488" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___debug_1a2978ab7f2ade479a003beb16d3b7a993" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* lua_Debug::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>lua_Debug::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="489" column="14" bodyfile="leasy/lua/lua.h" bodystart="489" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___debug_1a7e8c201950ea4dd3f2c7df9e1201019a" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* lua_Debug::namewhat</definition>
+        <argsstring></argsstring>
+        <name>namewhat</name>
+        <qualifiedname>lua_Debug::namewhat</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="490" column="14" bodyfile="leasy/lua/lua.h" bodystart="490" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___debug_1afbf8df5f26e9c345378a7eb402eed081" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* lua_Debug::what</definition>
+        <argsstring></argsstring>
+        <name>what</name>
+        <qualifiedname>lua_Debug::what</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="491" column="14" bodyfile="leasy/lua/lua.h" bodystart="491" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___debug_1a422bceba8605d96bce4d19ce801a62e4" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* lua_Debug::source</definition>
+        <argsstring></argsstring>
+        <name>source</name>
+        <qualifiedname>lua_Debug::source</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="492" column="14" bodyfile="leasy/lua/lua.h" bodystart="492" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___debug_1aace8e6efdb999325e7a77452c849293b" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t lua_Debug::srclen</definition>
+        <argsstring></argsstring>
+        <name>srclen</name>
+        <qualifiedname>lua_Debug::srclen</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="493" column="10" bodyfile="leasy/lua/lua.h" bodystart="493" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___debug_1a97b3ed36cdfdc6f2c694b253a3d96da6" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int lua_Debug::currentline</definition>
+        <argsstring></argsstring>
+        <name>currentline</name>
+        <qualifiedname>lua_Debug::currentline</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="494" column="7" bodyfile="leasy/lua/lua.h" bodystart="494" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___debug_1a97cb69b18daa46d20fb1a13eec78661b" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int lua_Debug::linedefined</definition>
+        <argsstring></argsstring>
+        <name>linedefined</name>
+        <qualifiedname>lua_Debug::linedefined</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="495" column="7" bodyfile="leasy/lua/lua.h" bodystart="495" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___debug_1a4c69b9d30e54cf9071cd2987ede128eb" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int lua_Debug::lastlinedefined</definition>
+        <argsstring></argsstring>
+        <name>lastlinedefined</name>
+        <qualifiedname>lua_Debug::lastlinedefined</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="496" column="7" bodyfile="leasy/lua/lua.h" bodystart="496" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___debug_1ab87c2a6ef686abf10da683f7e9af1b23" prot="public" static="no" mutable="no">
+        <type>unsigned char</type>
+        <definition>unsigned char lua_Debug::nups</definition>
+        <argsstring></argsstring>
+        <name>nups</name>
+        <qualifiedname>lua_Debug::nups</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="497" column="17" bodyfile="leasy/lua/lua.h" bodystart="497" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___debug_1adb5efd1576224ce9d14f42f8bfee7a1a" prot="public" static="no" mutable="no">
+        <type>unsigned char</type>
+        <definition>unsigned char lua_Debug::nparams</definition>
+        <argsstring></argsstring>
+        <name>nparams</name>
+        <qualifiedname>lua_Debug::nparams</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="498" column="17" bodyfile="leasy/lua/lua.h" bodystart="498" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___debug_1a943220c57a4dd46dcc1bcd1198cfea88" prot="public" static="no" mutable="no">
+        <type>char</type>
+        <definition>char lua_Debug::isvararg</definition>
+        <argsstring></argsstring>
+        <name>isvararg</name>
+        <qualifiedname>lua_Debug::isvararg</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="499" column="8" bodyfile="leasy/lua/lua.h" bodystart="499" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___debug_1a6d1b973ebbf25da89b1d637bec435ce5" prot="public" static="no" mutable="no">
+        <type>unsigned char</type>
+        <definition>unsigned char lua_Debug::extraargs</definition>
+        <argsstring></argsstring>
+        <name>extraargs</name>
+        <qualifiedname>lua_Debug::extraargs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="500" column="17" bodyfile="leasy/lua/lua.h" bodystart="500" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___debug_1a08e9cf647790ffeb068db293c7572260" prot="public" static="no" mutable="no">
+        <type>char</type>
+        <definition>char lua_Debug::istailcall</definition>
+        <argsstring></argsstring>
+        <name>istailcall</name>
+        <qualifiedname>lua_Debug::istailcall</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="501" column="8" bodyfile="leasy/lua/lua.h" bodystart="501" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___debug_1a472f04b46b9a76e4b7b2b13bc06f2b7d" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int lua_Debug::ftransfer</definition>
+        <argsstring></argsstring>
+        <name>ftransfer</name>
+        <qualifiedname>lua_Debug::ftransfer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="502" column="7" bodyfile="leasy/lua/lua.h" bodystart="502" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___debug_1ad76fcbbe403a26d349a76052ffa26558" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int lua_Debug::ntransfer</definition>
+        <argsstring></argsstring>
+        <name>ntransfer</name>
+        <qualifiedname>lua_Debug::ntransfer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="503" column="7" bodyfile="leasy/lua/lua.h" bodystart="503" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___debug_1a9b953c2fa9ef95a72a9ffc423744e1a4" prot="public" static="no" mutable="no">
+        <type>char</type>
+        <definition>char lua_Debug::short_src[LUA_IDSIZE]</definition>
+        <argsstring>[LUA_IDSIZE]</argsstring>
+        <name>short_src</name>
+        <qualifiedname>lua_Debug::short_src</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="504" column="8" bodyfile="leasy/lua/lua.h" bodystart="504" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structlua___debug_1a6cfa3d2272ea187b08164b0a2081d59d" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="struct_call_info" kindref="compound">CallInfo</ref> *</type>
+        <definition>struct CallInfo* lua_Debug::i_ci</definition>
+        <argsstring></argsstring>
+        <name>i_ci</name>
+        <qualifiedname>lua_Debug::i_ci</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lua.h" line="506" column="17" bodyfile="leasy/lua/lua.h" bodystart="506" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>CallInfo</label>
+        <link refid="struct_call_info"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>func</edgelabel>
+          <edgelabel>top</edgelabel>
+        </childnode>
+        <childnode refid="2" relation="usage">
+          <edgelabel>next</edgelabel>
+          <edgelabel>previous</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>k</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>GCObject</label>
+        <link refid="struct_g_c_object"/>
+      </node>
+      <node id="15">
+        <label>LX</label>
+        <link refid="struct_l_x"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>l</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>Node</label>
+        <link refid="union_node"/>
+        <childnode refid="14" relation="usage">
+          <edgelabel>u</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>i_val</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>Node::NodeKey</label>
+        <link refid="struct_node_1_1_node_key"/>
+        <childnode refid="12" relation="usage">
+          <edgelabel>key_val</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>StackValue</label>
+        <link refid="union_stack_value"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>val</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>StkIdRel</label>
+        <link refid="union_stk_id_rel"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>p</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="9" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>TValue</label>
+        <link refid="struct_t_value"/>
+      </node>
+      <node id="11">
+        <label>Table</label>
+        <link refid="struct_table"/>
+        <childnode refid="12" relation="usage">
+          <edgelabel>array</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>node</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>metatable</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>gclist</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>UpVal</label>
+        <link refid="struct_up_val"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>p</edgelabel>
+          <edgelabel>value</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>next</edgelabel>
+          <edgelabel>previous</edgelabel>
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Value</label>
+        <link refid="union_value"/>
+        <childnode refid="10" relation="usage">
+          <edgelabel>gc</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>f</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>global_State</label>
+        <link refid="structglobal___state"/>
+        <childnode refid="8" relation="usage">
+          <edgelabel>strt</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>l_registry</edgelabel>
+          <edgelabel>nilvalue</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>allgc</edgelabel>
+          <edgelabel>allweak</edgelabel>
+          <edgelabel>ephemeron</edgelabel>
+          <edgelabel>finobj</edgelabel>
+          <edgelabel>finobjold1</edgelabel>
+          <edgelabel>finobjrold</edgelabel>
+          <edgelabel>finobjsur</edgelabel>
+          <edgelabel>firstold1</edgelabel>
+          <edgelabel>fixedgc</edgelabel>
+          <edgelabel>gray</edgelabel>
+          <edgelabel>  ...</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>panic</edgelabel>
+          <edgelabel>twups</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>memerrmsg</edgelabel>
+          <edgelabel>strcache</edgelabel>
+          <edgelabel>tmname</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>mt</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>mainth</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>lua_Debug</label>
+        <link refid="structlua___debug"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>i_ci</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>lua_State</label>
+        <link refid="structlua___state"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>stack</edgelabel>
+          <edgelabel>stack_last</edgelabel>
+          <edgelabel>tbclist</edgelabel>
+          <edgelabel>top</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>l_G</edgelabel>
+        </childnode>
+        <childnode refid="2" relation="usage">
+          <edgelabel>base_ci</edgelabel>
+          <edgelabel>ci</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>openupval</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>gclist</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>twups</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>errorJmp</edgelabel>
+        </childnode>
+      </node>
+      <node id="17">
+        <label>lua_longjmp</label>
+        <link refid="structlua__longjmp"/>
+        <childnode refid="17" relation="usage">
+          <edgelabel>previous</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>stringtable</label>
+        <link refid="structstringtable"/>
+        <childnode refid="9" relation="usage">
+          <edgelabel>hash</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lua.h" line="487" column="1" bodyfile="leasy/lua/lua.h" bodystart="487" bodyend="507"/>
+    <listofallmembers>
+      <member refid="structlua___debug_1a97b3ed36cdfdc6f2c694b253a3d96da6" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>currentline</name></member>
+      <member refid="structlua___debug_1a6578d385d2322429a0fe87b79f1ddec0" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>event</name></member>
+      <member refid="structlua___debug_1a6d1b973ebbf25da89b1d637bec435ce5" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>extraargs</name></member>
+      <member refid="structlua___debug_1a472f04b46b9a76e4b7b2b13bc06f2b7d" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>ftransfer</name></member>
+      <member refid="structlua___debug_1a6cfa3d2272ea187b08164b0a2081d59d" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>i_ci</name></member>
+      <member refid="structlua___debug_1a08e9cf647790ffeb068db293c7572260" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>istailcall</name></member>
+      <member refid="structlua___debug_1a943220c57a4dd46dcc1bcd1198cfea88" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>isvararg</name></member>
+      <member refid="structlua___debug_1a4c69b9d30e54cf9071cd2987ede128eb" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>lastlinedefined</name></member>
+      <member refid="structlua___debug_1a97cb69b18daa46d20fb1a13eec78661b" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>linedefined</name></member>
+      <member refid="structlua___debug_1a2978ab7f2ade479a003beb16d3b7a993" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>name</name></member>
+      <member refid="structlua___debug_1a7e8c201950ea4dd3f2c7df9e1201019a" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>namewhat</name></member>
+      <member refid="structlua___debug_1adb5efd1576224ce9d14f42f8bfee7a1a" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>nparams</name></member>
+      <member refid="structlua___debug_1ad76fcbbe403a26d349a76052ffa26558" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>ntransfer</name></member>
+      <member refid="structlua___debug_1ab87c2a6ef686abf10da683f7e9af1b23" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>nups</name></member>
+      <member refid="structlua___debug_1a9b953c2fa9ef95a72a9ffc423744e1a4" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>short_src</name></member>
+      <member refid="structlua___debug_1a422bceba8605d96bce4d19ce801a62e4" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>source</name></member>
+      <member refid="structlua___debug_1aace8e6efdb999325e7a77452c849293b" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>srclen</name></member>
+      <member refid="structlua___debug_1afbf8df5f26e9c345378a7eb402eed081" prot="public" virt="non-virtual"><scope>lua_Debug</scope><name>what</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_auto_battle_1_1_attack_only" kind="class" language="C++" prot="public">
+    <compoundname>AutoBattle::AttackOnly</compoundname>
+    <basecompoundref refid="class_auto_battle_1_1_algorithm_base" prot="public" virt="non-virtual">AutoBattle::AlgorithmBase</basecompoundref>
+    <includes refid="autobattle_8h" local="no">autobattle.h</includes>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_auto_battle_1_1_attack_only_1ae012ff9ac731451a2d796d53eec943ef" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto AutoBattle::AttackOnly::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <qualifiedname>AutoBattle::AttackOnly::id</qualifiedname>
+        <initializer>= 2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.h" line="88" column="23" bodyfile="autobattle.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_auto_battle_1_1_attack_only_1a5ef9731b9bf33c01d4dd750bb83105af" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto AutoBattle::AttackOnly::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>AutoBattle::AttackOnly::name</qualifiedname>
+        <initializer>= &quot;ATTACK&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.h" line="90" column="23" bodyfile="autobattle.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_auto_battle_1_1_attack_only_1a9d48744e66257c13956376254859c1c5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int AutoBattle::AttackOnly::GetId</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetId</name>
+        <qualifiedname>AutoBattle::AttackOnly::GetId</qualifiedname>
+        <reimplements refid="class_auto_battle_1_1_algorithm_base_1a927162bcaf7a41e4bc55a3d8a04a7d87">GetId</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the id of this algorithm </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.h" line="92" column="5" bodyfile="autobattle.h" bodystart="92" bodyend="92"/>
+      </memberdef>
+      <memberdef kind="function" id="class_auto_battle_1_1_attack_only_1ade1ae18c77d533cdab3b7fe5f6299683" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view AutoBattle::AttackOnly::GetName</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetName</name>
+        <qualifiedname>AutoBattle::AttackOnly::GetName</qualifiedname>
+        <reimplements refid="class_auto_battle_1_1_algorithm_base_1a4737b80596a012416167c7db89e5cc4d">GetName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the name of this algorithm </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.h" line="94" column="18" bodyfile="autobattle.h" bodystart="94" bodyend="94"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_auto_battle_1_1_attack_only_1a6b373726dd4c106ffbcd66908b53fa45" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AutoBattle::AttackOnly::vSetAutoBattleAction</definition>
+        <argsstring>(Game_Actor &amp;source) override</argsstring>
+        <name>vSetAutoBattleAction</name>
+        <qualifiedname>AutoBattle::AttackOnly::vSetAutoBattleAction</qualifiedname>
+        <reimplements refid="class_auto_battle_1_1_algorithm_base_1af95cabd1ec9c2d331310c69a62095411">vSetAutoBattleAction</reimplements>
+        <param>
+          <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.h" line="96" column="6" bodyfile="autobattle.cpp" bodystart="71" bodyend="73"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>An autobattle algorithm which only does physical attacks. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>AutoBattle::AlgorithmBase</label>
+        <link refid="class_auto_battle_1_1_algorithm_base"/>
+      </node>
+      <node id="1">
+        <label>AutoBattle::AttackOnly</label>
+        <link refid="class_auto_battle_1_1_attack_only"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>AutoBattle::AlgorithmBase</label>
+        <link refid="class_auto_battle_1_1_algorithm_base"/>
+      </node>
+      <node id="1">
+        <label>AutoBattle::AttackOnly</label>
+        <link refid="class_auto_battle_1_1_attack_only"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="autobattle.h" line="86" column="1" bodyfile="autobattle.h" bodystart="86" bodyend="97"/>
+    <listofallmembers>
+      <member refid="class_auto_battle_1_1_attack_only_1a9d48744e66257c13956376254859c1c5" prot="public" virt="virtual"><scope>AutoBattle::AttackOnly</scope><name>GetId</name></member>
+      <member refid="class_auto_battle_1_1_attack_only_1ade1ae18c77d533cdab3b7fe5f6299683" prot="public" virt="virtual"><scope>AutoBattle::AttackOnly</scope><name>GetName</name></member>
+      <member refid="class_auto_battle_1_1_attack_only_1ae012ff9ac731451a2d796d53eec943ef" prot="public" virt="non-virtual"><scope>AutoBattle::AttackOnly</scope><name>id</name></member>
+      <member refid="class_auto_battle_1_1_attack_only_1a5ef9731b9bf33c01d4dd750bb83105af" prot="public" virt="non-virtual"><scope>AutoBattle::AttackOnly</scope><name>name</name></member>
+      <member refid="class_auto_battle_1_1_algorithm_base_1ab6a2cf5715d9783c77bbaceafd377c36" prot="public" virt="non-virtual"><scope>AutoBattle::AttackOnly</scope><name>SetAutoBattleAction</name></member>
+      <member refid="class_auto_battle_1_1_attack_only_1a6b373726dd4c106ffbcd66908b53fa45" prot="private" virt="virtual"><scope>AutoBattle::AttackOnly</scope><name>vSetAutoBattleAction</name></member>
+      <member refid="class_auto_battle_1_1_algorithm_base_1a4e86b75994f7727c5598496b6d712006" prot="public" virt="virtual"><scope>AutoBattle::AttackOnly</scope><name>~AlgorithmBase</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

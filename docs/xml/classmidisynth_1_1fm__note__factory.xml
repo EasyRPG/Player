@@ -1,0 +1,217 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classmidisynth_1_1fm__note__factory" kind="class" language="C++" prot="public">
+    <compoundname>midisynth::fm_note_factory</compoundname>
+    <basecompoundref refid="classmidisynth_1_1note__factory" prot="public" virt="non-virtual">midisynth::note_factory</basecompoundref>
+    <includes refid="midisynth_8h" local="no">midisynth.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classmidisynth_1_1fm__note__factory_1a87fb7ba32bc440efcb41a3c93711baaa" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, <ref refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r" kindref="compound">FMPARAMETER</ref> &gt;</type>
+        <definition>std::map&lt;int, FMPARAMETER&gt; midisynth::fm_note_factory::programs</definition>
+        <argsstring></argsstring>
+        <name>programs</name>
+        <qualifiedname>midisynth::fm_note_factory::programs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="400" column="18" bodyfile="midisynth.h" bodystart="400" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__note__factory_1a74fcb61fb8f728ca2cb051d667f6dc89" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, <ref refid="structmidisynth_1_1_d_r_u_m_p_a_r_a_m_e_t_e_r" kindref="compound">DRUMPARAMETER</ref> &gt;</type>
+        <definition>std::map&lt;int, DRUMPARAMETER&gt; midisynth::fm_note_factory::drums</definition>
+        <argsstring></argsstring>
+        <name>drums</name>
+        <qualifiedname>midisynth::fm_note_factory::drums</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="401" column="18" bodyfile="midisynth.h" bodystart="401" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classmidisynth_1_1fm__note__factory_1a024d715ac53fa79c13debdd5fd3f5a7a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>midisynth::fm_note_factory::fm_note_factory</definition>
+        <argsstring>()</argsstring>
+        <name>fm_note_factory</name>
+        <qualifiedname>midisynth::fm_note_factory::fm_note_factory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="393" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__note__factory_1af19ba2a95e0fd2b7e0570806dc143797" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::fm_note_factory::clear</definition>
+        <argsstring>()</argsstring>
+        <name>clear</name>
+        <qualifiedname>midisynth::fm_note_factory::clear</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="394" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__note__factory_1a3cf094217c60b2d75670ba3ff237e244" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::fm_note_factory::get_program</definition>
+        <argsstring>(int number, FMPARAMETER &amp;p)</argsstring>
+        <name>get_program</name>
+        <qualifiedname>midisynth::fm_note_factory::get_program</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>number</declname>
+        </param>
+        <param>
+          <type><ref refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r" kindref="compound">FMPARAMETER</ref> &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="395" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__note__factory_1acbda5d85cde0a29218f89d004e0be781" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool midisynth::fm_note_factory::set_program</definition>
+        <argsstring>(int number, const FMPARAMETER &amp;p)</argsstring>
+        <name>set_program</name>
+        <qualifiedname>midisynth::fm_note_factory::set_program</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>number</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r" kindref="compound">FMPARAMETER</ref> &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="396" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__note__factory_1a80639c528d1bd1451e2a1b41460ac8da" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool midisynth::fm_note_factory::set_drum_program</definition>
+        <argsstring>(int number, const DRUMPARAMETER &amp;p)</argsstring>
+        <name>set_drum_program</name>
+        <qualifiedname>midisynth::fm_note_factory::set_drum_program</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>number</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structmidisynth_1_1_d_r_u_m_p_a_r_a_m_e_t_e_r" kindref="compound">DRUMPARAMETER</ref> &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="397" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__note__factory_1aa68cce36446bf0fb1d6dca80833d7d0f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="classmidisynth_1_1note" kindref="compound">note</ref> *</type>
+        <definition>virtual note * midisynth::fm_note_factory::note_on</definition>
+        <argsstring>(int_least32_t program, int note, int velocity, float frequency_multiplier)</argsstring>
+        <name>note_on</name>
+        <qualifiedname>midisynth::fm_note_factory::note_on</qualifiedname>
+        <reimplements refid="classmidisynth_1_1note__factory_1aa81181ec58dd4d45829d6fe370a2666a">note_on</reimplements>
+        <param>
+          <type>int_least32_t</type>
+          <declname>program</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>note</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>velocity</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>frequency_multiplier</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="398" column="22"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>midisynth::fm_note_factory</label>
+        <link refid="classmidisynth_1_1fm__note__factory"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>midisynth::note_factory</label>
+        <link refid="classmidisynth_1_1note__factory"/>
+        <childnode refid="3" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>midisynth::uncopyable</label>
+        <link refid="classmidisynth_1_1uncopyable"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>midisynth::fm_note_factory</label>
+        <link refid="classmidisynth_1_1fm__note__factory"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>midisynth::note_factory</label>
+        <link refid="classmidisynth_1_1note__factory"/>
+        <childnode refid="3" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>midisynth::uncopyable</label>
+        <link refid="classmidisynth_1_1uncopyable"/>
+      </node>
+    </collaborationgraph>
+    <location file="midisynth.h" line="391" column="5" bodyfile="midisynth.h" bodystart="391" bodyend="402"/>
+    <listofallmembers>
+      <member refid="classmidisynth_1_1fm__note__factory_1af19ba2a95e0fd2b7e0570806dc143797" prot="public" virt="non-virtual"><scope>midisynth::fm_note_factory</scope><name>clear</name></member>
+      <member refid="classmidisynth_1_1fm__note__factory_1a74fcb61fb8f728ca2cb051d667f6dc89" prot="private" virt="non-virtual"><scope>midisynth::fm_note_factory</scope><name>drums</name></member>
+      <member refid="classmidisynth_1_1fm__note__factory_1a024d715ac53fa79c13debdd5fd3f5a7a" prot="public" virt="non-virtual"><scope>midisynth::fm_note_factory</scope><name>fm_note_factory</name></member>
+      <member refid="classmidisynth_1_1fm__note__factory_1a3cf094217c60b2d75670ba3ff237e244" prot="public" virt="non-virtual"><scope>midisynth::fm_note_factory</scope><name>get_program</name></member>
+      <member refid="classmidisynth_1_1fm__note__factory_1aa68cce36446bf0fb1d6dca80833d7d0f" prot="public" virt="virtual"><scope>midisynth::fm_note_factory</scope><name>note_on</name></member>
+      <member refid="classmidisynth_1_1fm__note__factory_1a87fb7ba32bc440efcb41a3c93711baaa" prot="private" virt="non-virtual"><scope>midisynth::fm_note_factory</scope><name>programs</name></member>
+      <member refid="classmidisynth_1_1fm__note__factory_1a80639c528d1bd1451e2a1b41460ac8da" prot="public" virt="non-virtual"><scope>midisynth::fm_note_factory</scope><name>set_drum_program</name></member>
+      <member refid="classmidisynth_1_1fm__note__factory_1acbda5d85cde0a29218f89d004e0be781" prot="public" virt="non-virtual"><scope>midisynth::fm_note_factory</scope><name>set_program</name></member>
+      <member refid="classmidisynth_1_1note__factory_1a67fed02339687e82a3895f0b41c6df9e" prot="protected" virt="virtual"><scope>midisynth::fm_note_factory</scope><name>~note_factory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

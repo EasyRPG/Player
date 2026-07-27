@@ -1,0 +1,666 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1ul2_1_1lstate" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>leasy::ul2::lstate</compoundname>
+    <includes refid="state_8hpp" local="no">state.hpp</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classleasy_1_1ul2_1_1lstate_1ab783400b0d915c95d1b744af8d54292c" prot="private" static="no" mutable="no">
+        <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+        <definition>lua_State* leasy::ul2::lstate::L</definition>
+        <argsstring></argsstring>
+        <name>L</name>
+        <qualifiedname>leasy::ul2::lstate::L</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="66" column="15" bodyfile="leasy/ul2/state.hpp" bodystart="66" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1lstate_1a78829325a93b49e940c7f3ef32e01731" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt; std::string &gt; leasy::ul2::lstate::split</definition>
+        <argsstring>(const std::string &amp;name) const</argsstring>
+        <name>split</name>
+        <qualifiedname>leasy::ul2::lstate::split</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+<para>Splits a dotted string into pieces. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Example: &quot;a.b.c&quot; -&gt; [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The thing you typed (hopefully valid) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Vector of parts</para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>ulexception2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if:<itemizedlist>
+<listitem><para>empty string (why)</para>
+</listitem><listitem><para>empty segment (&quot;a..b&quot; congrats, you broke it) </para>
+</listitem></itemizedlist>
+</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="81" column="24" bodyfile="leasy/ul2/state.hpp" bodystart="81" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1lstate_1a8ee86c28ecf076616399b1c6aeeb6c30" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ul2::lstate::push_path</definition>
+        <argsstring>(const std::vector&lt; std::string &gt; &amp;parts, bool leave_parent=false, bool create_missing=true)</argsstring>
+        <name>push_path</name>
+        <qualifiedname>leasy::ul2::lstate::push_path</qualifiedname>
+        <param>
+          <type>const std::vector&lt; std::string &gt; &amp;</type>
+          <declname>parts</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>leave_parent</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>create_missing</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+<para>Walks through Lua tables like it&apos;s an RPG dungeon. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Starts at _G and follows the path step by step.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>parts</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pre-split path (don&apos;t mess it up) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>leave_parent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stop before the last element (used for setting stuff) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>create_missing</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stop being stupid and yell at ya when parents ain&apos;t exist lol.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>ulexception2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if something doesn&apos;t exist (rip)</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Stack after:<itemizedlist>
+<listitem><para>top = final value (or parent if leave_parent = true) </para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="112" column="17" bodyfile="leasy/ul2/state.hpp" bodystart="112" bodyend="139"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1lstate_1a6e706105cda45c0154c33210a7ab4e89" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void leasy::ul2::lstate::push_value</definition>
+        <argsstring>(const T &amp;value)</argsstring>
+        <name>push_value</name>
+        <qualifiedname>leasy::ul2::lstate::push_value</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Push helper (generic version). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Uses <ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack</ref> for normal types. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="300" column="17" bodyfile="leasy/ul2/state.hpp" bodystart="300" bodyend="302"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1lstate_1a3538da107c42cd6e6e98c86ebe9e105d" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ul2::lstate::push_value</definition>
+        <argsstring>(lua_CFunction fn)</argsstring>
+        <name>push_value</name>
+        <qualifiedname>leasy::ul2::lstate::push_value</qualifiedname>
+        <param>
+          <type><ref refid="lua_8h_1a878b7e392e78661a374cf1c3073029b9" kindref="member">lua_CFunction</ref></type>
+          <declname>fn</declname>
+        </param>
+        <briefdescription>
+<para>Push helper (C function specialization). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Because Lua likes raw C functions. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="309" column="17" bodyfile="leasy/ul2/state.hpp" bodystart="309" bodyend="311"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1lstate_1afa02c36eb070796e4989537125e9a89e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ul2::lstate::lstate</definition>
+        <argsstring>(bool libs=true)</argsstring>
+        <name>lstate</name>
+        <qualifiedname>leasy::ul2::lstate::lstate</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>libs</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+<para>Creates a Lua state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>libs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load standard libs (recommended unless you enjoy suffering) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="148" column="12" bodyfile="leasy/ul2/state.hpp" bodystart="148" bodyend="157"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1lstate_1a62717ff5722dc30ea928a33b72fd1aa4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ul2::lstate::~lstate</definition>
+        <argsstring>()</argsstring>
+        <name>~lstate</name>
+        <qualifiedname>leasy::ul2::lstate::~lstate</qualifiedname>
+        <briefdescription>
+<para>Destroys the Lua state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Goodbye Lua. You did your best. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="164" column="12" bodyfile="leasy/ul2/state.hpp" bodystart="164" bodyend="164"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1lstate_1a6aa1f0d2821ad2f0ffa5cf968dd2c91c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void leasy::ul2::lstate::push</definition>
+        <argsstring>(const std::string &amp;name, const T &amp;value)</argsstring>
+        <name>push</name>
+        <qualifiedname>leasy::ul2::lstate::push</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Pushes a value into Lua. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Works with:<itemizedlist>
+<listitem><para>&quot;var&quot; -&gt; global</para>
+</listitem><listitem><para>&quot;a.b.c&quot; -&gt; nested field</para>
+</listitem></itemizedlist>
+</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type (must be supported by <ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack</ref> or be a C function) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Where to put it </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The thing you&apos;re shoving into Lua</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>ulexception2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if:<itemizedlist>
+<listitem><para>path is cursed</para>
+</listitem><listitem><para>parent isn&apos;t a table (seriously why) </para>
+</listitem></itemizedlist>
+</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="182" column="17" bodyfile="leasy/ul2/state.hpp" bodystart="182" bodyend="200"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1lstate_1a57b2f0cbae21ca37fa733f98a0e0e0bc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>auto</type>
+            <declname>F</declname>
+            <defname>F</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void leasy::ul2::lstate::bind</definition>
+        <argsstring>(const std::string &amp;name)</argsstring>
+        <name>bind</name>
+        <qualifiedname>leasy::ul2::lstate::bind</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+<para>Binds a C++ function into Lua. (It&apos;s better than the other one). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Basically black magic:<itemizedlist>
+<listitem><para>takes a normal C++ function</para>
+</listitem><listitem><para>runs it through your weird dispatch trampoline</para>
+</listitem><listitem><para>Lua thinks it&apos;s a regular function (it isn&apos;t)</para>
+</listitem></itemizedlist>
+</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function thingy (known at compile time, don&apos;t get fancy) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Where to expose it in Lua </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="214" column="17" bodyfile="leasy/ul2/state.hpp" bodystart="214" bodyend="232"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1lstate_1aad3707a8428b6027884acbefbaadf2ee" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ul2::lstate::bind2</definition>
+        <argsstring>(const std::string &amp;name, std::function&lt; int(lua_State *)&gt; fn)</argsstring>
+        <name>bind2</name>
+        <qualifiedname>leasy::ul2::lstate::bind2</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>std::function&lt; int(<ref refid="structlua___state" kindref="compound">lua_State</ref> *)&gt;</type>
+          <declname>fn</declname>
+        </param>
+        <briefdescription>
+<para>basically this binds a std::function&lt;int(lua_State*)&gt; to lua. Magic. Wow. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="237" column="17" bodyfile="leasy/ul2/state.hpp" bodystart="237" bodyend="262"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1lstate_1a809dead7d11b5a2e3ba32f2bbb8ff85f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void leasy::ul2::lstate::bind</definition>
+        <argsstring>(const std::string &amp;name, F &amp;&amp;fn)</argsstring>
+        <name>bind</name>
+        <qualifiedname>leasy::ul2::lstate::bind</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>fn</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="277" column="10" bodyfile="leasy/ul2/state.hpp" bodystart="277" bodyend="279"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1lstate_1a1eb7d89c0805619bdc36d901c562faab" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void leasy::ul2::lstate::call</definition>
+        <argsstring>(const std::string &amp;name, Args &amp;&amp;... args)</argsstring>
+        <name>call</name>
+        <qualifiedname>leasy::ul2::lstate::call</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+<para>Calls a Lua function (ignores return value). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function path </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>args</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stuff to throw at it </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="322" column="17" bodyfile="leasy/ul2/state.hpp" bodystart="322" bodyend="324"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1lstate_1a9f9d353b1c4d0c722a25803737da2c80" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename R</type>
+            <defval>void</defval>
+          </param>
+          <param>
+            <type>typename ...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>R</type>
+        <definition>R leasy::ul2::lstate::call</definition>
+        <argsstring>(const std::string &amp;name, Args &amp;&amp;... args)</argsstring>
+        <name>call</name>
+        <qualifiedname>leasy::ul2::lstate::call</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+<para>Calls a Lua function and expects something back. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>R</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Return type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function path </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>args</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Arguments</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whatever Lua felt like returning</para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>ulexception2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if:<itemizedlist>
+<listitem><para>not a function (oops)</para>
+</listitem><listitem><para>Lua explodes (common)</para>
+</listitem><listitem><para>no return value (rude) </para>
+</listitem></itemizedlist>
+</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="341" column="14" bodyfile="leasy/ul2/state.hpp" bodystart="341" bodyend="370"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1lstate_1a2808b6c966610a6aba42bdbe70dc3032" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ul2::lstate::dostring</definition>
+        <argsstring>(const std::string &amp;string)</argsstring>
+        <name>dostring</name>
+        <qualifiedname>leasy::ul2::lstate::dostring</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>string</declname>
+        </param>
+        <briefdescription>
+<para>Executes a string. Yes, literally. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>If Lua cries, we throw. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="377" column="17" bodyfile="leasy/ul2/state.hpp" bodystart="377" bodyend="383"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1lstate_1a54882b3d22afa14db92640e540f61644" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ul2::lstate::dofile</definition>
+        <argsstring>(const std::string &amp;string)</argsstring>
+        <name>dofile</name>
+        <qualifiedname>leasy::ul2::lstate::dofile</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>string</declname>
+        </param>
+        <briefdescription>
+<para>Executes a file. Revolutionary concept. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Same idea as dostring, but with files (wild, I know). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="390" column="17" bodyfile="leasy/ul2/state.hpp" bodystart="390" bodyend="396"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1lstate_1a799c5bfc0e1f752717d78abd9b06842c" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>std::function&lt; int(<ref refid="structlua___state" kindref="compound">lua_State</ref> *)&gt;</type>
+        <definition>static std::function&lt; int(lua_State *)&gt; leasy::ul2::lstate::bridge</definition>
+        <argsstring>(const F &amp;f)</argsstring>
+        <name>bridge</name>
+        <qualifiedname>leasy::ul2::lstate::bridge</qualifiedname>
+        <param>
+          <type>const F &amp;</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="265" column="26" bodyfile="leasy/ul2/state.hpp" bodystart="265" bodyend="274"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="classleasy_1_1ul2_1_1lstate_1a9e56e8e001b9378921422cc0d0bb06bc" prot="private" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename R</type>
+          </param>
+          <param>
+            <type>typename Callable</type>
+          </param>
+          <param>
+            <type>typename Tuple</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>I</declname>
+            <defname>I</defname>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>static int leasy::ul2::lstate::invoke_stdfn</definition>
+        <argsstring>(const Callable &amp;fn, lua_State *L, std::index_sequence&lt; I... &gt;)</argsstring>
+        <name>invoke_stdfn</name>
+        <qualifiedname>leasy::ul2::lstate::invoke_stdfn</qualifiedname>
+        <param>
+          <type>const Callable &amp;</type>
+          <declname>fn</declname>
+        </param>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>std::index_sequence&lt; I... &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/state.hpp" line="283" column="16" bodyfile="leasy/ul2/state.hpp" bodystart="283" bodyend="292"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Lua VM babysitter. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Wraps a <ref refid="structlua___state" kindref="compound">lua_State</ref> so you don&apos;t accidentally summon demons (you still can, just slightly harder now). If something breaks, it throws. Aggressively. </para>
+    </detaileddescription>
+    <location file="leasy/ul2/state.hpp" line="64" column="3" bodyfile="leasy/ul2/state.hpp" bodystart="64" bodyend="397"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1ul2_1_1lstate_1a57b2f0cbae21ca37fa733f98a0e0e0bc" prot="public" virt="non-virtual"><scope>leasy::ul2::lstate</scope><name>bind</name></member>
+      <member refid="classleasy_1_1ul2_1_1lstate_1a809dead7d11b5a2e3ba32f2bbb8ff85f" prot="public" virt="non-virtual"><scope>leasy::ul2::lstate</scope><name>bind</name></member>
+      <member refid="classleasy_1_1ul2_1_1lstate_1aad3707a8428b6027884acbefbaadf2ee" prot="public" virt="non-virtual"><scope>leasy::ul2::lstate</scope><name>bind2</name></member>
+      <member refid="classleasy_1_1ul2_1_1lstate_1a799c5bfc0e1f752717d78abd9b06842c" prot="public" virt="non-virtual"><scope>leasy::ul2::lstate</scope><name>bridge</name></member>
+      <member refid="classleasy_1_1ul2_1_1lstate_1a1eb7d89c0805619bdc36d901c562faab" prot="public" virt="non-virtual"><scope>leasy::ul2::lstate</scope><name>call</name></member>
+      <member refid="classleasy_1_1ul2_1_1lstate_1a9f9d353b1c4d0c722a25803737da2c80" prot="public" virt="non-virtual"><scope>leasy::ul2::lstate</scope><name>call</name></member>
+      <member refid="classleasy_1_1ul2_1_1lstate_1a54882b3d22afa14db92640e540f61644" prot="public" virt="non-virtual"><scope>leasy::ul2::lstate</scope><name>dofile</name></member>
+      <member refid="classleasy_1_1ul2_1_1lstate_1a2808b6c966610a6aba42bdbe70dc3032" prot="public" virt="non-virtual"><scope>leasy::ul2::lstate</scope><name>dostring</name></member>
+      <member refid="classleasy_1_1ul2_1_1lstate_1a9e56e8e001b9378921422cc0d0bb06bc" prot="private" virt="non-virtual"><scope>leasy::ul2::lstate</scope><name>invoke_stdfn</name></member>
+      <member refid="classleasy_1_1ul2_1_1lstate_1ab783400b0d915c95d1b744af8d54292c" prot="private" virt="non-virtual"><scope>leasy::ul2::lstate</scope><name>L</name></member>
+      <member refid="classleasy_1_1ul2_1_1lstate_1afa02c36eb070796e4989537125e9a89e" prot="public" virt="non-virtual"><scope>leasy::ul2::lstate</scope><name>lstate</name></member>
+      <member refid="classleasy_1_1ul2_1_1lstate_1a6aa1f0d2821ad2f0ffa5cf968dd2c91c" prot="public" virt="non-virtual"><scope>leasy::ul2::lstate</scope><name>push</name></member>
+      <member refid="classleasy_1_1ul2_1_1lstate_1a8ee86c28ecf076616399b1c6aeeb6c30" prot="private" virt="non-virtual"><scope>leasy::ul2::lstate</scope><name>push_path</name></member>
+      <member refid="classleasy_1_1ul2_1_1lstate_1a6e706105cda45c0154c33210a7ab4e89" prot="private" virt="non-virtual"><scope>leasy::ul2::lstate</scope><name>push_value</name></member>
+      <member refid="classleasy_1_1ul2_1_1lstate_1a3538da107c42cd6e6e98c86ebe9e105d" prot="private" virt="non-virtual"><scope>leasy::ul2::lstate</scope><name>push_value</name></member>
+      <member refid="classleasy_1_1ul2_1_1lstate_1a78829325a93b49e940c7f3ef32e01731" prot="private" virt="non-virtual"><scope>leasy::ul2::lstate</scope><name>split</name></member>
+      <member refid="classleasy_1_1ul2_1_1lstate_1a62717ff5722dc30ea928a33b72fd1aa4" prot="public" virt="non-virtual"><scope>leasy::ul2::lstate</scope><name>~lstate</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,723 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_input_1_1_source" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Input::Source</compoundname>
+    <derivedcompoundref refid="class_input_1_1_log_source" prot="public" virt="non-virtual">Input::LogSource</derivedcompoundref>
+    <derivedcompoundref refid="class_input_1_1_ui_source" prot="public" virt="non-virtual">Input::UiSource</derivedcompoundref>
+    <includes refid="input__source_8h" local="no">input_source.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_input_1_1_source_1a7d49f9da22d14d6f3633540da1d1d75d" prot="protected" static="no" mutable="no">
+        <type><ref refid="struct_game___config_input" kindref="compound">Game_ConfigInput</ref></type>
+        <definition>Game_ConfigInput Input::Source::cfg</definition>
+        <argsstring></argsstring>
+        <name>cfg</name>
+        <qualifiedname>Input::Source::cfg</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="154" column="18" bodyfile="input_source.h" bodystart="154" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_input_1_1_source_1acc99a6137cd256dfa0d3b18ccac0c2e4" prot="protected" static="no" mutable="no">
+        <type>std::bitset&lt; <ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a73e6218b7e59284f4b77124158ab1e1f" kindref="member">BUTTON_COUNT</ref> &gt;</type>
+        <definition>std::bitset&lt;BUTTON_COUNT&gt; Input::Source::pressed_buttons</definition>
+        <argsstring></argsstring>
+        <name>pressed_buttons</name>
+        <qualifiedname>Input::Source::pressed_buttons</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="156" column="13" bodyfile="input_source.h" bodystart="156" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_input_1_1_source_1aefc8686cceeef0f696ad026c997a7979" prot="protected" static="no" mutable="no">
+        <type><ref refid="namespace_input_1a094b7fb423e80f346cde45eea8f19375" kindref="member">DirectionMappingArray</ref></type>
+        <definition>DirectionMappingArray Input::Source::direction_mappings</definition>
+        <argsstring></argsstring>
+        <name>direction_mappings</name>
+        <qualifiedname>Input::Source::direction_mappings</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="157" column="23" bodyfile="input_source.h" bodystart="157" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_input_1_1_source_1a2c381b04768233a026a8daf6b6c9530d" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_filesystem___stream_1_1_output_stream" kindref="compound">Filesystem_Stream::OutputStream</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Filesystem_Stream::OutputStream&gt; Input::Source::record_log</definition>
+        <argsstring></argsstring>
+        <name>record_log</name>
+        <qualifiedname>Input::Source::record_log</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="158" column="17" bodyfile="input_source.h" bodystart="158" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" prot="protected" static="no" mutable="no">
+        <type><ref refid="namespace_input_1a5d4e095f2c5875f466cf0dc5a358b074" kindref="member">KeyStatus</ref></type>
+        <definition>KeyStatus Input::Source::keystates</definition>
+        <argsstring></argsstring>
+        <name>keystates</name>
+        <qualifiedname>Input::Source::keystates</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="160" column="11" bodyfile="input_source.h" bodystart="160" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_input_1_1_source_1ae8db377ac12acae2a615d924415189e0" prot="protected" static="no" mutable="no">
+        <type><ref refid="namespace_input_1a5d4e095f2c5875f466cf0dc5a358b074" kindref="member">KeyStatus</ref></type>
+        <definition>KeyStatus Input::Source::keymask</definition>
+        <argsstring></argsstring>
+        <name>keymask</name>
+        <qualifiedname>Input::Source::keymask</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="161" column="11" bodyfile="input_source.h" bodystart="161" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_input_1_1_source_1aae308b32662d7101d5fec61fa70f4cb1" prot="protected" static="no" mutable="no">
+        <type><ref refid="namespace_input_1a5d4e095f2c5875f466cf0dc5a358b074" kindref="member">KeyStatus</ref></type>
+        <definition>KeyStatus Input::Source::keystates_virtual</definition>
+        <argsstring></argsstring>
+        <name>keystates_virtual</name>
+        <qualifiedname>Input::Source::keystates_virtual</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="162" column="11" bodyfile="input_source.h" bodystart="162" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_input_1_1_source_1ad9f701998248a2269f5acce0971796fc" prot="protected" static="no" mutable="no">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Input::Source::mouse_pos</definition>
+        <argsstring></argsstring>
+        <name>mouse_pos</name>
+        <qualifiedname>Input::Source::mouse_pos</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="163" column="7" bodyfile="input_source.h" bodystart="163" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" prot="protected" static="no" mutable="no">
+        <type><ref refid="struct_input_1_1_analog_input" kindref="compound">AnalogInput</ref></type>
+        <definition>AnalogInput Input::Source::analog_input</definition>
+        <argsstring></argsstring>
+        <name>analog_input</name>
+        <qualifiedname>Input::Source::analog_input</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="164" column="13" bodyfile="input_source.h" bodystart="164" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_input_1_1_source_1aa3815c9c3f5b27e8d7a337aa458e3817" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Input::Source::last_written_frame</definition>
+        <argsstring></argsstring>
+        <name>last_written_frame</name>
+        <qualifiedname>Input::Source::last_written_frame</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="166" column="5" bodyfile="input_source.h" bodystart="166" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_input_1_1_source_1ae5ab013140c27051f874b0ab79b9f305" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unique_ptr&lt; <ref refid="class_input_1_1_source_1a41d404f825ce6c9e494c63d633a1d3a2" kindref="member">Source</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Input::Source &gt; Input::Source::Create</definition>
+        <argsstring>(const Game_ConfigInput &amp;cfg, DirectionMappingArray directions, const std::string &amp;replay_from_path)</argsstring>
+        <name>Create</name>
+        <qualifiedname>Input::Source::Create</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_game___config_input" kindref="compound">Game_ConfigInput</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_input_1a094b7fb423e80f346cde45eea8f19375" kindref="member">DirectionMappingArray</ref></type>
+          <declname>directions</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>replay_from_path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="80" column="24" bodyfile="input_source.cpp" bodystart="34" bodyend="51"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_input_1_1_source_1a41d404f825ce6c9e494c63d633a1d3a2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Input::Source::Source</definition>
+        <argsstring>(const Game_ConfigInput &amp;cfg, DirectionMappingArray directions)</argsstring>
+        <name>Source</name>
+        <qualifiedname>Input::Source::Source</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_game___config_input" kindref="compound">Game_ConfigInput</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <param>
+          <type><ref refid="namespace_input_1a094b7fb423e80f346cde45eea8f19375" kindref="member">DirectionMappingArray</ref></type>
+          <declname>directions</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="85" column="1" bodyfile="input_source.h" bodystart="85" bodyend="86"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1a285b6aeee22b9d3951d6bb3c017eefaa" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Input::Source::~Source</definition>
+        <argsstring>()=default</argsstring>
+        <name>~Source</name>
+        <qualifiedname>Input::Source::~Source</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="88" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1ab0c520beeebaf152b22756d440157c52" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Input::Source::Update</definition>
+        <argsstring>()=0</argsstring>
+        <name>Update</name>
+        <qualifiedname>Input::Source::Update</qualifiedname>
+        <reimplementedby refid="class_input_1_1_log_source_1af054cafb74cb5df214962ff51a46e2c9">Update</reimplementedby>
+        <reimplementedby refid="class_input_1_1_ui_source_1a96eb8393721ccfcb3a799083670eb0a6">Update</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called once each logical frame to update pressed_buttons. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="91" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1a2fc938d54856cc79eb7e8fec7a17ce3d" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Input::Source::UpdateSystem</definition>
+        <argsstring>()=0</argsstring>
+        <name>UpdateSystem</name>
+        <qualifiedname>Input::Source::UpdateSystem</qualifiedname>
+        <reimplementedby refid="class_input_1_1_log_source_1aaf2e77cac64b1b2239c20665f4a69572">UpdateSystem</reimplementedby>
+        <reimplementedby refid="class_input_1_1_ui_source_1a6b36ae786b0d7dcffab3aee6e55ad27f">UpdateSystem</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called once each physical frame when no logical frames occured to update pressed_buttons for system buttons. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="94" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1a5b289173d39509170fb4943264d7e980" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::Source::AddRecordingData</definition>
+        <argsstring>(RecordingData type, std::string_view data)</argsstring>
+        <name>AddRecordingData</name>
+        <qualifiedname>Input::Source::AddRecordingData</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1adb5ed8536be0280ad0de1f6c0b7d057f" kindref="member">RecordingData</ref></type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Used to submit additional metadata for input recording <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>type of data sent </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Sent data </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="101" column="6" bodyfile="input_source.cpp" bodystart="328" bodyend="332"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1ae9f40c3ce9baf9d823e8f6a96e8f4ae7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::Source::IsRecording</definition>
+        <argsstring>() const</argsstring>
+        <name>IsRecording</name>
+        <qualifiedname>Input::Source::IsRecording</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>If the input is recorded </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="104" column="6" bodyfile="input_source.h" bodystart="104" bodyend="106"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1a0e5e6209e3e596239faf8e67809ea7f1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::bitset&lt; <ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a73e6218b7e59284f4b77124158ab1e1f" kindref="member">BUTTON_COUNT</ref> &gt; &amp;</type>
+        <definition>const std::bitset&lt; BUTTON_COUNT &gt; &amp; Input::Source::GetPressedButtons</definition>
+        <argsstring>() const</argsstring>
+        <name>GetPressedButtons</name>
+        <qualifiedname>Input::Source::GetPressedButtons</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="108" column="19" bodyfile="input_source.h" bodystart="108" bodyend="110"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1adc07bfc874e8e9d86896ce66c1e18973" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::bitset&lt; <ref refid="namespace_input_1acb6add4c4956f7e6e425fcbaa03057b7a73e6218b7e59284f4b77124158ab1e1f" kindref="member">BUTTON_COUNT</ref> &gt;</type>
+        <definition>std::bitset&lt; BUTTON_COUNT &gt; Input::Source::GetPressedNonSystemButtons</definition>
+        <argsstring>() const</argsstring>
+        <name>GetPressedNonSystemButtons</name>
+        <qualifiedname>Input::Source::GetPressedNonSystemButtons</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="111" column="13" bodyfile="input_source.h" bodystart="111" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1a1f29ceeb0b25bdbfdc883adea47ea428" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::bitset&lt; <ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8abd075526b5c7e3bbe4e8853c17b66c28" kindref="member">Input::Keys::KEYS_COUNT</ref> &gt; &amp;</type>
+        <definition>const std::bitset&lt; Input::Keys::KEYS_COUNT &gt; &amp; Input::Source::GetPressedKeys</definition>
+        <argsstring>() const</argsstring>
+        <name>GetPressedKeys</name>
+        <qualifiedname>Input::Source::GetPressedKeys</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Returns raw keystates for reading the keyboard directly. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="121" column="19" bodyfile="input_source.h" bodystart="121" bodyend="123"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1a18ecff052f3ca5180ddda3738bf2e034" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="namespace_input_1a6c58920837b877254184fff33f735e9f" kindref="member">ButtonMappingArray</ref> &amp;</type>
+        <definition>ButtonMappingArray &amp; Input::Source::GetButtonMappings</definition>
+        <argsstring>()</argsstring>
+        <name>GetButtonMappings</name>
+        <qualifiedname>Input::Source::GetButtonMappings</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="125" column="20" bodyfile="input_source.h" bodystart="125" bodyend="125"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1a2de1d1dcd5f836efa40af6c828d9fa02" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="namespace_input_1a6c58920837b877254184fff33f735e9f" kindref="member">ButtonMappingArray</ref> &amp;</type>
+        <definition>const ButtonMappingArray &amp; Input::Source::GetButtonMappings</definition>
+        <argsstring>() const</argsstring>
+        <name>GetButtonMappings</name>
+        <qualifiedname>Input::Source::GetButtonMappings</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="126" column="26" bodyfile="input_source.h" bodystart="126" bodyend="126"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1a40a04787d3862d8117542da85cb5beeb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="namespace_input_1a094b7fb423e80f346cde45eea8f19375" kindref="member">DirectionMappingArray</ref> &amp;</type>
+        <definition>DirectionMappingArray &amp; Input::Source::GetDirectionMappings</definition>
+        <argsstring>()</argsstring>
+        <name>GetDirectionMappings</name>
+        <qualifiedname>Input::Source::GetDirectionMappings</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="128" column="23" bodyfile="input_source.h" bodystart="128" bodyend="128"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1aaa309312c6a45afb2afbf5e2bb3bc09d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="namespace_input_1a094b7fb423e80f346cde45eea8f19375" kindref="member">DirectionMappingArray</ref> &amp;</type>
+        <definition>const DirectionMappingArray &amp; Input::Source::GetDirectionMappings</definition>
+        <argsstring>() const</argsstring>
+        <name>GetDirectionMappings</name>
+        <qualifiedname>Input::Source::GetDirectionMappings</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="129" column="29" bodyfile="input_source.h" bodystart="129" bodyend="129"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1abe03af834a37175ffb8e3afb692ae2d3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="struct_game___config_input" kindref="compound">Game_ConfigInput</ref> &amp;</type>
+        <definition>Game_ConfigInput &amp; Input::Source::GetConfig</definition>
+        <argsstring>()</argsstring>
+        <name>GetConfig</name>
+        <qualifiedname>Input::Source::GetConfig</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="131" column="18" bodyfile="input_source.h" bodystart="131" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1af29e150d688735d670f044a1032c6457" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="struct_game___config_input" kindref="compound">Game_ConfigInput</ref> &amp;</type>
+        <definition>const Game_ConfigInput &amp; Input::Source::GetConfig</definition>
+        <argsstring>() const</argsstring>
+        <name>GetConfig</name>
+        <qualifiedname>Input::Source::GetConfig</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="132" column="24" bodyfile="input_source.h" bodystart="132" bodyend="132"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1af068911ebcf40e1cdf10d5998bc52dd9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Input::Source::InitRecording</definition>
+        <argsstring>(const std::string &amp;record_to_path)</argsstring>
+        <name>InitRecording</name>
+        <qualifiedname>Input::Source::InitRecording</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>record_to_path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="134" column="6" bodyfile="input_source.cpp" bodystart="150" bodyend="175"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1a58e4cf0eb57fcce2bde4f298e787a764" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref> &amp;</type>
+        <definition>const Point &amp; Input::Source::GetMousePosition</definition>
+        <argsstring>() const</argsstring>
+        <name>GetMousePosition</name>
+        <qualifiedname>Input::Source::GetMousePosition</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="136" column="13" bodyfile="input_source.h" bodystart="136" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1ad4e99d535d4ae4c791498c07b2d0fb33" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="struct_input_1_1_analog_input" kindref="compound">AnalogInput</ref> &amp;</type>
+        <definition>const AnalogInput &amp; Input::Source::GetAnalogInput</definition>
+        <argsstring>() const</argsstring>
+        <name>GetAnalogInput</name>
+        <qualifiedname>Input::Source::GetAnalogInput</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="138" column="19" bodyfile="input_source.h" bodystart="138" bodyend="138"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1af3a7100749aed300dfd467b234d62fd9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="namespace_input_1a5d4e095f2c5875f466cf0dc5a358b074" kindref="member">KeyStatus</ref> &amp;</type>
+        <definition>const KeyStatus &amp; Input::Source::GetMask</definition>
+        <argsstring>() const</argsstring>
+        <name>GetMask</name>
+        <qualifiedname>Input::Source::GetMask</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="140" column="17" bodyfile="input_source.h" bodystart="140" bodyend="140"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1acb8933d65b6fc80e7b0731a0303f9011" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="namespace_input_1a5d4e095f2c5875f466cf0dc5a358b074" kindref="member">KeyStatus</ref> &amp;</type>
+        <definition>KeyStatus &amp; Input::Source::GetMask</definition>
+        <argsstring>()</argsstring>
+        <name>GetMask</name>
+        <qualifiedname>Input::Source::GetMask</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="141" column="11" bodyfile="input_source.h" bodystart="141" bodyend="141"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1a247a838e52667aa5e73847f7390b0361" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::Source::SimulateKeyPress</definition>
+        <argsstring>(Input::Keys::InputKey key)</argsstring>
+        <name>SimulateKeyPress</name>
+        <qualifiedname>Input::Source::SimulateKeyPress</qualifiedname>
+        <param>
+          <type><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8" kindref="member">Input::Keys::InputKey</ref></type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Emulate a key being pressed. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>key</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="147" column="6" bodyfile="input_source.cpp" bodystart="334" bodyend="336"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_input_1_1_source_1a8330a3b51f5d9aa49c41e60f0572a050" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::Source::Record</definition>
+        <argsstring>()</argsstring>
+        <name>Record</name>
+        <qualifiedname>Input::Source::Record</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="150" column="6" bodyfile="input_source.cpp" bodystart="177" bodyend="203"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1a28ae745813ef5cc169192da88a676f49" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::Source::UpdateGamepad</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateGamepad</name>
+        <qualifiedname>Input::Source::UpdateGamepad</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="151" column="6" bodyfile="input_source.cpp" bodystart="205" bodyend="274"/>
+      </memberdef>
+      <memberdef kind="function" id="class_input_1_1_source_1a1ed54e82804b5e7c53d899e0146d97ce" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Input::Source::UpdateTouch</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateTouch</name>
+        <qualifiedname>Input::Source::UpdateTouch</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="input_source.h" line="152" column="6" bodyfile="input_source.cpp" bodystart="276" bodyend="326"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>A source for button presses. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Input::LogSource</label>
+        <link refid="class_input_1_1_log_source"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Input::Source</label>
+        <link refid="class_input_1_1_source"/>
+      </node>
+      <node id="3">
+        <label>Input::UiSource</label>
+        <link refid="class_input_1_1_ui_source"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="5">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="4">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="8">
+        <label>FlatUniqueMultiMap&lt; Direction::InputDirection, InputButton &gt;</label>
+        <link refid="class_flat_unique_multi_map"/>
+      </node>
+      <node id="7">
+        <label>FlatUniqueMultiMap&lt; InputButton, Keys::InputKey &gt;</label>
+        <link refid="class_flat_unique_multi_map"/>
+      </node>
+      <node id="2">
+        <label>Game_ConfigInput</label>
+        <link refid="struct_game___config_input"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>speed_modifier_a</edgelabel>
+          <edgelabel>speed_modifier_b</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>gamepad_swap_ab_and_xy</edgelabel>
+          <edgelabel>gamepad_swap_analog</edgelabel>
+          <edgelabel>gamepad_swap_dpad_with_buttons</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>buttons</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>Input::AnalogInput</label>
+        <link refid="struct_input_1_1_analog_input"/>
+        <childnode refid="11" relation="usage">
+          <edgelabel>primary</edgelabel>
+          <edgelabel>secondary</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Input::Source</label>
+        <link refid="class_input_1_1_source"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>cfg</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>direction_mappings</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>mouse_pos</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>analog_input</edgelabel>
+        </childnode>
+      </node>
+      <node id="11">
+        <label>PointT&lt; float &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="9">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="3">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="input_source.h" line="78" column="1" bodyfile="input_source.h" bodystart="78" bodyend="167"/>
+    <listofallmembers>
+      <member refid="class_input_1_1_source_1a5b289173d39509170fb4943264d7e980" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>AddRecordingData</name></member>
+      <member refid="class_input_1_1_source_1adfa221f0be2de983d052cb36de2db52c" prot="protected" virt="non-virtual"><scope>Input::Source</scope><name>analog_input</name></member>
+      <member refid="class_input_1_1_source_1a7d49f9da22d14d6f3633540da1d1d75d" prot="protected" virt="non-virtual"><scope>Input::Source</scope><name>cfg</name></member>
+      <member refid="class_input_1_1_source_1ae5ab013140c27051f874b0ab79b9f305" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>Create</name></member>
+      <member refid="class_input_1_1_source_1aefc8686cceeef0f696ad026c997a7979" prot="protected" virt="non-virtual"><scope>Input::Source</scope><name>direction_mappings</name></member>
+      <member refid="class_input_1_1_source_1ad4e99d535d4ae4c791498c07b2d0fb33" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>GetAnalogInput</name></member>
+      <member refid="class_input_1_1_source_1a18ecff052f3ca5180ddda3738bf2e034" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>GetButtonMappings</name></member>
+      <member refid="class_input_1_1_source_1a2de1d1dcd5f836efa40af6c828d9fa02" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>GetButtonMappings</name></member>
+      <member refid="class_input_1_1_source_1abe03af834a37175ffb8e3afb692ae2d3" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>GetConfig</name></member>
+      <member refid="class_input_1_1_source_1af29e150d688735d670f044a1032c6457" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>GetConfig</name></member>
+      <member refid="class_input_1_1_source_1a40a04787d3862d8117542da85cb5beeb" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>GetDirectionMappings</name></member>
+      <member refid="class_input_1_1_source_1aaa309312c6a45afb2afbf5e2bb3bc09d" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>GetDirectionMappings</name></member>
+      <member refid="class_input_1_1_source_1af3a7100749aed300dfd467b234d62fd9" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>GetMask</name></member>
+      <member refid="class_input_1_1_source_1acb8933d65b6fc80e7b0731a0303f9011" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>GetMask</name></member>
+      <member refid="class_input_1_1_source_1a58e4cf0eb57fcce2bde4f298e787a764" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>GetMousePosition</name></member>
+      <member refid="class_input_1_1_source_1a0e5e6209e3e596239faf8e67809ea7f1" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>GetPressedButtons</name></member>
+      <member refid="class_input_1_1_source_1a1f29ceeb0b25bdbfdc883adea47ea428" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>GetPressedKeys</name></member>
+      <member refid="class_input_1_1_source_1adc07bfc874e8e9d86896ce66c1e18973" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>GetPressedNonSystemButtons</name></member>
+      <member refid="class_input_1_1_source_1af068911ebcf40e1cdf10d5998bc52dd9" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>InitRecording</name></member>
+      <member refid="class_input_1_1_source_1ae9f40c3ce9baf9d823e8f6a96e8f4ae7" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>IsRecording</name></member>
+      <member refid="class_input_1_1_source_1ae8db377ac12acae2a615d924415189e0" prot="protected" virt="non-virtual"><scope>Input::Source</scope><name>keymask</name></member>
+      <member refid="class_input_1_1_source_1ab38a2fddc8cbc649461eae5a5b53a227" prot="protected" virt="non-virtual"><scope>Input::Source</scope><name>keystates</name></member>
+      <member refid="class_input_1_1_source_1aae308b32662d7101d5fec61fa70f4cb1" prot="protected" virt="non-virtual"><scope>Input::Source</scope><name>keystates_virtual</name></member>
+      <member refid="class_input_1_1_source_1aa3815c9c3f5b27e8d7a337aa458e3817" prot="protected" virt="non-virtual"><scope>Input::Source</scope><name>last_written_frame</name></member>
+      <member refid="class_input_1_1_source_1ad9f701998248a2269f5acce0971796fc" prot="protected" virt="non-virtual"><scope>Input::Source</scope><name>mouse_pos</name></member>
+      <member refid="class_input_1_1_source_1acc99a6137cd256dfa0d3b18ccac0c2e4" prot="protected" virt="non-virtual"><scope>Input::Source</scope><name>pressed_buttons</name></member>
+      <member refid="class_input_1_1_source_1a8330a3b51f5d9aa49c41e60f0572a050" prot="protected" virt="non-virtual"><scope>Input::Source</scope><name>Record</name></member>
+      <member refid="class_input_1_1_source_1a2c381b04768233a026a8daf6b6c9530d" prot="protected" virt="non-virtual"><scope>Input::Source</scope><name>record_log</name></member>
+      <member refid="class_input_1_1_source_1a247a838e52667aa5e73847f7390b0361" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>SimulateKeyPress</name></member>
+      <member refid="class_input_1_1_source_1a41d404f825ce6c9e494c63d633a1d3a2" prot="public" virt="non-virtual"><scope>Input::Source</scope><name>Source</name></member>
+      <member refid="class_input_1_1_source_1ab0c520beeebaf152b22756d440157c52" prot="public" virt="pure-virtual"><scope>Input::Source</scope><name>Update</name></member>
+      <member refid="class_input_1_1_source_1a28ae745813ef5cc169192da88a676f49" prot="protected" virt="non-virtual"><scope>Input::Source</scope><name>UpdateGamepad</name></member>
+      <member refid="class_input_1_1_source_1a2fc938d54856cc79eb7e8fec7a17ce3d" prot="public" virt="pure-virtual"><scope>Input::Source</scope><name>UpdateSystem</name></member>
+      <member refid="class_input_1_1_source_1a1ed54e82804b5e7c53d899e0146d97ce" prot="protected" virt="non-virtual"><scope>Input::Source</scope><name>UpdateTouch</name></member>
+      <member refid="class_input_1_1_source_1a285b6aeee22b9d3951d6bb3c017eefaa" prot="public" virt="virtual"><scope>Input::Source</scope><name>~Source</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

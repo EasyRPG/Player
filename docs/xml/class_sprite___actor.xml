@@ -1,0 +1,897 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_sprite___actor" kind="class" language="C++" prot="public">
+    <compoundname>Sprite_Actor</compoundname>
+    <basecompoundref refid="class_sprite___battler" prot="public" virt="non-virtual">Sprite_Battler</basecompoundref>
+    <includes refid="sprite__actor_8h" local="no">sprite_actor.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206a" prot="public" static="no" strong="no">
+        <type></type>
+        <name>AnimationState</name>
+        <qualifiedname>Sprite_Actor::AnimationState</qualifiedname>
+        <enumvalue id="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa069d3151326ee64653b7d0c19b4738e4" prot="public">
+          <name>AnimationState_Null</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa2ac74009e0d6b18db8e6615e3ed8c638" prot="public">
+          <name>AnimationState_Idle</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa7bc2fa1b551e54ece6b6bcaa7cdf056e" prot="public">
+          <name>AnimationState_RightHand</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa40a18e86ad16f5e2d88c5c69c7ccbaa6" prot="public">
+          <name>AnimationState_LeftHand</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aafc2dbcc1c209cedb9e9b95581ab1725a" prot="public">
+          <name>AnimationState_SkillUse</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aaaece4ea94988e96cf56e9b918e340af4" prot="public">
+          <name>AnimationState_Dead</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa8768105ec1caca836e30eaea495d17a6" prot="public">
+          <name>AnimationState_Damage</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa6c69bb5c67e3731e1947f83bb44b8252" prot="public">
+          <name>AnimationState_BadStatus</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa9be4b5c1187854956e735251cb58dc3d" prot="public">
+          <name>AnimationState_Defending</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aab0b51e3692cd7dd4ed400da8fb0c1772" prot="public">
+          <name>AnimationState_WalkingLeft</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa34699928fec2064f9c88b7aa474063d6" prot="public">
+          <name>AnimationState_WalkingRight</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa83f1a0452cc8918bfd038be55bd46342" prot="public">
+          <name>AnimationState_Victory</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa5c4a15c4eaf2c153dae5a0b785251b46" prot="public">
+          <name>AnimationState_Item</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="36" column="1" bodyfile="sprite_actor.h" bodystart="36" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="enum" id="class_sprite___actor_1aff850e156fb1b1cb50a297a8cd66fe79" prot="public" static="no" strong="no">
+        <type></type>
+        <name>LoopState</name>
+        <qualifiedname>Sprite_Actor::LoopState</qualifiedname>
+        <enumvalue id="class_sprite___actor_1aff850e156fb1b1cb50a297a8cd66fe79a66c61f089cd76aa64788a1e627c9933b" prot="public">
+          <name>LoopState_DefaultAnimationAfterFinish</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_sprite___actor_1aff850e156fb1b1cb50a297a8cd66fe79a9c399fd08c04c6ff9aa1416138b257ba" prot="public">
+          <name>LoopState_LoopAnimation</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_sprite___actor_1aff850e156fb1b1cb50a297a8cd66fe79a2583d5b1d004c55215bb58e7a2f5407d" prot="public">
+          <name>LoopState_WaitAfterFinish</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="52" column="1" bodyfile="sprite_actor.h" bodystart="52" bodyend="56"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_sprite___actor_1a964e0935458de92fcbe06b981772c012" prot="protected" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Sprite_Actor::graphic</definition>
+        <argsstring></argsstring>
+        <name>graphic</name>
+        <qualifiedname>Sprite_Actor::graphic</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="111" column="11" bodyfile="sprite_actor.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___actor_1a90975768d6b6b85749ac6652ae5b44c3" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite_Actor::anim_state</definition>
+        <argsstring></argsstring>
+        <name>anim_state</name>
+        <qualifiedname>Sprite_Actor::anim_state</qualifiedname>
+        <initializer>= <ref refid="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa2ac74009e0d6b18db8e6615e3ed8c638" kindref="member">AnimationState_Idle</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="112" column="5" bodyfile="sprite_actor.h" bodystart="112" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___actor_1a4ca96cf2d23a1c2329fd5d68a1a89e7a" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite_Actor::cycle</definition>
+        <argsstring></argsstring>
+        <name>cycle</name>
+        <qualifiedname>Sprite_Actor::cycle</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="113" column="5" bodyfile="sprite_actor.h" bodystart="113" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___actor_1a34bd44f13d11e888a10fa7882f01ec69" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite_Actor::sprite_frame</definition>
+        <argsstring></argsstring>
+        <name>sprite_frame</name>
+        <qualifiedname>Sprite_Actor::sprite_frame</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="114" column="5" bodyfile="sprite_actor.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___actor_1a4d3502384e057374e6559b9f7e388229" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_sprite___actor_1aff850e156fb1b1cb50a297a8cd66fe79" kindref="member">LoopState</ref></type>
+        <definition>LoopState Sprite_Actor::loop_state</definition>
+        <argsstring></argsstring>
+        <name>loop_state</name>
+        <qualifiedname>Sprite_Actor::loop_state</qualifiedname>
+        <initializer>= <ref refid="class_sprite___actor_1aff850e156fb1b1cb50a297a8cd66fe79a66c61f089cd76aa64788a1e627c9933b" kindref="member">LoopState_DefaultAnimationAfterFinish</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="115" column="11" bodyfile="sprite_actor.h" bodystart="115" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___actor_1a0bbc076fe04d603580556ddc7c0c94ee" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Sprite_Actor::old_hidden</definition>
+        <argsstring></argsstring>
+        <name>old_hidden</name>
+        <qualifiedname>Sprite_Actor::old_hidden</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="116" column="6" bodyfile="sprite_actor.h" bodystart="116" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___actor_1a481f40e6804e3f79b0335a10ba058255" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_battle_animation" kindref="compound">BattleAnimation</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;BattleAnimation&gt; Sprite_Actor::animation</definition>
+        <argsstring></argsstring>
+        <name>animation</name>
+        <qualifiedname>Sprite_Actor::animation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="117" column="17" bodyfile="sprite_actor.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___actor_1a1008a54511ea322a3642749cb51f171f" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Sprite_Actor::idling</definition>
+        <argsstring></argsstring>
+        <name>idling</name>
+        <qualifiedname>Sprite_Actor::idling</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="119" column="6" bodyfile="sprite_actor.h" bodystart="119" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___actor_1a41e75ae7710b8452130d20fc5cfa0412" prot="protected" static="no" mutable="no">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding Sprite_Actor::request_id</definition>
+        <argsstring></argsstring>
+        <name>request_id</name>
+        <qualifiedname>Sprite_Actor::request_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="121" column="20" bodyfile="sprite_actor.h" bodystart="121" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___actor_1a0112463c5d31f82130bc249a310e3ed1" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Sprite_Actor::do_not_draw</definition>
+        <argsstring></argsstring>
+        <name>do_not_draw</name>
+        <qualifiedname>Sprite_Actor::do_not_draw</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="123" column="6" bodyfile="sprite_actor.h" bodystart="123" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___actor_1a2c42468265c7202bfa2a2911cf353bca" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Sprite_Actor::normal_attacking</definition>
+        <argsstring></argsstring>
+        <name>normal_attacking</name>
+        <qualifiedname>Sprite_Actor::normal_attacking</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="124" column="6" bodyfile="sprite_actor.h" bodystart="124" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___actor_1aaa139a773623b9e326f23e2ab12729e2" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref> &gt;</type>
+        <definition>std::vector&lt;Point&gt; Sprite_Actor::images</definition>
+        <argsstring></argsstring>
+        <name>images</name>
+        <qualifiedname>Sprite_Actor::images</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="126" column="13" bodyfile="sprite_actor.h" bodystart="126" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___actor_1a65a21615d1a7fd863f066f19b71d4045" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite_Actor::afterimage_fade</definition>
+        <argsstring></argsstring>
+        <name>afterimage_fade</name>
+        <qualifiedname>Sprite_Actor::afterimage_fade</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="127" column="5" bodyfile="sprite_actor.h" bodystart="127" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_sprite___actor_1a9c5a9b5cb9f3137ce818a6b34fc5ebb2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Sprite_Actor::Sprite_Actor</definition>
+        <argsstring>(Game_Actor *actor)</argsstring>
+        <name>Sprite_Actor</name>
+        <qualifiedname>Sprite_Actor::Sprite_Actor</qualifiedname>
+        <param>
+          <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> *</type>
+          <declname>actor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>actor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>game battler to display </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="63" column="1" bodyfile="sprite_actor.cpp" bodystart="34" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1ac30ba434b7c358821ef0e5ff57451313" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Sprite_Actor::~Sprite_Actor</definition>
+        <argsstring>() override</argsstring>
+        <name>~Sprite_Actor</name>
+        <qualifiedname>Sprite_Actor::~Sprite_Actor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="65" column="1" bodyfile="sprite_actor.cpp" bodystart="44" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1a5670eb4e25067b2b292515b4909d5009" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Actor::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>Sprite_Actor::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates sprite state. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="70" column="6" bodyfile="sprite_actor.cpp" bodystart="51" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1a930c09d2e519b35024399809e8f59724" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Actor::SetAnimationState</definition>
+        <argsstring>(int state, LoopState loop=LoopState_LoopAnimation, int animation_id=0)</argsstring>
+        <name>SetAnimationState</name>
+        <qualifiedname>Sprite_Actor::SetAnimationState</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>state</declname>
+        </param>
+        <param>
+          <type><ref refid="class_sprite___actor_1aff850e156fb1b1cb50a297a8cd66fe79" kindref="member">LoopState</ref></type>
+          <declname>loop</declname>
+          <defval><ref refid="class_sprite___actor_1aff850e156fb1b1cb50a297a8cd66fe79a9c399fd08c04c6ff9aa1416138b257ba" kindref="member">LoopState_LoopAnimation</ref></defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>animation_id</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="72" column="6" bodyfile="sprite_actor.cpp" bodystart="138" bodyend="197"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1ae82a7345e85d3dd3ea57af5d3cbc7566" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Actor::SetAnimationLoop</definition>
+        <argsstring>(LoopState loop)</argsstring>
+        <name>SetAnimationLoop</name>
+        <qualifiedname>Sprite_Actor::SetAnimationLoop</qualifiedname>
+        <param>
+          <type><ref refid="class_sprite___actor_1aff850e156fb1b1cb50a297a8cd66fe79" kindref="member">LoopState</ref></type>
+          <declname>loop</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="73" column="6" bodyfile="sprite_actor.cpp" bodystart="199" bodyend="201"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1aa1fd281f9570f09691030b787ae14403" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Actor::DetectStateChange</definition>
+        <argsstring>()</argsstring>
+        <name>DetectStateChange</name>
+        <qualifiedname>Sprite_Actor::DetectStateChange</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the current animation state of the actor depending on his state. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="78" column="6" bodyfile="sprite_actor.cpp" bodystart="203" bodyend="207"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1ad98d1de32277be8591315595d82b69fd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Sprite_Actor::IsIdling</definition>
+        <argsstring>()</argsstring>
+        <name>IsIdling</name>
+        <qualifiedname>Sprite_Actor::IsIdling</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns true when the actor is in it&apos;s default state (Depending on conditions)</para>
+<para><simplesect kind="return"><para>Whether state is default </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="86" column="6" bodyfile="sprite_actor.cpp" bodystart="209" bodyend="211"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1aab31b9681f699a3a0a685ea3b58a8aae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Actor::DoIdleAnimation</definition>
+        <argsstring>()</argsstring>
+        <name>DoIdleAnimation</name>
+        <qualifiedname>Sprite_Actor::DoIdleAnimation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="88" column="6" bodyfile="sprite_actor.cpp" bodystart="243" bodyend="272"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1ae0a4fab049acfd277694045466df8191" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Sprite_Actor::GetWidth</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetWidth</name>
+        <qualifiedname>Sprite_Actor::GetWidth</qualifiedname>
+        <reimplements refid="class_sprite_1a190fdb389450b2a425d3b7256b10b041">GetWidth</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="90" column="5" bodyfile="sprite_actor.cpp" bodystart="213" bodyend="218"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1a521e77503e7d23136f4025b406ef99ba" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Sprite_Actor::GetHeight</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetHeight</name>
+        <qualifiedname>Sprite_Actor::GetHeight</qualifiedname>
+        <reimplements refid="class_sprite_1ab10bdecf4bf20472b53a3102315180c2">GetHeight</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="91" column="5" bodyfile="sprite_actor.cpp" bodystart="220" bodyend="225"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1a2aeef2f6bd2722c71f09abf9acf4db25" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Sprite_Actor::Draw</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Sprite_Actor::Draw</qualifiedname>
+        <reimplements refid="class_sprite_1a0a4a3bd44c2556cbbe47b4480fae2a5b">Draw</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="93" column="6" bodyfile="sprite_actor.cpp" bodystart="279" bodyend="300"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1aef4850bb70a26920f3334d9214a32bf0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> *</type>
+        <definition>Game_Actor * Sprite_Actor::GetBattler</definition>
+        <argsstring>() const</argsstring>
+        <name>GetBattler</name>
+        <qualifiedname>Sprite_Actor::GetBattler</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="95" column="12" bodyfile="sprite_actor.cpp" bodystart="47" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1a1dbf6fe012485db1c2a0b23c948bee09" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Actor::UpdatePosition</definition>
+        <argsstring>()</argsstring>
+        <name>UpdatePosition</name>
+        <qualifiedname>Sprite_Actor::UpdatePosition</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="97" column="6" bodyfile="sprite_actor.cpp" bodystart="302" bodyend="315"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1aefd28d7934c2548c84183ef24f1b3798" prot="public" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
+        <type>void</type>
+        <definition>void Sprite_Actor::ResetZ</definition>
+        <argsstring>() final</argsstring>
+        <name>ResetZ</name>
+        <qualifiedname>Sprite_Actor::ResetZ</qualifiedname>
+        <reimplements refid="class_sprite___battler_1aa1ba47b22d364377fb41ac0a425b5bf2">ResetZ</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Recompute the Z value for the sprite from it&apos;s Y coordinate. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="99" column="6" bodyfile="sprite_actor.cpp" bodystart="317" bodyend="322"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1a76aaec66d224ffbfa2c31dc2a59efebf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Actor::SetNormalAttacking</definition>
+        <argsstring>(bool nnormal_attacking)</argsstring>
+        <name>SetNormalAttacking</name>
+        <qualifiedname>Sprite_Actor::SetNormalAttacking</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>nnormal_attacking</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="101" column="6" bodyfile="sprite_actor.cpp" bodystart="324" bodyend="326"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1a9cd3b00f20917a771d15d304dec5c463" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Actor::SetAfterimageAmount</definition>
+        <argsstring>(unsigned amount)</argsstring>
+        <name>SetAfterimageAmount</name>
+        <qualifiedname>Sprite_Actor::SetAfterimageAmount</qualifiedname>
+        <param>
+          <type>unsigned</type>
+          <declname>amount</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="103" column="6" bodyfile="sprite_actor.cpp" bodystart="328" bodyend="331"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1a2c954928ce1434f79be808ecef6a4f15" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Actor::DoAfterimageFade</definition>
+        <argsstring>()</argsstring>
+        <name>DoAfterimageFade</name>
+        <qualifiedname>Sprite_Actor::DoAfterimageFade</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="104" column="6" bodyfile="sprite_actor.cpp" bodystart="333" bodyend="337"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_sprite___actor_1a2a3401fe0be1ff7b90a721c1d1f3e4aa" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Actor::CreateSprite</definition>
+        <argsstring>()</argsstring>
+        <name>CreateSprite</name>
+        <qualifiedname>Sprite_Actor::CreateSprite</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="107" column="6" bodyfile="sprite_actor.cpp" bodystart="227" bodyend="241"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1a91094f45d5f7811203c6106fbaf4a076" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Actor::OnMonsterSpriteReady</definition>
+        <argsstring>(FileRequestResult *result)</argsstring>
+        <name>OnMonsterSpriteReady</name>
+        <qualifiedname>Sprite_Actor::OnMonsterSpriteReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="108" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___actor_1a74802e2f6b87e866b39ea525dd53ef9a" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Actor::OnBattlercharsetReady</definition>
+        <argsstring>(FileRequestResult *result, int32_t battler_index)</argsstring>
+        <name>OnBattlercharsetReady</name>
+        <qualifiedname>Sprite_Actor::OnBattlercharsetReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <param>
+          <type>int32_t</type>
+          <declname>battler_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_actor.h" line="109" column="6" bodyfile="sprite_actor.cpp" bodystart="274" bodyend="277"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_sprite___actor" kindref="compound">Sprite_Actor</ref> class, used for battle sprites </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="4">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="3">
+        <label>Sprite</label>
+        <link refid="class_sprite"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Sprite_Actor</label>
+        <link refid="class_sprite___actor"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Sprite_Battler</label>
+        <link refid="class_sprite___battler"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="4">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="5">
+        <label>Game_Battler</label>
+        <link refid="class_game___battler"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>shake</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>flash</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Game_Battler::FlashData</label>
+        <link refid="struct_game___battler_1_1_flash_data"/>
+      </node>
+      <node id="7">
+        <label>Game_Battler::ShakeData</label>
+        <link refid="struct_game___battler_1_1_shake_data"/>
+      </node>
+      <node id="6">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="3">
+        <label>Sprite</label>
+        <link refid="class_sprite"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Sprite_Actor</label>
+        <link refid="class_sprite___actor"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Sprite_Battler</label>
+        <link refid="class_sprite___battler"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>battler</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="sprite_actor.h" line="34" column="1" bodyfile="sprite_actor.h" bodystart="34" bodyend="128"/>
+    <listofallmembers>
+      <member refid="class_sprite___actor_1a65a21615d1a7fd863f066f19b71d4045" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>afterimage_fade</name></member>
+      <member refid="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100adcf24fd0d84e2081d39c1dae389bb99d" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>AlwaysFlipped</name></member>
+      <member refid="class_sprite___actor_1a90975768d6b6b85749ac6652ae5b44c3" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>anim_state</name></member>
+      <member refid="class_sprite___actor_1a481f40e6804e3f79b0335a10ba058255" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>animation</name></member>
+      <member refid="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206a" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>AnimationState</name></member>
+      <member refid="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa6c69bb5c67e3731e1947f83bb44b8252" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>AnimationState_BadStatus</name></member>
+      <member refid="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa8768105ec1caca836e30eaea495d17a6" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>AnimationState_Damage</name></member>
+      <member refid="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aaaece4ea94988e96cf56e9b918e340af4" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>AnimationState_Dead</name></member>
+      <member refid="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa9be4b5c1187854956e735251cb58dc3d" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>AnimationState_Defending</name></member>
+      <member refid="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa2ac74009e0d6b18db8e6615e3ed8c638" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>AnimationState_Idle</name></member>
+      <member refid="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa5c4a15c4eaf2c153dae5a0b785251b46" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>AnimationState_Item</name></member>
+      <member refid="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa40a18e86ad16f5e2d88c5c69c7ccbaa6" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>AnimationState_LeftHand</name></member>
+      <member refid="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa069d3151326ee64653b7d0c19b4738e4" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>AnimationState_Null</name></member>
+      <member refid="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa7bc2fa1b551e54ece6b6bcaa7cdf056e" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>AnimationState_RightHand</name></member>
+      <member refid="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aafc2dbcc1c209cedb9e9b95581ab1725a" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>AnimationState_SkillUse</name></member>
+      <member refid="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa83f1a0452cc8918bfd038be55bd46342" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>AnimationState_Victory</name></member>
+      <member refid="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aab0b51e3692cd7dd4ed400da8fb0c1772" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>AnimationState_WalkingLeft</name></member>
+      <member refid="class_sprite___actor_1a4f479b9df59b2b292493ccdf7cf2206aa34699928fec2064f9c88b7aa474063d6" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>AnimationState_WalkingRight</name></member>
+      <member refid="class_sprite___battler_1a1e9fffec9533724d3b3e0db55b4b10c0" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>battle_index</name></member>
+      <member refid="class_sprite___battler_1aefecefca702c55e25357a862fb0f81a7" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>battler</name></member>
+      <member refid="class_sprite___actor_1a2a3401fe0be1ff7b90a721c1d1f3e4aa" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>CreateSprite</name></member>
+      <member refid="class_sprite___actor_1a4ca96cf2d23a1c2329fd5d68a1a89e7a" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>cycle</name></member>
+      <member refid="class_sprite___actor_1aa1fd281f9570f09691030b787ae14403" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>DetectStateChange</name></member>
+      <member refid="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100a4de921bd4ae612dae74340a23896153c" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>Disabled</name></member>
+      <member refid="class_sprite___actor_1a0112463c5d31f82130bc249a310e3ed1" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>do_not_draw</name></member>
+      <member refid="class_sprite___actor_1a2c954928ce1434f79be808ecef6a4f15" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>DoAfterimageFade</name></member>
+      <member refid="class_sprite___actor_1aab31b9681f699a3a0a685ea3b58a8aae" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>DoIdleAnimation</name></member>
+      <member refid="class_sprite___actor_1a2aeef2f6bd2722c71f09abf9acf4db25" prot="public" virt="virtual"><scope>Sprite_Actor</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>Drawable</name></member>
+      <member refid="class_sprite___battler_1a6f5a019ba3025ed5deeea396c7fb1b63" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>fixed_facing</name></member>
+      <member refid="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>FixedFacing</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>Flags</name></member>
+      <member refid="class_sprite_1ade47ec9b2fc6b79921a978ac85508eb4" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetAngle</name></member>
+      <member refid="class_sprite___actor_1aef4850bb70a26920f3334d9214a32bf0" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetBattler</name></member>
+      <member refid="class_sprite_1a8692649cce1320c23d7216207805b990" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetBitmap</name></member>
+      <member refid="class_sprite_1aa34fbb968bfb9441bca6a7be8a1e9629" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetBitmap</name></member>
+      <member refid="class_sprite_1a699b7b199c7e2ea838878d9058401911" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetBlendColor</name></member>
+      <member refid="class_sprite_1ae5eb51cb5b55c057cbcafe69d13929a6" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetBlendType</name></member>
+      <member refid="class_sprite_1a9a5a480bc86ea9712a94303a53082da3" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetBushDepth</name></member>
+      <member refid="class_sprite___battler_1ac38cd5f01626278780bbe848d6c9b69f" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetFixedFacing</name></member>
+      <member refid="class_sprite_1a120a7dccaeea0d7fd7bac4f87b4b9d00" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetFlipX</name></member>
+      <member refid="class_sprite_1a7217243249b11d9046369cd3f0141adb" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetFlipY</name></member>
+      <member refid="class_sprite___actor_1a521e77503e7d23136f4025b406ef99ba" prot="public" virt="virtual"><scope>Sprite_Actor</scope><name>GetHeight</name></member>
+      <member refid="class_sprite_1ae6b8f3dd521db97853b3f2719e298db5" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetOpacity</name></member>
+      <member refid="class_sprite_1aa5c54c0b59a4f4247157e8446d588645" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetOx</name></member>
+      <member refid="class_sprite_1a8acf5af95db9d7f29958277c2625b8c7" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetOy</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetRenderOy</name></member>
+      <member refid="class_sprite_1ac50818cd2774516c70f2583d54845f98" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetSrcRect</name></member>
+      <member refid="class_sprite_1af315f162b8f1d0374d2bb4788f15eb59" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetTone</name></member>
+      <member refid="class_sprite_1add7a9fa3823099c15d04bd98764c00b8" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetWaverDepth</name></member>
+      <member refid="class_sprite_1a5781eeeb12fd97b447809efd0f14afea" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetWaverPhase</name></member>
+      <member refid="class_sprite___actor_1ae0a4fab049acfd277694045466df8191" prot="public" virt="virtual"><scope>Sprite_Actor</scope><name>GetWidth</name></member>
+      <member refid="class_sprite_1aa87fb1678e6d814923b390085c8b47ca" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetX</name></member>
+      <member refid="class_sprite_1af3bb2ded3b6d29905c717031e8e873e4" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetY</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetZ</name></member>
+      <member refid="class_sprite_1afdc1630a767fef01cb29f81983a25825" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetZoomX</name></member>
+      <member refid="class_sprite_1a7fc9c4d33c7fade504f93a86c34a2b66" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>GetZoomY</name></member>
+      <member refid="class_sprite___actor_1a964e0935458de92fcbe06b981772c012" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>graphic</name></member>
+      <member refid="class_sprite___actor_1a1008a54511ea322a3642749cb51f171f" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>idling</name></member>
+      <member refid="class_sprite___actor_1aaa139a773623b9e326f23e2ab12729e2" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>images</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>IsGlobal</name></member>
+      <member refid="class_sprite___actor_1ad98d1de32277be8591315595d82b69fd" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>IsIdling</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>IsVisible</name></member>
+      <member refid="class_sprite___actor_1a4d3502384e057374e6559b9f7e388229" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>loop_state</name></member>
+      <member refid="class_sprite___actor_1aff850e156fb1b1cb50a297a8cd66fe79" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>LoopState</name></member>
+      <member refid="class_sprite___actor_1aff850e156fb1b1cb50a297a8cd66fe79a66c61f089cd76aa64788a1e627c9933b" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>LoopState_DefaultAnimationAfterFinish</name></member>
+      <member refid="class_sprite___actor_1aff850e156fb1b1cb50a297a8cd66fe79a9c399fd08c04c6ff9aa1416138b257ba" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>LoopState_LoopAnimation</name></member>
+      <member refid="class_sprite___actor_1aff850e156fb1b1cb50a297a8cd66fe79a2583d5b1d004c55215bb58e7a2f5407d" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>LoopState_WaitAfterFinish</name></member>
+      <member refid="class_sprite___battler_1ae35d23a717b6deeb4532e90a52e7f100a4e3ad56006f393cd0caabfd0705364c9" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>NeverFlipped</name></member>
+      <member refid="class_sprite___actor_1a2c42468265c7202bfa2a2911cf353bca" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>normal_attacking</name></member>
+      <member refid="class_sprite___actor_1a0bbc076fe04d603580556ddc7c0c94ee" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>old_hidden</name></member>
+      <member refid="class_sprite___actor_1a74802e2f6b87e866b39ea525dd53ef9a" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>OnBattlercharsetReady</name></member>
+      <member refid="class_sprite___actor_1a91094f45d5f7811203c6106fbaf4a076" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>OnMonsterSpriteReady</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>operator=</name></member>
+      <member refid="class_sprite___actor_1a41e75ae7710b8452130d20fc5cfa0412" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>request_id</name></member>
+      <member refid="class_sprite___battler_1a4ef70833dc352d79533bdd1eac71ac08" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>ResetFixedFacingDirection</name></member>
+      <member refid="class_sprite___actor_1aefd28d7934c2548c84183ef24f1b3798" prot="public" virt="virtual"><scope>Sprite_Actor</scope><name>ResetZ</name></member>
+      <member refid="class_sprite___actor_1a9cd3b00f20917a771d15d304dec5c463" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetAfterimageAmount</name></member>
+      <member refid="class_sprite_1ab2ac97d71f9af168477ff5114e895021" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetAngle</name></member>
+      <member refid="class_sprite___actor_1ae82a7345e85d3dd3ea57af5d3cbc7566" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetAnimationLoop</name></member>
+      <member refid="class_sprite___actor_1a930c09d2e519b35024399809e8f59724" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetAnimationState</name></member>
+      <member refid="class_sprite___battler_1a878c5e04cc96c771bb9430e4dac9e2a7" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetBattler</name></member>
+      <member refid="class_sprite_1a0b1f8eb93adbfffb165acb30699ddd78" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetBitmap</name></member>
+      <member refid="class_sprite_1a5a80440fb552919c24e3320544554a62" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetBlendColor</name></member>
+      <member refid="class_sprite_1a662cbae14d3628d670b865157b247df1" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetBlendType</name></member>
+      <member refid="class_sprite_1a48f4b1522175b8aab5e7f2d6b11a9425" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetBushDepth</name></member>
+      <member refid="class_sprite___battler_1a661a77fe65c8a70060564d723101a097" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetFixedFlipX</name></member>
+      <member refid="class_sprite_1a88b06fec2499b21fb21445269cbee15f" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetFlashEffect</name></member>
+      <member refid="class_sprite_1a85222d16191092db3e0d731f8a78d4a8" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetFlipX</name></member>
+      <member refid="class_sprite_1a909b9d49b660fa592b0b753f602dddef" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetFlipY</name></member>
+      <member refid="class_sprite___actor_1a76aaec66d224ffbfa2c31dc2a59efebf" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetNormalAttacking</name></member>
+      <member refid="class_sprite_1a00ec8dcc661ae5acea3c013dc12c07f0" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetOpacity</name></member>
+      <member refid="class_sprite_1ae2504fad70205dd8064392da7ceb4f71" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetOx</name></member>
+      <member refid="class_sprite_1a0e189abc78607a4a6e011d6e394a43d7" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetOy</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetRenderOy</name></member>
+      <member refid="class_sprite_1ae0a9b0248ce543551c1486c824b2949c" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetSpriteRect</name></member>
+      <member refid="class_sprite_1a890398eafe1a9135d7baa939842a798a" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetSrcRect</name></member>
+      <member refid="class_sprite_1a89865e8080e634db19ab6409efc0ef2c" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetTone</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetVisible</name></member>
+      <member refid="class_sprite_1a505321681169327d559b7f59146fdec9" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetWaverDepth</name></member>
+      <member refid="class_sprite_1a85f701cd0eb6033b471f84bb24f192b8" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetWaverPhase</name></member>
+      <member refid="class_sprite_1a57277e7b2c107f36f587c46e99f7a48f" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetX</name></member>
+      <member refid="class_sprite_1a0012676d8951dbf2342de94acc18eecd" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetY</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetZ</name></member>
+      <member refid="class_sprite_1a3e7151dfb8645a3fbb71395625af985c" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetZoomX</name></member>
+      <member refid="class_sprite_1aad6019d133e5abac3323d671af4ed06b" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>SetZoomY</name></member>
+      <member refid="class_sprite_1aa3a20244c338653f65beaa26d6189581" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>Sprite</name></member>
+      <member refid="class_sprite___actor_1a9c5a9b5cb9f3137ce818a6b34fc5ebb2" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>Sprite_Actor</name></member>
+      <member refid="class_sprite___battler_1a079962b6477cbd32e8292baf3f479338" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>Sprite_Battler</name></member>
+      <member refid="class_sprite___actor_1a34bd44f13d11e888a10fa7882f01ec69" prot="protected" virt="non-virtual"><scope>Sprite_Actor</scope><name>sprite_frame</name></member>
+      <member refid="class_sprite___actor_1a5670eb4e25067b2b292515b4909d5009" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>Update</name></member>
+      <member refid="class_sprite___actor_1a1dbf6fe012485db1c2a0b23c948bee09" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>UpdatePosition</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>Sprite_Actor</scope><name>~Drawable</name></member>
+      <member refid="class_sprite___actor_1ac30ba434b7c358821ef0e5ff57451313" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>~Sprite_Actor</name></member>
+      <member refid="class_sprite___battler_1aab1830d72b0f149998831d8a922dd68b" prot="public" virt="non-virtual"><scope>Sprite_Actor</scope><name>~Sprite_Battler</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

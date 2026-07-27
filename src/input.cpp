@@ -432,3 +432,4 @@ void Input::SimulateButtonPress(Input::InputButton button) {
 	}
 	UpdateButton(button, true);
 }
+

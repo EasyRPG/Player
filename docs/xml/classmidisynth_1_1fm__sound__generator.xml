@@ -1,0 +1,561 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classmidisynth_1_1fm__sound__generator" kind="class" language="C++" prot="public">
+    <compoundname>midisynth::fm_sound_generator</compoundname>
+    <includes refid="midisynth_8h" local="no">midisynth.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1a3e935f920d0bb9d7e70294a34b73e129" prot="private" static="no" mutable="no">
+        <type><ref refid="classmidisynth_1_1fm__operator" kindref="compound">fm_operator</ref></type>
+        <definition>fm_operator midisynth::fm_sound_generator::op1</definition>
+        <argsstring></argsstring>
+        <name>op1</name>
+        <qualifiedname>midisynth::fm_sound_generator::op1</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="348" column="21" bodyfile="midisynth.h" bodystart="348" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1a72a556735fe53a618a92f028db9feccf" prot="private" static="no" mutable="no">
+        <type><ref refid="classmidisynth_1_1fm__operator" kindref="compound">fm_operator</ref></type>
+        <definition>fm_operator midisynth::fm_sound_generator::op2</definition>
+        <argsstring></argsstring>
+        <name>op2</name>
+        <qualifiedname>midisynth::fm_sound_generator::op2</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="349" column="21" bodyfile="midisynth.h" bodystart="349" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1a0f5052919014e660308e1a620c2edd9a" prot="private" static="no" mutable="no">
+        <type><ref refid="classmidisynth_1_1fm__operator" kindref="compound">fm_operator</ref></type>
+        <definition>fm_operator midisynth::fm_sound_generator::op3</definition>
+        <argsstring></argsstring>
+        <name>op3</name>
+        <qualifiedname>midisynth::fm_sound_generator::op3</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="350" column="21" bodyfile="midisynth.h" bodystart="350" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1a10610443ff1ecb073d1094ec5bdecf7b" prot="private" static="no" mutable="no">
+        <type><ref refid="classmidisynth_1_1fm__operator" kindref="compound">fm_operator</ref></type>
+        <definition>fm_operator midisynth::fm_sound_generator::op4</definition>
+        <argsstring></argsstring>
+        <name>op4</name>
+        <qualifiedname>midisynth::fm_sound_generator::op4</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="351" column="21" bodyfile="midisynth.h" bodystart="351" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1a3c81c0666990e86864d16409e2794788" prot="private" static="no" mutable="no">
+        <type><ref refid="classmidisynth_1_1sine__wave__generator" kindref="compound">sine_wave_generator</ref></type>
+        <definition>sine_wave_generator midisynth::fm_sound_generator::ams_lfo</definition>
+        <argsstring></argsstring>
+        <name>ams_lfo</name>
+        <qualifiedname>midisynth::fm_sound_generator::ams_lfo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="352" column="29" bodyfile="midisynth.h" bodystart="352" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1afda0338ee103cd51442e029b6013a221" prot="private" static="no" mutable="no">
+        <type><ref refid="classmidisynth_1_1sine__wave__generator" kindref="compound">sine_wave_generator</ref></type>
+        <definition>sine_wave_generator midisynth::fm_sound_generator::vibrato_lfo</definition>
+        <argsstring></argsstring>
+        <name>vibrato_lfo</name>
+        <qualifiedname>midisynth::fm_sound_generator::vibrato_lfo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="353" column="29" bodyfile="midisynth.h" bodystart="353" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1a12928f686ed717fceb5d2633f00fe1af" prot="private" static="no" mutable="no">
+        <type><ref refid="classmidisynth_1_1sine__wave__generator" kindref="compound">sine_wave_generator</ref></type>
+        <definition>sine_wave_generator midisynth::fm_sound_generator::tremolo_lfo</definition>
+        <argsstring></argsstring>
+        <name>tremolo_lfo</name>
+        <qualifiedname>midisynth::fm_sound_generator::tremolo_lfo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="354" column="29" bodyfile="midisynth.h" bodystart="354" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1a043c03254e08a6ccd7fb65e9a4c516a2" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::fm_sound_generator::ALG</definition>
+        <argsstring></argsstring>
+        <name>ALG</name>
+        <qualifiedname>midisynth::fm_sound_generator::ALG</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="355" column="13" bodyfile="midisynth.h" bodystart="355" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1aa362534a8d4f26ecc605b1d1374c106f" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::fm_sound_generator::FB</definition>
+        <argsstring></argsstring>
+        <name>FB</name>
+        <qualifiedname>midisynth::fm_sound_generator::FB</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="356" column="13" bodyfile="midisynth.h" bodystart="356" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1a43874e1c4a1253aa4e9b6b26e98f9f15" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float midisynth::fm_sound_generator::freq</definition>
+        <argsstring></argsstring>
+        <name>freq</name>
+        <qualifiedname>midisynth::fm_sound_generator::freq</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="357" column="15" bodyfile="midisynth.h" bodystart="357" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1a1800140daf6558b8aa19c353038eab86" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float midisynth::fm_sound_generator::freq_mul</definition>
+        <argsstring></argsstring>
+        <name>freq_mul</name>
+        <qualifiedname>midisynth::fm_sound_generator::freq_mul</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="358" column="15" bodyfile="midisynth.h" bodystart="358" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1ac4431391786ca31e66935c4fc1c5a1ef" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float midisynth::fm_sound_generator::ams_freq</definition>
+        <argsstring></argsstring>
+        <name>ams_freq</name>
+        <qualifiedname>midisynth::fm_sound_generator::ams_freq</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="359" column="15" bodyfile="midisynth.h" bodystart="359" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1a88ad979f2bb629994bb65764b7a0b111" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool midisynth::fm_sound_generator::ams_enable</definition>
+        <argsstring></argsstring>
+        <name>ams_enable</name>
+        <qualifiedname>midisynth::fm_sound_generator::ams_enable</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="360" column="14" bodyfile="midisynth.h" bodystart="360" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1a1d9f361d863f00952f55acabdf779441" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::fm_sound_generator::tremolo_depth</definition>
+        <argsstring></argsstring>
+        <name>tremolo_depth</name>
+        <qualifiedname>midisynth::fm_sound_generator::tremolo_depth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="361" column="13" bodyfile="midisynth.h" bodystart="361" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1a938c33e8dd31030c9ae64f41fff35bed" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float midisynth::fm_sound_generator::tremolo_freq</definition>
+        <argsstring></argsstring>
+        <name>tremolo_freq</name>
+        <qualifiedname>midisynth::fm_sound_generator::tremolo_freq</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="362" column="15" bodyfile="midisynth.h" bodystart="362" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1aedd53dfdec8387051c4b4e585e63b285" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::fm_sound_generator::vibrato_depth</definition>
+        <argsstring></argsstring>
+        <name>vibrato_depth</name>
+        <qualifiedname>midisynth::fm_sound_generator::vibrato_depth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="363" column="13" bodyfile="midisynth.h" bodystart="363" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1a47d61c1fc4d150a536b4c04482c226f9" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float midisynth::fm_sound_generator::vibrato_freq</definition>
+        <argsstring></argsstring>
+        <name>vibrato_freq</name>
+        <qualifiedname>midisynth::fm_sound_generator::vibrato_freq</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="364" column="15" bodyfile="midisynth.h" bodystart="364" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1af836396d7129e64d83ee73b16e1102e1" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float midisynth::fm_sound_generator::rate</definition>
+        <argsstring></argsstring>
+        <name>rate</name>
+        <qualifiedname>midisynth::fm_sound_generator::rate</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="365" column="15" bodyfile="midisynth.h" bodystart="365" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1a5fd22ac4e6e9e522cfecb88775b494ab" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::fm_sound_generator::feedback</definition>
+        <argsstring></argsstring>
+        <name>feedback</name>
+        <qualifiedname>midisynth::fm_sound_generator::feedback</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="366" column="13" bodyfile="midisynth.h" bodystart="366" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1a1ad0c07d3e6179b5069ff4a086c654bd" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::fm_sound_generator::damper</definition>
+        <argsstring></argsstring>
+        <name>damper</name>
+        <qualifiedname>midisynth::fm_sound_generator::damper</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="367" column="13" bodyfile="midisynth.h" bodystart="367" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1fm__sound__generator_1afdcbfe2c4318d0cd21671bc7ab9e94a8" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::fm_sound_generator::sostenute</definition>
+        <argsstring></argsstring>
+        <name>sostenute</name>
+        <qualifiedname>midisynth::fm_sound_generator::sostenute</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="368" column="13" bodyfile="midisynth.h" bodystart="368" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classmidisynth_1_1fm__sound__generator_1a477ed04f93994781ce6103d176a68f0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>midisynth::fm_sound_generator::fm_sound_generator</definition>
+        <argsstring>(const FMPARAMETER &amp;params, int note, float frequency_multiplier)</argsstring>
+        <name>fm_sound_generator</name>
+        <qualifiedname>midisynth::fm_sound_generator::fm_sound_generator</qualifiedname>
+        <param>
+          <type>const <ref refid="structmidisynth_1_1_f_m_p_a_r_a_m_e_t_e_r" kindref="compound">FMPARAMETER</ref> &amp;</type>
+          <declname>params</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>note</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>frequency_multiplier</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="335" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__sound__generator_1a7a3888a4a8c857a7ec18dd5d90cbae9a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::fm_sound_generator::set_rate</definition>
+        <argsstring>(float rate)</argsstring>
+        <name>set_rate</name>
+        <qualifiedname>midisynth::fm_sound_generator::set_rate</qualifiedname>
+        <param>
+          <type>float</type>
+          <declname>rate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="336" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__sound__generator_1ab4b89f654349173834726dd22156368b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::fm_sound_generator::set_frequency_multiplier</definition>
+        <argsstring>(float value)</argsstring>
+        <name>set_frequency_multiplier</name>
+        <qualifiedname>midisynth::fm_sound_generator::set_frequency_multiplier</qualifiedname>
+        <param>
+          <type>float</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="337" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__sound__generator_1a7afb5ef19acbfc7e14b8b493268c34f5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::fm_sound_generator::set_damper</definition>
+        <argsstring>(int damper)</argsstring>
+        <name>set_damper</name>
+        <qualifiedname>midisynth::fm_sound_generator::set_damper</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>damper</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="338" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__sound__generator_1a8b632a0e2cde54cb14e6046d70cc28af" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::fm_sound_generator::set_sostenute</definition>
+        <argsstring>(int sostenute)</argsstring>
+        <name>set_sostenute</name>
+        <qualifiedname>midisynth::fm_sound_generator::set_sostenute</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>sostenute</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="339" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__sound__generator_1a97d8d61e66b8793e5171478cddb0070e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::fm_sound_generator::set_freeze</definition>
+        <argsstring>(int freeze)</argsstring>
+        <name>set_freeze</name>
+        <qualifiedname>midisynth::fm_sound_generator::set_freeze</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>freeze</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="340" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__sound__generator_1a864b733af70355faa14ed8403f9f326c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::fm_sound_generator::set_tremolo</definition>
+        <argsstring>(int depth, float frequency)</argsstring>
+        <name>set_tremolo</name>
+        <qualifiedname>midisynth::fm_sound_generator::set_tremolo</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>depth</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>frequency</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="341" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__sound__generator_1a7669c8f5e93092bc82ade04c5942f978" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::fm_sound_generator::set_vibrato</definition>
+        <argsstring>(float depth, float frequency)</argsstring>
+        <name>set_vibrato</name>
+        <qualifiedname>midisynth::fm_sound_generator::set_vibrato</qualifiedname>
+        <param>
+          <type>float</type>
+          <declname>depth</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>frequency</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="342" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__sound__generator_1a545723caeec8e0add293629f1e779629" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::fm_sound_generator::key_off</definition>
+        <argsstring>()</argsstring>
+        <name>key_off</name>
+        <qualifiedname>midisynth::fm_sound_generator::key_off</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="343" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__sound__generator_1af4d78b69fb907ceae4177ee5af52aa01" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::fm_sound_generator::sound_off</definition>
+        <argsstring>()</argsstring>
+        <name>sound_off</name>
+        <qualifiedname>midisynth::fm_sound_generator::sound_off</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="344" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__sound__generator_1a8bc0545bcbcbcacebce33f8e54201744" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool midisynth::fm_sound_generator::is_finished</definition>
+        <argsstring>() const</argsstring>
+        <name>is_finished</name>
+        <qualifiedname>midisynth::fm_sound_generator::is_finished</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="345" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1fm__sound__generator_1affc8741a3b278e0d7d3ea2ecd6a8e82d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::fm_sound_generator::get_next</definition>
+        <argsstring>()</argsstring>
+        <name>get_next</name>
+        <qualifiedname>midisynth::fm_sound_generator::get_next</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="346" column="13"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="midisynth.h" line="333" column="5" bodyfile="midisynth.h" bodystart="333" bodyend="369"/>
+    <listofallmembers>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a043c03254e08a6ccd7fb65e9a4c516a2" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>ALG</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a88ad979f2bb629994bb65764b7a0b111" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>ams_enable</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1ac4431391786ca31e66935c4fc1c5a1ef" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>ams_freq</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a3c81c0666990e86864d16409e2794788" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>ams_lfo</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a1ad0c07d3e6179b5069ff4a086c654bd" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>damper</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1aa362534a8d4f26ecc605b1d1374c106f" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>FB</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a5fd22ac4e6e9e522cfecb88775b494ab" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>feedback</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a477ed04f93994781ce6103d176a68f0b" prot="public" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>fm_sound_generator</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a43874e1c4a1253aa4e9b6b26e98f9f15" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>freq</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a1800140daf6558b8aa19c353038eab86" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>freq_mul</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1affc8741a3b278e0d7d3ea2ecd6a8e82d" prot="public" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>get_next</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a8bc0545bcbcbcacebce33f8e54201744" prot="public" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>is_finished</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a545723caeec8e0add293629f1e779629" prot="public" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>key_off</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a3e935f920d0bb9d7e70294a34b73e129" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>op1</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a72a556735fe53a618a92f028db9feccf" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>op2</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a0f5052919014e660308e1a620c2edd9a" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>op3</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a10610443ff1ecb073d1094ec5bdecf7b" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>op4</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1af836396d7129e64d83ee73b16e1102e1" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>rate</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a7afb5ef19acbfc7e14b8b493268c34f5" prot="public" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>set_damper</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a97d8d61e66b8793e5171478cddb0070e" prot="public" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>set_freeze</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1ab4b89f654349173834726dd22156368b" prot="public" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>set_frequency_multiplier</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a7a3888a4a8c857a7ec18dd5d90cbae9a" prot="public" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>set_rate</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a8b632a0e2cde54cb14e6046d70cc28af" prot="public" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>set_sostenute</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a864b733af70355faa14ed8403f9f326c" prot="public" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>set_tremolo</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a7669c8f5e93092bc82ade04c5942f978" prot="public" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>set_vibrato</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1afdcbfe2c4318d0cd21671bc7ab9e94a8" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>sostenute</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1af4d78b69fb907ceae4177ee5af52aa01" prot="public" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>sound_off</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a1d9f361d863f00952f55acabdf779441" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>tremolo_depth</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a938c33e8dd31030c9ae64f41fff35bed" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>tremolo_freq</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a12928f686ed717fceb5d2633f00fe1af" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>tremolo_lfo</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1aedd53dfdec8387051c4b4e585e63b285" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>vibrato_depth</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1a47d61c1fc4d150a536b4c04482c226f9" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>vibrato_freq</name></member>
+      <member refid="classmidisynth_1_1fm__sound__generator_1afda0338ee103cd51442e029b6013a221" prot="private" virt="non-virtual"><scope>midisynth::fm_sound_generator</scope><name>vibrato_lfo</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

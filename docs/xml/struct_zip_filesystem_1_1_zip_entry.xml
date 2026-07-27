@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_zip_filesystem_1_1_zip_entry" kind="struct" language="C++" prot="private">
+    <compoundname>ZipFilesystem::ZipEntry</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_zip_filesystem_1_1_zip_entry_1a8bc19b7740475292826084d3d6ccdeca" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t ZipFilesystem::ZipEntry::compressed_size</definition>
+        <argsstring></argsstring>
+        <name>compressed_size</name>
+        <qualifiedname>ZipFilesystem::ZipEntry::compressed_size</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="60" column="10" bodyfile="filesystem_zip.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_zip_filesystem_1_1_zip_entry_1af74b675b16e1675121d8e8680cc64470" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t ZipFilesystem::ZipEntry::uncompressed_size</definition>
+        <argsstring></argsstring>
+        <name>uncompressed_size</name>
+        <qualifiedname>ZipFilesystem::ZipEntry::uncompressed_size</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="61" column="10" bodyfile="filesystem_zip.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_zip_filesystem_1_1_zip_entry_1a143d3e033478312d23809aefe5bc88c3" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t ZipFilesystem::ZipEntry::fileoffset</definition>
+        <argsstring></argsstring>
+        <name>fileoffset</name>
+        <qualifiedname>ZipFilesystem::ZipEntry::fileoffset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="62" column="10" bodyfile="filesystem_zip.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_zip_filesystem_1_1_zip_entry_1a347e27ad1d633463b3ef3d3b7e975fdf" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool ZipFilesystem::ZipEntry::is_directory</definition>
+        <argsstring></argsstring>
+        <name>is_directory</name>
+        <qualifiedname>ZipFilesystem::ZipEntry::is_directory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="63" column="6" bodyfile="filesystem_zip.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="filesystem_zip.h" line="59" column="1" bodyfile="filesystem_zip.h" bodystart="59" bodyend="64"/>
+    <listofallmembers>
+      <member refid="struct_zip_filesystem_1_1_zip_entry_1a8bc19b7740475292826084d3d6ccdeca" prot="public" virt="non-virtual"><scope>ZipFilesystem::ZipEntry</scope><name>compressed_size</name></member>
+      <member refid="struct_zip_filesystem_1_1_zip_entry_1a143d3e033478312d23809aefe5bc88c3" prot="public" virt="non-virtual"><scope>ZipFilesystem::ZipEntry</scope><name>fileoffset</name></member>
+      <member refid="struct_zip_filesystem_1_1_zip_entry_1a347e27ad1d633463b3ef3d3b7e975fdf" prot="public" virt="non-virtual"><scope>ZipFilesystem::ZipEntry</scope><name>is_directory</name></member>
+      <member refid="struct_zip_filesystem_1_1_zip_entry_1af74b675b16e1675121d8e8680cc64470" prot="public" virt="non-virtual"><scope>ZipFilesystem::ZipEntry</scope><name>uncompressed_size</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

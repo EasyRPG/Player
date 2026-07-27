@@ -1,0 +1,252 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_component" kind="struct" language="C++" prot="public">
+    <compoundname>Component</compoundname>
+    <includes refid="pixel__format_8h" local="no">pixel_format.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_component_1a03e68a9c6ee91cb3d6dd7b74bc0ec652" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t Component::bits</definition>
+        <argsstring></argsstring>
+        <name>bits</name>
+        <qualifiedname>Component::bits</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="42" column="9" bodyfile="pixel_format.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_component_1a20ef792300b277ec7ce6ed7a1c9b46ad" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t Component::shift</definition>
+        <argsstring></argsstring>
+        <name>shift</name>
+        <qualifiedname>Component::shift</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="43" column="9" bodyfile="pixel_format.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_component_1a873c85e24befaf4a4d88881751243305" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t Component::byte</definition>
+        <argsstring></argsstring>
+        <name>byte</name>
+        <qualifiedname>Component::byte</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="44" column="9" bodyfile="pixel_format.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_component_1a183bc60328fb500c64b6647de3a8f44e" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t Component::mask</definition>
+        <argsstring></argsstring>
+        <name>mask</name>
+        <qualifiedname>Component::mask</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="45" column="10" bodyfile="pixel_format.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="struct_component_1a244bacd9d322abc489a0af817a72df24" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static constexpr int Component::count_bits</definition>
+        <argsstring>(uint32_t mask)</argsstring>
+        <name>count_bits</name>
+        <qualifiedname>Component::count_bits</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>mask</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="47" column="22" bodyfile="pixel_format.h" bodystart="47" bodyend="62"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_component_1a3929ea7402631b2d16e5465ac2c910b5" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Component::convert_mask</definition>
+        <argsstring>()</argsstring>
+        <name>convert_mask</name>
+        <qualifiedname>Component::convert_mask</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="64" column="16" bodyfile="pixel_format.h" bodystart="64" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_component_1a3a73c7616d01a25fed1ae6d68b31c036" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Component::operator==</definition>
+        <argsstring>(const Component &amp;c)</argsstring>
+        <name>operator==</name>
+        <qualifiedname>Component::operator==</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_component" kindref="compound">Component</ref> &amp;</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="73" column="16" bodyfile="pixel_format.h" bodystart="73" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_component_1a37e1af98888616d022787dfe17d3d3f6" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Component::operator!=</definition>
+        <argsstring>(const Component &amp;c)</argsstring>
+        <name>operator!=</name>
+        <qualifiedname>Component::operator!=</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_component" kindref="compound">Component</ref> &amp;</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="77" column="16" bodyfile="pixel_format.h" bodystart="77" bodyend="79"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_component_1ad5fddf377e2e76407df32c3f6a85ab72" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>uint8_t Component::unpack</definition>
+        <argsstring>(uint32_t pix) const</argsstring>
+        <name>unpack</name>
+        <qualifiedname>Component::unpack</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>pix</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="81" column="19" bodyfile="pixel_format.h" bodystart="81" bodyend="83"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_component_1ad5d84bb283a326dd4c12dd149718ea45" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t Component::pack</definition>
+        <argsstring>(const uint8_t &amp;x) const</argsstring>
+        <name>pack</name>
+        <qualifiedname>Component::pack</qualifiedname>
+        <param>
+          <type>const uint8_t &amp;</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="85" column="20" bodyfile="pixel_format.h" bodystart="85" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_component_1a376a8746bc474e042d1d8d7ff8138682" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>Component::Component</definition>
+        <argsstring>()</argsstring>
+        <name>Component</name>
+        <qualifiedname>Component::Component</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="89" column="11" bodyfile="pixel_format.h" bodystart="89" bodyend="89"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_component_1ab39747251b1b3bd8cf702ba062e85ec8" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>Component::Component</definition>
+        <argsstring>(unsigned int bits, unsigned int shift)</argsstring>
+        <name>Component</name>
+        <qualifiedname>Component::Component</qualifiedname>
+        <param>
+          <type>unsigned int</type>
+          <declname>bits</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>shift</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="91" column="11" bodyfile="pixel_format.h" bodystart="91" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_component_1a78e15415cdbf76ab715bbe715a0a85a0" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>Component::Component</definition>
+        <argsstring>(uint32_t mask)</argsstring>
+        <name>Component</name>
+        <qualifiedname>Component::Component</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>mask</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="97" column="11" bodyfile="pixel_format.h" bodystart="97" bodyend="98"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="struct_component" kindref="compound">Component</ref> struct </para>
+    </detaileddescription>
+    <location file="pixel_format.h" line="41" column="1" bodyfile="pixel_format.h" bodystart="41" bodyend="99"/>
+    <listofallmembers>
+      <member refid="struct_component_1a03e68a9c6ee91cb3d6dd7b74bc0ec652" prot="public" virt="non-virtual"><scope>Component</scope><name>bits</name></member>
+      <member refid="struct_component_1a873c85e24befaf4a4d88881751243305" prot="public" virt="non-virtual"><scope>Component</scope><name>byte</name></member>
+      <member refid="struct_component_1a376a8746bc474e042d1d8d7ff8138682" prot="public" virt="non-virtual"><scope>Component</scope><name>Component</name></member>
+      <member refid="struct_component_1ab39747251b1b3bd8cf702ba062e85ec8" prot="public" virt="non-virtual"><scope>Component</scope><name>Component</name></member>
+      <member refid="struct_component_1a78e15415cdbf76ab715bbe715a0a85a0" prot="public" virt="non-virtual"><scope>Component</scope><name>Component</name></member>
+      <member refid="struct_component_1a3929ea7402631b2d16e5465ac2c910b5" prot="public" virt="non-virtual"><scope>Component</scope><name>convert_mask</name></member>
+      <member refid="struct_component_1a244bacd9d322abc489a0af817a72df24" prot="public" virt="non-virtual"><scope>Component</scope><name>count_bits</name></member>
+      <member refid="struct_component_1a183bc60328fb500c64b6647de3a8f44e" prot="public" virt="non-virtual"><scope>Component</scope><name>mask</name></member>
+      <member refid="struct_component_1a37e1af98888616d022787dfe17d3d3f6" prot="public" virt="non-virtual"><scope>Component</scope><name>operator!=</name></member>
+      <member refid="struct_component_1a3a73c7616d01a25fed1ae6d68b31c036" prot="public" virt="non-virtual"><scope>Component</scope><name>operator==</name></member>
+      <member refid="struct_component_1ad5d84bb283a326dd4c12dd149718ea45" prot="public" virt="non-virtual"><scope>Component</scope><name>pack</name></member>
+      <member refid="struct_component_1a20ef792300b277ec7ce6ed7a1c9b46ad" prot="public" virt="non-virtual"><scope>Component</scope><name>shift</name></member>
+      <member refid="struct_component_1ad5fddf377e2e76407df32c3f6a85ab72" prot="public" virt="non-virtual"><scope>Component</scope><name>unpack</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

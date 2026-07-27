@@ -1,0 +1,464 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_scene___logo" kind="class" language="C++" prot="public">
+    <compoundname>Scene_Logo</compoundname>
+    <basecompoundref refid="class_scene" prot="public" virt="non-virtual">Scene</basecompoundref>
+    <includes refid="scene__logo_8h" local="no">scene_logo.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_scene___logo_1a03f9aeecfa5784f0f15cded9432ce037" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_sprite" kindref="compound">Sprite</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Sprite&gt; Scene_Logo::logo</definition>
+        <argsstring></argsstring>
+        <name>logo</name>
+        <qualifiedname>Scene_Logo::logo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="54" column="17" bodyfile="scene_logo.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___logo_1abf26a16e81718ce05ca4d22d6503f7c1" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Scene_Logo::logo_img</definition>
+        <argsstring></argsstring>
+        <name>logo_img</name>
+        <qualifiedname>Scene_Logo::logo_img</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="55" column="11" bodyfile="scene_logo.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___logo_1a64d37ad631bd21ba923188e5dddde620" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Logo::frame_counter</definition>
+        <argsstring></argsstring>
+        <name>frame_counter</name>
+        <qualifiedname>Scene_Logo::frame_counter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="56" column="5" bodyfile="scene_logo.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___logo_1a26f43a53e5d3d3655d7e9eb98254391e" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::vector&lt; uint8_t &gt; &gt;</type>
+        <definition>std::vector&lt;std::vector&lt;uint8_t&gt; &gt; Scene_Logo::logos</definition>
+        <argsstring></argsstring>
+        <name>logos</name>
+        <qualifiedname>Scene_Logo::logos</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="57" column="13" bodyfile="scene_logo.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___logo_1a8ad9bd5f8a4bf544d0c5beb80d069d60" prot="private" static="no" mutable="no">
+        <type>unsigned</type>
+        <definition>unsigned Scene_Logo::current_logo_index</definition>
+        <argsstring></argsstring>
+        <name>current_logo_index</name>
+        <qualifiedname>Scene_Logo::current_logo_index</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="58" column="10" bodyfile="scene_logo.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___logo_1af7b3d26d85c6645fee22977b368ef477" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Logo::skip_logos</definition>
+        <argsstring></argsstring>
+        <name>skip_logos</name>
+        <qualifiedname>Scene_Logo::skip_logos</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="59" column="6" bodyfile="scene_logo.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___logo_1a2a024a98eea16fee84844dbbc319b526" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Logo::detected_game</definition>
+        <argsstring></argsstring>
+        <name>detected_game</name>
+        <qualifiedname>Scene_Logo::detected_game</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="60" column="6" bodyfile="scene_logo.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___logo_1ac577afbda684dbaf43873856c14d8573" prot="private" static="no" mutable="no">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding Scene_Logo::request_id</definition>
+        <argsstring></argsstring>
+        <name>request_id</name>
+        <qualifiedname>Scene_Logo::request_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="63" column="20" bodyfile="scene_logo.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___logo_1a730ea378df8edad5d6cf87270a17f529" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Logo::async_ready</definition>
+        <argsstring></argsstring>
+        <name>async_ready</name>
+        <qualifiedname>Scene_Logo::async_ready</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="64" column="6" bodyfile="scene_logo.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_scene___logo_1a0d41c31b838bddaac6c7b64666a427c3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Scene_Logo::Scene_Logo</definition>
+        <argsstring>()</argsstring>
+        <name>Scene_Logo</name>
+        <qualifiedname>Scene_Logo::Scene_Logo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="40" column="2" bodyfile="scene_logo.cpp" bodystart="40" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___logo_1ab51d537662448a0ae4b5fd356c42af28" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Scene_Logo::Scene_Logo</definition>
+        <argsstring>(std::vector&lt; std::vector&lt; uint8_t &gt; &gt; logos, unsigned current_logo_index)</argsstring>
+        <name>Scene_Logo</name>
+        <qualifiedname>Scene_Logo::Scene_Logo</qualifiedname>
+        <param>
+          <type>std::vector&lt; std::vector&lt; uint8_t &gt; &gt;</type>
+          <declname>logos</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>current_logo_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="41" column="1" bodyfile="scene_logo.cpp" bodystart="46" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___logo_1a590457535039f38ce79de2e2747fc238" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Logo::Start</definition>
+        <argsstring>() override</argsstring>
+        <name>Start</name>
+        <qualifiedname>Scene_Logo::Start</qualifiedname>
+        <reimplements refid="class_scene_1a31e0e1b9ce39bd9f5ec160835cc94d44">Start</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Start processing. This function is executed while the screen is faded out. All objects needed for the scene should be created here. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="43" column="6" bodyfile="scene_logo.cpp" bodystart="55" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___logo_1afee217f424c55bd60afc5e36b14024ad" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Logo::vUpdate</definition>
+        <argsstring>() override</argsstring>
+        <name>vUpdate</name>
+        <qualifiedname>Scene_Logo::vUpdate</qualifiedname>
+        <reimplements refid="class_scene_1a8111b81e59b90b6711e9a39a507a32eb">vUpdate</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called every frame from Update. The scene should redraw all elements. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="44" column="6" bodyfile="scene_logo.cpp" bodystart="63" bodyend="122"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___logo_1ac3f533f251c57e3aff572bed7f006af1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Logo::DetectGame</definition>
+        <argsstring>()</argsstring>
+        <name>DetectGame</name>
+        <qualifiedname>Scene_Logo::DetectGame</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="45" column="6" bodyfile="scene_logo.cpp" bodystart="124" bodyend="156"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___logo_1aa44cbe103afdb70fd901dd73fdb30d5c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Scene_Logo::LoadLogo</definition>
+        <argsstring>()</argsstring>
+        <name>LoadLogo</name>
+        <qualifiedname>Scene_Logo::LoadLogo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="46" column="11" bodyfile="scene_logo.cpp" bodystart="158" bodyend="178"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___logo_1ae037ce2f3d0cba0efff4d7419e936867" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Logo::DrawLogo</definition>
+        <argsstring>(BitmapRef logo_img)</argsstring>
+        <name>DrawLogo</name>
+        <qualifiedname>Scene_Logo::DrawLogo</qualifiedname>
+        <param>
+          <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+          <declname>logo_img</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="47" column="6" bodyfile="scene_logo.cpp" bodystart="180" bodyend="185"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___logo_1a35ec20b89c9b89a44d75b5e8a22f5afd" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Logo::DrawBackground</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>DrawBackground</name>
+        <qualifiedname>Scene_Logo::DrawBackground</qualifiedname>
+        <reimplements refid="class_scene_1a1fcc0d5308270cc967966da917957bdf">DrawBackground</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called by the graphic system to request drawing of a background, usually a system color background</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dst</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The bitmap to draw the background to. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="48" column="6" bodyfile="scene_logo.cpp" bodystart="187" bodyend="189"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___logo_1a974cc69a8b96b84730c2091229e367a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Logo::DrawTextOnLogo</definition>
+        <argsstring>(bool verbose)</argsstring>
+        <name>DrawTextOnLogo</name>
+        <qualifiedname>Scene_Logo::DrawTextOnLogo</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>verbose</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="49" column="6" bodyfile="scene_logo.cpp" bodystart="191" bodyend="210"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_scene___logo_1a5e2097f76ba525a68f9afd44d5647a25" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::vector&lt; uint8_t &gt; &gt;</type>
+        <definition>std::vector&lt; std::vector&lt; uint8_t &gt; &gt; Scene_Logo::LoadLogos</definition>
+        <argsstring>()</argsstring>
+        <name>LoadLogos</name>
+        <qualifiedname>Scene_Logo::LoadLogos</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="51" column="20" bodyfile="scene_logo.cpp" bodystart="212" bodyend="241"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_scene___logo_1a332c79fba26ca5eb2895f9065aef8650" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Logo::OnIndexReady</definition>
+        <argsstring>(FileRequestResult *result)</argsstring>
+        <name>OnIndexReady</name>
+        <qualifiedname>Scene_Logo::OnIndexReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_logo.h" line="62" column="6" bodyfile="scene_logo.cpp" bodystart="243" bodyend="273"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_scene" kindref="compound">Scene</ref> Logo class. Displays the shiny EasyRPG logo on startup and inititalizes the game. When the startup directory does not contain a game it loads the Game Browser instead. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="1">
+        <label>Scene_Logo</label>
+        <link refid="class_scene___logo"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="1">
+        <label>Scene_Logo</label>
+        <link refid="class_scene___logo"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="scene_logo.h" line="34" column="1" bodyfile="scene_logo.h" bodystart="34" bodyend="65"/>
+    <listofallmembers>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea525fafbc764da0de39c27dea3ffeb3d0" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>ActorTarget</name></member>
+      <member refid="class_scene_1a6091a98761b264c35a150bc28ee4a505" prot="protected" virt="non-virtual"><scope>Scene_Logo</scope><name>async_continuation</name></member>
+      <member refid="class_scene___logo_1a730ea378df8edad5d6cf87270a17f529" prot="private" virt="non-virtual"><scope>Scene_Logo</scope><name>async_ready</name></member>
+      <member refid="class_scene_1a30c5c46dd99e4825df2d69518748c8ac" prot="protected" virt="non-virtual"><scope>Scene_Logo</scope><name>AsyncContinuation</name></member>
+      <member refid="class_scene_1a40aec0ae8ed38526531911eea247398b" prot="protected" virt="non-virtual"><scope>Scene_Logo</scope><name>AsyncNext</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea705f705b65bac2369f3cb10f5e89453a" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Battle</name></member>
+      <member refid="class_scene_1a91e354ab86259cd3bc94c094036280da" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>CheckSceneExit</name></member>
+      <member refid="class_scene_1ac612b681d0de7c100f580b4bc446887b" prot="public" virt="virtual"><scope>Scene_Logo</scope><name>Continue</name></member>
+      <member refid="class_scene___logo_1a8ad9bd5f8a4bf544d0c5beb80d069d60" prot="private" virt="non-virtual"><scope>Scene_Logo</scope><name>current_logo_index</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea418b00b4c130e675ac7512610ed3f473" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Debug</name></member>
+      <member refid="class_scene___logo_1a2a024a98eea16fee84844dbbc319b526" prot="private" virt="non-virtual"><scope>Scene_Logo</scope><name>detected_game</name></member>
+      <member refid="class_scene___logo_1ac3f533f251c57e3aff572bed7f006af1" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>DetectGame</name></member>
+      <member refid="class_scene___logo_1a35ec20b89c9b89a44d75b5e8a22f5afd" prot="public" virt="virtual"><scope>Scene_Logo</scope><name>DrawBackground</name></member>
+      <member refid="class_scene___logo_1ae037ce2f3d0cba0efff4d7419e936867" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>DrawLogo</name></member>
+      <member refid="class_scene___logo_1a974cc69a8b96b84730c2091229e367a5" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>DrawTextOnLogo</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaee9d4a8ee40ca6e8310597315e07b978" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>End</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea302637f5f0048f4433949f10fc6c8f58" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Equip</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea85a7c5a46a3ca806d41de80e68da80e1" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>File</name></member>
+      <member refid="class_scene_1aa8b96a758c0f1ea4cf28808089ff7123" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Find</name></member>
+      <member refid="class_scene___logo_1a64d37ad631bd21ba923188e5dddde620" prot="private" virt="non-virtual"><scope>Scene_Logo</scope><name>frame_counter</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea895a9b137f215eee5613d6a546275f5b" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>GameBrowser</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ead885a8fd6d0f378a99ee56a676029bca" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Gameover</name></member>
+      <member refid="class_scene_1ad837b22dff59e9c21f31204d958a24d7" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>GetDrawableList</name></member>
+      <member refid="class_scene_1ab9edda06ab170512d308c0c9fb38056b" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>GetRequestedSceneType</name></member>
+      <member refid="class_scene_1a203eba321fedc8a26c8802f4b9a84e01" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>HasDelayFrames</name></member>
+      <member refid="class_scene_1a1acd1e4345dfecb30c7c35f6d3e8130b" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>HasRequestedScene</name></member>
+      <member refid="class_scene_1ac348fc3b0beb12093144a1f03d81449d" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>instance</name></member>
+      <member refid="class_scene_1a5a8c37138fc3a2dda1e0e077b472ab7b" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>IsAsyncPending</name></member>
+      <member refid="class_scene_1a0e0d605d080b286e73a07587d72dfe70" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>IsInitialized</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea70390d274c6e9c167ac095faaa160c7c" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Item</name></member>
+      <member refid="class_scene_1a119de9e0876281a6eee15c7d15618d87" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>kReturnTitleDelayFrames</name></member>
+      <member refid="class_scene_1a563850d0f01381b76420c22ac335a103" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>kStartGameDelayFrames</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea16a3c57786ccf0d21f72a774d43957ab" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>LanguageMenu</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eac3db6576c8c7dc6e5d007d989f5022ea" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Load</name></member>
+      <member refid="class_scene___logo_1aa44cbe103afdb70fd901dd73fdb30d5c" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>LoadLogo</name></member>
+      <member refid="class_scene___logo_1a5e2097f76ba525a68f9afd44d5647a25" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>LoadLogos</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea4615e1aa6a92b7860d342a6aaf642611" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Logo</name></member>
+      <member refid="class_scene___logo_1a03f9aeecfa5784f0f15cded9432ce037" prot="private" virt="non-virtual"><scope>Scene_Logo</scope><name>logo</name></member>
+      <member refid="class_scene___logo_1abf26a16e81718ce05ca4d22d6503f7c1" prot="private" virt="non-virtual"><scope>Scene_Logo</scope><name>logo_img</name></member>
+      <member refid="class_scene___logo_1a26f43a53e5d3d3655d7e9eb98254391e" prot="private" virt="non-virtual"><scope>Scene_Logo</scope><name>logos</name></member>
+      <member refid="class_scene_1ae7f0f916c29e55b282dfe4ae522d2096" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>MainFunction</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eae39f3115e47e2cc1a161ab73db4819a6" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Map</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea2412b59539890965aeb61a22141a781b" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Menu</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea05b82d049724f3ca8838b9800e8f3f3e" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Name</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea352ebbd390cdf4d31336a52af54fca32" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Null</name></member>
+      <member refid="class_scene_1a71555af047b54446dfc4fd2b0e6f78bd" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>old_instances</name></member>
+      <member refid="class_scene_1a7388cece257333bb2c98a202135adf51" prot="public" virt="virtual"><scope>Scene_Logo</scope><name>OnEventHpChanged</name></member>
+      <member refid="class_scene_1a80c10e8f0c10921300be168e67ddf3ed" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>OnFinishAsync</name></member>
+      <member refid="class_scene___logo_1a332c79fba26ca5eb2895f9065aef8650" prot="private" virt="non-virtual"><scope>Scene_Logo</scope><name>OnIndexReady</name></member>
+      <member refid="class_scene_1a05be417a18748b38a3cd18566edd6d2d" prot="public" virt="virtual"><scope>Scene_Logo</scope><name>OnPartyChanged</name></member>
+      <member refid="class_scene_1ac6fa936fd2dc55f41889400d36d855e6" prot="public" virt="virtual"><scope>Scene_Logo</scope><name>OnTranslationChanged</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea26ab4613edf5d94d74a5e1ad4ec37fa3" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Order</name></member>
+      <member refid="class_scene_1a29b08fddcde74b786ec01129847454ba" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Peek</name></member>
+      <member refid="class_scene_1a713d07a297477318624fada11415f5e3" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Pop</name></member>
+      <member refid="class_scene_1ac657b33df6c856847d87aa976ae9a9eb" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>PopUntil</name></member>
+      <member refid="class_scene_1a61c10b38185eac9925da70d7fb915890" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Push</name></member>
+      <member refid="class_scene_1afb9e8385131d0524f0d9afa946096709" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>PushTitleScene</name></member>
+      <member refid="class_scene_1a5ecd59170e0a54d6216ccebd76702dd6" prot="public" virt="virtual"><scope>Scene_Logo</scope><name>Refresh</name></member>
+      <member refid="class_scene___logo_1ac577afbda684dbaf43873856c14d8573" prot="private" virt="non-virtual"><scope>Scene_Logo</scope><name>request_id</name></member>
+      <member refid="class_scene_1a902f2993901187b05d8e42188b7e8156" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>ReturnToTitleScene</name></member>
+      <member refid="class_scene_1a495973012445184e00a31dd31e217b7e" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>rpgRtSceneFromSceneType</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc195dbdbaa61f7b6b3ecb3236592d17" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Save</name></member>
+      <member refid="class_scene_1ad10176d75a9cc0da56626f682d083507" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Scene</name></member>
+      <member refid="class_scene___logo_1a0d41c31b838bddaac6c7b64666a427c3" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Scene_Logo</name></member>
+      <member refid="class_scene___logo_1ab51d537662448a0ae4b5fd356c42af28" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Scene_Logo</name></member>
+      <member refid="class_scene_1a300d6b1274f226a1e69a552858414ba3" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>scene_names</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea7484d8e1128440652139839089e85604" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>SceneMax</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09e" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>SceneType</name></member>
+      <member refid="class_scene_1a40c9e3ffb2917b1e3880e2ff5733b1b6" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>SetDelayFrames</name></member>
+      <member refid="class_scene_1a9f641fa0061cebf4294009cb1d860cbe" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>SetRequestedScene</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc93e55e9b1ff9b798d1fb0ee22abab0" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Settings</name></member>
+      <member refid="class_scene_1a287b3a8a6fdaa0eb6e9b43ae7c774c8b" prot="protected" virt="non-virtual"><scope>Scene_Logo</scope><name>SetUseSharedDrawables</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea40484f6fb0aae90d36b27e9f7abfee9c" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Shop</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafd156984a4436ea28706dc0c7873c8fc" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Skill</name></member>
+      <member refid="class_scene___logo_1af7b3d26d85c6645fee22977b368ef477" prot="private" virt="non-virtual"><scope>Scene_Logo</scope><name>skip_logos</name></member>
+      <member refid="class_scene___logo_1a590457535039f38ce79de2e2747fc238" prot="public" virt="virtual"><scope>Scene_Logo</scope><name>Start</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eabe141c1b0922ac825b014da56774c2dc" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Status</name></member>
+      <member refid="class_scene_1ac6413c7a3e405e57e415bec3c3096f26" prot="public" virt="virtual"><scope>Scene_Logo</scope><name>Suspend</name></member>
+      <member refid="class_scene_1a2ac1629e5d081accb6b3d2682c8aac18" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>TakeRequestedScene</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eadce8e1c84d0a06f5a005b24a6e602424" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Teleport</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaf3446103059a7e7c2333b8e0f81377d0" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Title</name></member>
+      <member refid="class_scene_1a1e97664b3509e2eb64b1aa621634703c" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>TransferDrawablesFrom</name></member>
+      <member refid="class_scene_1a4a594aefe6bd86e17042acf7c76eb0e6" prot="public" virt="virtual"><scope>Scene_Logo</scope><name>TransitionIn</name></member>
+      <member refid="class_scene_1a64d36508ee1971f89c7d5e8513d777b1" prot="public" virt="virtual"><scope>Scene_Logo</scope><name>TransitionOut</name></member>
+      <member refid="class_scene_1a8320189e28f3918a4f0200aedb97ccb5" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>type</name></member>
+      <member refid="class_scene_1a71a71b4f7752b853ff8032b0941a9d8d" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>Update</name></member>
+      <member refid="class_scene_1a85503cbb64a2f88b227d926768ed0100" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>UpdateDelayFrames</name></member>
+      <member refid="class_scene_1affa07b015ecebcf18cc0d652ab9a2fd4" prot="public" virt="virtual"><scope>Scene_Logo</scope><name>UpdateGraphics</name></member>
+      <member refid="class_scene_1ac41adc09c7fed6609df594bf5bcdc1c5" prot="public" virt="non-virtual"><scope>Scene_Logo</scope><name>UsesSharedDrawables</name></member>
+      <member refid="class_scene___logo_1afee217f424c55bd60afc5e36b14024ad" prot="public" virt="virtual"><scope>Scene_Logo</scope><name>vUpdate</name></member>
+      <member refid="class_scene_1aa0a5be58e2ee2d1fdafc5fb46b5e661e" prot="public" virt="virtual"><scope>Scene_Logo</scope><name>~Scene</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

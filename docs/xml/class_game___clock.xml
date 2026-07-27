@@ -1,0 +1,462 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___clock" kind="class" language="C++" prot="public">
+    <compoundname>Game_Clock</compoundname>
+    <includes refid="game__clock_8h" local="no">game_clock.h</includes>
+    <innerclass refid="struct_game___clock_1_1_data" prot="private">Game_Clock::Data</innerclass>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_game___clock_1a2fc6d8039e7213b5afe3421220a6b912" prot="public" static="no">
+        <type><ref refid="clock_8h_1a67e935559232ed532f9ab74655f6ddf3" kindref="member">Platform_Clock</ref></type>
+        <definition>using Game_Clock::clock = Platform_Clock</definition>
+        <argsstring></argsstring>
+        <name>clock</name>
+        <qualifiedname>Game_Clock::clock</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="33" column="1" bodyfile="game_clock.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_game___clock_1aa148b586c32baee2d41de1e5d5aa44e6" prot="public" static="no">
+        <type><ref refid="struct_std_clock_1a29e8f52166b68c93c29d3f46833899d0" kindref="member">clock::rep</ref></type>
+        <definition>using Game_Clock::rep = clock::rep</definition>
+        <argsstring></argsstring>
+        <name>rep</name>
+        <qualifiedname>Game_Clock::rep</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="35" column="1" bodyfile="game_clock.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_game___clock_1a414fa50c94c1aa77a34cc002282adf11" prot="public" static="no">
+        <type><ref refid="struct_std_clock_1a2bf2f06dfb6bcabdb338b50f1bc2b2fc" kindref="member">clock::period</ref></type>
+        <definition>using Game_Clock::period = clock::period</definition>
+        <argsstring></argsstring>
+        <name>period</name>
+        <qualifiedname>Game_Clock::period</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="36" column="1" bodyfile="game_clock.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_game___clock_1a636ab985f05b7e289d6c3ad1984e1e9f" prot="public" static="no">
+        <type><ref refid="struct_std_clock_1a593f4e2706629ffa819681d631afa7ab" kindref="member">clock::duration</ref></type>
+        <definition>using Game_Clock::duration = clock::duration</definition>
+        <argsstring></argsstring>
+        <name>duration</name>
+        <qualifiedname>Game_Clock::duration</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="37" column="1" bodyfile="game_clock.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_game___clock_1a7da5a97294e9d1b3dddb617d90eea63e" prot="public" static="no">
+        <type><ref refid="struct_std_clock_1a93b4cba5b23be9a32b7c1415d406f32f" kindref="member">clock::time_point</ref></type>
+        <definition>using Game_Clock::time_point = clock::time_point</definition>
+        <argsstring></argsstring>
+        <name>time_point</name>
+        <qualifiedname>Game_Clock::time_point</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="38" column="1" bodyfile="game_clock.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_game___clock_1a53d61b3a7fd399ddbe56d0115612dcb3" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Clock::is_steady</definition>
+        <argsstring></argsstring>
+        <name>is_steady</name>
+        <qualifiedname>Game_Clock::is_steady</qualifiedname>
+        <initializer>= <ref refid="struct_std_clock_1ade455cb978681d48d383081465caaae3" kindref="member">clock::is_steady</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="40" column="23" bodyfile="game_clock.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="class_game___clock_1ada584dd0b0265493604449b857c7e289" prot="private" static="yes" mutable="no">
+        <type>Data</type>
+        <definition>Game_Clock::Data Game_Clock::data</definition>
+        <argsstring></argsstring>
+        <name>data</name>
+        <qualifiedname>Game_Clock::data</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="122" column="13" bodyfile="game_clock.h" bodystart="122" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_game___clock_1afeeada1eba54aecb6490418714bc51d9" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_game___clock_1a7da5a97294e9d1b3dddb617d90eea63e" kindref="member">time_point</ref></type>
+        <definition>Game_Clock::time_point Game_Clock::now</definition>
+        <argsstring>()</argsstring>
+        <name>now</name>
+        <qualifiedname>Game_Clock::now</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get current time </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="43" column="19" bodyfile="game_clock.h" bodystart="125" bodyend="127"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___clock_1adf83075c2c1d6ae29dad9979d018addd" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename R</type>
+          </param>
+          <param>
+            <type>typename P</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Game_Clock::SleepFor</definition>
+        <argsstring>(std::chrono::duration&lt; R, P &gt; dt)</argsstring>
+        <name>SleepFor</name>
+        <qualifiedname>Game_Clock::SleepFor</qualifiedname>
+        <param>
+          <type>std::chrono::duration&lt; R, P &gt;</type>
+          <declname>dt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sleep for the specified duration </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="47" column="13" bodyfile="game_clock.h" bodystart="143" bodyend="145"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___clock_1a429e08beabdb3723d7a647f54b9d50da" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Clock::GetTargetGameFps</definition>
+        <argsstring>()</argsstring>
+        <name>GetTargetGameFps</name>
+        <qualifiedname>Game_Clock::GetTargetGameFps</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the target frames per second for the game simulation </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="50" column="22" bodyfile="game_clock.h" bodystart="129" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___clock_1a5deb06182f4a64fc60077eb6378be05e" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___clock_1a636ab985f05b7e289d6c3ad1984e1e9f" kindref="member">duration</ref></type>
+        <definition>Game_Clock::duration Game_Clock::GetTargetGameTimeStep</definition>
+        <argsstring>()</argsstring>
+        <name>GetTargetGameTimeStep</name>
+        <qualifiedname>Game_Clock::GetTargetGameTimeStep</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the amount of time each logical frame should take </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="53" column="27" bodyfile="game_clock.h" bodystart="133" bodyend="135"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___clock_1af830521bb4b41869a660ffb3c90d3f2b" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___clock_1a636ab985f05b7e289d6c3ad1984e1e9f" kindref="member">duration</ref></type>
+        <definition>Game_Clock::duration Game_Clock::TimeStepFromFps</definition>
+        <argsstring>(int fps)</argsstring>
+        <name>TimeStepFromFps</name>
+        <qualifiedname>Game_Clock::TimeStepFromFps</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>fps</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the timestep for a given frames per second value </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="56" column="27" bodyfile="game_clock.h" bodystart="137" bodyend="140"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___clock_1a819d85bf1c2d8e8ef9646971d91da756" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const char *</type>
+        <definition>const char * Game_Clock::Name</definition>
+        <argsstring>()</argsstring>
+        <name>Name</name>
+        <qualifiedname>Game_Clock::Name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the name of the underlying clock type </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="59" column="29" bodyfile="game_clock.h" bodystart="147" bodyend="149"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___clock_1a66f6a6c8003d6eeca530dfadb1833a6e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Clock::logClockInfo</definition>
+        <argsstring>()</argsstring>
+        <name>logClockInfo</name>
+        <qualifiedname>Game_Clock::logClockInfo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Log information about the <ref refid="class_game___clock" kindref="compound">Game_Clock</ref> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="62" column="13" bodyfile="game_clock.cpp" bodystart="55" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___clock_1a6a266a81f52c264939769081d95328d3" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Clock::SetMaxGameTimePerFrame</definition>
+        <argsstring>(duration dt)</argsstring>
+        <name>SetMaxGameTimePerFrame</name>
+        <qualifiedname>Game_Clock::SetMaxGameTimePerFrame</qualifiedname>
+        <param>
+          <type><ref refid="class_game___clock_1a636ab985f05b7e289d6c3ad1984e1e9f" kindref="member">duration</ref></type>
+          <declname>dt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the maximum amount of simulation time we&apos;ll allow to pass per frame. Normally, if the main loop is slow we&apos;ll run multiple simulation steps per frame to keep the game running at constant time. However if the main loop falls below this value, we&apos;ll cap how many simulation steps we run and start running the game loop slower. This can happen on slow machines, frame spikes, large file IO, or debugger breakpoints. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="72" column="13" bodyfile="game_clock.h" bodystart="172" bodyend="174"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___clock_1a65c182fb0b5ccd2cc4a2021a88b13aca" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Clock::SetGameSpeedFactor</definition>
+        <argsstring>(float speed)</argsstring>
+        <name>SetGameSpeedFactor</name>
+        <qualifiedname>Game_Clock::SetGameSpeedFactor</qualifiedname>
+        <param>
+          <type>float</type>
+          <declname>speed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the speed up or slowdown factor we&apos;ll use to run the game. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="75" column="13" bodyfile="game_clock.h" bodystart="176" bodyend="178"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___clock_1a6f92cb8acbdfdcf2f2370cc3a39c2e10" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>float Game_Clock::GetGameSpeedFactor</definition>
+        <argsstring>()</argsstring>
+        <name>GetGameSpeedFactor</name>
+        <qualifiedname>Game_Clock::GetGameSpeedFactor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the speed up or slowdown factor we&apos;ll use to run the game. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="78" column="14" bodyfile="game_clock.h" bodystart="180" bodyend="182"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___clock_1ad1a6ef64e2a007e88061589e6366b60a" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_game___clock_1a7da5a97294e9d1b3dddb617d90eea63e" kindref="member">time_point</ref></type>
+        <definition>Game_Clock::time_point Game_Clock::GetFrameTime</definition>
+        <argsstring>()</argsstring>
+        <name>GetFrameTime</name>
+        <qualifiedname>Game_Clock::GetFrameTime</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the time of the current frame </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="81" column="19" bodyfile="game_clock.h" bodystart="151" bodyend="153"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___clock_1a23ada54161ac3d49e63ea68838babe73" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Clock::GetFrame</definition>
+        <argsstring>()</argsstring>
+        <name>GetFrame</name>
+        <qualifiedname>Game_Clock::GetFrame</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the number of the current frame </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="84" column="12" bodyfile="game_clock.h" bodystart="155" bodyend="157"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___clock_1ad30e0aea23ec84e2088608312c06e98e" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>float Game_Clock::GetFPS</definition>
+        <argsstring>()</argsstring>
+        <name>GetFPS</name>
+        <qualifiedname>Game_Clock::GetFPS</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the estimated real frames per second </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="87" column="14" bodyfile="game_clock.h" bodystart="159" bodyend="161"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___clock_1a3ed51241a26040b303246b65aab30bcb" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___clock_1a636ab985f05b7e289d6c3ad1984e1e9f" kindref="member">Game_Clock::duration</ref></type>
+        <definition>Game_Clock::duration Game_Clock::OnNextFrame</definition>
+        <argsstring>(time_point now)</argsstring>
+        <name>OnNextFrame</name>
+        <qualifiedname>Game_Clock::OnNextFrame</qualifiedname>
+        <param>
+          <type><ref refid="class_game___clock_1a7da5a97294e9d1b3dddb617d90eea63e" kindref="member">time_point</ref></type>
+          <declname>now</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Call on each frame. Updates the current frame time to now</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>now</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the current time</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The amount of time elapsed since the previous frame. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="96" column="29" bodyfile="game_clock.cpp" bodystart="30" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___clock_1a8ebb3111c13cf6fe48a4884ea46cc7ed" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Clock::NextGameTimeStep</definition>
+        <argsstring>()</argsstring>
+        <name>NextGameTimeStep</name>
+        <qualifiedname>Game_Clock::NextGameTimeStep</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Call before running the next time step. Tells us whether we should simulate one more step and decrements the accumulator if so.</para>
+<para><simplesect kind="return"><para>Whether we should run an update </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="104" column="13" bodyfile="game_clock.h" bodystart="163" bodyend="170"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___clock_1a2845d015cf599c85a173532bb351bfc6" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Clock::ResetFrame</definition>
+        <argsstring>(time_point now, bool reset_frame_counter=false)</argsstring>
+        <name>ResetFrame</name>
+        <qualifiedname>Game_Clock::ResetFrame</qualifiedname>
+        <param>
+          <type><ref refid="class_game___clock_1a7da5a97294e9d1b3dddb617d90eea63e" kindref="member">time_point</ref></type>
+          <declname>now</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>reset_frame_counter</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reset the frame accumulator and time</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>now</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the current time </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>reset_frame_counter</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, reset the frame count also. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_clock.h" line="112" column="13" bodyfile="game_clock.cpp" bodystart="46" bodyend="53"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Used for time keeping in <ref refid="namespace_player" kindref="compound">Player</ref> </para>
+    </detaileddescription>
+    <location file="game_clock.h" line="31" column="1" bodyfile="game_clock.h" bodystart="31" bodyend="123"/>
+    <listofallmembers>
+      <member refid="class_game___clock_1a2fc6d8039e7213b5afe3421220a6b912" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>clock</name></member>
+      <member refid="class_game___clock_1ada584dd0b0265493604449b857c7e289" prot="private" virt="non-virtual"><scope>Game_Clock</scope><name>data</name></member>
+      <member refid="class_game___clock_1a636ab985f05b7e289d6c3ad1984e1e9f" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>duration</name></member>
+      <member refid="class_game___clock_1ad30e0aea23ec84e2088608312c06e98e" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>GetFPS</name></member>
+      <member refid="class_game___clock_1a23ada54161ac3d49e63ea68838babe73" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>GetFrame</name></member>
+      <member refid="class_game___clock_1ad1a6ef64e2a007e88061589e6366b60a" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>GetFrameTime</name></member>
+      <member refid="class_game___clock_1a6f92cb8acbdfdcf2f2370cc3a39c2e10" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>GetGameSpeedFactor</name></member>
+      <member refid="class_game___clock_1a429e08beabdb3723d7a647f54b9d50da" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>GetTargetGameFps</name></member>
+      <member refid="class_game___clock_1a5deb06182f4a64fc60077eb6378be05e" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>GetTargetGameTimeStep</name></member>
+      <member refid="class_game___clock_1a53d61b3a7fd399ddbe56d0115612dcb3" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>is_steady</name></member>
+      <member refid="class_game___clock_1a66f6a6c8003d6eeca530dfadb1833a6e" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>logClockInfo</name></member>
+      <member refid="class_game___clock_1a819d85bf1c2d8e8ef9646971d91da756" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>Name</name></member>
+      <member refid="class_game___clock_1a8ebb3111c13cf6fe48a4884ea46cc7ed" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>NextGameTimeStep</name></member>
+      <member refid="class_game___clock_1afeeada1eba54aecb6490418714bc51d9" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>now</name></member>
+      <member refid="class_game___clock_1a3ed51241a26040b303246b65aab30bcb" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>OnNextFrame</name></member>
+      <member refid="class_game___clock_1a414fa50c94c1aa77a34cc002282adf11" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>period</name></member>
+      <member refid="class_game___clock_1aa148b586c32baee2d41de1e5d5aa44e6" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>rep</name></member>
+      <member refid="class_game___clock_1a2845d015cf599c85a173532bb351bfc6" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>ResetFrame</name></member>
+      <member refid="class_game___clock_1a65c182fb0b5ccd2cc4a2021a88b13aca" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>SetGameSpeedFactor</name></member>
+      <member refid="class_game___clock_1a6a266a81f52c264939769081d95328d3" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>SetMaxGameTimePerFrame</name></member>
+      <member refid="class_game___clock_1adf83075c2c1d6ae29dad9979d018addd" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>SleepFor</name></member>
+      <member refid="class_game___clock_1a7da5a97294e9d1b3dddb617d90eea63e" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>time_point</name></member>
+      <member refid="class_game___clock_1af830521bb4b41869a660ffb3c90d3f2b" prot="public" virt="non-virtual"><scope>Game_Clock</scope><name>TimeStepFromFps</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

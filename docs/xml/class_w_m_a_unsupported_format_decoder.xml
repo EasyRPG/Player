@@ -1,0 +1,308 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_w_m_a_unsupported_format_decoder" kind="class" language="C++" prot="public">
+    <compoundname>WMAUnsupportedFormatDecoder</compoundname>
+    <basecompoundref refid="class_audio_decoder" prot="public" virt="non-virtual">AudioDecoder</basecompoundref>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_w_m_a_unsupported_format_decoder_1a88951464fa7891a7ac0ceafd96534388" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>WMAUnsupportedFormatDecoder::WMAUnsupportedFormatDecoder</definition>
+        <argsstring>()</argsstring>
+        <name>WMAUnsupportedFormatDecoder</name>
+        <qualifiedname>WMAUnsupportedFormatDecoder::WMAUnsupportedFormatDecoder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.cpp" line="40" column="1" bodyfile="audio_decoder.cpp" bodystart="40" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="class_w_m_a_unsupported_format_decoder_1a5cdca6b755ce1ad2e470d27ea89908fe" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>bool WMAUnsupportedFormatDecoder::Open</definition>
+        <argsstring>(Filesystem_Stream::InputStream) override</argsstring>
+        <name>Open</name>
+        <qualifiedname>WMAUnsupportedFormatDecoder::Open</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a572f94aa66fe630a45cbe1c500c55213">Open</reimplements>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+          <declname>stream</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Assigns a stream to the audio decoder. Open should be only called once per audio decoder instance. Use GetError to get the error reason on failure.</para>
+<para><simplesect kind="return"><para>true if initializing was successful, false otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.cpp" line="44" column="6" bodyfile="audio_decoder.cpp" bodystart="44" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="class_w_m_a_unsupported_format_decoder_1ad2db40ac10984f051dfbccae97e681e0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>bool WMAUnsupportedFormatDecoder::IsFinished</definition>
+        <argsstring>() const override</argsstring>
+        <name>IsFinished</name>
+        <qualifiedname>WMAUnsupportedFormatDecoder::IsFinished</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a6dc473563b9edccf21d07a39fae4fc2d">IsFinished</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines whether the stream is finished.</para>
+<para><simplesect kind="return"><para>true stream ended </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.cpp" line="45" column="6" bodyfile="audio_decoder.cpp" bodystart="45" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="class_w_m_a_unsupported_format_decoder_1adb6869ecb1d842a20898ab4005a16867" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void WMAUnsupportedFormatDecoder::GetFormat</definition>
+        <argsstring>(int &amp;, Format &amp;, int &amp;) const override</argsstring>
+        <name>GetFormat</name>
+        <qualifiedname>WMAUnsupportedFormatDecoder::GetFormat</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a1710868b1111bf6e33e43156958e0d57">GetFormat</reimplements>
+        <param>
+          <type>int &amp;</type>
+          <declname>frequency</declname>
+        </param>
+        <param>
+          <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">Format</ref> &amp;</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>channels</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieves the format of the audio decoder. It is guaranteed that these settings will stay constant the whole time.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>frequency</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the audio frequency </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the audio format </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>channels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the amount of channels </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.cpp" line="46" column="6" bodyfile="audio_decoder.cpp" bodystart="46" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="class_w_m_a_unsupported_format_decoder_1a041cb5c0a5571405b61375935d105242" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>bool WMAUnsupportedFormatDecoder::Seek</definition>
+        <argsstring>(std::streamoff, std::ios_base::seekdir) override</argsstring>
+        <name>Seek</name>
+        <qualifiedname>WMAUnsupportedFormatDecoder::Seek</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a5edd0cdbf8114d680a94c269b24e79f8">Seek</reimplements>
+        <param>
+          <type>std::streamoff</type>
+          <declname>offset</declname>
+        </param>
+        <param>
+          <type>std::ios_base::seekdir</type>
+          <declname>origin</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Seeks in the audio stream. The value of offset is implementation defined but is guaranteed to match the result of Tell. Libraries must support at least seek from the start for <ref refid="class_audio_decoder_base_1a2c9d165295deeb0cd12fea13cdd60467" kindref="member">Rewind()</ref>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>offset</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Offset to seek to </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>origin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Position to seek from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether seek was successful </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.cpp" line="47" column="6" bodyfile="audio_decoder.cpp" bodystart="47" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="class_w_m_a_unsupported_format_decoder_1a8fb1983cbcd9a74a25e947c1e05e62ea" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int WMAUnsupportedFormatDecoder::GetTicks</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetTicks</name>
+        <qualifiedname>WMAUnsupportedFormatDecoder::GetTicks</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1acecf36942396a6f78a9839b2dc2315db">GetTicks</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns a value suitable for the GetMidiTicks command. For MIDI this is the amount of MIDI ticks, for other formats usually the playback position in seconds.</para>
+<para><simplesect kind="return"><para>Amount of MIDI ticks or position in seconds </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.cpp" line="48" column="5" bodyfile="audio_decoder.cpp" bodystart="48" bodyend="48"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_w_m_a_unsupported_format_decoder_1a15fa86a40225bfdfd3f10ba5f261cbda" prot="private" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int WMAUnsupportedFormatDecoder::FillBuffer</definition>
+        <argsstring>(uint8_t *, int) override</argsstring>
+        <name>FillBuffer</name>
+        <qualifiedname>WMAUnsupportedFormatDecoder::FillBuffer</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1aa06a5130b4b45e44a364162230953636">FillBuffer</reimplements>
+        <param>
+          <type>uint8_t *</type>
+          <declname>buffer</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called by the Decode functions to fill the buffer.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>buffer</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Buffer to fill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Buffer size </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>number of bytes read or -1 on error </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="audio_decoder.cpp" line="50" column="5" bodyfile="audio_decoder.cpp" bodystart="50" bodyend="50"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>AudioDecoder</label>
+        <link refid="class_audio_decoder"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>AudioDecoderBase</label>
+        <link refid="class_audio_decoder_base"/>
+      </node>
+      <node id="1">
+        <label>WMAUnsupportedFormatDecoder</label>
+        <link refid="class_w_m_a_unsupported_format_decoder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>AudioDecoder</label>
+        <link refid="class_audio_decoder"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>AudioDecoderBase</label>
+        <link refid="class_audio_decoder_base"/>
+      </node>
+      <node id="1">
+        <label>WMAUnsupportedFormatDecoder</label>
+        <link refid="class_w_m_a_unsupported_format_decoder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="audio_decoder.cpp" line="38" column="1" bodyfile="audio_decoder.cpp" bodystart="38" bodyend="51"/>
+    <listofallmembers>
+      <member refid="class_audio_decoder_base_1ad75c2fadcdccc9bdf89626e9689dc73d" prot="public" virt="non-virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>AdjustVolume</name></member>
+      <member refid="class_audio_decoder_1a5cc996156bf9b185f46e501ae1d26edd" prot="public" virt="non-virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>Create</name></member>
+      <member refid="class_audio_decoder_base_1a176c25bf79b3e978665d01f649741dca" prot="public" virt="non-virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>Decode</name></member>
+      <member refid="class_audio_decoder_base_1aaec31de02d5329099c26005f8c365fff" prot="protected" virt="non-virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>Decode</name></member>
+      <member refid="class_audio_decoder_base_1a675f8d5337b547549b2c11ad63acffbd" prot="public" virt="non-virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>DecodeAll</name></member>
+      <member refid="class_audio_decoder_base_1ad2ce3dacf661c0849a08d1cad2e598d8" prot="protected" virt="non-virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>error_message</name></member>
+      <member refid="class_w_m_a_unsupported_format_decoder_1a15fa86a40225bfdfd3f10ba5f261cbda" prot="private" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>FillBuffer</name></member>
+      <member refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" prot="public" virt="non-virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>Format</name></member>
+      <member refid="class_audio_decoder_base_1a6459a4a6bbef9a3c1e114687e1ee38a7" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>GetError</name></member>
+      <member refid="class_w_m_a_unsupported_format_decoder_1adb6869ecb1d842a20898ab4005a16867" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>GetFormat</name></member>
+      <member refid="class_audio_decoder_base_1ada062070c78b1298131fc11bfb84e4b3" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>GetLoopCount</name></member>
+      <member refid="class_audio_decoder_base_1a0dc76b0664e5db6bbf08f15feac0b2f7" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>GetLooping</name></member>
+      <member refid="class_audio_decoder_base_1a2296a26d68cfe1f139cf82aa27c38019" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>GetPitch</name></member>
+      <member refid="class_audio_decoder_1a7f4f01e9acc6b7a7f4cf46f138f0c3cf" prot="public" virt="non-virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>GetSamplesizeForFormat</name></member>
+      <member refid="class_w_m_a_unsupported_format_decoder_1a8fb1983cbcd9a74a25e947c1e05e62ea" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>GetTicks</name></member>
+      <member refid="class_audio_decoder_base_1ad6fee4301b53a5891a4b37e6cab958f1" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>GetType</name></member>
+      <member refid="class_audio_decoder_1af6aa02e1eafb474d6bda180b432f5e15" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>GetVolume</name></member>
+      <member refid="class_w_m_a_unsupported_format_decoder_1ad2db40ac10984f051dfbccae97e681e0" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>IsFinished</name></member>
+      <member refid="class_audio_decoder_base_1ab8feafa866394875dc7c538b79021025" prot="protected" virt="non-virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>loop_count</name></member>
+      <member refid="class_audio_decoder_base_1a31c8df4d0267b8363daa9da00d2ed2f3" prot="protected" virt="non-virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>looping</name></member>
+      <member refid="class_audio_decoder_base_1a0735cf7d77356fbc1a2735804211a9c8" prot="protected" virt="non-virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>music_type</name></member>
+      <member refid="class_w_m_a_unsupported_format_decoder_1a5cdca6b755ce1ad2e470d27ea89908fe" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>Open</name></member>
+      <member refid="class_audio_decoder_1a50ddc8b699ec0ae2fc0495bfd0b1707b" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>Pause</name></member>
+      <member refid="class_audio_decoder_1aecdd23e1eeeb1a0b445302c3e61801b8" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>Resume</name></member>
+      <member refid="class_audio_decoder_base_1a2c9d165295deeb0cd12fea13cdd60467" prot="public" virt="non-virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>Rewind</name></member>
+      <member refid="class_w_m_a_unsupported_format_decoder_1a041cb5c0a5571405b61375935d105242" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>Seek</name></member>
+      <member refid="class_audio_decoder_1a629190e608348a1b91237be1602004a2" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>SetFade</name></member>
+      <member refid="class_audio_decoder_base_1acabfabe4f0b75482cc967b19133288c2" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>SetFormat</name></member>
+      <member refid="class_audio_decoder_base_1a840273aa05f6b6619863f9b7af142034" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>SetLooping</name></member>
+      <member refid="class_audio_decoder_base_1a81ca81aceceef4b9cc8a6818d3d199ca" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>SetPitch</name></member>
+      <member refid="class_audio_decoder_1ac6a23dcafc0da6b15539133234dad41b" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>SetVolume</name></member>
+      <member refid="class_audio_decoder_base_1a786745c4d49ed9146579c72a8b63ddd7" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>Tell</name></member>
+      <member refid="class_audio_decoder_1a279e144005fee23820bd0a02db5d87a6" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>Update</name></member>
+      <member refid="class_audio_decoder_base_1a11f5c509ee0dbc2e9e49505c27a8caf7" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>UpdateMidi</name></member>
+      <member refid="class_audio_decoder_base_1ab939d02c28d911d06a0c68087afa90aa" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>WasInited</name></member>
+      <member refid="class_w_m_a_unsupported_format_decoder_1a88951464fa7891a7ac0ceafd96534388" prot="public" virt="non-virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>WMAUnsupportedFormatDecoder</name></member>
+      <member refid="class_audio_decoder_base_1a9b7f3034af094a9d71e48ac220b4ca6a" prot="public" virt="virtual"><scope>WMAUnsupportedFormatDecoder</scope><name>~AudioDecoderBase</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

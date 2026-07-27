@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1ui3_1_1_graphical_console" kind="class" language="C++" prot="public">
+    <compoundname>leasy::ui3::GraphicalConsole</compoundname>
+    <basecompoundref refid="class_drawable" prot="public" virt="non-virtual">Drawable</basecompoundref>
+    <derivedcompoundref refid="classleasy_1_1ui3_1_1gui__sink" prot="public" virt="non-virtual">leasy::ui3::gui_sink</derivedcompoundref>
+    <includes refid="winstream_8hpp" local="no">winstream.hpp</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classleasy_1_1ui3_1_1_graphical_console_1aba16066e4af866f90f4c55d7a989975c" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="structleasy_1_1ui3_1_1_graphical_string" kindref="compound">GraphicalString</ref> &gt;</type>
+        <definition>std::vector&lt;GraphicalString&gt; leasy::ui3::GraphicalConsole::queue</definition>
+        <argsstring></argsstring>
+        <name>queue</name>
+        <qualifiedname>leasy::ui3::GraphicalConsole::queue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ui/winstream.hpp" line="48" column="17" bodyfile="leasy/ui/winstream.hpp" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1ui3_1_1_graphical_console_1af499a121d9b2bb7f7b366939dbdcc31a" prot="private" static="no" mutable="no">
+        <type><ref refid="structleasy_1_1ily3_1_1twin" kindref="compound">ily3::twin</ref>&lt; int &gt;</type>
+        <definition>ily3::twin&lt;int&gt; leasy::ui3::GraphicalConsole::start</definition>
+        <argsstring></argsstring>
+        <name>start</name>
+        <qualifiedname>leasy::ui3::GraphicalConsole::start</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ui/winstream.hpp" line="49" column="16" bodyfile="leasy/ui/winstream.hpp" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1ui3_1_1_graphical_console_1a647100e00599cc31171dddbc5c240688" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int leasy::ui3::GraphicalConsole::last_y</definition>
+        <argsstring></argsstring>
+        <name>last_y</name>
+        <qualifiedname>leasy::ui3::GraphicalConsole::last_y</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ui/winstream.hpp" line="50" column="9" bodyfile="leasy/ui/winstream.hpp" bodystart="50" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classleasy_1_1ui3_1_1_graphical_console_1ab681278ca9e0453b933ccc3fe60a4044" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ui3::GraphicalConsole::drawitactually</definition>
+        <argsstring>(const GraphicalString &amp;string, Bitmap &amp;map)</argsstring>
+        <name>drawitactually</name>
+        <qualifiedname>leasy::ui3::GraphicalConsole::drawitactually</qualifiedname>
+        <param>
+          <type>const <ref refid="structleasy_1_1ui3_1_1_graphical_string" kindref="compound">GraphicalString</ref> &amp;</type>
+          <declname>string</declname>
+        </param>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>map</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ui/winstream.hpp" line="52" column="17" bodyfile="leasy/ui/winstream.hpp" bodystart="52" bodyend="57"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1ui3_1_1_graphical_console_1a321b30606559e2d39c5f496734e05ccc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ui3::GraphicalConsole::GraphicalConsole</definition>
+        <argsstring>(const ily3::twin&lt; int &gt; &amp;st)</argsstring>
+        <name>GraphicalConsole</name>
+        <qualifiedname>leasy::ui3::GraphicalConsole::GraphicalConsole</qualifiedname>
+        <param>
+          <type>const <ref refid="structleasy_1_1ily3_1_1twin" kindref="compound">ily3::twin</ref>&lt; int &gt; &amp;</type>
+          <declname>st</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ui/winstream.hpp" line="60" column="12" bodyfile="leasy/ui/winstream.hpp" bodystart="60" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ui3_1_1_graphical_console_1a5fe6ea729fd84c2f769a706102b7e237" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ui3::GraphicalConsole::gwrite</definition>
+        <argsstring>(const std::string &amp;text, unsigned int lifetime=3, const Color &amp;color=Color(0, 0, 0xFF, 0xFF))</argsstring>
+        <name>gwrite</name>
+        <qualifiedname>leasy::ui3::GraphicalConsole::gwrite</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>text</declname>
+        </param>
+        <param>
+          <type>unsigned int</type>
+          <declname>lifetime</declname>
+          <defval>3</defval>
+        </param>
+        <param>
+          <type>const <ref refid="class_color" kindref="compound">Color</ref> &amp;</type>
+          <declname>color</declname>
+          <defval><ref refid="class_color" kindref="compound">Color</ref>(0, 0, 0xFF, 0xFF)</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ui/winstream.hpp" line="64" column="17" bodyfile="leasy/ui/winstream.hpp" bodystart="64" bodyend="72"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ui3_1_1_graphical_console_1a2ecc4d75eaa1063560b99b553400893c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void leasy::ui3::GraphicalConsole::Draw</definition>
+        <argsstring>(Bitmap &amp;map) override</argsstring>
+        <name>Draw</name>
+        <qualifiedname>leasy::ui3::GraphicalConsole::Draw</qualifiedname>
+        <reimplements refid="class_drawable_1aa8a9b151f40368331f6fd8bbdd20133f">Draw</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>map</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ui/winstream.hpp" line="74" column="17" bodyfile="leasy/ui/winstream.hpp" bodystart="74" bodyend="93"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>leasy::ui3::GraphicalConsole</label>
+        <link refid="classleasy_1_1ui3_1_1_graphical_console"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>leasy::ui3::gui_sink</label>
+        <link refid="classleasy_1_1ui3_1_1gui__sink"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>leasy::ui3::GraphicalConsole</label>
+        <link refid="classleasy_1_1ui3_1_1_graphical_console"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/ui/winstream.hpp" line="46" column="3" bodyfile="leasy/ui/winstream.hpp" bodystart="46" bodyend="94"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1ui3_1_1_graphical_console_1a2ecc4d75eaa1063560b99b553400893c" prot="public" virt="virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>Drawable</name></member>
+      <member refid="classleasy_1_1ui3_1_1_graphical_console_1ab681278ca9e0453b933ccc3fe60a4044" prot="private" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>drawitactually</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>Flags</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>GetRenderOy</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>GetZ</name></member>
+      <member refid="classleasy_1_1ui3_1_1_graphical_console_1a321b30606559e2d39c5f496734e05ccc" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>GraphicalConsole</name></member>
+      <member refid="classleasy_1_1ui3_1_1_graphical_console_1a5fe6ea729fd84c2f769a706102b7e237" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>gwrite</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>IsGlobal</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>IsVisible</name></member>
+      <member refid="classleasy_1_1ui3_1_1_graphical_console_1a647100e00599cc31171dddbc5c240688" prot="private" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>last_y</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>operator=</name></member>
+      <member refid="classleasy_1_1ui3_1_1_graphical_console_1aba16066e4af866f90f4c55d7a989975c" prot="private" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>queue</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>SetRenderOy</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>SetVisible</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>SetZ</name></member>
+      <member refid="classleasy_1_1ui3_1_1_graphical_console_1af499a121d9b2bb7f7b366939dbdcc31a" prot="private" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>start</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>leasy::ui3::GraphicalConsole</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

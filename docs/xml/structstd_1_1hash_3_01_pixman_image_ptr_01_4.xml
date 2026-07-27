@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structstd_1_1hash_3_01_pixman_image_ptr_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>std::hash&lt; PixmanImagePtr &gt;</compoundname>
+    <includes refid="pixman__image__ptr_8h" local="no">pixman_image_ptr.h</includes>
+    <templateparamlist>
+    </templateparamlist>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structstd_1_1hash_3_01_pixman_image_ptr_01_4_1a1ebf3ccea875f6413b074655a50c764d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t std::hash&lt; PixmanImagePtr &gt;::operator()</definition>
+        <argsstring>(const PixmanImagePtr &amp;p)</argsstring>
+        <name>operator()</name>
+        <qualifiedname>std::hash&lt; PixmanImagePtr &gt;::operator()</qualifiedname>
+        <param>
+          <type>const <ref refid="class_pixman_image_ptr" kindref="compound">PixmanImagePtr</ref> &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixman_image_ptr.h" line="82" column="8" bodyfile="pixman_image_ptr.h" bodystart="82" bodyend="84"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pixman_image_ptr.h" line="81" column="11" bodyfile="pixman_image_ptr.h" bodystart="81" bodyend="85"/>
+    <listofallmembers>
+      <member refid="structstd_1_1hash_3_01_pixman_image_ptr_01_4_1a1ebf3ccea875f6413b074655a50c764d" prot="public" virt="non-virtual"><scope>std::hash&lt; PixmanImagePtr &gt;</scope><name>operator()</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

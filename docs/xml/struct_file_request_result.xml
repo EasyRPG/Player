@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_file_request_result" kind="struct" language="C++" prot="public">
+    <compoundname>FileRequestResult</compoundname>
+    <includes refid="async__handler_8h" local="no">async_handler.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_file_request_result_1a49379057a16c5dbeb83d43a1a1c03c4e" prot="public" static="no" mutable="no">
+        <type>const std::string &amp;</type>
+        <definition>const std::string&amp; FileRequestResult::directory</definition>
+        <argsstring></argsstring>
+        <name>directory</name>
+        <qualifiedname>FileRequestResult::directory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="236" column="19" bodyfile="async_handler.h" bodystart="236" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_file_request_result_1ab9cbc6a573dcbacd9f0a653babe6f068" prot="public" static="no" mutable="no">
+        <type>const std::string &amp;</type>
+        <definition>const std::string&amp; FileRequestResult::file</definition>
+        <argsstring></argsstring>
+        <name>file</name>
+        <qualifiedname>FileRequestResult::file</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="237" column="19" bodyfile="async_handler.h" bodystart="237" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_file_request_result_1a5b34ed098245e7466e207cd013d8daff" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int FileRequestResult::request_id</definition>
+        <argsstring></argsstring>
+        <name>request_id</name>
+        <qualifiedname>FileRequestResult::request_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="238" column="5" bodyfile="async_handler.h" bodystart="238" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_file_request_result_1ac6d22f732c35a5388bee6f125e486c30" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool FileRequestResult::success</definition>
+        <argsstring></argsstring>
+        <name>success</name>
+        <qualifiedname>FileRequestResult::success</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="239" column="6" bodyfile="async_handler.h" bodystart="239" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Contains the result of an async request. directory: Directory name file: Name of requested file request_id assigned to the callback that fired success: true if requested was successful, otherwise false. </para>
+    </detaileddescription>
+    <location file="async_handler.h" line="235" column="1" bodyfile="async_handler.h" bodystart="235" bodyend="240"/>
+    <listofallmembers>
+      <member refid="struct_file_request_result_1a49379057a16c5dbeb83d43a1a1c03c4e" prot="public" virt="non-virtual"><scope>FileRequestResult</scope><name>directory</name></member>
+      <member refid="struct_file_request_result_1ab9cbc6a573dcbacd9f0a653babe6f068" prot="public" virt="non-virtual"><scope>FileRequestResult</scope><name>file</name></member>
+      <member refid="struct_file_request_result_1a5b34ed098245e7466e207cd013d8daff" prot="public" virt="non-virtual"><scope>FileRequestResult</scope><name>request_id</name></member>
+      <member refid="struct_file_request_result_1ac6d22f732c35a5388bee6f125e486c30" prot="public" virt="non-virtual"><scope>FileRequestResult</scope><name>success</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,1458 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lcode_8h" kind="file" language="C++">
+    <compoundname>lcode.h</compoundname>
+    <includes refid="llex_8h" local="yes">llex.h</includes>
+    <includes refid="lobject_8h" local="yes">lobject.h</includes>
+    <includes refid="lopcodes_8h" local="yes">lopcodes.h</includes>
+    <includes refid="lparser_8h" local="yes">lparser.h</includes>
+    <includedby refid="lcode_8c" local="yes">leasy/lua/lcode.c</includedby>
+    <includedby refid="ldebug_8c" local="yes">leasy/lua/ldebug.c</includedby>
+    <includedby refid="lparser_8c" local="yes">leasy/lua/lparser.c</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/lua/lcode.h</label>
+        <link refid="lcode_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>llex.h</label>
+        <link refid="llex_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>lmem.h</label>
+        <link refid="lmem_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>lobject.h</label>
+        <link refid="lobject_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>lopcodes.h</label>
+        <link refid="lopcodes_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>lparser.h</label>
+        <link refid="lparser_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>lzio.h</label>
+        <link refid="lzio_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>limits.h</label>
+      </node>
+      <node id="5">
+        <label>stdarg.h</label>
+      </node>
+      <node id="7">
+        <label>stddef.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>leasy/lua/lcode.c</label>
+        <link refid="lcode_8c"/>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lcode.h</label>
+        <link refid="lcode_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>leasy/lua/ldebug.c</label>
+        <link refid="ldebug_8c"/>
+      </node>
+      <node id="4">
+        <label>leasy/lua/lparser.c</label>
+        <link refid="lparser_8c"/>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lcode_8h_1ac12a06b93b62373c9e664c7a06e838b8" prot="public" static="no">
+        <name>NO_JUMP</name>
+        <initializer>(-1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="20" column="9" bodyfile="leasy/lua/lcode.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lcode_8h_1af868dddd41f6748292cc399555e82f89" prot="public" static="no">
+        <name>foldbinop</name>
+        <param><defname>op</defname></param>
+        <initializer>((op) &lt;= <ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a53468a69eae492aec03a799f02754411" kindref="member">OPR_SHR</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="45" column="9" bodyfile="leasy/lua/lcode.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lcode_8h_1a0d132d461ad7cb7bd041724d97cd7a39" prot="public" static="no">
+        <name>luaK_codeABC</name>
+        <param><defname>fs</defname></param>
+        <param><defname>o</defname></param>
+        <param><defname>a</defname></param>
+        <param><defname>b</defname></param>
+        <param><defname>c</defname></param>
+        <initializer><ref refid="lcode_8h_1ace0ce2d50b1423a5b4b2234ca90f4794" kindref="member">luaK_codeABCk</ref>(fs,o,a,b,c,0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="48" column="9" bodyfile="leasy/lua/lcode.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lcode_8h_1ae32808dba4795004b96e16024b1f9b2c" prot="public" static="no">
+        <name>getinstruction</name>
+        <param><defname>fs</defname></param>
+        <param><defname>e</defname></param>
+        <initializer>((fs)-&gt;f-&gt;code[(e)-&gt;u.info])</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="55" column="9" bodyfile="leasy/lua/lcode.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lcode_8h_1a525c933202c545dff0b84a9d5325ff49" prot="public" static="no">
+        <name>luaK_setmultret</name>
+        <param><defname>fs</defname></param>
+        <param><defname>e</defname></param>
+        <initializer><ref refid="lcode_8h_1acae0354c40f684d990fd3aa73bbcd770" kindref="member">luaK_setreturns</ref>(fs, e, <ref refid="lua_8h_1ace3545adc11664c2f2b152fbe8b6283c" kindref="member">LUA_MULTRET</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="58" column="9" bodyfile="leasy/lua/lcode.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lcode_8h_1a08e8dcbeff76a91cea9bdca0bec9c24f" prot="public" static="no">
+        <name>luaK_jumpto</name>
+        <param><defname>fs</defname></param>
+        <param><defname>t</defname></param>
+        <initializer><ref refid="lcode_8h_1a8efbcf17cf978cc2bac3e08f755677bd" kindref="member">luaK_patchlist</ref>(fs, <ref refid="lcode_8h_1a67cd7ce15260791b3348dfe0af04a444" kindref="member">luaK_jump</ref>(fs), t)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="60" column="9" bodyfile="leasy/lua/lcode.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83" prot="public" static="no" strong="no">
+        <type></type>
+        <name>BinOpr</name>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a6a040b1b3b8cc217942b40bdcfd89a12" prot="public">
+          <name>OPR_ADD</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a9af57e8c20b32a5bae4e7d5b94015a0d" prot="public">
+          <name>OPR_SUB</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a3b374e6db04a6e4645e113fc82c873e2" prot="public">
+          <name>OPR_MUL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83abc6e1524cbf3d8a2b2a6689d5c40bc57" prot="public">
+          <name>OPR_MOD</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83af06a2e29452e38eb8ed02812a1aa1083" prot="public">
+          <name>OPR_POW</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83aa0b20b22c1a53d0fb294bd15993fd4d8" prot="public">
+          <name>OPR_DIV</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83ac91ab547f0844521654b0e8924085d1e" prot="public">
+          <name>OPR_IDIV</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a83d1f111c407b2a4ce3ecdf5fc588e4d" prot="public">
+          <name>OPR_BAND</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83aee42d0b535e2a8f6686dde348f113210" prot="public">
+          <name>OPR_BOR</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83aba9d6ec8db62deeab8b731a973023156" prot="public">
+          <name>OPR_BXOR</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83aea58586b669bfc9483fa17069e7f3602" prot="public">
+          <name>OPR_SHL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a53468a69eae492aec03a799f02754411" prot="public">
+          <name>OPR_SHR</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a5f601beb91f937ddb7a1835f93016fdc" prot="public">
+          <name>OPR_CONCAT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a1c53aacbc69d7058b240be92b134a7eb" prot="public">
+          <name>OPR_EQ</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a15e3bd67027d90471048ea39abfd32fa" prot="public">
+          <name>OPR_LT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a96f2a6272233d80a19b4f4482cf121a5" prot="public">
+          <name>OPR_LE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a1f56f30f2368c0f93c9aeeea7e72ac55" prot="public">
+          <name>OPR_NE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a3c68b5b6ad04299cc50ef1c4611441b0" prot="public">
+          <name>OPR_GT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a5a35f1c08acd1e14156d32e04d8b9806" prot="public">
+          <name>OPR_GE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a3dbbb7b8ec103877916a8a4c4671a3ef" prot="public">
+          <name>OPR_AND</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83ae104a7612eb80ee5d9ff5715a938a2c1" prot="public">
+          <name>OPR_OR</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a1b1f5234efa3ff41b9898c76c8ee6f68" prot="public">
+          <name>OPR_NOBINOPR</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="26" column="1" bodyfile="leasy/lua/lcode.h" bodystart="26" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="enum" id="lcode_8h_1a36fd1054d39d6fc3373303522a7ef534" prot="public" static="no" strong="no">
+        <type></type>
+        <name>UnOpr</name>
+        <enumvalue id="lcode_8h_1a36fd1054d39d6fc3373303522a7ef534ad7aef0de1fbf580a7d03635a3e4058f3" prot="public">
+          <name>OPR_MINUS</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1a36fd1054d39d6fc3373303522a7ef534a692243c52fe8a114bce557d05a198c68" prot="public">
+          <name>OPR_BNOT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1a36fd1054d39d6fc3373303522a7ef534a238495588717191ca92bb9f8a5c80b59" prot="public">
+          <name>OPR_NOT</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1a36fd1054d39d6fc3373303522a7ef534a09eeed48a27b90460bab6d8ba33e620e" prot="public">
+          <name>OPR_LEN</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="lcode_8h_1a36fd1054d39d6fc3373303522a7ef534ae72bf1249ed8649f7ed837b537ed928d" prot="public">
+          <name>OPR_NOUNOPR</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="51" column="1" bodyfile="leasy/lua/lcode.h" bodystart="51" bodyend="51"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="lcode_8h_1a7b7545bb3e907a8d7a2a69eae7019ad7" prot="public" static="no">
+        <type>enum <ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83" kindref="member">BinOpr</ref></type>
+        <definition>typedef enum BinOpr BinOpr</definition>
+        <argsstring></argsstring>
+        <name>BinOpr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="41" column="8"/>
+      </memberdef>
+      <memberdef kind="typedef" id="lcode_8h_1a7e4f59918a6ccc30a26d002bcb22a3ca" prot="public" static="no">
+        <type>enum <ref refid="lcode_8h_1a36fd1054d39d6fc3373303522a7ef534" kindref="member">UnOpr</ref></type>
+        <definition>typedef enum UnOpr UnOpr</definition>
+        <argsstring></argsstring>
+        <name>UnOpr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="51" column="25"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="lcode_8h_1a96c5e0e67ce8d9bb5d7b32ce5dd587b2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaK_code</definition>
+        <argsstring>(FuncState *fs, Instruction i)</argsstring>
+        <name>luaK_code</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="lobject_8h_1aa81d2e7f7263ef29946852d4966a192e" kindref="member">Instruction</ref></type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="62" column="15" bodyfile="leasy/lua/lcode.c" bodystart="384" bodyend="392" declfile="leasy/lua/lcode.h" declline="62" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1acb79d743dbd8dd054c3e6438725451ca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaK_codeABx</definition>
+        <argsstring>(FuncState *fs, OpCode o, int A, int Bx)</argsstring>
+        <name>luaK_codeABx</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="lopcodes_8h_1abeb7dfb0e9e2b3114e240a405d046ea7" kindref="member">OpCode</ref></type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>Bx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="63" column="15" bodyfile="leasy/lua/lcode.c" bodystart="418" bodyend="422" declfile="leasy/lua/lcode.h" declline="63" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1ace0ce2d50b1423a5b4b2234ca90f4794" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaK_codeABCk</definition>
+        <argsstring>(FuncState *fs, OpCode o, int A, int B, int C, int k)</argsstring>
+        <name>luaK_codeABCk</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="lopcodes_8h_1abeb7dfb0e9e2b3114e240a405d046ea7" kindref="member">OpCode</ref></type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>B</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>C</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>k</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="64" column="15" bodyfile="leasy/lua/lcode.c" bodystart="399" bodyend="404" declfile="leasy/lua/lcode.h" declline="64" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a442d20f52208c6b06af86d2947cdb4e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaK_codevABCk</definition>
+        <argsstring>(FuncState *fs, OpCode o, int A, int B, int C, int k)</argsstring>
+        <name>luaK_codevABCk</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="lopcodes_8h_1abeb7dfb0e9e2b3114e240a405d046ea7" kindref="member">OpCode</ref></type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>B</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>C</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>k</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="66" column="15" bodyfile="leasy/lua/lcode.c" bodystart="407" bodyend="412" declfile="leasy/lua/lcode.h" declline="66" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a76fcfd2cbf5cf9decaefb29f24411455" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaK_exp2const</definition>
+        <argsstring>(FuncState *fs, const expdesc *e, TValue *v)</argsstring>
+        <name>luaK_exp2const</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>e</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="68" column="15" bodyfile="leasy/lua/lcode.c" bodystart="85" bodyend="108" declfile="leasy/lua/lcode.h" declline="68" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a87c903709e739068e361dd59788a486f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_fixline</definition>
+        <argsstring>(FuncState *fs, int line)</argsstring>
+        <name>luaK_fixline</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>line</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="69" column="16" bodyfile="leasy/lua/lcode.c" bodystart="1868" bodyend="1871" declfile="leasy/lua/lcode.h" declline="69" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a0b4caf213c4d4697d63ad22fedda0d1f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_nil</definition>
+        <argsstring>(FuncState *fs, int from, int n)</argsstring>
+        <name>luaK_nil</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>from</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="70" column="16" bodyfile="leasy/lua/lcode.c" bodystart="132" bodyend="148" declfile="leasy/lua/lcode.h" declline="70" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a2d28e2fd1a283bca9afbb9af4170f31b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_codecheckglobal</definition>
+        <argsstring>(FuncState *fs, expdesc *var, int k, int line)</argsstring>
+        <name>luaK_codecheckglobal</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>var</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>k</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>line</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="71" column="16" bodyfile="leasy/lua/lcode.c" bodystart="715" bodyend="722" declfile="leasy/lua/lcode.h" declline="71" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1abd5365c0b65143b55552bff3a9e6d681" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_reserveregs</definition>
+        <argsstring>(FuncState *fs, int n)</argsstring>
+        <name>luaK_reserveregs</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="73" column="16" bodyfile="leasy/lua/lcode.c" bodystart="488" bodyend="491" declfile="leasy/lua/lcode.h" declline="73" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1ade83373047ab7254868bfd06bb8089b5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_checkstack</definition>
+        <argsstring>(FuncState *fs, int n)</argsstring>
+        <name>luaK_checkstack</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="74" column="16" bodyfile="leasy/lua/lcode.c" bodystart="476" bodyend="482" declfile="leasy/lua/lcode.h" declline="74" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a511cc8052e9f5ffc7a9ac616825efa0d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_int</definition>
+        <argsstring>(FuncState *fs, int reg, lua_Integer n)</argsstring>
+        <name>luaK_int</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>reg</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="75" column="16" bodyfile="leasy/lua/lcode.c" bodystart="692" bodyend="697" declfile="leasy/lua/lcode.h" declline="75" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1aee040ae733633375d423d6d87ed758c6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_vapar2local</definition>
+        <argsstring>(FuncState *fs, expdesc *var)</argsstring>
+        <name>luaK_vapar2local</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="76" column="16" bodyfile="leasy/lua/lcode.c" bodystart="808" bodyend="812" declfile="leasy/lua/lcode.h" declline="76" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a4722275409ea90ad0cfc56723b8f21bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_dischargevars</definition>
+        <argsstring>(FuncState *fs, expdesc *e)</argsstring>
+        <name>luaK_dischargevars</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="77" column="16" bodyfile="leasy/lua/lcode.c" bodystart="819" bodyend="874" declfile="leasy/lua/lcode.h" declline="77" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a219ca12ddb52437285a46bddfc4feeb8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaK_exp2anyreg</definition>
+        <argsstring>(FuncState *fs, expdesc *e)</argsstring>
+        <name>luaK_exp2anyreg</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="78" column="15" bodyfile="leasy/lua/lcode.c" bodystart="1011" bodyend="1026" declfile="leasy/lua/lcode.h" declline="78" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a2d79e7835a757a0bace8b3f01eba161b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_exp2anyregup</definition>
+        <argsstring>(FuncState *fs, expdesc *e)</argsstring>
+        <name>luaK_exp2anyregup</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="79" column="16" bodyfile="leasy/lua/lcode.c" bodystart="1033" bodyend="1036" declfile="leasy/lua/lcode.h" declline="79" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a61926f09ebafc501840e6cac1bebb16d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_exp2nextreg</definition>
+        <argsstring>(FuncState *fs, expdesc *e)</argsstring>
+        <name>luaK_exp2nextreg</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="80" column="16" bodyfile="leasy/lua/lcode.c" bodystart="999" bodyend="1004" declfile="leasy/lua/lcode.h" declline="80" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1abbb8eb20146165d70bbda57068685f1e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_exp2val</definition>
+        <argsstring>(FuncState *fs, expdesc *e)</argsstring>
+        <name>luaK_exp2val</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="81" column="16" bodyfile="leasy/lua/lcode.c" bodystart="1043" bodyend="1048" declfile="leasy/lua/lcode.h" declline="81" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1aeaf22c625b86a7b63ec83cf8b6036815" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_self</definition>
+        <argsstring>(FuncState *fs, expdesc *e, expdesc *key)</argsstring>
+        <name>luaK_self</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>e</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="82" column="16" bodyfile="leasy/lua/lcode.c" bodystart="1321" bodyend="1341" declfile="leasy/lua/lcode.h" declline="82" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1aef9f69dd75331c1ad4ad55329fe5a1d9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_indexed</definition>
+        <argsstring>(FuncState *fs, expdesc *t, expdesc *k)</argsstring>
+        <name>luaK_indexed</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>k</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="83" column="16" bodyfile="leasy/lua/lcode.c" bodystart="1357" bodyend="1391" declfile="leasy/lua/lcode.h" declline="83" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1afff58a79c5fb3e56811bcf9a4315bfda" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_goiftrue</definition>
+        <argsstring>(FuncState *fs, expdesc *e)</argsstring>
+        <name>luaK_goiftrue</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="84" column="16" bodyfile="leasy/lua/lcode.c" bodystart="1178" bodyend="1199" declfile="leasy/lua/lcode.h" declline="84" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a84aa56cf92c9d61e65101d54c6300b96" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_storevar</definition>
+        <argsstring>(FuncState *fs, expdesc *var, expdesc *e)</argsstring>
+        <name>luaK_storevar</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>var</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="85" column="16" bodyfile="leasy/lua/lcode.c" bodystart="1105" bodyend="1140" declfile="leasy/lua/lcode.h" declline="85" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1acae0354c40f684d990fd3aa73bbcd770" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_setreturns</definition>
+        <argsstring>(FuncState *fs, expdesc *e, int nresults)</argsstring>
+        <name>luaK_setreturns</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>e</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nresults</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="86" column="16" bodyfile="leasy/lua/lcode.c" bodystart="757" bodyend="768" declfile="leasy/lua/lcode.h" declline="86" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a890dbdb46581586862dbcf56b077f97f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_setoneret</definition>
+        <argsstring>(FuncState *fs, expdesc *e)</argsstring>
+        <name>luaK_setoneret</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="87" column="16" bodyfile="leasy/lua/lcode.c" bodystart="792" bodyend="803" declfile="leasy/lua/lcode.h" declline="87" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a67cd7ce15260791b3348dfe0af04a444" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaK_jump</definition>
+        <argsstring>(FuncState *fs)</argsstring>
+        <name>luaK_jump</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="88" column="15" bodyfile="leasy/lua/lcode.c" bodystart="200" bodyend="202" declfile="leasy/lua/lcode.h" declline="88" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1aa7c34b815a59b7ed4b5d585825cad475" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_ret</definition>
+        <argsstring>(FuncState *fs, int first, int nret)</argsstring>
+        <name>luaK_ret</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nret</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="89" column="16" bodyfile="leasy/lua/lcode.c" bodystart="208" bodyend="217" declfile="leasy/lua/lcode.h" declline="89" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a8efbcf17cf978cc2bac3e08f755677bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_patchlist</definition>
+        <argsstring>(FuncState *fs, int list, int target)</argsstring>
+        <name>luaK_patchlist</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>list</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>target</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="90" column="16" bodyfile="leasy/lua/lcode.c" bodystart="308" bodyend="311" declfile="leasy/lua/lcode.h" declline="90" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a46bd7bbdf259cca73b0b0b833880df51" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_patchtohere</definition>
+        <argsstring>(FuncState *fs, int list)</argsstring>
+        <name>luaK_patchtohere</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>list</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="91" column="16" bodyfile="leasy/lua/lcode.c" bodystart="314" bodyend="317" declfile="leasy/lua/lcode.h" declline="91" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a0abd5e7a52c17bcf3ffe02ebaa771ff2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_concat</definition>
+        <argsstring>(FuncState *fs, int *l1, int l2)</argsstring>
+        <name>luaK_concat</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>int *</type>
+          <declname>l1</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>l2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="92" column="16" bodyfile="leasy/lua/lcode.c" bodystart="182" bodyend="193" declfile="leasy/lua/lcode.h" declline="92" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1aab3ec26384fa706960da17c9a3ed5057" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaK_getlabel</definition>
+        <argsstring>(FuncState *fs)</argsstring>
+        <name>luaK_getlabel</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="93" column="15" bodyfile="leasy/lua/lcode.c" bodystart="234" bodyend="237" declfile="leasy/lua/lcode.h" declline="93" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a108f48cde9af08a87347aa6380a4a015" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_prefix</definition>
+        <argsstring>(FuncState *fs, UnOpr op, expdesc *v, int line)</argsstring>
+        <name>luaK_prefix</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="lcode_8h_1a36fd1054d39d6fc3373303522a7ef534" kindref="member">UnOpr</ref></type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>v</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>line</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="94" column="16" bodyfile="leasy/lua/lcode.c" bodystart="1697" bodyend="1711" declfile="leasy/lua/lcode.h" declline="94" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1ad66fe8cd73e03e0d604d8c9572011ee7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_infix</definition>
+        <argsstring>(FuncState *fs, BinOpr op, expdesc *v)</argsstring>
+        <name>luaK_infix</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83" kindref="member">BinOpr</ref></type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="95" column="16" bodyfile="leasy/lua/lcode.c" bodystart="1718" bodyend="1760" declfile="leasy/lua/lcode.h" declline="95" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a2a87516e72f08e1b692331de96a6d8d6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_posfix</definition>
+        <argsstring>(FuncState *fs, BinOpr op, expdesc *v1, expdesc *v2, int line)</argsstring>
+        <name>luaK_posfix</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83" kindref="member">BinOpr</ref></type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>v1</declname>
+        </param>
+        <param>
+          <type><ref refid="structexpdesc" kindref="compound">expdesc</ref> *</type>
+          <declname>v2</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>line</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="96" column="16" bodyfile="leasy/lua/lcode.c" bodystart="1787" bodyend="1861" declfile="leasy/lua/lcode.h" declline="96" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a661f2e8d150a8878e016813a1616d7f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_settablesize</definition>
+        <argsstring>(FuncState *fs, int pc, int ra, int asize, int hsize)</argsstring>
+        <name>luaK_settablesize</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>pc</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>ra</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>asize</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>hsize</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="98" column="16" bodyfile="leasy/lua/lcode.c" bodystart="1874" bodyend="1882" declfile="leasy/lua/lcode.h" declline="98" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a88808415ff9297023fb19b4e84a19033" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_setlist</definition>
+        <argsstring>(FuncState *fs, int base, int nelems, int tostore)</argsstring>
+        <name>luaK_setlist</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>base</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nelems</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>tostore</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="100" column="16" bodyfile="leasy/lua/lcode.c" bodystart="1892" bodyend="1905" declfile="leasy/lua/lcode.h" declline="100" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a04b29cadb9bd98c501fa20e416d2ae5b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaK_finish</definition>
+        <argsstring>(FuncState *fs)</argsstring>
+        <name>luaK_finish</name>
+        <param>
+          <type><ref refid="struct_func_state" kindref="compound">FuncState</ref> *</type>
+          <declname>fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="101" column="16" bodyfile="leasy/lua/lcode.c" bodystart="1929" bodyend="1971" declfile="leasy/lua/lcode.h" declline="101" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lcode_8h_1a4290952aac1956f4ca686c8bea0b2392" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref></type>
+        <definition>LUAI_FUNC l_noret luaK_semerror</definition>
+        <argsstring>(LexState *ls, const char *fmt,...)</argsstring>
+        <name>luaK_semerror</name>
+        <param>
+          <type><ref refid="struct_lex_state" kindref="compound">LexState</ref> *</type>
+          <declname>ls</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>fmt</declname>
+        </param>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lcode.h" line="102" column="19" bodyfile="leasy/lua/lcode.c" bodystart="43" bodyend="50" declfile="leasy/lua/lcode.h" declline="102" declcolumn="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lcode.h<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Code<sp/>generator<sp/>for<sp/>Lua</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>lcode_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lcode_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="llex_8h" kindref="compound">llex.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lobject_8h" kindref="compound">lobject.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lopcodes_8h" kindref="compound">lopcodes.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lparser_8h" kindref="compound">lparser.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="17"><highlight class="comment">**<sp/>Marks<sp/>the<sp/>end<sp/>of<sp/>a<sp/>patch<sp/>list.<sp/>It<sp/>is<sp/>an<sp/>invalid<sp/>value<sp/>both<sp/>as<sp/>an<sp/>absolute</highlight></codeline>
+<codeline lineno="18"><highlight class="comment">**<sp/>address,<sp/>and<sp/>as<sp/>a<sp/>list<sp/>link<sp/>(would<sp/>link<sp/>an<sp/>element<sp/>to<sp/>itself).</highlight></codeline>
+<codeline lineno="19"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="lcode_8h_1ac12a06b93b62373c9e664c7a06e838b8" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NO_JUMP<sp/>(-1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="24"><highlight class="comment">**<sp/>grep<sp/>&quot;ORDER<sp/>OPR&quot;<sp/>if<sp/>you<sp/>change<sp/>these<sp/>enums<sp/><sp/>(ORDER<sp/>OP)</highlight></codeline>
+<codeline lineno="25"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83" kindref="member">BinOpr</ref><sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>arithmetic<sp/>operators<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a6a040b1b3b8cc217942b40bdcfd89a12" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a6a040b1b3b8cc217942b40bdcfd89a12" kindref="member">OPR_ADD</ref>,<sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a9af57e8c20b32a5bae4e7d5b94015a0d" kindref="member">OPR_SUB</ref>,<sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a3b374e6db04a6e4645e113fc82c873e2" kindref="member">OPR_MUL</ref>,<sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83abc6e1524cbf3d8a2b2a6689d5c40bc57" kindref="member">OPR_MOD</ref>,<sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83af06a2e29452e38eb8ed02812a1aa1083" kindref="member">OPR_POW</ref>,</highlight></codeline>
+<codeline lineno="29" refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83aa0b20b22c1a53d0fb294bd15993fd4d8" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83aa0b20b22c1a53d0fb294bd15993fd4d8" kindref="member">OPR_DIV</ref>,<sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83ac91ab547f0844521654b0e8924085d1e" kindref="member">OPR_IDIV</ref>,</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>bitwise<sp/>operators<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a83d1f111c407b2a4ce3ecdf5fc588e4d" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a83d1f111c407b2a4ce3ecdf5fc588e4d" kindref="member">OPR_BAND</ref>,<sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83aee42d0b535e2a8f6686dde348f113210" kindref="member">OPR_BOR</ref>,<sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83aba9d6ec8db62deeab8b731a973023156" kindref="member">OPR_BXOR</ref>,</highlight></codeline>
+<codeline lineno="32" refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83aea58586b669bfc9483fa17069e7f3602" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83aea58586b669bfc9483fa17069e7f3602" kindref="member">OPR_SHL</ref>,<sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a53468a69eae492aec03a799f02754411" kindref="member">OPR_SHR</ref>,</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>string<sp/>operator<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a5f601beb91f937ddb7a1835f93016fdc" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a5f601beb91f937ddb7a1835f93016fdc" kindref="member">OPR_CONCAT</ref>,</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>comparison<sp/>operators<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a1c53aacbc69d7058b240be92b134a7eb" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a1c53aacbc69d7058b240be92b134a7eb" kindref="member">OPR_EQ</ref>,<sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a15e3bd67027d90471048ea39abfd32fa" kindref="member">OPR_LT</ref>,<sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a96f2a6272233d80a19b4f4482cf121a5" kindref="member">OPR_LE</ref>,</highlight></codeline>
+<codeline lineno="37" refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a5a35f1c08acd1e14156d32e04d8b9806" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a1f56f30f2368c0f93c9aeeea7e72ac55" kindref="member">OPR_NE</ref>,<sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a3c68b5b6ad04299cc50ef1c4611441b0" kindref="member">OPR_GT</ref>,<sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a5a35f1c08acd1e14156d32e04d8b9806" kindref="member">OPR_GE</ref>,</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>logical<sp/>operators<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a3dbbb7b8ec103877916a8a4c4671a3ef" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a3dbbb7b8ec103877916a8a4c4671a3ef" kindref="member">OPR_AND</ref>,<sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83ae104a7612eb80ee5d9ff5715a938a2c1" kindref="member">OPR_OR</ref>,</highlight></codeline>
+<codeline lineno="40" refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a1b1f5234efa3ff41b9898c76c8ee6f68" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83a1b1f5234efa3ff41b9898c76c8ee6f68" kindref="member">OPR_NOBINOPR</ref></highlight></codeline>
+<codeline lineno="41" refid="lcode_8h_1a7b7545bb3e907a8d7a2a69eae7019ad7" refkind="member"><highlight class="normal">}<sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83" kindref="member">BinOpr</ref>;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>true<sp/>if<sp/>operation<sp/>is<sp/>foldable<sp/>(that<sp/>is,<sp/>it<sp/>is<sp/>arithmetic<sp/>or<sp/>bitwise)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="lcode_8h_1af868dddd41f6748292cc399555e82f89" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>foldbinop(op)<sp/><sp/><sp/>((op)<sp/>&lt;=<sp/>OPR_SHR)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="lcode_8h_1a0d132d461ad7cb7bd041724d97cd7a39" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaK_codeABC(fs,o,a,b,c)<sp/><sp/><sp/><sp/>luaK_codeABCk(fs,o,a,b,c,0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="lcode_8h_1a36fd1054d39d6fc3373303522a7ef534a692243c52fe8a114bce557d05a198c68" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a36fd1054d39d6fc3373303522a7ef534" kindref="member">UnOpr</ref><sp/>{<sp/><ref refid="lcode_8h_1a36fd1054d39d6fc3373303522a7ef534ad7aef0de1fbf580a7d03635a3e4058f3" kindref="member">OPR_MINUS</ref>,<sp/><ref refid="lcode_8h_1a36fd1054d39d6fc3373303522a7ef534a692243c52fe8a114bce557d05a198c68" kindref="member">OPR_BNOT</ref>,<sp/><ref refid="lcode_8h_1a36fd1054d39d6fc3373303522a7ef534a238495588717191ca92bb9f8a5c80b59" kindref="member">OPR_NOT</ref>,<sp/><ref refid="lcode_8h_1a36fd1054d39d6fc3373303522a7ef534a09eeed48a27b90460bab6d8ba33e620e" kindref="member">OPR_LEN</ref>,<sp/><ref refid="lcode_8h_1a36fd1054d39d6fc3373303522a7ef534ae72bf1249ed8649f7ed837b537ed928d" kindref="member">OPR_NOUNOPR</ref><sp/>}<sp/><ref refid="lcode_8h_1a36fd1054d39d6fc3373303522a7ef534" kindref="member">UnOpr</ref>;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>get<sp/>(pointer<sp/>to)<sp/>instruction<sp/>of<sp/>given<sp/>&apos;expdesc&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55" refid="lcode_8h_1ae32808dba4795004b96e16024b1f9b2c" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>getinstruction(fs,e)<sp/><sp/><sp/><sp/>((fs)-&gt;f-&gt;code[(e)-&gt;u.info])</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="lcode_8h_1a525c933202c545dff0b84a9d5325ff49" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaK_setmultret(fs,e)<sp/><sp/><sp/>luaK_setreturns(fs,<sp/>e,<sp/>LUA_MULTRET)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60" refid="lcode_8h_1a08e8dcbeff76a91cea9bdca0bec9c24f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaK_jumpto(fs,t)<sp/><sp/><sp/>luaK_patchlist(fs,<sp/>luaK_jump(fs),<sp/>t)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a96c5e0e67ce8d9bb5d7b32ce5dd587b2" kindref="member">luaK_code</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="lobject_8h_1aa81d2e7f7263ef29946852d4966a192e" kindref="member">Instruction</ref><sp/>i);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1acb79d743dbd8dd054c3e6438725451ca" kindref="member">luaK_codeABx</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="lopcodes_8h_1abeb7dfb0e9e2b3114e240a405d046ea7" kindref="member">OpCode</ref><sp/>o,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>A,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>Bx);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1ace0ce2d50b1423a5b4b2234ca90f4794" kindref="member">luaK_codeABCk</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="lopcodes_8h_1abeb7dfb0e9e2b3114e240a405d046ea7" kindref="member">OpCode</ref><sp/>o,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>A,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>B,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>C,</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>k);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a442d20f52208c6b06af86d2947cdb4e1" kindref="member">luaK_codevABCk</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="lopcodes_8h_1abeb7dfb0e9e2b3114e240a405d046ea7" kindref="member">OpCode</ref><sp/>o,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>A,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>B,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>C,</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>k);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a76fcfd2cbf5cf9decaefb29f24411455" kindref="member">luaK_exp2const</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*e,<sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*v);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a87c903709e739068e361dd59788a486f" kindref="member">luaK_fixline</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>line);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a0b4caf213c4d4697d63ad22fedda0d1f" kindref="member">luaK_nil</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>from,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a2d28e2fd1a283bca9afbb9af4170f31b" kindref="member">luaK_codecheckglobal</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*var,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>k,</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>line);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1abd5365c0b65143b55552bff3a9e6d681" kindref="member">luaK_reserveregs</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1ade83373047ab7254868bfd06bb8089b5" kindref="member">luaK_checkstack</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a511cc8052e9f5ffc7a9ac616825efa0d" kindref="member">luaK_int</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>reg,<sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/>n);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1aee040ae733633375d423d6d87ed758c6" kindref="member">luaK_vapar2local</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*var);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a4722275409ea90ad0cfc56723b8f21bb" kindref="member">luaK_dischargevars</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*e);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a219ca12ddb52437285a46bddfc4feeb8" kindref="member">luaK_exp2anyreg</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*e);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a2d79e7835a757a0bace8b3f01eba161b" kindref="member">luaK_exp2anyregup</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*e);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a61926f09ebafc501840e6cac1bebb16d" kindref="member">luaK_exp2nextreg</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*e);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1abbb8eb20146165d70bbda57068685f1e" kindref="member">luaK_exp2val</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*e);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1aeaf22c625b86a7b63ec83cf8b6036815" kindref="member">luaK_self</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*e,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1aef9f69dd75331c1ad4ad55329fe5a1d9" kindref="member">luaK_indexed</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*t,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*k);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1afff58a79c5fb3e56811bcf9a4315bfda" kindref="member">luaK_goiftrue</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*e);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a84aa56cf92c9d61e65101d54c6300b96" kindref="member">luaK_storevar</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*var,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*e);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1acae0354c40f684d990fd3aa73bbcd770" kindref="member">luaK_setreturns</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*e,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nresults);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a890dbdb46581586862dbcf56b077f97f" kindref="member">luaK_setoneret</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*e);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a67cd7ce15260791b3348dfe0af04a444" kindref="member">luaK_jump</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1aa7c34b815a59b7ed4b5d585825cad475" kindref="member">luaK_ret</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>first,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nret);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a8efbcf17cf978cc2bac3e08f755677bd" kindref="member">luaK_patchlist</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>list,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>target);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a46bd7bbdf259cca73b0b0b833880df51" kindref="member">luaK_patchtohere</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>list);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a0abd5e7a52c17bcf3ffe02ebaa771ff2" kindref="member">luaK_concat</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>*l1,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>l2);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1aab3ec26384fa706960da17c9a3ed5057" kindref="member">luaK_getlabel</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a108f48cde9af08a87347aa6380a4a015" kindref="member">luaK_prefix</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="lcode_8h_1a36fd1054d39d6fc3373303522a7ef534" kindref="member">UnOpr</ref><sp/>op,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*v,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>line);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1ad66fe8cd73e03e0d604d8c9572011ee7" kindref="member">luaK_infix</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83" kindref="member">BinOpr</ref><sp/>op,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*v);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a2a87516e72f08e1b692331de96a6d8d6" kindref="member">luaK_posfix</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/><ref refid="lcode_8h_1ae9a305c1104efedfc54af8d08b942c83" kindref="member">BinOpr</ref><sp/>op,<sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*v1,</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structexpdesc" kindref="compound">expdesc</ref><sp/>*v2,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>line);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a661f2e8d150a8878e016813a1616d7f0" kindref="member">luaK_settablesize</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>pc,</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ra,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>asize,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>hsize);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a88808415ff9297023fb19b4e84a19033" kindref="member">luaK_setlist</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>base,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nelems,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>tostore);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lcode_8h_1a04b29cadb9bd98c501fa20e416d2ae5b" kindref="member">luaK_finish</ref><sp/>(<ref refid="struct_func_state" kindref="compound">FuncState</ref><sp/>*fs);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="llimits_8h_1a9f743fcc9a5278cb9ee10355f09f7302" kindref="member">l_noret</ref><sp/><ref refid="lcode_8h_1a4290952aac1956f4ca686c8bea0b2392" kindref="member">luaK_semerror</ref><sp/>(<ref refid="struct_lex_state" kindref="compound">LexState</ref><sp/>*ls,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*fmt,<sp/>...);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lcode.h"/>
+  </compounddef>
+</doxygen>

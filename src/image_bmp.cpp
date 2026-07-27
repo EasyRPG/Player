@@ -191,3 +191,4 @@ bool ImageBMP::Read(Filesystem_Stream::InputStream& stream, bool transparent, Im
 	std::vector<uint8_t> buffer = Utils::ReadStream(stream);
 	return Read(&buffer.front(), (unsigned) buffer.size(), transparent, output);
 }
+

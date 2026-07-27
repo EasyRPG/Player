@@ -1,0 +1,2661 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___variables" kind="class" language="C++" prot="public">
+    <compoundname>Game_Variables</compoundname>
+    <includes refid="game__variables_8h" local="no">game_variables.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" prot="public" static="no">
+        <type>int32_t</type>
+        <definition>using Game_Variables::Var_t = int32_t</definition>
+        <argsstring></argsstring>
+        <name>Var_t</name>
+        <qualifiedname>Game_Variables::Var_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="34" column="1" bodyfile="game_variables.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_game___variables_1a0bec30e68da9da0a91645cccda56d8af" prot="public" static="no">
+        <type>std::vector&lt; <ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref> &gt;</type>
+        <definition>using Game_Variables::Variables_t = std::vector&lt;Var_t&gt;</definition>
+        <argsstring></argsstring>
+        <name>Variables_t</name>
+        <qualifiedname>Game_Variables::Variables_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="35" column="1" bodyfile="game_variables.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_game___variables_1aa6fd54ba6de623a306a5f773a8c192dd" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Game_Variables::max_warnings</definition>
+        <argsstring></argsstring>
+        <name>max_warnings</name>
+        <qualifiedname>Game_Variables::max_warnings</qualifiedname>
+        <initializer>= 10</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="37" column="22" bodyfile="game_variables.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___variables_1a7fb4aa5ae8c4b16cf3bda74df6718fa3" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Var_t Game_Variables::min_2k</definition>
+        <argsstring></argsstring>
+        <name>min_2k</name>
+        <qualifiedname>Game_Variables::min_2k</qualifiedname>
+        <initializer>= -999999</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="38" column="24" bodyfile="game_variables.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___variables_1aa43cae31632e974001b3574fc6816545" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Var_t Game_Variables::max_2k</definition>
+        <argsstring></argsstring>
+        <name>max_2k</name>
+        <qualifiedname>Game_Variables::max_2k</qualifiedname>
+        <initializer>= 999999</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="39" column="24" bodyfile="game_variables.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___variables_1a0b89b3f070cbd9e07a7b63bc25aabb62" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Var_t Game_Variables::min_2k3</definition>
+        <argsstring></argsstring>
+        <name>min_2k3</name>
+        <qualifiedname>Game_Variables::min_2k3</qualifiedname>
+        <initializer>= -9999999</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="40" column="24" bodyfile="game_variables.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___variables_1a5e28315c9201ee6bca683af0c3caa8df" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Var_t Game_Variables::max_2k3</definition>
+        <argsstring></argsstring>
+        <name>max_2k3</name>
+        <qualifiedname>Game_Variables::max_2k3</qualifiedname>
+        <initializer>= 9999999</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="41" column="24" bodyfile="game_variables.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___variables_1a5aff5cef01d554f388c81a7d601913db" prot="private" static="no" mutable="no">
+        <type><ref refid="class_game___variables_1a0bec30e68da9da0a91645cccda56d8af" kindref="member">Variables_t</ref></type>
+        <definition>Variables_t Game_Variables::_variables</definition>
+        <argsstring></argsstring>
+        <name>_variables</name>
+        <qualifiedname>Game_Variables::_variables</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="161" column="13" bodyfile="game_variables.h" bodystart="161" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___variables_1aaa5befca0e9a38fb81f54f111aa618ec" prot="private" static="no" mutable="no">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Var_t Game_Variables::_min</definition>
+        <argsstring></argsstring>
+        <name>_min</name>
+        <qualifiedname>Game_Variables::_min</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="162" column="7" bodyfile="game_variables.h" bodystart="162" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___variables_1a60df79f35df2053653a5f6eea27a7b57" prot="private" static="no" mutable="no">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Var_t Game_Variables::_max</definition>
+        <argsstring></argsstring>
+        <name>_max</name>
+        <qualifiedname>Game_Variables::_max</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="163" column="7" bodyfile="game_variables.h" bodystart="163" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___variables_1af3ce4680d81a8901e6b9a6459b162441" prot="private" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t Game_Variables::lower_limit</definition>
+        <argsstring></argsstring>
+        <name>lower_limit</name>
+        <qualifiedname>Game_Variables::lower_limit</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="164" column="8" bodyfile="game_variables.h" bodystart="164" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___variables_1a8eb5fd93fccfbbea6e8311efd1b5590f" prot="private" static="no" mutable="yes">
+        <type>int</type>
+        <definition>int Game_Variables::_warnings</definition>
+        <argsstring></argsstring>
+        <name>_warnings</name>
+        <qualifiedname>Game_Variables::_warnings</qualifiedname>
+        <initializer>= <ref refid="class_game___variables_1aa6fd54ba6de623a306a5f773a8c192dd" kindref="member">max_warnings</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="165" column="13" bodyfile="game_variables.h" bodystart="165" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___variables_1ae00d6f1d42d1ddbb9850a6b8107045f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Variables::Game_Variables</definition>
+        <argsstring>(Var_t minval, Var_t maxval)</argsstring>
+        <name>Game_Variables</name>
+        <qualifiedname>Game_Variables::Game_Variables</qualifiedname>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>minval</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>maxval</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="43" column="1" bodyfile="game_variables.cpp" bodystart="133" bodyend="139"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1ad5fc1cf64e2a8145f0d0f16023025c9e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::SetData</definition>
+        <argsstring>(Variables_t)</argsstring>
+        <name>SetData</name>
+        <qualifiedname>Game_Variables::SetData</qualifiedname>
+        <param>
+          <type><ref refid="class_game___variables_1a0bec30e68da9da0a91645cccda56d8af" kindref="member">Variables_t</ref></type>
+          <defname>v</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="45" column="6" bodyfile="game_variables.h" bodystart="168" bodyend="170"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a02fb0107974ce2449d93bb6161eb8c29" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="class_game___variables_1a0bec30e68da9da0a91645cccda56d8af" kindref="member">Variables_t</ref> &amp;</type>
+        <definition>const Game_Variables::Variables_t &amp; Game_Variables::GetData</definition>
+        <argsstring>() const</argsstring>
+        <name>GetData</name>
+        <qualifiedname>Game_Variables::GetData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="46" column="19" bodyfile="game_variables.h" bodystart="172" bodyend="174"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a17a2113af52ea83069d760dd5d068e79" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::SetLowerLimit</definition>
+        <argsstring>(size_t limit)</argsstring>
+        <name>SetLowerLimit</name>
+        <qualifiedname>Game_Variables::SetLowerLimit</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>limit</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="48" column="6" bodyfile="game_variables.h" bodystart="176" bodyend="178"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Game_Variables::Var_t Game_Variables::Get</definition>
+        <argsstring>(int variable_id) const</argsstring>
+        <name>Get</name>
+        <qualifiedname>Game_Variables::Get</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="50" column="7" bodyfile="game_variables.h" bodystart="196" bodyend="204"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a11c9a90f8e69ba4cc1a2bcafdb413cf8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Game_Variables::Var_t Game_Variables::GetIndirect</definition>
+        <argsstring>(int variable_id) const</argsstring>
+        <name>GetIndirect</name>
+        <qualifiedname>Game_Variables::GetIndirect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="51" column="7" bodyfile="game_variables.h" bodystart="206" bodyend="209"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1ab3b0d3669cd93a22c23cc5e4fcc3112d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Var_t Game_Variables::GetWithMode</definition>
+        <argsstring>(int id, int mode) const</argsstring>
+        <name>GetWithMode</name>
+        <qualifiedname>Game_Variables::GetWithMode</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="52" column="7"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a7c52dd3cc5f4fe93788c3fcd0125c3a1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref> &gt;</type>
+        <definition>std::vector&lt; Var_t &gt; Game_Variables::GetRange</definition>
+        <argsstring>(int variable_id, int length)</argsstring>
+        <name>GetRange</name>
+        <qualifiedname>Game_Variables::GetRange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>length</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="53" column="13" bodyfile="game_variables.cpp" bodystart="212" bodyend="218"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1ac9b7db3b0a9a0721cde0fe06fa90337d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Game_Variables::Var_t Game_Variables::Set</definition>
+        <argsstring>(int variable_id, Var_t value)</argsstring>
+        <name>Set</name>
+        <qualifiedname>Game_Variables::Set</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="55" column="7" bodyfile="game_variables.cpp" bodystart="220" bodyend="222"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a00d10ea75a5affe7ce4ff600417b8fd8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Game_Variables::Var_t Game_Variables::Add</definition>
+        <argsstring>(int variable_id, Var_t value)</argsstring>
+        <name>Add</name>
+        <qualifiedname>Game_Variables::Add</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="56" column="7" bodyfile="game_variables.cpp" bodystart="224" bodyend="226"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1adc853fd7bfd9fa745d3d46f169844639" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Game_Variables::Var_t Game_Variables::Sub</definition>
+        <argsstring>(int variable_id, Var_t value)</argsstring>
+        <name>Sub</name>
+        <qualifiedname>Game_Variables::Sub</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="57" column="7" bodyfile="game_variables.cpp" bodystart="228" bodyend="230"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a034568be935750066a31521221dc34ae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Game_Variables::Var_t Game_Variables::Mult</definition>
+        <argsstring>(int variable_id, Var_t value)</argsstring>
+        <name>Mult</name>
+        <qualifiedname>Game_Variables::Mult</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="58" column="7" bodyfile="game_variables.cpp" bodystart="232" bodyend="234"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1aef56c165efd318ab06e982398c7abcaa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Game_Variables::Var_t Game_Variables::Div</definition>
+        <argsstring>(int variable_id, Var_t value)</argsstring>
+        <name>Div</name>
+        <qualifiedname>Game_Variables::Div</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="59" column="7" bodyfile="game_variables.cpp" bodystart="236" bodyend="238"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1aa5945bec38938f3653f1f7079faae0ec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Game_Variables::Var_t Game_Variables::Mod</definition>
+        <argsstring>(int variable_id, Var_t value)</argsstring>
+        <name>Mod</name>
+        <qualifiedname>Game_Variables::Mod</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="60" column="7" bodyfile="game_variables.cpp" bodystart="240" bodyend="242"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1adb0d0c63186d24ceda676e747003f3c8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Game_Variables::Var_t Game_Variables::BitOr</definition>
+        <argsstring>(int variable_id, Var_t value)</argsstring>
+        <name>BitOr</name>
+        <qualifiedname>Game_Variables::BitOr</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="61" column="7" bodyfile="game_variables.cpp" bodystart="244" bodyend="246"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1ae2e5e4d9c7df9487ae4f4fd553f7eeb0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Game_Variables::Var_t Game_Variables::BitAnd</definition>
+        <argsstring>(int variable_id, Var_t value)</argsstring>
+        <name>BitAnd</name>
+        <qualifiedname>Game_Variables::BitAnd</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="62" column="7" bodyfile="game_variables.cpp" bodystart="248" bodyend="250"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a382d8c60ad840d494c9c714707bda598" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Game_Variables::Var_t Game_Variables::BitXor</definition>
+        <argsstring>(int variable_id, Var_t value)</argsstring>
+        <name>BitXor</name>
+        <qualifiedname>Game_Variables::BitXor</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="63" column="7" bodyfile="game_variables.cpp" bodystart="252" bodyend="254"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1ad4f12ae690debe5098b6ee9a9060f58d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Game_Variables::Var_t Game_Variables::BitShiftLeft</definition>
+        <argsstring>(int variable_id, Var_t value)</argsstring>
+        <name>BitShiftLeft</name>
+        <qualifiedname>Game_Variables::BitShiftLeft</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="64" column="7" bodyfile="game_variables.cpp" bodystart="256" bodyend="258"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1acd8d7c060b13db9b26d636805fbac4d6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Game_Variables::Var_t Game_Variables::BitShiftRight</definition>
+        <argsstring>(int variable_id, Var_t value)</argsstring>
+        <name>BitShiftRight</name>
+        <qualifiedname>Game_Variables::BitShiftRight</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="65" column="7" bodyfile="game_variables.cpp" bodystart="260" bodyend="262"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a8771f393181b303ec2c59323414f6fb5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::SetRange</definition>
+        <argsstring>(int first_id, int last_id, Var_t value)</argsstring>
+        <name>SetRange</name>
+        <qualifiedname>Game_Variables::SetRange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="67" column="6" bodyfile="game_variables.cpp" bodystart="264" bodyend="267"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1ab9dbad38f6dd6ed9bc5d0bb2c54f0a2b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::AddRange</definition>
+        <argsstring>(int first_id, int last_id, Var_t value)</argsstring>
+        <name>AddRange</name>
+        <qualifiedname>Game_Variables::AddRange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="68" column="6" bodyfile="game_variables.cpp" bodystart="269" bodyend="272"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a999bb61982ff43db1cd0319b4eb66682" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::SubRange</definition>
+        <argsstring>(int first_id, int last_id, Var_t value)</argsstring>
+        <name>SubRange</name>
+        <qualifiedname>Game_Variables::SubRange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="69" column="6" bodyfile="game_variables.cpp" bodystart="274" bodyend="277"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a32f1ea14cacefe857213029378d2d3e2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::MultRange</definition>
+        <argsstring>(int first_id, int last_id, Var_t value)</argsstring>
+        <name>MultRange</name>
+        <qualifiedname>Game_Variables::MultRange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="70" column="6" bodyfile="game_variables.cpp" bodystart="279" bodyend="282"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a07e3178bdbf70577c3f77604b9a3a9b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::DivRange</definition>
+        <argsstring>(int first_id, int last_id, Var_t value)</argsstring>
+        <name>DivRange</name>
+        <qualifiedname>Game_Variables::DivRange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="71" column="6" bodyfile="game_variables.cpp" bodystart="284" bodyend="287"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1af89d7b219756a35638fc6f8b0c45a560" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::ModRange</definition>
+        <argsstring>(int first_id, int last_id, Var_t value)</argsstring>
+        <name>ModRange</name>
+        <qualifiedname>Game_Variables::ModRange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="72" column="6" bodyfile="game_variables.cpp" bodystart="289" bodyend="292"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a743ef50637db15b7bbea453841a3a2f4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitOrRange</definition>
+        <argsstring>(int first_id, int last_id, Var_t value)</argsstring>
+        <name>BitOrRange</name>
+        <qualifiedname>Game_Variables::BitOrRange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="73" column="6" bodyfile="game_variables.cpp" bodystart="294" bodyend="297"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a6b76072fd7ca2172b5dc25d424e4e9a2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitAndRange</definition>
+        <argsstring>(int first_id, int last_id, Var_t value)</argsstring>
+        <name>BitAndRange</name>
+        <qualifiedname>Game_Variables::BitAndRange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="74" column="6" bodyfile="game_variables.cpp" bodystart="299" bodyend="302"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a20660296fae0a8b75996a49f1df86633" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitXorRange</definition>
+        <argsstring>(int first_id, int last_id, Var_t value)</argsstring>
+        <name>BitXorRange</name>
+        <qualifiedname>Game_Variables::BitXorRange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="75" column="6" bodyfile="game_variables.cpp" bodystart="304" bodyend="307"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a113a7c1e1aa93d31b6fcf03b83a5eb8c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitShiftLeftRange</definition>
+        <argsstring>(int first_id, int last_id, Var_t value)</argsstring>
+        <name>BitShiftLeftRange</name>
+        <qualifiedname>Game_Variables::BitShiftLeftRange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="76" column="6" bodyfile="game_variables.cpp" bodystart="309" bodyend="312"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1aff121b414a62dc3605771ff5b8a397db" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitShiftRightRange</definition>
+        <argsstring>(int first_id, int last_id, Var_t value)</argsstring>
+        <name>BitShiftRightRange</name>
+        <qualifiedname>Game_Variables::BitShiftRightRange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="77" column="6" bodyfile="game_variables.cpp" bodystart="314" bodyend="317"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a36cb9db44a1a1c774ed38e124810ee08" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::SetRangeVariable</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>SetRangeVariable</name>
+        <qualifiedname>Game_Variables::SetRangeVariable</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="79" column="6" bodyfile="game_variables.cpp" bodystart="331" bodyend="334"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1adf3c33f74a348f56f500a683fb2d2bcf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::AddRangeVariable</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>AddRangeVariable</name>
+        <qualifiedname>Game_Variables::AddRangeVariable</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="80" column="6" bodyfile="game_variables.cpp" bodystart="336" bodyend="339"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a02e361d9b9ff261325eb2e702ef3e128" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::SubRangeVariable</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>SubRangeVariable</name>
+        <qualifiedname>Game_Variables::SubRangeVariable</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="81" column="6" bodyfile="game_variables.cpp" bodystart="341" bodyend="344"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a3fb348c119e20bd3bc2554e6855c3aba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::MultRangeVariable</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>MultRangeVariable</name>
+        <qualifiedname>Game_Variables::MultRangeVariable</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="82" column="6" bodyfile="game_variables.cpp" bodystart="346" bodyend="349"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1aacb103546cd1c4335a9f5b8470336356" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::DivRangeVariable</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>DivRangeVariable</name>
+        <qualifiedname>Game_Variables::DivRangeVariable</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="83" column="6" bodyfile="game_variables.cpp" bodystart="351" bodyend="354"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1aafccf406a869d2266c5e93e2bad8292f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::ModRangeVariable</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>ModRangeVariable</name>
+        <qualifiedname>Game_Variables::ModRangeVariable</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="84" column="6" bodyfile="game_variables.cpp" bodystart="356" bodyend="359"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1af8177238bb0345e8074cc9f5cb8a4b5e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitOrRangeVariable</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>BitOrRangeVariable</name>
+        <qualifiedname>Game_Variables::BitOrRangeVariable</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="85" column="6" bodyfile="game_variables.cpp" bodystart="361" bodyend="364"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a49d17d50ed574c6eb9533d59ce7a038e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitAndRangeVariable</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>BitAndRangeVariable</name>
+        <qualifiedname>Game_Variables::BitAndRangeVariable</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="86" column="6" bodyfile="game_variables.cpp" bodystart="366" bodyend="369"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a78368a02a32bc074f009dea2d8c4f31f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitXorRangeVariable</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>BitXorRangeVariable</name>
+        <qualifiedname>Game_Variables::BitXorRangeVariable</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="87" column="6" bodyfile="game_variables.cpp" bodystart="371" bodyend="374"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1ac752fe9250bf40bee424507d48d4f90f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitShiftLeftRangeVariable</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>BitShiftLeftRangeVariable</name>
+        <qualifiedname>Game_Variables::BitShiftLeftRangeVariable</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="88" column="6" bodyfile="game_variables.cpp" bodystart="376" bodyend="379"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a442a211ef8af3a7abf4b466b720da06f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitShiftRightRangeVariable</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>BitShiftRightRangeVariable</name>
+        <qualifiedname>Game_Variables::BitShiftRightRangeVariable</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="89" column="6" bodyfile="game_variables.cpp" bodystart="381" bodyend="384"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1aec0396c3279b4269cad3f6606e7a5123" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::SetRangeVariableIndirect</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>SetRangeVariableIndirect</name>
+        <qualifiedname>Game_Variables::SetRangeVariableIndirect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="91" column="6" bodyfile="game_variables.cpp" bodystart="386" bodyend="389"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a6ce58e6cdf7c8e561093f1ae6a22a3ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::AddRangeVariableIndirect</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>AddRangeVariableIndirect</name>
+        <qualifiedname>Game_Variables::AddRangeVariableIndirect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="92" column="6" bodyfile="game_variables.cpp" bodystart="391" bodyend="394"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a459fdf87a543aea60bfd7f18b0769dd2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::SubRangeVariableIndirect</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>SubRangeVariableIndirect</name>
+        <qualifiedname>Game_Variables::SubRangeVariableIndirect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="93" column="6" bodyfile="game_variables.cpp" bodystart="396" bodyend="399"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1ae3c8729779ed0e3d9985e59dfd1685ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::MultRangeVariableIndirect</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>MultRangeVariableIndirect</name>
+        <qualifiedname>Game_Variables::MultRangeVariableIndirect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="94" column="6" bodyfile="game_variables.cpp" bodystart="401" bodyend="404"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a306d962116db88b195c8330e412b6732" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::DivRangeVariableIndirect</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>DivRangeVariableIndirect</name>
+        <qualifiedname>Game_Variables::DivRangeVariableIndirect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="95" column="6" bodyfile="game_variables.cpp" bodystart="406" bodyend="409"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a9700839c839cbfd2ef82f67ce5967ffd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::ModRangeVariableIndirect</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>ModRangeVariableIndirect</name>
+        <qualifiedname>Game_Variables::ModRangeVariableIndirect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="96" column="6" bodyfile="game_variables.cpp" bodystart="411" bodyend="414"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a3d53130e992e0ddfc6697bfe45c1152a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitOrRangeVariableIndirect</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>BitOrRangeVariableIndirect</name>
+        <qualifiedname>Game_Variables::BitOrRangeVariableIndirect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="97" column="6" bodyfile="game_variables.cpp" bodystart="416" bodyend="419"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1ad14f83c9d5d8ea9f42b76d8ee666e302" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitAndRangeVariableIndirect</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>BitAndRangeVariableIndirect</name>
+        <qualifiedname>Game_Variables::BitAndRangeVariableIndirect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="98" column="6" bodyfile="game_variables.cpp" bodystart="421" bodyend="424"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a5a1bc63b6a2d8d5a31ecf389a8bc05f5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitXorRangeVariableIndirect</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>BitXorRangeVariableIndirect</name>
+        <qualifiedname>Game_Variables::BitXorRangeVariableIndirect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="99" column="6" bodyfile="game_variables.cpp" bodystart="426" bodyend="429"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a92a2b15e02fee42f732cb808aa012a1e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitShiftLeftRangeVariableIndirect</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>BitShiftLeftRangeVariableIndirect</name>
+        <qualifiedname>Game_Variables::BitShiftLeftRangeVariableIndirect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="100" column="6" bodyfile="game_variables.cpp" bodystart="431" bodyend="434"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a2211cd901f1eb5ac5d00bfb3d9cb5bf4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitShiftRightRangeVariableIndirect</definition>
+        <argsstring>(int first_id, int last_id, int var_id)</argsstring>
+        <name>BitShiftRightRangeVariableIndirect</name>
+        <qualifiedname>Game_Variables::BitShiftRightRangeVariableIndirect</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="101" column="6" bodyfile="game_variables.cpp" bodystart="436" bodyend="439"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a39dd2daf1c29afb808b6034e30c88af9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::SetRangeRandom</definition>
+        <argsstring>(int first_id, int last_id, Var_t minval, Var_t maxval)</argsstring>
+        <name>SetRangeRandom</name>
+        <qualifiedname>Game_Variables::SetRangeRandom</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>minval</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>maxval</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="103" column="6" bodyfile="game_variables.cpp" bodystart="441" bodyend="444"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1af56f456e58efc86f3f56db1517c8fb6c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::AddRangeRandom</definition>
+        <argsstring>(int first_id, int last_id, Var_t minval, Var_t maxval)</argsstring>
+        <name>AddRangeRandom</name>
+        <qualifiedname>Game_Variables::AddRangeRandom</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>minval</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>maxval</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="104" column="6" bodyfile="game_variables.cpp" bodystart="446" bodyend="449"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1abd960410d5c1d5d9b5370225ba39cdcc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::SubRangeRandom</definition>
+        <argsstring>(int first_id, int last_id, Var_t minval, Var_t maxval)</argsstring>
+        <name>SubRangeRandom</name>
+        <qualifiedname>Game_Variables::SubRangeRandom</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>minval</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>maxval</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="105" column="6" bodyfile="game_variables.cpp" bodystart="451" bodyend="454"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a21fcbe9fd45906f6ce4bdfb3150d9bdc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::MultRangeRandom</definition>
+        <argsstring>(int first_id, int last_id, Var_t minval, Var_t maxval)</argsstring>
+        <name>MultRangeRandom</name>
+        <qualifiedname>Game_Variables::MultRangeRandom</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>minval</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>maxval</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="106" column="6" bodyfile="game_variables.cpp" bodystart="456" bodyend="459"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a0577545ab4beea2bc1a194eb9a0b4ef8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::DivRangeRandom</definition>
+        <argsstring>(int first_id, int last_id, Var_t minval, Var_t maxval)</argsstring>
+        <name>DivRangeRandom</name>
+        <qualifiedname>Game_Variables::DivRangeRandom</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>minval</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>maxval</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="107" column="6" bodyfile="game_variables.cpp" bodystart="461" bodyend="464"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a4be5f633e61ac859249bdbe80535ad9e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::ModRangeRandom</definition>
+        <argsstring>(int first_id, int last_id, Var_t minval, Var_t maxval)</argsstring>
+        <name>ModRangeRandom</name>
+        <qualifiedname>Game_Variables::ModRangeRandom</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>minval</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>maxval</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="108" column="6" bodyfile="game_variables.cpp" bodystart="466" bodyend="469"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a52ad4c4ec798634a13e697c3ed007a44" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitOrRangeRandom</definition>
+        <argsstring>(int first_id, int last_id, Var_t minval, Var_t maxval)</argsstring>
+        <name>BitOrRangeRandom</name>
+        <qualifiedname>Game_Variables::BitOrRangeRandom</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>minval</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>maxval</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="109" column="6" bodyfile="game_variables.cpp" bodystart="471" bodyend="474"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a6a5cb5ba40898d8c99f178355a4385ea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitAndRangeRandom</definition>
+        <argsstring>(int first_id, int last_id, Var_t minval, Var_t maxval)</argsstring>
+        <name>BitAndRangeRandom</name>
+        <qualifiedname>Game_Variables::BitAndRangeRandom</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>minval</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>maxval</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="110" column="6" bodyfile="game_variables.cpp" bodystart="476" bodyend="479"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a30f7b0ff2d374de7bf34d598f27f2a5d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitXorRangeRandom</definition>
+        <argsstring>(int first_id, int last_id, Var_t minval, Var_t maxval)</argsstring>
+        <name>BitXorRangeRandom</name>
+        <qualifiedname>Game_Variables::BitXorRangeRandom</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>minval</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>maxval</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="111" column="6" bodyfile="game_variables.cpp" bodystart="481" bodyend="484"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a95eea66b1e0f564a7642c400da4c3efc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitShiftLeftRangeRandom</definition>
+        <argsstring>(int first_id, int last_id, Var_t minval, Var_t maxval)</argsstring>
+        <name>BitShiftLeftRangeRandom</name>
+        <qualifiedname>Game_Variables::BitShiftLeftRangeRandom</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>minval</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>maxval</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="112" column="6" bodyfile="game_variables.cpp" bodystart="486" bodyend="489"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a64dd68701474160ef67f492d2ddb2202" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitShiftRightRangeRandom</definition>
+        <argsstring>(int first_id, int last_id, Var_t minval, Var_t maxval)</argsstring>
+        <name>BitShiftRightRangeRandom</name>
+        <qualifiedname>Game_Variables::BitShiftRightRangeRandom</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>minval</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>maxval</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="113" column="6" bodyfile="game_variables.cpp" bodystart="491" bodyend="494"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a0f9fa43e3802ab8ed5600504f0827bc0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::EnumerateRange</definition>
+        <argsstring>(int first_id, int last_id, Var_t value)</argsstring>
+        <name>EnumerateRange</name>
+        <qualifiedname>Game_Variables::EnumerateRange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="115" column="6" bodyfile="game_variables.cpp" bodystart="496" bodyend="500"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a9e97a615b492e75b6a2f45079eba1b96" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::SortRange</definition>
+        <argsstring>(int first_id, int last_id, bool asc)</argsstring>
+        <name>SortRange</name>
+        <qualifiedname>Game_Variables::SortRange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>asc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="116" column="6" bodyfile="game_variables.cpp" bodystart="502" bodyend="516"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a802be8f55c0c81c07dfb76357150086b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::ShuffleRange</definition>
+        <argsstring>(int first_id, int last_id)</argsstring>
+        <name>ShuffleRange</name>
+        <qualifiedname>Game_Variables::ShuffleRange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="117" column="6" bodyfile="game_variables.cpp" bodystart="518" bodyend="525"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a16db8e4c60a57d5beecdff0deb20896e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::SetArray</definition>
+        <argsstring>(int first_id_a, int last_id_a, int first_id_b)</argsstring>
+        <name>SetArray</name>
+        <qualifiedname>Game_Variables::SetArray</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>first_id_b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="119" column="6" bodyfile="game_variables.cpp" bodystart="527" bodyend="544"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a318abd91a37634ed4d1e6c6bee8c5512" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::AddArray</definition>
+        <argsstring>(int first_id_a, int last_id_a, int first_id_b)</argsstring>
+        <name>AddArray</name>
+        <qualifiedname>Game_Variables::AddArray</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>first_id_b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="120" column="6" bodyfile="game_variables.cpp" bodystart="546" bodyend="549"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1ae6928d10967d8cd596ef13ac815368bc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::SubArray</definition>
+        <argsstring>(int first_id_a, int last_id_a, int first_id_b)</argsstring>
+        <name>SubArray</name>
+        <qualifiedname>Game_Variables::SubArray</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>first_id_b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="121" column="6" bodyfile="game_variables.cpp" bodystart="551" bodyend="554"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a436d75867c17edc363bf1afffe0c2e8d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::MultArray</definition>
+        <argsstring>(int first_id_a, int last_id_a, int first_id_b)</argsstring>
+        <name>MultArray</name>
+        <qualifiedname>Game_Variables::MultArray</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>first_id_b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="122" column="6" bodyfile="game_variables.cpp" bodystart="556" bodyend="559"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a6ffa87aea2298579fa9f674bca371079" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::DivArray</definition>
+        <argsstring>(int first_id_a, int last_id_a, int first_id_b)</argsstring>
+        <name>DivArray</name>
+        <qualifiedname>Game_Variables::DivArray</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>first_id_b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="123" column="6" bodyfile="game_variables.cpp" bodystart="561" bodyend="564"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a6176115b3c3efed66fa4b89bbf695918" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::ModArray</definition>
+        <argsstring>(int first_id_a, int last_id_a, int first_id_b)</argsstring>
+        <name>ModArray</name>
+        <qualifiedname>Game_Variables::ModArray</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>first_id_b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="124" column="6" bodyfile="game_variables.cpp" bodystart="566" bodyend="569"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a390751e8d23810679507cd93326f7733" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitOrArray</definition>
+        <argsstring>(int first_id_a, int last_id_a, int first_id_b)</argsstring>
+        <name>BitOrArray</name>
+        <qualifiedname>Game_Variables::BitOrArray</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>first_id_b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="125" column="6" bodyfile="game_variables.cpp" bodystart="571" bodyend="574"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a13fbd1bb9afa7e4125ad4c6e09bf67eb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitAndArray</definition>
+        <argsstring>(int first_id_a, int last_id_a, int first_id_b)</argsstring>
+        <name>BitAndArray</name>
+        <qualifiedname>Game_Variables::BitAndArray</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>first_id_b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="126" column="6" bodyfile="game_variables.cpp" bodystart="576" bodyend="579"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a59bddba20cea80d1a7c5baabf288f23d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitXorArray</definition>
+        <argsstring>(int first_id_a, int last_id_a, int first_id_b)</argsstring>
+        <name>BitXorArray</name>
+        <qualifiedname>Game_Variables::BitXorArray</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>first_id_b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="127" column="6" bodyfile="game_variables.cpp" bodystart="581" bodyend="584"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a426c8c1c224af0b74d7665f5eb40aac2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitShiftLeftArray</definition>
+        <argsstring>(int first_id_a, int last_id_a, int first_id_b)</argsstring>
+        <name>BitShiftLeftArray</name>
+        <qualifiedname>Game_Variables::BitShiftLeftArray</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>first_id_b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="128" column="6" bodyfile="game_variables.cpp" bodystart="586" bodyend="589"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a809600c99d7b84fb90b2527d09a40c38" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::BitShiftRightArray</definition>
+        <argsstring>(int first_id_a, int last_id_a, int first_id_b)</argsstring>
+        <name>BitShiftRightArray</name>
+        <qualifiedname>Game_Variables::BitShiftRightArray</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>first_id_b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="129" column="6" bodyfile="game_variables.cpp" bodystart="591" bodyend="594"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a70b42e2d7cecc40b14a3502664aa4063" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::SwapArray</definition>
+        <argsstring>(int first_id_a, int last_id_a, int first_id_b)</argsstring>
+        <name>SwapArray</name>
+        <qualifiedname>Game_Variables::SwapArray</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id_a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>first_id_b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="130" column="6" bodyfile="game_variables.cpp" bodystart="596" bodyend="605"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1aad50284b378cecb51d27d4d4a1d8a602" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_Variables::GetName</definition>
+        <argsstring>(int _id) const</argsstring>
+        <name>GetName</name>
+        <qualifiedname>Game_Variables::GetName</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="132" column="18" bodyfile="game_variables.cpp" bodystart="607" bodyend="616"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1ab86ff52fab3a284811d7a0bbadcadc28" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Variables::GetSize</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSize</name>
+        <qualifiedname>Game_Variables::GetSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="134" column="5" bodyfile="game_variables.h" bodystart="180" bodyend="182"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1adeee3e510811c88f79e292cfaa6e3cce" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Variables::GetSizeWithLimit</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSizeWithLimit</name>
+        <qualifiedname>Game_Variables::GetSizeWithLimit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="135" column="5" bodyfile="game_variables.h" bodystart="184" bodyend="186"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1af0ef985eb05a2983cb773017f515ccb7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Variables::IsValid</definition>
+        <argsstring>(int variable_id) const</argsstring>
+        <name>IsValid</name>
+        <qualifiedname>Game_Variables::IsValid</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="137" column="6" bodyfile="game_variables.h" bodystart="188" bodyend="190"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a0635c339c4bfd8810ff88efe10478088" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::SetWarning</definition>
+        <argsstring>(int w)</argsstring>
+        <name>SetWarning</name>
+        <qualifiedname>Game_Variables::SetWarning</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>w</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="139" column="6" bodyfile="game_variables.h" bodystart="211" bodyend="213"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1adceebdc751835592784898f090ce2bc9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Game_Variables::Var_t Game_Variables::GetMaxValue</definition>
+        <argsstring>() const</argsstring>
+        <name>GetMaxValue</name>
+        <qualifiedname>Game_Variables::GetMaxValue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="141" column="7" bodyfile="game_variables.h" bodystart="215" bodyend="217"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a6fab88d0dfe8dc1f817ad6dcb4bf241a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Game_Variables::Var_t Game_Variables::GetMinValue</definition>
+        <argsstring>() const</argsstring>
+        <name>GetMinValue</name>
+        <qualifiedname>Game_Variables::GetMinValue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="142" column="7" bodyfile="game_variables.h" bodystart="219" bodyend="221"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a0d4db7f16c886480296008b9b4ea3305" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Variables::GetMaxDigits</definition>
+        <argsstring>() const</argsstring>
+        <name>GetMaxDigits</name>
+        <qualifiedname>Game_Variables::GetMaxDigits</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="144" column="5" bodyfile="game_variables.cpp" bodystart="618" bodyend="621"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_game___variables_1a93a5841a70895641818fae8e0303bab8" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Variables::ShouldWarn</definition>
+        <argsstring>(int first_id, int last_id) const</argsstring>
+        <name>ShouldWarn</name>
+        <qualifiedname>Game_Variables::ShouldWarn</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>last_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="146" column="6" bodyfile="game_variables.h" bodystart="192" bodyend="194"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a7c3d91c897b54f7a8b43d324d1345fd4" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Variables::WarnGet</definition>
+        <argsstring>(int variable_id) const</argsstring>
+        <name>WarnGet</name>
+        <qualifiedname>Game_Variables::WarnGet</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="147" column="6" bodyfile="game_variables.cpp" bodystart="141" bodyend="144"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a628758f95bbca5f4fee44b41a72d7023" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+        <definition>Game_Variables::Var_t Game_Variables::SetOp</definition>
+        <argsstring>(int variable_id, Var_t value, F &amp;&amp;op, const char *warn)</argsstring>
+        <name>SetOp</name>
+        <qualifiedname>Game_Variables::SetOp</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>variable_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" kindref="member">Var_t</ref></type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>warn</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="149" column="7" bodyfile="game_variables.cpp" bodystart="147" bodyend="162"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1af0bbbd3781c4f95492c1b13a37886f45" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Game_Variables::PrepareRange</definition>
+        <argsstring>(const int first_id, const int last_id, const char *warn, Args... args)</argsstring>
+        <name>PrepareRange</name>
+        <qualifiedname>Game_Variables::PrepareRange</qualifiedname>
+        <param>
+          <type>const int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>warn</declname>
+        </param>
+        <param>
+          <type>Args...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="151" column="6" bodyfile="game_variables.cpp" bodystart="165" bodyend="174"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1acc6c6500bcf8d909f4b2fc5561a82e3b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Game_Variables::PrepareArray</definition>
+        <argsstring>(const int first_id_a, const int last_id_a, const int first_id_b, const char *warn, Args... args)</argsstring>
+        <name>PrepareArray</name>
+        <qualifiedname>Game_Variables::PrepareArray</qualifiedname>
+        <param>
+          <type>const int</type>
+          <declname>first_id_a</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>last_id_a</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>first_id_b</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>warn</declname>
+        </param>
+        <param>
+          <type>Args...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="153" column="6" bodyfile="game_variables.cpp" bodystart="177" bodyend="190"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1ab9194b9d564e03bd78112562e0eae1d7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename V</type>
+          </param>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Game_Variables::WriteRange</definition>
+        <argsstring>(const int first_id, const int last_id, V &amp;&amp;value, F &amp;&amp;op)</argsstring>
+        <name>WriteRange</name>
+        <qualifiedname>Game_Variables::WriteRange</qualifiedname>
+        <param>
+          <type>const int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>V &amp;&amp;</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="155" column="6" bodyfile="game_variables.cpp" bodystart="193" bodyend="199"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a9c4abe0972423f6a1226042261ecea39" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Game_Variables::WriteRangeVariable</definition>
+        <argsstring>(const int first_id, const int last_id, int var_id, F &amp;&amp;op)</argsstring>
+        <name>WriteRangeVariable</name>
+        <qualifiedname>Game_Variables::WriteRangeVariable</qualifiedname>
+        <param>
+          <type>const int</type>
+          <declname>first_id</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>last_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="157" column="6" bodyfile="game_variables.cpp" bodystart="320" bodyend="328"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___variables_1a8958f964338835e6e0f835b8d1c4fb37" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Game_Variables::WriteArray</definition>
+        <argsstring>(const int first_id_a, const int last_id_a, const int first_id_b, F &amp;&amp;op)</argsstring>
+        <name>WriteArray</name>
+        <qualifiedname>Game_Variables::WriteArray</qualifiedname>
+        <param>
+          <type>const int</type>
+          <declname>first_id_a</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>last_id_a</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>first_id_b</declname>
+        </param>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_variables.h" line="159" column="6" bodyfile="game_variables.cpp" bodystart="202" bodyend="210"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_game___variables" kindref="compound">Game_Variables</ref> class. </para>
+    </detaileddescription>
+    <location file="game_variables.h" line="32" column="1" bodyfile="game_variables.h" bodystart="32" bodyend="166"/>
+    <listofallmembers>
+      <member refid="class_game___variables_1a60df79f35df2053653a5f6eea27a7b57" prot="private" virt="non-virtual"><scope>Game_Variables</scope><name>_max</name></member>
+      <member refid="class_game___variables_1aaa5befca0e9a38fb81f54f111aa618ec" prot="private" virt="non-virtual"><scope>Game_Variables</scope><name>_min</name></member>
+      <member refid="class_game___variables_1a5aff5cef01d554f388c81a7d601913db" prot="private" virt="non-virtual"><scope>Game_Variables</scope><name>_variables</name></member>
+      <member refid="class_game___variables_1a8eb5fd93fccfbbea6e8311efd1b5590f" prot="private" virt="non-virtual"><scope>Game_Variables</scope><name>_warnings</name></member>
+      <member refid="class_game___variables_1a00d10ea75a5affe7ce4ff600417b8fd8" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>Add</name></member>
+      <member refid="class_game___variables_1a318abd91a37634ed4d1e6c6bee8c5512" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>AddArray</name></member>
+      <member refid="class_game___variables_1ab9dbad38f6dd6ed9bc5d0bb2c54f0a2b" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>AddRange</name></member>
+      <member refid="class_game___variables_1af56f456e58efc86f3f56db1517c8fb6c" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>AddRangeRandom</name></member>
+      <member refid="class_game___variables_1adf3c33f74a348f56f500a683fb2d2bcf" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>AddRangeVariable</name></member>
+      <member refid="class_game___variables_1a6ce58e6cdf7c8e561093f1ae6a22a3ed" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>AddRangeVariableIndirect</name></member>
+      <member refid="class_game___variables_1ae2e5e4d9c7df9487ae4f4fd553f7eeb0" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitAnd</name></member>
+      <member refid="class_game___variables_1a13fbd1bb9afa7e4125ad4c6e09bf67eb" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitAndArray</name></member>
+      <member refid="class_game___variables_1a6b76072fd7ca2172b5dc25d424e4e9a2" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitAndRange</name></member>
+      <member refid="class_game___variables_1a6a5cb5ba40898d8c99f178355a4385ea" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitAndRangeRandom</name></member>
+      <member refid="class_game___variables_1a49d17d50ed574c6eb9533d59ce7a038e" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitAndRangeVariable</name></member>
+      <member refid="class_game___variables_1ad14f83c9d5d8ea9f42b76d8ee666e302" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitAndRangeVariableIndirect</name></member>
+      <member refid="class_game___variables_1adb0d0c63186d24ceda676e747003f3c8" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitOr</name></member>
+      <member refid="class_game___variables_1a390751e8d23810679507cd93326f7733" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitOrArray</name></member>
+      <member refid="class_game___variables_1a743ef50637db15b7bbea453841a3a2f4" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitOrRange</name></member>
+      <member refid="class_game___variables_1a52ad4c4ec798634a13e697c3ed007a44" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitOrRangeRandom</name></member>
+      <member refid="class_game___variables_1af8177238bb0345e8074cc9f5cb8a4b5e" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitOrRangeVariable</name></member>
+      <member refid="class_game___variables_1a3d53130e992e0ddfc6697bfe45c1152a" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitOrRangeVariableIndirect</name></member>
+      <member refid="class_game___variables_1ad4f12ae690debe5098b6ee9a9060f58d" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitShiftLeft</name></member>
+      <member refid="class_game___variables_1a426c8c1c224af0b74d7665f5eb40aac2" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitShiftLeftArray</name></member>
+      <member refid="class_game___variables_1a113a7c1e1aa93d31b6fcf03b83a5eb8c" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitShiftLeftRange</name></member>
+      <member refid="class_game___variables_1a95eea66b1e0f564a7642c400da4c3efc" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitShiftLeftRangeRandom</name></member>
+      <member refid="class_game___variables_1ac752fe9250bf40bee424507d48d4f90f" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitShiftLeftRangeVariable</name></member>
+      <member refid="class_game___variables_1a92a2b15e02fee42f732cb808aa012a1e" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitShiftLeftRangeVariableIndirect</name></member>
+      <member refid="class_game___variables_1acd8d7c060b13db9b26d636805fbac4d6" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitShiftRight</name></member>
+      <member refid="class_game___variables_1a809600c99d7b84fb90b2527d09a40c38" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitShiftRightArray</name></member>
+      <member refid="class_game___variables_1aff121b414a62dc3605771ff5b8a397db" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitShiftRightRange</name></member>
+      <member refid="class_game___variables_1a64dd68701474160ef67f492d2ddb2202" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitShiftRightRangeRandom</name></member>
+      <member refid="class_game___variables_1a442a211ef8af3a7abf4b466b720da06f" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitShiftRightRangeVariable</name></member>
+      <member refid="class_game___variables_1a2211cd901f1eb5ac5d00bfb3d9cb5bf4" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitShiftRightRangeVariableIndirect</name></member>
+      <member refid="class_game___variables_1a382d8c60ad840d494c9c714707bda598" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitXor</name></member>
+      <member refid="class_game___variables_1a59bddba20cea80d1a7c5baabf288f23d" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitXorArray</name></member>
+      <member refid="class_game___variables_1a20660296fae0a8b75996a49f1df86633" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitXorRange</name></member>
+      <member refid="class_game___variables_1a30f7b0ff2d374de7bf34d598f27f2a5d" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitXorRangeRandom</name></member>
+      <member refid="class_game___variables_1a78368a02a32bc074f009dea2d8c4f31f" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitXorRangeVariable</name></member>
+      <member refid="class_game___variables_1a5a1bc63b6a2d8d5a31ecf389a8bc05f5" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>BitXorRangeVariableIndirect</name></member>
+      <member refid="class_game___variables_1aef56c165efd318ab06e982398c7abcaa" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>Div</name></member>
+      <member refid="class_game___variables_1a6ffa87aea2298579fa9f674bca371079" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>DivArray</name></member>
+      <member refid="class_game___variables_1a07e3178bdbf70577c3f77604b9a3a9b3" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>DivRange</name></member>
+      <member refid="class_game___variables_1a0577545ab4beea2bc1a194eb9a0b4ef8" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>DivRangeRandom</name></member>
+      <member refid="class_game___variables_1aacb103546cd1c4335a9f5b8470336356" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>DivRangeVariable</name></member>
+      <member refid="class_game___variables_1a306d962116db88b195c8330e412b6732" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>DivRangeVariableIndirect</name></member>
+      <member refid="class_game___variables_1a0f9fa43e3802ab8ed5600504f0827bc0" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>EnumerateRange</name></member>
+      <member refid="class_game___variables_1ae00d6f1d42d1ddbb9850a6b8107045f1" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>Game_Variables</name></member>
+      <member refid="class_game___variables_1a416c2f6a7032a95f77945fe4b513bf44" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>Get</name></member>
+      <member refid="class_game___variables_1a02fb0107974ce2449d93bb6161eb8c29" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>GetData</name></member>
+      <member refid="class_game___variables_1a11c9a90f8e69ba4cc1a2bcafdb413cf8" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>GetIndirect</name></member>
+      <member refid="class_game___variables_1a0d4db7f16c886480296008b9b4ea3305" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>GetMaxDigits</name></member>
+      <member refid="class_game___variables_1adceebdc751835592784898f090ce2bc9" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>GetMaxValue</name></member>
+      <member refid="class_game___variables_1a6fab88d0dfe8dc1f817ad6dcb4bf241a" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>GetMinValue</name></member>
+      <member refid="class_game___variables_1aad50284b378cecb51d27d4d4a1d8a602" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>GetName</name></member>
+      <member refid="class_game___variables_1a7c52dd3cc5f4fe93788c3fcd0125c3a1" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>GetRange</name></member>
+      <member refid="class_game___variables_1ab86ff52fab3a284811d7a0bbadcadc28" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>GetSize</name></member>
+      <member refid="class_game___variables_1adeee3e510811c88f79e292cfaa6e3cce" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>GetSizeWithLimit</name></member>
+      <member refid="class_game___variables_1ab3b0d3669cd93a22c23cc5e4fcc3112d" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>GetWithMode</name></member>
+      <member refid="class_game___variables_1af0ef985eb05a2983cb773017f515ccb7" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>IsValid</name></member>
+      <member refid="class_game___variables_1af3ce4680d81a8901e6b9a6459b162441" prot="private" virt="non-virtual"><scope>Game_Variables</scope><name>lower_limit</name></member>
+      <member refid="class_game___variables_1aa43cae31632e974001b3574fc6816545" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>max_2k</name></member>
+      <member refid="class_game___variables_1a5e28315c9201ee6bca683af0c3caa8df" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>max_2k3</name></member>
+      <member refid="class_game___variables_1aa6fd54ba6de623a306a5f773a8c192dd" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>max_warnings</name></member>
+      <member refid="class_game___variables_1a7fb4aa5ae8c4b16cf3bda74df6718fa3" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>min_2k</name></member>
+      <member refid="class_game___variables_1a0b89b3f070cbd9e07a7b63bc25aabb62" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>min_2k3</name></member>
+      <member refid="class_game___variables_1aa5945bec38938f3653f1f7079faae0ec" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>Mod</name></member>
+      <member refid="class_game___variables_1a6176115b3c3efed66fa4b89bbf695918" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>ModArray</name></member>
+      <member refid="class_game___variables_1af89d7b219756a35638fc6f8b0c45a560" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>ModRange</name></member>
+      <member refid="class_game___variables_1a4be5f633e61ac859249bdbe80535ad9e" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>ModRangeRandom</name></member>
+      <member refid="class_game___variables_1aafccf406a869d2266c5e93e2bad8292f" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>ModRangeVariable</name></member>
+      <member refid="class_game___variables_1a9700839c839cbfd2ef82f67ce5967ffd" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>ModRangeVariableIndirect</name></member>
+      <member refid="class_game___variables_1a034568be935750066a31521221dc34ae" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>Mult</name></member>
+      <member refid="class_game___variables_1a436d75867c17edc363bf1afffe0c2e8d" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>MultArray</name></member>
+      <member refid="class_game___variables_1a32f1ea14cacefe857213029378d2d3e2" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>MultRange</name></member>
+      <member refid="class_game___variables_1a21fcbe9fd45906f6ce4bdfb3150d9bdc" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>MultRangeRandom</name></member>
+      <member refid="class_game___variables_1a3fb348c119e20bd3bc2554e6855c3aba" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>MultRangeVariable</name></member>
+      <member refid="class_game___variables_1ae3c8729779ed0e3d9985e59dfd1685ed" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>MultRangeVariableIndirect</name></member>
+      <member refid="class_game___variables_1acc6c6500bcf8d909f4b2fc5561a82e3b" prot="private" virt="non-virtual"><scope>Game_Variables</scope><name>PrepareArray</name></member>
+      <member refid="class_game___variables_1af0bbbd3781c4f95492c1b13a37886f45" prot="private" virt="non-virtual"><scope>Game_Variables</scope><name>PrepareRange</name></member>
+      <member refid="class_game___variables_1ac9b7db3b0a9a0721cde0fe06fa90337d" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>Set</name></member>
+      <member refid="class_game___variables_1a16db8e4c60a57d5beecdff0deb20896e" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>SetArray</name></member>
+      <member refid="class_game___variables_1ad5fc1cf64e2a8145f0d0f16023025c9e" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>SetData</name></member>
+      <member refid="class_game___variables_1a17a2113af52ea83069d760dd5d068e79" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>SetLowerLimit</name></member>
+      <member refid="class_game___variables_1a628758f95bbca5f4fee44b41a72d7023" prot="private" virt="non-virtual"><scope>Game_Variables</scope><name>SetOp</name></member>
+      <member refid="class_game___variables_1a8771f393181b303ec2c59323414f6fb5" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>SetRange</name></member>
+      <member refid="class_game___variables_1a39dd2daf1c29afb808b6034e30c88af9" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>SetRangeRandom</name></member>
+      <member refid="class_game___variables_1a36cb9db44a1a1c774ed38e124810ee08" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>SetRangeVariable</name></member>
+      <member refid="class_game___variables_1aec0396c3279b4269cad3f6606e7a5123" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>SetRangeVariableIndirect</name></member>
+      <member refid="class_game___variables_1a0635c339c4bfd8810ff88efe10478088" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>SetWarning</name></member>
+      <member refid="class_game___variables_1a93a5841a70895641818fae8e0303bab8" prot="private" virt="non-virtual"><scope>Game_Variables</scope><name>ShouldWarn</name></member>
+      <member refid="class_game___variables_1a802be8f55c0c81c07dfb76357150086b" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>ShuffleRange</name></member>
+      <member refid="class_game___variables_1a9e97a615b492e75b6a2f45079eba1b96" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>SortRange</name></member>
+      <member refid="class_game___variables_1adc853fd7bfd9fa745d3d46f169844639" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>Sub</name></member>
+      <member refid="class_game___variables_1ae6928d10967d8cd596ef13ac815368bc" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>SubArray</name></member>
+      <member refid="class_game___variables_1a999bb61982ff43db1cd0319b4eb66682" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>SubRange</name></member>
+      <member refid="class_game___variables_1abd960410d5c1d5d9b5370225ba39cdcc" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>SubRangeRandom</name></member>
+      <member refid="class_game___variables_1a02e361d9b9ff261325eb2e702ef3e128" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>SubRangeVariable</name></member>
+      <member refid="class_game___variables_1a459fdf87a543aea60bfd7f18b0769dd2" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>SubRangeVariableIndirect</name></member>
+      <member refid="class_game___variables_1a70b42e2d7cecc40b14a3502664aa4063" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>SwapArray</name></member>
+      <member refid="class_game___variables_1a4702b75bf2c5fc3d43f0da8b8f9770f6" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>Var_t</name></member>
+      <member refid="class_game___variables_1a0bec30e68da9da0a91645cccda56d8af" prot="public" virt="non-virtual"><scope>Game_Variables</scope><name>Variables_t</name></member>
+      <member refid="class_game___variables_1a7c3d91c897b54f7a8b43d324d1345fd4" prot="private" virt="non-virtual"><scope>Game_Variables</scope><name>WarnGet</name></member>
+      <member refid="class_game___variables_1a8958f964338835e6e0f835b8d1c4fb37" prot="private" virt="non-virtual"><scope>Game_Variables</scope><name>WriteArray</name></member>
+      <member refid="class_game___variables_1ab9194b9d564e03bd78112562e0eae1d7" prot="private" virt="non-virtual"><scope>Game_Variables</scope><name>WriteRange</name></member>
+      <member refid="class_game___variables_1a9c4abe0972423f6a1226042261ecea39" prot="private" virt="non-virtual"><scope>Game_Variables</scope><name>WriteRangeVariable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

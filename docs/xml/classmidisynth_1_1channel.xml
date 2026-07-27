@@ -1,0 +1,1579 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classmidisynth_1_1channel" kind="class" language="C++" prot="public">
+    <compoundname>midisynth::channel</compoundname>
+    <basecompoundref refid="classmidisynth_1_1uncopyable" prot="private" virt="non-virtual">midisynth::uncopyable</basecompoundref>
+    <includes refid="midisynth_8h" local="no">midisynth.h</includes>
+    <innerclass refid="structmidisynth_1_1channel_1_1_n_o_t_e" prot="private">midisynth::channel::NOTE</innerclass>
+    <sectiondef kind="private-type">
+      <memberdef kind="enum" id="classmidisynth_1_1channel_1a6ba25aa3d726add9f1b04f41a86caec0" prot="private" static="no" strong="no">
+        <type></type>
+        <name>@026204116060214175041266377024155167003003300362</name>
+        <qualifiedname>midisynth::channel::@026204116060214175041266377024155167003003300362</qualifiedname>
+        <enumvalue id="classmidisynth_1_1channel_1a6ba25aa3d726add9f1b04f41a86caec0a20d04d00dd36943400a940dc2647283a" prot="private">
+          <name>NUM_NOTES</name>
+          <initializer>= 128</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="92" column="9" bodyfile="midisynth.h" bodystart="92" bodyend="92"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1af580936954556f44ba4d87e307ec811e" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; NOTE &gt;</type>
+        <definition>std::vector&lt;NOTE&gt; midisynth::channel::notes</definition>
+        <argsstring></argsstring>
+        <name>notes</name>
+        <qualifiedname>midisynth::channel::notes</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="167" column="21" bodyfile="midisynth.h" bodystart="167" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1aaf9f0cecc23f9190cd4a695bb7d55dd0" prot="private" static="no" mutable="no">
+        <type><ref refid="classmidisynth_1_1note__factory" kindref="compound">note_factory</ref> *</type>
+        <definition>note_factory* midisynth::channel::factory</definition>
+        <argsstring></argsstring>
+        <name>factory</name>
+        <qualifiedname>midisynth::channel::factory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="168" column="22" bodyfile="midisynth.h" bodystart="168" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1a5d737d5f369cb9a93df79b59a73237e0" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::default_bank</definition>
+        <argsstring></argsstring>
+        <name>default_bank</name>
+        <qualifiedname>midisynth::channel::default_bank</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="169" column="13" bodyfile="midisynth.h" bodystart="169" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1aab7c774c8ee1d05c0eecdcb56e29878e" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::program</definition>
+        <argsstring></argsstring>
+        <name>program</name>
+        <qualifiedname>midisynth::channel::program</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="170" column="13" bodyfile="midisynth.h" bodystart="170" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1ac7a3fed53659d9de13fa58e8deaaf2d0" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::bank</definition>
+        <argsstring></argsstring>
+        <name>bank</name>
+        <qualifiedname>midisynth::channel::bank</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="171" column="13" bodyfile="midisynth.h" bodystart="171" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1a1892e1918fb9dc1888335e1821b306ed" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::panpot</definition>
+        <argsstring></argsstring>
+        <name>panpot</name>
+        <qualifiedname>midisynth::channel::panpot</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="172" column="13" bodyfile="midisynth.h" bodystart="172" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1a6bbbdb605fbebfc42f233395788a7004" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::volume</definition>
+        <argsstring></argsstring>
+        <name>volume</name>
+        <qualifiedname>midisynth::channel::volume</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="173" column="13" bodyfile="midisynth.h" bodystart="173" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1a37203162f7fb3e84440ade7c1c70166c" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::expression</definition>
+        <argsstring></argsstring>
+        <name>expression</name>
+        <qualifiedname>midisynth::channel::expression</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="174" column="13" bodyfile="midisynth.h" bodystart="174" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1adf8aec4ce1a3d2adf0154d87304924d0" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::pressure</definition>
+        <argsstring></argsstring>
+        <name>pressure</name>
+        <qualifiedname>midisynth::channel::pressure</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="175" column="13" bodyfile="midisynth.h" bodystart="175" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1abf066e126588490d74565519bac4151f" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::pitch_bend</definition>
+        <argsstring></argsstring>
+        <name>pitch_bend</name>
+        <qualifiedname>midisynth::channel::pitch_bend</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="176" column="13" bodyfile="midisynth.h" bodystart="176" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1adf9c6baba611b7c3e95ccd3f0b39f5dc" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::pitch_bend_sensitivity</definition>
+        <argsstring></argsstring>
+        <name>pitch_bend_sensitivity</name>
+        <qualifiedname>midisynth::channel::pitch_bend_sensitivity</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="177" column="13" bodyfile="midisynth.h" bodystart="177" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1ad4bd1a2ee3541cdc0ebb842a68835d37" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::modulation_depth</definition>
+        <argsstring></argsstring>
+        <name>modulation_depth</name>
+        <qualifiedname>midisynth::channel::modulation_depth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="178" column="13" bodyfile="midisynth.h" bodystart="178" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1a22bd2b10e5b21afe0dce41728c59c385" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::modulation_depth_range</definition>
+        <argsstring></argsstring>
+        <name>modulation_depth_range</name>
+        <qualifiedname>midisynth::channel::modulation_depth_range</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="179" column="13" bodyfile="midisynth.h" bodystart="179" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1a0505436d8bbdb10ef96bc6905dfb0ce7" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::damper</definition>
+        <argsstring></argsstring>
+        <name>damper</name>
+        <qualifiedname>midisynth::channel::damper</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="180" column="13" bodyfile="midisynth.h" bodystart="180" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1a81d07c1ee222f1093170cd74096b9d41" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::sostenute</definition>
+        <argsstring></argsstring>
+        <name>sostenute</name>
+        <qualifiedname>midisynth::channel::sostenute</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="181" column="13" bodyfile="midisynth.h" bodystart="181" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1ad9542b7917b32d615fe88f069c878a57" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::freeze</definition>
+        <argsstring></argsstring>
+        <name>freeze</name>
+        <qualifiedname>midisynth::channel::freeze</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="182" column="13" bodyfile="midisynth.h" bodystart="182" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1aba37ffd7146a446321fbf4556072893f" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::fine_tuning</definition>
+        <argsstring></argsstring>
+        <name>fine_tuning</name>
+        <qualifiedname>midisynth::channel::fine_tuning</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="183" column="13" bodyfile="midisynth.h" bodystart="183" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1ab932f3ad2d2acf2026c933257d5c3702" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::coarse_tuning</definition>
+        <argsstring></argsstring>
+        <name>coarse_tuning</name>
+        <qualifiedname>midisynth::channel::coarse_tuning</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="184" column="13" bodyfile="midisynth.h" bodystart="184" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1a75af2dc3569e2dbc5fcae648943603f3" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::RPN</definition>
+        <argsstring></argsstring>
+        <name>RPN</name>
+        <qualifiedname>midisynth::channel::RPN</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="185" column="13" bodyfile="midisynth.h" bodystart="185" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1a56b7d1291ebff21c2403abe1cebe7482" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int midisynth::channel::NRPN</definition>
+        <argsstring></argsstring>
+        <name>NRPN</name>
+        <qualifiedname>midisynth::channel::NRPN</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="186" column="13" bodyfile="midisynth.h" bodystart="186" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1a6b1816a733df368b2d50265c58846a4d" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool midisynth::channel::mono</definition>
+        <argsstring></argsstring>
+        <name>mono</name>
+        <qualifiedname>midisynth::channel::mono</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="187" column="14" bodyfile="midisynth.h" bodystart="187" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1a1e656cba0c04cf709385f1c9cd57bc7e" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool midisynth::channel::mute</definition>
+        <argsstring></argsstring>
+        <name>mute</name>
+        <qualifiedname>midisynth::channel::mute</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="188" column="14" bodyfile="midisynth.h" bodystart="188" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1a3fef3842c652af722ab69b39fa555e1d" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float midisynth::channel::tremolo_frequency</definition>
+        <argsstring></argsstring>
+        <name>tremolo_frequency</name>
+        <qualifiedname>midisynth::channel::tremolo_frequency</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="189" column="15" bodyfile="midisynth.h" bodystart="189" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1a7928981d49ba58c866e5227e25f3cb77" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float midisynth::channel::vibrato_frequency</definition>
+        <argsstring></argsstring>
+        <name>vibrato_frequency</name>
+        <qualifiedname>midisynth::channel::vibrato_frequency</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="190" column="15" bodyfile="midisynth.h" bodystart="190" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1a5cac0e03b978c3a025ddf9a108964740" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float midisynth::channel::frequency_multiplier</definition>
+        <argsstring></argsstring>
+        <name>frequency_multiplier</name>
+        <qualifiedname>midisynth::channel::frequency_multiplier</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="191" column="15" bodyfile="midisynth.h" bodystart="191" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1a7cac4b06eef2161dd8a487c9958c0c46" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float midisynth::channel::master_frequency_multiplier</definition>
+        <argsstring></argsstring>
+        <name>master_frequency_multiplier</name>
+        <qualifiedname>midisynth::channel::master_frequency_multiplier</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="192" column="15" bodyfile="midisynth.h" bodystart="192" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisynth_1_1channel_1a3dd274760e884455d915da518822c362" prot="private" static="no" mutable="no">
+        <type><ref refid="namespacemidisynth_1a036a2f6a076f1510e07168a6648e316e" kindref="member">system_mode_t</ref></type>
+        <definition>system_mode_t midisynth::channel::system_mode</definition>
+        <argsstring></argsstring>
+        <name>system_mode</name>
+        <qualifiedname>midisynth::channel::system_mode</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="193" column="23" bodyfile="midisynth.h" bodystart="193" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classmidisynth_1_1channel_1ab6b7cb5176088e2266097bcbea21bf3d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>midisynth::channel::channel</definition>
+        <argsstring>(note_factory *factory, int bank)</argsstring>
+        <name>channel</name>
+        <qualifiedname>midisynth::channel::channel</qualifiedname>
+        <param>
+          <type><ref refid="classmidisynth_1_1note__factory" kindref="compound">note_factory</ref> *</type>
+          <declname>factory</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>bank</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="94" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1ae96bb31e5b303284a506fc9b8a7295b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>midisynth::channel::~channel</definition>
+        <argsstring>()</argsstring>
+        <name>~channel</name>
+        <qualifiedname>midisynth::channel::~channel</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="95" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a48eb34baa018ee793871d003e02c1d11" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::synthesize</definition>
+        <argsstring>(int_least32_t *out, std::size_t samples, float rate, int_least32_t master_volume, int master_balance)</argsstring>
+        <name>synthesize</name>
+        <qualifiedname>midisynth::channel::synthesize</qualifiedname>
+        <param>
+          <type>int_least32_t *</type>
+          <declname>out</declname>
+        </param>
+        <param>
+          <type>std::size_t</type>
+          <declname>samples</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>rate</declname>
+        </param>
+        <param>
+          <type>int_least32_t</type>
+          <declname>master_volume</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>master_balance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="97" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1ad1a6e9bc8aa7c98368c353d7546ed1c6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::reset_all_parameters</definition>
+        <argsstring>()</argsstring>
+        <name>reset_all_parameters</name>
+        <qualifiedname>midisynth::channel::reset_all_parameters</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="98" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a4e977863c536b3181e1c193d1e254bf1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::reset_all_controller</definition>
+        <argsstring>()</argsstring>
+        <name>reset_all_controller</name>
+        <qualifiedname>midisynth::channel::reset_all_controller</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="99" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a66b9ffb97722048b93116f067be083d1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::all_note_off</definition>
+        <argsstring>()</argsstring>
+        <name>all_note_off</name>
+        <qualifiedname>midisynth::channel::all_note_off</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="100" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1ae8966afccbc45538b3db8c2408e87342" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::all_sound_off</definition>
+        <argsstring>()</argsstring>
+        <name>all_sound_off</name>
+        <qualifiedname>midisynth::channel::all_sound_off</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="101" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1aa88a311ba85bc285984808f56e9444af" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::all_sound_off_immediately</definition>
+        <argsstring>()</argsstring>
+        <name>all_sound_off_immediately</name>
+        <qualifiedname>midisynth::channel::all_sound_off_immediately</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="102" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a8e2d4faa03d7b4cf525cae33b323bc77" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::note_off</definition>
+        <argsstring>(int note, int velocity)</argsstring>
+        <name>note_off</name>
+        <qualifiedname>midisynth::channel::note_off</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>note</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>velocity</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="104" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1aef34afaa7a8edd10f78f2e5aa1456423" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::note_on</definition>
+        <argsstring>(int note, int velocity)</argsstring>
+        <name>note_on</name>
+        <qualifiedname>midisynth::channel::note_on</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>note</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>velocity</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="105" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a281f3648175aeb1d62f294028630e9bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::polyphonic_key_pressure</definition>
+        <argsstring>(int note, int value)</argsstring>
+        <name>polyphonic_key_pressure</name>
+        <qualifiedname>midisynth::channel::polyphonic_key_pressure</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>note</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="106" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1ac5762e09d007f6d6413354de11fd271d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::program_change</definition>
+        <argsstring>(int value)</argsstring>
+        <name>program_change</name>
+        <qualifiedname>midisynth::channel::program_change</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="107" column="14" bodyfile="midisynth.h" bodystart="107" bodyend="107"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a3950f1f4f2d15399bd4d1f0cdeb485ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::channel_pressure</definition>
+        <argsstring>(int value)</argsstring>
+        <name>channel_pressure</name>
+        <qualifiedname>midisynth::channel::channel_pressure</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="108" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a87841a432d80aa1621db5425d4095c41" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::pitch_bend_change</definition>
+        <argsstring>(int value)</argsstring>
+        <name>pitch_bend_change</name>
+        <qualifiedname>midisynth::channel::pitch_bend_change</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="109" column="14" bodyfile="midisynth.h" bodystart="109" bodyend="109"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a4e0056630ca45fc217578327f399c6b2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::control_change</definition>
+        <argsstring>(int control, int value)</argsstring>
+        <name>control_change</name>
+        <qualifiedname>midisynth::channel::control_change</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>control</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="110" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a13b52cab20152ee028e4b764bae3bad6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::bank_select</definition>
+        <argsstring>(int value)</argsstring>
+        <name>bank_select</name>
+        <qualifiedname>midisynth::channel::bank_select</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="111" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a76b9f835a3cd799e24507834547b5bd1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_bank</definition>
+        <argsstring>(int value)</argsstring>
+        <name>set_bank</name>
+        <qualifiedname>midisynth::channel::set_bank</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="113" column="14" bodyfile="midisynth.h" bodystart="113" bodyend="113"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1acdb32c5537bb8e4c620d53f09f865c07" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_program</definition>
+        <argsstring>(int value)</argsstring>
+        <name>set_program</name>
+        <qualifiedname>midisynth::channel::set_program</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="114" column="14" bodyfile="midisynth.h" bodystart="114" bodyend="114"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1aa41669ad8e0814319bce3d1b4d33f4c3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_panpot</definition>
+        <argsstring>(int value)</argsstring>
+        <name>set_panpot</name>
+        <qualifiedname>midisynth::channel::set_panpot</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="115" column="14" bodyfile="midisynth.h" bodystart="115" bodyend="115"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a346156535a191419e84a7b5b57b0a211" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_volume</definition>
+        <argsstring>(int value)</argsstring>
+        <name>set_volume</name>
+        <qualifiedname>midisynth::channel::set_volume</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="116" column="14" bodyfile="midisynth.h" bodystart="116" bodyend="116"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a5063b1c68c257e94a8ae00725df95ae0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_expression</definition>
+        <argsstring>(int value)</argsstring>
+        <name>set_expression</name>
+        <qualifiedname>midisynth::channel::set_expression</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="117" column="14" bodyfile="midisynth.h" bodystart="117" bodyend="117"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a8ad93a1e97e0aff3efa92c09356d24bf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_pitch_bend_sensitivity</definition>
+        <argsstring>(int value)</argsstring>
+        <name>set_pitch_bend_sensitivity</name>
+        <qualifiedname>midisynth::channel::set_pitch_bend_sensitivity</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="118" column="14" bodyfile="midisynth.h" bodystart="118" bodyend="118"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a490c53bf1881c1b43f798dd1b2755f1a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_modulation_depth</definition>
+        <argsstring>(int value)</argsstring>
+        <name>set_modulation_depth</name>
+        <qualifiedname>midisynth::channel::set_modulation_depth</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="119" column="14" bodyfile="midisynth.h" bodystart="119" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a1c13559d3ba5611b58ba278036051df2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_modulation_depth_range</definition>
+        <argsstring>(int value)</argsstring>
+        <name>set_modulation_depth_range</name>
+        <qualifiedname>midisynth::channel::set_modulation_depth_range</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="120" column="14" bodyfile="midisynth.h" bodystart="120" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a8e949b447e25d449c0a2bc513a3a2367" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_damper</definition>
+        <argsstring>(int value)</argsstring>
+        <name>set_damper</name>
+        <qualifiedname>midisynth::channel::set_damper</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="121" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1ad34fa44658c23ff155bf5652341cb368" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_sostenute</definition>
+        <argsstring>(int value)</argsstring>
+        <name>set_sostenute</name>
+        <qualifiedname>midisynth::channel::set_sostenute</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="122" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1ab565423c73f60be584bf8141b92e9549" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_freeze</definition>
+        <argsstring>(int value)</argsstring>
+        <name>set_freeze</name>
+        <qualifiedname>midisynth::channel::set_freeze</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="123" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1af4bcaebaf407292d662226548ec4c002" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_fine_tuning</definition>
+        <argsstring>(int value)</argsstring>
+        <name>set_fine_tuning</name>
+        <qualifiedname>midisynth::channel::set_fine_tuning</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="124" column="14" bodyfile="midisynth.h" bodystart="124" bodyend="124"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a7976ef07294b82af8b52d31db8ddd1b5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_coarse_tuning</definition>
+        <argsstring>(int value)</argsstring>
+        <name>set_coarse_tuning</name>
+        <qualifiedname>midisynth::channel::set_coarse_tuning</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="125" column="14" bodyfile="midisynth.h" bodystart="125" bodyend="125"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a88163291290cef1e61bd64b204684e27" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_RPN</definition>
+        <argsstring>(int value)</argsstring>
+        <name>set_RPN</name>
+        <qualifiedname>midisynth::channel::set_RPN</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="126" column="14" bodyfile="midisynth.h" bodystart="126" bodyend="126"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a7051c575266edb237f821bc2ecbb44df" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_NRPN</definition>
+        <argsstring>(int value)</argsstring>
+        <name>set_NRPN</name>
+        <qualifiedname>midisynth::channel::set_NRPN</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="127" column="14" bodyfile="midisynth.h" bodystart="127" bodyend="127"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a7d791c322badb37e65fb8186f0f1cbc6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_tremolo_frequency</definition>
+        <argsstring>(float value)</argsstring>
+        <name>set_tremolo_frequency</name>
+        <qualifiedname>midisynth::channel::set_tremolo_frequency</qualifiedname>
+        <param>
+          <type>float</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="128" column="14" bodyfile="midisynth.h" bodystart="128" bodyend="128"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1aeda2cdc49dde1617c01381cf66aca2a3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_vibrato_frequency</definition>
+        <argsstring>(float value)</argsstring>
+        <name>set_vibrato_frequency</name>
+        <qualifiedname>midisynth::channel::set_vibrato_frequency</qualifiedname>
+        <param>
+          <type>float</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="129" column="14" bodyfile="midisynth.h" bodystart="129" bodyend="129"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1abb6e2f2372d338fe9c9249b12c30eb93" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_master_frequency_multiplier</definition>
+        <argsstring>(float value)</argsstring>
+        <name>set_master_frequency_multiplier</name>
+        <qualifiedname>midisynth::channel::set_master_frequency_multiplier</qualifiedname>
+        <param>
+          <type>float</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="130" column="14" bodyfile="midisynth.h" bodystart="130" bodyend="130"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a5d3b9bf2948ffee5468fa301c11b4ac1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_mute</definition>
+        <argsstring>(bool mute_)</argsstring>
+        <name>set_mute</name>
+        <qualifiedname>midisynth::channel::set_mute</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>mute_</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="131" column="14" bodyfile="midisynth.h" bodystart="131" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a822d9f1c04cadd878fdcd15fca48450b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_system_mode</definition>
+        <argsstring>(system_mode_t mode)</argsstring>
+        <name>set_system_mode</name>
+        <qualifiedname>midisynth::channel::set_system_mode</qualifiedname>
+        <param>
+          <type><ref refid="namespacemidisynth_1a036a2f6a076f1510e07168a6648e316e" kindref="member">system_mode_t</ref></type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="132" column="14" bodyfile="midisynth.h" bodystart="132" bodyend="132"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a3b511f94293dc88fd931496175a46c0a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::mono_mode_on</definition>
+        <argsstring>()</argsstring>
+        <name>mono_mode_on</name>
+        <qualifiedname>midisynth::channel::mono_mode_on</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="133" column="14" bodyfile="midisynth.h" bodystart="133" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a07b0b090d01c7c28d82069e4089a513f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::poly_mode_on</definition>
+        <argsstring>()</argsstring>
+        <name>poly_mode_on</name>
+        <qualifiedname>midisynth::channel::poly_mode_on</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="134" column="14" bodyfile="midisynth.h" bodystart="134" bodyend="134"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1afd041c0994a7e417542b396afb8accaa" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_program</definition>
+        <argsstring>() const</argsstring>
+        <name>get_program</name>
+        <qualifiedname>midisynth::channel::get_program</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="136" column="13" bodyfile="midisynth.h" bodystart="136" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1aa0cdf26cf14c2f449a83b699264474f7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_bank</definition>
+        <argsstring>() const</argsstring>
+        <name>get_bank</name>
+        <qualifiedname>midisynth::channel::get_bank</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="137" column="13" bodyfile="midisynth.h" bodystart="137" bodyend="137"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1ad1a6957cf8b6873c63ee564d9624d693" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_panpot</definition>
+        <argsstring>() const</argsstring>
+        <name>get_panpot</name>
+        <qualifiedname>midisynth::channel::get_panpot</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="138" column="13" bodyfile="midisynth.h" bodystart="138" bodyend="138"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1ae78c2f24ecae5778b14e5d669148cd45" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_volume</definition>
+        <argsstring>() const</argsstring>
+        <name>get_volume</name>
+        <qualifiedname>midisynth::channel::get_volume</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="139" column="13" bodyfile="midisynth.h" bodystart="139" bodyend="139"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1afcecacbd573e9cc2264819fad1667a54" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_expression</definition>
+        <argsstring>() const</argsstring>
+        <name>get_expression</name>
+        <qualifiedname>midisynth::channel::get_expression</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="140" column="13" bodyfile="midisynth.h" bodystart="140" bodyend="140"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1ab4cd0b4d665f1b2220cf66911e23bc27" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_channel_pressure</definition>
+        <argsstring>() const</argsstring>
+        <name>get_channel_pressure</name>
+        <qualifiedname>midisynth::channel::get_channel_pressure</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="141" column="13" bodyfile="midisynth.h" bodystart="141" bodyend="141"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a8800c81f45976fc4a216bf268af038e2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_pitch_bend</definition>
+        <argsstring>() const</argsstring>
+        <name>get_pitch_bend</name>
+        <qualifiedname>midisynth::channel::get_pitch_bend</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="142" column="13" bodyfile="midisynth.h" bodystart="142" bodyend="142"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a9ba9b73dc4dd222681b27dbbaa3aa67c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_pitch_bend_sensitivity</definition>
+        <argsstring>() const</argsstring>
+        <name>get_pitch_bend_sensitivity</name>
+        <qualifiedname>midisynth::channel::get_pitch_bend_sensitivity</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="143" column="13" bodyfile="midisynth.h" bodystart="143" bodyend="143"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a7a42e16fd7698106319f4b7ef85de2b9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_modulation_depth</definition>
+        <argsstring>() const</argsstring>
+        <name>get_modulation_depth</name>
+        <qualifiedname>midisynth::channel::get_modulation_depth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="144" column="13" bodyfile="midisynth.h" bodystart="144" bodyend="144"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1ad9857b144fe8fc30dc9e5baed547d0e0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_modulation_depth_range</definition>
+        <argsstring>() const</argsstring>
+        <name>get_modulation_depth_range</name>
+        <qualifiedname>midisynth::channel::get_modulation_depth_range</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="145" column="13" bodyfile="midisynth.h" bodystart="145" bodyend="145"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1ae1e6d54765ce6a64d8aecb7af353fea3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_damper</definition>
+        <argsstring>() const</argsstring>
+        <name>get_damper</name>
+        <qualifiedname>midisynth::channel::get_damper</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="146" column="13" bodyfile="midisynth.h" bodystart="146" bodyend="146"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1abdf5d53dccfdbbb7c24abaa47056a503" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_sostenute</definition>
+        <argsstring>() const</argsstring>
+        <name>get_sostenute</name>
+        <qualifiedname>midisynth::channel::get_sostenute</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="147" column="13" bodyfile="midisynth.h" bodystart="147" bodyend="147"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1ab0a1873c527fffc716a5d03875343590" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_freeze</definition>
+        <argsstring>() const</argsstring>
+        <name>get_freeze</name>
+        <qualifiedname>midisynth::channel::get_freeze</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="148" column="13" bodyfile="midisynth.h" bodystart="148" bodyend="148"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1ab9822833df2c7e83f61fb839b18bf9e7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_fine_tuning</definition>
+        <argsstring>() const</argsstring>
+        <name>get_fine_tuning</name>
+        <qualifiedname>midisynth::channel::get_fine_tuning</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="149" column="13" bodyfile="midisynth.h" bodystart="149" bodyend="149"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1aaf10bf8c1681f69503a0baa7b7bc77f1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_coarse_tuning</definition>
+        <argsstring>() const</argsstring>
+        <name>get_coarse_tuning</name>
+        <qualifiedname>midisynth::channel::get_coarse_tuning</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="150" column="13" bodyfile="midisynth.h" bodystart="150" bodyend="150"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a55594154335c49c5a10b827d15706c8b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_RPN</definition>
+        <argsstring>() const</argsstring>
+        <name>get_RPN</name>
+        <qualifiedname>midisynth::channel::get_RPN</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="151" column="13" bodyfile="midisynth.h" bodystart="151" bodyend="151"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a7ddd54f89bda462a360e738542edbd8e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_NRPN</definition>
+        <argsstring>() const</argsstring>
+        <name>get_NRPN</name>
+        <qualifiedname>midisynth::channel::get_NRPN</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="152" column="13" bodyfile="midisynth.h" bodystart="152" bodyend="152"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a80f9bff00046c133ff6938b47aee3a55" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>float midisynth::channel::get_tremolo_frequency</definition>
+        <argsstring>() const</argsstring>
+        <name>get_tremolo_frequency</name>
+        <qualifiedname>midisynth::channel::get_tremolo_frequency</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="153" column="15" bodyfile="midisynth.h" bodystart="153" bodyend="153"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1aa151e3b3d39fa0a8d31e7f0b2ff279d6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>float</type>
+        <definition>float midisynth::channel::get_vibrato_frequency</definition>
+        <argsstring>() const</argsstring>
+        <name>get_vibrato_frequency</name>
+        <qualifiedname>midisynth::channel::get_vibrato_frequency</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="154" column="15" bodyfile="midisynth.h" bodystart="154" bodyend="154"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1aa75fd7c49fe78ef48929579b5557bbef" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool midisynth::channel::get_mute</definition>
+        <argsstring>() const</argsstring>
+        <name>get_mute</name>
+        <qualifiedname>midisynth::channel::get_mute</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="155" column="14" bodyfile="midisynth.h" bodystart="155" bodyend="155"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1adc0b9e13137b6e534328521a82d7a77c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool midisynth::channel::get_mono_mode</definition>
+        <argsstring>() const</argsstring>
+        <name>get_mono_mode</name>
+        <qualifiedname>midisynth::channel::get_mono_mode</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="156" column="14" bodyfile="midisynth.h" bodystart="156" bodyend="156"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a4ea3ef0eeca0028e384bc4e3214a4382" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisynth::channel::get_registered_parameter</definition>
+        <argsstring>()</argsstring>
+        <name>get_registered_parameter</name>
+        <qualifiedname>midisynth::channel::get_registered_parameter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="195" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a0cfacac66586733e8804aef529499ae1" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::set_registered_parameter</definition>
+        <argsstring>(int value)</argsstring>
+        <name>set_registered_parameter</name>
+        <qualifiedname>midisynth::channel::set_registered_parameter</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="196" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1a1377d9554100cef6eb03f78905ea5dc0" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::update_frequency_multiplier</definition>
+        <argsstring>()</argsstring>
+        <name>update_frequency_multiplier</name>
+        <qualifiedname>midisynth::channel::update_frequency_multiplier</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="197" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisynth_1_1channel_1af48673856b3b9aec612b33ae467c0440" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisynth::channel::update_modulation</definition>
+        <argsstring>()</argsstring>
+        <name>update_modulation</name>
+        <qualifiedname>midisynth::channel::update_modulation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="198" column="14"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>midisynth::channel</label>
+        <link refid="classmidisynth_1_1channel"/>
+        <childnode refid="2" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>midisynth::uncopyable</label>
+        <link refid="classmidisynth_1_1uncopyable"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>midisynth::channel</label>
+        <link refid="classmidisynth_1_1channel"/>
+        <childnode refid="2" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>midisynth::uncopyable</label>
+        <link refid="classmidisynth_1_1uncopyable"/>
+      </node>
+    </collaborationgraph>
+    <location file="midisynth.h" line="91" column="5" bodyfile="midisynth.h" bodystart="91" bodyend="199"/>
+    <listofallmembers>
+      <member refid="classmidisynth_1_1channel_1a66b9ffb97722048b93116f067be083d1" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>all_note_off</name></member>
+      <member refid="classmidisynth_1_1channel_1ae8966afccbc45538b3db8c2408e87342" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>all_sound_off</name></member>
+      <member refid="classmidisynth_1_1channel_1aa88a311ba85bc285984808f56e9444af" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>all_sound_off_immediately</name></member>
+      <member refid="classmidisynth_1_1channel_1ac7a3fed53659d9de13fa58e8deaaf2d0" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>bank</name></member>
+      <member refid="classmidisynth_1_1channel_1a13b52cab20152ee028e4b764bae3bad6" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>bank_select</name></member>
+      <member refid="classmidisynth_1_1channel_1ab6b7cb5176088e2266097bcbea21bf3d" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>channel</name></member>
+      <member refid="classmidisynth_1_1channel_1a3950f1f4f2d15399bd4d1f0cdeb485ba" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>channel_pressure</name></member>
+      <member refid="classmidisynth_1_1channel_1ab932f3ad2d2acf2026c933257d5c3702" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>coarse_tuning</name></member>
+      <member refid="classmidisynth_1_1channel_1a4e0056630ca45fc217578327f399c6b2" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>control_change</name></member>
+      <member refid="classmidisynth_1_1channel_1a0505436d8bbdb10ef96bc6905dfb0ce7" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>damper</name></member>
+      <member refid="classmidisynth_1_1channel_1a5d737d5f369cb9a93df79b59a73237e0" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>default_bank</name></member>
+      <member refid="classmidisynth_1_1channel_1a37203162f7fb3e84440ade7c1c70166c" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>expression</name></member>
+      <member refid="classmidisynth_1_1channel_1aaf9f0cecc23f9190cd4a695bb7d55dd0" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>factory</name></member>
+      <member refid="classmidisynth_1_1channel_1aba37ffd7146a446321fbf4556072893f" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>fine_tuning</name></member>
+      <member refid="classmidisynth_1_1channel_1ad9542b7917b32d615fe88f069c878a57" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>freeze</name></member>
+      <member refid="classmidisynth_1_1channel_1a5cac0e03b978c3a025ddf9a108964740" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>frequency_multiplier</name></member>
+      <member refid="classmidisynth_1_1channel_1aa0cdf26cf14c2f449a83b699264474f7" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_bank</name></member>
+      <member refid="classmidisynth_1_1channel_1ab4cd0b4d665f1b2220cf66911e23bc27" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_channel_pressure</name></member>
+      <member refid="classmidisynth_1_1channel_1aaf10bf8c1681f69503a0baa7b7bc77f1" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_coarse_tuning</name></member>
+      <member refid="classmidisynth_1_1channel_1ae1e6d54765ce6a64d8aecb7af353fea3" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_damper</name></member>
+      <member refid="classmidisynth_1_1channel_1afcecacbd573e9cc2264819fad1667a54" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_expression</name></member>
+      <member refid="classmidisynth_1_1channel_1ab9822833df2c7e83f61fb839b18bf9e7" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_fine_tuning</name></member>
+      <member refid="classmidisynth_1_1channel_1ab0a1873c527fffc716a5d03875343590" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_freeze</name></member>
+      <member refid="classmidisynth_1_1channel_1a7a42e16fd7698106319f4b7ef85de2b9" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_modulation_depth</name></member>
+      <member refid="classmidisynth_1_1channel_1ad9857b144fe8fc30dc9e5baed547d0e0" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_modulation_depth_range</name></member>
+      <member refid="classmidisynth_1_1channel_1adc0b9e13137b6e534328521a82d7a77c" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_mono_mode</name></member>
+      <member refid="classmidisynth_1_1channel_1aa75fd7c49fe78ef48929579b5557bbef" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_mute</name></member>
+      <member refid="classmidisynth_1_1channel_1a7ddd54f89bda462a360e738542edbd8e" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_NRPN</name></member>
+      <member refid="classmidisynth_1_1channel_1ad1a6957cf8b6873c63ee564d9624d693" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_panpot</name></member>
+      <member refid="classmidisynth_1_1channel_1a8800c81f45976fc4a216bf268af038e2" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_pitch_bend</name></member>
+      <member refid="classmidisynth_1_1channel_1a9ba9b73dc4dd222681b27dbbaa3aa67c" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_pitch_bend_sensitivity</name></member>
+      <member refid="classmidisynth_1_1channel_1afd041c0994a7e417542b396afb8accaa" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_program</name></member>
+      <member refid="classmidisynth_1_1channel_1a4ea3ef0eeca0028e384bc4e3214a4382" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>get_registered_parameter</name></member>
+      <member refid="classmidisynth_1_1channel_1a55594154335c49c5a10b827d15706c8b" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_RPN</name></member>
+      <member refid="classmidisynth_1_1channel_1abdf5d53dccfdbbb7c24abaa47056a503" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_sostenute</name></member>
+      <member refid="classmidisynth_1_1channel_1a80f9bff00046c133ff6938b47aee3a55" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_tremolo_frequency</name></member>
+      <member refid="classmidisynth_1_1channel_1aa151e3b3d39fa0a8d31e7f0b2ff279d6" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_vibrato_frequency</name></member>
+      <member refid="classmidisynth_1_1channel_1ae78c2f24ecae5778b14e5d669148cd45" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>get_volume</name></member>
+      <member refid="classmidisynth_1_1channel_1a7cac4b06eef2161dd8a487c9958c0c46" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>master_frequency_multiplier</name></member>
+      <member refid="classmidisynth_1_1channel_1ad4bd1a2ee3541cdc0ebb842a68835d37" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>modulation_depth</name></member>
+      <member refid="classmidisynth_1_1channel_1a22bd2b10e5b21afe0dce41728c59c385" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>modulation_depth_range</name></member>
+      <member refid="classmidisynth_1_1channel_1a6b1816a733df368b2d50265c58846a4d" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>mono</name></member>
+      <member refid="classmidisynth_1_1channel_1a3b511f94293dc88fd931496175a46c0a" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>mono_mode_on</name></member>
+      <member refid="classmidisynth_1_1channel_1a1e656cba0c04cf709385f1c9cd57bc7e" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>mute</name></member>
+      <member refid="classmidisynth_1_1channel_1a8e2d4faa03d7b4cf525cae33b323bc77" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>note_off</name></member>
+      <member refid="classmidisynth_1_1channel_1aef34afaa7a8edd10f78f2e5aa1456423" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>note_on</name></member>
+      <member refid="classmidisynth_1_1channel_1af580936954556f44ba4d87e307ec811e" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>notes</name></member>
+      <member refid="classmidisynth_1_1channel_1a56b7d1291ebff21c2403abe1cebe7482" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>NRPN</name></member>
+      <member refid="classmidisynth_1_1channel_1a6ba25aa3d726add9f1b04f41a86caec0a20d04d00dd36943400a940dc2647283a" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>NUM_NOTES</name></member>
+      <member refid="classmidisynth_1_1channel_1a1892e1918fb9dc1888335e1821b306ed" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>panpot</name></member>
+      <member refid="classmidisynth_1_1channel_1abf066e126588490d74565519bac4151f" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>pitch_bend</name></member>
+      <member refid="classmidisynth_1_1channel_1a87841a432d80aa1621db5425d4095c41" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>pitch_bend_change</name></member>
+      <member refid="classmidisynth_1_1channel_1adf9c6baba611b7c3e95ccd3f0b39f5dc" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>pitch_bend_sensitivity</name></member>
+      <member refid="classmidisynth_1_1channel_1a07b0b090d01c7c28d82069e4089a513f" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>poly_mode_on</name></member>
+      <member refid="classmidisynth_1_1channel_1a281f3648175aeb1d62f294028630e9bb" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>polyphonic_key_pressure</name></member>
+      <member refid="classmidisynth_1_1channel_1adf8aec4ce1a3d2adf0154d87304924d0" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>pressure</name></member>
+      <member refid="classmidisynth_1_1channel_1aab7c774c8ee1d05c0eecdcb56e29878e" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>program</name></member>
+      <member refid="classmidisynth_1_1channel_1ac5762e09d007f6d6413354de11fd271d" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>program_change</name></member>
+      <member refid="classmidisynth_1_1channel_1a4e977863c536b3181e1c193d1e254bf1" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>reset_all_controller</name></member>
+      <member refid="classmidisynth_1_1channel_1ad1a6e9bc8aa7c98368c353d7546ed1c6" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>reset_all_parameters</name></member>
+      <member refid="classmidisynth_1_1channel_1a75af2dc3569e2dbc5fcae648943603f3" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>RPN</name></member>
+      <member refid="classmidisynth_1_1channel_1a76b9f835a3cd799e24507834547b5bd1" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_bank</name></member>
+      <member refid="classmidisynth_1_1channel_1a7976ef07294b82af8b52d31db8ddd1b5" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_coarse_tuning</name></member>
+      <member refid="classmidisynth_1_1channel_1a8e949b447e25d449c0a2bc513a3a2367" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_damper</name></member>
+      <member refid="classmidisynth_1_1channel_1a5063b1c68c257e94a8ae00725df95ae0" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_expression</name></member>
+      <member refid="classmidisynth_1_1channel_1af4bcaebaf407292d662226548ec4c002" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_fine_tuning</name></member>
+      <member refid="classmidisynth_1_1channel_1ab565423c73f60be584bf8141b92e9549" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_freeze</name></member>
+      <member refid="classmidisynth_1_1channel_1abb6e2f2372d338fe9c9249b12c30eb93" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_master_frequency_multiplier</name></member>
+      <member refid="classmidisynth_1_1channel_1a490c53bf1881c1b43f798dd1b2755f1a" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_modulation_depth</name></member>
+      <member refid="classmidisynth_1_1channel_1a1c13559d3ba5611b58ba278036051df2" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_modulation_depth_range</name></member>
+      <member refid="classmidisynth_1_1channel_1a5d3b9bf2948ffee5468fa301c11b4ac1" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_mute</name></member>
+      <member refid="classmidisynth_1_1channel_1a7051c575266edb237f821bc2ecbb44df" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_NRPN</name></member>
+      <member refid="classmidisynth_1_1channel_1aa41669ad8e0814319bce3d1b4d33f4c3" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_panpot</name></member>
+      <member refid="classmidisynth_1_1channel_1a8ad93a1e97e0aff3efa92c09356d24bf" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_pitch_bend_sensitivity</name></member>
+      <member refid="classmidisynth_1_1channel_1acdb32c5537bb8e4c620d53f09f865c07" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_program</name></member>
+      <member refid="classmidisynth_1_1channel_1a0cfacac66586733e8804aef529499ae1" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>set_registered_parameter</name></member>
+      <member refid="classmidisynth_1_1channel_1a88163291290cef1e61bd64b204684e27" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_RPN</name></member>
+      <member refid="classmidisynth_1_1channel_1ad34fa44658c23ff155bf5652341cb368" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_sostenute</name></member>
+      <member refid="classmidisynth_1_1channel_1a822d9f1c04cadd878fdcd15fca48450b" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_system_mode</name></member>
+      <member refid="classmidisynth_1_1channel_1a7d791c322badb37e65fb8186f0f1cbc6" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_tremolo_frequency</name></member>
+      <member refid="classmidisynth_1_1channel_1aeda2cdc49dde1617c01381cf66aca2a3" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_vibrato_frequency</name></member>
+      <member refid="classmidisynth_1_1channel_1a346156535a191419e84a7b5b57b0a211" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>set_volume</name></member>
+      <member refid="classmidisynth_1_1channel_1a81d07c1ee222f1093170cd74096b9d41" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>sostenute</name></member>
+      <member refid="classmidisynth_1_1channel_1a48eb34baa018ee793871d003e02c1d11" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>synthesize</name></member>
+      <member refid="classmidisynth_1_1channel_1a3dd274760e884455d915da518822c362" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>system_mode</name></member>
+      <member refid="classmidisynth_1_1channel_1a3fef3842c652af722ab69b39fa555e1d" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>tremolo_frequency</name></member>
+      <member refid="classmidisynth_1_1channel_1a1377d9554100cef6eb03f78905ea5dc0" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>update_frequency_multiplier</name></member>
+      <member refid="classmidisynth_1_1channel_1af48673856b3b9aec612b33ae467c0440" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>update_modulation</name></member>
+      <member refid="classmidisynth_1_1channel_1a7928981d49ba58c866e5227e25f3cb77" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>vibrato_frequency</name></member>
+      <member refid="classmidisynth_1_1channel_1a6bbbdb605fbebfc42f233395788a7004" prot="private" virt="non-virtual"><scope>midisynth::channel</scope><name>volume</name></member>
+      <member refid="classmidisynth_1_1channel_1ae96bb31e5b303284a506fc9b8a7295b8" prot="public" virt="non-virtual"><scope>midisynth::channel</scope><name>~channel</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

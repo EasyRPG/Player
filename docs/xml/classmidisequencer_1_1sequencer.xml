@@ -1,0 +1,412 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classmidisequencer_1_1sequencer" kind="class" language="C++" prot="public">
+    <compoundname>midisequencer::sequencer</compoundname>
+    <basecompoundref refid="classmidisequencer_1_1uncopyable" prot="private" virt="non-virtual">midisequencer::uncopyable</basecompoundref>
+    <includes refid="midisequencer_8h" local="no">midisequencer.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classmidisequencer_1_1sequencer_1a624cc8e3200c2e68344a84284c0d408a" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="structmidisequencer_1_1midi__message" kindref="compound">midi_message</ref> &gt;</type>
+        <definition>std::vector&lt;midi_message&gt; midisequencer::sequencer::messages</definition>
+        <argsstring></argsstring>
+        <name>messages</name>
+        <qualifiedname>midisequencer::sequencer::messages</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="89" column="21" bodyfile="midisequencer.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisequencer_1_1sequencer_1aa3143032b76fdcab2f61b161d141a167" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="structmidisequencer_1_1midi__message" kindref="compound">midi_message</ref> &gt;::iterator</type>
+        <definition>std::vector&lt;midi_message&gt;::iterator midisequencer::sequencer::position</definition>
+        <argsstring></argsstring>
+        <name>position</name>
+        <qualifiedname>midisequencer::sequencer::position</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="90" column="32" bodyfile="midisequencer.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisequencer_1_1sequencer_1a79b4032b9ec47219fdbcaf4e4017ee88" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="structmidisequencer_1_1midi__message" kindref="compound">midi_message</ref> &gt;::iterator</type>
+        <definition>std::vector&lt;midi_message&gt;::iterator midisequencer::sequencer::loop_position</definition>
+        <argsstring></argsstring>
+        <name>loop_position</name>
+        <qualifiedname>midisequencer::sequencer::loop_position</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="91" column="32" bodyfile="midisequencer.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisequencer_1_1sequencer_1ad2a8fab441c6f2778e8239c14e3f8b48" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt;std::string&gt; midisequencer::sequencer::long_messages</definition>
+        <argsstring></argsstring>
+        <name>long_messages</name>
+        <qualifiedname>midisequencer::sequencer::long_messages</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="92" column="21" bodyfile="midisequencer.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmidisequencer_1_1sequencer_1ae9aa34ff1ddeac536c947eeeae824906" prot="private" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t midisequencer::sequencer::division</definition>
+        <argsstring></argsstring>
+        <name>division</name>
+        <qualifiedname>midisequencer::sequencer::division</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="93" column="18" bodyfile="midisequencer.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classmidisequencer_1_1sequencer_1a3044c1278949419c2e8a26d47673ee66" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>midisequencer::sequencer::sequencer</definition>
+        <argsstring>()</argsstring>
+        <name>sequencer</name>
+        <qualifiedname>midisequencer::sequencer::sequencer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="72" column="9" bodyfile="midisequencer.cpp" bodystart="60" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1sequencer_1a2724074abfc20243102611e36ca446b0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisequencer::sequencer::clear</definition>
+        <argsstring>()</argsstring>
+        <name>clear</name>
+        <qualifiedname>midisequencer::sequencer::clear</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="73" column="14" bodyfile="midisequencer.cpp" bodystart="65" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1sequencer_1a25675a7efb8539d8a3a723806715b8d3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisequencer::sequencer::rewind</definition>
+        <argsstring>()</argsstring>
+        <name>rewind</name>
+        <qualifiedname>midisequencer::sequencer::rewind</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="74" column="14" bodyfile="midisequencer.cpp" bodystart="71" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1sequencer_1ae8e2661b6905f6f81db8f15e43d9a602" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="structmidisequencer_1_1midi__message" kindref="compound">midi_message</ref> &gt;::iterator</type>
+        <definition>std::vector&lt; midi_message &gt;::iterator midisequencer::sequencer::rewind_to_loop</definition>
+        <argsstring>()</argsstring>
+        <name>rewind_to_loop</name>
+        <qualifiedname>midisequencer::sequencer::rewind_to_loop</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="75" column="32" bodyfile="midisequencer.cpp" bodystart="76" bodyend="83"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1sequencer_1a3ca82ad4dd266e7a612b125813e29f2a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool midisequencer::sequencer::is_at_end</definition>
+        <argsstring>()</argsstring>
+        <name>is_at_end</name>
+        <qualifiedname>midisequencer::sequencer::is_at_end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="76" column="14" bodyfile="midisequencer.cpp" bodystart="85" bodyend="88"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1sequencer_1ac6a0607711459afaefa527e72b787f51" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool midisequencer::sequencer::load</definition>
+        <argsstring>(void *fp, int(*fgetc)(void *))</argsstring>
+        <name>load</name>
+        <qualifiedname>midisequencer::sequencer::load</qualifiedname>
+        <param>
+          <type>void *</type>
+          <declname>fp</declname>
+        </param>
+        <param>
+          <type>int(*)(void *)</type>
+          <declname>fgetc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="77" column="14" bodyfile="midisequencer.cpp" bodystart="89" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1sequencer_1a503c61d41563900bfe56ef4c5015a5fc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool midisequencer::sequencer::load</definition>
+        <argsstring>(std::FILE *fp)</argsstring>
+        <name>load</name>
+        <qualifiedname>midisequencer::sequencer::load</qualifiedname>
+        <param>
+          <type>std::FILE *</type>
+          <declname>fp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="78" column="14" bodyfile="midisequencer.cpp" bodystart="120" bodyend="123"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1sequencer_1aacb2b99f6e18eccfe550eb70d511ab27" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int midisequencer::sequencer::get_num_ports</definition>
+        <argsstring>() const</argsstring>
+        <name>get_num_ports</name>
+        <qualifiedname>midisequencer::sequencer::get_num_ports</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="79" column="13" bodyfile="midisequencer.cpp" bodystart="124" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1sequencer_1a2e89f97d6ae56e28088e6dc56ea932bd" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::chrono::microseconds</type>
+        <definition>std::chrono::microseconds midisequencer::sequencer::get_total_time</definition>
+        <argsstring>() const</argsstring>
+        <name>get_total_time</name>
+        <qualifiedname>midisequencer::sequencer::get_total_time</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="80" column="35" bodyfile="midisequencer.cpp" bodystart="134" bodyend="141"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1sequencer_1a58b72ec98da75b94dd8191f283def07a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string midisequencer::sequencer::get_title</definition>
+        <argsstring>() const</argsstring>
+        <name>get_title</name>
+        <qualifiedname>midisequencer::sequencer::get_title</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="81" column="21" bodyfile="midisequencer.cpp" bodystart="142" bodyend="154"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1sequencer_1ad2d053a81a9faa0c97a3aba5dd70fa70" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string midisequencer::sequencer::get_copyright</definition>
+        <argsstring>() const</argsstring>
+        <name>get_copyright</name>
+        <qualifiedname>midisequencer::sequencer::get_copyright</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="82" column="21" bodyfile="midisequencer.cpp" bodystart="155" bodyend="167"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1sequencer_1a3a4cbae8f09651df1c48f1a4dc004f0b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string midisequencer::sequencer::get_song</definition>
+        <argsstring>() const</argsstring>
+        <name>get_song</name>
+        <qualifiedname>midisequencer::sequencer::get_song</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="83" column="21" bodyfile="midisequencer.cpp" bodystart="168" bodyend="182"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1sequencer_1a9062f117fd197b8b930ab1893fc79cb1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t midisequencer::sequencer::get_division</definition>
+        <argsstring>() const</argsstring>
+        <name>get_division</name>
+        <qualifiedname>midisequencer::sequencer::get_division</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="84" column="18" bodyfile="midisequencer.cpp" bodystart="504" bodyend="506"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1sequencer_1a9fd581ad6babdca8d29a611dc2349bb5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisequencer::sequencer::play</definition>
+        <argsstring>(std::chrono::microseconds time, output *out)</argsstring>
+        <name>play</name>
+        <qualifiedname>midisequencer::sequencer::play</qualifiedname>
+        <param>
+          <type>std::chrono::microseconds</type>
+          <declname>time</declname>
+        </param>
+        <param>
+          <type><ref refid="classmidisequencer_1_1output" kindref="compound">output</ref> *</type>
+          <declname>out</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="85" column="14" bodyfile="midisequencer.cpp" bodystart="183" bodyend="218"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1sequencer_1a6f4b75f9252b6353aa99c67bc9411037" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisequencer::sequencer::set_time</definition>
+        <argsstring>(std::chrono::microseconds time, output *out)</argsstring>
+        <name>set_time</name>
+        <qualifiedname>midisequencer::sequencer::set_time</qualifiedname>
+        <param>
+          <type>std::chrono::microseconds</type>
+          <declname>time</declname>
+        </param>
+        <param>
+          <type><ref refid="classmidisequencer_1_1output" kindref="compound">output</ref> *</type>
+          <declname>out</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="86" column="14" bodyfile="midisequencer.cpp" bodystart="220" bodyend="265"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1sequencer_1a7643e53df0f5b8ef454b749b482c6e62" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::chrono::microseconds</type>
+        <definition>std::chrono::microseconds midisequencer::sequencer::get_start_skipping_silence</definition>
+        <argsstring>()</argsstring>
+        <name>get_start_skipping_silence</name>
+        <qualifiedname>midisequencer::sequencer::get_start_skipping_silence</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="87" column="35" bodyfile="midisequencer.cpp" bodystart="267" bodyend="294"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classmidisequencer_1_1sequencer_1a771cf6e03b50bfc4d568c604c0ceac14" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void midisequencer::sequencer::load_smf</definition>
+        <argsstring>(void *fp, int(*fgetc)(void *))</argsstring>
+        <name>load_smf</name>
+        <qualifiedname>midisequencer::sequencer::load_smf</qualifiedname>
+        <param>
+          <type>void *</type>
+          <declname>fp</declname>
+        </param>
+        <param>
+          <type>int(*)(void *)</type>
+          <declname>fgetc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="94" column="14" bodyfile="midisequencer.cpp" bodystart="296" bodyend="502"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>midisequencer::sequencer</label>
+        <link refid="classmidisequencer_1_1sequencer"/>
+        <childnode refid="2" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>midisequencer::uncopyable</label>
+        <link refid="classmidisequencer_1_1uncopyable"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>midisequencer::sequencer</label>
+        <link refid="classmidisequencer_1_1sequencer"/>
+        <childnode refid="2" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>midisequencer::uncopyable</label>
+        <link refid="classmidisequencer_1_1uncopyable"/>
+      </node>
+    </collaborationgraph>
+    <location file="midisequencer.h" line="70" column="5" bodyfile="midisequencer.h" bodystart="70" bodyend="95"/>
+    <listofallmembers>
+      <member refid="classmidisequencer_1_1sequencer_1a2724074abfc20243102611e36ca446b0" prot="public" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>clear</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1ae9aa34ff1ddeac536c947eeeae824906" prot="private" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>division</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1ad2d053a81a9faa0c97a3aba5dd70fa70" prot="public" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>get_copyright</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1a9062f117fd197b8b930ab1893fc79cb1" prot="public" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>get_division</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1aacb2b99f6e18eccfe550eb70d511ab27" prot="public" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>get_num_ports</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1a3a4cbae8f09651df1c48f1a4dc004f0b" prot="public" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>get_song</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1a7643e53df0f5b8ef454b749b482c6e62" prot="public" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>get_start_skipping_silence</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1a58b72ec98da75b94dd8191f283def07a" prot="public" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>get_title</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1a2e89f97d6ae56e28088e6dc56ea932bd" prot="public" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>get_total_time</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1a3ca82ad4dd266e7a612b125813e29f2a" prot="public" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>is_at_end</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1ac6a0607711459afaefa527e72b787f51" prot="public" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>load</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1a503c61d41563900bfe56ef4c5015a5fc" prot="public" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>load</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1a771cf6e03b50bfc4d568c604c0ceac14" prot="private" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>load_smf</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1ad2a8fab441c6f2778e8239c14e3f8b48" prot="private" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>long_messages</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1a79b4032b9ec47219fdbcaf4e4017ee88" prot="private" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>loop_position</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1a624cc8e3200c2e68344a84284c0d408a" prot="private" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>messages</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1a9fd581ad6babdca8d29a611dc2349bb5" prot="public" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>play</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1aa3143032b76fdcab2f61b161d141a167" prot="private" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>position</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1a25675a7efb8539d8a3a723806715b8d3" prot="public" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>rewind</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1ae8e2661b6905f6f81db8f15e43d9a602" prot="public" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>rewind_to_loop</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1a3044c1278949419c2e8a26d47673ee66" prot="public" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>sequencer</name></member>
+      <member refid="classmidisequencer_1_1sequencer_1a6f4b75f9252b6353aa99c67bc9411037" prot="public" virt="non-virtual"><scope>midisequencer::sequencer</scope><name>set_time</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

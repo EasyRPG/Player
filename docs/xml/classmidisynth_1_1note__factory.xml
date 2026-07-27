@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classmidisynth_1_1note__factory" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>midisynth::note_factory</compoundname>
+    <basecompoundref refid="classmidisynth_1_1uncopyable" prot="private" virt="non-virtual">midisynth::uncopyable</basecompoundref>
+    <derivedcompoundref refid="classmidisynth_1_1fm__note__factory" prot="public" virt="non-virtual">midisynth::fm_note_factory</derivedcompoundref>
+    <includes refid="midisynth_8h" local="no">midisynth.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classmidisynth_1_1note__factory_1aa81181ec58dd4d45829d6fe370a2666a" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="classmidisynth_1_1note" kindref="compound">note</ref> *</type>
+        <definition>virtual note * midisynth::note_factory::note_on</definition>
+        <argsstring>(int_least32_t program, int note, int velocity, float frequency_multiplier)=0</argsstring>
+        <name>note_on</name>
+        <qualifiedname>midisynth::note_factory::note_on</qualifiedname>
+        <reimplementedby refid="classmidisynth_1_1fm__note__factory_1aa68cce36446bf0fb1d6dca80833d7d0f">note_on</reimplementedby>
+        <param>
+          <type>int_least32_t</type>
+          <declname>program</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>note</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>velocity</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>frequency_multiplier</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="85" column="22"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classmidisynth_1_1note__factory_1a67fed02339687e82a3895f0b41c6df9e" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type></type>
+        <definition>virtual midisynth::note_factory::~note_factory</definition>
+        <argsstring>()</argsstring>
+        <name>~note_factory</name>
+        <qualifiedname>midisynth::note_factory::~note_factory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisynth.h" line="87" column="17" bodyfile="midisynth.h" bodystart="87" bodyend="87"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>midisynth::fm_note_factory</label>
+        <link refid="classmidisynth_1_1fm__note__factory"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>midisynth::note_factory</label>
+        <link refid="classmidisynth_1_1note__factory"/>
+        <childnode refid="2" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>midisynth::uncopyable</label>
+        <link refid="classmidisynth_1_1uncopyable"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>midisynth::note_factory</label>
+        <link refid="classmidisynth_1_1note__factory"/>
+        <childnode refid="2" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>midisynth::uncopyable</label>
+        <link refid="classmidisynth_1_1uncopyable"/>
+      </node>
+    </collaborationgraph>
+    <location file="midisynth.h" line="83" column="5" bodyfile="midisynth.h" bodystart="83" bodyend="88"/>
+    <listofallmembers>
+      <member refid="classmidisynth_1_1note__factory_1aa81181ec58dd4d45829d6fe370a2666a" prot="public" virt="pure-virtual"><scope>midisynth::note_factory</scope><name>note_on</name></member>
+      <member refid="classmidisynth_1_1note__factory_1a67fed02339687e82a3895f0b41c6df9e" prot="protected" virt="virtual"><scope>midisynth::note_factory</scope><name>~note_factory</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

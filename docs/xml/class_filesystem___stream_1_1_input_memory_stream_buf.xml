@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_filesystem___stream_1_1_input_memory_stream_buf" kind="class" language="C++" prot="public">
+    <compoundname>Filesystem_Stream::InputMemoryStreamBuf</compoundname>
+    <basecompoundref refid="class_filesystem___stream_1_1_input_memory_stream_buf_view" prot="public" virt="non-virtual">Filesystem_Stream::InputMemoryStreamBufView</basecompoundref>
+    <includes refid="filesystem__stream_8h" local="no">filesystem_stream.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_filesystem___stream_1_1_input_memory_stream_buf_1ac29785074f98a59b074141cfed62a7de" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; uint8_t &gt;</type>
+        <definition>std::vector&lt;uint8_t&gt; Filesystem_Stream::InputMemoryStreamBuf::buffer</definition>
+        <argsstring></argsstring>
+        <name>buffer</name>
+        <qualifiedname>Filesystem_Stream::InputMemoryStreamBuf::buffer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="98" column="13" bodyfile="filesystem_stream.h" bodystart="98" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_memory_stream_buf_1a7ebc9852ffc9345f7a8c32b9833e419c" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Filesystem_Stream::InputMemoryStreamBuf::InputMemoryStreamBuf</definition>
+        <argsstring>(std::vector&lt; uint8_t &gt; buffer)</argsstring>
+        <name>InputMemoryStreamBuf</name>
+        <qualifiedname>Filesystem_Stream::InputMemoryStreamBuf::InputMemoryStreamBuf</qualifiedname>
+        <param>
+          <type>std::vector&lt; uint8_t &gt;</type>
+          <declname>buffer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="93" column="10" bodyfile="filesystem_stream.cpp" bodystart="125" bodyend="128"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_memory_stream_buf_1a6492e6621b5c9d9984c6a2e95121eddc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Filesystem_Stream::InputMemoryStreamBuf::InputMemoryStreamBuf</definition>
+        <argsstring>(InputMemoryStreamBuf const &amp;other)=delete</argsstring>
+        <name>InputMemoryStreamBuf</name>
+        <qualifiedname>Filesystem_Stream::InputMemoryStreamBuf::InputMemoryStreamBuf</qualifiedname>
+        <param>
+          <type>InputMemoryStreamBuf const &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="94" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_filesystem___stream_1_1_input_memory_stream_buf_1a6e4a7f21f50cd7edf4c7ea6c5da43525" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_input_memory_stream_buf_1a7ebc9852ffc9345f7a8c32b9833e419c" kindref="member">InputMemoryStreamBuf</ref> const &amp;</type>
+        <definition>InputMemoryStreamBuf const  &amp; Filesystem_Stream::InputMemoryStreamBuf::operator=</definition>
+        <argsstring>(InputMemoryStreamBuf const &amp;other)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Filesystem_Stream::InputMemoryStreamBuf::operator=</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_memory_stream_buf_1a7ebc9852ffc9345f7a8c32b9833e419c" kindref="member">InputMemoryStreamBuf</ref> const &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="95" column="28"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Streambuf interface for an in-memory buffer. Takes ownership of the buffer. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Filesystem_Stream::InputMemoryStreamBuf</label>
+        <link refid="class_filesystem___stream_1_1_input_memory_stream_buf"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Filesystem_Stream::InputMemoryStreamBufView</label>
+        <link refid="class_filesystem___stream_1_1_input_memory_stream_buf_view"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>std::streambuf</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Filesystem_Stream::InputMemoryStreamBuf</label>
+        <link refid="class_filesystem___stream_1_1_input_memory_stream_buf"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Filesystem_Stream::InputMemoryStreamBufView</label>
+        <link refid="class_filesystem___stream_1_1_input_memory_stream_buf_view"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>std::streambuf</label>
+      </node>
+    </collaborationgraph>
+    <location file="filesystem_stream.h" line="91" column="1" bodyfile="filesystem_stream.h" bodystart="91" bodyend="99"/>
+    <listofallmembers>
+      <member refid="class_filesystem___stream_1_1_input_memory_stream_buf_1ac29785074f98a59b074141cfed62a7de" prot="private" virt="non-virtual"><scope>Filesystem_Stream::InputMemoryStreamBuf</scope><name>buffer</name></member>
+      <member refid="class_filesystem___stream_1_1_input_memory_stream_buf_1a7ebc9852ffc9345f7a8c32b9833e419c" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputMemoryStreamBuf</scope><name>InputMemoryStreamBuf</name></member>
+      <member refid="class_filesystem___stream_1_1_input_memory_stream_buf_1a6492e6621b5c9d9984c6a2e95121eddc" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputMemoryStreamBuf</scope><name>InputMemoryStreamBuf</name></member>
+      <member refid="class_filesystem___stream_1_1_input_memory_stream_buf_view_1a2a117e6c06b99ed420a6941b4a857178" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputMemoryStreamBuf</scope><name>InputMemoryStreamBufView</name></member>
+      <member refid="class_filesystem___stream_1_1_input_memory_stream_buf_view_1aad69f0efe0804d09b673acf3c733eb35" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputMemoryStreamBuf</scope><name>InputMemoryStreamBufView</name></member>
+      <member refid="class_filesystem___stream_1_1_input_memory_stream_buf_1a6e4a7f21f50cd7edf4c7ea6c5da43525" prot="public" virt="non-virtual"><scope>Filesystem_Stream::InputMemoryStreamBuf</scope><name>operator=</name></member>
+      <member refid="class_filesystem___stream_1_1_input_memory_stream_buf_view_1aab2a4fb7170ec064e1a01272cbd94a2a" prot="public" virt="non-virtual" ambiguityscope="Filesystem_Stream::InputMemoryStreamBufView::"><scope>Filesystem_Stream::InputMemoryStreamBuf</scope><name>operator=</name></member>
+      <member refid="class_filesystem___stream_1_1_input_memory_stream_buf_view_1a5bea50d642c740df2477f3325636e426" prot="protected" virt="non-virtual"><scope>Filesystem_Stream::InputMemoryStreamBuf</scope><name>seekoff</name></member>
+      <member refid="class_filesystem___stream_1_1_input_memory_stream_buf_view_1a4682f4f7b3b67acfe6f8cedaf156de9e" prot="protected" virt="non-virtual"><scope>Filesystem_Stream::InputMemoryStreamBuf</scope><name>seekpos</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

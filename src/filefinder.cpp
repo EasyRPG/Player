@@ -619,3 +619,4 @@ std::vector<FileFinder::FsEntry> FileFinder::FindGames(FilesystemView fs, int re
 
 	return games;
 }
+

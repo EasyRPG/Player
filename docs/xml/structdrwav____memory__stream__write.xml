@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structdrwav____memory__stream__write" kind="struct" language="C++" prot="public">
+    <compoundname>drwav__memory_stream_write</compoundname>
+    <includes refid="dr__wav_8h" local="no">dr_wav.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdrwav____memory__stream__write_1a52e615403f5f708d532c02c2210df110" prot="public" static="no" mutable="no">
+        <type>void **</type>
+        <definition>void** drwav__memory_stream_write::ppData</definition>
+        <argsstring></argsstring>
+        <name>ppData</name>
+        <qualifiedname>drwav__memory_stream_write::ppData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="461" column="10" bodyfile="external/dr_wav.h" bodystart="461" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav____memory__stream__write_1ab64d5a1522f344b5ea001d783fac8051" prot="public" static="no" mutable="no">
+        <type>size_t *</type>
+        <definition>size_t* drwav__memory_stream_write::pDataSize</definition>
+        <argsstring></argsstring>
+        <name>pDataSize</name>
+        <qualifiedname>drwav__memory_stream_write::pDataSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="462" column="12" bodyfile="external/dr_wav.h" bodystart="462" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav____memory__stream__write_1a9e01cbf6578e9f2b92b7ea7021078c71" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t drwav__memory_stream_write::dataSize</definition>
+        <argsstring></argsstring>
+        <name>dataSize</name>
+        <qualifiedname>drwav__memory_stream_write::dataSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="463" column="12" bodyfile="external/dr_wav.h" bodystart="463" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav____memory__stream__write_1a9101d09c995e2934734d86313659d262" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t drwav__memory_stream_write::dataCapacity</definition>
+        <argsstring></argsstring>
+        <name>dataCapacity</name>
+        <qualifiedname>drwav__memory_stream_write::dataCapacity</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="464" column="12" bodyfile="external/dr_wav.h" bodystart="464" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structdrwav____memory__stream__write_1ac65a0c98d3a2e7d504247c73168bd088" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t drwav__memory_stream_write::currentWritePos</definition>
+        <argsstring></argsstring>
+        <name>currentWritePos</name>
+        <qualifiedname>drwav__memory_stream_write::currentWritePos</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="external/dr_wav.h" line="465" column="12" bodyfile="external/dr_wav.h" bodystart="465" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="external/dr_wav.h" line="459" column="1" bodyfile="external/dr_wav.h" bodystart="460" bodyend="466"/>
+    <listofallmembers>
+      <member refid="structdrwav____memory__stream__write_1ac65a0c98d3a2e7d504247c73168bd088" prot="public" virt="non-virtual"><scope>drwav__memory_stream_write</scope><name>currentWritePos</name></member>
+      <member refid="structdrwav____memory__stream__write_1a9101d09c995e2934734d86313659d262" prot="public" virt="non-virtual"><scope>drwav__memory_stream_write</scope><name>dataCapacity</name></member>
+      <member refid="structdrwav____memory__stream__write_1a9e01cbf6578e9f2b92b7ea7021078c71" prot="public" virt="non-virtual"><scope>drwav__memory_stream_write</scope><name>dataSize</name></member>
+      <member refid="structdrwav____memory__stream__write_1ab64d5a1522f344b5ea001d783fac8051" prot="public" virt="non-virtual"><scope>drwav__memory_stream_write</scope><name>pDataSize</name></member>
+      <member refid="structdrwav____memory__stream__write_1a52e615403f5f708d532c02c2210df110" prot="public" virt="non-virtual"><scope>drwav__memory_stream_write</scope><name>ppData</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

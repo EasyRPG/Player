@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_3a887a178c55a31a996f441b8ca49395" kind="dir">
+    <compoundname>platform/linux</compoundname>
+    <innerfile refid="midiout__device__alsa_8cpp">midiout_device_alsa.cpp</innerfile>
+    <innerfile refid="midiout__device__alsa_8h">midiout_device_alsa.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/linux/"/>
+  </compounddef>
+</doxygen>

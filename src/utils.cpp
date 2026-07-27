@@ -679,3 +679,4 @@ std::string Utils::FormatDate(const std::tm *tm, std::string_view format) {
 
 	return std::string(buffer, res);
 }
+

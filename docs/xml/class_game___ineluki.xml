@@ -1,0 +1,582 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___ineluki" kind="class" language="C++" prot="public">
+    <compoundname>Game_Ineluki</compoundname>
+    <includes refid="game__ineluki_8h" local="no">game_ineluki.h</includes>
+    <innerclass refid="struct_game___ineluki_1_1_ineluki_command" prot="private">Game_Ineluki::InelukiCommand</innerclass>
+    <innerclass refid="struct_game___ineluki_1_1_key_item" prot="private">Game_Ineluki::KeyItem</innerclass>
+    <innerclass refid="struct_game___ineluki_1_1_mapping" prot="private">Game_Ineluki::Mapping</innerclass>
+    <innerclass refid="struct_game___ineluki_1_1_cheat_item" prot="private">Game_Ineluki::CheatItem</innerclass>
+    <innerclass refid="struct_game___ineluki_1_1_async_args" prot="private">Game_Ineluki::AsyncArgs</innerclass>
+    <sectiondef kind="private-type">
+      <memberdef kind="enum" id="class_game___ineluki_1aa2d7fd21a6746d73b5ace2c854f26693" prot="private" static="no" strong="yes">
+        <type></type>
+        <name>OutputMode</name>
+        <qualifiedname>Game_Ineluki::OutputMode</qualifiedname>
+        <enumvalue id="class_game___ineluki_1aa2d7fd21a6746d73b5ace2c854f26693a0a52da7a03a6de3beefe54f8c03ad80d" prot="private">
+          <name>Original</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>GetMidiTicks returns the audio ticks </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___ineluki_1aa2d7fd21a6746d73b5ace2c854f26693a29c2c02a361c9d7028472e5d92cd4a54" prot="private">
+          <name>Output</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>GetMidiTicks returns from the output list </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="112" column="1" bodyfile="game_ineluki.h" bodystart="112" bodyend="117"/>
+      </memberdef>
+      <memberdef kind="enum" id="class_game___ineluki_1aa20eb4d7d7b5efed15a6af2b4564df54" prot="private" static="no" strong="yes">
+        <type></type>
+        <name>MouseReturnMode</name>
+        <qualifiedname>Game_Ineluki::MouseReturnMode</qualifiedname>
+        <enumvalue id="class_game___ineluki_1aa20eb4d7d7b5efed15a6af2b4564df54a6adf97f83acf6453d4a6a4b1070f3754" prot="private">
+          <name>None</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___ineluki_1aa20eb4d7d7b5efed15a6af2b4564df54a945d5e233cf7d6240f6b783b36a374ff" prot="private">
+          <name>Left</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___ineluki_1aa20eb4d7d7b5efed15a6af2b4564df54a92b09c7c48c520c3c55e497875da437c" prot="private">
+          <name>Right</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___ineluki_1aa20eb4d7d7b5efed15a6af2b4564df54a130c5b3473c57faa76e2a1c54e26f88e" prot="private">
+          <name>Both</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="138" column="1" bodyfile="game_ineluki.h" bodystart="138" bodyend="143"/>
+      </memberdef>
+      <memberdef kind="enum" id="class_game___ineluki_1a0be0bb21bfcfb81f223f756516937e6a" prot="private" static="no" strong="yes">
+        <type></type>
+        <name>MouseWheelMode</name>
+        <qualifiedname>Game_Ineluki::MouseWheelMode</qualifiedname>
+        <enumvalue id="class_game___ineluki_1a0be0bb21bfcfb81f223f756516937e6aa6adf97f83acf6453d4a6a4b1070f3754" prot="private">
+          <name>None</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___ineluki_1a0be0bb21bfcfb81f223f756516937e6aa8833f67c0f8e2339c154ffc91e15eb8c" prot="private">
+          <name>UpDown</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___ineluki_1a0be0bb21bfcfb81f223f756516937e6aa955322c98b1fc571e8b6b688ae7d9ee4" prot="private">
+          <name>LeftRight</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="145" column="1" bodyfile="game_ineluki.h" bodystart="145" bodyend="149"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_game___ineluki_1a698da825b357f5534dc7e0f94b6ccc51" prot="private" static="no">
+        <type>std::vector&lt; InelukiCommand &gt;</type>
+        <definition>using Game_Ineluki::command_list = std::vector&lt;InelukiCommand&gt;</definition>
+        <argsstring></argsstring>
+        <name>command_list</name>
+        <qualifiedname>Game_Ineluki::command_list</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="109" column="1" bodyfile="game_ineluki.h" bodystart="109" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___ineluki_1aa483305baff576204768dd2d0f13b247" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, command_list &gt;</type>
+        <definition>std::map&lt;std::string, command_list&gt; Game_Ineluki::functions</definition>
+        <argsstring></argsstring>
+        <name>functions</name>
+        <qualifiedname>Game_Ineluki::functions</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="110" column="10" bodyfile="game_ineluki.h" bodystart="110" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___ineluki_1ab8b2cb2dec41dd7a0827c1d20e43f561" prot="private" static="no" mutable="no">
+        <type>OutputMode</type>
+        <definition>OutputMode Game_Ineluki::output_mode</definition>
+        <argsstring></argsstring>
+        <name>output_mode</name>
+        <qualifiedname>Game_Ineluki::output_mode</qualifiedname>
+        <initializer>= OutputMode::Original</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="119" column="12" bodyfile="game_ineluki.h" bodystart="119" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___ineluki_1ab5c5ad770023863b461329f104c8dad4" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; Game_Ineluki::output_list</definition>
+        <argsstring></argsstring>
+        <name>output_list</name>
+        <qualifiedname>Game_Ineluki::output_list</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="120" column="13" bodyfile="game_ineluki.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___ineluki_1a0ed2655cb7009a15d45b38dcb955f8db" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; KeyItem &gt;</type>
+        <definition>std::vector&lt;KeyItem&gt; Game_Ineluki::keylist_down</definition>
+        <argsstring></argsstring>
+        <name>keylist_down</name>
+        <qualifiedname>Game_Ineluki::keylist_down</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>List of key down events to watch </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="130" column="13" bodyfile="game_ineluki.h" bodystart="130" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___ineluki_1a0419d5986bdada57086855c67fc5fc06" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; KeyItem &gt;</type>
+        <definition>std::vector&lt;KeyItem&gt; Game_Ineluki::keylist_up</definition>
+        <argsstring></argsstring>
+        <name>keylist_up</name>
+        <qualifiedname>Game_Ineluki::keylist_up</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>List of key up events to watch </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="132" column="13" bodyfile="game_ineluki.h" bodystart="132" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___ineluki_1a0693ca07d29849bea5c5c4957f96ee2b" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Ineluki::key_support</definition>
+        <argsstring></argsstring>
+        <name>key_support</name>
+        <qualifiedname>Game_Ineluki::key_support</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="134" column="6" bodyfile="game_ineluki.h" bodystart="134" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___ineluki_1a0fc32f56b6436301ab5e9501385a614a" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Ineluki::mouse_support</definition>
+        <argsstring></argsstring>
+        <name>mouse_support</name>
+        <qualifiedname>Game_Ineluki::mouse_support</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="135" column="6" bodyfile="game_ineluki.h" bodystart="135" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___ineluki_1a7afc95c904b15cbaf5cef9cabacd3820" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Ineluki::mouse_id_prefix</definition>
+        <argsstring></argsstring>
+        <name>mouse_id_prefix</name>
+        <qualifiedname>Game_Ineluki::mouse_id_prefix</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="136" column="5" bodyfile="game_ineluki.h" bodystart="136" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___ineluki_1add9e3dfc75c53e2f7b40f637393ccb8d" prot="private" static="no" mutable="no">
+        <type>MouseReturnMode</type>
+        <definition>MouseReturnMode Game_Ineluki::mouse_decision_binding</definition>
+        <argsstring></argsstring>
+        <name>mouse_decision_binding</name>
+        <qualifiedname>Game_Ineluki::mouse_decision_binding</qualifiedname>
+        <initializer>= MouseReturnMode::None</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="151" column="17" bodyfile="game_ineluki.h" bodystart="151" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___ineluki_1ad9851babb4f29a387fc3402e26a9d147" prot="private" static="no" mutable="no">
+        <type>MouseWheelMode</type>
+        <definition>MouseWheelMode Game_Ineluki::mouse_wheel_binding</definition>
+        <argsstring></argsstring>
+        <name>mouse_wheel_binding</name>
+        <qualifiedname>Game_Ineluki::mouse_wheel_binding</qualifiedname>
+        <initializer>= MouseWheelMode::None</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="152" column="16" bodyfile="game_ineluki.h" bodystart="152" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___ineluki_1a448c4b8ecf7cedbbfd1046e0563175cb" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; CheatItem &gt;</type>
+        <definition>std::vector&lt;CheatItem&gt; Game_Ineluki::cheatlist</definition>
+        <argsstring></argsstring>
+        <name>cheatlist</name>
+        <qualifiedname>Game_Ineluki::cheatlist</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="238" column="13" bodyfile="game_ineluki.h" bodystart="238" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___ineluki_1a21c48efecfb9605dc2f58685090a5d9c" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; AsyncArgs &gt;</type>
+        <definition>std::vector&lt;AsyncArgs&gt; Game_Ineluki::async_scripts</definition>
+        <argsstring></argsstring>
+        <name>async_scripts</name>
+        <qualifiedname>Game_Ineluki::async_scripts</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="249" column="13" bodyfile="game_ineluki.h" bodystart="249" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="class_game___ineluki_1a6692c926b703cf8e1e938dcee034a342" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>std::array&lt; Mapping, 61 &gt;</type>
+        <definition>std::array&lt;Mapping, 61&gt; Game_Ineluki::key_to_ineluki</definition>
+        <argsstring></argsstring>
+        <name>key_to_ineluki</name>
+        <qualifiedname>Game_Ineluki::key_to_ineluki</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Mapping from input key to Ineluki key (yes, they are German) ä. ö, ü and other German keyboard keys are not supported </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="163" column="29" bodyfile="game_ineluki.h" bodystart="163" bodyend="226"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___ineluki_1a6380a9efdc0318b879a48a70cf9250ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Ineluki::~Game_Ineluki</definition>
+        <argsstring>()</argsstring>
+        <name>~Game_Ineluki</name>
+        <qualifiedname>Game_Ineluki::~Game_Ineluki</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="39" column="1" bodyfile="game_ineluki.cpp" bodystart="50" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___ineluki_1a11017deacd7724346aaf1e9fba0d49bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Ineluki::Execute</definition>
+        <argsstring>(const lcf::rpg::Sound &amp;se)</argsstring>
+        <name>Execute</name>
+        <qualifiedname>Game_Ineluki::Execute</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Sound &amp;</type>
+          <declname>se</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Executes the specified sound effect (which is actually an INI file) as a keypatch script. The file is not requested asynchroniously.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>se</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Sound Effect (INI file) to execute </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the file is a valid script </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="48" column="6" bodyfile="game_ineluki.cpp" bodystart="58" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___ineluki_1a9073480f0e79ca98c34c206b769b22fd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Ineluki::Execute</definition>
+        <argsstring>(std::string_view ini_file)</argsstring>
+        <name>Execute</name>
+        <qualifiedname>Game_Ineluki::Execute</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>ini_file</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Executes the specified INI file as a keypatch script. The file is not requested asynchroniously.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ini_file</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>INI file to execute </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the file is a valid script </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="57" column="6" bodyfile="game_ineluki.cpp" bodystart="76" bodyend="214"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___ineluki_1a4613c255c32fe9e77c86dd63097dc35c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Ineluki::ExecuteScriptList</definition>
+        <argsstring>(std::string_view list_file)</argsstring>
+        <name>ExecuteScriptList</name>
+        <qualifiedname>Game_Ineluki::ExecuteScriptList</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>list_file</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Executes a file containing a list of script files. Usually used for the autorun.script on startup. The scripts are requested asynchroniously as important files and executed in order but the file itself is not fetched.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>list_file</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>File to process </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the file was found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="68" column="6" bodyfile="game_ineluki.cpp" bodystart="216" bodyend="243"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___ineluki_1abec164a7de20f476796d27944a2924ca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Ineluki::GetMidiTicks</definition>
+        <argsstring>()</argsstring>
+        <name>GetMidiTicks</name>
+        <qualifiedname>Game_Ineluki::GetMidiTicks</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the normal midi ticks or an element from the output list depending on the output state</para>
+<para><simplesect kind="return"><para>Midi Ticks or output list </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="76" column="5" bodyfile="game_ineluki.cpp" bodystart="321" bodyend="332"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___ineluki_1a1d96d7894b7a4c29fccb60bf3e5567ee" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Ineluki::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>Game_Ineluki::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the configured input patches. Must be called once per update frame. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="81" column="6" bodyfile="game_ineluki.cpp" bodystart="334" bodyend="341"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_game___ineluki_1a0d50fb05607efb993ba4a31667b0116c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Ineluki::UpdateKeys</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateKeys</name>
+        <qualifiedname>Game_Ineluki::UpdateKeys</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the key up/down list. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="87" column="6" bodyfile="game_ineluki.cpp" bodystart="343" bodyend="376"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___ineluki_1ade32c447f4e083c1c43dd9a1fe517aaa" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Ineluki::UpdateMouse</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateMouse</name>
+        <qualifiedname>Game_Ineluki::UpdateMouse</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Handles virtual key bindings for mouse buttons. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="92" column="6" bodyfile="game_ineluki.cpp" bodystart="378" bodyend="404"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___ineluki_1a8da1f4bf8afd62a200c5355b893bafae" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Ineluki::Parse</definition>
+        <argsstring>(std::string_view ini_file)</argsstring>
+        <name>Parse</name>
+        <qualifiedname>Game_Ineluki::Parse</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>ini_file</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Parses and caches the script.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ini_file</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Script to parse </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the file is a valid script </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="100" column="6" bodyfile="game_ineluki.cpp" bodystart="245" bodyend="319"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___ineluki_1a605c83f713944182075ed87d0525d451" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Ineluki::OnScriptFileReady</definition>
+        <argsstring>(FileRequestResult *result)</argsstring>
+        <name>OnScriptFileReady</name>
+        <qualifiedname>Game_Ineluki::OnScriptFileReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="240" column="6" bodyfile="game_ineluki.cpp" bodystart="406" bodyend="421"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Implements Ineluki&apos;s Key Patch </para>
+    </detaileddescription>
+    <location file="game_ineluki.h" line="37" column="1" bodyfile="game_ineluki.h" bodystart="37" bodyend="250"/>
+    <listofallmembers>
+      <member refid="class_game___ineluki_1a21c48efecfb9605dc2f58685090a5d9c" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>async_scripts</name></member>
+      <member refid="class_game___ineluki_1a448c4b8ecf7cedbbfd1046e0563175cb" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>cheatlist</name></member>
+      <member refid="class_game___ineluki_1a698da825b357f5534dc7e0f94b6ccc51" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>command_list</name></member>
+      <member refid="class_game___ineluki_1a11017deacd7724346aaf1e9fba0d49bb" prot="public" virt="non-virtual"><scope>Game_Ineluki</scope><name>Execute</name></member>
+      <member refid="class_game___ineluki_1a9073480f0e79ca98c34c206b769b22fd" prot="public" virt="non-virtual"><scope>Game_Ineluki</scope><name>Execute</name></member>
+      <member refid="class_game___ineluki_1a4613c255c32fe9e77c86dd63097dc35c" prot="public" virt="non-virtual"><scope>Game_Ineluki</scope><name>ExecuteScriptList</name></member>
+      <member refid="class_game___ineluki_1aa483305baff576204768dd2d0f13b247" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>functions</name></member>
+      <member refid="class_game___ineluki_1abec164a7de20f476796d27944a2924ca" prot="public" virt="non-virtual"><scope>Game_Ineluki</scope><name>GetMidiTicks</name></member>
+      <member refid="class_game___ineluki_1a0693ca07d29849bea5c5c4957f96ee2b" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>key_support</name></member>
+      <member refid="class_game___ineluki_1a6692c926b703cf8e1e938dcee034a342" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>key_to_ineluki</name></member>
+      <member refid="class_game___ineluki_1a0ed2655cb7009a15d45b38dcb955f8db" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>keylist_down</name></member>
+      <member refid="class_game___ineluki_1a0419d5986bdada57086855c67fc5fc06" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>keylist_up</name></member>
+      <member refid="class_game___ineluki_1add9e3dfc75c53e2f7b40f637393ccb8d" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>mouse_decision_binding</name></member>
+      <member refid="class_game___ineluki_1a7afc95c904b15cbaf5cef9cabacd3820" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>mouse_id_prefix</name></member>
+      <member refid="class_game___ineluki_1a0fc32f56b6436301ab5e9501385a614a" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>mouse_support</name></member>
+      <member refid="class_game___ineluki_1ad9851babb4f29a387fc3402e26a9d147" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>mouse_wheel_binding</name></member>
+      <member refid="class_game___ineluki_1aa20eb4d7d7b5efed15a6af2b4564df54" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>MouseReturnMode</name></member>
+      <member refid="class_game___ineluki_1a0be0bb21bfcfb81f223f756516937e6a" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>MouseWheelMode</name></member>
+      <member refid="class_game___ineluki_1a605c83f713944182075ed87d0525d451" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>OnScriptFileReady</name></member>
+      <member refid="class_game___ineluki_1ab5c5ad770023863b461329f104c8dad4" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>output_list</name></member>
+      <member refid="class_game___ineluki_1ab8b2cb2dec41dd7a0827c1d20e43f561" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>output_mode</name></member>
+      <member refid="class_game___ineluki_1aa2d7fd21a6746d73b5ace2c854f26693" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>OutputMode</name></member>
+      <member refid="class_game___ineluki_1a8da1f4bf8afd62a200c5355b893bafae" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>Parse</name></member>
+      <member refid="class_game___ineluki_1a1d96d7894b7a4c29fccb60bf3e5567ee" prot="public" virt="non-virtual"><scope>Game_Ineluki</scope><name>Update</name></member>
+      <member refid="class_game___ineluki_1a0d50fb05607efb993ba4a31667b0116c" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>UpdateKeys</name></member>
+      <member refid="class_game___ineluki_1ade32c447f4e083c1c43dd9a1fe517aaa" prot="private" virt="non-virtual"><scope>Game_Ineluki</scope><name>UpdateMouse</name></member>
+      <member refid="class_game___ineluki_1a6380a9efdc0318b879a48a70cf9250ef" prot="public" virt="non-virtual"><scope>Game_Ineluki</scope><name>~Game_Ineluki</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

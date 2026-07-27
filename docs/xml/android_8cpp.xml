@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="android_8cpp" kind="file" language="C++">
+    <compoundname>android.cpp</compoundname>
+    <includes refid="android_8h" local="yes">android.h</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>platform/android/android.cpp</label>
+        <link refid="android_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>android.h</label>
+        <link refid="android_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>functional</label>
+      </node>
+      <node id="5">
+        <label>jni.h</label>
+      </node>
+      <node id="3">
+        <label>mutex</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="android_8h" kindref="compound">android.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3" refid="namespace_ep_android_1ae74f0d905c88f02723e6788a58dff3ab" refkind="member"><highlight class="normal">JNIEnv*<sp/><ref refid="namespace_ep_android_1ae74f0d905c88f02723e6788a58dff3ab" kindref="member">EpAndroid::env</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="4" refid="namespace_ep_android_1a8fa0a4d128b4b2fae86b852948b00af0" refkind="member"><highlight class="normal">std::function&lt;void()&gt;<sp/><ref refid="namespace_ep_android_1a8fa0a4d128b4b2fae86b852948b00af0" kindref="member">EpAndroid::android_fn</ref>;</highlight></codeline>
+<codeline lineno="5" refid="namespace_ep_android_1a8da914d42a9e210ddd98af5083d9ce82" refkind="member"><highlight class="normal">std::mutex<sp/><ref refid="namespace_ep_android_1a8da914d42a9e210ddd98af5083d9ce82" kindref="member">EpAndroid::android_mutex</ref>;</highlight></codeline>
+    </programlisting>
+    <location file="platform/android/android.cpp"/>
+  </compounddef>
+</doxygen>

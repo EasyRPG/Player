@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy" kind="namespace" language="C++">
+    <compoundname>leasy</compoundname>
+    <innerclass refid="classleasy_1_1_signal" prot="public">leasy::Signal</innerclass>
+    <innerclass refid="classleasy_1_1_singleton" prot="public">leasy::Singleton</innerclass>
+    <innernamespace refid="namespaceleasy_1_1app">leasy::app</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1compat">leasy::compat</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1diag5">leasy::diag5</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1engine">leasy::engine</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1iky7">leasy::iky7</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ily3">leasy::ily3</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ios">leasy::ios</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1kits">leasy::kits</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1libs2">leasy::libs2</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1lscripts">leasy::lscripts</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1metadata">leasy::metadata</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1tests">leasy::tests</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1typings2">leasy::typings2</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ui3">leasy::ui3</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ul2">leasy::ul2</innernamespace>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceleasy_1a430cf03e6240d20d2ef866c1044b1c7b" prot="public" static="no" mutable="no">
+        <type><ref refid="classleasy_1_1_signal" kindref="compound">Signal</ref></type>
+        <definition>Signal leasy::ready</definition>
+        <argsstring></argsstring>
+        <name>ready</name>
+        <qualifiedname>leasy::ready</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/leasy.cpp" line="51" column="4" bodyfile="leasy/leasy.cpp" bodystart="51" bodyend="51" declfile="leasy/leasy.hpp" declline="34" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1a4cb223ae334e8d69ca27c9da6ea0752f" prot="public" static="no" mutable="no">
+        <type><ref refid="classleasy_1_1_signal" kindref="compound">Signal</ref>&lt; double &gt;</type>
+        <definition>Signal&lt; double &gt; leasy::process</definition>
+        <argsstring></argsstring>
+        <name>process</name>
+        <qualifiedname>leasy::process</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/leasy.cpp" line="52" column="10" bodyfile="leasy/leasy.cpp" bodystart="52" bodyend="52" declfile="leasy/leasy.hpp" declline="35" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1a7f59d93a336c939c1fa93e8de24ebc7c" prot="public" static="no" mutable="no">
+        <type><ref refid="classleasy_1_1_signal" kindref="compound">Signal</ref>&lt; <ref refid="class_bitmap" kindref="compound">Bitmap</ref> * &gt;</type>
+        <definition>Signal&lt; Bitmap * &gt; leasy::draw</definition>
+        <argsstring></argsstring>
+        <name>draw</name>
+        <qualifiedname>leasy::draw</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/leasy.cpp" line="53" column="10" bodyfile="leasy/leasy.cpp" bodystart="53" bodyend="53" declfile="leasy/leasy.hpp" declline="36" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1a969ece27b2f9f49c39c191cbcd5098c1" prot="public" static="no" mutable="no">
+        <type><ref refid="classleasy_1_1ios_1_1io__system" kindref="compound">ios::io_system</ref></type>
+        <definition>ios::io_system leasy::io</definition>
+        <argsstring></argsstring>
+        <name>io</name>
+        <qualifiedname>leasy::io</qualifiedname>
+        <initializer>{}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.cpp" line="27" column="18" bodyfile="leasy/lio.cpp" bodystart="27" bodyend="27" declfile="leasy/lio.hpp" declline="451" declcolumn="23"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para>0xEF9087A</para>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para><ulink url="mailto:0xEF9087A@wys-prog.https">0xEF9087A@wys-prog.https</ulink>://github.com/wys-prog/leasy </para>
+    </detaileddescription>
+    <location file="algo.cpp" line="353" column="1"/>
+  </compounddef>
+</doxygen>

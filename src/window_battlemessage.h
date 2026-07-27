@@ -118,3 +118,4 @@ inline const std::vector<std::string>& Window_BattleMessage::GetLines() const {
 }
 
 #endif
+

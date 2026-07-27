@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_libretro_clock" kind="struct" language="C++" prot="public">
+    <compoundname>LibretroClock</compoundname>
+    <includes refid="libretro_2clock_8h" local="no">clock.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="struct_libretro_clock_1a005850e019ff3c856a25c037326a0aac" prot="public" static="no">
+        <type>int64_t</type>
+        <definition>using LibretroClock::rep = int64_t</definition>
+        <argsstring></argsstring>
+        <name>rep</name>
+        <qualifiedname>LibretroClock::rep</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/clock.h" line="27" column="1" bodyfile="platform/libretro/clock.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_libretro_clock_1ae7b2c162886c6f7633be4628fb76de0d" prot="public" static="no">
+        <type>std::micro</type>
+        <definition>using LibretroClock::period = std::micro</definition>
+        <argsstring></argsstring>
+        <name>period</name>
+        <qualifiedname>LibretroClock::period</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/clock.h" line="28" column="1" bodyfile="platform/libretro/clock.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_libretro_clock_1a5b9cec5210c3ea97c6931d3c109ad8a9" prot="public" static="no">
+        <type>std::chrono::duration&lt; <ref refid="struct_libretro_clock_1a005850e019ff3c856a25c037326a0aac" kindref="member">rep</ref>, <ref refid="struct_libretro_clock_1ae7b2c162886c6f7633be4628fb76de0d" kindref="member">period</ref> &gt;</type>
+        <definition>using LibretroClock::duration = std::chrono::duration&lt;rep,period&gt;</definition>
+        <argsstring></argsstring>
+        <name>duration</name>
+        <qualifiedname>LibretroClock::duration</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/clock.h" line="29" column="1" bodyfile="platform/libretro/clock.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_libretro_clock_1aaafc0a9f4086f401d72702bc47ec95bb" prot="public" static="no">
+        <type>std::chrono::time_point&lt; <ref refid="struct_libretro_clock" kindref="compound">LibretroClock</ref>, <ref refid="struct_libretro_clock_1a5b9cec5210c3ea97c6931d3c109ad8a9" kindref="member">duration</ref> &gt;</type>
+        <definition>using LibretroClock::time_point = std::chrono::time_point&lt;LibretroClock,duration&gt;</definition>
+        <argsstring></argsstring>
+        <name>time_point</name>
+        <qualifiedname>LibretroClock::time_point</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/clock.h" line="30" column="1" bodyfile="platform/libretro/clock.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="struct_libretro_clock_1adbe549c07e2864eb500418717e8cb099" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool LibretroClock::is_steady</definition>
+        <argsstring></argsstring>
+        <name>is_steady</name>
+        <qualifiedname>LibretroClock::is_steady</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/clock.h" line="32" column="23" bodyfile="platform/libretro/clock.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_libretro_clock_1a73c18424bdfad5c658731a28858a8404" prot="public" static="yes" mutable="no">
+        <type>retro_usec_t</type>
+        <definition>retro_usec_t LibretroClock::time_in_microseconds</definition>
+        <argsstring></argsstring>
+        <name>time_in_microseconds</name>
+        <qualifiedname>LibretroClock::time_in_microseconds</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/clock.h" line="41" column="21" bodyfile="platform/libretro/clock.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="struct_libretro_clock_1adcf6f3219e3d81f2e9aa846390d3b3bd" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="struct_libretro_clock_1aaafc0a9f4086f401d72702bc47ec95bb" kindref="member">time_point</ref></type>
+        <definition>LibretroClock::time_point LibretroClock::now</definition>
+        <argsstring>()</argsstring>
+        <name>now</name>
+        <qualifiedname>LibretroClock::now</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/clock.h" line="34" column="19" bodyfile="platform/libretro/clock.h" bodystart="44" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_libretro_clock_1a1f3987e3b6d152edd76dcbdbe28e4900" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename R</type>
+          </param>
+          <param>
+            <type>typename P</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void LibretroClock::SleepFor</definition>
+        <argsstring>(std::chrono::duration&lt; R, P &gt; dt)</argsstring>
+        <name>SleepFor</name>
+        <qualifiedname>LibretroClock::SleepFor</qualifiedname>
+        <param>
+          <type>std::chrono::duration&lt; R, P &gt;</type>
+          <declname>dt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/clock.h" line="37" column="13" bodyfile="platform/libretro/clock.h" bodystart="50" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_libretro_clock_1a58884ef592866cc0e2688d2126326b06" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const char *</type>
+        <definition>const char * LibretroClock::Name</definition>
+        <argsstring>()</argsstring>
+        <name>Name</name>
+        <qualifiedname>LibretroClock::Name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/clock.h" line="39" column="29" bodyfile="platform/libretro/clock.h" bodystart="54" bodyend="56"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/libretro/clock.h" line="26" column="1" bodyfile="platform/libretro/clock.h" bodystart="26" bodyend="42"/>
+    <listofallmembers>
+      <member refid="struct_libretro_clock_1a5b9cec5210c3ea97c6931d3c109ad8a9" prot="public" virt="non-virtual"><scope>LibretroClock</scope><name>duration</name></member>
+      <member refid="struct_libretro_clock_1adbe549c07e2864eb500418717e8cb099" prot="public" virt="non-virtual"><scope>LibretroClock</scope><name>is_steady</name></member>
+      <member refid="struct_libretro_clock_1a58884ef592866cc0e2688d2126326b06" prot="public" virt="non-virtual"><scope>LibretroClock</scope><name>Name</name></member>
+      <member refid="struct_libretro_clock_1adcf6f3219e3d81f2e9aa846390d3b3bd" prot="public" virt="non-virtual"><scope>LibretroClock</scope><name>now</name></member>
+      <member refid="struct_libretro_clock_1ae7b2c162886c6f7633be4628fb76de0d" prot="public" virt="non-virtual"><scope>LibretroClock</scope><name>period</name></member>
+      <member refid="struct_libretro_clock_1a005850e019ff3c856a25c037326a0aac" prot="public" virt="non-virtual"><scope>LibretroClock</scope><name>rep</name></member>
+      <member refid="struct_libretro_clock_1a1f3987e3b6d152edd76dcbdbe28e4900" prot="public" virt="non-virtual"><scope>LibretroClock</scope><name>SleepFor</name></member>
+      <member refid="struct_libretro_clock_1a73c18424bdfad5c658731a28858a8404" prot="public" virt="non-virtual"><scope>LibretroClock</scope><name>time_in_microseconds</name></member>
+      <member refid="struct_libretro_clock_1aaafc0a9f4086f401d72702bc47ec95bb" prot="public" virt="non-virtual"><scope>LibretroClock</scope><name>time_point</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

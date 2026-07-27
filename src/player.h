@@ -577,3 +577,4 @@ inline std::optional<bool> Player::GetRuntimeFlag(Game_Interpreter_Shared::State
 #endif
 
 #endif
+

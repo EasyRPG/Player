@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_9146873c03ec196cb07d82238976763c" kind="dir">
+    <compoundname>platform/macos</compoundname>
+    <innerfile refid="macos__utils_8h">macos_utils.h</innerfile>
+    <innerfile refid="midiout__device__coreaudio_8cpp">midiout_device_coreaudio.cpp</innerfile>
+    <innerfile refid="midiout__device__coreaudio_8h">midiout_device_coreaudio.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/macos/"/>
+  </compounddef>
+</doxygen>

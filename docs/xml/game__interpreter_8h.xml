@@ -1,0 +1,1388 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="game__interpreter_8h" kind="file" language="C++">
+    <compoundname>game_interpreter.h</compoundname>
+    <includes local="no">cstdint</includes>
+    <includes local="no">map</includes>
+    <includes local="no">string</includes>
+    <includes local="no">vector</includes>
+    <includes refid="async__handler_8h" local="yes">async_handler.h</includes>
+    <includes refid="game__character_8h" local="yes">game_character.h</includes>
+    <includes refid="game__actor_8h" local="yes">game_actor.h</includes>
+    <includes refid="game__interpreter__shared_8h" local="yes">game_interpreter_shared.h</includes>
+    <includes local="no">lcf/dbarray.h</includes>
+    <includes local="no">lcf/rpg/fwd.h</includes>
+    <includes local="no">lcf/rpg/eventcommand.h</includes>
+    <includes refid="system_8h" local="yes">system.h</includes>
+    <includes local="no">lcf/rpg/saveeventexecstate.h</includes>
+    <includes local="no">lcf/flag_set.h</includes>
+    <includes refid="async__op_8h" local="yes">async_op.h</includes>
+    <includedby refid="game__enemyparty_8cpp" local="yes">game_enemyparty.cpp</includedby>
+    <includedby refid="game__interpreter_8cpp" local="yes">game_interpreter.cpp</includedby>
+    <includedby refid="game__interpreter__battle_8h" local="yes">game_interpreter_battle.h</includedby>
+    <includedby refid="game__interpreter__control__variables_8cpp" local="yes">game_interpreter_control_variables.cpp</includedby>
+    <includedby refid="game__interpreter__map_8h" local="yes">game_interpreter_map.h</includedby>
+    <includedby refid="maniac__patch_8cpp" local="yes">maniac_patch.cpp</includedby>
+    <includedby refid="scene_8cpp" local="yes">scene.cpp</includedby>
+    <includedby refid="scene__battle_8cpp" local="yes">scene_battle.cpp</includedby>
+    <incdepgraph>
+      <node id="6">
+        <label>async_handler.h</label>
+        <link refid="async__handler_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="58">
+        <label>async_op.h</label>
+        <link refid="async__op_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>compiler.h</label>
+        <link refid="compiler_8h"/>
+      </node>
+      <node id="23">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>flash.h</label>
+        <link refid="flash_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>game_actor.h</label>
+        <link refid="game__actor_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>game_battler.h</label>
+        <link refid="game__battler_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>game_character.h</label>
+        <link refid="game__character_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>game_interpreter.h</label>
+        <link refid="game__interpreter_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>game_interpreter_shared.h</label>
+        <link refid="game__interpreter__shared_8h"/>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="41">
+        <label>point.h</label>
+        <link refid="point_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="44">
+        <label>rect.h</label>
+        <link refid="rect_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>sprite.h</label>
+        <link refid="sprite_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+      </node>
+      <node id="48">
+        <label>sprite_actor.h</label>
+        <link refid="sprite__actor_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>sprite_battler.h</label>
+        <link refid="sprite__battler_8h"/>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>sprite_weapon.h</label>
+        <link refid="sprite__weapon_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>state.h</label>
+        <link refid="state_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>tone.h</label>
+        <link refid="tone_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>algorithm</label>
+      </node>
+      <node id="60">
+        <label>cassert</label>
+      </node>
+      <node id="2">
+        <label>cstdint</label>
+      </node>
+      <node id="25">
+        <label>ctime</label>
+      </node>
+      <node id="12">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="13">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="7">
+        <label>functional</label>
+      </node>
+      <node id="56">
+        <label>lcf/dbarray.h</label>
+      </node>
+      <node id="36">
+        <label>lcf/dbbitarray.h</label>
+      </node>
+      <node id="11">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="57">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="31">
+        <label>lcf/rpg/actor.h</label>
+      </node>
+      <node id="50">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="21">
+        <label>lcf/rpg/eventpage.h</label>
+      </node>
+      <node id="29">
+        <label>lcf/rpg/fwd.h</label>
+      </node>
+      <node id="32">
+        <label>lcf/rpg/learning.h</label>
+      </node>
+      <node id="51">
+        <label>lcf/rpg/movecommand.h</label>
+      </node>
+      <node id="20">
+        <label>lcf/rpg/moveroute.h</label>
+      </node>
+      <node id="30">
+        <label>lcf/rpg/saveactor.h</label>
+      </node>
+      <node id="53">
+        <label>lcf/rpg/saveeventexecframe.h</label>
+      </node>
+      <node id="52">
+        <label>lcf/rpg/saveeventexecstate.h</label>
+      </node>
+      <node id="22">
+        <label>lcf/rpg/savemapeventbase.h</label>
+      </node>
+      <node id="35">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="27">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="10">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="34">
+        <label>limits</label>
+      </node>
+      <node id="3">
+        <label>map</label>
+      </node>
+      <node id="8">
+        <label>memory</label>
+      </node>
+      <node id="55">
+        <label>optional</label>
+      </node>
+      <node id="18">
+        <label>ostream</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="17">
+        <label>tuple</label>
+      </node>
+      <node id="15">
+        <label>unordered_set</label>
+      </node>
+      <node id="59">
+        <label>utility</label>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="7">
+        <label>algo.cpp</label>
+        <link refid="algo_8cpp"/>
+      </node>
+      <node id="8">
+        <label>autobattle.cpp</label>
+        <link refid="autobattle_8cpp"/>
+      </node>
+      <node id="9">
+        <label>battle_animation.cpp</label>
+        <link refid="battle__animation_8cpp"/>
+      </node>
+      <node id="11">
+        <label>dynrpg_easyrpg.cpp</label>
+        <link refid="dynrpg__easyrpg_8cpp"/>
+      </node>
+      <node id="10">
+        <label>dynrpg_easyrpg.h</label>
+        <link refid="dynrpg__easyrpg_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="50">
+        <label>dynrpg_textplugin.cpp</label>
+        <link refid="dynrpg__textplugin_8cpp"/>
+      </node>
+      <node id="13">
+        <label>enemyai.cpp</label>
+        <link refid="enemyai_8cpp"/>
+      </node>
+      <node id="14">
+        <label>game_actor.cpp</label>
+        <link refid="game__actor_8cpp"/>
+      </node>
+      <node id="5">
+        <label>game_battle.cpp</label>
+        <link refid="game__battle_8cpp"/>
+      </node>
+      <node id="6">
+        <label>game_battle.h</label>
+        <link refid="game__battle_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>game_battlealgorithm.cpp</label>
+        <link refid="game__battlealgorithm_8cpp"/>
+      </node>
+      <node id="16">
+        <label>game_battler.cpp</label>
+        <link refid="game__battler_8cpp"/>
+      </node>
+      <node id="51">
+        <label>game_character.cpp</label>
+        <link refid="game__character_8cpp"/>
+      </node>
+      <node id="47">
+        <label>game_commonevent.cpp</label>
+        <link refid="game__commonevent_8cpp"/>
+      </node>
+      <node id="48">
+        <label>game_commonevent.h</label>
+        <link refid="game__commonevent_8h"/>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>game_dynrpg.cpp</label>
+        <link refid="game__dynrpg_8cpp"/>
+      </node>
+      <node id="17">
+        <label>game_enemy.cpp</label>
+        <link refid="game__enemy_8cpp"/>
+      </node>
+      <node id="2">
+        <label>game_enemyparty.cpp</label>
+        <link refid="game__enemyparty_8cpp"/>
+      </node>
+      <node id="52">
+        <label>game_event.cpp</label>
+        <link refid="game__event_8cpp"/>
+      </node>
+      <node id="78">
+        <label>game_event.h</label>
+        <link refid="game__event_8h"/>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>game_interpreter.cpp</label>
+        <link refid="game__interpreter_8cpp"/>
+      </node>
+      <node id="1">
+        <label>game_interpreter.h</label>
+        <link refid="game__interpreter_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>game_interpreter_battle.cpp</label>
+        <link refid="game__interpreter__battle_8cpp"/>
+      </node>
+      <node id="4">
+        <label>game_interpreter_battle.h</label>
+        <link refid="game__interpreter__battle_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>game_interpreter_control_variables.cpp</label>
+        <link refid="game__interpreter__control__variables_8cpp"/>
+      </node>
+      <node id="19">
+        <label>game_interpreter_map.cpp</label>
+        <link refid="game__interpreter__map_8cpp"/>
+      </node>
+      <node id="46">
+        <label>game_interpreter_map.h</label>
+        <link refid="game__interpreter__map_8h"/>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>game_interpreter_shared.cpp</label>
+        <link refid="game__interpreter__shared_8cpp"/>
+      </node>
+      <node id="20">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="49">
+        <label>game_map.h</label>
+        <link refid="game__map_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>game_message.cpp</label>
+        <link refid="game__message_8cpp"/>
+      </node>
+      <node id="22">
+        <label>game_party.cpp</label>
+        <link refid="game__party_8cpp"/>
+      </node>
+      <node id="54">
+        <label>game_pictures.cpp</label>
+        <link refid="game__pictures_8cpp"/>
+      </node>
+      <node id="28">
+        <label>game_player.cpp</label>
+        <link refid="game__player_8cpp"/>
+      </node>
+      <node id="23">
+        <label>game_screen.cpp</label>
+        <link refid="game__screen_8cpp"/>
+      </node>
+      <node id="55">
+        <label>game_strings.cpp</label>
+        <link refid="game__strings_8cpp"/>
+      </node>
+      <node id="24">
+        <label>game_system.cpp</label>
+        <link refid="game__system_8cpp"/>
+      </node>
+      <node id="56">
+        <label>game_vehicle.cpp</label>
+        <link refid="game__vehicle_8cpp"/>
+      </node>
+      <node id="57">
+        <label>main_data.cpp</label>
+        <link refid="main__data_8cpp"/>
+      </node>
+      <node id="58">
+        <label>maniac_patch.cpp</label>
+        <link refid="maniac__patch_8cpp"/>
+      </node>
+      <node id="59">
+        <label>plane.cpp</label>
+        <link refid="plane_8cpp"/>
+      </node>
+      <node id="25">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+      <node id="60">
+        <label>scene.cpp</label>
+        <link refid="scene_8cpp"/>
+      </node>
+      <node id="26">
+        <label>scene_battle.cpp</label>
+        <link refid="scene__battle_8cpp"/>
+      </node>
+      <node id="27">
+        <label>scene_battle.h</label>
+        <link refid="scene__battle_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>scene_battle_rpg2k.cpp</label>
+        <link refid="scene__battle__rpg2k_8cpp"/>
+      </node>
+      <node id="30">
+        <label>scene_battle_rpg2k.h</label>
+        <link refid="scene__battle__rpg2k_8h"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>scene_battle_rpg2k3.cpp</label>
+        <link refid="scene__battle__rpg2k3_8cpp"/>
+      </node>
+      <node id="31">
+        <label>scene_battle_rpg2k3.h</label>
+        <link refid="scene__battle__rpg2k3_8h"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>scene_debug.cpp</label>
+        <link refid="scene__debug_8cpp"/>
+      </node>
+      <node id="61">
+        <label>scene_item.cpp</label>
+        <link refid="scene__item_8cpp"/>
+      </node>
+      <node id="64">
+        <label>scene_load.cpp</label>
+        <link refid="scene__load_8cpp"/>
+      </node>
+      <node id="35">
+        <label>scene_logo.cpp</label>
+        <link refid="scene__logo_8cpp"/>
+      </node>
+      <node id="62">
+        <label>scene_map.cpp</label>
+        <link refid="scene__map_8cpp"/>
+      </node>
+      <node id="63">
+        <label>scene_map.h</label>
+        <link refid="scene__map_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+      </node>
+      <node id="65">
+        <label>scene_order.cpp</label>
+        <link refid="scene__order_8cpp"/>
+      </node>
+      <node id="67">
+        <label>scene_save.cpp</label>
+        <link refid="scene__save_8cpp"/>
+      </node>
+      <node id="68">
+        <label>scene_skill.cpp</label>
+        <link refid="scene__skill_8cpp"/>
+      </node>
+      <node id="34">
+        <label>scene_title.cpp</label>
+        <link refid="scene__title_8cpp"/>
+      </node>
+      <node id="36">
+        <label>sprite_actor.cpp</label>
+        <link refid="sprite__actor_8cpp"/>
+      </node>
+      <node id="69">
+        <label>sprite_airshipshadow.cpp</label>
+        <link refid="sprite__airshipshadow_8cpp"/>
+      </node>
+      <node id="70">
+        <label>sprite_character.cpp</label>
+        <link refid="sprite__character_8cpp"/>
+      </node>
+      <node id="37">
+        <label>sprite_enemy.cpp</label>
+        <link refid="sprite__enemy_8cpp"/>
+      </node>
+      <node id="38">
+        <label>sprite_picture.cpp</label>
+        <link refid="sprite__picture_8cpp"/>
+      </node>
+      <node id="39">
+        <label>sprite_timer.cpp</label>
+        <link refid="sprite__timer_8cpp"/>
+      </node>
+      <node id="40">
+        <label>spriteset_battle.cpp</label>
+        <link refid="spriteset__battle_8cpp"/>
+      </node>
+      <node id="71">
+        <label>spriteset_map.cpp</label>
+        <link refid="spriteset__map_8cpp"/>
+      </node>
+      <node id="72">
+        <label>tilemap_layer.cpp</label>
+        <link refid="tilemap__layer_8cpp"/>
+      </node>
+      <node id="66">
+        <label>transition.cpp</label>
+        <link refid="transition_8cpp"/>
+      </node>
+      <node id="73">
+        <label>translation.cpp</label>
+        <link refid="translation_8cpp"/>
+      </node>
+      <node id="41">
+        <label>window_battlestatus.cpp</label>
+        <link refid="window__battlestatus_8cpp"/>
+      </node>
+      <node id="74">
+        <label>window_interpreter.cpp</label>
+        <link refid="window__interpreter_8cpp"/>
+      </node>
+      <node id="42">
+        <label>window_item.cpp</label>
+        <link refid="window__item_8cpp"/>
+      </node>
+      <node id="43">
+        <label>window_message.cpp</label>
+        <link refid="window__message_8cpp"/>
+      </node>
+      <node id="75">
+        <label>window_settings.cpp</label>
+        <link refid="window__settings_8cpp"/>
+      </node>
+      <node id="44">
+        <label>window_skill.cpp</label>
+        <link refid="window__skill_8cpp"/>
+      </node>
+      <node id="76">
+        <label>window_teleport.cpp</label>
+        <link refid="window__teleport_8cpp"/>
+      </node>
+      <node id="77">
+        <label>window_varlist.cpp</label>
+        <link refid="window__varlist_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_game___interpreter" prot="public">Game_Interpreter</innerclass>
+    <innerclass refid="struct_game___interpreter_1_1_key_input_state" prot="protected">Game_Interpreter::KeyInputState</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="game__interpreter_8h_1a9cb5ea6dde6ba350effc9703f951ba25" prot="public" static="no">
+        <name>EP_GAME_INTERPRETER_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="20" column="9" bodyfile="game_interpreter.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_GAME_INTERPRETER_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="game__interpreter_8h_1a9cb5ea6dde6ba350effc9703f951ba25" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_GAME_INTERPRETER_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstdint&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;map&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="async__handler_8h" kindref="compound">async_handler.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__character_8h" kindref="compound">game_character.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__actor_8h" kindref="compound">game_actor.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="game__interpreter__shared_8h" kindref="compound">game_interpreter_shared.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/dbarray.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/fwd.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/eventcommand.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="system_8h" kindref="compound">system.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/saveeventexecstate.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/flag_set.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="async__op_8h" kindref="compound">async_op.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_game___event" kindref="compound">Game_Event</ref>;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_game___common_event" kindref="compound">Game_CommonEvent</ref>;</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_pending_message" kindref="compound">PendingMessage</ref>;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="class_game___interpreter" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_game___interpreter_1a4c645dbae42426e39905c2a9c9e5a7f8" kindref="member">Game_Interpreter</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_game___base_interpreter_context" kindref="compound">Game_BaseInterpreterContext</ref></highlight></codeline>
+<codeline lineno="46"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="48" refid="class_game___interpreter_1aea7f9fef94b1b5ecdc8592575859b0b5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_game___interpreter_1aea7f9fef94b1b5ecdc8592575859b0b5" kindref="member">Cmd</ref><sp/>=<sp/>lcf::rpg::EventCommand::Code;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a4c645dbae42426e39905c2a9c9e5a7f8" kindref="member">Game_Interpreter</ref>&amp;<sp/><ref refid="class_game___interpreter_1a46615f6ad530e53b6e9e978d3e42b711" kindref="member">GetForegroundInterpreter</ref>();</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___interpreter_1a4c645dbae42426e39905c2a9c9e5a7f8" kindref="member">Game_Interpreter</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_main_flag<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EMSCRIPTEN</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>No<sp/>idea<sp/>why<sp/>but<sp/>emscripten<sp/>will<sp/>complain<sp/>about<sp/>a<sp/>missing<sp/>destructor<sp/>when</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>using<sp/>virtual<sp/>here</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___interpreter_1a4dd38d34146fe09a7e2bcc8aae8309b6" kindref="member">~Game_Interpreter</ref>();</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1abe054b320afc15c4fc57e08f210159ae" kindref="member">Clear</ref>();</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a82b55341ba75ad2e7b50962d9c26f7a9" kindref="member">IsRunning</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a9c13628cf24867629e5b16be6dbb184b" kindref="member">GetLoopCount</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a6b8ee36d4d28188dc32d442c0127b225" kindref="member">ReachedLoopLimit</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a87469ff80e344b9ce9daa4c75f103fc3" kindref="member">Update</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>reset_loop_count=</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ab78318b453ffa99de7c32dfbc53c398d" kindref="member">Push</ref>(</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;lcf::rpg::EventCommand&gt;<sp/>_list,</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>_event_id,</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>started_by_decision_key<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>event_page_id<sp/>=<sp/>0</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ab78318b453ffa99de7c32dfbc53c398d" kindref="member">Push</ref>(<ref refid="class_game___event" kindref="compound">Game_Event</ref>*<sp/>ev);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ab78318b453ffa99de7c32dfbc53c398d" kindref="member">Push</ref>(<ref refid="class_game___event" kindref="compound">Game_Event</ref>*<sp/>ev,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::EventPage*<sp/>page,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>triggered_by_decision_key);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ab78318b453ffa99de7c32dfbc53c398d" kindref="member">Push</ref>(<ref refid="class_game___common_event" kindref="compound">Game_CommonEvent</ref>*<sp/>ev);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78" refid="class_game___interpreter_1a552bf737962441e203dfbb9946311205" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a552bf737962441e203dfbb9946311205" kindref="member">InputButton</ref>();</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ad9538a0312c8c31dc4178d85f6994b01" kindref="member">SetupChoices</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;std::string&gt;&amp;<sp/>choices,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>indent,<sp/><ref refid="class_pending_message" kindref="compound">PendingMessage</ref>&amp;<sp/>pm);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a5e5f373b9753e227c44ba49002ba580d" kindref="member">ExecuteCommand</ref>();</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a5e5f373b9753e227c44ba49002ba580d" kindref="member">ExecuteCommand</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::SaveEventExecState&amp;<sp/><ref refid="class_game___interpreter_1a2f98f13b6209d7586523f9242a58f90e" kindref="member">GetState</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>lcf::rpg::SaveEventExecState<sp/><ref refid="class_game___interpreter_1ad6409258d697149e11675e6bd34eab21" kindref="member">GetSaveState</ref>();</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___character" kindref="compound">Game_Character</ref>*<sp/><ref refid="class_game___interpreter_1a7d1705d3b6f9cd6c2bca2a9f0269b2b2" kindref="member">GetCharacter</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>event_id,<sp/>std::string_view<sp/>origin)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a510e6bc02f4d23cf2ff249986eab1e42" kindref="member">GetCurrentEventId</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ae32a9cf670563f96f7aedb46aa148314" kindref="member">GetThisEventId</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ae47c48ecd454382620dc232c1e404acd" kindref="member">GetOriginalEventId</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1af44d80ff4c9963f20908d13172e31d8a" kindref="member">ClearOriginalEventId</ref>();</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ac3d796cc8e189d2e4c077e30eab83912" kindref="member">IsAsyncPending</ref>();</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_async_op" kindref="compound">AsyncOp</ref><sp/><ref refid="class_game___interpreter_1aa02ed61c936fab916281d940a7240555" kindref="member">GetAsyncOp</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ada596083e5275d71f31a1478ff97d64d" kindref="member">IsWaitingForWaitCommand</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="126" refid="class_game___interpreter_1a8f958b6593872b03b63822e26a2bac04" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a8f958b6593872b03b63822e26a2bac04" kindref="member">loop_limit</ref><sp/>=<sp/>10000;</highlight></codeline>
+<codeline lineno="127" refid="class_game___interpreter_1a8a6cc11c14c63bbab8ff5b52bed6093c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a8a6cc11c14c63bbab8ff5b52bed6093c" kindref="member">call_stack_limit</ref><sp/>=<sp/>1000;</highlight></codeline>
+<codeline lineno="128" refid="class_game___interpreter_1aaf7594be12e356b1bc052e310239c8f1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aaf7594be12e356b1bc052e310239c8f1" kindref="member">subcommand_sentinel</ref><sp/>=<sp/>255;</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::SaveEventExecFrame&amp;<sp/><ref refid="class_game___interpreter_1a44b03a0b5ea2f0b298fa259d7f05c135" kindref="member">GetFrame</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>lcf::rpg::SaveEventExecFrame&amp;<sp/><ref refid="class_game___interpreter_1a44b03a0b5ea2f0b298fa259d7f05c135" kindref="member">GetFrame</ref>();</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::SaveEventExecFrame*<sp/><ref refid="class_game___interpreter_1ad3d7d9952b6e30d52d82f5db9e5f20b9" kindref="member">GetFramePtr</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>lcf::rpg::SaveEventExecFrame*<sp/><ref refid="class_game___interpreter_1ad3d7d9952b6e30d52d82f5db9e5f20b9" kindref="member">GetFramePtr</ref>();</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135" refid="class_game___interpreter_1a0d60a7ac16ae14132bf5aabbc70c4f66" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a0d60a7ac16ae14132bf5aabbc70c4f66" kindref="member">main_flag</ref>;</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137" refid="class_game___interpreter_1a75cffc20d4e33642025d4ac8ca160cb4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a75cffc20d4e33642025d4ac8ca160cb4" kindref="member">loop_count</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/><ref refid="class_game___interpreter_1ab55246e3bbb783b838b66393f112510c" kindref="member">GetChoices</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>max_num_choices);</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1af72c7ae119c80a0cb9531bee91a5a405" kindref="member">OperateValue</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>operation,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>operand_type,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>operand);</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a74e1af3920f25836c69e70f3bbdd9c46" kindref="member">SkipToNextConditional</ref>(std::initializer_list&lt;Cmd&gt;<sp/>codes,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>indent);</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ad8db1b97275ec751f917fcc9a1c5c380" kindref="member">SetupWait</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>duration);</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a09545f2c15e77005b8c8cbd6eb47d8a1" kindref="member">SetupWaitFrames</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>duration);</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::vector&lt;Game_Actor*&gt;<sp/><ref refid="class_game___interpreter_1afbeba0273309b6f44ffc06b8b1773c13" kindref="member">GetActors</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mode,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a7d943704fa0d7c3e5347835280c11152" kindref="member">OnFinishStackFrame</ref>();</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a47d2ff7ca2f8ebe98780852b57a746c7" kindref="member">CheckGameOver</ref>();</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aac95bb5ff9f62f0e56077489a89e3086" kindref="member">CommandOptionGeneric</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>option_sub_idx,<sp/>std::initializer_list&lt;Cmd&gt;<sp/><ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">next</ref>);</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a9b30ac0715ca464cc5430d6909333f73" kindref="member">CommandShowMessage</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aa65e74b9eff25544536c5d5efbf03b3b" kindref="member">CommandMessageOptions</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1af3c2414c3a8c9e5418fa416b599ab1b2" kindref="member">CommandChangeFaceGraphic</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aafa884fd3f363f047a485644a15e71c3" kindref="member">CommandShowChoices</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a27b0041f52c00cab9237c8bad3b4ffa1" kindref="member">CommandShowChoiceOption</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a04b2643b0991c8f7f1b1dc0837f0d070" kindref="member">CommandShowChoiceEnd</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a72fb7e48ec9f72c700e6296704ee2f9a" kindref="member">CommandInputNumber</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a08096287030e2ad775fea2821dfe280f" kindref="member">CommandControlSwitches</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aa4fddb4f523b90eff566d03cf377dfe0" kindref="member">CommandControlVariables</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ad2547fa74ea9f14c8d7d0ee0dc5ada73" kindref="member">CommandTimerOperation</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aa136144c62e364f7d552718fe571d6ec" kindref="member">CommandChangeGold</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1acbc591f8cf96e98f2a747270a99ac6e8" kindref="member">CommandChangeItems</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a1cfe8e4a84f997174fc059a5fe2a40d7" kindref="member">CommandChangePartyMember</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a7a02a59594f95f28272551fd19e0fa66" kindref="member">CommandChangeExp</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a955c948fa047df2c42c00c145cb84f02" kindref="member">CommandChangeLevel</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a2d828c3ecd365d73be922fa6871e48f7" kindref="member">CommandChangeParameters</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a0527ba8bea7232a7238502c9645615a9" kindref="member">CommandChangeSkills</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a910a208782cfbee724e6268ea581ca2b" kindref="member">CommandChangeEquipment</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a5bdd48109b6a4c1f4068563368229fd4" kindref="member">CommandChangeHP</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a8ab1b772551d71a1d1fd803d5eebbb0e" kindref="member">CommandChangeSP</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a556e560089fbb2a38bc4df481e423d6e" kindref="member">CommandChangeCondition</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aed38ff5c5d9d82ccd426048c512c741c" kindref="member">CommandFullHeal</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aa29789c2cf760b67b06886fdfa543194" kindref="member">CommandSimulatedAttack</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a0761e0a5f97e11445bc2efa3afbe5f99" kindref="member">CommandWait</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aef706a164426cf429dda84a40111162b" kindref="member">CommandPlayBGM</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a0e122aea419f106e7ee9b9eb11f8ed54" kindref="member">CommandFadeOutBGM</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a4f3b4631b03b2b06a351e7c5713727dd" kindref="member">CommandPlaySound</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a03fd3ba60c4efa3b3b1b0ee109bd560c" kindref="member">CommandEndEventProcessing</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1affd4dc4765d7b548d29b7badf5c12684" kindref="member">CommandComment</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1abf809d236473a78f013c15aefe563019" kindref="member">CommandGameOver</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a139cea5046c62ed0187e451e81034739" kindref="member">CommandChangeHeroName</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a7ea9ee0622876dbf9476018e45f9d4ca" kindref="member">CommandChangeHeroTitle</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a9bcbe9f8dfbde2954528ef2c96a41b24" kindref="member">CommandChangeSpriteAssociation</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a54e166e9e6a2d3c1057577ebaebb1b5c" kindref="member">CommandChangeActorFace</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a5ceb64f7967605f5fc95342e724e7195" kindref="member">CommandChangeVehicleGraphic</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1af2b1453c14c6927a34eb0704b0b877be" kindref="member">CommandChangeSystemBGM</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a8e7d3936858b93534aa51c7ca14fa3cf" kindref="member">CommandChangeSystemSFX</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a206cf4081443a63fc0b8e56d4e4e2678" kindref="member">CommandChangeSystemGraphics</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a67392323d0811f42fcf0f4d8e2a7a648" kindref="member">CommandChangeScreenTransitions</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a09a02aa1f0b197c002b90f75b70f53bd" kindref="member">CommandMemorizeLocation</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a30bed17b20ea82e45576a957f9186691" kindref="member">CommandSetVehicleLocation</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a1210cf181bd22b3787a8b283ce9ea574" kindref="member">CommandChangeEventLocation</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a3bc149bafb32e75c06c0700be4eea9df" kindref="member">CommandTradeEventLocations</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a29cda1bcfd93b7e3fdb5b0218227eb7c" kindref="member">CommandStoreTerrainID</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a143995bfabe52cd36b3f2f1dcaafa006" kindref="member">CommandStoreEventID</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a52053c1f7bcf8b18503eea9f2227e100" kindref="member">CommandEraseScreen</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aa53b992812260b38353b88451c953370" kindref="member">CommandShowScreen</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aff9b77e92a751baafb9fcda76f127af2" kindref="member">CommandTintScreen</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a1644db312a42abb5434e75da22dd4038" kindref="member">CommandFlashScreen</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ac186926f7a8a992d24d2dbf5fa8886e5" kindref="member">CommandShakeScreen</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1acb353c32a5382180bd8abf48606527c8" kindref="member">CommandWeatherEffects</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a933490867ec6a274e8ba683a220ca1e4" kindref="member">CommandShowPicture</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a0dd5fbdb7fcc80c81a8b1b643ad111c0" kindref="member">CommandMovePicture</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aef46e2a14f0f309d84a635d6b35cb4dd" kindref="member">CommandErasePicture</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a9c8be3dec58a83e5708d317fe6f3595f" kindref="member">CommandPlayerVisibility</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a44a06cf772b0186f9652f0386b8163c9" kindref="member">CommandMoveEvent</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ac50794c5ba7d2f114bcf82f31af013e7" kindref="member">CommandMemorizeBGM</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ad6631dfade1d5bfe42fc1461bd4f3906" kindref="member">CommandPlayMemorizedBGM</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ace395385facc5e269c9653ff213c957b" kindref="member">CommandKeyInputProc</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a96677a668844610c9c1bf7e2b2911202" kindref="member">CommandChangeMapTileset</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aa31cb770abec0baca5c7c75cbb9c46aa" kindref="member">CommandChangePBG</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a3111df9fe1022c674c824ac31418b84a" kindref="member">CommandChangeEncounterSteps</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a5744617f17714da02aad5d73168c5f03" kindref="member">CommandTileSubstitution</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a0e8f297e918b0a66b4d36f8154453226" kindref="member">CommandTeleportTargets</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1afb3b9c24d1d9892604848a36881dcf4b" kindref="member">CommandChangeTeleportAccess</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a858f215a1e0498b957f433a0dcd24b7e" kindref="member">CommandEscapeTarget</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aa8fbc1982b549a099d37272232bb57d5" kindref="member">CommandChangeEscapeAccess</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ad9c51e6b81cdc92c68b77dbb95cc763f" kindref="member">CommandChangeSaveAccess</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a7dc5e67de02cf32192b3b7159ff302c0" kindref="member">CommandChangeMainMenuAccess</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ae13843be47e13cd26012d10f34d1ea86" kindref="member">CommandConditionalBranch</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a391e8094d5b1ecf7b01a8446439b0261" kindref="member">CommandElseBranch</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1af1249707724db420b67e82434cbdb501" kindref="member">CommandEndBranch</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aef0ec9b29c52204243e97aa5bc59edb4" kindref="member">CommandJumpToLabel</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a9f979bd8fff4ab8803cd8b67be505566" kindref="member">CommandLoop</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aea6e782fdc6d97e27eda2bc663ca458f" kindref="member">CommandBreakLoop</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ac92e0548b59b562d10139e51c1fd009b" kindref="member">CommandEndLoop</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a0bdea58e80b6b1a58bb93148acf48015" kindref="member">CommandEraseEvent</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a1f97f6cf5785e455142d175369a0f871" kindref="member">CommandCallEvent</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aab75cb8ff04587bd24c368f8ee667bf3" kindref="member">CommandReturnToTitleScreen</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a82ea4697b7d3424568eb30fc74620512" kindref="member">CommandChangeClass</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a0a64d9ad41a9d843ba1c0568cbad1429" kindref="member">CommandChangeBattleCommands</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a7f27aa3f0b83fa62ade332a53d2362a6" kindref="member">CommandExitGame</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a67f189836ffd272fa410cdea6f85ae32" kindref="member">CommandToggleFullscreen</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1afd62cf348f7c0b70ace064b1217fc834" kindref="member">CommandOpenVideoOptions</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a1bf80ea23a7a4a529a537dc2e2f7096f" kindref="member">CommandManiacGetSaveInfo</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1afff479239f7a43d357607d81a6b6df65" kindref="member">CommandManiacSave</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ad4bb3a00a22100d223eca8c3de84d9ca" kindref="member">CommandManiacLoad</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1af2db51a5a00e41deb20b80517dd4b383" kindref="member">CommandManiacEndLoadProcess</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aa1761126912bfb6f7822ebec609a774a" kindref="member">CommandManiacGetMousePosition</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1af65b35fd3c3496bb1c7dff161d4fb2af" kindref="member">CommandManiacSetMousePosition</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1abb22dfedf589fa3401cfe6b5709041cf" kindref="member">CommandManiacShowStringPicture</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ae53830043a3dfaca312032c9d2d404d4" kindref="member">CommandManiacGetPictureInfo</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aa9143aad046d1ab32b2129f292ed9cae" kindref="member">CommandManiacControlVarArray</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aeb6bc9803e68c08f360134a8ea5fbf0f" kindref="member">CommandManiacKeyInputProcEx</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a92ea3bfd697bb9453837dc07b0c208f2" kindref="member">CommandManiacRewriteMap</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a361c06d1408e5a2ae5d93a2a69b1749d" kindref="member">CommandManiacControlGlobalSave</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a2a660c9aed78d688d7d48fc7be321fd5" kindref="member">CommandManiacChangePictureId</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ab43e8d5fe92ac43743926b38cc0e21fc" kindref="member">CommandManiacSetGameOption</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ad3e8cd494101f7b29a064f1d56b74f66" kindref="member">CommandManiacControlStrings</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ad1067bfd5059d216045b240994ba3548" kindref="member">CommandManiacCallCommand</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a25e88d2ed3b5f3ec6c04b7abc8a74162" kindref="member">CommandEasyRpgSetInterpreterFlag</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a9465eed80bc4e00f35391fe20e9c3e2c" kindref="member">CommandEasyRpgProcessJson</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a8806c892dacadea350990e12369b7a7e" kindref="member">CommandEasyRpgCloneMapEvent</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a221ea790132c7db90f698fb66a89a39b" kindref="member">CommandEasyRpgDestroyMapEvent</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a23c2e20cad7341f70d90b18370452c02" kindref="member">CommandManiacGetGameInfo</ref>(lcf::rpg::EventCommand<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"></highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ad37fd70718341354915dd6458a021938" kindref="member">SetSubcommandIndex</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>indent,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>idx);</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t&amp;<sp/><ref refid="class_game___interpreter_1a4f59bbf6b9b3aaa20ed4087861ec1c53" kindref="member">ReserveSubcommandIndex</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>indent);</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a36663bc6fab30c291525f0befb8ffa45" kindref="member">GetSubcommandIndex</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>indent)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"></highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aa0a5a5f24aad210a07e0e8ab6a395da6" kindref="member">ForegroundTextPush</ref>(<ref refid="class_pending_message" kindref="compound">PendingMessage</ref><sp/>pm);</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ab6def7f0eee05ab01c32384b9225ae56" kindref="member">EndEventProcessing</ref>();</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"></highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/>std::optional&lt;bool&gt;<sp/><ref refid="class_game___interpreter_1a921b0e92b396e6f4ab9c4df07a99cd52" kindref="member">HandleDynRpgScript</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::EventCommand&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/>std::optional&lt;bool&gt;<sp/><ref refid="class_game___interpreter_1a98ec0b440ee7f4a8fd1f85a3d8188420" kindref="member">HandleDestinyScript</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::EventCommand&amp;<sp/>com);</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"></highlight></codeline>
+<codeline lineno="317" refid="class_game___interpreter_1a1dcc1d4ed876edb7f9b2a4636e19f80c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref><sp/><ref refid="class_game___interpreter_1a1dcc1d4ed876edb7f9b2a4636e19f80c" kindref="member">request_id</ref>;</highlight></codeline>
+<codeline lineno="318" refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2b" kindref="member">Keys</ref><sp/>{</highlight></codeline>
+<codeline lineno="319" refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba9b99cd9a69140a1d7c7d483df619ea02" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba9b99cd9a69140a1d7c7d483df619ea02" kindref="member">eDown</ref>,</highlight></codeline>
+<codeline lineno="320" refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba97d352658db7b34c35502f9cd535e48b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba97d352658db7b34c35502f9cd535e48b" kindref="member">eLeft</ref>,</highlight></codeline>
+<codeline lineno="321" refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2baf47864efb86f863a0080026825b1303d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2baf47864efb86f863a0080026825b1303d" kindref="member">eRight</ref>,</highlight></codeline>
+<codeline lineno="322" refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2bade2a1951a10731843b364fde00833a23" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2bade2a1951a10731843b364fde00833a23" kindref="member">eUp</ref>,</highlight></codeline>
+<codeline lineno="323" refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2bab81fb787a6876deeeda8d3cb60018b7e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2bab81fb787a6876deeeda8d3cb60018b7e" kindref="member">eDecision</ref>,</highlight></codeline>
+<codeline lineno="324" refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2bafa517a41eb0fc0c836791ecd5d902b50" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2bafa517a41eb0fc0c836791ecd5d902b50" kindref="member">eCancel</ref>,</highlight></codeline>
+<codeline lineno="325" refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba9e62f71ce009d65471fccb01fdb3245d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba9e62f71ce009d65471fccb01fdb3245d" kindref="member">eShift</ref>,</highlight></codeline>
+<codeline lineno="326" refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba1f04be94c9f2469a472e930c9ccdaa45" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba1f04be94c9f2469a472e930c9ccdaa45" kindref="member">eNumbers</ref>,</highlight></codeline>
+<codeline lineno="327" refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba7c4db72d07c1a284fdda6e51c4bc1453" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba7c4db72d07c1a284fdda6e51c4bc1453" kindref="member">eOperators</ref>,</highlight></codeline>
+<codeline lineno="328"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>ManiacPatch</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="329" refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2baa8b83783968fdb2693b2528ea2fbc065" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2baa8b83783968fdb2693b2528ea2fbc065" kindref="member">eMouseLeft</ref>,</highlight></codeline>
+<codeline lineno="330" refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba6dfb1c9d1388375448172a2d2ad8bbc9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba6dfb1c9d1388375448172a2d2ad8bbc9" kindref="member">eMouseRight</ref>,</highlight></codeline>
+<codeline lineno="331" refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2baeee36d88d89282f8ce701d4c7bbedfee" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2baeee36d88d89282f8ce701d4c7bbedfee" kindref="member">eMouseMiddle</ref>,</highlight></codeline>
+<codeline lineno="332" refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2bacebe1c0a76c27a9a7a512e963a69b2d1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2bacebe1c0a76c27a9a7a512e963a69b2d1" kindref="member">eMouseScrollDown</ref>,</highlight></codeline>
+<codeline lineno="333" refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba72610c9005f1ee08a25451767424c7b4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba72610c9005f1ee08a25451767424c7b4" kindref="member">eMouseScrollUp</ref></highlight></codeline>
+<codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"></highlight></codeline>
+<codeline lineno="336" refid="struct_game___interpreter_1_1_key_input_state" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_game___interpreter_1_1_key_input_state" kindref="compound">KeyInputState</ref><sp/>{</highlight></codeline>
+<codeline lineno="337" refid="struct_game___interpreter_1_1_key_input_state_1a85fa57b6fec438879025775592ef6c71" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lcf::FlagSet&lt;Keys&gt;<sp/><ref refid="struct_game___interpreter_1_1_key_input_state_1a85fa57b6fec438879025775592ef6c71" kindref="member">keys</ref><sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="338" refid="struct_game___interpreter_1_1_key_input_state_1a6a45f893d86e5505f4a9cd6b2d665dac" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/><ref refid="struct_game___interpreter_1_1_key_input_state_1a6a45f893d86e5505f4a9cd6b2d665dac" kindref="member">variable</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="339" refid="struct_game___interpreter_1_1_key_input_state_1abf0c11f9ce9d915d0ed3945b914c6f05" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___interpreter_1_1_key_input_state_1abf0c11f9ce9d915d0ed3945b914c6f05" kindref="member">time_variable</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="340" refid="struct_game___interpreter_1_1_key_input_state_1aee0b2a79fe6d2aa1a5fbaefdef935d44" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___interpreter_1_1_key_input_state_1aee0b2a79fe6d2aa1a5fbaefdef935d44" kindref="member">wait_frames</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="341" refid="struct_game___interpreter_1_1_key_input_state_1ace4cdcd05070ae933471c3d25a6800f4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___interpreter_1_1_key_input_state_1ace4cdcd05070ae933471c3d25a6800f4" kindref="member">wait</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="342" refid="struct_game___interpreter_1_1_key_input_state_1a7b01483ebb285bbc47dfe4012ded0d80" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_game___interpreter_1_1_key_input_state_1a7b01483ebb285bbc47dfe4012ded0d80" kindref="member">timed</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"></highlight></codeline>
+<codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_game___interpreter_1_1_key_input_state_1a81710b1e5ccb19c9974dcac4e9aa069d" kindref="member">CheckInput</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___interpreter_1_1_key_input_state_1a355152aa9caf44d1a30b87a988884643" kindref="member">fromSave</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::SaveEventExecState&amp;<sp/>save);</highlight></codeline>
+<codeline lineno="346"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="struct_game___interpreter_1_1_key_input_state_1a916d16b9a9bf8766f71d551b8b627f76" kindref="member">toSave</ref>(lcf::rpg::SaveEventExecState&amp;<sp/>save)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="348"><highlight class="normal"></highlight></codeline>
+<codeline lineno="349"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a96bd7e1677520378961da5d7f4d44a05" kindref="member">ManiacBitmask</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mask)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"></highlight></codeline>
+<codeline lineno="351" refid="class_game___interpreter_1a8deff46edae44d7d426e38ee75cc1ede" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>lcf::rpg::SaveEventExecState<sp/><ref refid="class_game___interpreter_1a8deff46edae44d7d426e38ee75cc1ede" kindref="member">_state</ref>;</highlight></codeline>
+<codeline lineno="352" refid="class_game___interpreter_1a46335e1e1c16974d73b183ae67612b7c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_game___interpreter_1_1_key_input_state" kindref="compound">KeyInputState</ref><sp/><ref refid="class_game___interpreter_1a46335e1e1c16974d73b183ae67612b7c" kindref="member">_keyinput</ref>;</highlight></codeline>
+<codeline lineno="353" refid="class_game___interpreter_1a0791542402a644e15382dd42f412af2b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_async_op" kindref="compound">AsyncOp</ref><sp/><ref refid="class_game___interpreter_1a0791542402a644e15382dd42f412af2b" kindref="member">_async_op</ref><sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="354"><highlight class="normal"></highlight></codeline>
+<codeline lineno="355" refid="class_game___interpreter_1ae60e888f01e861f90c85fcb73dca975f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">friend</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_game___interpreter_1ae60e888f01e861f90c85fcb73dca975f" kindref="member">Scene_Debug</ref>;</highlight></codeline>
+<codeline lineno="356"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="357"><highlight class="normal"></highlight></codeline>
+<codeline lineno="358" refid="class_game___interpreter_1ad3d7d9952b6e30d52d82f5db9e5f20b9" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::SaveEventExecFrame*<sp/><ref refid="class_game___interpreter_1ad3d7d9952b6e30d52d82f5db9e5f20b9" kindref="member">Game_Interpreter::GetFramePtr</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="359"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>!<ref refid="class_game___interpreter_1a8deff46edae44d7d426e38ee75cc1ede" kindref="member">_state</ref>.stack.empty()<sp/>?<sp/>&amp;<ref refid="class_game___interpreter_1a8deff46edae44d7d426e38ee75cc1ede" kindref="member">_state</ref>.stack.back()<sp/>:<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="360"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="361"><highlight class="normal"></highlight></codeline>
+<codeline lineno="362" refid="class_game___interpreter_1a169d5fe70d4fd80cbc3c70c7043f57c6" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>lcf::rpg::SaveEventExecFrame*<sp/><ref refid="class_game___interpreter_1ad3d7d9952b6e30d52d82f5db9e5f20b9" kindref="member">Game_Interpreter::GetFramePtr</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="363"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>!<ref refid="class_game___interpreter_1a8deff46edae44d7d426e38ee75cc1ede" kindref="member">_state</ref>.stack.empty()<sp/>?<sp/>&amp;<ref refid="class_game___interpreter_1a8deff46edae44d7d426e38ee75cc1ede" kindref="member">_state</ref>.stack.back()<sp/>:<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="364"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="365"><highlight class="normal"></highlight></codeline>
+<codeline lineno="366" refid="class_game___interpreter_1a44b03a0b5ea2f0b298fa259d7f05c135" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::SaveEventExecFrame&amp;<sp/><ref refid="class_game___interpreter_1a44b03a0b5ea2f0b298fa259d7f05c135" kindref="member">Game_Interpreter::GetFrame</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>frame<sp/>=<sp/><ref refid="class_game___interpreter_1ad3d7d9952b6e30d52d82f5db9e5f20b9" kindref="member">GetFramePtr</ref>();</highlight></codeline>
+<codeline lineno="368"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(frame);</highlight></codeline>
+<codeline lineno="369"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*frame;</highlight></codeline>
+<codeline lineno="370"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="371"><highlight class="normal"></highlight></codeline>
+<codeline lineno="372" refid="class_game___interpreter_1aeec408fa8ec452ae435f106c173c6ef2" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>lcf::rpg::SaveEventExecFrame&amp;<sp/><ref refid="class_game___interpreter_1a44b03a0b5ea2f0b298fa259d7f05c135" kindref="member">Game_Interpreter::GetFrame</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="373"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>frame<sp/>=<sp/><ref refid="class_game___interpreter_1ad3d7d9952b6e30d52d82f5db9e5f20b9" kindref="member">GetFramePtr</ref>();</highlight></codeline>
+<codeline lineno="374"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(frame);</highlight></codeline>
+<codeline lineno="375"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*frame;</highlight></codeline>
+<codeline lineno="376"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="377"><highlight class="normal"></highlight></codeline>
+<codeline lineno="378"><highlight class="normal"></highlight></codeline>
+<codeline lineno="379" refid="class_game___interpreter_1a510e6bc02f4d23cf2ff249986eab1e42" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a510e6bc02f4d23cf2ff249986eab1e42" kindref="member">Game_Interpreter::GetCurrentEventId</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="380"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>!<ref refid="class_game___interpreter_1a8deff46edae44d7d426e38ee75cc1ede" kindref="member">_state</ref>.stack.empty()<sp/>?<sp/><ref refid="class_game___interpreter_1a8deff46edae44d7d426e38ee75cc1ede" kindref="member">_state</ref>.stack.back().event_id<sp/>:<sp/>0;</highlight></codeline>
+<codeline lineno="381"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="382"><highlight class="normal"></highlight></codeline>
+<codeline lineno="383" refid="class_game___interpreter_1ae47c48ecd454382620dc232c1e404acd" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ae47c48ecd454382620dc232c1e404acd" kindref="member">Game_Interpreter::GetOriginalEventId</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="384"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>!<ref refid="class_game___interpreter_1a8deff46edae44d7d426e38ee75cc1ede" kindref="member">_state</ref>.stack.empty()<sp/>?<sp/><ref refid="class_game___interpreter_1a8deff46edae44d7d426e38ee75cc1ede" kindref="member">_state</ref>.stack.front().event_id<sp/>:<sp/>0;</highlight></codeline>
+<codeline lineno="385"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="386"><highlight class="normal"></highlight></codeline>
+<codeline lineno="387" refid="class_game___interpreter_1af44d80ff4c9963f20908d13172e31d8a" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1af44d80ff4c9963f20908d13172e31d8a" kindref="member">Game_Interpreter::ClearOriginalEventId</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="388"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="class_game___interpreter_1a8deff46edae44d7d426e38ee75cc1ede" kindref="member">_state</ref>.stack.empty())<sp/>{</highlight></codeline>
+<codeline lineno="389"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_game___interpreter_1a8deff46edae44d7d426e38ee75cc1ede" kindref="member">_state</ref>.stack.front().event_id<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="390"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="391"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="392"><highlight class="normal"></highlight></codeline>
+<codeline lineno="393" refid="class_game___interpreter_1a9c13628cf24867629e5b16be6dbb184b" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a9c13628cf24867629e5b16be6dbb184b" kindref="member">Game_Interpreter::GetLoopCount</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="394"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a75cffc20d4e33642025d4ac8ca160cb4" kindref="member">loop_count</ref>;</highlight></codeline>
+<codeline lineno="395"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="396"><highlight class="normal"></highlight></codeline>
+<codeline lineno="397" refid="class_game___interpreter_1ac3d796cc8e189d2e4c077e30eab83912" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1ac3d796cc8e189d2e4c077e30eab83912" kindref="member">Game_Interpreter::IsAsyncPending</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="398"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1aa02ed61c936fab916281d940a7240555" kindref="member">GetAsyncOp</ref>().<ref refid="class_async_op_1a3d65d393ff06aa398504d251e28a2ddf" kindref="member">IsActive</ref>();</highlight></codeline>
+<codeline lineno="399"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="400"><highlight class="normal"></highlight></codeline>
+<codeline lineno="401" refid="class_game___interpreter_1aa02ed61c936fab916281d940a7240555" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_async_op" kindref="compound">AsyncOp</ref><sp/><ref refid="class_game___interpreter_1aa02ed61c936fab916281d940a7240555" kindref="member">Game_Interpreter::GetAsyncOp</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="402"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_game___interpreter_1a0791542402a644e15382dd42f412af2b" kindref="member">_async_op</ref>;</highlight></codeline>
+<codeline lineno="403"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="404"><highlight class="normal"></highlight></codeline>
+<codeline lineno="405"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="406"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="game_interpreter.h"/>
+  </compounddef>
+</doxygen>

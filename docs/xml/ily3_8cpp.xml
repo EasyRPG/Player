@@ -1,0 +1,429 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="ily3_8cpp" kind="file" language="C++">
+    <compoundname>ily3.cpp</compoundname>
+    <includes refid="version_8h" local="yes">version.h</includes>
+    <includes refid="ldebug_8hpp" local="yes">../ldebug.hpp</includes>
+    <includes refid="state_8hpp" local="yes">../ul2/state.hpp</includes>
+    <includes refid="lio_8hpp" local="yes">../lio.hpp</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/ily3/ily3.cpp</label>
+        <link refid="ily3_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>kits/ps7k.hpp</label>
+        <link refid="ps7k_8hpp"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>../kits/variant.hpp</label>
+        <link refid="variant_8hpp"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>../ldebug.hpp</label>
+        <link refid="ldebug_8hpp"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>../lio.hpp</label>
+        <link refid="lio_8hpp"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>lauxlib.h</label>
+        <link refid="lauxlib_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>../lua/lua.hpp</label>
+        <link refid="lua_2lua_8hpp"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>lualib.h</label>
+        <link refid="lualib_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>../typings/metatypes.hpp</label>
+        <link refid="metatypes_8hpp"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>dispatcher.hpp</label>
+        <link refid="dispatcher_8hpp"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>../ul2/function_traits.hpp</label>
+        <link refid="function__traits_8hpp"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>lua_stack.hpp</label>
+        <link refid="lua__stack_8hpp"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>../ul2/state.hpp</label>
+        <link refid="state_8hpp"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>types.hpp</label>
+        <link refid="types_8hpp"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>ulexception2.hpp</label>
+        <link refid="ulexception2_8hpp"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>version.h</label>
+        <link refid="version_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>algorithm</label>
+      </node>
+      <node id="30">
+        <label>any</label>
+      </node>
+      <node id="39">
+        <label>chrono</label>
+      </node>
+      <node id="48">
+        <label>cstddef</label>
+      </node>
+      <node id="3">
+        <label>cstring</label>
+      </node>
+      <node id="40">
+        <label>filesystem</label>
+      </node>
+      <node id="41">
+        <label>fstream</label>
+      </node>
+      <node id="10">
+        <label>functional</label>
+      </node>
+      <node id="42">
+        <label>iomanip</label>
+      </node>
+      <node id="6">
+        <label>iostream</label>
+      </node>
+      <node id="49">
+        <label>iterator</label>
+      </node>
+      <node id="17">
+        <label>limits.h</label>
+      </node>
+      <node id="31">
+        <label>memory</label>
+      </node>
+      <node id="43">
+        <label>mutex</label>
+      </node>
+      <node id="34">
+        <label>new</label>
+      </node>
+      <node id="44">
+        <label>optional</label>
+      </node>
+      <node id="9">
+        <label>sstream</label>
+      </node>
+      <node id="14">
+        <label>stdarg.h</label>
+      </node>
+      <node id="15">
+        <label>stddef.h</label>
+      </node>
+      <node id="22">
+        <label>stdexcept</label>
+      </node>
+      <node id="20">
+        <label>stdio.h</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="45">
+        <label>string_view</label>
+      </node>
+      <node id="46">
+        <label>thread</label>
+      </node>
+      <node id="26">
+        <label>tuple</label>
+      </node>
+      <node id="11">
+        <label>type_traits</label>
+      </node>
+      <node id="27">
+        <label>typeindex</label>
+      </node>
+      <node id="32">
+        <label>unordered_map</label>
+      </node>
+      <node id="33">
+        <label>utility</label>
+      </node>
+      <node id="29">
+        <label>variant</label>
+      </node>
+      <node id="8">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceleasy">leasy</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ily3">leasy::ily3</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ily3_1_1global">leasy::ily3::global</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ily3_1_1lua__scripts">leasy::ily3::lua_scripts</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="version_8h" kindref="compound">version.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ldebug_8hpp" kindref="compound">../ldebug.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="state_8hpp" kindref="compound">../ul2/state.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lio_8hpp" kindref="compound">../lio.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1ily3" kindref="compound">leasy::ily3</ref><sp/>{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1ily3_1_1global" kindref="compound">global</ref><sp/>{</highlight></codeline>
+<codeline lineno="30" refid="namespaceleasy_1_1ily3_1_1global_1a38a489664fcd8c5bfdd4fe1895a52669" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classleasy_1_1ul2_1_1lstate" kindref="compound">ul2::lstate</ref><sp/><ref refid="namespaceleasy_1_1ily3_1_1global_1a38a489664fcd8c5bfdd4fe1895a52669" kindref="member">state</ref><sp/>=<sp/>([](void)<sp/>-&gt;<sp/><ref refid="classleasy_1_1ul2_1_1lstate" kindref="compound">ul2::lstate</ref><sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1ul2_1_1lstate" kindref="compound">ul2::lstate</ref>(</highlight><highlight class="keyword">true</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>})();</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="namespaceleasy_1_1ily3_1_1lua__scripts" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1ily3_1_1lua__scripts" kindref="compound">lua_scripts</ref><sp/>{</highlight></codeline>
+<codeline lineno="36" refid="namespaceleasy_1_1ily3_1_1lua__scripts_1a8313ce35b5a6954d540a103941d5d499" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>*<ref refid="namespaceleasy_1_1ily3_1_1lua__scripts_1a8313ce35b5a6954d540a103941d5d499" kindref="member">init</ref><sp/>=<sp/></highlight><highlight class="comment">//<sp/>The<sp/>only<sp/>reason<sp/>of<sp/>this<sp/>is<sp/>maybe<sp/>to<sp/>make<sp/>the<sp/>code<sp/>easier<sp/>to<sp/>read.<sp/>That&apos;s<sp/>kinda<sp/>all.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal">R</highlight><highlight class="stringliteral">&quot;(leasy<sp/>=<sp/>leasy<sp/>or<sp/>{}</highlight></codeline>
+<codeline lineno="38"><highlight class="stringliteral">leasy.User<sp/>=<sp/>{}</highlight></codeline>
+<codeline lineno="39"><highlight class="stringliteral">leasy.User.ready<sp/>=<sp/>function()<sp/>end</highlight></codeline>
+<codeline lineno="40"><highlight class="stringliteral">leasy.User.process<sp/>=<sp/>function()<sp/>end</highlight></codeline>
+<codeline lineno="41"><highlight class="stringliteral">leasy.User.draw<sp/>=<sp/>function()<sp/>end</highlight></codeline>
+<codeline lineno="42"><highlight class="stringliteral">leasy.Engine<sp/>=<sp/>{})&quot;;</highlight></codeline>
+<codeline lineno="43"><highlight class="stringliteral"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="44"><highlight class="stringliteral"></highlight></codeline>
+<codeline lineno="45"><highlight class="stringliteral"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>lprint(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L)<sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nargs<sp/>=<sp/><ref refid="lapi_8c_1afbb08ecb69421875494105d4de68e5bf" kindref="member">lua_gettop</ref>(L);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>std::ostringstream<sp/>oss;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>1;<sp/>i<sp/>&lt;=<sp/>nargs;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>str<sp/>=<sp/><ref refid="lua_8h_1ac813fc3bc1886ba17c363d5b4c6e7ef1" kindref="member">lua_tostring</ref>(L,<sp/>i);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(str)<sp/>oss<sp/>&lt;&lt;<sp/>(str);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>oss<sp/>&lt;&lt;<sp/>(<ref refid="lauxlib_8h_1a2bee94954917c5bccb05d6578f3c675b" kindref="member">luaL_typename</ref>(L,<sp/>i));</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(i<sp/>&lt;<sp/>nargs)<sp/>oss<sp/>&lt;&lt;<sp/></highlight><highlight class="charliteral">&apos;\t&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1a969ece27b2f9f49c39c191cbcd5098c1" kindref="member">io</ref>.System.writeln(oss.str());</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>lwarn(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L)<sp/>{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nargs<sp/>=<sp/><ref refid="lapi_8c_1afbb08ecb69421875494105d4de68e5bf" kindref="member">lua_gettop</ref>(L);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>std::ostringstream<sp/>oss;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>1;<sp/>i<sp/>&lt;=<sp/>nargs;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>str<sp/>=<sp/><ref refid="lua_8h_1ac813fc3bc1886ba17c363d5b4c6e7ef1" kindref="member">lua_tostring</ref>(L,<sp/>i);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(str)<sp/>oss<sp/>&lt;&lt;<sp/>(str);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>oss<sp/>&lt;&lt;<sp/>(<ref refid="lauxlib_8h_1a2bee94954917c5bccb05d6578f3c675b" kindref="member">luaL_typename</ref>(L,<sp/>i));</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(i<sp/>&lt;<sp/>nargs)<sp/>oss<sp/>&lt;&lt;<sp/></highlight><highlight class="charliteral">&apos;\t&apos;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1a969ece27b2f9f49c39c191cbcd5098c1" kindref="member">io</ref>.<ref refid="classleasy_1_1ios_1_1io__system_1aa39825d134b45494dc869094cbad128b" kindref="member">Warning</ref>.<ref refid="classleasy_1_1ios_1_1channel_1aeddeb76d651cabbb2a00b10b22a9d186" kindref="member">writeln</ref>(oss.str());</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77" refid="namespaceleasy_1_1ily3_1a9858e96a48ff3aa9e102c62e7ab490bc" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1ily3_1a9858e96a48ff3aa9e102c62e7ab490bc" kindref="member">setup_lua</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">)<sp/>{<sp/></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1_1ily3_1_1global_1a38a489664fcd8c5bfdd4fe1895a52669" kindref="member">global::state</ref>.push(</highlight><highlight class="stringliteral">&quot;leasy.System.version.full&quot;</highlight><highlight class="normal">,<sp/><ref refid="namespace_version_1afb61e596a826b119307dae8938c87bc6" kindref="member">Version::GetVersionString</ref>());</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1_1ily3_1_1global_1a38a489664fcd8c5bfdd4fe1895a52669" kindref="member">global::state</ref>.push(</highlight><highlight class="stringliteral">&quot;leasy.System.version.major&quot;</highlight><highlight class="normal">,<sp/><ref refid="namespace_version_1ab2bec3294bd2f71d45ca8c4ae42742f9" kindref="member">Version::MAJOR</ref>);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1_1ily3_1_1global_1a38a489664fcd8c5bfdd4fe1895a52669" kindref="member">global::state</ref>.push(</highlight><highlight class="stringliteral">&quot;leasy.System.version.minor&quot;</highlight><highlight class="normal">,<sp/><ref refid="namespace_version_1ac3b4a5708c4a7d331a6a3fa58fb2c3ee" kindref="member">Version::MINOR</ref>);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1_1ily3_1_1global_1a38a489664fcd8c5bfdd4fe1895a52669" kindref="member">global::state</ref>.push(</highlight><highlight class="stringliteral">&quot;leasy.System.version.fix&quot;</highlight><highlight class="normal">,<sp/><ref refid="namespace_version_1a1b1cbf1d76c33e3bf8d319b9c2211e5c" kindref="member">Version::PATCH</ref>);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1_1ily3_1_1global_1a38a489664fcd8c5bfdd4fe1895a52669" kindref="member">global::state</ref>.dostring(<ref refid="namespaceleasy_1_1ily3_1_1lua__scripts_1a8313ce35b5a6954d540a103941d5d499" kindref="member">lua_scripts::init</ref>);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1_1ily3_1_1global_1a38a489664fcd8c5bfdd4fe1895a52669" kindref="member">global::state</ref>.push(</highlight><highlight class="stringliteral">&quot;print&quot;</highlight><highlight class="normal">,<sp/>lprint);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1_1ily3_1_1global_1a38a489664fcd8c5bfdd4fe1895a52669" kindref="member">global::state</ref>.push(</highlight><highlight class="stringliteral">&quot;warn&quot;</highlight><highlight class="normal">,<sp/>lwarn);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/ily3/ily3.cpp"/>
+  </compounddef>
+</doxygen>

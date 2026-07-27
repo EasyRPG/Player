@@ -55,3 +55,4 @@ inline const std::string& Window_Name::Get() const {
 }
 
 #endif
+

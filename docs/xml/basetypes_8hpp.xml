@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="basetypes_8hpp" kind="file" language="C++">
+    <compoundname>basetypes.hpp</compoundname>
+    <includes refid="color_8h" local="yes">color.h</includes>
+    <includedby refid="math_8hpp" local="yes">leasy/ily3/math.hpp</includedby>
+    <includedby refid="drawable__object_8cpp" local="yes">leasy/libs2/drawable_object.cpp</includedby>
+    <includedby refid="drawable__object_8hpp" local="yes">leasy/libs2/drawable_object.hpp</includedby>
+    <includedby refid="winstream_8hpp" local="yes">leasy/ui/winstream.hpp</includedby>
+    <incdepgraph>
+      <node id="2">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/ily3/basetypes.hpp</label>
+        <link refid="basetypes_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>cstdint</label>
+      </node>
+      <node id="5">
+        <label>ostream</label>
+      </node>
+      <node id="4">
+        <label>tuple</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>leasy/ily3/basetypes.hpp</label>
+        <link refid="basetypes_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>leasy/ily3/math.hpp</label>
+        <link refid="math_8hpp"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>leasy/leasy.cpp</label>
+        <link refid="leasy_8cpp"/>
+      </node>
+      <node id="5">
+        <label>leasy/libs2/drawable_object.cpp</label>
+        <link refid="drawable__object_8cpp"/>
+      </node>
+      <node id="6">
+        <label>leasy/libs2/drawable_object.hpp</label>
+        <link refid="drawable__object_8hpp"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>leasy/ui/winstream.hpp</label>
+        <link refid="winstream_8hpp"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structleasy_1_1ily3_1_1pair" prot="public">leasy::ily3::pair</innerclass>
+    <innerclass refid="structleasy_1_1ily3_1_1twin" prot="public">leasy::ily3::twin</innerclass>
+    <innernamespace refid="namespaceleasy">leasy</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ily3">leasy::ily3</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="color_8h" kindref="compound">color.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27" refid="namespaceleasy_1_1ily3" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1ily3" kindref="compound">leasy::ily3</ref><sp/>{</highlight></codeline>
+<codeline lineno="28" refid="structleasy_1_1ily3_1_1pair" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>TX,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>TY&gt;<sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ily3_1_1pair" kindref="compound">pair</ref><sp/>{</highlight></codeline>
+<codeline lineno="29" refid="structleasy_1_1ily3_1_1pair_1a81332548ebd999e518e87f053c1768c0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>TX<sp/><ref refid="structleasy_1_1ily3_1_1pair_1a81332548ebd999e518e87f053c1768c0" kindref="member">x</ref>;</highlight></codeline>
+<codeline lineno="30" refid="structleasy_1_1ily3_1_1pair_1a80d8f40e1335c1b57dec8a8bd499e7f7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>TY<sp/><ref refid="structleasy_1_1ily3_1_1pair_1a80d8f40e1335c1b57dec8a8bd499e7f7" kindref="member">y</ref>;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="structleasy_1_1ily3_1_1twin" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;<sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ily3_1_1twin_1a4c408d9d345d7ef824e65e8d09fe9301" kindref="member">twin</ref><sp/>{</highlight></codeline>
+<codeline lineno="34" refid="structleasy_1_1ily3_1_1twin_1a4853d8355611c75b649563162b5ccd23" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>T<sp/><ref refid="structleasy_1_1ily3_1_1twin_1a4853d8355611c75b649563162b5ccd23" kindref="member">x</ref>,<sp/><ref refid="structleasy_1_1ily3_1_1twin_1afe8fc5c2c02bf4d698a548440391dc2b" kindref="member">y</ref>;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="structleasy_1_1ily3_1_1twin_1a4c408d9d345d7ef824e65e8d09fe9301" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ily3_1_1twin_1a4c408d9d345d7ef824e65e8d09fe9301" kindref="member">twin</ref>()<sp/>{}</highlight></codeline>
+<codeline lineno="37" refid="structleasy_1_1ily3_1_1twin_1aa2895f8c7e0262b2fc0e218e3bc85e94" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ily3_1_1twin_1aa2895f8c7e0262b2fc0e218e3bc85e94" kindref="member">twin</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T<sp/>&amp;a,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T<sp/>&amp;b)</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="structleasy_1_1ily3_1_1twin_1a4853d8355611c75b649563162b5ccd23" kindref="member">x</ref>(a),<sp/><ref refid="structleasy_1_1ily3_1_1twin_1afe8fc5c2c02bf4d698a548440391dc2b" kindref="member">y</ref>(b)<sp/>{}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>dummy<sp/>function!<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="namespaceleasy_1_1ily3_1aee99568e690ad212184dba9165c1a041" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;<sp/><ref refid="structleasy_1_1ily3_1_1twin" kindref="compound">twin&lt;T&gt;</ref><sp/><ref refid="namespaceleasy_1_1ily3_1aee99568e690ad212184dba9165c1a041" kindref="member">make_twin</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T<sp/>&amp;a,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T<sp/>&amp;b)<sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ily3_1_1twin" kindref="compound">twin&lt;T&gt;</ref>(a,<sp/>b);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="namespaceleasy_1_1ily3_1aa7647d7880a9db57a74a453edca345bd" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>TX,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>TY&gt;<sp/><ref refid="structleasy_1_1ily3_1_1pair" kindref="compound">pair&lt;TX, TY&gt;</ref><sp/><ref refid="namespaceleasy_1_1ily3_1aa7647d7880a9db57a74a453edca345bd" kindref="member">make_pair</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>TX<sp/>&amp;x,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>TY<sp/>&amp;y)<sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ily3_1_1pair" kindref="compound">pair&lt;TX, TY&gt;</ref><sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>.x<sp/>=<sp/>x,<sp/>.y<sp/>=<sp/>y</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52" refid="namespaceleasy_1_1ily3_1ac84535018ac4f718423eb8c7f6c29185" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/><ref refid="namespaceleasy_1_1ily3_1ac84535018ac4f718423eb8c7f6c29185" kindref="member">color_from_u32</ref>(uint32_t<sp/>v)<sp/>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_color" kindref="compound">Color</ref><sp/>col;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>col.<ref refid="class_color_1a8c55aa73e839e57527559cd732bda475" kindref="member">red</ref><sp/>=<sp/>(v<sp/>&gt;&gt;<sp/>24)<sp/><sp/><sp/>&amp;<sp/>0xFF;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>col.<ref refid="class_color_1a4f8414e1814c166da1859ce388149d78" kindref="member">green</ref><sp/>=<sp/>(v<sp/>&gt;&gt;<sp/>16)<sp/>&amp;<sp/>0xFF;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>col.<ref refid="class_color_1acad45c325d520d1c24ea774099821c7c" kindref="member">blue</ref><sp/>=<sp/>(v<sp/>&gt;&gt;<sp/>8)<sp/><sp/><sp/>&amp;<sp/>0xFF;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>col.<ref refid="class_color_1a8f76c7e20ecccd56a47950cda706c5e2" kindref="member">alpha</ref><sp/>=<sp/>(v)<sp/><sp/><sp/><sp/><sp/><sp/><sp/>&amp;<sp/>0xFF;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>col;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/ily3/basetypes.hpp"/>
+  </compounddef>
+</doxygen>

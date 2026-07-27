@@ -1,0 +1,233 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___actors" kind="class" language="C++" prot="public">
+    <compoundname>Game_Actors</compoundname>
+    <includes refid="game__actors_8h" local="no">game_actors.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___actors_1a352b2ecec42c7b3023ffbd5f4caf3c48" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &gt;</type>
+        <definition>std::vector&lt;Game_Actor&gt; Game_Actors::data</definition>
+        <argsstring></argsstring>
+        <name>data</name>
+        <qualifiedname>Game_Actors::data</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_actors.h" line="70" column="13" bodyfile="game_actors.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___actors_1a44b62e937e4e64f7b355b54c7f7f8bc3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Actors::Game_Actors</definition>
+        <argsstring>()</argsstring>
+        <name>Game_Actors</name>
+        <qualifiedname>Game_Actors::Game_Actors</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes Game Actors. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_actors.h" line="35" column="1" bodyfile="game_actors.cpp" bodystart="25" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___actors_1af81fb10b6e17d6735f5616c6998be569" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Actors::Game_Actors</definition>
+        <argsstring>(const Game_Actors &amp;)=delete</argsstring>
+        <name>Game_Actors</name>
+        <qualifiedname>Game_Actors::Game_Actors</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actors" kindref="compound">Game_Actors</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_actors.h" line="37" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___actors_1afa2a8e90264660a99399c28594095f48" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___actors" kindref="compound">Game_Actors</ref> &amp;</type>
+        <definition>Game_Actors &amp; Game_Actors::operator=</definition>
+        <argsstring>(const Game_Actors &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Game_Actors::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___actors" kindref="compound">Game_Actors</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_actors.h" line="38" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___actors_1a3d0080abf3a0190c2e877ca1996846a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Actors::SetSaveData</definition>
+        <argsstring>(std::vector&lt; lcf::rpg::SaveActor &gt; save)</argsstring>
+        <name>SetSaveData</name>
+        <qualifiedname>Game_Actors::SetSaveData</qualifiedname>
+        <param>
+          <type>std::vector&lt; lcf::rpg::SaveActor &gt;</type>
+          <declname>save</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_actors.h" line="40" column="6" bodyfile="game_actors.cpp" bodystart="32" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___actors_1ae3858e0f70fe953e2efaacc686fb9584" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; lcf::rpg::SaveActor &gt;</type>
+        <definition>std::vector&lt; lcf::rpg::SaveActor &gt; Game_Actors::GetSaveData</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSaveData</name>
+        <qualifiedname>Game_Actors::GetSaveData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_actors.h" line="41" column="13" bodyfile="game_actors.cpp" bodystart="43" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___actors_1ac88ddab4bbf8e68947233495d8be3120" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> *</type>
+        <definition>Game_Actor * Game_Actors::GetActor</definition>
+        <argsstring>(int actor_id)</argsstring>
+        <name>GetActor</name>
+        <qualifiedname>Game_Actors::GetActor</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>actor_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets an actor by its ID.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>actor_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the actor ID in the database. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the actor object. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_actors.h" line="49" column="12" bodyfile="game_actors.cpp" bodystart="52" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___actors_1ae46b2ce93296fbc6774863fce89c0e3d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Actors::GetNumActors</definition>
+        <argsstring>() const</argsstring>
+        <name>GetNumActors</name>
+        <qualifiedname>Game_Actors::GetNumActors</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the number of actors </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_actors.h" line="52" column="5" bodyfile="game_actors.h" bodystart="73" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___actors_1a84d37b86a98ece192b2f027409dec5b5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Actors::ActorExists</definition>
+        <argsstring>(int actor_id)</argsstring>
+        <name>ActorExists</name>
+        <qualifiedname>Game_Actors::ActorExists</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>actor_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if an actor ID is valid.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>actor_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the actor ID in the database. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether the actor exists. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_actors.h" line="60" column="6" bodyfile="game_actors.cpp" bodystart="60" bodyend="62"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___actors_1a076099053892543f0fb7e3d6a034438c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Actors::ResetBattle</definition>
+        <argsstring>()</argsstring>
+        <name>ResetBattle</name>
+        <qualifiedname>Game_Actors::ResetBattle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Resets battle modifiers of all actors. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_actors.h" line="65" column="6" bodyfile="game_actors.cpp" bodystart="64" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___actors_1a71f8464f0ddde046760681d7c77b2de3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Actors::ReloadActors</definition>
+        <argsstring>()</argsstring>
+        <name>ReloadActors</name>
+        <qualifiedname>Game_Actors::ReloadActors</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_actors.h" line="67" column="6" bodyfile="game_actors.cpp" bodystart="70" bodyend="74"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_game___actors" kindref="compound">Game_Actors</ref> namespace. </para>
+    </detaileddescription>
+    <location file="game_actors.h" line="30" column="1" bodyfile="game_actors.h" bodystart="30" bodyend="71"/>
+    <listofallmembers>
+      <member refid="class_game___actors_1a84d37b86a98ece192b2f027409dec5b5" prot="public" virt="non-virtual"><scope>Game_Actors</scope><name>ActorExists</name></member>
+      <member refid="class_game___actors_1a352b2ecec42c7b3023ffbd5f4caf3c48" prot="private" virt="non-virtual"><scope>Game_Actors</scope><name>data</name></member>
+      <member refid="class_game___actors_1a44b62e937e4e64f7b355b54c7f7f8bc3" prot="public" virt="non-virtual"><scope>Game_Actors</scope><name>Game_Actors</name></member>
+      <member refid="class_game___actors_1af81fb10b6e17d6735f5616c6998be569" prot="public" virt="non-virtual"><scope>Game_Actors</scope><name>Game_Actors</name></member>
+      <member refid="class_game___actors_1ac88ddab4bbf8e68947233495d8be3120" prot="public" virt="non-virtual"><scope>Game_Actors</scope><name>GetActor</name></member>
+      <member refid="class_game___actors_1ae46b2ce93296fbc6774863fce89c0e3d" prot="public" virt="non-virtual"><scope>Game_Actors</scope><name>GetNumActors</name></member>
+      <member refid="class_game___actors_1ae3858e0f70fe953e2efaacc686fb9584" prot="public" virt="non-virtual"><scope>Game_Actors</scope><name>GetSaveData</name></member>
+      <member refid="class_game___actors_1afa2a8e90264660a99399c28594095f48" prot="public" virt="non-virtual"><scope>Game_Actors</scope><name>operator=</name></member>
+      <member refid="class_game___actors_1a71f8464f0ddde046760681d7c77b2de3" prot="public" virt="non-virtual"><scope>Game_Actors</scope><name>ReloadActors</name></member>
+      <member refid="class_game___actors_1a076099053892543f0fb7e3d6a034438c" prot="public" virt="non-virtual"><scope>Game_Actors</scope><name>ResetBattle</name></member>
+      <member refid="class_game___actors_1a3d0080abf3a0190c2e877ca1996846a5" prot="public" virt="non-virtual"><scope>Game_Actors</scope><name>SetSaveData</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

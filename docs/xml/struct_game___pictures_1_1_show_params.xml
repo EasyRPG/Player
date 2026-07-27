@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___pictures_1_1_show_params" kind="struct" language="C++" prot="public">
+    <compoundname>Game_Pictures::ShowParams</compoundname>
+    <basecompoundref refid="struct_game___pictures_1_1_params" prot="public" virt="non-virtual">Game_Pictures::Params</basecompoundref>
+    <derivedcompoundref refid="struct_game___windows_1_1_window_params" prot="public" virt="non-virtual">Game_Windows::WindowParams</derivedcompoundref>
+    <includes refid="game__pictures_8h" local="no">game_pictures.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___pictures_1_1_show_params_1a08cdb3bd01032f665593a88b4956cbdb" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Game_Pictures::ShowParams::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>Game_Pictures::ShowParams::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="67" column="13" bodyfile="game_pictures.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___pictures_1_1_show_params_1a9e4d7d5ebb99d31b3e6f7a3e8103e71b" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Pictures::ShowParams::spritesheet_cols</definition>
+        <argsstring></argsstring>
+        <name>spritesheet_cols</name>
+        <qualifiedname>Game_Pictures::ShowParams::spritesheet_cols</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="69" column="5" bodyfile="game_pictures.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___pictures_1_1_show_params_1a6be4b8c0f1d61bc828cfc17b3875b5ed" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Pictures::ShowParams::spritesheet_rows</definition>
+        <argsstring></argsstring>
+        <name>spritesheet_rows</name>
+        <qualifiedname>Game_Pictures::ShowParams::spritesheet_rows</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="70" column="5" bodyfile="game_pictures.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___pictures_1_1_show_params_1abee05698567d50c009102b3b7f795432" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Pictures::ShowParams::spritesheet_frame</definition>
+        <argsstring></argsstring>
+        <name>spritesheet_frame</name>
+        <qualifiedname>Game_Pictures::ShowParams::spritesheet_frame</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="71" column="5" bodyfile="game_pictures.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___pictures_1_1_show_params_1a1c5e049cf490c5b0b2418bd7942a694d" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Pictures::ShowParams::spritesheet_speed</definition>
+        <argsstring></argsstring>
+        <name>spritesheet_speed</name>
+        <qualifiedname>Game_Pictures::ShowParams::spritesheet_speed</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="72" column="5" bodyfile="game_pictures.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___pictures_1_1_show_params_1a133f120e0454f9feebbf3d4032b39614" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Pictures::ShowParams::map_layer</definition>
+        <argsstring></argsstring>
+        <name>map_layer</name>
+        <qualifiedname>Game_Pictures::ShowParams::map_layer</qualifiedname>
+        <initializer>= 7</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="73" column="5" bodyfile="game_pictures.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___pictures_1_1_show_params_1a6bb1a9f8b4453b1b45dbb3c1e788eb2b" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Pictures::ShowParams::battle_layer</definition>
+        <argsstring></argsstring>
+        <name>battle_layer</name>
+        <qualifiedname>Game_Pictures::ShowParams::battle_layer</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="74" column="5" bodyfile="game_pictures.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___pictures_1_1_show_params_1ac8f27ac38e64041e100a77617a8bb94b" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Pictures::ShowParams::flags</definition>
+        <argsstring></argsstring>
+        <name>flags</name>
+        <qualifiedname>Game_Pictures::ShowParams::flags</qualifiedname>
+        <initializer>= 1 | 32 | 64</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="76" column="5" bodyfile="game_pictures.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___pictures_1_1_show_params_1a5a748d69bdec24dc07387d1db5bd89cf" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Pictures::ShowParams::spritesheet_play_once</definition>
+        <argsstring></argsstring>
+        <name>spritesheet_play_once</name>
+        <qualifiedname>Game_Pictures::ShowParams::spritesheet_play_once</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="77" column="6" bodyfile="game_pictures.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___pictures_1_1_show_params_1a4c456e055e4e52d1b23226adc261b6bc" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Pictures::ShowParams::use_transparent_color</definition>
+        <argsstring></argsstring>
+        <name>use_transparent_color</name>
+        <qualifiedname>Game_Pictures::ShowParams::use_transparent_color</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="78" column="6" bodyfile="game_pictures.h" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___pictures_1_1_show_params_1a07cb1d090fbf13b1b88bbd41c9501320" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Pictures::ShowParams::fixed_to_map</definition>
+        <argsstring></argsstring>
+        <name>fixed_to_map</name>
+        <qualifiedname>Game_Pictures::ShowParams::fixed_to_map</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_pictures.h" line="79" column="6" bodyfile="game_pictures.h" bodystart="79" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Game_Pictures::Params</label>
+        <link refid="struct_game___pictures_1_1_params"/>
+      </node>
+      <node id="1">
+        <label>Game_Pictures::ShowParams</label>
+        <link refid="struct_game___pictures_1_1_show_params"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Game_Windows::WindowParams</label>
+        <link refid="struct_game___windows_1_1_window_params"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Game_Pictures::Params</label>
+        <link refid="struct_game___pictures_1_1_params"/>
+      </node>
+      <node id="1">
+        <label>Game_Pictures::ShowParams</label>
+        <link refid="struct_game___pictures_1_1_show_params"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="game_pictures.h" line="66" column="1" bodyfile="game_pictures.h" bodystart="66" bodyend="80"/>
+    <listofallmembers>
+      <member refid="struct_game___pictures_1_1_show_params_1a6bb1a9f8b4453b1b45dbb3c1e788eb2b" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>battle_layer</name></member>
+      <member refid="struct_game___pictures_1_1_params_1a9cc8573787b8cb412190a992dcab9ff6" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>blend_mode</name></member>
+      <member refid="struct_game___pictures_1_1_params_1a7d270a5445048ad20ccd4ab7dbf81fdf" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>blue</name></member>
+      <member refid="struct_game___pictures_1_1_params_1a9da7e92d7813db595b695ebb0c6d6b13" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>bottom_trans</name></member>
+      <member refid="struct_game___pictures_1_1_params_1a4e9b4ce7709e007e3c8228352967c740" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>effect_mode</name></member>
+      <member refid="struct_game___pictures_1_1_params_1ab935d776a4a9bffba7f7bfc387008e1a" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>effect_power</name></member>
+      <member refid="struct_game___pictures_1_1_show_params_1a07cb1d090fbf13b1b88bbd41c9501320" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>fixed_to_map</name></member>
+      <member refid="struct_game___pictures_1_1_show_params_1ac8f27ac38e64041e100a77617a8bb94b" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>flags</name></member>
+      <member refid="struct_game___pictures_1_1_params_1a599768ca888df27a07c7039f541b9a5d" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>flip_x</name></member>
+      <member refid="struct_game___pictures_1_1_params_1a49f001abc9efbed30dfb7c0df5c9340a" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>flip_y</name></member>
+      <member refid="struct_game___pictures_1_1_params_1ab24499e50994cd787752f8facd9eb72b" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>green</name></member>
+      <member refid="struct_game___pictures_1_1_params_1acd268f28b18a20b89adbce8577f9c263" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>magnify_height</name></member>
+      <member refid="struct_game___pictures_1_1_params_1afbc55c62770a735f7587101922643ee2" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>magnify_width</name></member>
+      <member refid="struct_game___pictures_1_1_show_params_1a133f120e0454f9feebbf3d4032b39614" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>map_layer</name></member>
+      <member refid="struct_game___pictures_1_1_show_params_1a08cdb3bd01032f665593a88b4956cbdb" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>name</name></member>
+      <member refid="struct_game___pictures_1_1_params_1acc00a4f4224a1af6b82d6f4afd7a3dba" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>origin</name></member>
+      <member refid="struct_game___pictures_1_1_params_1a70a137eada5d7d61351f86f510a9892c" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>position_x</name></member>
+      <member refid="struct_game___pictures_1_1_params_1abf85d051a3c5e13e4e2b640732105ebf" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>position_y</name></member>
+      <member refid="struct_game___pictures_1_1_params_1ab49a26d33d2b670441458c7906fd6e49" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>red</name></member>
+      <member refid="struct_game___pictures_1_1_params_1a189f1fb009f8b5a16c6534644be5f4e8" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>saturation</name></member>
+      <member refid="struct_game___pictures_1_1_show_params_1a9e4d7d5ebb99d31b3e6f7a3e8103e71b" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>spritesheet_cols</name></member>
+      <member refid="struct_game___pictures_1_1_show_params_1abee05698567d50c009102b3b7f795432" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>spritesheet_frame</name></member>
+      <member refid="struct_game___pictures_1_1_show_params_1a5a748d69bdec24dc07387d1db5bd89cf" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>spritesheet_play_once</name></member>
+      <member refid="struct_game___pictures_1_1_show_params_1a6be4b8c0f1d61bc828cfc17b3875b5ed" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>spritesheet_rows</name></member>
+      <member refid="struct_game___pictures_1_1_show_params_1a1c5e049cf490c5b0b2418bd7942a694d" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>spritesheet_speed</name></member>
+      <member refid="struct_game___pictures_1_1_params_1aad56581deb7c0ab48ebf38b598123592" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>top_trans</name></member>
+      <member refid="struct_game___pictures_1_1_show_params_1a4c456e055e4e52d1b23226adc261b6bc" prot="public" virt="non-virtual"><scope>Game_Pictures::ShowParams</scope><name>use_transparent_color</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

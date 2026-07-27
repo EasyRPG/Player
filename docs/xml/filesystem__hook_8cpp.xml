@@ -1,0 +1,349 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="filesystem__hook_8cpp" kind="file" language="C++">
+    <compoundname>filesystem_hook.cpp</compoundname>
+    <includes refid="filesystem__hook_8h" local="yes">filesystem_hook.h</includes>
+    <includes refid="filesystem__stream_8h" local="yes">filesystem_stream.h</includes>
+    <includes refid="options_8h" local="yes">options.h</includes>
+    <includes local="no">cassert</includes>
+    <includes local="no">cstdio</includes>
+    <includes local="no">streambuf</includes>
+    <incdepgraph>
+      <node id="11">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>filesystem_hook.cpp</label>
+        <link refid="filesystem__hook_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>filesystem_hook.h</label>
+        <link refid="filesystem__hook_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="13">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>cassert</label>
+      </node>
+      <node id="5">
+        <label>cstdint</label>
+      </node>
+      <node id="27">
+        <label>cstdio</label>
+      </node>
+      <node id="22">
+        <label>ctime</label>
+      </node>
+      <node id="18">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="19">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="23">
+        <label>functional</label>
+      </node>
+      <node id="7">
+        <label>istream</label>
+      </node>
+      <node id="17">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="14">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="16">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="6">
+        <label>memory</label>
+      </node>
+      <node id="8">
+        <label>ostream</label>
+      </node>
+      <node id="28">
+        <label>streambuf</label>
+      </node>
+      <node id="12">
+        <label>string</label>
+      </node>
+      <node id="9">
+        <label>unordered_map</label>
+      </node>
+      <node id="10">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <innerclass refid="class_caesar_stream_buf" prot="public">CaesarStreamBuf</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="filesystem__hook_8h" kindref="compound">filesystem_hook.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="filesystem__stream_8h" kindref="compound">filesystem_stream.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="options_8h" kindref="compound">options.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cassert&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstdio&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;streambuf&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="class_caesar_stream_buf" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_caesar_stream_buf_1ac38b953946c4a56b40ac8e5492bac0d4" kindref="member">CaesarStreamBuf</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>std::streambuf<sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="28" refid="class_caesar_stream_buf_1ac38b953946c4a56b40ac8e5492bac0d4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_caesar_stream_buf_1ac38b953946c4a56b40ac8e5492bac0d4" kindref="member">CaesarStreamBuf</ref>(std::streambuf*<sp/>parent_sb,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n)<sp/>:<sp/>parent_sb(parent_sb),<sp/>n(n)<sp/>{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>setg(&amp;buf,<sp/>&amp;buf<sp/>+<sp/>1,<sp/>&amp;buf<sp/>+<sp/>1);</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="31" refid="class_caesar_stream_buf_1abef87b639377ecf8cb0b8c3d8d24bdf4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_caesar_stream_buf_1abef87b639377ecf8cb0b8c3d8d24bdf4" kindref="member">CaesarStreamBuf</ref>(<ref refid="class_caesar_stream_buf_1ac38b953946c4a56b40ac8e5492bac0d4" kindref="member">CaesarStreamBuf</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>other)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="32" refid="class_caesar_stream_buf_1a2340eda3399a53251620101412e51f15" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_caesar_stream_buf_1ac38b953946c4a56b40ac8e5492bac0d4" kindref="member">CaesarStreamBuf</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/><ref refid="class_caesar_stream_buf_1a2340eda3399a53251620101412e51f15" kindref="member">operator=</ref>(<ref refid="class_caesar_stream_buf_1ac38b953946c4a56b40ac8e5492bac0d4" kindref="member">CaesarStreamBuf</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>other)<sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="33" refid="class_caesar_stream_buf_1a4b6a559106d3c5ed71440d8a26505f08" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_caesar_stream_buf_1a4b6a559106d3c5ed71440d8a26505f08" kindref="member">~CaesarStreamBuf</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>parent_sb;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="38" refid="class_caesar_stream_buf_1a73c8bb119ac911c6b0342a5c0a254615" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>int_type<sp/><ref refid="class_caesar_stream_buf_1a73c8bb119ac911c6b0342a5c0a254615" kindref="member">underflow</ref>()</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">byte</highlight><highlight class="normal"><sp/>=<sp/>parent_sb-&gt;sbumpc();</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">byte</highlight><highlight class="normal"><sp/>==<sp/>traits_type::eof())<sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>byte;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>buf<sp/>=<sp/>traits_type::to_char_type(</highlight><highlight class="keywordtype">byte</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>buf<sp/>-=<sp/>n;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>setg(&amp;buf,<sp/>&amp;buf,<sp/>&amp;buf<sp/>+<sp/>1);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>byte;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="class_caesar_stream_buf_1aae003b587ef1d93f15803c8a91149cfc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::streambuf::pos_type<sp/><ref refid="class_caesar_stream_buf_1aae003b587ef1d93f15803c8a91149cfc" kindref="member">seekoff</ref>(std::streambuf::off_type<sp/>offset,<sp/>std::ios_base::seekdir<sp/>dir,<sp/>std::ios_base::openmode)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>parent_sb-&gt;pubseekoff(offset,<sp/>dir);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57" refid="class_caesar_stream_buf_1a7a11f33e47cd5355361dcca4556f920b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::streambuf::pos_type<sp/><ref refid="class_caesar_stream_buf_1a7a11f33e47cd5355361dcca4556f920b" kindref="member">seekpos</ref>(std::streambuf::pos_type<sp/>pos,<sp/>std::ios_base::openmode)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>parent_sb-&gt;pubseekpos(pos);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>std::streambuf*<sp/>parent_sb;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/>buf;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="class_hook_filesystem_1abd203dbb2cab1b794afd5db946389545" refkind="member"><highlight class="normal"><ref refid="class_hook_filesystem_1abd203dbb2cab1b794afd5db946389545" kindref="member">HookFilesystem::HookFilesystem</ref>(<ref refid="class_filesystem_1a5f6d2b59075737de3e42fd9fd4b5c630" kindref="member">FilesystemView</ref><sp/>parent_fs,<sp/><ref refid="class_hook_filesystem_1abc8de4e1c34e21efe5cfbc9e5b6cc98e" kindref="member">Hook</ref><sp/>hook)<sp/>:<sp/><ref refid="class_filesystem_1a9134daaffbc1e9ce8777e82d6156c3a8" kindref="member">Filesystem</ref>(</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">,<sp/>parent_fs),<sp/><ref refid="class_hook_filesystem_1a1a6e5c3397cdb8d7cd5ded14ef95935b" kindref="member">active_hook</ref>(hook)<sp/>{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>no-op</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73" refid="class_hook_filesystem_1ada32d205391c70f8283f3c1bdf3146c6" refkind="member"><highlight class="normal"><ref refid="class_filesystem_1a5f6d2b59075737de3e42fd9fd4b5c630" kindref="member">FilesystemView</ref><sp/><ref refid="class_hook_filesystem_1ada32d205391c70f8283f3c1bdf3146c6" kindref="member">HookFilesystem::Detect</ref>(<ref refid="class_filesystem_1a5f6d2b59075737de3e42fd9fd4b5c630" kindref="member">FilesystemView</ref><sp/>fs)<sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>lmt<sp/>=<sp/>fs.<ref refid="class_filesystem_view_1a98b4d2eae589baa1c8adeddf3eb66d67" kindref="member">OpenInputStream</ref>(<ref refid="options_8h_1a21bd2d54bd1ee2d7448010f97fa0313b" kindref="member">TREEMAP_NAME</ref>);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(lmt)<sp/>{</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::array&lt;char,<sp/>11&gt;<sp/>buf;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>lmt.ReadIntoObj(buf);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!memcmp(buf.data(),<sp/></highlight><highlight class="stringliteral">&quot;\xbMdgNbqUsff&quot;</highlight><highlight class="normal">,<sp/>11))<sp/>{</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>hook_fs<sp/>=<sp/>std::make_shared&lt;HookFilesystem&gt;(fs,<sp/><ref refid="class_hook_filesystem_1abc8de4e1c34e21efe5cfbc9e5b6cc98ea600415f1b81c64d43f57d668e822e294" kindref="member">Hook::SacredTears</ref>);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>hook_fs-&gt;Subtree(</highlight><highlight class="stringliteral">&quot;&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>fs;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89" refid="class_hook_filesystem_1a32c6498daca743e83330ebdcfeec04cf" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_hook_filesystem_1a32c6498daca743e83330ebdcfeec04cf" kindref="member">HookFilesystem::IsFile</ref>(std::string_view<sp/>path)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_1aa6a067c40a362f4b9dd12f7149f11d1f" kindref="member">GetParent</ref>().<ref refid="class_filesystem_view_1a9bd41de9ee42828c306aff01991aacac" kindref="member">IsFile</ref>(path);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93" refid="class_hook_filesystem_1a241c34ec685984708a5121d65127ab2a" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_hook_filesystem_1a241c34ec685984708a5121d65127ab2a" kindref="member">HookFilesystem::IsDirectory</ref>(std::string_view<sp/>path,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>follow_symlinks)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_1aa6a067c40a362f4b9dd12f7149f11d1f" kindref="member">GetParent</ref>().<ref refid="class_filesystem_view_1aa2eb5916ce55f2fa4f7adf88d9f44eee" kindref="member">IsDirectory</ref>(path,<sp/>follow_symlinks);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97" refid="class_hook_filesystem_1a9a1483c0a2128edb9dc5df4f100377c3" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_hook_filesystem_1a9a1483c0a2128edb9dc5df4f100377c3" kindref="member">HookFilesystem::Exists</ref>(std::string_view<sp/>path)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_1aa6a067c40a362f4b9dd12f7149f11d1f" kindref="member">GetParent</ref>().<ref refid="class_filesystem_view_1a725adbfa1bd46b282ebf374d5463b386" kindref="member">Exists</ref>(path);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101" refid="class_hook_filesystem_1a4117351fd46529b6353b5550c5921063" refkind="member"><highlight class="normal">int64_t<sp/><ref refid="class_hook_filesystem_1a4117351fd46529b6353b5550c5921063" kindref="member">HookFilesystem::GetFilesize</ref>(std::string_view<sp/>path)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_1aa6a067c40a362f4b9dd12f7149f11d1f" kindref="member">GetParent</ref>().<ref refid="class_filesystem_view_1aedb1b0d4fcdf5ebe69010d082cdc217e" kindref="member">GetFilesize</ref>(path);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105" refid="class_hook_filesystem_1af1e7bee7f3a1adcf14b03e4177de6509" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_hook_filesystem_1af1e7bee7f3a1adcf14b03e4177de6509" kindref="member">HookFilesystem::MakeDirectory</ref>(std::string_view<sp/>dir,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>follow_symlinks)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_1aa6a067c40a362f4b9dd12f7149f11d1f" kindref="member">GetParent</ref>().<ref refid="class_filesystem_view_1a49e796e2ecbe4b80f3d6d9abef0030c3" kindref="member">MakeDirectory</ref>(dir,<sp/>follow_symlinks);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109" refid="class_hook_filesystem_1a79a66018b53d3f40df90576e17d5c7cb" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_hook_filesystem_1a79a66018b53d3f40df90576e17d5c7cb" kindref="member">HookFilesystem::IsFeatureSupported</ref>(<ref refid="namespace_feature" kindref="compound">Feature</ref><sp/>f)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_1aa6a067c40a362f4b9dd12f7149f11d1f" kindref="member">GetParent</ref>().<ref refid="class_filesystem_view_1af63692bc9c53e6f1e21b00733cb90619" kindref="member">IsFeatureSupported</ref>(f);</highlight></codeline>
+<codeline lineno="111"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113" refid="class_hook_filesystem_1a80d6efbf005b42c08f12e81e648ad259" refkind="member"><highlight class="normal">std::streambuf*<sp/><ref refid="class_hook_filesystem_1a80d6efbf005b42c08f12e81e648ad259" kindref="member">HookFilesystem::CreateInputStreambuffer</ref>(std::string_view<sp/>path,<sp/>std::ios_base::openmode<sp/>mode)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>parent_sb<sp/>=<sp/><ref refid="class_filesystem_1aa6a067c40a362f4b9dd12f7149f11d1f" kindref="member">GetParent</ref>().<ref refid="class_filesystem_view_1adaa88b7f6fbaf83aebf046e4501848db" kindref="member">CreateInputStreambuffer</ref>(path,<sp/>mode);</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="class_hook_filesystem_1a1a6e5c3397cdb8d7cd5ded14ef95935b" kindref="member">active_hook</ref><sp/>==<sp/><ref refid="class_hook_filesystem_1abc8de4e1c34e21efe5cfbc9e5b6cc98ea600415f1b81c64d43f57d668e822e294" kindref="member">Hook::SacredTears</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(path<sp/>==<sp/><ref refid="options_8h_1a21bd2d54bd1ee2d7448010f97fa0313b" kindref="member">TREEMAP_NAME</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="class_caesar_stream_buf" kindref="compound">CaesarStreamBuf</ref>(parent_sb,<sp/>1);</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>parent_sb;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125" refid="class_hook_filesystem_1ab0fa0059ef7a32d1f2ff78dbc05d2d47" refkind="member"><highlight class="normal">std::streambuf*<sp/><ref refid="class_hook_filesystem_1ab0fa0059ef7a32d1f2ff78dbc05d2d47" kindref="member">HookFilesystem::CreateOutputStreambuffer</ref>(std::string_view<sp/>path,<sp/>std::ios_base::openmode<sp/>mode)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_filesystem_1aa6a067c40a362f4b9dd12f7149f11d1f" kindref="member">GetParent</ref>().<ref refid="class_filesystem_view_1aedfd35cba331ea76ab6ab721f3f6aab9" kindref="member">CreateOutputStreambuffer</ref>(path,<sp/>mode);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129" refid="class_hook_filesystem_1adf7b113b7094a5e8f834e504e5a0289c" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_hook_filesystem_1adf7b113b7094a5e8f834e504e5a0289c" kindref="member">HookFilesystem::GetDirectoryContent</ref>(std::string_view<sp/>path,<sp/>std::vector&lt;DirectoryTree::Entry&gt;&amp;<sp/><ref refid="class_filesystem_1a2bb5d8bd203dde6ff4a50f056458e380" kindref="member">tree</ref>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>dir_tree<sp/>=<sp/><ref refid="class_filesystem_1aa6a067c40a362f4b9dd12f7149f11d1f" kindref="member">GetParent</ref>().<ref refid="class_filesystem_view_1aad4efb9cd59aaffcdeab8d7d75178e8e" kindref="member">ListDirectory</ref>(path);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!dir_tree)<sp/>{</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>item:<sp/>*dir_tree)<sp/>{</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_filesystem_1a2bb5d8bd203dde6ff4a50f056458e380" kindref="member">tree</ref>.push_back(item.second);</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="141"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143" refid="class_hook_filesystem_1a68574b2ef76a1458728311bbcfb29b1c" refkind="member"><highlight class="normal">std::string<sp/><ref refid="class_hook_filesystem_1a68574b2ef76a1458728311bbcfb29b1c" kindref="member">HookFilesystem::Describe</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(<ref refid="class_hook_filesystem_1a1a6e5c3397cdb8d7cd5ded14ef95935b" kindref="member">active_hook</ref><sp/>==<sp/><ref refid="class_hook_filesystem_1abc8de4e1c34e21efe5cfbc9e5b6cc98ea600415f1b81c64d43f57d668e822e294" kindref="member">Hook::SacredTears</ref>);</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>fmt::format(</highlight><highlight class="stringliteral">&quot;[Hook]<sp/>({})&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Sacred<sp/>Tears&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="147"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="filesystem_hook.cpp"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,848 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lua__stack_8hpp" kind="file" language="C++">
+    <compoundname>lua_stack.hpp</compoundname>
+    <includes refid="lua_2lua_8hpp" local="yes">../lua/lua.hpp</includes>
+    <includes refid="ulexception2_8hpp" local="yes">ulexception2.hpp</includes>
+    <includes refid="metatypes_8hpp" local="yes">../typings/metatypes.hpp</includes>
+    <includes refid="variant_8hpp" local="yes">../kits/variant.hpp</includes>
+    <includes refid="function__traits_8hpp" local="yes">function_traits.hpp</includes>
+    <includes local="no">any</includes>
+    <includes local="no">tuple</includes>
+    <includes local="no">memory</includes>
+    <includes local="no">string</includes>
+    <includes local="no">typeindex</includes>
+    <includes local="no">type_traits</includes>
+    <includes local="no">unordered_map</includes>
+    <includes local="no">utility</includes>
+    <includes local="no">new</includes>
+    <includedby refid="dispatcher_8hpp" local="yes">leasy/ul2/dispatcher.hpp</includedby>
+    <includedby refid="function__wrapper_8hpp" local="yes">leasy/ul2/function_wrapper.hpp</includedby>
+    <includedby refid="state_8hpp" local="yes">leasy/ul2/state.hpp</includedby>
+    <incdepgraph>
+      <node id="20">
+        <label>../kits/variant.hpp</label>
+        <link refid="variant_8hpp"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>lauxlib.h</label>
+        <link refid="lauxlib_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>../lua/lua.hpp</label>
+        <link refid="lua_2lua_8hpp"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>lualib.h</label>
+        <link refid="lualib_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>../typings/metatypes.hpp</label>
+        <link refid="metatypes_8hpp"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>../ul2/function_traits.hpp</label>
+        <link refid="function__traits_8hpp"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/ul2/lua_stack.hpp</label>
+        <link refid="lua__stack_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>ulexception2.hpp</label>
+        <link refid="ulexception2_8hpp"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>any</label>
+      </node>
+      <node id="17">
+        <label>functional</label>
+      </node>
+      <node id="7">
+        <label>limits.h</label>
+      </node>
+      <node id="23">
+        <label>memory</label>
+      </node>
+      <node id="26">
+        <label>new</label>
+      </node>
+      <node id="4">
+        <label>stdarg.h</label>
+      </node>
+      <node id="5">
+        <label>stddef.h</label>
+      </node>
+      <node id="13">
+        <label>stdexcept</label>
+      </node>
+      <node id="10">
+        <label>stdio.h</label>
+      </node>
+      <node id="12">
+        <label>string</label>
+      </node>
+      <node id="16">
+        <label>tuple</label>
+      </node>
+      <node id="18">
+        <label>type_traits</label>
+      </node>
+      <node id="19">
+        <label>typeindex</label>
+      </node>
+      <node id="24">
+        <label>unordered_map</label>
+      </node>
+      <node id="25">
+        <label>utility</label>
+      </node>
+      <node id="21">
+        <label>variant</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="20">
+        <label>algo.cpp</label>
+        <link refid="algo_8cpp"/>
+      </node>
+      <node id="10">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="14">
+        <label>graphics.cpp</label>
+        <link refid="graphics_8cpp"/>
+      </node>
+      <node id="9">
+        <label>leasy/events.hpp</label>
+        <link refid="events_8hpp"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>leasy/iky7/anyf.hpp</label>
+        <link refid="anyf_8hpp"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>leasy/ily3/boot.cpp</label>
+        <link refid="boot_8cpp"/>
+      </node>
+      <node id="7">
+        <label>leasy/ily3/ily3.cpp</label>
+        <link refid="ily3_8cpp"/>
+      </node>
+      <node id="8">
+        <label>leasy/ily3/ily3.hpp</label>
+        <link refid="ily3_8hpp"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>leasy/ily3/libsys.cpp</label>
+        <link refid="libsys_8cpp"/>
+      </node>
+      <node id="5">
+        <label>leasy/ily3/libsys.hpp</label>
+        <link refid="libsys_8hpp"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>leasy/kits/rtt.hpp</label>
+        <link refid="rtt_8hpp"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>leasy/leasy.cpp</label>
+        <link refid="leasy_8cpp"/>
+      </node>
+      <node id="13">
+        <label>leasy/leasy.hpp</label>
+        <link refid="leasy_8hpp"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>leasy/lmain.cpp</label>
+        <link refid="lmain_8cpp"/>
+      </node>
+      <node id="18">
+        <label>leasy/metadata/class.hpp</label>
+        <link refid="class_8hpp"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>leasy/metadata/function.hpp</label>
+        <link refid="function_8hpp"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>leasy/metadata/metadata.hpp</label>
+        <link refid="metadata_8hpp"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>leasy/metadata/namespace.hpp</label>
+        <link refid="namespace_8hpp"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>leasy/metadata/reflection.hpp</label>
+        <link refid="reflection_8hpp"/>
+      </node>
+      <node id="22">
+        <label>leasy/metadata/type.cpp</label>
+        <link refid="type_8cpp"/>
+      </node>
+      <node id="25">
+        <label>leasy/metadata/type.hpp</label>
+        <link refid="type_8hpp"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>leasy/ui/winstream.hpp</label>
+        <link refid="winstream_8hpp"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>leasy/ul2/dispatcher.hpp</label>
+        <link refid="dispatcher_8hpp"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>leasy/ul2/function_wrapper.hpp</label>
+        <link refid="function__wrapper_8hpp"/>
+      </node>
+      <node id="1">
+        <label>leasy/ul2/lua_stack.hpp</label>
+        <link refid="lua__stack_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>leasy/ul2/state.hpp</label>
+        <link refid="state_8hpp"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>platform/sdl/main.cpp</label>
+        <link refid="sdl_2main_8cpp"/>
+      </node>
+      <node id="12">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__integral__v_3_06172c95ee22f9d9bf9dbe317b6bd8715" prot="public">leasy::ul2::lua_stack&lt; T, std::enable_if_t&lt; std::is_integral_v&lt; T &gt; &amp;&amp;!std::is_same_v&lt; T, bool &gt; &gt; &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01bool_01_4" prot="public">leasy::ul2::lua_stack&lt; bool &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__floating__point__v_3_01_t_01_4_01_4_01_4" prot="public">leasy::ul2::lua_stack&lt; T, std::enable_if_t&lt; std::is_floating_point_v&lt; T &gt; &gt; &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1string_01_4" prot="public">leasy::ul2::lua_stack&lt; std::string &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01const_01char_01_5_01_4" prot="public">leasy::ul2::lua_stack&lt; const char * &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1userdata__holder_3_01_t_00_01std_1_1enable__if__t_3_01typings2_1_1is__complete__v_3_01_t_01_4_01_4_01_4" prot="public">leasy::ul2::userdata_holder&lt; T, std::enable_if_t&lt; typings2::is_complete_v&lt; T &gt; &gt; &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1userdata__holder_3_01_t_00_01std_1_1enable__if__t_3_9typings2_1_1is__comple78baed4a32c6a3218677f77bf330edf" prot="public">leasy::ul2::userdata_holder&lt; T, std::enable_if_t&lt;!typings2::is_complete_v&lt; T &gt;||std::is_abstract_v&lt; T &gt; &gt; &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01_9std_1_1is__arithmetic__vdb488ff22805e7f759d132e2271e9e6f" prot="public">leasy::ul2::lua_stack&lt; T, std::enable_if_t&lt; !std::is_arithmetic_v&lt; T &gt; &amp;&amp;!std::is_same_v&lt; T, std::string &gt; &amp;&amp;!std::is_same_v&lt; T, const char * &gt; &gt; &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1variant__loader" prot="public">leasy::ul2::variant_loader</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4" prot="public">leasy::ul2::lua_stack&lt; leasy::kits::variant&lt; Ts... &gt; &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1vector_3_01_t_01_4_01_4" prot="public">leasy::ul2::lua_stack&lt; std::vector&lt; T &gt; &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1unordered__map_3_01_k_00_01_v_01_4_01_4" prot="public">leasy::ul2::lua_stack&lt; std::unordered_map&lt; K, V &gt; &gt;</innerclass>
+    <innernamespace refid="namespaceleasy">leasy</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ul2">leasy::ul2</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ul2_1_1detail">leasy::ul2::detail</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lua_2lua_8hpp" kindref="compound">../lua/lua.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ulexception2_8hpp" kindref="compound">ulexception2.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="metatypes_8hpp" kindref="compound">../typings/metatypes.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="variant_8hpp" kindref="compound">../kits/variant.hpp</ref>&quot;</highlight><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="function__traits_8hpp" kindref="compound">function_traits.hpp</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;any&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;tuple&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;memory&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;typeindex&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;type_traits&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;unordered_map&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;utility&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;new&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1ul2" kindref="compound">leasy::ul2</ref><sp/>{</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>=<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">&gt;</highlight></codeline>
+<codeline lineno="45" refid="structleasy_1_1ul2_1_1lua__stack" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack</ref>;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>Integral<sp/>types</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="52" refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__integral__v_3_06172c95ee22f9d9bf9dbe317b6bd8715" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack</ref>&lt;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>T,</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacestd" kindref="compound">std</ref>::enable_if_t&lt;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>std::is_integral_v&lt;T&gt;<sp/>&amp;&amp;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>!std::is_same_v&lt;T,<sp/>bool&gt;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>&gt;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal">&gt;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="60" refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__integral__v_3_06172c95ee22f9d9bf9dbe317b6bd8715_1a91578fa5f1301bddb9a5c598ff405bd9" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>T<sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__integral__v_3_06172c95ee22f9d9bf9dbe317b6bd8715_1a91578fa5f1301bddb9a5c598ff405bd9" kindref="member">get</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>index)</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">T</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lauxlib_8c_1aa15bea412c49bfdee1f3dbff096ce7d2" kindref="member">luaL_checkinteger</ref>(L,<sp/>index)</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__integral__v_3_06172c95ee22f9d9bf9dbe317b6bd8715_1af1c8097a20a2b84b20fe82e4ef9557aa" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__integral__v_3_06172c95ee22f9d9bf9dbe317b6bd8715_1af1c8097a20a2b84b20fe82e4ef9557aa" kindref="member">push</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/>T<sp/>value)</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1adcec46ff05dfee9a3c4c05828b40c213" kindref="member">lua_pushinteger</ref>(</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>L,</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal"><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(value)</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="80"><highlight class="comment"><sp/>*<sp/>Boolean</highlight></codeline>
+<codeline lineno="81"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="83" refid="structleasy_1_1ul2_1_1lua__stack_3_01bool_01_4" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack</ref>&lt;bool&gt;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="85" refid="structleasy_1_1ul2_1_1lua__stack_3_01bool_01_4_1abe4fa69516047806beddf5e00f86cc8f" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01bool_01_4_1abe4fa69516047806beddf5e00f86cc8f" kindref="member">get</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>index)</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lapi_8c_1a444aee9aa56b0b06175ee3c7bcf7927c" kindref="member">lua_toboolean</ref>(L,<sp/>index);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91" refid="structleasy_1_1ul2_1_1lua__stack_3_01bool_01_4_1a96875426545fc0e30dced5e612975295" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01bool_01_4_1a96875426545fc0e30dced5e612975295" kindref="member">push</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>value)</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a56bbb7479265e38da2e2596e6ec25faa" kindref="member">lua_pushboolean</ref>(L,<sp/>value);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="95"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="100"><highlight class="comment"><sp/>*<sp/>Floating<sp/>point</highlight></codeline>
+<codeline lineno="101"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="103" refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__floating__point__v_3_01_t_01_4_01_4_01_4" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack</ref>&lt;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>T,</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacestd" kindref="compound">std</ref>::enable_if_t&lt;std::is_floating_point_v&lt;T&gt;&gt;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal">&gt;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="108" refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__floating__point__v_3_01_t_01_4_01_4_01_4_1a00a44aef40cf16fc2426546e4e1b2e5a" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>T<sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__floating__point__v_3_01_t_01_4_01_4_01_4_1a00a44aef40cf16fc2426546e4e1b2e5a" kindref="member">get</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>index)</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal">T</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lauxlib_8c_1a9f2c941bb5eb7d3a7746f35c4fe3cced" kindref="member">luaL_checknumber</ref>(L,<sp/>index)</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116" refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__floating__point__v_3_01_t_01_4_01_4_01_4_1abd860d4869d09724ee8f4ab9914e512c" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__floating__point__v_3_01_t_01_4_01_4_01_4_1abd860d4869d09724ee8f4ab9914e512c" kindref="member">push</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/>T<sp/>value)</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a328625a03fbb5548f27b1af10f109f6a" kindref="member">lua_pushnumber</ref>(</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>L,</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal"><ref refid="lua_8h_1af0a6ed3b852d680769cfc410a0672172" kindref="member">lua_Number</ref></highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(value)</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="123"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="128"><highlight class="comment"><sp/>*<sp/>std::string</highlight></codeline>
+<codeline lineno="129"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="131" refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1string_01_4" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack</ref>&lt;<ref refid="namespacestd" kindref="compound">std</ref>::<ref refid="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57ab45cffe084dd3d20d928bee85e7b0f21" kindref="member">string</ref>&gt;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="133" refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1string_01_4_1a3cd14b7058e7f3fd1e9374b8937a7d48" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::string<sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1string_01_4_1a3cd14b7058e7f3fd1e9374b8937a7d48" kindref="member">get</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>index)</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>len;</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>str<sp/>=</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lauxlib_8c_1a84f77c4f62b1f42748cabbfd875cb36f" kindref="member">luaL_checklstring</ref>(L,<sp/>index,<sp/>&amp;len);</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::string(str,<sp/>len);</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144" refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1string_01_4_1a4ca72a99a38bb16ca2b7203b37d56511" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1string_01_4_1a4ca72a99a38bb16ca2b7203b37d56511" kindref="member">push</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>value)</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a01ac82fa494af5e7c3e10c87a8052cf7" kindref="member">lua_pushlstring</ref>(</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>L,</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>value.data(),</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>value.size()</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="152"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="157"><highlight class="comment"><sp/>*<sp/>C<sp/>strings</highlight></codeline>
+<codeline lineno="158"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="160" refid="structleasy_1_1ul2_1_1lua__stack_3_01const_01char_01_5_01_4" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack</ref>&lt;const<sp/>char*&gt;</highlight></codeline>
+<codeline lineno="161"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="162" refid="structleasy_1_1ul2_1_1lua__stack_3_01const_01char_01_5_01_4_1af28413c5072595b91319ec43a1ea6b35" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01const_01char_01_5_01_4_1af28413c5072595b91319ec43a1ea6b35" kindref="member">get</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>index)</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lauxlib_8h_1ad9917d22c79651fdd73d42c146b5056f" kindref="member">luaL_checkstring</ref>(L,<sp/>index);</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168" refid="structleasy_1_1ul2_1_1lua__stack_3_01const_01char_01_5_01_4_1a1c6905aba344b782a23527dea903b9c8" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01const_01char_01_5_01_4_1a1c6905aba344b782a23527dea903b9c8" kindref="member">push</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*<sp/>value)</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a6dd1a745d08c2dd96916ff0f2f1ca9ad" kindref="member">lua_pushstring</ref>(L,<sp/>value);</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="172"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="178"><highlight class="comment"><sp/>*<sp/>Userdata<sp/>system</highlight></codeline>
+<codeline lineno="179"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>=<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">&gt;</highlight></codeline>
+<codeline lineno="182" refid="structleasy_1_1ul2_1_1userdata__holder" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1userdata__holder" kindref="compound">userdata_holder</ref>;</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="185" refid="structleasy_1_1ul2_1_1userdata__holder_3_01_t_00_01std_1_1enable__if__t_3_01typings2_1_1is__complete__v_3_01_t_01_4_01_4_01_4" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1userdata__holder" kindref="compound">userdata_holder</ref>&lt;T,<sp/><ref refid="namespacestd" kindref="compound">std</ref>::enable_if_t&lt;typings2::is_complete_v&lt;T&gt;&gt;&gt;</highlight></codeline>
+<codeline lineno="186"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="187" refid="structleasy_1_1ul2_1_1userdata__holder_3_01_t_00_01std_1_1enable__if__t_3_01typings2_1_1is__complete__v_3_01_t_01_4_01_4_01_4_1a777eebffe532cf9e21dfe7422cc79c57" refkind="member"><highlight class="normal"><sp/><sp/>T<sp/><ref refid="structleasy_1_1ul2_1_1userdata__holder_3_01_t_00_01std_1_1enable__if__t_3_01typings2_1_1is__complete__v_3_01_t_01_4_01_4_01_4_1a777eebffe532cf9e21dfe7422cc79c57" kindref="member">value</ref>;</highlight></codeline>
+<codeline lineno="188"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="191" refid="structleasy_1_1ul2_1_1userdata__holder_3_01_t_00_01std_1_1enable__if__t_3_9typings2_1_1is__comple78baed4a32c6a3218677f77bf330edf" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1userdata__holder" kindref="compound">userdata_holder</ref>&lt;T,<sp/><ref refid="namespacestd" kindref="compound">std</ref>::enable_if_t&lt;!typings2::is_complete_v&lt;T&gt;<sp/>||<sp/>std::is_abstract_v&lt;T&gt;&gt;&gt;</highlight></codeline>
+<codeline lineno="192"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline lineno="194"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="199" refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01_9std_1_1is__arithmetic__vdb488ff22805e7f759d132e2271e9e6f" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack</ref>&lt;</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/>T,</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespacestd" kindref="compound">std</ref>::enable_if_t&lt;</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>!std::is_arithmetic_v&lt;T&gt;<sp/>&amp;&amp;</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>!std::is_same_v&lt;T,<sp/>std::string&gt;<sp/>&amp;&amp;</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>!std::is_same_v&lt;T,<sp/>const<sp/>char*&gt;</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/>&gt;</highlight></codeline>
+<codeline lineno="206"><highlight class="normal">&gt;</highlight></codeline>
+<codeline lineno="207"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="208" refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01_9std_1_1is__arithmetic__vdb488ff22805e7f759d132e2271e9e6f_1a5820cc3f32ebb8110f410a854d78150e" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01_9std_1_1is__arithmetic__vdb488ff22805e7f759d132e2271e9e6f_1a5820cc3f32ebb8110f410a854d78150e" kindref="member">holder</ref><sp/>=<sp/><ref refid="structleasy_1_1ul2_1_1userdata__holder" kindref="compound">userdata_holder&lt;T&gt;</ref>;</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight></codeline>
+<codeline lineno="210"><highlight class="normal"></highlight></codeline>
+<codeline lineno="211" refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01_9std_1_1is__arithmetic__vdb488ff22805e7f759d132e2271e9e6f_1aee95289210a38ddfc04ccca843a5b7c0" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>T&amp;<sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01_9std_1_1is__arithmetic__vdb488ff22805e7f759d132e2271e9e6f_1aee95289210a38ddfc04ccca843a5b7c0" kindref="member">get</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>index)</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(<ref refid="namespaceleasy_1_1typings2_1a915c7bc6515c39c692e4cdedb0b4897d" kindref="member">typings2::can_store_by_value&lt;T&gt;</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>ptr<sp/>=</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01_9std_1_1is__arithmetic__vdb488ff22805e7f759d132e2271e9e6f_1a5820cc3f32ebb8110f410a854d78150e" kindref="member">holder</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lauxlib_8c_1a4be5678b50e3688ce06f874b5bb14bce" kindref="member">luaL_checkudata</ref>(</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>L,</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>index,</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1_1typings2_1af8c2991784c540f1b9010f2c1d834308" kindref="member">typings2::leasy_typeid&lt;T&gt;</ref>().name()</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>)</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ptr-&gt;value;</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="ulexception2_8hpp_1a67a65e7c91e4241a38a3b1a97c12ed6e" kindref="member">ulthrow</ref>(</highlight><highlight class="stringliteral">&quot;cannot<sp/>retrieve<sp/>a<sp/>value<sp/>because<sp/>its<sp/>type<sp/>is<sp/>incomplete<sp/>or<sp/>abstract<sp/>(which<sp/>is<sp/>illegal<sp/>in<sp/>C++)&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight></codeline>
+<codeline lineno="230" refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01_9std_1_1is__arithmetic__vdb488ff22805e7f759d132e2271e9e6f_1a05f39cb0612d69ed78ce538254934471" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01_9std_1_1is__arithmetic__vdb488ff22805e7f759d132e2271e9e6f_1a05f39cb0612d69ed78ce538254934471" kindref="member">push</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T&amp;<sp/>value)<sp/>{</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(<ref refid="namespaceleasy_1_1typings2_1a915c7bc6515c39c692e4cdedb0b4897d" kindref="member">typings2::can_store_by_value&lt;T&gt;</ref>)<sp/>{</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">*<sp/>memory<sp/>=<sp/><ref refid="lua_8h_1a1123eb282211547f4951ae0d126708af" kindref="member">lua_newuserdata</ref>(L,<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<ref refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01_9std_1_1is__arithmetic__vdb488ff22805e7f759d132e2271e9e6f_1a5820cc3f32ebb8110f410a854d78150e" kindref="member">holder</ref>));</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal">(memory)<sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01_9std_1_1is__arithmetic__vdb488ff22805e7f759d132e2271e9e6f_1a5820cc3f32ebb8110f410a854d78150e" kindref="member">holder</ref>{value};</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lauxlib_8c_1a2664eb7bcc85bbf6eeded2a81cf09b01" kindref="member">luaL_newmetatable</ref>(L,<sp/><ref refid="namespaceleasy_1_1typings2_1af8c2991784c540f1b9010f2c1d834308" kindref="member">typings2::leasy_typeid&lt;T&gt;</ref>().name()))<sp/>{</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a6dd1a745d08c2dd96916ff0f2f1ca9ad" kindref="member">lua_pushstring</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;__gc&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lua_8h_1a2e4fbbe97182bf90004379202202f2b9" kindref="member">lua_pushcfunction</ref>(L,<sp/>[](<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">*<sp/>ptr<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01_t_00_01std_1_1enable__if__t_3_01_9std_1_1is__arithmetic__vdb488ff22805e7f759d132e2271e9e6f_1a5820cc3f32ebb8110f410a854d78150e" kindref="member">holder</ref>*</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(<ref refid="lauxlib_8c_1a4be5678b50e3688ce06f874b5bb14bce" kindref="member">luaL_checkudata</ref>(L,<sp/>1,<sp/><ref refid="namespaceleasy_1_1typings2_1af8c2991784c540f1b9010f2c1d834308" kindref="member">typings2::leasy_typeid&lt;T&gt;</ref>().name()));</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ptr-&gt;~holder();</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>});</highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a4ca492cf3d2194aec9a6292708bf66c8" kindref="member">lua_settable</ref>(L,<sp/>-3);</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a15719ea4119bdf5b3f2a406534431a7e" kindref="member">lua_setmetatable</ref>(L,<sp/>-2);</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>This<sp/>type<sp/>cannot<sp/>be<sp/>stored<sp/>directly<sp/>inside<sp/>Lua<sp/>userdata.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Reasons<sp/>include:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/>-<sp/>T<sp/>is<sp/>incomplete<sp/>(sizeof(T)<sp/>is<sp/>unknown)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/>-<sp/>T<sp/>is<sp/>abstract<sp/>(cannot<sp/>be<sp/>instantiated)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Intentionally<sp/>do<sp/>nothing<sp/>so<sp/>the<sp/>code<sp/>still<sp/>compiles.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>library<sp/>may<sp/>emit<sp/>a<sp/>warning<sp/>here<sp/>in<sp/>the<sp/>future.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>(void)L;</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>(void)value;</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="259"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"></highlight></codeline>
+<codeline lineno="261" refid="namespaceleasy_1_1ul2_1_1detail" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacedetail" kindref="compound">detail</ref><sp/>{</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="263" refid="namespaceleasy_1_1ul2_1_1detail_1a234c76938f0dfa835c5e164ef250fdea" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1ul2_1_1detail_1a234c76938f0dfa835c5e164ef250fdea" kindref="member">try_get</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>idx,<sp/>T&amp;<sp/>out)<sp/>{</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(std::is_same_v&lt;T,<sp/>bool&gt;)<sp/>{</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="lua_8h_1af4f579ead7d5ea837d8d708186033502" kindref="member">lua_isboolean</ref>(L,<sp/>idx))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(std::is_integral_v&lt;T&gt;)<sp/>{</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="lapi_8c_1aba53e83eb1fff94b5ed96203bb52d8ae" kindref="member">lua_isinteger</ref>(L,<sp/>idx))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(std::is_floating_point_v&lt;T&gt;)<sp/>{</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="lapi_8c_1a99451f234bf085c9c46c3d17a5aef905" kindref="member">lua_isnumber</ref>(L,<sp/>idx))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(std::is_same_v&lt;T,<sp/>std::string&gt;)<sp/>{</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="lapi_8c_1a9f20233199a414b04c1c4b43f5d040f3" kindref="member">lua_isstring</ref>(L,<sp/>idx))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="lauxlib_8c_1a002893351c161d943c16a31ae957c6d0" kindref="member">luaL_testudata</ref>(L,<sp/>idx,<sp/><ref refid="namespaceleasy_1_1typings2_1af8c2991784c540f1b9010f2c1d834308" kindref="member">typings2::leasy_typeid&lt;T&gt;</ref>().name()))<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"></highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>out<sp/>=<sp/><ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack&lt;T&gt;::get</ref>(L,<sp/>idx);</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"></highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Variant,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>Rest&gt;</highlight></codeline>
+<codeline lineno="282" refid="structleasy_1_1ul2_1_1variant__loader" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1variant__loader" kindref="compound">variant_loader</ref><sp/>{</highlight></codeline>
+<codeline lineno="283" refid="structleasy_1_1ul2_1_1variant__loader_1a07657ddb2664e05a2e34b39315b7d40a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1variant__loader_1a07657ddb2664e05a2e34b39315b7d40a" kindref="member">load</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>idx,<sp/>Variant&amp;<sp/>v)<sp/>{</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>T<sp/>value;</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="namespaceleasy_1_1ul2_1_1detail_1a234c76938f0dfa835c5e164ef250fdea" kindref="member">detail::try_get</ref>(L,<sp/>idx,<sp/>value))<sp/>{</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v.set(std::move(value));</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">...(Rest)<sp/>&gt;<sp/>0)<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1variant__loader_1a07657ddb2664e05a2e34b39315b7d40a" kindref="member">variant_loader&lt;Variant, Rest...&gt;::load</ref>(L,<sp/>idx,<sp/>v);</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"></highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>Ts&gt;</highlight></codeline>
+<codeline lineno="295" refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack</ref>&lt;<ref refid="namespaceleasy" kindref="compound">leasy</ref>::<ref refid="classleasy_1_1kits_1_1variant" kindref="compound">kits::variant</ref>&lt;Ts...&gt;&gt;</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="297" refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1acc54f67ebf42be90df26be27c86b9eff" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1acc54f67ebf42be90df26be27c86b9eff" kindref="member">variant_t</ref><sp/>=<sp/><ref refid="classleasy_1_1kits_1_1variant" kindref="compound">leasy::kits::variant</ref>&lt;Ts...&gt;;</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"></highlight></codeline>
+<codeline lineno="299" refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1a7118a166fa25453957c508c92c626674" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1acc54f67ebf42be90df26be27c86b9eff" kindref="member">variant_t</ref><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1a7118a166fa25453957c508c92c626674" kindref="member">get</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>index)</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1acc54f67ebf42be90df26be27c86b9eff" kindref="member">variant_t</ref><sp/>result;</highlight></codeline>
+<codeline lineno="302"><highlight class="normal"></highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="structleasy_1_1ul2_1_1variant__loader_1a07657ddb2664e05a2e34b39315b7d40a" kindref="member">variant_loader&lt;variant_t, Ts...&gt;::load</ref>(L,<sp/>index,<sp/>result))<sp/><ref refid="lauxlib_8c_1a6c51d83d29244779392551388913e08a" kindref="member">luaL_error</ref>(L,<sp/></highlight><highlight class="stringliteral">&quot;No<sp/>matching<sp/>variant<sp/>alternative.&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"></highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>result;</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"></highlight></codeline>
+<codeline lineno="308" refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1a2a393e03db4bfb00813c53fb3fdf55c0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1a2a393e03db4bfb00813c53fb3fdf55c0" kindref="member">push</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1acc54f67ebf42be90df26be27c86b9eff" kindref="member">variant_t</ref>&amp;<sp/>v)</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>std::visit(</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[&amp;](</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>x)</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack</ref>&lt;std::decay_t&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(x)&gt;&gt;<ref refid="structleasy_1_1ul2_1_1lua__stack_3_01leasy_1_1kits_1_1variant_3_01_ts_8_8_8_01_4_01_4_1a2a393e03db4bfb00813c53fb3fdf55c0" kindref="member">::push</ref>(L,<sp/>x);</highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>},</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v.<ref refid="classleasy_1_1kits_1_1variant_1ad793cbe3aa25bbbaa38007198fc89e35" kindref="member">internal</ref>()</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="317"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="318"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="319"><highlight class="normal"></highlight></codeline>
+<codeline lineno="320"><highlight class="normal"></highlight></codeline>
+<codeline lineno="321"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="322" refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1vector_3_01_t_01_4_01_4" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack</ref>&lt;<ref refid="namespacestd" kindref="compound">std</ref>::vector&lt;T&gt;&gt;</highlight></codeline>
+<codeline lineno="323"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="324" refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1vector_3_01_t_01_4_01_4_1aae5d92e1245ceb0712bed02e5d954b4e" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::vector&lt;T&gt;<sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1vector_3_01_t_01_4_01_4_1aae5d92e1245ceb0712bed02e5d954b4e" kindref="member">get</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>index)</highlight></codeline>
+<codeline lineno="325"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="326"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lauxlib_8c_1a0f8f78c4edc5cbf890690b3cf9615dc8" kindref="member">luaL_checktype</ref>(L,<sp/>index,<sp/><ref refid="lua_8h_1a31620fd8da5b655b7879e16a116ec31a" kindref="member">LUA_TTABLE</ref>);</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;T&gt;<sp/>result;</highlight></codeline>
+<codeline lineno="328"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>len<sp/>=<sp/><ref refid="lapi_8c_1a161e2baf3d7a6a84499f6a9010cf12c8" kindref="member">lua_rawlen</ref>(L,<sp/>index);</highlight></codeline>
+<codeline lineno="329"><highlight class="normal"><sp/><sp/><sp/><sp/>result.reserve(len);</highlight></codeline>
+<codeline lineno="330"><highlight class="normal"></highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>1;<sp/>i<sp/>&lt;=<sp/>len;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a631ebda324b6a0f382ab6b9314917384" kindref="member">lua_geti</ref>(L,<sp/>index,<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal"><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(i));</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>result.push_back(<ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack&lt;T&gt;::get</ref>(L,<sp/>-1));</highlight></codeline>
+<codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lua_8h_1abb8eae2164badeafdb037bc1e03cc822" kindref="member">lua_pop</ref>(L,<sp/>1);</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="336"><highlight class="normal"></highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>result;</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"></highlight></codeline>
+<codeline lineno="340" refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1vector_3_01_t_01_4_01_4_1a0f428ac4919e2d8fea569d7d71d3725d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1vector_3_01_t_01_4_01_4_1a0f428ac4919e2d8fea569d7d71d3725d" kindref="member">push</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;T&gt;&amp;<sp/>vec)</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a7f93e3baf3101cad59ec61b7744a55d8" kindref="member">lua_createtable</ref>(L,</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(vec.size()),</highlight></codeline>
+<codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0);</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"></highlight></codeline>
+<codeline lineno="346"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"></highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>e<sp/>:<sp/>vec)</highlight></codeline>
+<codeline lineno="349"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack&lt;T&gt;::push</ref>(L,<sp/>e);</highlight></codeline>
+<codeline lineno="351"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a3f995c6cbc03d4cdebb2a6fc6fa11e59" kindref="member">lua_seti</ref>(L,<sp/>-2,<sp/>i++);</highlight></codeline>
+<codeline lineno="352"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="353"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="354"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="355"><highlight class="normal"></highlight></codeline>
+<codeline lineno="356"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>K,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>V&gt;</highlight></codeline>
+<codeline lineno="357" refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1unordered__map_3_01_k_00_01_v_01_4_01_4" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack</ref>&lt;<ref refid="namespacestd" kindref="compound">std</ref>::unordered_map&lt;K,<sp/>V&gt;&gt;</highlight></codeline>
+<codeline lineno="358"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="359"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::unordered_map&lt;K,<sp/>V&gt;</highlight></codeline>
+<codeline lineno="360" refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1unordered__map_3_01_k_00_01_v_01_4_01_4_1aa4d059227610a61d10e9215faf77abb9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1unordered__map_3_01_k_00_01_v_01_4_01_4_1aa4d059227610a61d10e9215faf77abb9" kindref="member">get</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>index)</highlight></codeline>
+<codeline lineno="361"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="362"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lauxlib_8c_1a0f8f78c4edc5cbf890690b3cf9615dc8" kindref="member">luaL_checktype</ref>(L,<sp/>index,<sp/><ref refid="lua_8h_1a31620fd8da5b655b7879e16a116ec31a" kindref="member">LUA_TTABLE</ref>);</highlight></codeline>
+<codeline lineno="363"><highlight class="normal"></highlight></codeline>
+<codeline lineno="364"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>std::unordered_map&lt;K,<sp/>V&gt;<sp/>map;</highlight></codeline>
+<codeline lineno="365"><highlight class="normal"></highlight></codeline>
+<codeline lineno="366"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a1b4cd0d80f51e5545a97ca6c28c03c50" kindref="member">lua_pushnil</ref>(L);</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"></highlight></codeline>
+<codeline lineno="368"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(<ref refid="lapi_8c_1aa8bf464b98335a075732200ad91ce1de" kindref="member">lua_next</ref>(L,<sp/>index))</highlight></codeline>
+<codeline lineno="369"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="370"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>K<sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref><sp/>=<sp/><ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack&lt;K&gt;::get</ref>(L,<sp/>-2);</highlight></codeline>
+<codeline lineno="371"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>V<sp/>value<sp/>=<sp/><ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack&lt;V&gt;::get</ref>(L,<sp/>-1);</highlight></codeline>
+<codeline lineno="372"><highlight class="normal"></highlight></codeline>
+<codeline lineno="373"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map.emplace(std::move(<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>),</highlight></codeline>
+<codeline lineno="374"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::move(value));</highlight></codeline>
+<codeline lineno="375"><highlight class="normal"></highlight></codeline>
+<codeline lineno="376"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lua_8h_1abb8eae2164badeafdb037bc1e03cc822" kindref="member">lua_pop</ref>(L,<sp/>1);</highlight></codeline>
+<codeline lineno="377"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="378"><highlight class="normal"></highlight></codeline>
+<codeline lineno="379"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>map;</highlight></codeline>
+<codeline lineno="380"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="381"><highlight class="normal"></highlight></codeline>
+<codeline lineno="382" refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1unordered__map_3_01_k_00_01_v_01_4_01_4_1aad5be92417f36fd01a1a8dab498eeff4" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack_3_01std_1_1unordered__map_3_01_k_00_01_v_01_4_01_4_1aad5be92417f36fd01a1a8dab498eeff4" kindref="member">push</ref>(</highlight></codeline>
+<codeline lineno="383"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,</highlight></codeline>
+<codeline lineno="384"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::unordered_map&lt;K,<sp/>V&gt;&amp;<sp/>map)</highlight></codeline>
+<codeline lineno="385"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="386"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="lua_8h_1aa59db6b784aa1ec954599a44168c7761" kindref="member">lua_newtable</ref>(L);</highlight></codeline>
+<codeline lineno="387"><highlight class="normal"></highlight></codeline>
+<codeline lineno="388"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>[k,<sp/>v]<sp/>:<sp/>map)</highlight></codeline>
+<codeline lineno="389"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="390"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack&lt;K&gt;::push</ref>(L,<sp/>k);</highlight></codeline>
+<codeline lineno="391"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structleasy_1_1ul2_1_1lua__stack" kindref="compound">lua_stack&lt;V&gt;::push</ref>(L,<sp/>v);</highlight></codeline>
+<codeline lineno="392"><highlight class="normal"></highlight></codeline>
+<codeline lineno="393"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="lapi_8c_1a4ca492cf3d2194aec9a6292708bf66c8" kindref="member">lua_settable</ref>(L,<sp/>-3);</highlight></codeline>
+<codeline lineno="394"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="395"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="396"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="397"><highlight class="normal"></highlight></codeline>
+<codeline lineno="398"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="399" refid="namespaceleasy_1_1ul2_1a185622abe4c8a88d927a42fd93a82ca2" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1ul2_1a185622abe4c8a88d927a42fd93a82ca2" kindref="member">accepts</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>index)</highlight></codeline>
+<codeline lineno="400"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="401"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(std::is_same_v&lt;T,<sp/>bool&gt;)</highlight></codeline>
+<codeline lineno="402"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lua_8h_1af4f579ead7d5ea837d8d708186033502" kindref="member">lua_isboolean</ref>(L,<sp/>index);</highlight></codeline>
+<codeline lineno="403"><highlight class="normal"></highlight></codeline>
+<codeline lineno="404"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(std::is_integral_v&lt;T&gt;)</highlight></codeline>
+<codeline lineno="405"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lapi_8c_1aba53e83eb1fff94b5ed96203bb52d8ae" kindref="member">lua_isinteger</ref>(L,<sp/>index);</highlight></codeline>
+<codeline lineno="406"><highlight class="normal"></highlight></codeline>
+<codeline lineno="407"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(std::is_floating_point_v&lt;T&gt;)</highlight></codeline>
+<codeline lineno="408"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lapi_8c_1a99451f234bf085c9c46c3d17a5aef905" kindref="member">lua_isnumber</ref>(L,<sp/>index);</highlight></codeline>
+<codeline lineno="409"><highlight class="normal"></highlight></codeline>
+<codeline lineno="410"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(std::is_same_v&lt;T,<sp/>std::string&gt;)</highlight></codeline>
+<codeline lineno="411"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lapi_8c_1a9f20233199a414b04c1c4b43f5d040f3" kindref="member">lua_isstring</ref>(L,<sp/>index);</highlight></codeline>
+<codeline lineno="412"><highlight class="normal"></highlight></codeline>
+<codeline lineno="413"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="414"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="lauxlib_8c_1a002893351c161d943c16a31ae957c6d0" kindref="member">luaL_testudata</ref>(</highlight></codeline>
+<codeline lineno="415"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>L,</highlight></codeline>
+<codeline lineno="416"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>index,</highlight></codeline>
+<codeline lineno="417"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1_1typings2_1af8c2991784c540f1b9010f2c1d834308" kindref="member">typings2::leasy_typeid&lt;T&gt;</ref>().name()</highlight></codeline>
+<codeline lineno="418"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="419"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="420"><highlight class="normal"></highlight></codeline>
+<codeline lineno="421"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Tuple,<sp/>std::size_t...<sp/>I&gt;</highlight></codeline>
+<codeline lineno="422" refid="namespaceleasy_1_1ul2_1a31ade0bfd8a65adf1d5238798712996c" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1ul2_1a31ade0bfd8a65adf1d5238798712996c" kindref="member">matches_impl</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L,<sp/>std::index_sequence&lt;I...&gt;)</highlight></codeline>
+<codeline lineno="423"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="424"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(</highlight></codeline>
+<codeline lineno="425"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1_1ul2_1a185622abe4c8a88d927a42fd93a82ca2" kindref="member">accepts</ref>&lt;</highlight></codeline>
+<codeline lineno="426"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>std::tuple_element_t&lt;I,<sp/>Tuple&gt;</highlight></codeline>
+<codeline lineno="427"><highlight class="normal"><sp/><sp/><sp/><sp/>&gt;(L,<sp/>I<sp/>+<sp/>1)</highlight></codeline>
+<codeline lineno="428"><highlight class="normal"><sp/><sp/><sp/><sp/>&amp;&amp;<sp/>...</highlight></codeline>
+<codeline lineno="429"><highlight class="normal"><sp/><sp/>);</highlight></codeline>
+<codeline lineno="430"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="431"><highlight class="normal"></highlight></codeline>
+<codeline lineno="432"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>F&gt;</highlight></codeline>
+<codeline lineno="433" refid="namespaceleasy_1_1ul2_1a7c27ff9d6a160ac1491fcd8fbbefb290" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1ul2_1a7c27ff9d6a160ac1491fcd8fbbefb290" kindref="member">matches</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L)</highlight></codeline>
+<codeline lineno="434"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="435"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">traits<sp/>=<sp/><ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">function_traits&lt;F&gt;</ref>;</highlight></codeline>
+<codeline lineno="436"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">args<sp/>=<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>traits::args_tuple;</highlight></codeline>
+<codeline lineno="437"><highlight class="normal"></highlight></codeline>
+<codeline lineno="438"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>std::size_t<sp/><ref refid="tilemap__layer_8cpp_1a0240ac851181b84ac374872dc5434ee4" kindref="member">N</ref><sp/>=<sp/>std::tuple_size_v&lt;args&gt;;</highlight></codeline>
+<codeline lineno="439"><highlight class="normal"></highlight></codeline>
+<codeline lineno="440"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="lapi_8c_1afbb08ecb69421875494105d4de68e5bf" kindref="member">lua_gettop</ref>(L)<sp/>!=<sp/><ref refid="tilemap__layer_8cpp_1a0240ac851181b84ac374872dc5434ee4" kindref="member">N</ref>)</highlight></codeline>
+<codeline lineno="441"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="442"><highlight class="normal"></highlight></codeline>
+<codeline lineno="443"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1ul2_1a31ade0bfd8a65adf1d5238798712996c" kindref="member">matches_impl&lt;args&gt;</ref>(L,<sp/>std::make_index_sequence&lt;N&gt;{});</highlight></codeline>
+<codeline lineno="444"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="445"><highlight class="normal"></highlight></codeline>
+<codeline lineno="446"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>leasy::ul2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="447"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/ul2/lua_stack.hpp"/>
+  </compounddef>
+</doxygen>

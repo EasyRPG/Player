@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1ily3_1_1lua__scripts" kind="namespace" language="C++">
+    <compoundname>leasy::ily3::lua_scripts</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceleasy_1_1ily3_1_1lua__scripts_1a8313ce35b5a6954d540a103941d5d499" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* leasy::ily3::lua_scripts::init</definition>
+        <argsstring></argsstring>
+        <name>init</name>
+        <qualifiedname>leasy::ily3::lua_scripts::init</qualifiedname>
+        <initializer>                    = 
+R&quot;(<ref refid="namespaceleasy" kindref="compound">leasy</ref> = <ref refid="namespaceleasy" kindref="compound">leasy</ref> or {}
+leasy.User = {}
+leasy.User.ready = function() end
+leasy.User.process = function() end
+leasy.User.draw = function() end
+leasy.Engine = {})&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/ily3.cpp" line="36" column="16" bodyfile="leasy/ily3/ily3.cpp" bodystart="36" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ily3/ily3.cpp" line="35" column="3"/>
+  </compounddef>
+</doxygen>

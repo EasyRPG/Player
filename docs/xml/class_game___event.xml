@@ -1,0 +1,1064 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___event" kind="class" language="C++" prot="public">
+    <compoundname>Game_Event</compoundname>
+    <basecompoundref refid="class_game___character_data_storage" prot="public" virt="non-virtual">Game_CharacterDataStorage&lt; lcf::rpg::SaveMapEvent &gt;</basecompoundref>
+    <includes refid="game__event_8h" local="no">game_event.h</includes>
+    <sectiondef kind="user-defined">
+      <memberdef kind="function" id="class_game___event_1a244286a1a489a4b5977fe12d5c10e853" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" kindref="member">Drawable::Z_t</ref></type>
+        <definition>Drawable::Z_t Game_Event::GetScreenZ</definition>
+        <argsstring>(int x_offset, int y_offset) const override</argsstring>
+        <name>GetScreenZ</name>
+        <qualifiedname>Game_Event::GetScreenZ</qualifiedname>
+        <reimplements refid="class_game___character_1a80702c04b1dad2437db17899109ff701">GetScreenZ</reimplements>
+        <param>
+          <type>int</type>
+          <declname>x_offset</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y_offset</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Implementation of abstract methods </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="58" column="15" bodyfile="game_event.cpp" bodystart="118" bodyend="122"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a7d80295ab64db90ad69974447c9b9310" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Game_Event::Move</definition>
+        <argsstring>(int dir) override</argsstring>
+        <name>Move</name>
+        <qualifiedname>Game_Event::Move</qualifiedname>
+        <reimplements refid="class_game___character_1a882dd952631aa69288d6a82b98b7a20d">Move</reimplements>
+        <param>
+          <type>int</type>
+          <declname>dir</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Move in the direction dir.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dir</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the direction to move to.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether move was successful or a move or jump is already in progress. </para>
+</simplesect>
+<simplesect kind="post"><para>If successful, <ref refid="class_game___character_1a87ac863be02cbcf3669d07e4bf57f86a" kindref="member">IsStopping()</ref> == false. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="59" column="6" bodyfile="game_event.cpp" bodystart="391" bodyend="398"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1ae361f85fc16c615d132e8ddc6f121944" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Game_Event::UpdateNextMovementAction</definition>
+        <argsstring>() override</argsstring>
+        <name>UpdateNextMovementAction</name>
+        <qualifiedname>Game_Event::UpdateNextMovementAction</qualifiedname>
+        <reimplements refid="class_game___character_1a1630729379e37dc9e1c30d81693750e9">UpdateNextMovementAction</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="60" column="6" bodyfile="game_event.cpp" bodystart="400" bodyend="446"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1ad866cefc43c5f153e80c1e3d09dc931d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>bool Game_Event::IsVisible</definition>
+        <argsstring>() const override</argsstring>
+        <name>IsVisible</name>
+        <qualifiedname>Game_Event::IsVisible</qualifiedname>
+        <reimplements refid="class_game___character_1a1512c8154f3ab6a8204c32a5cbc8932d">IsVisible</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if the character is visible.</para>
+<para><simplesect kind="return"><para>if visible, when true Opaque value is used </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="61" column="6" bodyfile="game_event.h" bodystart="229" bodyend="231"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___event_1a5c0ca7661cc58e2828b01bde7cb98c57" prot="private" static="no" mutable="no">
+        <type>const lcf::rpg::Event *</type>
+        <definition>const lcf::rpg::Event* Game_Event::event</definition>
+        <argsstring></argsstring>
+        <name>event</name>
+        <qualifiedname>Game_Event::event</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="218" column="23" bodyfile="game_event.h" bodystart="218" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___event_1ad0b95e516302e232f03b619c8544fc49" prot="private" static="no" mutable="no">
+        <type>const lcf::rpg::EventPage *</type>
+        <definition>const lcf::rpg::EventPage* Game_Event::page</definition>
+        <argsstring></argsstring>
+        <name>page</name>
+        <qualifiedname>Game_Event::page</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="219" column="27" bodyfile="game_event.h" bodystart="219" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___event_1a25d28af414e7784fd26ee018866bf174" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___interpreter___map" kindref="compound">Game_Interpreter_Map</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Game_Interpreter_Map&gt; Game_Event::interpreter</definition>
+        <argsstring></argsstring>
+        <name>interpreter</name>
+        <qualifiedname>Game_Event::interpreter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="220" column="17" bodyfile="game_event.h" bodystart="220" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="friend">
+      <memberdef kind="friend" id="class_game___event_1ae60e888f01e861f90c85fcb73dca975f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>class</type>
+        <definition>friend class Scene_Debug</definition>
+        <argsstring></argsstring>
+        <name>Scene_Debug</name>
+        <qualifiedname>Game_Event::Scene_Debug</qualifiedname>
+        <param>
+          <type><ref refid="class_scene___debug" kindref="compound">Scene_Debug</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="222" column="14" bodyfile="game_event.h" bodystart="222" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___event_1a7d65a47f973b99c45498d97117960bcc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Event::Game_Event</definition>
+        <argsstring>(int map_id, const lcf::rpg::Event *event)</argsstring>
+        <name>Game_Event</name>
+        <qualifiedname>Game_Event::Game_Event</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>map_id</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Event *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="41" column="1" bodyfile="game_event.cpp" bodystart="38" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a57285e0f0bc1faf1beb72f12f93dab32" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Event::SetUnderlyingEvent</definition>
+        <argsstring>(const lcf::rpg::Event *ev)</argsstring>
+        <name>SetUnderlyingEvent</name>
+        <qualifiedname>Game_Event::SetUnderlyingEvent</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Event *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ev</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Event referenced </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="44" column="6" bodyfile="game_event.h" bodystart="44" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1acd11f90834fa9fc925c8c6db5a8781f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Event::SetSaveData</definition>
+        <argsstring>(lcf::rpg::SaveMapEvent save)</argsstring>
+        <name>SetSaveData</name>
+        <qualifiedname>Game_Event::SetSaveData</qualifiedname>
+        <param>
+          <type>lcf::rpg::SaveMapEvent</type>
+          <declname>save</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Load from saved game </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="49" column="6" bodyfile="game_event.cpp" bodystart="58" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a1c83f0ace1f0456fc3005babf1e3ab9e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>lcf::rpg::SaveMapEvent</type>
+        <definition>lcf::rpg::SaveMapEvent Game_Event::GetSaveData</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSaveData</name>
+        <qualifiedname>Game_Event::GetSaveData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>save game data </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="52" column="24" bodyfile="game_event.cpp" bodystart="97" bodyend="116"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1aff192475ca81769a17b036a20e224b3c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Event::RefreshPage</definition>
+        <argsstring>()</argsstring>
+        <name>RefreshPage</name>
+        <qualifiedname>Game_Event::RefreshPage</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Re-checks active pages and sets up new page on change. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="67" column="6" bodyfile="game_event.cpp" bodystart="151" bodyend="240"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a5b67cc0a93b660e6ecb397d101cbfa4e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Event::GetId</definition>
+        <argsstring>() const</argsstring>
+        <name>GetId</name>
+        <qualifiedname>Game_Event::GetId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets event ID.</para>
+<para><simplesect kind="return"><para>event ID. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="74" column="5" bodyfile="game_event.cpp" bodystart="296" bodyend="298"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a4aa01c38e6501705b8dcad34652d5bc8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_Event::GetName</definition>
+        <argsstring>() const</argsstring>
+        <name>GetName</name>
+        <qualifiedname>Game_Event::GetName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets event name.</para>
+<para><simplesect kind="return"><para>event name. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="81" column="18" bodyfile="game_event.cpp" bodystart="300" bodyend="302"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1af163de6b4144792ed2ea23ec6d7b6e1b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Event::ClearWaitingForegroundExecution</definition>
+        <argsstring>()</argsstring>
+        <name>ClearWaitingForegroundExecution</name>
+        <qualifiedname>Game_Event::ClearWaitingForegroundExecution</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Clears waiting_execution flag </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="84" column="6" bodyfile="game_event.cpp" bodystart="132" bodyend="134"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1affbedfc80c795f8f94cab7c7d3fe110c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Event::IsWaitingForegroundExecution</definition>
+        <argsstring>() const</argsstring>
+        <name>IsWaitingForegroundExecution</name>
+        <qualifiedname>Game_Event::IsWaitingForegroundExecution</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>waiting_execution flag. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="87" column="6" bodyfile="game_event.cpp" bodystart="304" bodyend="306"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a64a84471b74eda8f6731994ac75c29fd" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Event::WasStartedByDecisionKey</definition>
+        <argsstring>() const</argsstring>
+        <name>WasStartedByDecisionKey</name>
+        <qualifiedname>Game_Event::WasStartedByDecisionKey</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>If the event is starting, whether or not it was started by pushing the decision key.</para>
+<para><simplesect kind="return"><para>started by decision key </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="95" column="6" bodyfile="game_event.cpp" bodystart="308" bodyend="310"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a71778e274d4d906477489b73666d8f95" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>lcf::rpg::EventPage::Trigger</type>
+        <definition>lcf::rpg::EventPage::Trigger Game_Event::GetTrigger</definition>
+        <argsstring>() const</argsstring>
+        <name>GetTrigger</name>
+        <qualifiedname>Game_Event::GetTrigger</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets trigger condition.</para>
+<para><simplesect kind="return"><para>trigger condition. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="102" column="30" bodyfile="game_event.cpp" bodystart="312" bodyend="315"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1abd6ab9b976d5c5ac057176065f9d8f4a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::vector&lt; lcf::rpg::EventCommand &gt; &amp;</type>
+        <definition>const std::vector&lt; lcf::rpg::EventCommand &gt; &amp; Game_Event::GetList</definition>
+        <argsstring>() const</argsstring>
+        <name>GetList</name>
+        <qualifiedname>Game_Event::GetList</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets event commands list.</para>
+<para><simplesect kind="return"><para>event commands list. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="109" column="19" bodyfile="game_event.cpp" bodystart="339" bodyend="341"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a6758771c7fe309564f25b8ce400469c4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Event::OnFinishForegroundEvent</definition>
+        <argsstring>()</argsstring>
+        <name>OnFinishForegroundEvent</name>
+        <qualifiedname>Game_Event::OnFinishForegroundEvent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Event returns to its original direction before talking to the hero. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="114" column="6" bodyfile="game_event.cpp" bodystart="343" bodyend="346"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a20e7d819b1be62c1637f83368c6167e0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Event::ScheduleForegroundExecution</definition>
+        <argsstring>(bool triggered_by_decision_key, bool face_player)</argsstring>
+        <name>ScheduleForegroundExecution</name>
+        <qualifiedname>Game_Event::ScheduleForegroundExecution</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>triggered_by_decision_key</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>face_player</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Schedule the event for execution on the map&apos;s foreground interpreter.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>triggered_by_decision_key</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>set whether this was triggered by decision key </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>face_hero</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if scheduled, event faces the player.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if event was scheduled. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="124" column="6" bodyfile="game_event.cpp" bodystart="318" bodyend="335"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a6a5692c7cfd5b82d37e438d1f51c0eb3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp Game_Event::Update</definition>
+        <argsstring>(bool resume_async)</argsstring>
+        <name>Update</name>
+        <qualifiedname>Game_Event::Update</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>resume_async</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Update this for the current frame</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>resume_async</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If we&apos;re resuming from an async operation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>async operation if we should suspend, otherwise returns <ref refid="class_async_op_1a084fe9a30b6eb75c27840074466139f4ae8b5ea825dcf322f368ecbd1aa359ce4" kindref="member">AsyncOp::eNone</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="132" column="9" bodyfile="game_event.cpp" bodystart="578" bodyend="609"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a4773575900864cd6570fe7443a060861" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Event::AreConditionsMet</definition>
+        <argsstring>(const lcf::rpg::EventPage &amp;page)</argsstring>
+        <name>AreConditionsMet</name>
+        <qualifiedname>Game_Event::AreConditionsMet</qualifiedname>
+        <param>
+          <type>const lcf::rpg::EventPage &amp;</type>
+          <declname>page</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="134" column="6" bodyfile="game_event.cpp" bodystart="242" bodyend="294"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1aa0bf9b1aee9716658536900cdd616c70" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Event::GetOriginalMoveRouteIndex</definition>
+        <argsstring>() const</argsstring>
+        <name>GetOriginalMoveRouteIndex</name>
+        <qualifiedname>Game_Event::GetOriginalMoveRouteIndex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns current index of a &quot;Movement Type Custom&quot; move route.</para>
+<para><simplesect kind="return"><para>current original move route index </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="141" column="5" bodyfile="game_event.cpp" bodystart="124" bodyend="126"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a868b3a6917546900b9d12beeb43cd873" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Event::SetOriginalMoveRouteIndex</definition>
+        <argsstring>(int new_index)</argsstring>
+        <name>SetOriginalMoveRouteIndex</name>
+        <qualifiedname>Game_Event::SetOriginalMoveRouteIndex</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>new_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets current index of a &quot;Movement Type Custom&quot; move route.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>new_index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>New move route index </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="148" column="6" bodyfile="game_event.cpp" bodystart="128" bodyend="130"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a5269cb45f8e8b5279e1b20fb9af89cbe" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const lcf::rpg::EventPage *</type>
+        <definition>const lcf::rpg::EventPage * Game_Event::GetPage</definition>
+        <argsstring>(int page) const</argsstring>
+        <name>GetPage</name>
+        <qualifiedname>Game_Event::GetPage</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>page</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the event page or nullptr is page does not exist.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>page</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Page number (starting from 1)</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>page or nullptr </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="157" column="27" bodyfile="game_event.cpp" bodystart="611" bodyend="616"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a74a74e27d18796de682e8f1e34101e7f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const lcf::rpg::EventPage *</type>
+        <definition>const lcf::rpg::EventPage * Game_Event::GetActivePage</definition>
+        <argsstring>() const</argsstring>
+        <name>GetActivePage</name>
+        <qualifiedname>Game_Event::GetActivePage</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the active event page or nullptr if no page is active.</para>
+<para><simplesect kind="return"><para>active page or nullptr </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="164" column="27" bodyfile="game_event.cpp" bodystart="618" bodyend="620"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a0d7e9cd8fe13c0764b0e322519d30aaa" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Event::GetNumPages</definition>
+        <argsstring>() const</argsstring>
+        <name>GetNumPages</name>
+        <qualifiedname>Game_Event::GetNumPages</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the number of pages this event has </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="167" column="5" bodyfile="game_event.h" bodystart="225" bodyend="227"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_game___event_1ab032085b710267aa854782961cbb3c81" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Event::SanitizeData</definition>
+        <argsstring>()</argsstring>
+        <name>SanitizeData</name>
+        <qualifiedname>Game_Event::SanitizeData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Check for and fix incorrect data after loading save game </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="171" column="6" bodyfile="game_event.cpp" bodystart="50" bodyend="56"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_game___event_1a9169f79ed427243431290600c3355e42" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Event::CheckEventAutostart</definition>
+        <argsstring>()</argsstring>
+        <name>CheckEventAutostart</name>
+        <qualifiedname>Game_Event::CheckEventAutostart</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="173" column="6" bodyfile="game_event.cpp" bodystart="348" bodyend="354"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a457bb1051f12b2ae587810610fc8a49b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Event::CheckEventCollision</definition>
+        <argsstring>()</argsstring>
+        <name>CheckEventCollision</name>
+        <qualifiedname>Game_Event::CheckEventCollision</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="174" column="6" bodyfile="game_event.cpp" bodystart="356" bodyend="369"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a92b38d8915a2e542055b3459ade73fd1" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Event::SetMaxStopCountForRandom</definition>
+        <argsstring>()</argsstring>
+        <name>SetMaxStopCountForRandom</name>
+        <qualifiedname>Game_Event::SetMaxStopCountForRandom</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="175" column="6" bodyfile="game_event.cpp" bodystart="448" bodyend="453"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a163d106912043cf6a0bb9a44f0d09694" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Event::MoveTypeRandom</definition>
+        <argsstring>()</argsstring>
+        <name>MoveTypeRandom</name>
+        <qualifiedname>Game_Event::MoveTypeRandom</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Moves on a random route. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="180" column="6" bodyfile="game_event.cpp" bodystart="455" bodyend="486"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a28799c394b55a2020b09f571d957eaa3" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Event::MoveTypeCycle</definition>
+        <argsstring>(int default_dir)</argsstring>
+        <name>MoveTypeCycle</name>
+        <qualifiedname>Game_Event::MoveTypeCycle</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>default_dir</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Cycles between moving in default_dir and its opposite. Tries to move in the event&apos;s movement direction, or default_dir if this is along the wrong axis. Reverses directions when encountering an obstacle. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="188" column="6" bodyfile="game_event.cpp" bodystart="488" bodyend="517"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a6a09d9b7a7679a737815cd758d8e5ba2" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Event::MoveTypeCycleLeftRight</definition>
+        <argsstring>()</argsstring>
+        <name>MoveTypeCycleLeftRight</name>
+        <qualifiedname>Game_Event::MoveTypeCycleLeftRight</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Cycles left and right. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="193" column="6" bodyfile="game_event.cpp" bodystart="519" bodyend="521"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a8f7c5618c1de54c342d886795b28c6e4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Event::MoveTypeCycleUpDown</definition>
+        <argsstring>()</argsstring>
+        <name>MoveTypeCycleUpDown</name>
+        <qualifiedname>Game_Event::MoveTypeCycleUpDown</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Cycles up and down. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="198" column="6" bodyfile="game_event.cpp" bodystart="523" bodyend="525"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1af38e2618208e9653b1289d572b85e189" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Event::MoveTypeTowardsOrAwayPlayer</definition>
+        <argsstring>(bool towards)</argsstring>
+        <name>MoveTypeTowardsOrAwayPlayer</name>
+        <qualifiedname>Game_Event::MoveTypeTowardsOrAwayPlayer</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>towards</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Implementation method for walking to or from the player </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="204" column="6" bodyfile="game_event.cpp" bodystart="527" bodyend="568"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a1a4bc310c42304bc44d20cf31eac13a0" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Event::MoveTypeTowardsPlayer</definition>
+        <argsstring>()</argsstring>
+        <name>MoveTypeTowardsPlayer</name>
+        <qualifiedname>Game_Event::MoveTypeTowardsPlayer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Walks to the player. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="209" column="6" bodyfile="game_event.cpp" bodystart="570" bodyend="572"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a3462aa361c225fb21b3fd508685d8f55" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Event::MoveTypeAwayFromPlayer</definition>
+        <argsstring>()</argsstring>
+        <name>MoveTypeAwayFromPlayer</name>
+        <qualifiedname>Game_Event::MoveTypeAwayFromPlayer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Walks away from the player. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="214" column="6" bodyfile="game_event.cpp" bodystart="574" bodyend="576"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___event_1a85ecbc5629cdb2de75b8ed3bd07e4868" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Event::CheckCollisonOnMoveFailure</definition>
+        <argsstring>()</argsstring>
+        <name>CheckCollisonOnMoveFailure</name>
+        <qualifiedname>Game_Event::CheckCollisonOnMoveFailure</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_event.h" line="216" column="6" bodyfile="game_event.cpp" bodystart="371" bodyend="389"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_game___event" kindref="compound">Game_Event</ref> class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>Game_Character</label>
+        <link refid="class_game___character"/>
+      </node>
+      <node id="1">
+        <label>Game_Event</label>
+        <link refid="class_game___event"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Game_EventBase</label>
+        <link refid="class_game___character_data_storage"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>Game_Character</label>
+        <link refid="class_game___character"/>
+      </node>
+      <node id="1">
+        <label>Game_Event</label>
+        <link refid="class_game___event"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Game_EventBase</label>
+        <link refid="class_game___character_data_storage"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="game_event.h" line="36" column="1" bodyfile="game_event.h" bodystart="36" bodyend="223"/>
+    <listofallmembers>
+      <member refid="class_game___character_1abdd63f54ff547ea76a15f88b609d7fd6" prot="protected" virt="non-virtual"><scope>Game_Event</scope><name>_type</name></member>
+      <member refid="class_game___character_1a01128fcf038fd58bc14999c084f9dc0f" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>AnimType</name></member>
+      <member refid="class_game___event_1a4773575900864cd6570fe7443a060861" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>AreConditionsMet</name></member>
+      <member refid="class_game___character_1a6854fed9e31aa78c0bf968562e6a363e" prot="protected" virt="non-virtual"><scope>Game_Event</scope><name>BeginMoveRouteJump</name></member>
+      <member refid="class_game___character_1a358b1d37b8aebbb17c7d23320dab3973" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>CalculateMoveRoute</name></member>
+      <member refid="class_game___character_1a5c18cce2d55b422877d349c73bcb7d71" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>CancelMoveRoute</name></member>
+      <member refid="class_game___character_1a931f81711537e9eee910dcee0506958cac9f595c137dfe871695cd0048cc6ead3" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>CharAirship</name></member>
+      <member refid="class_game___character_1a931f81711537e9eee910dcee0506958caa296a5fb74da9977bc0af4ae1122850f" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>CharBoat</name></member>
+      <member refid="class_game___character_1a931f81711537e9eee910dcee0506958ca767054470dfaea3b2ed8aae3cb46b004" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>CharPlayer</name></member>
+      <member refid="class_game___character_1a931f81711537e9eee910dcee0506958ca53c472d773fc0575bb9e12aab8031898" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>CharShip</name></member>
+      <member refid="class_game___character_1a931f81711537e9eee910dcee0506958c" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>CharsID</name></member>
+      <member refid="class_game___character_1a931f81711537e9eee910dcee0506958ca2fdd555f957e09c536e51c0e9852565a" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>CharThisEvent</name></member>
+      <member refid="class_game___event_1a85ecbc5629cdb2de75b8ed3bd07e4868" prot="private" virt="non-virtual"><scope>Game_Event</scope><name>CheckCollisonOnMoveFailure</name></member>
+      <member refid="class_game___event_1a9169f79ed427243431290600c3355e42" prot="private" virt="non-virtual"><scope>Game_Event</scope><name>CheckEventAutostart</name></member>
+      <member refid="class_game___event_1a457bb1051f12b2ae587810610fc8a49b" prot="private" virt="non-virtual"><scope>Game_Event</scope><name>CheckEventCollision</name></member>
+      <member refid="class_game___character_1adeca074d8f4b007756ad8348456728f5" prot="public" virt="virtual"><scope>Game_Event</scope><name>CheckWay</name></member>
+      <member refid="class_game___character_1afdaaf81a4b33ac8d0020fca62bf6e188" prot="public" virt="virtual"><scope>Game_Event</scope><name>CheckWay</name></member>
+      <member refid="class_game___event_1af163de6b4144792ed2ea23ec6d7b6e1b" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>ClearWaitingForegroundExecution</name></member>
+      <member refid="class_game___character_data_storage_1a16e7afaf2cf6a7d2b65a4a355f70974a" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>data</name></member>
+      <member refid="class_game___character_data_storage_1a70a31b2b37092f4f77e5a8dba7ddb68b" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>data</name></member>
+      <member refid="class_game___character_1a3ff0827fc381f3543e684edf43804107" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Direction</name></member>
+      <member refid="class_game___character_1a3ff0827fc381f3543e684edf43804107a8b42a750ce509019f247a1571de5a7c7" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Down</name></member>
+      <member refid="class_game___character_1a3ff0827fc381f3543e684edf43804107ae96c154380439f06c7ba0f0c33a95fd3" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>DownLeft</name></member>
+      <member refid="class_game___character_1a3ff0827fc381f3543e684edf43804107a010e0367da2622bf28dff927586fb085" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>DownRight</name></member>
+      <member refid="class_game___character_1ad40c46e403c6cdfa90a633447829bb80ac925249895ba663fac43579ec6c000dd" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Event</name></member>
+      <member refid="class_game___event_1a5c0ca7661cc58e2828b01bde7cb98c57" prot="private" virt="non-virtual"><scope>Game_Event</scope><name>event</name></member>
+      <member refid="class_game___character_1af3f6bbd2d5198569eb24ecd19bf68a4c" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Flash</name></member>
+      <member refid="class_game___character_1a0de3935d9f101b77852890465f389c0b" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>ForceMoveRoute</name></member>
+      <member refid="class_game___character_1aeb2fb4f74f72a7283c25f669513c619e" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Game_Character</name></member>
+      <member refid="class_game___character_1ae3a578ab8bbd0ca45fd98acdc2b6322e" prot="protected" virt="non-virtual"><scope>Game_Event</scope><name>Game_Character</name></member>
+      <member refid="class_game___character_data_storage_1a905e76bde08925c0328ea4956eec5cf6" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Game_CharacterDataStorage</name></member>
+      <member refid="class_game___character_data_storage_1a8d088de78146e06eed5e2d5eaeb6dc13" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Game_CharacterDataStorage</name></member>
+      <member refid="class_game___character_data_storage_1ad7be8bd7a88fb52be1d3a17c251a3f7d" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Game_CharacterDataStorage</name></member>
+      <member refid="class_game___event_1a7d65a47f973b99c45498d97117960bcc" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Game_Event</name></member>
+      <member refid="class_game___event_1a74a74e27d18796de682e8f1e34101e7f" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetActivePage</name></member>
+      <member refid="class_game___character_1a9cb635971a6f37fd9f785188581b5e0e" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetAnimationType</name></member>
+      <member refid="class_game___character_1a1b53cff16339ba63855ab4fb878ed5a9" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetAnimCount</name></member>
+      <member refid="class_game___character_1a5331efd1b27f7b5c63abfb8e0ee1d0da" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetAnimFrame</name></member>
+      <member refid="class_game___character_1a28ce516cd05370ccce1202a20b788833" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetBeginJumpX</name></member>
+      <member refid="class_game___character_1a4ed83e53c999f20edb6d727c5b0190a1" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetBeginJumpY</name></member>
+      <member refid="class_game___character_1a866b913aa74feb3721a9ae6f21d5c1d2" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetBushDepth</name></member>
+      <member refid="class_game___character_1a10cabf09c3abc8f5dc1ebef76ad74639" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetCharacter</name></member>
+      <member refid="class_game___character_1a1ad481a5b79ecb6dbb54dcea35d8d5ca" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetContinuousAnimFrames</name></member>
+      <member refid="class_game___character_1a2f3d671490636dedf26cdc053178b6f4" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetDirection</name></member>
+      <member refid="class_game___character_1ab79c927ae0b415904dadefd9e6ef3712" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetDirection180Degree</name></member>
+      <member refid="class_game___character_1a3752d7a5c883d41f62208dc338329e51" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetDirection90DegreeLeft</name></member>
+      <member refid="class_game___character_1a7dcde53f07fd8ece6c6aa706474a8eac" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetDirection90DegreeRight</name></member>
+      <member refid="class_game___character_1a28bb6c05807cd4703c03b18d7121dfd7" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetDirectionAwayCharacter</name></member>
+      <member refid="class_game___character_1a7855da29e003ebfcad95763ec6d70cf0" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetDirectionToCharacter</name></member>
+      <member refid="class_game___character_1a1fc104a5fe36bba8c539dca2c1cb7a52" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetDistanceXfromCharacter</name></member>
+      <member refid="class_game___character_1a8e8178513256cb4da6cd45ac829d9dc7" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetDistanceYfromCharacter</name></member>
+      <member refid="class_game___character_1a40d40c147cc59063a13fef6e0d4db2f8" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetDxFromDirection</name></member>
+      <member refid="class_game___character_1a7adfa341dd161e9ade699e2680ae7f51" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetDyFromDirection</name></member>
+      <member refid="class_game___character_1a7e2cad21642282d53b5d0868d4552652" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetFacing</name></member>
+      <member refid="class_game___character_1ae7b26ad78bf56b372d5d3ae93ebce64f" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetFlashColor</name></member>
+      <member refid="class_game___character_1ab2946a0d1bc93d7233bfcb30213a37cc" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetFlashLevel</name></member>
+      <member refid="class_game___character_1a637cf7d35b4aa26cd8a2f908c770dc63" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetFlashTimeLeft</name></member>
+      <member refid="class_game___event_1a5b67cc0a93b660e6ecb397d101cbfa4e" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetId</name></member>
+      <member refid="class_game___character_1a7a313aa3fc2fd05a41eaca03769bcba3" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetJumpHeight</name></member>
+      <member refid="class_game___character_1afbeafbc028086c0445bedd2dc51efad5" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetLayer</name></member>
+      <member refid="class_game___event_1abd6ab9b976d5c5ac057176065f9d8f4a" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetList</name></member>
+      <member refid="class_game___character_1abe94c5cbb464e36d135535e021ebf68d" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetMapId</name></member>
+      <member refid="class_game___character_1abc9bf7d70c9d6b3556aecd4cb9aafc77" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetMaxStopCount</name></member>
+      <member refid="class_game___character_1a8726d60588ef711d619f0c36035ab468" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetMaxStopCountForStep</name></member>
+      <member refid="class_game___character_1a5509b25267b137170ac96b2ac3edbdf2" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetMaxStopCountForTurn</name></member>
+      <member refid="class_game___character_1a732d8cf24641adaa165ffced887c1f95" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetMaxStopCountForWait</name></member>
+      <member refid="class_game___character_1a367d0581ce5f7b71e37b545817c86027" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetMoveFailureCount</name></member>
+      <member refid="class_game___character_1aa283baae5859cda687bb87eefd973ce4" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetMoveFrequency</name></member>
+      <member refid="class_game___character_1a0dc4652d76de439e323da6d18579af81" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetMoveRoute</name></member>
+      <member refid="class_game___character_1ab8d89ef4b9a5d6c98dbc9d1c442a6598" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetMoveRouteIndex</name></member>
+      <member refid="class_game___character_1a8325d809fa31f0ac4363741927c06012" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetMoveSpeed</name></member>
+      <member refid="class_game___event_1a4aa01c38e6501705b8dcad34652d5bc8" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetName</name></member>
+      <member refid="class_game___event_1a0d7e9cd8fe13c0764b0e322519d30aaa" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetNumPages</name></member>
+      <member refid="class_game___character_1a0b9a204f122128470a765269f7884f40" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetOpacity</name></member>
+      <member refid="class_game___event_1aa0bf9b1aee9716658536900cdd616c70" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetOriginalMoveRouteIndex</name></member>
+      <member refid="class_game___event_1a5269cb45f8e8b5279e1b20fb9af89cbe" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetPage</name></member>
+      <member refid="class_game___character_1ae663958e3a32de66cbf6f45eb1dade61" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetPlayer</name></member>
+      <member refid="class_game___character_1a5a72ff92d18af08f6e748c2fe3d24771" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetRemainingStep</name></member>
+      <member refid="class_game___event_1a1c83f0ace1f0456fc3005babf1e3ab9e" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetSaveData</name></member>
+      <member refid="class_game___character_1ac0661ee8624bd23ffbe0055d06ac39b2" prot="public" virt="virtual"><scope>Game_Event</scope><name>GetScreenX</name></member>
+      <member refid="class_game___character_1a572da916bd33b0657c3091cd26a4764d" prot="public" virt="virtual"><scope>Game_Event</scope><name>GetScreenY</name></member>
+      <member refid="class_game___event_1a244286a1a489a4b5977fe12d5c10e853" prot="public" virt="virtual"><scope>Game_Event</scope><name>GetScreenZ</name></member>
+      <member refid="class_game___character_1ac79e76300e486d4056033df02ebec478" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetSpinAnimFrames</name></member>
+      <member refid="class_game___character_1a2390da49a5d296a8191c6f62d67dc746" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetSpriteIndex</name></member>
+      <member refid="class_game___character_1ad3bf17740507a355b2fbebcdda5415d8" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetSpriteName</name></member>
+      <member refid="class_game___character_1a28cef7760603f651158177c4c8d4948c" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetSpriteX</name></member>
+      <member refid="class_game___character_1a3d6167e094ba2284a89904065d80e81f" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetSpriteY</name></member>
+      <member refid="class_game___character_1a515b2ff8c9bef79193c194dd6eac4517" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetStationaryAnimFrames</name></member>
+      <member refid="class_game___character_1ae474b479dfcfa29530307517737e92e4" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetStopCount</name></member>
+      <member refid="class_game___character_1a84a113cf1f1cc1c60d0d755d835d1e45" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetThrough</name></member>
+      <member refid="class_game___character_1ab1cbcc76f659f9045e3d6c6d89b731bf" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetTileId</name></member>
+      <member refid="class_game___character_1a03a07d4dabed3923df7d19a538655927" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetTransparency</name></member>
+      <member refid="class_game___event_1a71778e274d4d906477489b73666d8f95" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetTrigger</name></member>
+      <member refid="class_game___character_1ab53ffe040c66dc1a1a338632f51a2500" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetType</name></member>
+      <member refid="class_game___character_1afc92af92b3372dcbd7cf858286473b16" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetX</name></member>
+      <member refid="class_game___character_1a2d9457449c85f4324777b197ba3e7703" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>GetY</name></member>
+      <member refid="class_game___character_1acc2622f57841cd145a0e48b3a589433c" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>HasTileSprite</name></member>
+      <member refid="class_game___character_1ace6661c4c6bb011348a326789e6d9e13" prot="protected" virt="non-virtual"><scope>Game_Event</scope><name>IncAnimCount</name></member>
+      <member refid="class_game___character_1a83fe629d40055062b19c49eeb0f65af3" prot="protected" virt="non-virtual"><scope>Game_Event</scope><name>IncAnimFrame</name></member>
+      <member refid="class_game___event_1a25d28af414e7784fd26ee018866bf174" prot="private" virt="non-virtual"><scope>Game_Event</scope><name>interpreter</name></member>
+      <member refid="class_game___character_1a9ee96af4aa1d8ab306be92c60f726c89" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsActive</name></member>
+      <member refid="class_game___character_1a91a17ea5b3c4e74357334f914ac322f3" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsAnimated</name></member>
+      <member refid="class_game___character_1adbce4c1261e8a94b72f1a4e1bc52ab39" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsAnimPaused</name></member>
+      <member refid="class_game___character_1ab1e6b305eb42dfb337a80460f25dfe3a" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsContinuous</name></member>
+      <member refid="class_game___character_1a087d05253db5a59dcd88f4aaf27bee72" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsDirectionDiagonal</name></member>
+      <member refid="class_game___character_1a0f9d4565ec632cd297093e764599920e" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsDirectionFixedAnimationType</name></member>
+      <member refid="class_game___character_1aa8f00302961af81075059d77bcfaad29" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsFacingLocked</name></member>
+      <member refid="class_game___character_1aa29565372de183adb9e98f7113ab1227" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsFlying</name></member>
+      <member refid="class_game___character_1a855ebd6bbb5623af5b669c8ab329b541" prot="public" virt="virtual"><scope>Game_Event</scope><name>IsInPosition</name></member>
+      <member refid="class_game___character_1ac74176aed58102278ab2fb2ea2f94ca1" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsJumping</name></member>
+      <member refid="class_game___character_1aa7746b5ad1521f0e855502aebebb528d" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsMoveRouteFinished</name></member>
+      <member refid="class_game___character_1a4776bd95c266bb85433fb7a6117c4aaf" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsMoveRouteOverwritten</name></member>
+      <member refid="class_game___character_1ac81380c43c03cf6ff224928e38b47f7d" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsMoving</name></member>
+      <member refid="class_game___character_1a7935e425c1b8a58239d8ebe98d9a27b0" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsOverlapForbidden</name></member>
+      <member refid="class_game___character_1a25efd5c5c52591f5c06f08abe242c2c6" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsPaused</name></member>
+      <member refid="class_game___character_1ab1f598d6068401664bc25b6a961c508e" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsProcessed</name></member>
+      <member refid="class_game___character_1a622ab71ed9550effb741502bb2c0eeae" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsSpinning</name></member>
+      <member refid="class_game___character_1ae7f32e40feb6d0821124acc99185cc6b" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsSpriteHidden</name></member>
+      <member refid="class_game___character_1affa5f0f3d6d5b1d3b0453e4edc0575e3" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsStopCountActive</name></member>
+      <member refid="class_game___character_1a87ac863be02cbcf3669d07e4bf57f86a" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsStopping</name></member>
+      <member refid="class_game___event_1ad866cefc43c5f153e80c1e3d09dc931d" prot="public" virt="virtual"><scope>Game_Event</scope><name>IsVisible</name></member>
+      <member refid="class_game___event_1affbedfc80c795f8f94cab7c7d3fe110c" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>IsWaitingForegroundExecution</name></member>
+      <member refid="class_game___character_1a040df6414c8e58bb0be491ef80f7468a" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Jump</name></member>
+      <member refid="class_game___character_1a3ff0827fc381f3543e684edf43804107a7565b10b237eba80ff2907790fbfae19" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Left</name></member>
+      <member refid="class_game___character_1a3e82706864291cfd199627580fec4790" prot="public" virt="virtual"><scope>Game_Event</scope><name>MakeWay</name></member>
+      <member refid="class_game___event_1a7d80295ab64db90ad69974447c9b9310" prot="public" virt="virtual"><scope>Game_Event</scope><name>Move</name></member>
+      <member refid="class_game___character_1ad9e6d5576649d9b3ab99bef9bf133fe7" prot="public" virt="virtual"><scope>Game_Event</scope><name>MoveRouteSetSpriteGraphic</name></member>
+      <member refid="class_game___character_1af5d88657048b017ad3ed9fe2429f11c6" prot="public" virt="virtual"><scope>Game_Event</scope><name>MoveTo</name></member>
+      <member refid="class_game___event_1a3462aa361c225fb21b3fd508685d8f55" prot="private" virt="non-virtual"><scope>Game_Event</scope><name>MoveTypeAwayFromPlayer</name></member>
+      <member refid="class_game___event_1a28799c394b55a2020b09f571d957eaa3" prot="private" virt="non-virtual"><scope>Game_Event</scope><name>MoveTypeCycle</name></member>
+      <member refid="class_game___event_1a6a09d9b7a7679a737815cd758d8e5ba2" prot="private" virt="non-virtual"><scope>Game_Event</scope><name>MoveTypeCycleLeftRight</name></member>
+      <member refid="class_game___event_1a8f7c5618c1de54c342d886795b28c6e4" prot="private" virt="non-virtual"><scope>Game_Event</scope><name>MoveTypeCycleUpDown</name></member>
+      <member refid="class_game___event_1a163d106912043cf6a0bb9a44f0d09694" prot="private" virt="non-virtual"><scope>Game_Event</scope><name>MoveTypeRandom</name></member>
+      <member refid="class_game___event_1af38e2618208e9653b1289d572b85e189" prot="private" virt="non-virtual"><scope>Game_Event</scope><name>MoveTypeTowardsOrAwayPlayer</name></member>
+      <member refid="class_game___event_1a1a4bc310c42304bc44d20cf31eac13a0" prot="private" virt="non-virtual"><scope>Game_Event</scope><name>MoveTypeTowardsPlayer</name></member>
+      <member refid="class_game___event_1a6758771c7fe309564f25b8ce400469c4" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>OnFinishForegroundEvent</name></member>
+      <member refid="class_game___character_data_storage_1a00fab0dc7fcc21487227b458fa6a15aa" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>operator=</name></member>
+      <member refid="class_game___character_data_storage_1acd241616899f6fcdc5d04109f9693f36" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>operator=</name></member>
+      <member refid="class_game___character_1ada9220f91ddee1ecba8c5ae9e92b2c8c" prot="public" virt="non-virtual" ambiguityscope="Game_Character::"><scope>Game_Event</scope><name>operator=</name></member>
+      <member refid="class_game___character_1a93442ee1b0cc99a9c34790829f5f9455" prot="public" virt="non-virtual" ambiguityscope="Game_Character::"><scope>Game_Event</scope><name>operator=</name></member>
+      <member refid="class_game___character_1a1dc83809498afdb2a10c4a93eb5d92fe" prot="protected" virt="non-virtual"><scope>Game_Event</scope><name>original_move_frequency</name></member>
+      <member refid="class_game___event_1ad0b95e516302e232f03b619c8544fc49" prot="private" virt="non-virtual"><scope>Game_Event</scope><name>page</name></member>
+      <member refid="class_game___character_1ad40c46e403c6cdfa90a633447829bb80a4c2b40381924e0ece1cfa6c51cecc159" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Player</name></member>
+      <member refid="class_game___event_1aff192475ca81769a17b036a20e224b3c" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>RefreshPage</name></member>
+      <member refid="class_game___character_1aa11816378a6f682b9c9374f71c04b6aa" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>ResetAnimation</name></member>
+      <member refid="class_game___character_1ab1cf2717b1775f3854ce3af33334bf22" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>ResetThrough</name></member>
+      <member refid="class_game___character_1a3afa20aa2273c41eca58268aba67a88f" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>ReverseDir</name></member>
+      <member refid="class_game___character_1a3ff0827fc381f3543e684edf43804107a252684dc06606f3fe52aa6e6d7f298db" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Right</name></member>
+      <member refid="class_game___event_1ab032085b710267aa854782961cbb3c81" prot="protected" virt="non-virtual"><scope>Game_Event</scope><name>SanitizeData</name></member>
+      <member refid="class_game___character_1ab2c0ce5761faa5b977f3aa0c4abaca9c" prot="protected" virt="non-virtual" ambiguityscope="Game_CharacterDataStorage&lt; lcf::rpg::SaveMapEvent &gt;::"><scope>Game_Event</scope><name>SanitizeData</name></member>
+      <member refid="class_game___character_1a592f3adc34aee6761c1a3ba55b4d11db" prot="protected" virt="non-virtual"><scope>Game_Event</scope><name>SanitizeMoveRoute</name></member>
+      <member refid="class_game___event_1ae60e888f01e861f90c85fcb73dca975f" prot="private" virt="non-virtual"><scope>Game_Event</scope><name>Scene_Debug</name></member>
+      <member refid="class_game___event_1a20e7d819b1be62c1637f83368c6167e0" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>ScheduleForegroundExecution</name></member>
+      <member refid="class_game___character_1a17a5baf172020013d564cfe86f3ba041" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetActive</name></member>
+      <member refid="class_game___character_1a94ce488c84811364cdc12301883c681b" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetAnimationType</name></member>
+      <member refid="class_game___character_1a67d63673c1ae146e3aeb7cefab2fd9cc" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetAnimCount</name></member>
+      <member refid="class_game___character_1a535e84732ed09546020a7e66b585deb7" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetAnimFrame</name></member>
+      <member refid="class_game___character_1ac3ef1411c3a786334c90a44b1b8ed99c" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetAnimPaused</name></member>
+      <member refid="class_game___character_1a26d471386205169c42e863a193d238ee" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetBeginJumpX</name></member>
+      <member refid="class_game___character_1afc01fdd52a06152a650ab5f6a0063e0f" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetBeginJumpY</name></member>
+      <member refid="class_game___character_1afd3c7a42938315ee89ad94ae753834b1" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetDirection</name></member>
+      <member refid="class_game___character_1a55801035e6050e4511b42814606811c1" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetFacing</name></member>
+      <member refid="class_game___character_1a35d53427b06f1bcfe4ffa02b7697bed8" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetFacingLocked</name></member>
+      <member refid="class_game___character_1ab0a609c50378b3ec56e16f3fd24883e2" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetFlashLevel</name></member>
+      <member refid="class_game___character_1abf618cac7ce3b9e706c48d7d367af57c" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetFlashTimeLeft</name></member>
+      <member refid="class_game___character_1a26eef29a0127819782b29af1afdbf26a" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetFlying</name></member>
+      <member refid="class_game___character_1ab276032131a7bf2a400f3c86ec0f7566" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetJumping</name></member>
+      <member refid="class_game___character_1afd9319970921b31f7de403fb2b7539d4" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetLayer</name></member>
+      <member refid="class_game___character_1adc5489b3cb8fbc74d3c8f4e177702bf3" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetMapId</name></member>
+      <member refid="class_game___character_1a920c92d86d0b7c5605ee0fe827066792" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetMaxStopCount</name></member>
+      <member refid="class_game___event_1a92b38d8915a2e542055b3459ade73fd1" prot="private" virt="non-virtual"><scope>Game_Event</scope><name>SetMaxStopCountForRandom</name></member>
+      <member refid="class_game___character_1a62bf0fde1e8c4c2f585f87a6a1bbe728" prot="protected" virt="non-virtual"><scope>Game_Event</scope><name>SetMaxStopCountForStep</name></member>
+      <member refid="class_game___character_1a1b320e544254796f644ace24a2f205bb" prot="protected" virt="non-virtual"><scope>Game_Event</scope><name>SetMaxStopCountForTurn</name></member>
+      <member refid="class_game___character_1a58780108b16d7fc6b0a5a3d36e1bc0e2" prot="protected" virt="non-virtual"><scope>Game_Event</scope><name>SetMaxStopCountForWait</name></member>
+      <member refid="class_game___character_1a28ac9d29d60f0716b04b87bc78b3f48a" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetMoveFailureCount</name></member>
+      <member refid="class_game___character_1a7f1bf680eaa121a98683b773db6571c5" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetMoveFrequency</name></member>
+      <member refid="class_game___character_1ae1c909bade239b37514a732e066d581c" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetMoveRoute</name></member>
+      <member refid="class_game___character_1ae2138fca371e16618bb5fbf5cb042c50" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetMoveRouteFinished</name></member>
+      <member refid="class_game___character_1a1615f4c915accd00f32540e0a36e0f55" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetMoveRouteIndex</name></member>
+      <member refid="class_game___character_1a01c2e552d0af39d6f466a5eaa863f808" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetMoveRouteOverwritten</name></member>
+      <member refid="class_game___character_1a98d3a5e8c5ae294d48f8e270348fcfde" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetMoveSpeed</name></member>
+      <member refid="class_game___event_1a868b3a6917546900b9d12beeb43cd873" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetOriginalMoveRouteIndex</name></member>
+      <member refid="class_game___character_1a741599631aa8c09a217d9eac2a7b5596" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetPaused</name></member>
+      <member refid="class_game___character_1aef8fb5c2f05566d77805037d68980169" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetProcessed</name></member>
+      <member refid="class_game___character_1a45025c7c49fc28200870baa7de8f9e0c" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetRemainingStep</name></member>
+      <member refid="class_game___event_1acd11f90834fa9fc925c8c6db5a8781f1" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetSaveData</name></member>
+      <member refid="class_game___character_1ab5a7cdf39944d6e434751a64b401eebc" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetSpriteGraphic</name></member>
+      <member refid="class_game___character_1a97fb68bf4878cc6a6de38fb2ebeabdd1" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetSpriteHidden</name></member>
+      <member refid="class_game___character_1af3364b2d2a4286f8e7af47edef4fa7b6" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetStopCount</name></member>
+      <member refid="class_game___character_1a30a26473bde4deb6f3157b2f4482d807" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetThrough</name></member>
+      <member refid="class_game___character_1a67987b279ff8b84d420fd9d223699f57" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetTransparency</name></member>
+      <member refid="class_game___event_1a57285e0f0bc1faf1beb72f12f93dab32" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetUnderlyingEvent</name></member>
+      <member refid="class_game___character_1ae88f6e70c1d85e4ef713c59c83932d21" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetX</name></member>
+      <member refid="class_game___character_1af61e8d2ddea8e48312a3d7319f8e1871" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>SetY</name></member>
+      <member refid="class_game___character_1a188aaa09cc9fdf5e89c2ae259cf6f41d" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Turn180Degree</name></member>
+      <member refid="class_game___character_1a83178865169b0d7c426ec3d64c5b7a8e" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Turn90DegreeLeft</name></member>
+      <member refid="class_game___character_1a65afecb8d869029685f79a5c8f922d52" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Turn90DegreeLeftOrRight</name></member>
+      <member refid="class_game___character_1afeb919f7f0ea2f87084a5d430f0e91be" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Turn90DegreeRight</name></member>
+      <member refid="class_game___character_1af2bacc4e0862f3030f72d3a30f26f582" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>TurnAwayFromCharacter</name></member>
+      <member refid="class_game___character_1a1cbf50f9c39557632eda462c1921982e" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>TurnRandom</name></member>
+      <member refid="class_game___character_1a74ee7fc33359bd65c67e64ff3996b342" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>TurnTowardCharacter</name></member>
+      <member refid="class_game___character_data_storage_1ad65369bd00977a820fcea7733a7979da" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Type</name></member>
+      <member refid="class_game___character_1a7ab1c956f1d222c64bf7a5888e8663da" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>TypeToStr</name></member>
+      <member refid="class_game___character_1a3ff0827fc381f3543e684edf43804107a26268df2a27cd01463fef86a102385b2" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Up</name></member>
+      <member refid="class_game___event_1a6a5692c7cfd5b82d37e438d1f51c0eb3" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Update</name></member>
+      <member refid="class_game___character_1a53b7db77a07fd0cb32b828af5f82cb4c" prot="protected" virt="non-virtual" ambiguityscope="Game_CharacterDataStorage&lt; lcf::rpg::SaveMapEvent &gt;::"><scope>Game_Event</scope><name>Update</name></member>
+      <member refid="class_game___character_1a0474da73b19c3f513d8d151d90b5addf" prot="protected" virt="virtual"><scope>Game_Event</scope><name>UpdateAnimation</name></member>
+      <member refid="class_game___character_1a92788abd1463c8f46916b5fb35edf2f8" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>UpdateFacing</name></member>
+      <member refid="class_game___character_1aa536b249c2ee1d7635e75dc4082544fa" prot="protected" virt="non-virtual"><scope>Game_Event</scope><name>UpdateFlash</name></member>
+      <member refid="class_game___character_1ac85b5a79a1a0389b8b66185a2f8ef305" prot="protected" virt="virtual"><scope>Game_Event</scope><name>UpdateMovement</name></member>
+      <member refid="class_game___character_1a27e2eca7b821eff716f4ce473cc79de4" prot="protected" virt="non-virtual"><scope>Game_Event</scope><name>UpdateMoveRoute</name></member>
+      <member refid="class_game___event_1ae361f85fc16c615d132e8ddc6f121944" prot="public" virt="virtual"><scope>Game_Event</scope><name>UpdateNextMovementAction</name></member>
+      <member refid="class_game___character_1a3ff0827fc381f3543e684edf43804107a84b89cef35384e4ad26bd035c3008306" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>UpLeft</name></member>
+      <member refid="class_game___character_1a3ff0827fc381f3543e684edf43804107a485fec6b55843ebe6002d0bf758e8222" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>UpRight</name></member>
+      <member refid="class_game___character_1ad40c46e403c6cdfa90a633447829bb80ae67019664abd991439906c47fc8e127e" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Vehicle</name></member>
+      <member refid="class_game___character_1a7e7078d77be0a0f0ff2798ea6c5a49ec" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>Wait</name></member>
+      <member refid="class_game___event_1a64a84471b74eda8f6731994ac75c29fd" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>WasStartedByDecisionKey</name></member>
+      <member refid="class_game___character_1aa51e68f8287cc8a52551e428ffb3965f" prot="public" virt="virtual"><scope>Game_Event</scope><name>~Game_Character</name></member>
+      <member refid="class_game___character_data_storage_1aa4af891770efc02ae4ba47de37e303bc" prot="public" virt="non-virtual"><scope>Game_Event</scope><name>~Game_CharacterDataStorage</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

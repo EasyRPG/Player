@@ -1,0 +1,1066 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___interpreter___battle" kind="class" language="C++" prot="public">
+    <compoundname>Game_Interpreter_Battle</compoundname>
+    <basecompoundref refid="class_game___interpreter" prot="public" virt="non-virtual">Game_Interpreter</basecompoundref>
+    <includes refid="game__interpreter__battle_8h" local="no">game_interpreter_battle.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_game___interpreter___battle_1a2412719c1a6e3b38303df8673e74b3ed" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>ManiacBattleHookType</name>
+        <qualifiedname>Game_Interpreter_Battle::ManiacBattleHookType</qualifiedname>
+        <enumvalue id="class_game___interpreter___battle_1a2412719c1a6e3b38303df8673e74b3eda57c732049a332cc2fb9e96437126f7a4" prot="public">
+          <name>AtbIncrement</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___interpreter___battle_1a2412719c1a6e3b38303df8673e74b3eda6ce8aab9499bc2f702893e22882cae19" prot="public">
+          <name>DamagePop</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___interpreter___battle_1a2412719c1a6e3b38303df8673e74b3edacb0b2a1f477e73603e8b3c0ccb4dd7f4" prot="public">
+          <name>Targetting</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___interpreter___battle_1a2412719c1a6e3b38303df8673e74b3edaa4e6009ebf3731cb980080aa8608fb47" prot="public">
+          <name>SetState</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___interpreter___battle_1a2412719c1a6e3b38303df8673e74b3eda73bdd62e4756c7ccbe0f7de6efb84b81" prot="public">
+          <name>StatChange</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>All possible hook type events that maniacs offers. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="70" column="1" bodyfile="game_interpreter_battle.h" bodystart="70" bodyend="76"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___interpreter___battle_1a0adabc268fb0feacdff62d61ba744578" prot="private" static="no" mutable="no">
+        <type>Span&lt; const lcf::rpg::TroopPage &gt;</type>
+        <definition>Span&lt;const lcf::rpg::TroopPage&gt; Game_Interpreter_Battle::pages</definition>
+        <argsstring></argsstring>
+        <name>pages</name>
+        <qualifiedname>Game_Interpreter_Battle::pages</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="108" column="6" bodyfile="game_interpreter_battle.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___interpreter___battle_1a68ba9b2f325e91944f16beba6fee7b75" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; bool &gt;</type>
+        <definition>std::vector&lt;bool&gt; Game_Interpreter_Battle::executed</definition>
+        <argsstring></argsstring>
+        <name>executed</name>
+        <qualifiedname>Game_Interpreter_Battle::executed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="109" column="13" bodyfile="game_interpreter_battle.h" bodystart="109" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___interpreter___battle_1a574636dd6567c6102630e971a24760cd" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Interpreter_Battle::target_enemy_index</definition>
+        <argsstring></argsstring>
+        <name>target_enemy_index</name>
+        <qualifiedname>Game_Interpreter_Battle::target_enemy_index</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="110" column="5" bodyfile="game_interpreter_battle.h" bodystart="110" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___interpreter___battle_1a42bace862e93000cfb63cad068f40c48" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Interpreter_Battle::current_actor_id</definition>
+        <argsstring></argsstring>
+        <name>current_actor_id</name>
+        <qualifiedname>Game_Interpreter_Battle::current_actor_id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="111" column="5" bodyfile="game_interpreter_battle.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___interpreter___battle_1ad545dacac4d9b31e55bb5dd63c43fb4f" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::targets_single_enemy</definition>
+        <argsstring></argsstring>
+        <name>targets_single_enemy</name>
+        <qualifiedname>Game_Interpreter_Battle::targets_single_enemy</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="112" column="6" bodyfile="game_interpreter_battle.h" bodystart="112" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___interpreter___battle_1a753859c9edf4ea5e603d9c25e56d57d0" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::force_flee_enabled</definition>
+        <argsstring></argsstring>
+        <name>force_flee_enabled</name>
+        <qualifiedname>Game_Interpreter_Battle::force_flee_enabled</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="113" column="6" bodyfile="game_interpreter_battle.h" bodystart="113" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="class_game___interpreter___battle_1ad830bf4a3534b5208f1fb77198f49f5e" prot="private" static="yes" mutable="no">
+        <type>std::map&lt; <ref refid="class_game___interpreter___battle_1a2412719c1a6e3b38303df8673e74b3ed" kindref="member">ManiacBattleHookType</ref>, std::tuple&lt; int, int &gt; &gt;</type>
+        <definition>std::map&lt; Game_Interpreter_Battle::ManiacBattleHookType, std::tuple&lt; int, int &gt; &gt; Game_Interpreter_Battle::maniac_hooks</definition>
+        <argsstring></argsstring>
+        <name>maniac_hooks</name>
+        <qualifiedname>Game_Interpreter_Battle::maniac_hooks</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="114" column="17" bodyfile="game_interpreter_battle.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___interpreter___battle_1a2d6978714b3f1502d421cc0b88783c65" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Interpreter_Battle::Game_Interpreter_Battle</definition>
+        <argsstring>(Span&lt; const lcf::rpg::TroopPage &gt; pages)</argsstring>
+        <name>Game_Interpreter_Battle</name>
+        <qualifiedname>Game_Interpreter_Battle::Game_Interpreter_Battle</qualifiedname>
+        <param>
+          <type>Span&lt; const lcf::rpg::TroopPage &gt;</type>
+          <declname>pages</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="43" column="10" bodyfile="game_interpreter_battle.cpp" bodystart="72" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1af0fa6fd583b30cd36fa1b0f1c52e4826" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Interpreter_Battle::Game_Interpreter_Battle</definition>
+        <argsstring>()</argsstring>
+        <name>Game_Interpreter_Battle</name>
+        <qualifiedname>Game_Interpreter_Battle::Game_Interpreter_Battle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="44" column="10" bodyfile="game_interpreter_battle.cpp" bodystart="78" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a857d46146f08e46f876bec6a8bcfedb3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Interpreter_Battle::GetNumPages</definition>
+        <argsstring>() const</argsstring>
+        <name>GetNumPages</name>
+        <qualifiedname>Game_Interpreter_Battle::GetNumPages</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="46" column="5" bodyfile="game_interpreter_battle.h" bodystart="117" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1aec8844d338ed70726fde8529e8f7fca7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::IsValidPage</definition>
+        <argsstring>(int page_id) const</argsstring>
+        <name>IsValidPage</name>
+        <qualifiedname>Game_Interpreter_Battle::IsValidPage</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>page_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="48" column="6" bodyfile="game_interpreter_battle.h" bodystart="121" bodyend="123"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a434cd25aa7748164376809b46f06d3de" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::HasPageExecuted</definition>
+        <argsstring>(int page_id) const</argsstring>
+        <name>HasPageExecuted</name>
+        <qualifiedname>Game_Interpreter_Battle::HasPageExecuted</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>page_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="49" column="6" bodyfile="game_interpreter_battle.h" bodystart="125" bodyend="128"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a8de1391c217218d70abf6c2dcfe6fc6f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Interpreter_Battle::ScheduleNextPage</definition>
+        <argsstring>(Game_Battler *source)</argsstring>
+        <name>ScheduleNextPage</name>
+        <qualifiedname>Game_Interpreter_Battle::ScheduleNextPage</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="53" column="5" bodyfile="game_interpreter_battle.cpp" bodystart="185" bodyend="190"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a18eb995a9679f9e28a2c311d6f460bbe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Interpreter_Battle::ScheduleNextPage</definition>
+        <argsstring>(lcf::rpg::TroopPageCondition::Flags required_conditions, Game_Battler *source)</argsstring>
+        <name>ScheduleNextPage</name>
+        <qualifiedname>Game_Interpreter_Battle::ScheduleNextPage</qualifiedname>
+        <param>
+          <type>lcf::rpg::TroopPageCondition::Flags</type>
+          <declname>required_conditions</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="54" column="5" bodyfile="game_interpreter_battle.cpp" bodystart="201" bodyend="219"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1af1db36840c8affb011e80dfc44115da5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter_Battle::ResetPagesExecuted</definition>
+        <argsstring>()</argsstring>
+        <name>ResetPagesExecuted</name>
+        <qualifiedname>Game_Interpreter_Battle::ResetPagesExecuted</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="55" column="6" bodyfile="game_interpreter_battle.h" bodystart="130" bodyend="132"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a0cd670bbb916850a63f500b44a71f285" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter_Battle::SetCurrentEnemyTargetIndex</definition>
+        <argsstring>(int idx)</argsstring>
+        <name>SetCurrentEnemyTargetIndex</name>
+        <qualifiedname>Game_Interpreter_Battle::SetCurrentEnemyTargetIndex</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>idx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="57" column="6" bodyfile="game_interpreter_battle.h" bodystart="134" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a990671a730c5e03e7437a0a397735f0b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter_Battle::SetCurrentActionTargetsSingleEnemy</definition>
+        <argsstring>(bool value)</argsstring>
+        <name>SetCurrentActionTargetsSingleEnemy</name>
+        <qualifiedname>Game_Interpreter_Battle::SetCurrentActionTargetsSingleEnemy</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="58" column="6" bodyfile="game_interpreter_battle.h" bodystart="138" bodyend="140"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a0e506ef81f9c30597f861fda5702c179" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter_Battle::SetCurrentActingActorId</definition>
+        <argsstring>(int id)</argsstring>
+        <name>SetCurrentActingActorId</name>
+        <qualifiedname>Game_Interpreter_Battle::SetCurrentActingActorId</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="59" column="6" bodyfile="game_interpreter_battle.h" bodystart="142" bodyend="144"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a03131a9b24758a1d8a042ed0b08a0363" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::IsForceFleeEnabled</definition>
+        <argsstring>() const</argsstring>
+        <name>IsForceFleeEnabled</name>
+        <qualifiedname>Game_Interpreter_Battle::IsForceFleeEnabled</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="61" column="6" bodyfile="game_interpreter_battle.h" bodystart="146" bodyend="148"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1ad0a67b3be569d3f6894a76b998c339ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::ExecuteCommand</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com) override</argsstring>
+        <name>ExecuteCommand</name>
+        <qualifiedname>Game_Interpreter_Battle::ExecuteCommand</qualifiedname>
+        <reimplements refid="class_game___interpreter_1a404a2a8e0c9168bab3bf63290cb6ebd6">ExecuteCommand</reimplements>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="63" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="222" bodyend="261"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a38837a494aa53385242ebe8618c5e750" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::ManiacBattleHook</definition>
+        <argsstring>(ManiacBattleHookType hook_type, int var1, int var2, int var3, int var4=0, int var5=0, int var6=0)</argsstring>
+        <name>ManiacBattleHook</name>
+        <qualifiedname>Game_Interpreter_Battle::ManiacBattleHook</qualifiedname>
+        <param>
+          <type><ref refid="class_game___interpreter___battle_1a2412719c1a6e3b38303df8673e74b3ed" kindref="member">ManiacBattleHookType</ref></type>
+          <declname>hook_type</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var1</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var2</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var3</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var4</declname>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var5</declname>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>var6</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calls a maniacs battle hook, which processes sub-events at any time. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="81" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="629" bodyend="692"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a316f8e1cc8382a96785338dc1e7811e6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::ProcessManiacSubEvents</definition>
+        <argsstring>()</argsstring>
+        <name>ProcessManiacSubEvents</name>
+        <qualifiedname>Game_Interpreter_Battle::ProcessManiacSubEvents</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Processes all maniacs sub-events, and returns whether it&apos;s currently running </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="85" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="694" bodyend="702"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_game___interpreter___battle_1a20e338cb2c9177ace68d2e7f8bb6b59e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::AreConditionsMet</definition>
+        <argsstring>(const lcf::rpg::TroopPageCondition &amp;condition, Game_Battler *source)</argsstring>
+        <name>AreConditionsMet</name>
+        <qualifiedname>Game_Interpreter_Battle::AreConditionsMet</qualifiedname>
+        <param>
+          <type>const lcf::rpg::TroopPageCondition &amp;</type>
+          <declname>condition</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="51" column="13" bodyfile="game_interpreter_battle.cpp" bodystart="83" bodyend="183"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a0e4bb464fda14a855977da4c25573e4b" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter_Battle::InitBattle</definition>
+        <argsstring>()</argsstring>
+        <name>InitBattle</name>
+        <qualifiedname>Game_Interpreter_Battle::InitBattle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="65" column="13" bodyfile="game_interpreter_battle.cpp" bodystart="50" bodyend="60"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_game___interpreter___battle_1a13230314306943be4b1a3f61ad3e2c12" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::CommandCallCommonEvent</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandCallCommonEvent</name>
+        <qualifiedname>Game_Interpreter_Battle::CommandCallCommonEvent</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="88" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="265" bodyend="281"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a053fc47d347178917a65d75c4b76c3f5" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::CommandForceFlee</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandForceFlee</name>
+        <qualifiedname>Game_Interpreter_Battle::CommandForceFlee</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="89" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="283" bodyend="329"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1aa8e423b0db955c8e2ca48bda59ff618d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::CommandEnableCombo</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandEnableCombo</name>
+        <qualifiedname>Game_Interpreter_Battle::CommandEnableCombo</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="90" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="331" bodyend="355"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a9fac247d31db21e77da2daf333f2ebb2" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::CommandChangeMonsterHP</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeMonsterHP</name>
+        <qualifiedname>Game_Interpreter_Battle::CommandChangeMonsterHP</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="91" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="357" bodyend="401"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a6898538b3e76db19cafea5a600c093ca" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::CommandChangeMonsterMP</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeMonsterMP</name>
+        <qualifiedname>Game_Interpreter_Battle::CommandChangeMonsterMP</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="92" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="403" bodyend="431"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a9b8e1761e4dcbd0dad2a9ff4de5670f4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::CommandChangeMonsterCondition</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeMonsterCondition</name>
+        <qualifiedname>Game_Interpreter_Battle::CommandChangeMonsterCondition</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="93" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="433" bodyend="449"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a4faf5399e4ca9e653c9cc0e4157eab5e" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::CommandShowHiddenMonster</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandShowHiddenMonster</name>
+        <qualifiedname>Game_Interpreter_Battle::CommandShowHiddenMonster</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="94" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="451" bodyend="460"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a9c80e1e2fa3e148f86bf82e45c379664" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::CommandChangeBattleBG</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeBattleBG</name>
+        <qualifiedname>Game_Interpreter_Battle::CommandChangeBattleBG</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="95" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="462" bodyend="465"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1afb0ffa6c66a6b7db2393d9f7bcab1ca1" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::CommandShowBattleAnimation</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandShowBattleAnimation</name>
+        <qualifiedname>Game_Interpreter_Battle::CommandShowBattleAnimation</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="96" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="467" bodyend="519"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1abf7c331761acfd57f2d92501edcf9cb8" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::CommandTerminateBattle</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandTerminateBattle</name>
+        <qualifiedname>Game_Interpreter_Battle::CommandTerminateBattle</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="97" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="521" bodyend="524"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a90c103fc55677b348e21435ee2e4cdbb" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::CommandConditionalBranchBattle</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandConditionalBranchBattle</name>
+        <qualifiedname>Game_Interpreter_Battle::CommandConditionalBranchBattle</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="98" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="527" bodyend="619"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a0af7f3c543831e65a67d0d1f2ae9523d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::CommandElseBranchBattle</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandElseBranchBattle</name>
+        <qualifiedname>Game_Interpreter_Battle::CommandElseBranchBattle</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="99" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="621" bodyend="623"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a6bc0a27603cd09f761f4494f573b51d0" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::CommandEndBranchBattle</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandEndBranchBattle</name>
+        <qualifiedname>Game_Interpreter_Battle::CommandEndBranchBattle</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="100" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="625" bodyend="627"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a827c34144251e64dab527a58d66f9ed7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::CommandManiacControlBattle</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacControlBattle</name>
+        <qualifiedname>Game_Interpreter_Battle::CommandManiacControlBattle</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="102" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="704" bodyend="719"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1aabc3b4fe362a4846ac5ca9f5f23c7d42" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::CommandManiacControlAtbGauge</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacControlAtbGauge</name>
+        <qualifiedname>Game_Interpreter_Battle::CommandManiacControlAtbGauge</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="103" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="721" bodyend="806"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1a54fc0c72cda5836ae7bb7b7cfd1d267b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::CommandManiacChangeBattleCommandEx</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacChangeBattleCommandEx</name>
+        <qualifiedname>Game_Interpreter_Battle::CommandManiacChangeBattleCommandEx</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="104" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="808" bodyend="842"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter___battle_1ab7dcc004092be22d1f6f9a7c4081372d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter_Battle::CommandManiacGetBattleInfo</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacGetBattleInfo</name>
+        <qualifiedname>Game_Interpreter_Battle::CommandManiacGetBattleInfo</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter_battle.h" line="105" column="6" bodyfile="game_interpreter_battle.cpp" bodystart="844" bodyend="963"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_game___interpreter___battle" kindref="compound">Game_Interpreter_Battle</ref> class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>Game_BaseInterpreterContext</label>
+        <link refid="class_game___base_interpreter_context"/>
+      </node>
+      <node id="2">
+        <label>Game_Interpreter</label>
+        <link refid="class_game___interpreter"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Game_Interpreter_Battle</label>
+        <link refid="class_game___interpreter___battle"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="5">
+        <label>AsyncOp</label>
+        <link refid="class_async_op"/>
+      </node>
+      <node id="3">
+        <label>Game_BaseInterpreterContext</label>
+        <link refid="class_game___base_interpreter_context"/>
+      </node>
+      <node id="2">
+        <label>Game_Interpreter</label>
+        <link refid="class_game___interpreter"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>_keyinput</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>_async_op</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Game_Interpreter::KeyInputState</label>
+        <link refid="struct_game___interpreter_1_1_key_input_state"/>
+      </node>
+      <node id="1">
+        <label>Game_Interpreter_Battle</label>
+        <link refid="class_game___interpreter___battle"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="game_interpreter_battle.h" line="40" column="1" bodyfile="game_interpreter_battle.h" bodystart="41" bodyend="115"/>
+    <listofallmembers>
+      <member refid="class_game___interpreter_1a0791542402a644e15382dd42f412af2b" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>_async_op</name></member>
+      <member refid="class_game___interpreter_1a46335e1e1c16974d73b183ae67612b7c" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>_keyinput</name></member>
+      <member refid="class_game___interpreter_1a8deff46edae44d7d426e38ee75cc1ede" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>_state</name></member>
+      <member refid="class_game___interpreter___battle_1a20e338cb2c9177ace68d2e7f8bb6b59e" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>AreConditionsMet</name></member>
+      <member refid="class_game___interpreter_1a8a6cc11c14c63bbab8ff5b52bed6093c" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>call_stack_limit</name></member>
+      <member refid="class_game___interpreter_1a47d2ff7ca2f8ebe98780852b57a746c7" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CheckGameOver</name></member>
+      <member refid="class_game___interpreter_1abe054b320afc15c4fc57e08f210159ae" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>Clear</name></member>
+      <member refid="class_game___interpreter_1af44d80ff4c9963f20908d13172e31d8a" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>ClearOriginalEventId</name></member>
+      <member refid="class_game___interpreter_1aea7f9fef94b1b5ecdc8592575859b0b5" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>Cmd</name></member>
+      <member refid="class_game___base_interpreter_context_1afceb98cd2f1e559f0da86c25d77657ab" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CmdSetup</name></member>
+      <member refid="class_game___interpreter_1aea6e782fdc6d97e27eda2bc663ca458f" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandBreakLoop</name></member>
+      <member refid="class_game___interpreter___battle_1a13230314306943be4b1a3f61ad3e2c12" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandCallCommonEvent</name></member>
+      <member refid="class_game___interpreter_1a1f97f6cf5785e455142d175369a0f871" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandCallEvent</name></member>
+      <member refid="class_game___interpreter_1a54e166e9e6a2d3c1057577ebaebb1b5c" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeActorFace</name></member>
+      <member refid="class_game___interpreter___battle_1a9c80e1e2fa3e148f86bf82e45c379664" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeBattleBG</name></member>
+      <member refid="class_game___interpreter_1a0a64d9ad41a9d843ba1c0568cbad1429" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeBattleCommands</name></member>
+      <member refid="class_game___interpreter_1a82ea4697b7d3424568eb30fc74620512" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeClass</name></member>
+      <member refid="class_game___interpreter_1a556e560089fbb2a38bc4df481e423d6e" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeCondition</name></member>
+      <member refid="class_game___interpreter_1a3111df9fe1022c674c824ac31418b84a" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeEncounterSteps</name></member>
+      <member refid="class_game___interpreter_1a910a208782cfbee724e6268ea581ca2b" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeEquipment</name></member>
+      <member refid="class_game___interpreter_1aa8fbc1982b549a099d37272232bb57d5" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeEscapeAccess</name></member>
+      <member refid="class_game___interpreter_1a1210cf181bd22b3787a8b283ce9ea574" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeEventLocation</name></member>
+      <member refid="class_game___interpreter_1a7a02a59594f95f28272551fd19e0fa66" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeExp</name></member>
+      <member refid="class_game___interpreter_1af3c2414c3a8c9e5418fa416b599ab1b2" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeFaceGraphic</name></member>
+      <member refid="class_game___interpreter_1aa136144c62e364f7d552718fe571d6ec" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeGold</name></member>
+      <member refid="class_game___interpreter_1a139cea5046c62ed0187e451e81034739" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeHeroName</name></member>
+      <member refid="class_game___interpreter_1a7ea9ee0622876dbf9476018e45f9d4ca" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeHeroTitle</name></member>
+      <member refid="class_game___interpreter_1a5bdd48109b6a4c1f4068563368229fd4" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeHP</name></member>
+      <member refid="class_game___interpreter_1acbc591f8cf96e98f2a747270a99ac6e8" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeItems</name></member>
+      <member refid="class_game___interpreter_1a955c948fa047df2c42c00c145cb84f02" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeLevel</name></member>
+      <member refid="class_game___interpreter_1a7dc5e67de02cf32192b3b7159ff302c0" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeMainMenuAccess</name></member>
+      <member refid="class_game___interpreter_1a96677a668844610c9c1bf7e2b2911202" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeMapTileset</name></member>
+      <member refid="class_game___interpreter___battle_1a9b8e1761e4dcbd0dad2a9ff4de5670f4" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeMonsterCondition</name></member>
+      <member refid="class_game___interpreter___battle_1a9fac247d31db21e77da2daf333f2ebb2" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeMonsterHP</name></member>
+      <member refid="class_game___interpreter___battle_1a6898538b3e76db19cafea5a600c093ca" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeMonsterMP</name></member>
+      <member refid="class_game___interpreter_1a2d828c3ecd365d73be922fa6871e48f7" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeParameters</name></member>
+      <member refid="class_game___interpreter_1a1cfe8e4a84f997174fc059a5fe2a40d7" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangePartyMember</name></member>
+      <member refid="class_game___interpreter_1aa31cb770abec0baca5c7c75cbb9c46aa" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangePBG</name></member>
+      <member refid="class_game___interpreter_1ad9c51e6b81cdc92c68b77dbb95cc763f" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeSaveAccess</name></member>
+      <member refid="class_game___interpreter_1a67392323d0811f42fcf0f4d8e2a7a648" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeScreenTransitions</name></member>
+      <member refid="class_game___interpreter_1a0527ba8bea7232a7238502c9645615a9" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeSkills</name></member>
+      <member refid="class_game___interpreter_1a8ab1b772551d71a1d1fd803d5eebbb0e" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeSP</name></member>
+      <member refid="class_game___interpreter_1a9bcbe9f8dfbde2954528ef2c96a41b24" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeSpriteAssociation</name></member>
+      <member refid="class_game___interpreter_1af2b1453c14c6927a34eb0704b0b877be" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeSystemBGM</name></member>
+      <member refid="class_game___interpreter_1a206cf4081443a63fc0b8e56d4e4e2678" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeSystemGraphics</name></member>
+      <member refid="class_game___interpreter_1a8e7d3936858b93534aa51c7ca14fa3cf" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeSystemSFX</name></member>
+      <member refid="class_game___interpreter_1afb3b9c24d1d9892604848a36881dcf4b" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeTeleportAccess</name></member>
+      <member refid="class_game___interpreter_1a5ceb64f7967605f5fc95342e724e7195" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandChangeVehicleGraphic</name></member>
+      <member refid="class_game___interpreter_1affd4dc4765d7b548d29b7badf5c12684" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandComment</name></member>
+      <member refid="class_game___interpreter_1ae13843be47e13cd26012d10f34d1ea86" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandConditionalBranch</name></member>
+      <member refid="class_game___interpreter___battle_1a90c103fc55677b348e21435ee2e4cdbb" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandConditionalBranchBattle</name></member>
+      <member refid="class_game___interpreter_1a08096287030e2ad775fea2821dfe280f" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandControlSwitches</name></member>
+      <member refid="class_game___interpreter_1aa4fddb4f523b90eff566d03cf377dfe0" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandControlVariables</name></member>
+      <member refid="class_game___interpreter_1a8806c892dacadea350990e12369b7a7e" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandEasyRpgCloneMapEvent</name></member>
+      <member refid="class_game___interpreter_1a221ea790132c7db90f698fb66a89a39b" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandEasyRpgDestroyMapEvent</name></member>
+      <member refid="class_game___interpreter_1a9465eed80bc4e00f35391fe20e9c3e2c" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandEasyRpgProcessJson</name></member>
+      <member refid="class_game___interpreter_1a25e88d2ed3b5f3ec6c04b7abc8a74162" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandEasyRpgSetInterpreterFlag</name></member>
+      <member refid="class_game___interpreter_1a391e8094d5b1ecf7b01a8446439b0261" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandElseBranch</name></member>
+      <member refid="class_game___interpreter___battle_1a0af7f3c543831e65a67d0d1f2ae9523d" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandElseBranchBattle</name></member>
+      <member refid="class_game___interpreter___battle_1aa8e423b0db955c8e2ca48bda59ff618d" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandEnableCombo</name></member>
+      <member refid="class_game___interpreter_1af1249707724db420b67e82434cbdb501" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandEndBranch</name></member>
+      <member refid="class_game___interpreter___battle_1a6bc0a27603cd09f761f4494f573b51d0" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandEndBranchBattle</name></member>
+      <member refid="class_game___interpreter_1a03fd3ba60c4efa3b3b1b0ee109bd560c" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandEndEventProcessing</name></member>
+      <member refid="class_game___interpreter_1ac92e0548b59b562d10139e51c1fd009b" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandEndLoop</name></member>
+      <member refid="class_game___interpreter_1a0bdea58e80b6b1a58bb93148acf48015" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandEraseEvent</name></member>
+      <member refid="class_game___interpreter_1aef46e2a14f0f309d84a635d6b35cb4dd" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandErasePicture</name></member>
+      <member refid="class_game___interpreter_1a52053c1f7bcf8b18503eea9f2227e100" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandEraseScreen</name></member>
+      <member refid="class_game___interpreter_1a858f215a1e0498b957f433a0dcd24b7e" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandEscapeTarget</name></member>
+      <member refid="class_game___interpreter_1a7f27aa3f0b83fa62ade332a53d2362a6" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandExitGame</name></member>
+      <member refid="class_game___interpreter_1a0e122aea419f106e7ee9b9eb11f8ed54" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandFadeOutBGM</name></member>
+      <member refid="class_game___interpreter_1a1644db312a42abb5434e75da22dd4038" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandFlashScreen</name></member>
+      <member refid="class_game___interpreter___battle_1a053fc47d347178917a65d75c4b76c3f5" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandForceFlee</name></member>
+      <member refid="class_game___interpreter_1aed38ff5c5d9d82ccd426048c512c741c" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandFullHeal</name></member>
+      <member refid="class_game___interpreter_1abf809d236473a78f013c15aefe563019" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandGameOver</name></member>
+      <member refid="class_game___interpreter_1a72fb7e48ec9f72c700e6296704ee2f9a" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandInputNumber</name></member>
+      <member refid="class_game___interpreter_1aef0ec9b29c52204243e97aa5bc59edb4" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandJumpToLabel</name></member>
+      <member refid="class_game___interpreter_1ace395385facc5e269c9653ff213c957b" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandKeyInputProc</name></member>
+      <member refid="class_game___interpreter_1a9f979bd8fff4ab8803cd8b67be505566" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandLoop</name></member>
+      <member refid="class_game___interpreter_1ad1067bfd5059d216045b240994ba3548" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacCallCommand</name></member>
+      <member refid="class_game___interpreter___battle_1a54fc0c72cda5836ae7bb7b7cfd1d267b" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacChangeBattleCommandEx</name></member>
+      <member refid="class_game___interpreter_1a2a660c9aed78d688d7d48fc7be321fd5" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacChangePictureId</name></member>
+      <member refid="class_game___interpreter___battle_1aabc3b4fe362a4846ac5ca9f5f23c7d42" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacControlAtbGauge</name></member>
+      <member refid="class_game___interpreter___battle_1a827c34144251e64dab527a58d66f9ed7" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacControlBattle</name></member>
+      <member refid="class_game___interpreter_1a361c06d1408e5a2ae5d93a2a69b1749d" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacControlGlobalSave</name></member>
+      <member refid="class_game___interpreter_1ad3e8cd494101f7b29a064f1d56b74f66" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacControlStrings</name></member>
+      <member refid="class_game___interpreter_1aa9143aad046d1ab32b2129f292ed9cae" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacControlVarArray</name></member>
+      <member refid="class_game___interpreter_1af2db51a5a00e41deb20b80517dd4b383" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacEndLoadProcess</name></member>
+      <member refid="class_game___interpreter___battle_1ab7dcc004092be22d1f6f9a7c4081372d" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacGetBattleInfo</name></member>
+      <member refid="class_game___interpreter_1a23c2e20cad7341f70d90b18370452c02" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacGetGameInfo</name></member>
+      <member refid="class_game___interpreter_1aa1761126912bfb6f7822ebec609a774a" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacGetMousePosition</name></member>
+      <member refid="class_game___interpreter_1ae53830043a3dfaca312032c9d2d404d4" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacGetPictureInfo</name></member>
+      <member refid="class_game___interpreter_1a1bf80ea23a7a4a529a537dc2e2f7096f" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacGetSaveInfo</name></member>
+      <member refid="class_game___interpreter_1aeb6bc9803e68c08f360134a8ea5fbf0f" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacKeyInputProcEx</name></member>
+      <member refid="class_game___interpreter_1ad4bb3a00a22100d223eca8c3de84d9ca" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacLoad</name></member>
+      <member refid="class_game___interpreter_1a92ea3bfd697bb9453837dc07b0c208f2" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacRewriteMap</name></member>
+      <member refid="class_game___interpreter_1afff479239f7a43d357607d81a6b6df65" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacSave</name></member>
+      <member refid="class_game___interpreter_1ab43e8d5fe92ac43743926b38cc0e21fc" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacSetGameOption</name></member>
+      <member refid="class_game___interpreter_1af65b35fd3c3496bb1c7dff161d4fb2af" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacSetMousePosition</name></member>
+      <member refid="class_game___interpreter_1abb22dfedf589fa3401cfe6b5709041cf" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandManiacShowStringPicture</name></member>
+      <member refid="class_game___interpreter_1ac50794c5ba7d2f114bcf82f31af013e7" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandMemorizeBGM</name></member>
+      <member refid="class_game___interpreter_1a09a02aa1f0b197c002b90f75b70f53bd" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandMemorizeLocation</name></member>
+      <member refid="class_game___interpreter_1aa65e74b9eff25544536c5d5efbf03b3b" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandMessageOptions</name></member>
+      <member refid="class_game___interpreter_1a44a06cf772b0186f9652f0386b8163c9" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandMoveEvent</name></member>
+      <member refid="class_game___interpreter_1a0dd5fbdb7fcc80c81a8b1b643ad111c0" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandMovePicture</name></member>
+      <member refid="class_game___interpreter_1afd62cf348f7c0b70ace064b1217fc834" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandOpenVideoOptions</name></member>
+      <member refid="class_game___interpreter_1aac95bb5ff9f62f0e56077489a89e3086" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandOptionGeneric</name></member>
+      <member refid="class_game___interpreter_1aef706a164426cf429dda84a40111162b" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandPlayBGM</name></member>
+      <member refid="class_game___interpreter_1a9c8be3dec58a83e5708d317fe6f3595f" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandPlayerVisibility</name></member>
+      <member refid="class_game___interpreter_1ad6631dfade1d5bfe42fc1461bd4f3906" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandPlayMemorizedBGM</name></member>
+      <member refid="class_game___interpreter_1a4f3b4631b03b2b06a351e7c5713727dd" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandPlaySound</name></member>
+      <member refid="class_game___interpreter_1aab75cb8ff04587bd24c368f8ee667bf3" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandReturnToTitleScreen</name></member>
+      <member refid="class_game___interpreter_1a30bed17b20ea82e45576a957f9186691" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandSetVehicleLocation</name></member>
+      <member refid="class_game___interpreter_1ac186926f7a8a992d24d2dbf5fa8886e5" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandShakeScreen</name></member>
+      <member refid="class_game___interpreter___battle_1afb0ffa6c66a6b7db2393d9f7bcab1ca1" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandShowBattleAnimation</name></member>
+      <member refid="class_game___interpreter_1a04b2643b0991c8f7f1b1dc0837f0d070" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandShowChoiceEnd</name></member>
+      <member refid="class_game___interpreter_1a27b0041f52c00cab9237c8bad3b4ffa1" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandShowChoiceOption</name></member>
+      <member refid="class_game___interpreter_1aafa884fd3f363f047a485644a15e71c3" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandShowChoices</name></member>
+      <member refid="class_game___interpreter___battle_1a4faf5399e4ca9e653c9cc0e4157eab5e" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandShowHiddenMonster</name></member>
+      <member refid="class_game___interpreter_1a9b30ac0715ca464cc5430d6909333f73" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandShowMessage</name></member>
+      <member refid="class_game___interpreter_1a933490867ec6a274e8ba683a220ca1e4" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandShowPicture</name></member>
+      <member refid="class_game___interpreter_1aa53b992812260b38353b88451c953370" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandShowScreen</name></member>
+      <member refid="class_game___interpreter_1aa29789c2cf760b67b06886fdfa543194" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandSimulatedAttack</name></member>
+      <member refid="class_game___interpreter_1a143995bfabe52cd36b3f2f1dcaafa006" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandStoreEventID</name></member>
+      <member refid="class_game___interpreter_1a29cda1bcfd93b7e3fdb5b0218227eb7c" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandStoreTerrainID</name></member>
+      <member refid="class_game___interpreter_1a0e8f297e918b0a66b4d36f8154453226" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandTeleportTargets</name></member>
+      <member refid="class_game___interpreter___battle_1abf7c331761acfd57f2d92501edcf9cb8" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandTerminateBattle</name></member>
+      <member refid="class_game___interpreter_1a5744617f17714da02aad5d73168c5f03" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandTileSubstitution</name></member>
+      <member refid="class_game___interpreter_1ad2547fa74ea9f14c8d7d0ee0dc5ada73" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandTimerOperation</name></member>
+      <member refid="class_game___interpreter_1aff9b77e92a751baafb9fcda76f127af2" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandTintScreen</name></member>
+      <member refid="class_game___interpreter_1a67f189836ffd272fa410cdea6f85ae32" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandToggleFullscreen</name></member>
+      <member refid="class_game___interpreter_1a3bc149bafb32e75c06c0700be4eea9df" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandTradeEventLocations</name></member>
+      <member refid="class_game___interpreter_1a0761e0a5f97e11445bc2efa3afbe5f99" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandWait</name></member>
+      <member refid="class_game___interpreter_1acb353c32a5382180bd8abf48606527c8" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>CommandWeatherEffects</name></member>
+      <member refid="class_game___interpreter___battle_1a42bace862e93000cfb63cad068f40c48" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>current_actor_id</name></member>
+      <member refid="class_game___base_interpreter_context_1a1a41c3fde574ddf2c9b7fae7c9e81214" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>DecodeTargetEvaluationMode</name></member>
+      <member refid="class_game___interpreter_1ab6def7f0eee05ab01c32384b9225ae56" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>EndEventProcessing</name></member>
+      <member refid="class_game___interpreter___battle_1ad0a67b3be569d3f6894a76b998c339ce" prot="public" virt="virtual"><scope>Game_Interpreter_Battle</scope><name>ExecuteCommand</name></member>
+      <member refid="class_game___interpreter_1a5e5f373b9753e227c44ba49002ba580d" prot="public" virt="non-virtual" ambiguityscope="Game_Interpreter::"><scope>Game_Interpreter_Battle</scope><name>ExecuteCommand</name></member>
+      <member refid="class_game___interpreter___battle_1a68ba9b2f325e91944f16beba6fee7b75" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>executed</name></member>
+      <member refid="class_game___interpreter___battle_1a753859c9edf4ea5e603d9c25e56d57d0" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>force_flee_enabled</name></member>
+      <member refid="class_game___interpreter_1aa0a5a5f24aad210a07e0e8ab6a395da6" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>ForegroundTextPush</name></member>
+      <member refid="class_game___interpreter_1a4c645dbae42426e39905c2a9c9e5a7f8" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>Game_Interpreter</name></member>
+      <member refid="class_game___interpreter___battle_1a2d6978714b3f1502d421cc0b88783c65" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>Game_Interpreter_Battle</name></member>
+      <member refid="class_game___interpreter___battle_1af0fa6fd583b30cd36fa1b0f1c52e4826" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>Game_Interpreter_Battle</name></member>
+      <member refid="class_game___interpreter_1afbeba0273309b6f44ffc06b8b1773c13" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>GetActors</name></member>
+      <member refid="class_game___interpreter_1aa02ed61c936fab916281d940a7240555" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>GetAsyncOp</name></member>
+      <member refid="class_game___interpreter_1a7d1705d3b6f9cd6c2bca2a9f0269b2b2" prot="public" virt="virtual"><scope>Game_Interpreter_Battle</scope><name>GetCharacter</name></member>
+      <member refid="class_game___interpreter_1ab55246e3bbb783b838b66393f112510c" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>GetChoices</name></member>
+      <member refid="class_game___interpreter_1a510e6bc02f4d23cf2ff249986eab1e42" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>GetCurrentEventId</name></member>
+      <member refid="class_game___interpreter_1a46615f6ad530e53b6e9e978d3e42b711" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>GetForegroundInterpreter</name></member>
+      <member refid="class_game___interpreter_1a44b03a0b5ea2f0b298fa259d7f05c135" prot="protected" virt="virtual"><scope>Game_Interpreter_Battle</scope><name>GetFrame</name></member>
+      <member refid="class_game___interpreter_1aeec408fa8ec452ae435f106c173c6ef2" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>GetFrame</name></member>
+      <member refid="class_game___interpreter_1ad3d7d9952b6e30d52d82f5db9e5f20b9" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>GetFramePtr</name></member>
+      <member refid="class_game___interpreter_1a169d5fe70d4fd80cbc3c70c7043f57c6" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>GetFramePtr</name></member>
+      <member refid="class_game___interpreter_1a9c13628cf24867629e5b16be6dbb184b" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>GetLoopCount</name></member>
+      <member refid="class_game___interpreter___battle_1a857d46146f08e46f876bec6a8bcfedb3" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>GetNumPages</name></member>
+      <member refid="class_game___interpreter_1ae47c48ecd454382620dc232c1e404acd" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>GetOriginalEventId</name></member>
+      <member refid="class_game___base_interpreter_context_1a10142f54bf1363ba3b88a4d00944ef03" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>GetRuntimeFlag</name></member>
+      <member refid="class_game___interpreter_1ad6409258d697149e11675e6bd34eab21" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>GetSaveState</name></member>
+      <member refid="class_game___interpreter_1a2f98f13b6209d7586523f9242a58f90e" prot="public" virt="virtual"><scope>Game_Interpreter_Battle</scope><name>GetState</name></member>
+      <member refid="class_game___interpreter_1a36663bc6fab30c291525f0befb8ffa45" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>GetSubcommandIndex</name></member>
+      <member refid="class_game___interpreter_1ae32a9cf670563f96f7aedb46aa148314" prot="public" virt="virtual"><scope>Game_Interpreter_Battle</scope><name>GetThisEventId</name></member>
+      <member refid="class_game___interpreter_1a98ec0b440ee7f4a8fd1f85a3d8188420" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>HandleDestinyScript</name></member>
+      <member refid="class_game___interpreter_1a921b0e92b396e6f4ab9c4df07a99cd52" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>HandleDynRpgScript</name></member>
+      <member refid="class_game___interpreter___battle_1a434cd25aa7748164376809b46f06d3de" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>HasPageExecuted</name></member>
+      <member refid="class_game___interpreter___battle_1a0e4bb464fda14a855977da4c25573e4b" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>InitBattle</name></member>
+      <member refid="class_game___interpreter_1a552bf737962441e203dfbb9946311205" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>InputButton</name></member>
+      <member refid="class_game___interpreter_1ac3d796cc8e189d2e4c077e30eab83912" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>IsAsyncPending</name></member>
+      <member refid="class_game___interpreter___battle_1a03131a9b24758a1d8a042ed0b08a0363" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>IsForceFleeEnabled</name></member>
+      <member refid="class_game___interpreter_1a82b55341ba75ad2e7b50962d9c26f7a9" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>IsRunning</name></member>
+      <member refid="class_game___interpreter___battle_1aec8844d338ed70726fde8529e8f7fca7" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>IsValidPage</name></member>
+      <member refid="class_game___interpreter_1ada596083e5275d71f31a1478ff97d64d" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>IsWaitingForWaitCommand</name></member>
+      <member refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2b" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>Keys</name></member>
+      <member refid="class_game___interpreter_1a75cffc20d4e33642025d4ac8ca160cb4" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>loop_count</name></member>
+      <member refid="class_game___interpreter_1a8f958b6593872b03b63822e26a2bac04" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>loop_limit</name></member>
+      <member refid="class_game___interpreter_1a0d60a7ac16ae14132bf5aabbc70c4f66" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>main_flag</name></member>
+      <member refid="class_game___interpreter___battle_1ad830bf4a3534b5208f1fb77198f49f5e" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>maniac_hooks</name></member>
+      <member refid="class_game___interpreter___battle_1a38837a494aa53385242ebe8618c5e750" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>ManiacBattleHook</name></member>
+      <member refid="class_game___interpreter___battle_1a2412719c1a6e3b38303df8673e74b3ed" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>ManiacBattleHookType</name></member>
+      <member refid="class_game___interpreter_1a96bd7e1677520378961da5d7f4d44a05" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>ManiacBitmask</name></member>
+      <member refid="class_game___base_interpreter_context_1a61f153febc72e303b78c27f8eb05dba4" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>MemFnCls</name></member>
+      <member refid="class_game___interpreter_1a7d943704fa0d7c3e5347835280c11152" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>OnFinishStackFrame</name></member>
+      <member refid="class_game___interpreter_1af72c7ae119c80a0cb9531bee91a5a405" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>OperateValue</name></member>
+      <member refid="class_game___interpreter___battle_1a0adabc268fb0feacdff62d61ba744578" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>pages</name></member>
+      <member refid="class_game___interpreter___battle_1a316f8e1cc8382a96785338dc1e7811e6" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>ProcessManiacSubEvents</name></member>
+      <member refid="class_game___interpreter_1ab78318b453ffa99de7c32dfbc53c398d" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>Push</name></member>
+      <member refid="class_game___interpreter_1acdc900abd221a593c39a37dcf6478c4e" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>Push</name></member>
+      <member refid="class_game___interpreter_1a16ebf104311a696f06119e72120df54d" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>Push</name></member>
+      <member refid="class_game___interpreter_1aac06dd5e551aa3f4f04d1807542f4da7" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>Push</name></member>
+      <member refid="class_game___interpreter_1a6b8ee36d4d28188dc32d442c0127b225" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>ReachedLoopLimit</name></member>
+      <member refid="class_game___interpreter_1a1dcc1d4ed876edb7f9b2a4636e19f80c" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>request_id</name></member>
+      <member refid="class_game___interpreter_1a4f59bbf6b9b3aaa20ed4087861ec1c53" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>ReserveSubcommandIndex</name></member>
+      <member refid="class_game___interpreter___battle_1af1db36840c8affb011e80dfc44115da5" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>ResetPagesExecuted</name></member>
+      <member refid="class_game___interpreter___battle_1a8de1391c217218d70abf6c2dcfe6fc6f" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>ScheduleNextPage</name></member>
+      <member refid="class_game___interpreter___battle_1a18eb995a9679f9e28a2c311d6f460bbe" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>ScheduleNextPage</name></member>
+      <member refid="class_game___interpreter___battle_1a0e506ef81f9c30597f861fda5702c179" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>SetCurrentActingActorId</name></member>
+      <member refid="class_game___interpreter___battle_1a990671a730c5e03e7437a0a397735f0b" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>SetCurrentActionTargetsSingleEnemy</name></member>
+      <member refid="class_game___interpreter___battle_1a0cd670bbb916850a63f500b44a71f285" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>SetCurrentEnemyTargetIndex</name></member>
+      <member refid="class_game___interpreter_1ad37fd70718341354915dd6458a021938" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>SetSubcommandIndex</name></member>
+      <member refid="class_game___interpreter_1ad9538a0312c8c31dc4178d85f6994b01" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>SetupChoices</name></member>
+      <member refid="class_game___interpreter_1ad8db1b97275ec751f917fcc9a1c5c380" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>SetupWait</name></member>
+      <member refid="class_game___interpreter_1a09545f2c15e77005b8c8cbd6eb47d8a1" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>SetupWaitFrames</name></member>
+      <member refid="class_game___interpreter_1a74e1af3920f25836c69e70f3bbdd9c46" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>SkipToNextConditional</name></member>
+      <member refid="class_game___interpreter_1aaf7594be12e356b1bc052e310239c8f1" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>subcommand_sentinel</name></member>
+      <member refid="class_game___interpreter___battle_1a574636dd6567c6102630e971a24760cd" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>target_enemy_index</name></member>
+      <member refid="class_game___interpreter___battle_1ad545dacac4d9b31e55bb5dd63c43fb4f" prot="private" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>targets_single_enemy</name></member>
+      <member refid="class_game___interpreter_1a87469ff80e344b9ce9daa4c75f103fc3" prot="public" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>Update</name></member>
+      <member refid="class_game___base_interpreter_context_1a48d3d7b4929dd127af559e2a924aa19f" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>ValueOrVariable</name></member>
+      <member refid="class_game___base_interpreter_context_1a53974070e68b2083235aaac836526c54" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>ValueOrVariableBitfield</name></member>
+      <member refid="class_game___base_interpreter_context_1a07cd3d4bd8419c2fbe6ae2ad33eae3cf" prot="protected" virt="non-virtual"><scope>Game_Interpreter_Battle</scope><name>ValueOrVariableBitfield</name></member>
+      <member refid="class_game___base_interpreter_context_1af5a2804abcfd66518de598fa8bb297df" prot="public" virt="virtual"><scope>Game_Interpreter_Battle</scope><name>~Game_BaseInterpreterContext</name></member>
+      <member refid="class_game___interpreter_1a4dd38d34146fe09a7e2bcc8aae8309b6" prot="public" virt="virtual"><scope>Game_Interpreter_Battle</scope><name>~Game_Interpreter</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

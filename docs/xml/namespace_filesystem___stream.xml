@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_filesystem___stream" kind="namespace" language="C++">
+    <compoundname>Filesystem_Stream</compoundname>
+    <innerclass refid="class_filesystem___stream_1_1_input_stream" prot="public">Filesystem_Stream::InputStream</innerclass>
+    <innerclass refid="class_filesystem___stream_1_1_output_stream" prot="public">Filesystem_Stream::OutputStream</innerclass>
+    <innerclass refid="class_filesystem___stream_1_1_input_memory_stream_buf_view" prot="public">Filesystem_Stream::InputMemoryStreamBufView</innerclass>
+    <innerclass refid="class_filesystem___stream_1_1_input_memory_stream_buf" prot="public">Filesystem_Stream::InputMemoryStreamBuf</innerclass>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_filesystem___stream_1a70967d05e8019d4aeac8b65c0349a03f" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::ios_base::seekdir</type>
+        <definition>std::ios_base::seekdir Filesystem_Stream::CSeekdirToCppSeekdir</definition>
+        <argsstring>(int origin)</argsstring>
+        <name>CSeekdirToCppSeekdir</name>
+        <qualifiedname>Filesystem_Stream::CSeekdirToCppSeekdir</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>origin</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="131" column="41" bodyfile="filesystem_stream.h" bodystart="178" bodyend="190" declfile="filesystem_stream.h" declline="131" declcolumn="41"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_filesystem___stream_1ad05bfa46e2fb999645a99cf1c172414c" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Filesystem_Stream::CppSeekdirToCSeekdir</definition>
+        <argsstring>(std::ios_base::seekdir origin)</argsstring>
+        <name>CppSeekdirToCSeekdir</name>
+        <qualifiedname>Filesystem_Stream::CppSeekdirToCSeekdir</qualifiedname>
+        <param>
+          <type>std::ios_base::seekdir</type>
+          <declname>origin</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_stream.h" line="133" column="22" bodyfile="filesystem_stream.h" bodystart="192" bodyend="204" declfile="filesystem_stream.h" declline="133" declcolumn="22"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="audio_generic_midiout.h" line="26" column="1"/>
+  </compounddef>
+</doxygen>

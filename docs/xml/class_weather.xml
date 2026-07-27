@@ -1,0 +1,560 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_weather" kind="class" language="C++" prot="public">
+    <compoundname>Weather</compoundname>
+    <basecompoundref refid="class_drawable" prot="public" virt="non-virtual">Drawable</basecompoundref>
+    <includes refid="weather_8h" local="no">weather.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_weather_1a9505fde1731aeb2f61f1ec158f0a1bdb" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Weather::snow_bitmap</definition>
+        <argsstring></argsstring>
+        <name>snow_bitmap</name>
+        <qualifiedname>Weather::snow_bitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="61" column="11" bodyfile="weather.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_weather_1acf132b711067df4b329b95e22b91cd1f" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Weather::rain_bitmap</definition>
+        <argsstring></argsstring>
+        <name>rain_bitmap</name>
+        <qualifiedname>Weather::rain_bitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="62" column="11" bodyfile="weather.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_weather_1a655262fd4735ad056e701b413ba8b0de" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Weather::fog_bitmap</definition>
+        <argsstring></argsstring>
+        <name>fog_bitmap</name>
+        <qualifiedname>Weather::fog_bitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="63" column="11" bodyfile="weather.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_weather_1ab13bf1fb0949932119cce9969a526fb1" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Weather::sand_bitmap</definition>
+        <argsstring></argsstring>
+        <name>sand_bitmap</name>
+        <qualifiedname>Weather::sand_bitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="64" column="11" bodyfile="weather.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_weather_1ace4b68f28f8c550aee0cdc33d4ff8e58" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Weather::sand_particle_bitmap</definition>
+        <argsstring></argsstring>
+        <name>sand_particle_bitmap</name>
+        <qualifiedname>Weather::sand_particle_bitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="65" column="11" bodyfile="weather.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_weather_1a9a5589e0ad313afb91d2c5b899b10a41" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Weather::tone_bitmap</definition>
+        <argsstring></argsstring>
+        <name>tone_bitmap</name>
+        <qualifiedname>Weather::tone_bitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="67" column="11" bodyfile="weather.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_weather_1a31752416ebe5caf03e8a6b0bd7eca84b" prot="private" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Weather::weather_surface</definition>
+        <argsstring></argsstring>
+        <name>weather_surface</name>
+        <qualifiedname>Weather::weather_surface</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="69" column="11" bodyfile="weather.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_weather_1a7d457bd6f98489cd8e778cf05fb46363" prot="private" static="no" mutable="no">
+        <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+        <definition>Tone Weather::tone_effect</definition>
+        <argsstring></argsstring>
+        <name>tone_effect</name>
+        <qualifiedname>Weather::tone_effect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="71" column="6" bodyfile="weather.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_weather_1abfc60b0ec508661dfa294668b1ad0abf" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Weather::tone_dirty</definition>
+        <argsstring></argsstring>
+        <name>tone_dirty</name>
+        <qualifiedname>Weather::tone_dirty</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="73" column="6" bodyfile="weather.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_weather_1aa404c94fec05b825454a7309827767c6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Weather::Weather</definition>
+        <argsstring>()</argsstring>
+        <name>Weather</name>
+        <qualifiedname>Weather::Weather</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="34" column="1" bodyfile="weather.cpp" bodystart="32" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="class_weather_1abbb52c8af2197776d78a8f69fc5d0fee" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Weather::Draw</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Weather::Draw</qualifiedname>
+        <reimplements refid="class_drawable_1aa8a9b151f40368331f6fd8bbdd20133f">Draw</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="36" column="6" bodyfile="weather.cpp" bodystart="44" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="class_weather_1a7ad4c8a19ac2bd7b484e42ca4515c2f4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Weather::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>Weather::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="37" column="6" bodyfile="weather.cpp" bodystart="41" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="class_weather_1a023e90fda601af153f08f24dfca0050d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+        <definition>Tone Weather::GetTone</definition>
+        <argsstring>() const</argsstring>
+        <name>GetTone</name>
+        <qualifiedname>Weather::GetTone</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="39" column="6" bodyfile="weather.h" bodystart="76" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="function" id="class_weather_1a887289f3321f9436c3b04ce320a2e8a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Weather::SetTone</definition>
+        <argsstring>(Tone tone)</argsstring>
+        <name>SetTone</name>
+        <qualifiedname>Weather::SetTone</qualifiedname>
+        <param>
+          <type><ref refid="class_tone" kindref="compound">Tone</ref></type>
+          <declname>tone</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="40" column="6" bodyfile="weather.cpp" bodystart="355" bodyend="360"/>
+      </memberdef>
+      <memberdef kind="function" id="class_weather_1a88e10def4c8e2c82cb154b1c6b2de56c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Weather::OnWeatherChanged</definition>
+        <argsstring>()</argsstring>
+        <name>OnWeatherChanged</name>
+        <qualifiedname>Weather::OnWeatherChanged</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="42" column="6" bodyfile="weather.cpp" bodystart="362" bodyend="367"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_weather_1aff2712a93ff719e31c88499687531fe5" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Weather::GetMaxNumParticles</definition>
+        <argsstring>(int weather_type)</argsstring>
+        <name>GetMaxNumParticles</name>
+        <qualifiedname>Weather::GetMaxNumParticles</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>weather_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="44" column="12" bodyfile="weather.cpp" bodystart="122" bodyend="135"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_weather_1aaa1c19ae23022bfd33132942aaa92737" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Weather::DrawRain</definition>
+        <argsstring>(Bitmap &amp;dst)</argsstring>
+        <name>DrawRain</name>
+        <qualifiedname>Weather::DrawRain</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="47" column="6" bodyfile="weather.cpp" bodystart="169" bodyend="174"/>
+      </memberdef>
+      <memberdef kind="function" id="class_weather_1a127e108cd9108afd35b162487ce1f0b8" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Weather::DrawSnow</definition>
+        <argsstring>(Bitmap &amp;dst)</argsstring>
+        <name>DrawSnow</name>
+        <qualifiedname>Weather::DrawSnow</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="48" column="6" bodyfile="weather.cpp" bodystart="191" bodyend="196"/>
+      </memberdef>
+      <memberdef kind="function" id="class_weather_1addfa0b82bcc12076e301a72a983beeff" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Weather::DrawFog</definition>
+        <argsstring>(Bitmap &amp;dst)</argsstring>
+        <name>DrawFog</name>
+        <qualifiedname>Weather::DrawFog</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="49" column="6" bodyfile="weather.cpp" bodystart="229" bodyend="235"/>
+      </memberdef>
+      <memberdef kind="function" id="class_weather_1a5353ea6c24c1369fd9d250e8a9029594" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Weather::DrawSandstorm</definition>
+        <argsstring>(Bitmap &amp;dst)</argsstring>
+        <name>DrawSandstorm</name>
+        <qualifiedname>Weather::DrawSandstorm</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="50" column="6" bodyfile="weather.cpp" bodystart="237" bodyend="247"/>
+      </memberdef>
+      <memberdef kind="function" id="class_weather_1a96e2664ac7fd2825ad2247f07f4043c5" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Weather::CreateRainParticle</definition>
+        <argsstring>()</argsstring>
+        <name>CreateRainParticle</name>
+        <qualifiedname>Weather::CreateRainParticle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="51" column="6" bodyfile="weather.cpp" bodystart="153" bodyend="167"/>
+      </memberdef>
+      <memberdef kind="function" id="class_weather_1a47bebf7bb9df51af1bf1dfe55a14eefa" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Weather::CreateSnowParticle</definition>
+        <argsstring>()</argsstring>
+        <name>CreateSnowParticle</name>
+        <qualifiedname>Weather::CreateSnowParticle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="52" column="6" bodyfile="weather.cpp" bodystart="177" bodyend="189"/>
+      </memberdef>
+      <memberdef kind="function" id="class_weather_1a26bf270f80232f51f2badaa22951b003" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Weather::CreateSandParticle</definition>
+        <argsstring>()</argsstring>
+        <name>CreateSandParticle</name>
+        <qualifiedname>Weather::CreateSandParticle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="53" column="6" bodyfile="weather.cpp" bodystart="249" bodyend="267"/>
+      </memberdef>
+      <memberdef kind="function" id="class_weather_1a2fc4f10cf7bdbf80745af84529af6ce5" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Weather::CreateFogOverlay</definition>
+        <argsstring>()</argsstring>
+        <name>CreateFogOverlay</name>
+        <qualifiedname>Weather::CreateFogOverlay</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="54" column="6" bodyfile="weather.cpp" bodystart="294" bodyend="320"/>
+      </memberdef>
+      <memberdef kind="function" id="class_weather_1a38fdf580ad926127cfe3a12668dd9fcc" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Weather::DrawParticles</definition>
+        <argsstring>(Bitmap &amp;dst, const Bitmap &amp;particle, Rect rect, int abase, int tmax)</argsstring>
+        <name>DrawParticles</name>
+        <qualifiedname>Weather::DrawParticles</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>particle</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+          <declname>rect</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>abase</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>tmax</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="56" column="6" bodyfile="weather.cpp" bodystart="198" bodyend="227"/>
+      </memberdef>
+      <memberdef kind="function" id="class_weather_1af34ead4993d93f9cc7825fd5578dd693" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Weather::DrawFogOverlay</definition>
+        <argsstring>(Bitmap &amp;dst, const Bitmap &amp;overlay)</argsstring>
+        <name>DrawFogOverlay</name>
+        <qualifiedname>Weather::DrawFogOverlay</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>overlay</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="57" column="6" bodyfile="weather.cpp" bodystart="322" bodyend="353"/>
+      </memberdef>
+      <memberdef kind="function" id="class_weather_1adc65980eabc3ef3649a3e5379aa5a1e7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Weather::DrawSandParticles</definition>
+        <argsstring>(Bitmap &amp;dst, const Bitmap &amp;particle)</argsstring>
+        <name>DrawSandParticles</name>
+        <qualifiedname>Weather::DrawSandParticles</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>particle</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="58" column="6" bodyfile="weather.cpp" bodystart="269" bodyend="292"/>
+      </memberdef>
+      <memberdef kind="function" id="class_weather_1a58859f7ed0948046fb7a3d83af063417" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_bitmap" kindref="compound">Bitmap</ref> *</type>
+        <definition>const Bitmap * Weather::ApplyToneEffect</definition>
+        <argsstring>(const Bitmap &amp;bitmap, Rect rect)</argsstring>
+        <name>ApplyToneEffect</name>
+        <qualifiedname>Weather::ApplyToneEffect</qualifiedname>
+        <param>
+          <type>const <ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>bitmap</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+          <declname>rect</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="weather.h" line="59" column="14" bodyfile="weather.cpp" bodystart="137" bodyend="151"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Renders the weather effects. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>Weather</label>
+        <link refid="class_weather"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="1">
+        <label>Weather</label>
+        <link refid="class_weather"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="weather.h" line="32" column="1" bodyfile="weather.h" bodystart="32" bodyend="74"/>
+    <listofallmembers>
+      <member refid="class_weather_1a58859f7ed0948046fb7a3d83af063417" prot="private" virt="non-virtual"><scope>Weather</scope><name>ApplyToneEffect</name></member>
+      <member refid="class_weather_1a2fc4f10cf7bdbf80745af84529af6ce5" prot="private" virt="non-virtual"><scope>Weather</scope><name>CreateFogOverlay</name></member>
+      <member refid="class_weather_1a96e2664ac7fd2825ad2247f07f4043c5" prot="private" virt="non-virtual"><scope>Weather</scope><name>CreateRainParticle</name></member>
+      <member refid="class_weather_1a26bf270f80232f51f2badaa22951b003" prot="private" virt="non-virtual"><scope>Weather</scope><name>CreateSandParticle</name></member>
+      <member refid="class_weather_1a47bebf7bb9df51af1bf1dfe55a14eefa" prot="private" virt="non-virtual"><scope>Weather</scope><name>CreateSnowParticle</name></member>
+      <member refid="class_weather_1abbb52c8af2197776d78a8f69fc5d0fee" prot="public" virt="virtual"><scope>Weather</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>Weather</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>Weather</scope><name>Drawable</name></member>
+      <member refid="class_weather_1addfa0b82bcc12076e301a72a983beeff" prot="private" virt="non-virtual"><scope>Weather</scope><name>DrawFog</name></member>
+      <member refid="class_weather_1af34ead4993d93f9cc7825fd5578dd693" prot="private" virt="non-virtual"><scope>Weather</scope><name>DrawFogOverlay</name></member>
+      <member refid="class_weather_1a38fdf580ad926127cfe3a12668dd9fcc" prot="private" virt="non-virtual"><scope>Weather</scope><name>DrawParticles</name></member>
+      <member refid="class_weather_1aaa1c19ae23022bfd33132942aaa92737" prot="private" virt="non-virtual"><scope>Weather</scope><name>DrawRain</name></member>
+      <member refid="class_weather_1adc65980eabc3ef3649a3e5379aa5a1e7" prot="private" virt="non-virtual"><scope>Weather</scope><name>DrawSandParticles</name></member>
+      <member refid="class_weather_1a5353ea6c24c1369fd9d250e8a9029594" prot="private" virt="non-virtual"><scope>Weather</scope><name>DrawSandstorm</name></member>
+      <member refid="class_weather_1a127e108cd9108afd35b162487ce1f0b8" prot="private" virt="non-virtual"><scope>Weather</scope><name>DrawSnow</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>Weather</scope><name>Flags</name></member>
+      <member refid="class_weather_1a655262fd4735ad056e701b413ba8b0de" prot="private" virt="non-virtual"><scope>Weather</scope><name>fog_bitmap</name></member>
+      <member refid="class_weather_1aff2712a93ff719e31c88499687531fe5" prot="public" virt="non-virtual"><scope>Weather</scope><name>GetMaxNumParticles</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>Weather</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>Weather</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>Weather</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>Weather</scope><name>GetRenderOy</name></member>
+      <member refid="class_weather_1a023e90fda601af153f08f24dfca0050d" prot="public" virt="non-virtual"><scope>Weather</scope><name>GetTone</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>Weather</scope><name>GetZ</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>Weather</scope><name>IsGlobal</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>Weather</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>Weather</scope><name>IsVisible</name></member>
+      <member refid="class_weather_1a88e10def4c8e2c82cb154b1c6b2de56c" prot="public" virt="non-virtual"><scope>Weather</scope><name>OnWeatherChanged</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>Weather</scope><name>operator=</name></member>
+      <member refid="class_weather_1acf132b711067df4b329b95e22b91cd1f" prot="private" virt="non-virtual"><scope>Weather</scope><name>rain_bitmap</name></member>
+      <member refid="class_weather_1ab13bf1fb0949932119cce9969a526fb1" prot="private" virt="non-virtual"><scope>Weather</scope><name>sand_bitmap</name></member>
+      <member refid="class_weather_1ace4b68f28f8c550aee0cdc33d4ff8e58" prot="private" virt="non-virtual"><scope>Weather</scope><name>sand_particle_bitmap</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>Weather</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>Weather</scope><name>SetRenderOy</name></member>
+      <member refid="class_weather_1a887289f3321f9436c3b04ce320a2e8a3" prot="public" virt="non-virtual"><scope>Weather</scope><name>SetTone</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>Weather</scope><name>SetVisible</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>Weather</scope><name>SetZ</name></member>
+      <member refid="class_weather_1a9505fde1731aeb2f61f1ec158f0a1bdb" prot="private" virt="non-virtual"><scope>Weather</scope><name>snow_bitmap</name></member>
+      <member refid="class_weather_1a9a5589e0ad313afb91d2c5b899b10a41" prot="private" virt="non-virtual"><scope>Weather</scope><name>tone_bitmap</name></member>
+      <member refid="class_weather_1abfc60b0ec508661dfa294668b1ad0abf" prot="private" virt="non-virtual"><scope>Weather</scope><name>tone_dirty</name></member>
+      <member refid="class_weather_1a7d457bd6f98489cd8e778cf05fb46363" prot="private" virt="non-virtual"><scope>Weather</scope><name>tone_effect</name></member>
+      <member refid="class_weather_1a7ad4c8a19ac2bd7b484e42ca4515c2f4" prot="public" virt="non-virtual"><scope>Weather</scope><name>Update</name></member>
+      <member refid="class_weather_1aa404c94fec05b825454a7309827767c6" prot="public" virt="non-virtual"><scope>Weather</scope><name>Weather</name></member>
+      <member refid="class_weather_1a31752416ebe5caf03e8a6b0bd7eca84b" prot="private" virt="non-virtual"><scope>Weather</scope><name>weather_surface</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>Weather</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>Weather</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

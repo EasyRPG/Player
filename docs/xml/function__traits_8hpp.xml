@@ -1,0 +1,344 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="function__traits_8hpp" kind="file" language="C++">
+    <compoundname>function_traits.hpp</compoundname>
+    <includes local="no">tuple</includes>
+    <includes local="no">functional</includes>
+    <includedby refid="anyf_8hpp" local="yes">leasy/iky7/anyf.hpp</includedby>
+    <includedby refid="class_8hpp" local="yes">leasy/metadata/class.hpp</includedby>
+    <includedby refid="function_8hpp" local="yes">leasy/metadata/function.hpp</includedby>
+    <includedby refid="metatypes_8hpp" local="yes">leasy/typings/metatypes.hpp</includedby>
+    <includedby refid="dispatcher_8hpp" local="yes">leasy/ul2/dispatcher.hpp</includedby>
+    <includedby refid="function__wrapper_8hpp" local="yes">leasy/ul2/function_wrapper.hpp</includedby>
+    <includedby refid="lua__stack_8hpp" local="yes">leasy/ul2/lua_stack.hpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/ul2/function_traits.hpp</label>
+        <link refid="function__traits_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>functional</label>
+      </node>
+      <node id="2">
+        <label>tuple</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="5">
+        <label>algo.cpp</label>
+        <link refid="algo_8cpp"/>
+      </node>
+      <node id="20">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="23">
+        <label>graphics.cpp</label>
+        <link refid="graphics_8cpp"/>
+      </node>
+      <node id="19">
+        <label>leasy/events.hpp</label>
+        <link refid="events_8hpp"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>leasy/iky7/anyf.hpp</label>
+        <link refid="anyf_8hpp"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>leasy/ily3/boot.cpp</label>
+        <link refid="boot_8cpp"/>
+      </node>
+      <node id="17">
+        <label>leasy/ily3/ily3.cpp</label>
+        <link refid="ily3_8cpp"/>
+      </node>
+      <node id="18">
+        <label>leasy/ily3/ily3.hpp</label>
+        <link refid="ily3_8hpp"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>leasy/ily3/libsys.cpp</label>
+        <link refid="libsys_8cpp"/>
+      </node>
+      <node id="15">
+        <label>leasy/ily3/libsys.hpp</label>
+        <link refid="libsys_8hpp"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>leasy/kits/rtt.hpp</label>
+        <link refid="rtt_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>leasy/leasy.cpp</label>
+        <link refid="leasy_8cpp"/>
+      </node>
+      <node id="22">
+        <label>leasy/leasy.hpp</label>
+        <link refid="leasy_8hpp"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>leasy/lmain.cpp</label>
+        <link refid="lmain_8cpp"/>
+      </node>
+      <node id="3">
+        <label>leasy/metadata/class.hpp</label>
+        <link refid="class_8hpp"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>leasy/metadata/function.hpp</label>
+        <link refid="function_8hpp"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>leasy/metadata/metadata.hpp</label>
+        <link refid="metadata_8hpp"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>leasy/metadata/namespace.hpp</label>
+        <link refid="namespace_8hpp"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>leasy/metadata/reflection.hpp</label>
+        <link refid="reflection_8hpp"/>
+      </node>
+      <node id="8">
+        <label>leasy/metadata/type.cpp</label>
+        <link refid="type_8cpp"/>
+      </node>
+      <node id="28">
+        <label>leasy/metadata/type.hpp</label>
+        <link refid="type_8hpp"/>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>leasy/typings/metatypes.hpp</label>
+        <link refid="metatypes_8hpp"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>leasy/ui/winstream.hpp</label>
+        <link refid="winstream_8hpp"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>leasy/ul2/dispatcher.hpp</label>
+        <link refid="dispatcher_8hpp"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/ul2/function_traits.hpp</label>
+        <link refid="function__traits_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>leasy/ul2/function_wrapper.hpp</label>
+        <link refid="function__wrapper_8hpp"/>
+      </node>
+      <node id="11">
+        <label>leasy/ul2/lua_stack.hpp</label>
+        <link refid="lua__stack_8hpp"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>leasy/ul2/state.hpp</label>
+        <link refid="state_8hpp"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>platform/sdl/main.cpp</label>
+        <link refid="sdl_2main_8cpp"/>
+      </node>
+      <node id="21">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4" prot="public">leasy::ul2::function_traits&lt; R(Args...)&gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_5_08_07_args_8_8_8_08_4" prot="public">leasy::ul2::function_traits&lt; R(*)(Args...)&gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_6_08_07_args_8_8_8_08_4" prot="public">leasy::ul2::function_traits&lt; R(&amp;)(Args...)&gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_c_1_1_5_08_07_args_8_8_8_08_4" prot="public">leasy::ul2::function_traits&lt; R(C::*)(Args...)&gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_c_1_1_5_08_07_args_8_8_8_08_01const_01_4" prot="public">leasy::ul2::function_traits&lt; R(C::*)(Args...) const &gt;</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1function__traits" prot="public">leasy::ul2::function_traits</innerclass>
+    <innernamespace refid="namespaceleasy">leasy</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ul2">leasy::ul2</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;tuple&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;functional&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1ul2" kindref="compound">leasy::ul2</ref><sp/>{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">function_traits</ref>;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8aa1d869560fdde1ac0e0420c2771310f8" kindref="member">R</ref>,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
+<codeline lineno="33" refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">function_traits</ref>&lt;R(Args...)&gt;<sp/>{</highlight></codeline>
+<codeline lineno="34" refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1aa237f5b388b512112404c9d68186609a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1aa237f5b388b512112404c9d68186609a" kindref="member">return_type</ref><sp/>=<sp/>R;</highlight></codeline>
+<codeline lineno="35" refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1af4b2e31cca0f3001cb290dd6d415ef34" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1af4b2e31cca0f3001cb290dd6d415ef34" kindref="member">args_tuple</ref><sp/><sp/>=<sp/>std::tuple&lt;Args...&gt;;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;std::</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>I&gt;</highlight></codeline>
+<codeline lineno="38" refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1ac82dfae487e119cb8bbbd75662612272" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1ac82dfae487e119cb8bbbd75662612272" kindref="member">arg</ref><sp/>=<sp/>std::tuple_element_t&lt;I,<sp/>args_tuple&gt;;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1a832d2b1fad3caa28ff5c443cca83be6c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1a832d2b1fad3caa28ff5c443cca83be6c" kindref="member">class_type</ref><sp/>=<sp/>void;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1ae6539b79cb3d7e16ccbf4e8f823df03b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>std::size_t<sp/><ref refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1ae6539b79cb3d7e16ccbf4e8f823df03b" kindref="member">arity</ref><sp/>=<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">...(Args);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1a84684b2edbbb219cea60bdb02af5dc33" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1a84684b2edbbb219cea60bdb02af5dc33" kindref="member">functional</ref><sp/>=<sp/>std::function&lt;R(Args...)&gt;;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>R,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
+<codeline lineno="48" refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_5_08_07_args_8_8_8_08_4" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">function_traits</ref>&lt;R(*)(Args...)&gt;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/><ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">function_traits</ref>&lt;R(Args...)&gt;<sp/>{};</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>R,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
+<codeline lineno="53" refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_6_08_07_args_8_8_8_08_4" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">function_traits</ref>&lt;R(&amp;)(Args...)&gt;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/><ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">function_traits</ref>&lt;R(Args...)&gt;<sp/>{};</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>C,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>R,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
+<codeline lineno="57" refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_c_1_1_5_08_07_args_8_8_8_08_4" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">function_traits</ref>&lt;R(C::*)(Args...)&gt;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/><ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">function_traits</ref>&lt;R(Args...)&gt;<sp/>{</highlight></codeline>
+<codeline lineno="59" refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_c_1_1_5_08_07_args_8_8_8_08_4_1a88d9ff2b3d8d0f5c4d3ca972a1ac046a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_c_1_1_5_08_07_args_8_8_8_08_4_1a88d9ff2b3d8d0f5c4d3ca972a1ac046a" kindref="member">class_type</ref><sp/>=<sp/>C;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>C,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>R,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>Args&gt;</highlight></codeline>
+<codeline lineno="63" refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_c_1_1_5_08_07_args_8_8_8_08_01const_01_4" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">function_traits</ref>&lt;R(C::*)(Args...)<sp/>const&gt;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/><ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">function_traits</ref>&lt;R(Args...)&gt;<sp/>{</highlight></codeline>
+<codeline lineno="65" refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_c_1_1_5_08_07_args_8_8_8_08_01const_01_4_1aaa65f1ee9039dd3845993ca9755ef5c0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_c_1_1_5_08_07_args_8_8_8_08_01const_01_4_1aaa65f1ee9039dd3845993ca9755ef5c0" kindref="member">class_type</ref><sp/>=<sp/>C;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="69" refid="structleasy_1_1ul2_1_1function__traits" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">function_traits</ref></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/><ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">function_traits</ref>&lt;decltype(&amp;T::operator())&gt;<sp/>{};</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>F&gt;</highlight></codeline>
+<codeline lineno="73" refid="namespaceleasy_1_1ul2_1ab7963859e32181f6ed027dfbf9e587ce" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1ul2_1ab7963859e32181f6ed027dfbf9e587ce" kindref="member">wrap</ref>(F&amp;&amp;<sp/>f)</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>-&gt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">function_traits&lt;std::decay_t&lt;F&gt;</ref>&gt;::functional</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1function__traits" kindref="compound">function_traits&lt;std::decay_t&lt;F&gt;</ref>&gt;::functional(</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>std::forward&lt;F&gt;(f)</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="80"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>leasy::ul2</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/ul2/function_traits.hpp"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ul2::function_traits&lt; R(Args...)&gt;</compoundname>
+    <derivedcompoundref refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_6_08_07_args_8_8_8_08_4" prot="public" virt="non-virtual">leasy::ul2::function_traits&lt; R(&amp;)(Args...)&gt;</derivedcompoundref>
+    <derivedcompoundref refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_5_08_07_args_8_8_8_08_4" prot="public" virt="non-virtual">leasy::ul2::function_traits&lt; R(*)(Args...)&gt;</derivedcompoundref>
+    <derivedcompoundref refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_c_1_1_5_08_07_args_8_8_8_08_01const_01_4" prot="public" virt="non-virtual">leasy::ul2::function_traits&lt; R(C::*)(Args...) const &gt;</derivedcompoundref>
+    <derivedcompoundref refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_c_1_1_5_08_07_args_8_8_8_08_4" prot="public" virt="non-virtual">leasy::ul2::function_traits&lt; R(C::*)(Args...)&gt;</derivedcompoundref>
+    <includes refid="function__traits_8hpp" local="no">function_traits.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type>typename R</type>
+      </param>
+      <param>
+        <type>typename...</type>
+        <declname>Args</declname>
+        <defname>Args</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1aa237f5b388b512112404c9d68186609a" prot="public" static="no">
+        <type>R</type>
+        <definition>using leasy::ul2::function_traits&lt; R(Args...)&gt;::return_type = R</definition>
+        <argsstring></argsstring>
+        <name>return_type</name>
+        <qualifiedname>leasy::ul2::function_traits&lt; R(Args...)&gt;::return_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_traits.hpp" line="34" column="5" bodyfile="leasy/ul2/function_traits.hpp" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1af4b2e31cca0f3001cb290dd6d415ef34" prot="public" static="no">
+        <type>std::tuple&lt; Args... &gt;</type>
+        <definition>using leasy::ul2::function_traits&lt; R(Args...)&gt;::args_tuple = std::tuple&lt;Args...&gt;</definition>
+        <argsstring></argsstring>
+        <name>args_tuple</name>
+        <qualifiedname>leasy::ul2::function_traits&lt; R(Args...)&gt;::args_tuple</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_traits.hpp" line="35" column="5" bodyfile="leasy/ul2/function_traits.hpp" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1ac82dfae487e119cb8bbbd75662612272" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>std::size_t</type>
+            <declname>I</declname>
+            <defname>I</defname>
+          </param>
+        </templateparamlist>
+        <type>std::tuple_element_t&lt; I, <ref refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1af4b2e31cca0f3001cb290dd6d415ef34" kindref="member">args_tuple</ref> &gt;</type>
+        <definition>using leasy::ul2::function_traits&lt; R(Args...)&gt;::arg = std::tuple_element_t&lt;I, args_tuple&gt;</definition>
+        <argsstring></argsstring>
+        <name>arg</name>
+        <qualifiedname>leasy::ul2::function_traits&lt; R(Args...)&gt;::arg</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_traits.hpp" line="38" column="5" bodyfile="leasy/ul2/function_traits.hpp" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1a832d2b1fad3caa28ff5c443cca83be6c" prot="public" static="no">
+        <type>void</type>
+        <definition>using leasy::ul2::function_traits&lt; R(Args...)&gt;::class_type = void</definition>
+        <argsstring></argsstring>
+        <name>class_type</name>
+        <qualifiedname>leasy::ul2::function_traits&lt; R(Args...)&gt;::class_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_traits.hpp" line="40" column="5" bodyfile="leasy/ul2/function_traits.hpp" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1a84684b2edbbb219cea60bdb02af5dc33" prot="public" static="no">
+        <type>std::function&lt; R(Args...)&gt;</type>
+        <definition>using leasy::ul2::function_traits&lt; R(Args...)&gt;::functional = std::function&lt;R(Args...)&gt;</definition>
+        <argsstring></argsstring>
+        <name>functional</name>
+        <qualifiedname>leasy::ul2::function_traits&lt; R(Args...)&gt;::functional</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_traits.hpp" line="44" column="5" bodyfile="leasy/ul2/function_traits.hpp" bodystart="44" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1ae6539b79cb3d7e16ccbf4e8f823df03b" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>std::size_t</type>
+        <definition>std::size_t leasy::ul2::function_traits&lt; R(Args...)&gt;::arity</definition>
+        <argsstring></argsstring>
+        <name>arity</name>
+        <qualifiedname>leasy::ul2::function_traits&lt; R(Args...)&gt;::arity</qualifiedname>
+        <initializer>= sizeof...(Args)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ul2/function_traits.hpp" line="42" column="34" bodyfile="leasy/ul2/function_traits.hpp" bodystart="42" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>leasy::ul2::function_traits&lt; R(&amp;)(Args...)&gt;</label>
+        <link refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_6_08_07_args_8_8_8_08_4"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>leasy::ul2::function_traits&lt; R(*)(Args...)&gt;</label>
+        <link refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_5_08_07_args_8_8_8_08_4"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy::ul2::function_traits&lt; R(Args...)&gt;</label>
+        <link refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4"/>
+      </node>
+      <node id="4">
+        <label>leasy::ul2::function_traits&lt; R(C::*)(Args...) const &gt;</label>
+        <link refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_c_1_1_5_08_07_args_8_8_8_08_01const_01_4"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>leasy::ul2::function_traits&lt; R(C::*)(Args...)&gt;</label>
+        <link refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_c_1_1_5_08_07_args_8_8_8_08_4"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="leasy/ul2/function_traits.hpp" line="33" column="3" bodyfile="leasy/ul2/function_traits.hpp" bodystart="33" bodyend="45"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1ac82dfae487e119cb8bbbd75662612272" prot="public" virt="non-virtual"><scope>leasy::ul2::function_traits&lt; R(Args...)&gt;</scope><name>arg</name></member>
+      <member refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1af4b2e31cca0f3001cb290dd6d415ef34" prot="public" virt="non-virtual"><scope>leasy::ul2::function_traits&lt; R(Args...)&gt;</scope><name>args_tuple</name></member>
+      <member refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1ae6539b79cb3d7e16ccbf4e8f823df03b" prot="public" virt="non-virtual"><scope>leasy::ul2::function_traits&lt; R(Args...)&gt;</scope><name>arity</name></member>
+      <member refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1a832d2b1fad3caa28ff5c443cca83be6c" prot="public" virt="non-virtual"><scope>leasy::ul2::function_traits&lt; R(Args...)&gt;</scope><name>class_type</name></member>
+      <member refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1a84684b2edbbb219cea60bdb02af5dc33" prot="public" virt="non-virtual"><scope>leasy::ul2::function_traits&lt; R(Args...)&gt;</scope><name>functional</name></member>
+      <member refid="structleasy_1_1ul2_1_1function__traits_3_01_r_07_args_8_8_8_08_4_1aa237f5b388b512112404c9d68186609a" prot="public" virt="non-virtual"><scope>leasy::ul2::function_traits&lt; R(Args...)&gt;</scope><name>return_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

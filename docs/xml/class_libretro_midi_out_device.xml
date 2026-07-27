@@ -1,0 +1,236 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_libretro_midi_out_device" kind="class" language="C++" prot="public">
+    <compoundname>LibretroMidiOutDevice</compoundname>
+    <basecompoundref refid="class_midi_decoder" prot="public" virt="non-virtual">MidiDecoder</basecompoundref>
+    <includes refid="midiout__device_8h" local="no">midiout_device.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_libretro_midi_out_device_1a35a22e3af786ceecd34abeef24e86d04" prot="private" static="no" mutable="no">
+        <type>struct retro_midi_interface</type>
+        <definition>struct retro_midi_interface LibretroMidiOutDevice::midi_out</definition>
+        <argsstring></argsstring>
+        <name>midi_out</name>
+        <qualifiedname>LibretroMidiOutDevice::midi_out</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/midiout_device.h" line="38" column="27" bodyfile="platform/libretro/midiout_device.h" bodystart="38" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_libretro_midi_out_device_1ae375c892b6c488291194547bc8b4c544" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool LibretroMidiOutDevice::works</definition>
+        <argsstring></argsstring>
+        <name>works</name>
+        <qualifiedname>LibretroMidiOutDevice::works</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/midiout_device.h" line="39" column="6" bodyfile="platform/libretro/midiout_device.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_libretro_midi_out_device_1a21345ad209c039d1d8bba70c2a819e01" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>LibretroMidiOutDevice::LibretroMidiOutDevice</definition>
+        <argsstring>(std::string &amp;status_message)</argsstring>
+        <name>LibretroMidiOutDevice</name>
+        <qualifiedname>LibretroMidiOutDevice::LibretroMidiOutDevice</qualifiedname>
+        <param>
+          <type>std::string &amp;</type>
+          <declname>status_message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/midiout_device.h" line="30" column="1" bodyfile="platform/libretro/midiout_device.cpp" bodystart="22" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="class_libretro_midi_out_device_1a9ad28292030c7d0b6207a31c1bc8c790" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void LibretroMidiOutDevice::SendMidiMessage</definition>
+        <argsstring>(uint32_t message) override</argsstring>
+        <name>SendMidiMessage</name>
+        <qualifiedname>LibretroMidiOutDevice::SendMidiMessage</qualifiedname>
+        <reimplements refid="class_midi_decoder_1a224acd738e2f9c66e4caabdfb4653d61">SendMidiMessage</reimplements>
+        <param>
+          <type>uint32_t</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Forwards a Midi message to the Midi decoder</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Midi message </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/midiout_device.h" line="32" column="6" bodyfile="platform/libretro/midiout_device.cpp" bodystart="36" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="class_libretro_midi_out_device_1a602a7b184fe8ebdb19ed3c70a0eda9ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void LibretroMidiOutDevice::SendSysExMessage</definition>
+        <argsstring>(const uint8_t *data, size_t size) override</argsstring>
+        <name>SendSysExMessage</name>
+        <qualifiedname>LibretroMidiOutDevice::SendSysExMessage</qualifiedname>
+        <reimplements refid="class_midi_decoder_1a15e5774605a1d77b05e5d332ebef74c9">SendSysExMessage</reimplements>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Forwards a SysEx Message to the Midi Decoder</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>sysex content </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>length of sysex content (data) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/midiout_device.h" line="33" column="6" bodyfile="platform/libretro/midiout_device.cpp" bodystart="62" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="function" id="class_libretro_midi_out_device_1aadd1c2781c363c45616002a5d2113322" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string LibretroMidiOutDevice::GetName</definition>
+        <argsstring>() override</argsstring>
+        <name>GetName</name>
+        <qualifiedname>LibretroMidiOutDevice::GetName</qualifiedname>
+        <reimplements refid="class_midi_decoder_1af4d40d12d6758967cb2dcb73f3a06900">GetName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the unique name of the Midi decoder.</para>
+<para><simplesect kind="return"><para>decoder name </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/midiout_device.h" line="34" column="13" bodyfile="platform/libretro/midiout_device.cpp" bodystart="69" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="class_libretro_midi_out_device_1a82c164ee15c184e88e34a62f1601a365" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool LibretroMidiOutDevice::IsInitialized</definition>
+        <argsstring>() const</argsstring>
+        <name>IsInitialized</name>
+        <qualifiedname>LibretroMidiOutDevice::IsInitialized</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/libretro/midiout_device.h" line="35" column="6" bodyfile="platform/libretro/midiout_device.cpp" bodystart="73" bodyend="75"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Plays MIDI through Libretro API </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>LibretroMidiOutDevice</label>
+        <link refid="class_libretro_midi_out_device"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MidiDecoder</label>
+        <link refid="class_midi_decoder"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>LibretroMidiOutDevice</label>
+        <link refid="class_libretro_midi_out_device"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MidiDecoder</label>
+        <link refid="class_midi_decoder"/>
+      </node>
+    </collaborationgraph>
+    <location file="platform/libretro/midiout_device.h" line="28" column="1" bodyfile="platform/libretro/midiout_device.h" bodystart="28" bodyend="40"/>
+    <listofallmembers>
+      <member refid="class_midi_decoder_1a03c883f6c10808ce7f95559018eb9f07" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>ChangeFluidsynthSoundfont</name></member>
+      <member refid="class_midi_decoder_1a3df91771d3a83c4d52c5706af9619fa7" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>CheckFluidsynth</name></member>
+      <member refid="class_midi_decoder_1a9beb09513b83be3c65ace1c700cb7b13" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>CheckWildMidi</name></member>
+      <member refid="class_midi_decoder_1aea38a9c8766ad49ee47cd509b71889f3" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>Create</name></member>
+      <member refid="class_midi_decoder_1ab90e4f43be463ff0f045f320569d6d3f" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>CreateFluidsynth</name></member>
+      <member refid="class_midi_decoder_1a1bfc000db967fff83a03b9737ae22571" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>CreateFmMidi</name></member>
+      <member refid="class_midi_decoder_1ac027fd25d15a3eab594f85448c3e9aac" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>CreateWildMidi</name></member>
+      <member refid="class_midi_decoder_1a9b662741035e2a82a9b7e2aa9a406bd8" prot="public" virt="virtual"><scope>LibretroMidiOutDevice</scope><name>FillBuffer</name></member>
+      <member refid="class_midi_decoder_1a4cc4e1c89b089d4ebeaab82d89a8332c" prot="protected" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>frequency</name></member>
+      <member refid="class_midi_decoder_1a6417064ebe5f3b42299facc0b54f341b" prot="public" virt="virtual"><scope>LibretroMidiOutDevice</scope><name>GetFormat</name></member>
+      <member refid="class_libretro_midi_out_device_1aadd1c2781c363c45616002a5d2113322" prot="public" virt="virtual"><scope>LibretroMidiOutDevice</scope><name>GetName</name></member>
+      <member refid="class_libretro_midi_out_device_1a82c164ee15c184e88e34a62f1601a365" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>IsInitialized</name></member>
+      <member refid="class_libretro_midi_out_device_1a21345ad209c039d1d8bba70c2a819e01" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>LibretroMidiOutDevice</name></member>
+      <member refid="class_libretro_midi_out_device_1a35a22e3af786ceecd34abeef24e86d04" prot="private" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>midi_out</name></member>
+      <member refid="class_midi_decoder_1a9111f9360e9afe04c4a36e1fb45181e2" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>MidiDecoder</name></member>
+      <member refid="class_midi_decoder_1a282d792c6c08f01e8980bae08bc9be90" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>MidiDecoder</name></member>
+      <member refid="class_midi_decoder_1a83eb8eec90b545be05f4d5506d22a3cd" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>MidiDecoder</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>MidiEvent</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92aefb0f519c3e8dacf7f5e687d0d27c4a6" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>MidiEvent_ChannelPressure</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92adea32a25b2d36ebbfe69c3efac1e1501" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>MidiEvent_Controller</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92ab3c25e6206ee22d077812a5a3b94a211" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>MidiEvent_KeyPressure</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a27cba7e4508b870ae8ea80ca162c4433" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>MidiEvent_NoteOff</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a53a94fde6f981169615b7d5427cccb78" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>MidiEvent_NoteOn</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92aa1ff6af7ff6c70ca07022bf620b3ccd3" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>MidiEvent_PitchBend</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a3509a9d33ea0da16a480395a0ee4af5e" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>MidiEvent_ProgramChange</name></member>
+      <member refid="class_midi_decoder_1afd17f90102463d31d3b739936f3e70dd" prot="public" virt="virtual"><scope>LibretroMidiOutDevice</scope><name>NeedsSoftReset</name></member>
+      <member refid="class_midi_decoder_1a6806f9b6c94b9275b4495d8466692b4a" prot="public" virt="virtual"><scope>LibretroMidiOutDevice</scope><name>OnNewMidi</name></member>
+      <member refid="class_midi_decoder_1a622decc74141fffbb272c8be23af0215" prot="public" virt="virtual"><scope>LibretroMidiOutDevice</scope><name>Open</name></member>
+      <member refid="class_midi_decoder_1a463917459cc34a694f53c50b9e00f267" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>operator=</name></member>
+      <member refid="class_midi_decoder_1a4b5c64f6f1256d07812614519240a6bb" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>operator=</name></member>
+      <member refid="class_midi_decoder_1aa4c0f006466de50a3f7c84460cf0f1ea" prot="public" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>Reset</name></member>
+      <member refid="class_midi_decoder_1abad45713922fef863804905572041ef0" prot="public" virt="virtual"><scope>LibretroMidiOutDevice</scope><name>Seek</name></member>
+      <member refid="class_libretro_midi_out_device_1a9ad28292030c7d0b6207a31c1bc8c790" prot="public" virt="virtual"><scope>LibretroMidiOutDevice</scope><name>SendMidiMessage</name></member>
+      <member refid="class_libretro_midi_out_device_1a602a7b184fe8ebdb19ed3c70a0eda9ab" prot="public" virt="virtual"><scope>LibretroMidiOutDevice</scope><name>SendSysExMessage</name></member>
+      <member refid="class_midi_decoder_1aecab4ef828716841e2c6f5468a734961" prot="public" virt="virtual"><scope>LibretroMidiOutDevice</scope><name>SetFormat</name></member>
+      <member refid="class_midi_decoder_1ab492d527453d3b8513c2e7c2cb34b237" prot="public" virt="virtual"><scope>LibretroMidiOutDevice</scope><name>SetPitch</name></member>
+      <member refid="class_midi_decoder_1a07adfc534e13ab8dabac2ca2abf68676" prot="public" virt="virtual"><scope>LibretroMidiOutDevice</scope><name>SupportsMidiMessages</name></member>
+      <member refid="class_libretro_midi_out_device_1ae375c892b6c488291194547bc8b4c544" prot="private" virt="non-virtual"><scope>LibretroMidiOutDevice</scope><name>works</name></member>
+      <member refid="class_midi_decoder_1a62bb942c2ce3a52b4f8903b80bb94065" prot="public" virt="virtual"><scope>LibretroMidiOutDevice</scope><name>~MidiDecoder</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

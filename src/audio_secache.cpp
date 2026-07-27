@@ -227,3 +227,4 @@ int AudioSeDecoder::FillBuffer(uint8_t *buffer, int size) {
 int AudioSeDecoder::GetPitch() const {
 	return 100;
 }
+

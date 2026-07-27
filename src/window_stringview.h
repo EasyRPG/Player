@@ -71,3 +71,4 @@ inline int Window_StringView::GetReservedLineCount() const {
 }
 
 #endif
+

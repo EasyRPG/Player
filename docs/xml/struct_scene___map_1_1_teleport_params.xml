@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_scene___map_1_1_teleport_params" kind="struct" language="C++" prot="private">
+    <compoundname>Scene_Map::TeleportParams</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_scene___map_1_1_teleport_params_1a3435b859fadbbd5804e406ad32ca5b82" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Map::TeleportParams::run_foreground_events</definition>
+        <argsstring></argsstring>
+        <name>run_foreground_events</name>
+        <qualifiedname>Scene_Map::TeleportParams::run_foreground_events</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="64" column="6" bodyfile="scene_map.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_scene___map_1_1_teleport_params_1a173dc3b5a68e68ed2c9f4568f3bb9e85" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Map::TeleportParams::erase_screen</definition>
+        <argsstring></argsstring>
+        <name>erase_screen</name>
+        <qualifiedname>Scene_Map::TeleportParams::erase_screen</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="65" column="6" bodyfile="scene_map.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_scene___map_1_1_teleport_params_1a97ab77a5a8e24396903a74405b0a4b38" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Map::TeleportParams::use_default_transition_in</definition>
+        <argsstring></argsstring>
+        <name>use_default_transition_in</name>
+        <qualifiedname>Scene_Map::TeleportParams::use_default_transition_in</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="66" column="6" bodyfile="scene_map.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_scene___map_1_1_teleport_params_1a62f39cc62cf494900fbcf0348341fff3" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Map::TeleportParams::defer_recursive_teleports</definition>
+        <argsstring></argsstring>
+        <name>defer_recursive_teleports</name>
+        <qualifiedname>Scene_Map::TeleportParams::defer_recursive_teleports</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_map.h" line="67" column="6" bodyfile="scene_map.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="scene_map.h" line="63" column="1" bodyfile="scene_map.h" bodystart="63" bodyend="68"/>
+    <listofallmembers>
+      <member refid="struct_scene___map_1_1_teleport_params_1a62f39cc62cf494900fbcf0348341fff3" prot="public" virt="non-virtual"><scope>Scene_Map::TeleportParams</scope><name>defer_recursive_teleports</name></member>
+      <member refid="struct_scene___map_1_1_teleport_params_1a173dc3b5a68e68ed2c9f4568f3bb9e85" prot="public" virt="non-virtual"><scope>Scene_Map::TeleportParams</scope><name>erase_screen</name></member>
+      <member refid="struct_scene___map_1_1_teleport_params_1a3435b859fadbbd5804e406ad32ca5b82" prot="public" virt="non-virtual"><scope>Scene_Map::TeleportParams</scope><name>run_foreground_events</name></member>
+      <member refid="struct_scene___map_1_1_teleport_params_1a97ab77a5a8e24396903a74405b0a4b38" prot="public" virt="non-virtual"><scope>Scene_Map::TeleportParams</scope><name>use_default_transition_in</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___ineluki_1_1_cheat_item" kind="struct" language="C++" prot="private">
+    <compoundname>Game_Ineluki::CheatItem</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___ineluki_1_1_cheat_item_1ac6f2743e9d26f0db1ee27b7cbb4904e6" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="namespace_input_1_1_keys_1a05ec2c767c2321c1ddc27dfe4810f5e8" kindref="member">Input::Keys::InputKey</ref> &gt;</type>
+        <definition>std::vector&lt;Input::Keys::InputKey&gt; Game_Ineluki::CheatItem::keys</definition>
+        <argsstring></argsstring>
+        <name>keys</name>
+        <qualifiedname>Game_Ineluki::CheatItem::keys</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Cheat code </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="230" column="13" bodyfile="game_ineluki.h" bodystart="230" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___ineluki_1_1_cheat_item_1aed812dd6a8ba80ea698a4e8d983d2908" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Ineluki::CheatItem::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>Game_Ineluki::CheatItem::value</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="union_value" kindref="compound">Value</ref> to push when cheat was entered </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="232" column="5" bodyfile="game_ineluki.h" bodystart="232" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___ineluki_1_1_cheat_item_1a680066e55536d6fb202c061a6715d7b0" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Ineluki::CheatItem::index</definition>
+        <argsstring></argsstring>
+        <name>index</name>
+        <qualifiedname>Game_Ineluki::CheatItem::index</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Current index in the cheatcode </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="234" column="5" bodyfile="game_ineluki.h" bodystart="234" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_game___ineluki_1_1_cheat_item_1a8aeac98a008723d631ff14561c065896" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Ineluki::CheatItem::CheatItem</definition>
+        <argsstring>(const std::string &amp;code, int value)</argsstring>
+        <name>CheatItem</name>
+        <qualifiedname>Game_Ineluki::CheatItem::CheatItem</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>code</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_ineluki.h" line="236" column="1" bodyfile="game_ineluki.cpp" bodystart="423" bodyend="432"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_ineluki.h" line="228" column="1" bodyfile="game_ineluki.h" bodystart="228" bodyend="237"/>
+    <listofallmembers>
+      <member refid="struct_game___ineluki_1_1_cheat_item_1a8aeac98a008723d631ff14561c065896" prot="public" virt="non-virtual"><scope>Game_Ineluki::CheatItem</scope><name>CheatItem</name></member>
+      <member refid="struct_game___ineluki_1_1_cheat_item_1a680066e55536d6fb202c061a6715d7b0" prot="public" virt="non-virtual"><scope>Game_Ineluki::CheatItem</scope><name>index</name></member>
+      <member refid="struct_game___ineluki_1_1_cheat_item_1ac6f2743e9d26f0db1ee27b7cbb4904e6" prot="public" virt="non-virtual"><scope>Game_Ineluki::CheatItem</scope><name>keys</name></member>
+      <member refid="struct_game___ineluki_1_1_cheat_item_1aed812dd6a8ba80ea698a4e8d983d2908" prot="public" virt="non-virtual"><scope>Game_Ineluki::CheatItem</scope><name>value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

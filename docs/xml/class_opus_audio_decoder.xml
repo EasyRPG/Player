@@ -1,0 +1,527 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_opus_audio_decoder" kind="class" language="C++" prot="public">
+    <compoundname>OpusAudioDecoder</compoundname>
+    <basecompoundref refid="class_audio_decoder" prot="public" virt="non-virtual">AudioDecoder</basecompoundref>
+    <includes refid="decoder__opus_8h" local="no">decoder_opus.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_opus_audio_decoder_1a8c1bbd87601a194f8b9dacccebb6f762" prot="private" static="no" mutable="no">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream OpusAudioDecoder::stream</definition>
+        <argsstring></argsstring>
+        <name>stream</name>
+        <qualifiedname>OpusAudioDecoder::stream</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="56" column="32" bodyfile="decoder_opus.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_opus_audio_decoder_1a8608719a1579216e23459989755d6285" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpusAudioDecoder::finished</definition>
+        <argsstring></argsstring>
+        <name>finished</name>
+        <qualifiedname>OpusAudioDecoder::finished</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="57" column="6" bodyfile="decoder_opus.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_opus_audio_decoder_1a683396f34a48ebb74c87d4d27f2201b8" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int OpusAudioDecoder::frequency</definition>
+        <argsstring></argsstring>
+        <name>frequency</name>
+        <qualifiedname>OpusAudioDecoder::frequency</qualifiedname>
+        <initializer>= 48000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="58" column="5" bodyfile="decoder_opus.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_opus_audio_decoder_1a33c3263117b4fbc4203a305b4e0ef55e" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int OpusAudioDecoder::channels</definition>
+        <argsstring></argsstring>
+        <name>channels</name>
+        <qualifiedname>OpusAudioDecoder::channels</qualifiedname>
+        <initializer>= 2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="59" column="5" bodyfile="decoder_opus.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_opus_audio_decoder_1ad3dab1dd05d7f02d5b34c1956c761a64" prot="private" static="no" mutable="no">
+        <type>struct OpusAudioDecoder::@051337163131067006001365177325004101237352275072</type>
+        <definition>struct OpusAudioDecoder::@051337163131067006001365177325004101237352275072 OpusAudioDecoder::loop</definition>
+        <argsstring></argsstring>
+        <name>loop</name>
+        <qualifiedname>OpusAudioDecoder::loop</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="67" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_opus_audio_decoder_1a2aff546b2ca64f72d6ae8c0aaf272502" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpusAudioDecoder::looping</definition>
+        <argsstring></argsstring>
+        <name>looping</name>
+        <qualifiedname>OpusAudioDecoder::looping</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="62" column="6" bodyfile="decoder_opus.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_opus_audio_decoder_1a91e266dbbd49262e663ae3e0015e795f" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool OpusAudioDecoder::to_end</definition>
+        <argsstring></argsstring>
+        <name>to_end</name>
+        <qualifiedname>OpusAudioDecoder::to_end</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="64" column="6" bodyfile="decoder_opus.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_opus_audio_decoder_1a059ec0e0c4e315cd63678a7e6a04407d" prot="public" static="no" mutable="no">
+        <type>int64_t</type>
+        <definition>int64_t OpusAudioDecoder::start</definition>
+        <argsstring></argsstring>
+        <name>start</name>
+        <qualifiedname>OpusAudioDecoder::start</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="65" column="9" bodyfile="decoder_opus.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_opus_audio_decoder_1a77e0b180a3e97675f88229cd6d33a363" prot="public" static="no" mutable="no">
+        <type>int64_t</type>
+        <definition>int64_t OpusAudioDecoder::end</definition>
+        <argsstring></argsstring>
+        <name>end</name>
+        <qualifiedname>OpusAudioDecoder::end</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="66" column="9" bodyfile="decoder_opus.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_opus_audio_decoder_1a45aaa14861a31ec4b7b38723c0cf71a2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpusAudioDecoder::OpusAudioDecoder</definition>
+        <argsstring>()</argsstring>
+        <name>OpusAudioDecoder</name>
+        <qualifiedname>OpusAudioDecoder::OpusAudioDecoder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="34" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_opus_audio_decoder_1a7f4c3072dce11a2a76c0ccd0849aafd5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>OpusAudioDecoder::~OpusAudioDecoder</definition>
+        <argsstring>()</argsstring>
+        <name>~OpusAudioDecoder</name>
+        <qualifiedname>OpusAudioDecoder::~OpusAudioDecoder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="36" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_opus_audio_decoder_1a24d362d1eb9ceddfb88df7236d418fc0" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool OpusAudioDecoder::Open</definition>
+        <argsstring>(Filesystem_Stream::InputStream stream) override</argsstring>
+        <name>Open</name>
+        <qualifiedname>OpusAudioDecoder::Open</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a572f94aa66fe630a45cbe1c500c55213">Open</reimplements>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+          <declname>stream</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Assigns a stream to the audio decoder. Open should be only called once per audio decoder instance. Use GetError to get the error reason on failure.</para>
+<para><simplesect kind="return"><para>true if initializing was successful, false otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="39" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_opus_audio_decoder_1a1573c9025e952fccb40c337b3e219017" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool OpusAudioDecoder::Seek</definition>
+        <argsstring>(std::streamoff offset, std::ios_base::seekdir origin) override</argsstring>
+        <name>Seek</name>
+        <qualifiedname>OpusAudioDecoder::Seek</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a5edd0cdbf8114d680a94c269b24e79f8">Seek</reimplements>
+        <param>
+          <type>std::streamoff</type>
+          <declname>offset</declname>
+        </param>
+        <param>
+          <type>std::ios_base::seekdir</type>
+          <declname>origin</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Seeks in the audio stream. The value of offset is implementation defined but is guaranteed to match the result of Tell. Libraries must support at least seek from the start for <ref refid="class_audio_decoder_base_1a2c9d165295deeb0cd12fea13cdd60467" kindref="member">Rewind()</ref>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>offset</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Offset to seek to </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>origin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Position to seek from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether seek was successful </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="41" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_opus_audio_decoder_1a656a1598d11a7404cfc7a8e25eaf06e1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool OpusAudioDecoder::IsFinished</definition>
+        <argsstring>() const override</argsstring>
+        <name>IsFinished</name>
+        <qualifiedname>OpusAudioDecoder::IsFinished</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a6dc473563b9edccf21d07a39fae4fc2d">IsFinished</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines whether the stream is finished.</para>
+<para><simplesect kind="return"><para>true stream ended </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="43" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_opus_audio_decoder_1a66d7d05c82a2e1425e2ccbcedb0465b9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void OpusAudioDecoder::GetFormat</definition>
+        <argsstring>(int &amp;frequency, AudioDecoder::Format &amp;format, int &amp;channels) const override</argsstring>
+        <name>GetFormat</name>
+        <qualifiedname>OpusAudioDecoder::GetFormat</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1a1710868b1111bf6e33e43156958e0d57">GetFormat</reimplements>
+        <param>
+          <type>int &amp;</type>
+          <declname>frequency</declname>
+        </param>
+        <param>
+          <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">AudioDecoder::Format</ref> &amp;</type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>channels</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieves the format of the audio decoder. It is guaranteed that these settings will stay constant the whole time.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>frequency</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the audio frequency </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the audio format </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>channels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Filled with the amount of channels </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="45" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_opus_audio_decoder_1a1fb97d1583eb77900fe0650d94b59ca2" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool OpusAudioDecoder::SetFormat</definition>
+        <argsstring>(int frequency, AudioDecoder::Format format, int channels) override</argsstring>
+        <name>SetFormat</name>
+        <qualifiedname>OpusAudioDecoder::SetFormat</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1acabfabe4f0b75482cc967b19133288c2">SetFormat</reimplements>
+        <param>
+          <type>int</type>
+          <declname>frequency</declname>
+        </param>
+        <param>
+          <type><ref refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" kindref="member">AudioDecoder::Format</ref></type>
+          <declname>format</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>channels</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Requests a preferred format from the audio decoder. Not all decoders support everything and it&apos;s recommended to use the audio hardware for audio processing. When false is returned use GetFormat to get the real format of the output data.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>frequency</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Audio frequency </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>format</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Audio format </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>channels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of channels </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true when all settings were set, otherwise false (use GetFormat) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="47" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_opus_audio_decoder_1aace14daa26ab9500276f2a5285976838" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int OpusAudioDecoder::GetTicks</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetTicks</name>
+        <qualifiedname>OpusAudioDecoder::GetTicks</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1acecf36942396a6f78a9839b2dc2315db">GetTicks</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns a value suitable for the GetMidiTicks command. For MIDI this is the amount of MIDI ticks, for other formats usually the playback position in seconds.</para>
+<para><simplesect kind="return"><para>Amount of MIDI ticks or position in seconds </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="49" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_opus_audio_decoder_1aab7328c2883c0cf7d58059038b26b25f" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int OpusAudioDecoder::FillBuffer</definition>
+        <argsstring>(uint8_t *buffer, int length) override</argsstring>
+        <name>FillBuffer</name>
+        <qualifiedname>OpusAudioDecoder::FillBuffer</qualifiedname>
+        <reimplements refid="class_audio_decoder_base_1aa06a5130b4b45e44a364162230953636">FillBuffer</reimplements>
+        <param>
+          <type>uint8_t *</type>
+          <declname>buffer</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called by the Decode functions to fill the buffer.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>buffer</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Buffer to fill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Buffer size </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>number of bytes read or -1 on error </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="decoder_opus.h" line="51" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Audio decoder for Opus powered by opusfile</para>
+<para>Class renamed from OpusDecoder because of a conflict with the library. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>AudioDecoder</label>
+        <link refid="class_audio_decoder"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>AudioDecoderBase</label>
+        <link refid="class_audio_decoder_base"/>
+      </node>
+      <node id="1">
+        <label>OpusAudioDecoder</label>
+        <link refid="class_opus_audio_decoder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>AudioDecoder</label>
+        <link refid="class_audio_decoder"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>AudioDecoderBase</label>
+        <link refid="class_audio_decoder_base"/>
+      </node>
+      <node id="1">
+        <label>OpusAudioDecoder</label>
+        <link refid="class_opus_audio_decoder"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="decoder_opus.h" line="32" column="1" bodyfile="decoder_opus.h" bodystart="32" bodyend="68"/>
+    <listofallmembers>
+      <member refid="class_audio_decoder_base_1ad75c2fadcdccc9bdf89626e9689dc73d" prot="public" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>AdjustVolume</name></member>
+      <member refid="class_opus_audio_decoder_1a33c3263117b4fbc4203a305b4e0ef55e" prot="private" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>channels</name></member>
+      <member refid="class_audio_decoder_1a5cc996156bf9b185f46e501ae1d26edd" prot="public" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>Create</name></member>
+      <member refid="class_audio_decoder_base_1a176c25bf79b3e978665d01f649741dca" prot="public" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>Decode</name></member>
+      <member refid="class_audio_decoder_base_1aaec31de02d5329099c26005f8c365fff" prot="protected" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>Decode</name></member>
+      <member refid="class_audio_decoder_base_1a675f8d5337b547549b2c11ad63acffbd" prot="public" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>DecodeAll</name></member>
+      <member refid="class_opus_audio_decoder_1a77e0b180a3e97675f88229cd6d33a363" prot="public" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>end</name></member>
+      <member refid="class_audio_decoder_base_1ad2ce3dacf661c0849a08d1cad2e598d8" prot="protected" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>error_message</name></member>
+      <member refid="class_opus_audio_decoder_1aab7328c2883c0cf7d58059038b26b25f" prot="private" virt="virtual"><scope>OpusAudioDecoder</scope><name>FillBuffer</name></member>
+      <member refid="class_opus_audio_decoder_1a8608719a1579216e23459989755d6285" prot="private" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>finished</name></member>
+      <member refid="class_audio_decoder_base_1af0b1946e2f9e4d477533b556ec2df739" prot="public" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>Format</name></member>
+      <member refid="class_opus_audio_decoder_1a683396f34a48ebb74c87d4d27f2201b8" prot="private" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>frequency</name></member>
+      <member refid="class_audio_decoder_base_1a6459a4a6bbef9a3c1e114687e1ee38a7" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>GetError</name></member>
+      <member refid="class_opus_audio_decoder_1a66d7d05c82a2e1425e2ccbcedb0465b9" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>GetFormat</name></member>
+      <member refid="class_audio_decoder_base_1ada062070c78b1298131fc11bfb84e4b3" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>GetLoopCount</name></member>
+      <member refid="class_audio_decoder_base_1a0dc76b0664e5db6bbf08f15feac0b2f7" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>GetLooping</name></member>
+      <member refid="class_audio_decoder_base_1a2296a26d68cfe1f139cf82aa27c38019" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>GetPitch</name></member>
+      <member refid="class_audio_decoder_1a7f4f01e9acc6b7a7f4cf46f138f0c3cf" prot="public" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>GetSamplesizeForFormat</name></member>
+      <member refid="class_opus_audio_decoder_1aace14daa26ab9500276f2a5285976838" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>GetTicks</name></member>
+      <member refid="class_audio_decoder_base_1ad6fee4301b53a5891a4b37e6cab958f1" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>GetType</name></member>
+      <member refid="class_audio_decoder_1af6aa02e1eafb474d6bda180b432f5e15" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>GetVolume</name></member>
+      <member refid="class_opus_audio_decoder_1a656a1598d11a7404cfc7a8e25eaf06e1" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>IsFinished</name></member>
+      <member refid="class_opus_audio_decoder_1ad3dab1dd05d7f02d5b34c1956c761a64" prot="private" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>loop</name></member>
+      <member refid="class_audio_decoder_base_1ab8feafa866394875dc7c538b79021025" prot="protected" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>loop_count</name></member>
+      <member refid="class_opus_audio_decoder_1a2aff546b2ca64f72d6ae8c0aaf272502" prot="public" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>looping</name></member>
+      <member refid="class_audio_decoder_base_1a0735cf7d77356fbc1a2735804211a9c8" prot="protected" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>music_type</name></member>
+      <member refid="class_opus_audio_decoder_1a24d362d1eb9ceddfb88df7236d418fc0" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>Open</name></member>
+      <member refid="class_opus_audio_decoder_1a45aaa14861a31ec4b7b38723c0cf71a2" prot="public" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>OpusAudioDecoder</name></member>
+      <member refid="class_audio_decoder_1a50ddc8b699ec0ae2fc0495bfd0b1707b" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>Pause</name></member>
+      <member refid="class_audio_decoder_1aecdd23e1eeeb1a0b445302c3e61801b8" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>Resume</name></member>
+      <member refid="class_audio_decoder_base_1a2c9d165295deeb0cd12fea13cdd60467" prot="public" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>Rewind</name></member>
+      <member refid="class_opus_audio_decoder_1a1573c9025e952fccb40c337b3e219017" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>Seek</name></member>
+      <member refid="class_audio_decoder_1a629190e608348a1b91237be1602004a2" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>SetFade</name></member>
+      <member refid="class_opus_audio_decoder_1a1fb97d1583eb77900fe0650d94b59ca2" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>SetFormat</name></member>
+      <member refid="class_audio_decoder_base_1a840273aa05f6b6619863f9b7af142034" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>SetLooping</name></member>
+      <member refid="class_audio_decoder_base_1a81ca81aceceef4b9cc8a6818d3d199ca" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>SetPitch</name></member>
+      <member refid="class_audio_decoder_1ac6a23dcafc0da6b15539133234dad41b" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>SetVolume</name></member>
+      <member refid="class_opus_audio_decoder_1a059ec0e0c4e315cd63678a7e6a04407d" prot="public" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>start</name></member>
+      <member refid="class_opus_audio_decoder_1a8c1bbd87601a194f8b9dacccebb6f762" prot="private" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>stream</name></member>
+      <member refid="class_audio_decoder_base_1a786745c4d49ed9146579c72a8b63ddd7" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>Tell</name></member>
+      <member refid="class_opus_audio_decoder_1a91e266dbbd49262e663ae3e0015e795f" prot="public" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>to_end</name></member>
+      <member refid="class_audio_decoder_1a279e144005fee23820bd0a02db5d87a6" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>Update</name></member>
+      <member refid="class_audio_decoder_base_1a11f5c509ee0dbc2e9e49505c27a8caf7" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>UpdateMidi</name></member>
+      <member refid="class_audio_decoder_base_1ab939d02c28d911d06a0c68087afa90aa" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>WasInited</name></member>
+      <member refid="class_audio_decoder_base_1a9b7f3034af094a9d71e48ac220b4ca6a" prot="public" virt="virtual"><scope>OpusAudioDecoder</scope><name>~AudioDecoderBase</name></member>
+      <member refid="class_opus_audio_decoder_1a7f4c3072dce11a2a76c0ccd0849aafd5" prot="public" virt="non-virtual"><scope>OpusAudioDecoder</scope><name>~OpusAudioDecoder</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

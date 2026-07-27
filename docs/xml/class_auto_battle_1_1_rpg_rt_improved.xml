@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_auto_battle_1_1_rpg_rt_improved" kind="class" language="C++" prot="public">
+    <compoundname>AutoBattle::RpgRtImproved</compoundname>
+    <basecompoundref refid="class_auto_battle_1_1_algorithm_base" prot="public" virt="non-virtual">AutoBattle::AlgorithmBase</basecompoundref>
+    <includes refid="autobattle_8h" local="no">autobattle.h</includes>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_auto_battle_1_1_rpg_rt_improved_1aff060092eedd233daeb4d37872b27849" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto AutoBattle::RpgRtImproved::id</definition>
+        <argsstring></argsstring>
+        <name>id</name>
+        <qualifiedname>AutoBattle::RpgRtImproved::id</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.h" line="104" column="23" bodyfile="autobattle.h" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_auto_battle_1_1_rpg_rt_improved_1abe8a2543ffcdc174879163aa3bb40b69" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto AutoBattle::RpgRtImproved::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>AutoBattle::RpgRtImproved::name</qualifiedname>
+        <initializer>= &quot;RPG_RT+&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.h" line="106" column="23" bodyfile="autobattle.h" bodystart="106" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_auto_battle_1_1_rpg_rt_improved_1ac9e14a3de5fed9c47bda65e459f1601a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int AutoBattle::RpgRtImproved::GetId</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetId</name>
+        <qualifiedname>AutoBattle::RpgRtImproved::GetId</qualifiedname>
+        <reimplements refid="class_auto_battle_1_1_algorithm_base_1a927162bcaf7a41e4bc55a3d8a04a7d87">GetId</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the id of this algorithm </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.h" line="108" column="5" bodyfile="autobattle.h" bodystart="108" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="class_auto_battle_1_1_rpg_rt_improved_1a77b28ba2bdeae71068ea8491e74f9796" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view AutoBattle::RpgRtImproved::GetName</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetName</name>
+        <qualifiedname>AutoBattle::RpgRtImproved::GetName</qualifiedname>
+        <reimplements refid="class_auto_battle_1_1_algorithm_base_1a4737b80596a012416167c7db89e5cc4d">GetName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the name of this algorithm </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.h" line="110" column="18" bodyfile="autobattle.h" bodystart="110" bodyend="110"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_auto_battle_1_1_rpg_rt_improved_1a38eb877db103c90acfdbc17ceffa64e7" prot="private" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void AutoBattle::RpgRtImproved::vSetAutoBattleAction</definition>
+        <argsstring>(Game_Actor &amp;source) override</argsstring>
+        <name>vSetAutoBattleAction</name>
+        <qualifiedname>AutoBattle::RpgRtImproved::vSetAutoBattleAction</qualifiedname>
+        <reimplements refid="class_auto_battle_1_1_algorithm_base_1af95cabd1ec9c2d331310c69a62095411">vSetAutoBattleAction</reimplements>
+        <param>
+          <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="autobattle.h" line="112" column="6" bodyfile="autobattle.cpp" bodystart="75" bodyend="77"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>A custom autobattle algorithm which is similar to RPG_RT but fixes bugs and has improved logic. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>AutoBattle::AlgorithmBase</label>
+        <link refid="class_auto_battle_1_1_algorithm_base"/>
+      </node>
+      <node id="1">
+        <label>AutoBattle::RpgRtImproved</label>
+        <link refid="class_auto_battle_1_1_rpg_rt_improved"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>AutoBattle::AlgorithmBase</label>
+        <link refid="class_auto_battle_1_1_algorithm_base"/>
+      </node>
+      <node id="1">
+        <label>AutoBattle::RpgRtImproved</label>
+        <link refid="class_auto_battle_1_1_rpg_rt_improved"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="autobattle.h" line="102" column="1" bodyfile="autobattle.h" bodystart="102" bodyend="113"/>
+    <listofallmembers>
+      <member refid="class_auto_battle_1_1_rpg_rt_improved_1ac9e14a3de5fed9c47bda65e459f1601a" prot="public" virt="virtual"><scope>AutoBattle::RpgRtImproved</scope><name>GetId</name></member>
+      <member refid="class_auto_battle_1_1_rpg_rt_improved_1a77b28ba2bdeae71068ea8491e74f9796" prot="public" virt="virtual"><scope>AutoBattle::RpgRtImproved</scope><name>GetName</name></member>
+      <member refid="class_auto_battle_1_1_rpg_rt_improved_1aff060092eedd233daeb4d37872b27849" prot="public" virt="non-virtual"><scope>AutoBattle::RpgRtImproved</scope><name>id</name></member>
+      <member refid="class_auto_battle_1_1_rpg_rt_improved_1abe8a2543ffcdc174879163aa3bb40b69" prot="public" virt="non-virtual"><scope>AutoBattle::RpgRtImproved</scope><name>name</name></member>
+      <member refid="class_auto_battle_1_1_algorithm_base_1ab6a2cf5715d9783c77bbaceafd377c36" prot="public" virt="non-virtual"><scope>AutoBattle::RpgRtImproved</scope><name>SetAutoBattleAction</name></member>
+      <member refid="class_auto_battle_1_1_rpg_rt_improved_1a38eb877db103c90acfdbc17ceffa64e7" prot="private" virt="virtual"><scope>AutoBattle::RpgRtImproved</scope><name>vSetAutoBattleAction</name></member>
+      <member refid="class_auto_battle_1_1_algorithm_base_1a4e86b75994f7727c5598496b6d712006" prot="public" virt="virtual"><scope>AutoBattle::RpgRtImproved</scope><name>~AlgorithmBase</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

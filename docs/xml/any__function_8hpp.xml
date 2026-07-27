@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="any__function_8hpp" kind="file" language="C++">
+    <compoundname>any_function.hpp</compoundname>
+    <includes local="no">any</includes>
+    <includes local="no">string</includes>
+    <includes local="no">typeindex</includes>
+    <includes local="no">vector</includes>
+    <includedby refid="function__wrapper_8hpp" local="yes">leasy/ul2/function_wrapper.hpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/ul2/any_function.hpp</label>
+        <link refid="any__function_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>any</label>
+      </node>
+      <node id="3">
+        <label>string</label>
+      </node>
+      <node id="4">
+        <label>typeindex</label>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>leasy/ul2/any_function.hpp</label>
+        <link refid="any__function_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>leasy/ul2/function_wrapper.hpp</label>
+        <link refid="function__wrapper_8hpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structleasy_1_1ul2_1_1lua__arg__info" prot="public">leasy::ul2::lua_arg_info</innerclass>
+    <innerclass refid="structleasy_1_1ul2_1_1any__function" prot="public">leasy::ul2::any_function</innerclass>
+    <innernamespace refid="namespaceleasy">leasy</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ul2">leasy::ul2</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;any&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;typeindex&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Forward<sp/>declaration<sp/>only<sp/>—<sp/>avoids<sp/>dragging<sp/>the<sp/>Lua<sp/>C<sp/>API<sp/>into<sp/>every</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>translation<sp/>unit<sp/>that<sp/>just<sp/>wants<sp/>to<sp/>do<sp/>reflection<sp/>(std::any<sp/>calls).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structlua___state" kindref="compound">lua_State</ref>;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="namespaceleasy_1_1ul2" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1ul2" kindref="compound">leasy::ul2</ref><sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="comment">//<sp/>What<sp/>&quot;shape&quot;<sp/>of<sp/>Lua<sp/>value<sp/>an<sp/>argument<sp/>expects.<sp/>Used<sp/>at<sp/>runtime<sp/>to<sp/>pick</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="comment">//<sp/>the<sp/>right<sp/>overload<sp/>when<sp/>a<sp/>lua_method<sp/>has<sp/>several<sp/>of<sp/>them,<sp/>since<sp/>Lua</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="comment">//<sp/>itself<sp/>carries<sp/>no<sp/>static<sp/>types<sp/>on<sp/>its<sp/>stack.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57" kindref="member">lua_kind</ref><sp/>{</highlight></codeline>
+<codeline lineno="40" refid="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57a84e2c64f38f78ba3ea5c905ab5a2da27" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57a84e2c64f38f78ba3ea5c905ab5a2da27" kindref="member">boolean</ref>,</highlight></codeline>
+<codeline lineno="41" refid="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57ab1bc248a7ff2b2e95569f56de68615df" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57ab1bc248a7ff2b2e95569f56de68615df" kindref="member">number</ref>,</highlight></codeline>
+<codeline lineno="42" refid="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57ab45cffe084dd3d20d928bee85e7b0f21" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57ab45cffe084dd3d20d928bee85e7b0f21" kindref="member">string</ref>,</highlight></codeline>
+<codeline lineno="43" refid="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57a08fd04da1b9c3e4c1c9ab1fe42494a35" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57a08fd04da1b9c3e4c1c9ab1fe42494a35" kindref="member">userdata</ref></highlight></codeline>
+<codeline lineno="44"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="structleasy_1_1ul2_1_1lua__arg__info" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1lua__arg__info" kindref="compound">lua_arg_info</ref><sp/>{</highlight></codeline>
+<codeline lineno="47" refid="structleasy_1_1ul2_1_1lua__arg__info_1a9dcb9d3a87545e3fabf7c1373e5b214e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::type_index<sp/><ref refid="structleasy_1_1ul2_1_1lua__arg__info_1a9dcb9d3a87545e3fabf7c1373e5b214e" kindref="member">type</ref>;</highlight></codeline>
+<codeline lineno="48" refid="structleasy_1_1ul2_1_1lua__arg__info_1a2b7444375d84adbf79640f169e2300f9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceleasy_1_1ul2_1a644ef23c83c4adcd0db4ea17ece23a57" kindref="member">lua_kind</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structleasy_1_1ul2_1_1lua__arg__info_1a2b7444375d84adbf79640f169e2300f9" kindref="member">kind</ref>;</highlight></codeline>
+<codeline lineno="49" refid="structleasy_1_1ul2_1_1lua__arg__info_1adc8f0b0436d10dab31dab6b097389f3b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><sp/><sp/><sp/><sp/><ref refid="structleasy_1_1ul2_1_1lua__arg__info_1adc8f0b0436d10dab31dab6b097389f3b" kindref="member">metatable_name</ref>;<sp/></highlight><highlight class="comment">//<sp/>only<sp/>meaningful<sp/>when<sp/>kind<sp/>==<sp/>userdata</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Type-erased,<sp/>callable<sp/>&quot;reflected<sp/>function&quot;.<sp/>One<sp/>instance<sp/>of<sp/>a</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="comment">//<sp/>function_wrapper&lt;F&gt;<sp/>(see<sp/>function_wrapper.hpp)<sp/>implements<sp/>this<sp/>for</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="comment">//<sp/>any<sp/>F:<sp/>free<sp/>function,<sp/>member<sp/>function<sp/>pointer,<sp/>or<sp/>lambda/functor.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55" refid="structleasy_1_1ul2_1_1any__function" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ul2_1_1any__function" kindref="compound">any_function</ref><sp/>{</highlight></codeline>
+<codeline lineno="56" refid="structleasy_1_1ul2_1_1any__function_1abe3f9d82c9ad4b59d1f2d596d1cb4d22" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1any__function_1abe3f9d82c9ad4b59d1f2d596d1cb4d22" kindref="member">~any_function</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Reads<sp/>its<sp/>arguments<sp/>directly<sp/>off<sp/>the<sp/>Lua<sp/>stack<sp/>(indices<sp/>1..arity),</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>pushes<sp/>the<sp/>return<sp/>value<sp/>(if<sp/>any),<sp/>and<sp/>returns<sp/>the<sp/>Lua-convention</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>result<sp/>count<sp/>(0<sp/>or<sp/>1).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61" refid="structleasy_1_1ul2_1_1any__function_1a916dcedb52930f14a9394fead47a952b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1any__function_1a916dcedb52930f14a9394fead47a952b" kindref="member">invoke_lua</ref>(<ref refid="structlua___state" kindref="compound">lua_State</ref>*<sp/>L)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Pure<sp/>C++<sp/>calling<sp/>convention.<sp/>For<sp/>member<sp/>functions,<sp/>args[0]<sp/>must<sp/>be</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>a<sp/>std::any<sp/>holding<sp/>a<sp/>`C*`<sp/>(the<sp/>instance)<sp/>—<sp/>every<sp/>other<sp/>argument</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>follows<sp/>in<sp/>declared<sp/>order.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="structleasy_1_1ul2_1_1any__function_1a2d47d41ebb59fa7a61d5ea4aba146db1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>std::any<sp/><ref refid="structleasy_1_1ul2_1_1any__function_1a2d47d41ebb59fa7a61d5ea4aba146db1" kindref="member">invoke_any</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;std::any&gt;&amp;<sp/>args)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="structleasy_1_1ul2_1_1any__function_1a81ec0020aeebcd480c5309982c9f3b68" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>std::size_t<sp/><ref refid="structleasy_1_1ul2_1_1any__function_1a81ec0020aeebcd480c5309982c9f3b68" kindref="member">arity</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="69" refid="structleasy_1_1ul2_1_1any__function_1ac17837eddd0ad87a6db2e916459ff620" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>std::type_index<sp/><ref refid="structleasy_1_1ul2_1_1any__function_1ac17837eddd0ad87a6db2e916459ff620" kindref="member">return_type</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="70" refid="structleasy_1_1ul2_1_1any__function_1ad163126fd55406c8b5ade64fa5c88e98" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>std::vector&lt;std::type_index&gt;<sp/><ref refid="structleasy_1_1ul2_1_1any__function_1ad163126fd55406c8b5ade64fa5c88e98" kindref="member">argument_types</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="71" refid="structleasy_1_1ul2_1_1any__function_1a5f7bd5ad4147fa0b00cefac12bfe0e86" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>std::vector&lt;lua_arg_info&gt;<sp/><ref refid="structleasy_1_1ul2_1_1any__function_1a5f7bd5ad4147fa0b00cefac12bfe0e86" kindref="member">lua_argument_info</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="72" refid="structleasy_1_1ul2_1_1any__function_1ad2b5659eac4333a8a910840043b6804b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ul2_1_1any__function_1ad2b5659eac4333a8a910840043b6804b" kindref="member">is_member</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>leasy::ul2</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/ul2/any_function.hpp"/>
+  </compounddef>
+</doxygen>

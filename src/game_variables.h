@@ -221,3 +221,4 @@ inline Game_Variables::Var_t Game_Variables::GetMinValue() const {
 }
 
 #endif
+

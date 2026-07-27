@@ -166,3 +166,4 @@ inline void Rect::Halve() {
 }
 
 #endif
+

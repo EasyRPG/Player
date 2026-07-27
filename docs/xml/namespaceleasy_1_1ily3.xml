@@ -1,0 +1,345 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1ily3" kind="namespace" language="C++">
+    <compoundname>leasy::ily3</compoundname>
+    <innerclass refid="structleasy_1_1ily3_1_1fun" prot="public">leasy::ily3::fun</innerclass>
+    <innerclass refid="structleasy_1_1ily3_1_1guard" prot="public">leasy::ily3::guard</innerclass>
+    <innerclass refid="structleasy_1_1ily3_1_1lib" prot="public">leasy::ily3::lib</innerclass>
+    <innerclass refid="structleasy_1_1ily3_1_1pair" prot="public">leasy::ily3::pair</innerclass>
+    <innerclass refid="structleasy_1_1ily3_1_1twin" prot="public">leasy::ily3::twin</innerclass>
+    <innernamespace refid="namespaceleasy_1_1ily3_1_1efs">leasy::ily3::efs</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ily3_1_1global">leasy::ily3::global</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ily3_1_1lua__scripts">leasy::ily3::lua_scripts</innernamespace>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceleasy_1_1ily3_1aed792e475a47954eb6dfdcaafb53ac47" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; std::shared_ptr&lt; <ref refid="class_drawable" kindref="compound">Drawable</ref> &gt; &gt;</type>
+        <definition>std::vector&lt; std::shared_ptr&lt; Drawable &gt; &gt; leasy::ily3::leasy_draw_queue</definition>
+        <argsstring></argsstring>
+        <name>leasy_draw_queue</name>
+        <qualifiedname>leasy::ily3::leasy_draw_queue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/drawqueue.cpp" line="31" column="15" bodyfile="leasy/ily3/drawqueue.cpp" bodystart="31" bodyend="-1" declfile="leasy/leasy.cpp" declline="48" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceleasy_1_1ily3_1a3a10b986b3b9d4261f466cd8683d5273" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="structleasy_1_1ily3_1_1lib" kindref="compound">lib</ref> &gt;</type>
+        <definition>std::vector&lt;lib&gt; leasy::ily3::libs</definition>
+        <argsstring></argsstring>
+        <name>libs</name>
+        <qualifiedname>leasy::ily3::libs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/libsys.cpp" line="36" column="15" bodyfile="leasy/ily3/libsys.cpp" bodystart="36" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceleasy_1_1ily3_1aee99568e690ad212184dba9165c1a041" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="structleasy_1_1ily3_1_1twin" kindref="compound">twin</ref>&lt; T &gt;</type>
+        <definition>twin&lt; T &gt; leasy::ily3::make_twin</definition>
+        <argsstring>(const T &amp;a, const T &amp;b)</argsstring>
+        <name>make_twin</name>
+        <qualifiedname>leasy::ily3::make_twin</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/basetypes.hpp" line="42" column="20" bodyfile="leasy/ily3/basetypes.hpp" bodystart="42" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ily3_1aa7647d7880a9db57a74a453edca345bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename TX</type>
+          </param>
+          <param>
+            <type>typename TY</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="structleasy_1_1ily3_1_1pair" kindref="compound">pair</ref>&lt; TX, TY &gt;</type>
+        <definition>pair&lt; TX, TY &gt; leasy::ily3::make_pair</definition>
+        <argsstring>(const TX &amp;x, const TY &amp;y)</argsstring>
+        <name>make_pair</name>
+        <qualifiedname>leasy::ily3::make_pair</qualifiedname>
+        <param>
+          <type>const TX &amp;</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>const TY &amp;</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/basetypes.hpp" line="46" column="22" bodyfile="leasy/ily3/basetypes.hpp" bodystart="46" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ily3_1ac84535018ac4f718423eb8c7f6c29185" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_color" kindref="compound">Color</ref></type>
+        <definition>Color leasy::ily3::color_from_u32</definition>
+        <argsstring>(uint32_t v)</argsstring>
+        <name>color_from_u32</name>
+        <qualifiedname>leasy::ily3::color_from_u32</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/basetypes.hpp" line="52" column="16" bodyfile="leasy/ily3/basetypes.hpp" bodystart="52" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ily3_1a89ce338b67fe7d830474b51b8f33fb8f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ily3::boot</definition>
+        <argsstring>(const fs::path &amp;p)</argsstring>
+        <name>boot</name>
+        <qualifiedname>leasy::ily3::boot</qualifiedname>
+        <param>
+          <type>const fs::path &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/boot.cpp" line="42" column="8" bodyfile="leasy/ily3/boot.cpp" bodystart="42" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ily3_1aedbb87cc4d00906244d4550f1153854a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ily3::drawqueue</definition>
+        <argsstring>(const std::shared_ptr&lt; Drawable &gt; &amp;drawable)</argsstring>
+        <name>drawqueue</name>
+        <qualifiedname>leasy::ily3::drawqueue</qualifiedname>
+        <param>
+          <type>const std::shared_ptr&lt; <ref refid="class_drawable" kindref="compound">Drawable</ref> &gt; &amp;</type>
+          <declname>drawable</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/drawqueue.cpp" line="33" column="8" bodyfile="leasy/ily3/drawqueue.cpp" bodystart="33" bodyend="35" declfile="leasy/ily3/drawqueue.hpp" declline="26" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ily3_1a6415425e99f22687144ce83348e6d5bb" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int leasy::ily3::lprint</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>lprint</name>
+        <qualifiedname>leasy::ily3::lprint</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/ily3.cpp" line="45" column="14" bodyfile="leasy/ily3/ily3.cpp" bodystart="45" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ily3_1a04e54755f4ee3b3f2c83935e2aaa15c4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int leasy::ily3::lwarn</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>lwarn</name>
+        <qualifiedname>leasy::ily3::lwarn</qualifiedname>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/ily3.cpp" line="61" column="14" bodyfile="leasy/ily3/ily3.cpp" bodystart="61" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ily3_1a9858e96a48ff3aa9e102c62e7ab490bc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ily3::setup_lua</definition>
+        <argsstring>(void)</argsstring>
+        <name>setup_lua</name>
+        <qualifiedname>leasy::ily3::setup_lua</qualifiedname>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/ily3.cpp" line="77" column="8" bodyfile="leasy/ily3/ily3.cpp" bodystart="77" bodyend="85" declfile="leasy/ily3/ily3.hpp" declline="35" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ily3_1a621ddd585afe87a6be23f7ee93badb35" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ily3::boot</definition>
+        <argsstring>(const std::filesystem::path &amp;p)</argsstring>
+        <name>boot</name>
+        <qualifiedname>leasy::ily3::boot</qualifiedname>
+        <param>
+          <type>const std::filesystem::path &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/ily3.hpp" line="33" column="8" declfile="leasy/ily3/ily3.hpp" declline="33" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ily3_1ac3b1a8d37f0b440155270acd7a7cc463" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ily3::setup</definition>
+        <argsstring>(void)</argsstring>
+        <name>setup</name>
+        <qualifiedname>leasy::ily3::setup</qualifiedname>
+        <param>
+          <type>void</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/libsys.cpp" line="42" column="8" bodyfile="leasy/ily3/libsys.cpp" bodystart="42" bodyend="51" declfile="leasy/ily3/ily3.hpp" declline="34" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ily3_1aa2f3ab1397d9bbf4cad3e02db5ea2ef7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ily3::addlib</definition>
+        <argsstring>(const lib &amp;l)</argsstring>
+        <name>addlib</name>
+        <qualifiedname>leasy::ily3::addlib</qualifiedname>
+        <param>
+          <type>const <ref refid="structleasy_1_1ily3_1_1lib" kindref="compound">lib</ref> &amp;</type>
+          <declname>l</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/libsys.cpp" line="38" column="8" bodyfile="leasy/ily3/libsys.cpp" bodystart="38" bodyend="40" declfile="leasy/ily3/libsys.hpp" declline="59" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ily3_1a9eb3fbebdf8682896e153029f45fac5d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>auto</type>
+            <declname>F</declname>
+            <defname>F</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="structleasy_1_1ily3_1_1fun" kindref="compound">fun</ref></type>
+        <definition>fun leasy::ily3::make_fun</definition>
+        <argsstring>(const std::string &amp;name)</argsstring>
+        <name>make_fun</name>
+        <qualifiedname>leasy::ily3::make_fun</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/libsys.hpp" line="50" column="14" bodyfile="leasy/ily3/libsys.hpp" bodystart="50" bodyend="52"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ily3_1a25a6f61186740e053908210fc7df1f56" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T leasy::ily3::clamp</definition>
+        <argsstring>(const T &amp;min, const T &amp;max, const T &amp;v)</argsstring>
+        <name>clamp</name>
+        <qualifiedname>leasy::ily3::clamp</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>min</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>max</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/math.hpp" line="29" column="12" bodyfile="leasy/ily3/math.hpp" bodystart="29" bodyend="33"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para><ulink url="mailto:0xEF9087A@wys-prog.https">0xEF9087A@wys-prog.https</ulink>://github.com/wys-prog/leasy</para>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para>0xEF9087A</para>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para>0xEF9087A BY THE WAY. <ref refid="namespaceleasy_1_1ily3" kindref="compound">ily3</ref> stands for I Love You :3, don&apos;t you guys search for something complex lol </para>
+    </detaileddescription>
+    <location file="leasy/ily3/basetypes.hpp" line="27" column="1"/>
+  </compounddef>
+</doxygen>

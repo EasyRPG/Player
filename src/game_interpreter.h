@@ -403,3 +403,4 @@ inline AsyncOp Game_Interpreter::GetAsyncOp() const {
 }
 
 #endif
+

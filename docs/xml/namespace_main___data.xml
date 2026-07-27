@@ -1,0 +1,338 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_main___data" kind="namespace" language="C++">
+    <compoundname>Main_Data</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_main___data_1aec8daf528694a6a3ab21c3a7c7e9f095" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___system" kindref="compound">Game_System</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_System &gt; Main_Data::game_system</definition>
+        <argsstring></argsstring>
+        <name>game_system</name>
+        <qualifiedname>Main_Data::game_system</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="64" column="17" bodyfile="main_data.cpp" bodystart="64" bodyend="-1" declfile="main_data.h" declline="50" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1ab25add99e209d9690c41c5886c441dce" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___switches" kindref="compound">Game_Switches</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_Switches &gt; Main_Data::game_switches</definition>
+        <argsstring></argsstring>
+        <name>game_switches</name>
+        <qualifiedname>Main_Data::game_switches</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="65" column="17" bodyfile="main_data.cpp" bodystart="65" bodyend="-1" declfile="main_data.h" declline="51" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1af13b0dc47f222e736acbf1a9cab35755" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___variables" kindref="compound">Game_Variables</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_Variables &gt; Main_Data::game_variables</definition>
+        <argsstring></argsstring>
+        <name>game_variables</name>
+        <qualifiedname>Main_Data::game_variables</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="66" column="17" bodyfile="main_data.cpp" bodystart="66" bodyend="-1" declfile="main_data.h" declline="52" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1aba85ba0cfef4da7891703c493cb77f97" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___strings" kindref="compound">Game_Strings</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_Strings &gt; Main_Data::game_strings</definition>
+        <argsstring></argsstring>
+        <name>game_strings</name>
+        <qualifiedname>Main_Data::game_strings</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="67" column="17" bodyfile="main_data.cpp" bodystart="67" bodyend="-1" declfile="main_data.h" declline="53" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1af7f2278d063e4720a225de49774ab4d0" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___screen" kindref="compound">Game_Screen</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_Screen &gt; Main_Data::game_screen</definition>
+        <argsstring></argsstring>
+        <name>game_screen</name>
+        <qualifiedname>Main_Data::game_screen</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="68" column="17" bodyfile="main_data.cpp" bodystart="68" bodyend="-1" declfile="main_data.h" declline="54" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1adbf4671135f907ba4b0e4f686331e12b" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___pictures" kindref="compound">Game_Pictures</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_Pictures &gt; Main_Data::game_pictures</definition>
+        <argsstring></argsstring>
+        <name>game_pictures</name>
+        <qualifiedname>Main_Data::game_pictures</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="69" column="17" bodyfile="main_data.cpp" bodystart="69" bodyend="-1" declfile="main_data.h" declline="55" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1a4e8ef412381d61025dfddbd1589cafd4" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___windows" kindref="compound">Game_Windows</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_Windows &gt; Main_Data::game_windows</definition>
+        <argsstring></argsstring>
+        <name>game_windows</name>
+        <qualifiedname>Main_Data::game_windows</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="70" column="17" bodyfile="main_data.cpp" bodystart="70" bodyend="-1" declfile="main_data.h" declline="56" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1a0712541593d0ad740ef8a5f4141b3ba2" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___actors" kindref="compound">Game_Actors</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_Actors &gt; Main_Data::game_actors</definition>
+        <argsstring></argsstring>
+        <name>game_actors</name>
+        <qualifiedname>Main_Data::game_actors</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="71" column="17" bodyfile="main_data.cpp" bodystart="71" bodyend="-1" declfile="main_data.h" declline="58" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1aec95cb7effa69078c1aa6af2bde13632" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___player" kindref="compound">Game_Player</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_Player &gt; Main_Data::game_player</definition>
+        <argsstring></argsstring>
+        <name>game_player</name>
+        <qualifiedname>Main_Data::game_player</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="72" column="17" bodyfile="main_data.cpp" bodystart="72" bodyend="-1" declfile="main_data.h" declline="57" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1a24298fe75265c441e0ccf860cedffe1b" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___party" kindref="compound">Game_Party</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_Party &gt; Main_Data::game_party</definition>
+        <argsstring></argsstring>
+        <name>game_party</name>
+        <qualifiedname>Main_Data::game_party</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="73" column="17" bodyfile="main_data.cpp" bodystart="73" bodyend="-1" declfile="main_data.h" declline="59" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1a0add912158980534622ddcb72eb40e91" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___enemy_party" kindref="compound">Game_EnemyParty</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_EnemyParty &gt; Main_Data::game_enemyparty</definition>
+        <argsstring></argsstring>
+        <name>game_enemyparty</name>
+        <qualifiedname>Main_Data::game_enemyparty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="74" column="17" bodyfile="main_data.cpp" bodystart="74" bodyend="-1" declfile="main_data.h" declline="60" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1adfbf6ea4d4bd59ad101bd60dc74f52df" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___targets" kindref="compound">Game_Targets</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_Targets &gt; Main_Data::game_targets</definition>
+        <argsstring></argsstring>
+        <name>game_targets</name>
+        <qualifiedname>Main_Data::game_targets</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="75" column="17" bodyfile="main_data.cpp" bodystart="75" bodyend="-1" declfile="main_data.h" declline="61" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1aedddb12a22494a9583ad3ad3715badaf" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___quit" kindref="compound">Game_Quit</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_Quit &gt; Main_Data::game_quit</definition>
+        <argsstring></argsstring>
+        <name>game_quit</name>
+        <qualifiedname>Main_Data::game_quit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="76" column="17" bodyfile="main_data.cpp" bodystart="76" bodyend="-1" declfile="main_data.h" declline="62" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1a4c743585c1b57e03ed817c281f570b80" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___dyn_rpg" kindref="compound">Game_DynRpg</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_DynRpg &gt; Main_Data::game_dynrpg</definition>
+        <argsstring></argsstring>
+        <name>game_dynrpg</name>
+        <qualifiedname>Main_Data::game_dynrpg</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="77" column="17" bodyfile="main_data.cpp" bodystart="77" bodyend="-1" declfile="main_data.h" declline="63" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1aa1f77f78a1549d6b9168c11f6e998dd2" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___ineluki" kindref="compound">Game_Ineluki</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_Ineluki &gt; Main_Data::game_ineluki</definition>
+        <argsstring></argsstring>
+        <name>game_ineluki</name>
+        <qualifiedname>Main_Data::game_ineluki</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="78" column="17" bodyfile="main_data.cpp" bodystart="78" bodyend="-1" declfile="main_data.h" declline="64" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1ac79802b2b2ad28307f25bf002214c411" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___destiny" kindref="compound">Game_Destiny</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_Destiny &gt; Main_Data::game_destiny</definition>
+        <argsstring></argsstring>
+        <name>game_destiny</name>
+        <qualifiedname>Main_Data::game_destiny</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="79" column="17" bodyfile="main_data.cpp" bodystart="79" bodyend="-1" declfile="main_data.h" declline="65" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1ad76159d71c78f698f97a5a99b66cbc43" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Main_Data::global_save_opened</definition>
+        <argsstring></argsstring>
+        <name>global_save_opened</name>
+        <qualifiedname>Main_Data::global_save_opened</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="80" column="6" bodyfile="main_data.cpp" bodystart="80" bodyend="-1" declfile="main_data.h" declline="66" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1a654a3efb829967373849c4f3694de7d3" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___switches" kindref="compound">Game_Switches</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_Switches &gt; Main_Data::game_switches_global</definition>
+        <argsstring></argsstring>
+        <name>game_switches_global</name>
+        <qualifiedname>Main_Data::game_switches_global</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="81" column="17" bodyfile="main_data.cpp" bodystart="81" bodyend="-1" declfile="main_data.h" declline="67" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1a582c66abfedb3d703bf970ce7349b5d0" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_game___variables" kindref="compound">Game_Variables</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Game_Variables &gt; Main_Data::game_variables_global</definition>
+        <argsstring></argsstring>
+        <name>game_variables_global</name>
+        <qualifiedname>Main_Data::game_variables_global</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="82" column="17" bodyfile="main_data.cpp" bodystart="82" bodyend="-1" declfile="main_data.h" declline="68" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_main___data_1a3a2152f7c52398c1656d3417067cb9d3" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_file_finder___r_t_p" kindref="compound">FileFinder_RTP</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; FileFinder_RTP &gt; Main_Data::filefinder_rtp</definition>
+        <argsstring></argsstring>
+        <name>filefinder_rtp</name>
+        <qualifiedname>Main_Data::filefinder_rtp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.cpp" line="84" column="17" bodyfile="main_data.cpp" bodystart="84" bodyend="-1" declfile="main_data.h" declline="71" declcolumn="24"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_main___data_1a61cc28507f1ebf84288107e66a9251d7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Main_Data::Init</definition>
+        <argsstring>()</argsstring>
+        <name>Init</name>
+        <qualifiedname>Main_Data::Init</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.h" line="73" column="6" bodyfile="main_data.cpp" bodystart="87" bodyend="118" declfile="main_data.h" declline="73" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_main___data_1a8372d323f9f8bd2270d2df257f137fcc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Main_Data::Cleanup</definition>
+        <argsstring>()</argsstring>
+        <name>Cleanup</name>
+        <qualifiedname>Main_Data::Cleanup</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.h" line="74" column="6" bodyfile="main_data.cpp" bodystart="120" bodyend="140" declfile="main_data.h" declline="74" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_main___data_1a6b157466bc0057ebd35d14dd190dbc82" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::string &amp;</type>
+        <definition>const std::string &amp; Main_Data::GetDefaultProjectPath</definition>
+        <argsstring>()</argsstring>
+        <name>GetDefaultProjectPath</name>
+        <qualifiedname>Main_Data::GetDefaultProjectPath</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="main_data.h" line="76" column="19" bodyfile="main_data.cpp" bodystart="142" bodyend="144" declfile="main_data.h" declline="76" declcolumn="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="main_data.cpp" line="62" column="1"/>
+  </compounddef>
+</doxygen>

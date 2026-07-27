@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ily3_1_1lib" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ily3::lib</compoundname>
+    <includes refid="libsys_8hpp" local="no">libsys.hpp</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structleasy_1_1ily3_1_1lib_1a850112f8e5cc6881bfaaafa040e6090e" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string leasy::ily3::lib::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>leasy::ily3::lib::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/libsys.hpp" line="55" column="17" bodyfile="leasy/ily3/libsys.hpp" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1ily3_1_1lib_1acf74a65285316377b875a791b229dfeb" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="structleasy_1_1ily3_1_1fun" kindref="compound">fun</ref> &gt;</type>
+        <definition>std::vector&lt;fun&gt; leasy::ily3::lib::funcs</definition>
+        <argsstring></argsstring>
+        <name>funcs</name>
+        <qualifiedname>leasy::ily3::lib::funcs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/libsys.hpp" line="56" column="17" bodyfile="leasy/ily3/libsys.hpp" bodystart="56" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ily3/libsys.hpp" line="54" column="3" bodyfile="leasy/ily3/libsys.hpp" bodystart="54" bodyend="57"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ily3_1_1lib_1acf74a65285316377b875a791b229dfeb" prot="public" virt="non-virtual"><scope>leasy::ily3::lib</scope><name>funcs</name></member>
+      <member refid="structleasy_1_1ily3_1_1lib_1a850112f8e5cc6881bfaaafa040e6090e" prot="public" virt="non-virtual"><scope>leasy::ily3::lib</scope><name>name</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

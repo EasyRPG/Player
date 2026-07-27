@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_directory_tree_1_1_args" kind="struct" language="C++" prot="public">
+    <compoundname>DirectoryTree::Args</compoundname>
+    <includes refid="directory__tree_8h" local="no">directory_tree.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_directory_tree_1_1_args_1afe4ebb076a065b18a9589982a3dfb4b6" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string DirectoryTree::Args::path</definition>
+        <argsstring></argsstring>
+        <name>path</name>
+        <qualifiedname>DirectoryTree::Args::path</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>File relative to the current tree to search </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="64" column="13" bodyfile="directory_tree.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_directory_tree_1_1_args_1ae4d520d39d3d019992a81a8db6db1f30" prot="public" static="no" mutable="no">
+        <type>const Span&lt; const std::string_view &gt;</type>
+        <definition>const Span&lt;const std::string_view&gt; DirectoryTree::Args::exts</definition>
+        <argsstring></argsstring>
+        <name>exts</name>
+        <qualifiedname>DirectoryTree::Args::exts</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>File extensions to append to the filename when searching </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="66" column="12" bodyfile="directory_tree.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_directory_tree_1_1_args_1ac21db82c93325a2330f3313cf15c20ff" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int DirectoryTree::Args::canonical_initial_deepness</definition>
+        <argsstring></argsstring>
+        <name>canonical_initial_deepness</name>
+        <qualifiedname>DirectoryTree::Args::canonical_initial_deepness</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>How often moving upwards when &quot;..&quot; is encountered in the path is allowed (to prevent directory traversal) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="71" column="5" bodyfile="directory_tree.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_directory_tree_1_1_args_1abe0d61b9916750ada59d8fa0ff136bd3" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool DirectoryTree::Args::file_not_found_warning</definition>
+        <argsstring></argsstring>
+        <name>file_not_found_warning</name>
+        <qualifiedname>DirectoryTree::Args::file_not_found_warning</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>When true a &quot;Not Found&quot; message is shown in the terminal. Off by default because file probing would spam the terminal alot. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="76" column="6" bodyfile="directory_tree.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_directory_tree_1_1_args_1a01261ecfed34c3eb5ad0666a024c00d5" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool DirectoryTree::Args::process_wildcards</definition>
+        <argsstring></argsstring>
+        <name>process_wildcards</name>
+        <qualifiedname>DirectoryTree::Args::process_wildcards</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Processes ? in filenames as placeholders </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="directory_tree.h" line="80" column="6" bodyfile="directory_tree.h" bodystart="80" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Argument struct for more complex find operations </para>
+    </detaileddescription>
+    <location file="directory_tree.h" line="62" column="1" bodyfile="directory_tree.h" bodystart="62" bodyend="81"/>
+    <listofallmembers>
+      <member refid="struct_directory_tree_1_1_args_1ac21db82c93325a2330f3313cf15c20ff" prot="public" virt="non-virtual"><scope>DirectoryTree::Args</scope><name>canonical_initial_deepness</name></member>
+      <member refid="struct_directory_tree_1_1_args_1ae4d520d39d3d019992a81a8db6db1f30" prot="public" virt="non-virtual"><scope>DirectoryTree::Args</scope><name>exts</name></member>
+      <member refid="struct_directory_tree_1_1_args_1abe0d61b9916750ada59d8fa0ff136bd3" prot="public" virt="non-virtual"><scope>DirectoryTree::Args</scope><name>file_not_found_warning</name></member>
+      <member refid="struct_directory_tree_1_1_args_1afe4ebb076a065b18a9589982a3dfb4b6" prot="public" virt="non-virtual"><scope>DirectoryTree::Args</scope><name>path</name></member>
+      <member refid="struct_directory_tree_1_1_args_1a01261ecfed34c3eb5ad0666a024c00d5" prot="public" virt="non-virtual"><scope>DirectoryTree::Args</scope><name>process_wildcards</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

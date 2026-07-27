@@ -120,3 +120,4 @@ std::vector<uint8_t> DynRpg::EasyRpgPlugin::Save() {
 
 	return save_data;
 }
+

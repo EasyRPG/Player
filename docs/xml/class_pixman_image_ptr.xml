@@ -1,0 +1,288 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_pixman_image_ptr" kind="class" language="C++" prot="public">
+    <compoundname>PixmanImagePtr</compoundname>
+    <includes refid="pixman__image__ptr_8h" local="no">pixman_image_ptr.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_pixman_image_ptr_1a42663379990f82792aa8853a45cf7176" prot="private" static="no" mutable="no">
+        <type>pixman_image_t *</type>
+        <definition>pixman_image_t* PixmanImagePtr::_img</definition>
+        <argsstring></argsstring>
+        <name>_img</name>
+        <qualifiedname>PixmanImagePtr::_img</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixman_image_ptr.h" line="70" column="16" bodyfile="pixman_image_ptr.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_pixman_image_ptr_1ab8ed36e6d7f9459019a00ef10c007526" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>PixmanImagePtr::PixmanImagePtr</definition>
+        <argsstring>()=default</argsstring>
+        <name>PixmanImagePtr</name>
+        <qualifiedname>PixmanImagePtr::PixmanImagePtr</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Construct with nullptr </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixman_image_ptr.h" line="28" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixman_image_ptr_1a606aa1ad739cf54399172ab763271188" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>PixmanImagePtr::PixmanImagePtr</definition>
+        <argsstring>(std::nullptr_t) noexcept</argsstring>
+        <name>PixmanImagePtr</name>
+        <qualifiedname>PixmanImagePtr::PixmanImagePtr</qualifiedname>
+        <param>
+          <type>std::nullptr_t</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Construct with nullptr </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixman_image_ptr.h" line="31" column="11" bodyfile="pixman_image_ptr.h" bodystart="88" bodyend="88"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixman_image_ptr_1a55c65b61348d897f2574d456b90ca86e" prot="public" static="no" constexpr="yes" const="no" explicit="yes" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>constexpr</type>
+        <definition>PixmanImagePtr::PixmanImagePtr</definition>
+        <argsstring>(pixman_image_t *img) noexcept</argsstring>
+        <name>PixmanImagePtr</name>
+        <qualifiedname>PixmanImagePtr::PixmanImagePtr</qualifiedname>
+        <param>
+          <type>pixman_image_t *</type>
+          <declname>img</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Take ownership of img </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixman_image_ptr.h" line="34" column="20" bodyfile="pixman_image_ptr.h" bodystart="90" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixman_image_ptr_1a325acce591727d0df92c1501b6b25e65" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>PixmanImagePtr::PixmanImagePtr</definition>
+        <argsstring>(const PixmanImagePtr &amp;)</argsstring>
+        <name>PixmanImagePtr</name>
+        <qualifiedname>PixmanImagePtr::PixmanImagePtr</qualifiedname>
+        <param>
+          <type>const <ref refid="class_pixman_image_ptr" kindref="compound">PixmanImagePtr</ref> &amp;</type>
+          <defname>o</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Increment ref count and share img with other </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixman_image_ptr.h" line="37" column="1" bodyfile="pixman_image_ptr.h" bodystart="93" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixman_image_ptr_1ab9ad2928b3ac4501228902bfa8d68d41" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_pixman_image_ptr" kindref="compound">PixmanImagePtr</ref> &amp;</type>
+        <definition>PixmanImagePtr &amp; PixmanImagePtr::operator=</definition>
+        <argsstring>(const PixmanImagePtr &amp;)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>PixmanImagePtr::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_pixman_image_ptr" kindref="compound">PixmanImagePtr</ref> &amp;</type>
+          <defname>o</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Increment ref count and share img with other </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixman_image_ptr.h" line="40" column="16" bodyfile="pixman_image_ptr.h" bodystart="97" bodyend="103"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixman_image_ptr_1a71a4e5e985ff73f47015965f83eb6163" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>PixmanImagePtr::PixmanImagePtr</definition>
+        <argsstring>(PixmanImagePtr &amp;&amp;) noexcept</argsstring>
+        <name>PixmanImagePtr</name>
+        <qualifiedname>PixmanImagePtr::PixmanImagePtr</qualifiedname>
+        <param>
+          <type><ref refid="class_pixman_image_ptr" kindref="compound">PixmanImagePtr</ref> &amp;&amp;</type>
+          <defname>o</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Take img from other </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixman_image_ptr.h" line="43" column="1" bodyfile="pixman_image_ptr.h" bodystart="104" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixman_image_ptr_1ab422a1c95c67d158bd88fa1e2a7a68d6" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="class_pixman_image_ptr" kindref="compound">PixmanImagePtr</ref> &amp;</type>
+        <definition>PixmanImagePtr &amp; PixmanImagePtr::operator=</definition>
+        <argsstring>(PixmanImagePtr &amp;&amp;) noexcept</argsstring>
+        <name>operator=</name>
+        <qualifiedname>PixmanImagePtr::operator=</qualifiedname>
+        <param>
+          <type><ref refid="class_pixman_image_ptr" kindref="compound">PixmanImagePtr</ref> &amp;&amp;</type>
+          <defname>o</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Take img from other </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixman_image_ptr.h" line="46" column="16" bodyfile="pixman_image_ptr.h" bodystart="110" bodyend="117"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixman_image_ptr_1a50b12dc8816f8c7ea94241bf9fa4558d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>PixmanImagePtr::~PixmanImagePtr</definition>
+        <argsstring>()</argsstring>
+        <name>~PixmanImagePtr</name>
+        <qualifiedname>PixmanImagePtr::~PixmanImagePtr</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Unreference and possibly destroy image </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixman_image_ptr.h" line="49" column="1" bodyfile="pixman_image_ptr.h" bodystart="119" bodyend="121"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixman_image_ptr_1a93d87f28ef1bd4f1f2155489bb4f5fa7" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>pixman_image_t *</type>
+        <definition>pixman_image_t * PixmanImagePtr::get</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>get</name>
+        <qualifiedname>PixmanImagePtr::get</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>pointer to image </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixman_image_ptr.h" line="52" column="16" bodyfile="pixman_image_ptr.h" bodystart="123" bodyend="125"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixman_image_ptr_1a186f9947523833ca58b6c0670e6b552f" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>pixman_image_t &amp;</type>
+        <definition>pixman_image_t &amp; PixmanImagePtr::operator*</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>operator*</name>
+        <qualifiedname>PixmanImagePtr::operator*</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>reference to image </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixman_image_ptr.h" line="55" column="16" bodyfile="pixman_image_ptr.h" bodystart="127" bodyend="129"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixman_image_ptr_1a73fd05b683f1f4fdd0cb0526ee00255b" prot="public" static="no" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>pixman_image_t *</type>
+        <definition>pixman_image_t * PixmanImagePtr::operator-&gt;</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>operator-&gt;</name>
+        <qualifiedname>PixmanImagePtr::operator-&gt;</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>pointer to image </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixman_image_ptr.h" line="58" column="16" bodyfile="pixman_image_ptr.h" bodystart="131" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixman_image_ptr_1ae78ac2b53e6c6e8eb4cd21c860e64761" prot="public" static="no" const="yes" explicit="yes" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>PixmanImagePtr::operator bool</definition>
+        <argsstring>() const noexcept</argsstring>
+        <name>operator bool</name>
+        <qualifiedname>PixmanImagePtr::operator bool</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if image is not nullptr </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixman_image_ptr.h" line="61" column="10" bodyfile="pixman_image_ptr.h" bodystart="135" bodyend="137"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixman_image_ptr_1a0d8639347ed1a74924a056bbcbe6473f" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void PixmanImagePtr::reset</definition>
+        <argsstring>(pixman_image_t *img=nullptr) noexcept</argsstring>
+        <name>reset</name>
+        <qualifiedname>PixmanImagePtr::reset</qualifiedname>
+        <param>
+          <type>pixman_image_t *</type>
+          <declname>img</declname>
+          <defval>nullptr</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Release current image (if any) and take ownership of img</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>img</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new image to take ownership of </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixman_image_ptr.h" line="68" column="6" bodyfile="pixman_image_ptr.h" bodystart="139" bodyend="144"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pixman_image_ptr.h" line="25" column="1" bodyfile="pixman_image_ptr.h" bodystart="25" bodyend="71"/>
+    <listofallmembers>
+      <member refid="class_pixman_image_ptr_1a42663379990f82792aa8853a45cf7176" prot="private" virt="non-virtual"><scope>PixmanImagePtr</scope><name>_img</name></member>
+      <member refid="class_pixman_image_ptr_1a93d87f28ef1bd4f1f2155489bb4f5fa7" prot="public" virt="non-virtual"><scope>PixmanImagePtr</scope><name>get</name></member>
+      <member refid="class_pixman_image_ptr_1ae78ac2b53e6c6e8eb4cd21c860e64761" prot="public" virt="non-virtual"><scope>PixmanImagePtr</scope><name>operator bool</name></member>
+      <member refid="class_pixman_image_ptr_1a186f9947523833ca58b6c0670e6b552f" prot="public" virt="non-virtual"><scope>PixmanImagePtr</scope><name>operator*</name></member>
+      <member refid="class_pixman_image_ptr_1a73fd05b683f1f4fdd0cb0526ee00255b" prot="public" virt="non-virtual"><scope>PixmanImagePtr</scope><name>operator-&gt;</name></member>
+      <member refid="class_pixman_image_ptr_1ab9ad2928b3ac4501228902bfa8d68d41" prot="public" virt="non-virtual"><scope>PixmanImagePtr</scope><name>operator=</name></member>
+      <member refid="class_pixman_image_ptr_1ab422a1c95c67d158bd88fa1e2a7a68d6" prot="public" virt="non-virtual"><scope>PixmanImagePtr</scope><name>operator=</name></member>
+      <member refid="class_pixman_image_ptr_1ab8ed36e6d7f9459019a00ef10c007526" prot="public" virt="non-virtual"><scope>PixmanImagePtr</scope><name>PixmanImagePtr</name></member>
+      <member refid="class_pixman_image_ptr_1a606aa1ad739cf54399172ab763271188" prot="public" virt="non-virtual"><scope>PixmanImagePtr</scope><name>PixmanImagePtr</name></member>
+      <member refid="class_pixman_image_ptr_1a55c65b61348d897f2574d456b90ca86e" prot="public" virt="non-virtual"><scope>PixmanImagePtr</scope><name>PixmanImagePtr</name></member>
+      <member refid="class_pixman_image_ptr_1a325acce591727d0df92c1501b6b25e65" prot="public" virt="non-virtual"><scope>PixmanImagePtr</scope><name>PixmanImagePtr</name></member>
+      <member refid="class_pixman_image_ptr_1a71a4e5e985ff73f47015965f83eb6163" prot="public" virt="non-virtual"><scope>PixmanImagePtr</scope><name>PixmanImagePtr</name></member>
+      <member refid="class_pixman_image_ptr_1a0d8639347ed1a74924a056bbcbe6473f" prot="public" virt="non-virtual"><scope>PixmanImagePtr</scope><name>reset</name></member>
+      <member refid="class_pixman_image_ptr_1a50b12dc8816f8c7ea94241bf9fa4558d" prot="public" virt="non-virtual"><scope>PixmanImagePtr</scope><name>~PixmanImagePtr</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

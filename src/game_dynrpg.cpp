@@ -517,3 +517,4 @@ void Game_DynRpg::Update() {
 		plugin->Update();
 	}
 }
+

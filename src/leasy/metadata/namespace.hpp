@@ -117,3 +117,4 @@ namespace leasy::metadata {
 
   NSpace &EasyRPG();
 }
+

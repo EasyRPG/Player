@@ -1307,3 +1307,4 @@ lcf::rpg::SaveEventExecFrame& Scene_Debug::GetSelectedInterpreterFrameFromUiStat
 	}
 	return empty;
 }
+

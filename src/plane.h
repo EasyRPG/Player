@@ -92,3 +92,4 @@ inline void Plane::SetTone(Tone tone) {
 }
 
 #endif
+

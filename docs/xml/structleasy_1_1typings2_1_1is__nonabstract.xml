@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1typings2_1_1is__nonabstract" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::typings2::is_nonabstract</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::true_type</basecompoundref>
+    <includes refid="metatypes_8hpp" local="no">metatypes.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+      <param>
+        <type>bool</type>
+        <defval><ref refid="namespaceleasy_1_1typings2_1a0fa28aa0518573256600314babc89a2d" kindref="member">is_complete_v</ref>&lt;T&gt;</defval>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>leasy::typings2::is_nonabstract&lt; T, bool &gt;</label>
+        <link refid="structleasy_1_1typings2_1_1is__nonabstract"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::true_type</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>leasy::typings2::is_nonabstract&lt; T, bool &gt;</label>
+        <link refid="structleasy_1_1typings2_1_1is__nonabstract"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::true_type</label>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/typings/metatypes.hpp" line="70" column="3" bodyfile="leasy/typings/metatypes.hpp" bodystart="70" bodyend="70"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

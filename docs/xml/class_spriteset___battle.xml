@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_spriteset___battle" kind="class" language="C++" prot="public">
+    <compoundname>Spriteset_Battle</compoundname>
+    <includes refid="spriteset__battle_8h" local="no">spriteset_battle.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_spriteset___battle_1acf85c8ec5fc169db3246a4a4bd90f4a6" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_background" kindref="compound">Background</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Background&gt; Spriteset_Battle::background</definition>
+        <argsstring></argsstring>
+        <name>background</name>
+        <qualifiedname>Spriteset_Battle::background</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_battle.h" line="40" column="17" bodyfile="spriteset_battle.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___battle_1a801f37a59b372bef6f41a621bcdef01c" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="class_sprite___battler" kindref="compound">Sprite_Battler</ref> * &gt;</type>
+        <definition>std::vector&lt;Sprite_Battler*&gt; Spriteset_Battle::sprites</definition>
+        <argsstring></argsstring>
+        <name>sprites</name>
+        <qualifiedname>Spriteset_Battle::sprites</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_battle.h" line="41" column="13" bodyfile="spriteset_battle.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___battle_1a0ee5db2dd73c1d72706b934eaa50719f" prot="protected" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Spriteset_Battle::background_name</definition>
+        <argsstring></argsstring>
+        <name>background_name</name>
+        <qualifiedname>Spriteset_Battle::background_name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_battle.h" line="42" column="13" bodyfile="spriteset_battle.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___battle_1aeed4d642050df141379f73c203baad8c" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_screen" kindref="compound">Screen</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Screen&gt; Spriteset_Battle::screen</definition>
+        <argsstring></argsstring>
+        <name>screen</name>
+        <qualifiedname>Spriteset_Battle::screen</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_battle.h" line="43" column="17" bodyfile="spriteset_battle.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___battle_1a0806b038d4b3a8ee77d82611f76f6579" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_sprite___timer" kindref="compound">Sprite_Timer</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Sprite_Timer&gt; Spriteset_Battle::timer1</definition>
+        <argsstring></argsstring>
+        <name>timer1</name>
+        <qualifiedname>Spriteset_Battle::timer1</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_battle.h" line="45" column="17" bodyfile="spriteset_battle.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_spriteset___battle_1a9e2514671c8b5d50310264284144c921" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_sprite___timer" kindref="compound">Sprite_Timer</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Sprite_Timer&gt; Spriteset_Battle::timer2</definition>
+        <argsstring></argsstring>
+        <name>timer2</name>
+        <qualifiedname>Spriteset_Battle::timer2</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_battle.h" line="46" column="17" bodyfile="spriteset_battle.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_spriteset___battle_1a32fdb901fd41440346e176edfa8adb66" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Spriteset_Battle::Spriteset_Battle</definition>
+        <argsstring>(std::string background, int terrain_id)</argsstring>
+        <name>Spriteset_Battle</name>
+        <qualifiedname>Spriteset_Battle::Spriteset_Battle</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>background</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>terrain_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_battle.h" line="35" column="10" bodyfile="spriteset_battle.cpp" bodystart="34" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="function" id="class_spriteset___battle_1a639dfda6e1eb8f67210da4a90109df77" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Spriteset_Battle::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>Spriteset_Battle::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="spriteset_battle.h" line="37" column="6" bodyfile="spriteset_battle.cpp" bodystart="62" bodyend="77"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_spriteset___battle" kindref="compound">Spriteset_Battle</ref> class. </para>
+    </detaileddescription>
+    <location file="spriteset_battle.h" line="33" column="1" bodyfile="spriteset_battle.h" bodystart="33" bodyend="47"/>
+    <listofallmembers>
+      <member refid="class_spriteset___battle_1acf85c8ec5fc169db3246a4a4bd90f4a6" prot="protected" virt="non-virtual"><scope>Spriteset_Battle</scope><name>background</name></member>
+      <member refid="class_spriteset___battle_1a0ee5db2dd73c1d72706b934eaa50719f" prot="protected" virt="non-virtual"><scope>Spriteset_Battle</scope><name>background_name</name></member>
+      <member refid="class_spriteset___battle_1aeed4d642050df141379f73c203baad8c" prot="protected" virt="non-virtual"><scope>Spriteset_Battle</scope><name>screen</name></member>
+      <member refid="class_spriteset___battle_1a801f37a59b372bef6f41a621bcdef01c" prot="protected" virt="non-virtual"><scope>Spriteset_Battle</scope><name>sprites</name></member>
+      <member refid="class_spriteset___battle_1a32fdb901fd41440346e176edfa8adb66" prot="public" virt="non-virtual"><scope>Spriteset_Battle</scope><name>Spriteset_Battle</name></member>
+      <member refid="class_spriteset___battle_1a0806b038d4b3a8ee77d82611f76f6579" prot="protected" virt="non-virtual"><scope>Spriteset_Battle</scope><name>timer1</name></member>
+      <member refid="class_spriteset___battle_1a9e2514671c8b5d50310264284144c921" prot="protected" virt="non-virtual"><scope>Spriteset_Battle</scope><name>timer2</name></member>
+      <member refid="class_spriteset___battle_1a639dfda6e1eb8f67210da4a90109df77" prot="public" virt="non-virtual"><scope>Spriteset_Battle</scope><name>Update</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

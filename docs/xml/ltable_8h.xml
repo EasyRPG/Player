@@ -1,0 +1,1133 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="ltable_8h" kind="file" language="C++">
+    <compoundname>ltable.h</compoundname>
+    <includes refid="lobject_8h" local="yes">lobject.h</includes>
+    <includedby refid="lapi_8c" local="yes">leasy/lua/lapi.c</includedby>
+    <includedby refid="lcode_8c" local="yes">leasy/lua/lcode.c</includedby>
+    <includedby refid="ldebug_8c" local="yes">leasy/lua/ldebug.c</includedby>
+    <includedby refid="ldo_8c" local="yes">leasy/lua/ldo.c</includedby>
+    <includedby refid="ldump_8c" local="yes">leasy/lua/ldump.c</includedby>
+    <includedby refid="lgc_8c" local="yes">leasy/lua/lgc.c</includedby>
+    <includedby refid="llex_8c" local="yes">leasy/lua/llex.c</includedby>
+    <includedby refid="lparser_8c" local="yes">leasy/lua/lparser.c</includedby>
+    <includedby refid="lstate_8c" local="yes">leasy/lua/lstate.c</includedby>
+    <includedby refid="ltable_8c" local="yes">leasy/lua/ltable.c</includedby>
+    <includedby refid="ltm_8c" local="yes">leasy/lua/ltm.c</includedby>
+    <includedby refid="lundump_8c" local="yes">leasy/lua/lundump.c</includedby>
+    <includedby refid="lvm_8c" local="yes">leasy/lua/lvm.c</includedby>
+    <incdepgraph>
+      <node id="4">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>lobject.h</label>
+        <link refid="lobject_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/ltable.h</label>
+        <link refid="ltable_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>limits.h</label>
+      </node>
+      <node id="3">
+        <label>stdarg.h</label>
+      </node>
+      <node id="6">
+        <label>stddef.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>leasy/lua/lapi.c</label>
+        <link refid="lapi_8c"/>
+      </node>
+      <node id="3">
+        <label>leasy/lua/lcode.c</label>
+        <link refid="lcode_8c"/>
+      </node>
+      <node id="4">
+        <label>leasy/lua/ldebug.c</label>
+        <link refid="ldebug_8c"/>
+      </node>
+      <node id="5">
+        <label>leasy/lua/ldo.c</label>
+        <link refid="ldo_8c"/>
+      </node>
+      <node id="6">
+        <label>leasy/lua/ldump.c</label>
+        <link refid="ldump_8c"/>
+      </node>
+      <node id="7">
+        <label>leasy/lua/lgc.c</label>
+        <link refid="lgc_8c"/>
+      </node>
+      <node id="8">
+        <label>leasy/lua/llex.c</label>
+        <link refid="llex_8c"/>
+      </node>
+      <node id="9">
+        <label>leasy/lua/lparser.c</label>
+        <link refid="lparser_8c"/>
+      </node>
+      <node id="10">
+        <label>leasy/lua/lstate.c</label>
+        <link refid="lstate_8c"/>
+      </node>
+      <node id="11">
+        <label>leasy/lua/ltable.c</label>
+        <link refid="ltable_8c"/>
+      </node>
+      <node id="1">
+        <label>leasy/lua/ltable.h</label>
+        <link refid="ltable_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>leasy/lua/ltm.c</label>
+        <link refid="ltm_8c"/>
+      </node>
+      <node id="13">
+        <label>leasy/lua/lundump.c</label>
+        <link refid="lundump_8c"/>
+      </node>
+      <node id="14">
+        <label>leasy/lua/lvm.c</label>
+        <link refid="lvm_8c"/>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="ltable_8h_1a644cfa3b6d4be1782e818a8340b5f78b" prot="public" static="no">
+        <name>gnode</name>
+        <param><defname>t</defname></param>
+        <param><defname>i</defname></param>
+        <initializer>(&amp;(t)-&gt;node[i])</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="13" column="9" bodyfile="leasy/lua/ltable.h" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1acbbecd9bd8fbb72a17f6e2f5acf7113d" prot="public" static="no">
+        <name>gval</name>
+        <param><defname>n</defname></param>
+        <initializer>(&amp;(n)-&gt;i_val)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="14" column="9" bodyfile="leasy/lua/ltable.h" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1aac0e00b2296e00cfc818b74f1aff4f8b" prot="public" static="no">
+        <name>gnext</name>
+        <param><defname>n</defname></param>
+        <initializer>((n)-&gt;<ref refid="llex_8c_1a8ab976102fb046f9974c53caaf5a1995" kindref="member">u.next</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="15" column="9" bodyfile="leasy/lua/ltable.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1a69534d37fbaf464430636bf437108530" prot="public" static="no">
+        <name>invalidateTMcache</name>
+        <param><defname>t</defname></param>
+        <initializer>((t)-&gt;flags &amp;= <ref refid="llimits_8h_1a596f5b6e992f53a5a4e5732083448dd4" kindref="member">cast_byte</ref>(~<ref refid="ltm_8h_1aedcd44ed828c5c7060bc7140ec669753" kindref="member">maskflags</ref>))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="23" column="9" bodyfile="leasy/lua/ltable.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1a10992ea3eca8febeb53da0e75217d127" prot="public" static="no">
+        <name>BITDUMMY</name>
+        <initializer>(1 &lt;&lt; 6)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="31" column="9" bodyfile="leasy/lua/ltable.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1a44ec1f8e91c16395505cefa404e161c2" prot="public" static="no">
+        <name>NOTBITDUMMY</name>
+        <initializer><ref refid="llimits_8h_1a596f5b6e992f53a5a4e5732083448dd4" kindref="member">cast_byte</ref>(~<ref refid="ltable_8h_1a10992ea3eca8febeb53da0e75217d127" kindref="member">BITDUMMY</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="32" column="9" bodyfile="leasy/lua/ltable.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1a97b22167368e065caf9d8d11ae7ca1de" prot="public" static="no">
+        <name>isdummy</name>
+        <param><defname>t</defname></param>
+        <initializer>((t)-&gt;flags &amp; <ref refid="ltable_8h_1a10992ea3eca8febeb53da0e75217d127" kindref="member">BITDUMMY</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="33" column="9" bodyfile="leasy/lua/ltable.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1a4bb2b4ed22d4441dc2dc6baa024d88fb" prot="public" static="no">
+        <name>setnodummy</name>
+        <param><defname>t</defname></param>
+        <initializer>((t)-&gt;flags &amp;= <ref refid="ltable_8h_1a44ec1f8e91c16395505cefa404e161c2" kindref="member">NOTBITDUMMY</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="35" column="9" bodyfile="leasy/lua/ltable.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1a7b467ef97c2013e02a8ca29da04fa1bb" prot="public" static="no">
+        <name>setdummy</name>
+        <param><defname>t</defname></param>
+        <initializer>((t)-&gt;flags |= <ref refid="ltable_8h_1a10992ea3eca8febeb53da0e75217d127" kindref="member">BITDUMMY</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="36" column="9" bodyfile="leasy/lua/ltable.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1af3ab680af234ee7ea0f7e6078b4b73bf" prot="public" static="no">
+        <name>allocsizenode</name>
+        <param><defname>t</defname></param>
+        <initializer>(<ref refid="ltable_8h_1a97b22167368e065caf9d8d11ae7ca1de" kindref="member">isdummy</ref>(t) ? 0 : <ref refid="lobject_8h_1a2fbf715e78eaa889ed0fb9d4514e736a" kindref="member">sizenode</ref>(t))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="41" column="9" bodyfile="leasy/lua/ltable.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1aa318820e0b85f1a9b1c34821e3d37a10" prot="public" static="no">
+        <name>nodefromval</name>
+        <param><defname>v</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(<ref refid="union_node" kindref="compound">Node</ref> *, (v))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="45" column="9" bodyfile="leasy/lua/ltable.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1a2b173ca3509371168fed5faa75fd02ee" prot="public" static="no">
+        <name>luaH_fastgeti</name>
+        <param><defname>t</defname></param>
+        <param><defname>k</defname></param>
+        <param><defname>res</defname></param>
+        <param><defname>tag</defname></param>
+        <initializer>{ <ref refid="struct_table" kindref="compound">Table</ref> *h = t; <ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref> u = <ref refid="llimits_8h_1a5871309e671ba9f938fcb1e0d3bcbeca" kindref="member">l_castS2U</ref>(k) - 1u; \
+  if ((u &lt; h-&gt;asize)) { \
+    tag = *<ref refid="ltable_8h_1a313a46d69e7a7c6507b232c062476fb8" kindref="member">getArrTag</ref>(h, u); \
+    if (!<ref refid="lobject_8h_1aec4fc2bddf98a2fc76c443e0653aedf3" kindref="member">tagisempty</ref>(tag)) { <ref refid="ltable_8h_1a05cdf433ea75bde96fdf20b025290ce1" kindref="member">farr2val</ref>(h, u, tag, res); }} \
+  else { tag = <ref refid="ltable_8h_1a6a542d74e5a43a675eb98c81e89d4fd4" kindref="member">luaH_getint</ref>(h, (k), res); }}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="49" column="9" bodyfile="leasy/lua/ltable.h" bodystart="49" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1a40ea18434574c42819014d5dce3f187f" prot="public" static="no">
+        <name>luaH_fastseti</name>
+        <param><defname>t</defname></param>
+        <param><defname>k</defname></param>
+        <param><defname>val</defname></param>
+        <param><defname>hres</defname></param>
+        <initializer>{ <ref refid="struct_table" kindref="compound">Table</ref> *h = t; <ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref> u = <ref refid="llimits_8h_1a5871309e671ba9f938fcb1e0d3bcbeca" kindref="member">l_castS2U</ref>(k) - 1u; \
+  if ((u &lt; h-&gt;asize)) { \
+    <ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref> *tag = <ref refid="ltable_8h_1a313a46d69e7a7c6507b232c062476fb8" kindref="member">getArrTag</ref>(h, u); \
+    if (<ref refid="ltm_8h_1acdceef200899b1738407ad4b7d259116" kindref="member">checknoTM</ref>(h-&gt;metatable, <ref refid="ltm_8h_1a69e345ae253d250b61a03f1d6871c8d1a256e00a44fb438064c2eb7a8b7df206d" kindref="member">TM_NEWINDEX</ref>) || !<ref refid="lobject_8h_1aec4fc2bddf98a2fc76c443e0653aedf3" kindref="member">tagisempty</ref>(*tag)) \
+      { <ref refid="ltable_8h_1a940e30a137cda5e4c5d0698442bd6839" kindref="member">fval2arr</ref>(h, u, tag, val); hres = <ref refid="ltable_8h_1ab0ad6b5a11bdd85b09068bab4357e04f" kindref="member">HOK</ref>; } \
+    else hres = ~<ref refid="llimits_8h_1a37a9e2c4b53433d34bad0f12a1500c08" kindref="member">cast_int</ref>(u); } \
+  else { hres = <ref refid="ltable_8h_1a39c02ce7da8b7b67a3969a5ce965c41c" kindref="member">luaH_psetint</ref>(h, k, val); }}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="57" column="9" bodyfile="leasy/lua/ltable.h" bodystart="57" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1ab0ad6b5a11bdd85b09068bab4357e04f" prot="public" static="no">
+        <name>HOK</name>
+        <initializer>0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="68" column="9" bodyfile="leasy/lua/ltable.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1a0a61e2afa849546bb2711491c78a09fb" prot="public" static="no">
+        <name>HNOTFOUND</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="69" column="9" bodyfile="leasy/lua/ltable.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1a6eb3819f70bd20a64e23e20e405de46f" prot="public" static="no">
+        <name>HNOTATABLE</name>
+        <initializer>2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="70" column="9" bodyfile="leasy/lua/ltable.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1ab105a0920f2c2c07a8b345447c5e7047" prot="public" static="no">
+        <name>HFIRSTNODE</name>
+        <initializer>3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="71" column="9" bodyfile="leasy/lua/ltable.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1a313a46d69e7a7c6507b232c062476fb8" prot="public" static="no">
+        <name>getArrTag</name>
+        <param><defname>t</defname></param>
+        <param><defname>k</defname></param>
+        <initializer>(<ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(<ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref>*, (t)-&gt;array) + sizeof(unsigned) + (k))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="113" column="9" bodyfile="leasy/lua/ltable.h" bodystart="113" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1ade20cdfd523d50990d8e0f766302f8a2" prot="public" static="no">
+        <name>getArrVal</name>
+        <param><defname>t</defname></param>
+        <param><defname>k</defname></param>
+        <initializer>((t)-&gt;array - 1 - (k))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="116" column="9" bodyfile="leasy/lua/ltable.h" bodystart="116" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1a1fa639fadf21f3e9e1cd4a07ea4ca93b" prot="public" static="no">
+        <name>lenhint</name>
+        <param><defname>t</defname></param>
+        <initializer><ref refid="llimits_8h_1af17d62ec9e237a7644de6b9b34a48a34" kindref="member">cast</ref>(unsigned*, (t)-&gt;array)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="124" column="9" bodyfile="leasy/lua/ltable.h" bodystart="124" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1a4724bc32155985f6e2e7ef7c2aec5fe9" prot="public" static="no">
+        <name>arr2obj</name>
+        <param><defname>h</defname></param>
+        <param><defname>k</defname></param>
+        <param><defname>val</defname></param>
+        <initializer>((val)-&gt;tt_ = *<ref refid="ltable_8h_1a313a46d69e7a7c6507b232c062476fb8" kindref="member">getArrTag</ref>(h,(k)), (val)-&gt;value_ = *<ref refid="ltable_8h_1ade20cdfd523d50990d8e0f766302f8a2" kindref="member">getArrVal</ref>(h,(k)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="130" column="9" bodyfile="leasy/lua/ltable.h" bodystart="130" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1ae9bc3116f28b43afdc06d1549cc72a36" prot="public" static="no">
+        <name>obj2arr</name>
+        <param><defname>h</defname></param>
+        <param><defname>k</defname></param>
+        <param><defname>val</defname></param>
+        <initializer>(*<ref refid="ltable_8h_1a313a46d69e7a7c6507b232c062476fb8" kindref="member">getArrTag</ref>(h,(k)) = (val)-&gt;tt_, *<ref refid="ltable_8h_1ade20cdfd523d50990d8e0f766302f8a2" kindref="member">getArrVal</ref>(h,(k)) = (val)-&gt;value_)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="133" column="9" bodyfile="leasy/lua/ltable.h" bodystart="133" bodyend="134"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1a05cdf433ea75bde96fdf20b025290ce1" prot="public" static="no">
+        <name>farr2val</name>
+        <param><defname>h</defname></param>
+        <param><defname>k</defname></param>
+        <param><defname>tag</defname></param>
+        <param><defname>res</defname></param>
+        <initializer>((res)-&gt;tt_ = tag, (res)-&gt;value_ = *<ref refid="ltable_8h_1ade20cdfd523d50990d8e0f766302f8a2" kindref="member">getArrVal</ref>(h,(k)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="142" column="9" bodyfile="leasy/lua/ltable.h" bodystart="142" bodyend="143"/>
+      </memberdef>
+      <memberdef kind="define" id="ltable_8h_1a940e30a137cda5e4c5d0698442bd6839" prot="public" static="no">
+        <name>fval2arr</name>
+        <param><defname>h</defname></param>
+        <param><defname>k</defname></param>
+        <param><defname>tag</defname></param>
+        <param><defname>val</defname></param>
+        <initializer>(*tag = (val)-&gt;tt_, *<ref refid="ltable_8h_1ade20cdfd523d50990d8e0f766302f8a2" kindref="member">getArrVal</ref>(h,(k)) = (val)-&gt;value_)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="145" column="9" bodyfile="leasy/lua/ltable.h" bodystart="145" bodyend="146"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="ltable_8h_1aba1d7dc5ad7152a059101915ec0dcad4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>LUAI_FUNC lu_byte luaH_get</definition>
+        <argsstring>(Table *t, const TValue *key, TValue *res)</argsstring>
+        <name>luaH_get</name>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>res</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="149" column="19" bodyfile="leasy/lua/ltable.c" bodystart="1020" bodyend="1042" declfile="leasy/lua/ltable.h" declline="149" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1aedec5832a6781a4fe8f3de7c2a76144b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>LUAI_FUNC lu_byte luaH_getshortstr</definition>
+        <argsstring>(Table *t, TString *key, TValue *res)</argsstring>
+        <name>luaH_getshortstr</name>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>res</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="150" column="19" bodyfile="leasy/lua/ltable.c" bodystart="991" bodyend="993" declfile="leasy/lua/ltable.h" declline="150" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1a5454c72376783365b4534378b774f017" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>LUAI_FUNC lu_byte luaH_getstr</definition>
+        <argsstring>(Table *t, TString *key, TValue *res)</argsstring>
+        <name>luaH_getstr</name>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>res</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="151" column="19" bodyfile="leasy/lua/ltable.c" bodystart="1012" bodyend="1014" declfile="leasy/lua/ltable.h" declline="151" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1a6a542d74e5a43a675eb98c81e89d4fd4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>LUAI_FUNC lu_byte luaH_getint</definition>
+        <argsstring>(Table *t, lua_Integer key, TValue *res)</argsstring>
+        <name>luaH_getint</name>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>res</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="152" column="19" bodyfile="leasy/lua/ltable.c" bodystart="959" bodyend="969" declfile="leasy/lua/ltable.h" declline="152" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1a9f5d752a8b44b770b53bfdcb1483c65c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+        <definition>LUAI_FUNC const TValue * luaH_Hgetshortstr</definition>
+        <argsstring>(Table *t, TString *key)</argsstring>
+        <name>luaH_Hgetshortstr</name>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="155" column="24" bodyfile="leasy/lua/ltable.c" bodystart="975" bodyend="988" declfile="leasy/lua/ltable.h" declline="155" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1a39c02ce7da8b7b67a3969a5ce965c41c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaH_psetint</definition>
+        <argsstring>(Table *t, lua_Integer key, TValue *val)</argsstring>
+        <name>luaH_psetint</name>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="157" column="15" bodyfile="leasy/lua/ltable.c" bodystart="1077" bodyend="1080" declfile="leasy/lua/ltable.h" declline="157" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1afb75711d2aa4f3eba64141dd2e005e30" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaH_psetshortstr</definition>
+        <argsstring>(Table *t, TString *key, TValue *val)</argsstring>
+        <name>luaH_psetshortstr</name>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="158" column="15" bodyfile="leasy/lua/ltable.c" bodystart="1098" bodyend="1121" declfile="leasy/lua/ltable.h" declline="158" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1a7ce2b87e99dbb6f0a7940e4da153a0a7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaH_psetstr</definition>
+        <argsstring>(Table *t, TString *key, TValue *val)</argsstring>
+        <name>luaH_psetstr</name>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="159" column="15" bodyfile="leasy/lua/ltable.c" bodystart="1124" bodyend="1129" declfile="leasy/lua/ltable.h" declline="159" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1a43642596f87a566fad5f981b61e379c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaH_pset</definition>
+        <argsstring>(Table *t, const TValue *key, TValue *val)</argsstring>
+        <name>luaH_pset</name>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="160" column="15" bodyfile="leasy/lua/ltable.c" bodystart="1132" bodyend="1146" declfile="leasy/lua/ltable.h" declline="160" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1ac62838e269732b63812012592c454462" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaH_setint</definition>
+        <argsstring>(lua_State *L, Table *t, lua_Integer key, TValue *value)</argsstring>
+        <name>luaH_setint</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref></type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="162" column="16" bodyfile="leasy/lua/ltable.c" bodystart="1206" bodyend="1218" declfile="leasy/lua/ltable.h" declline="162" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1a8957db41a7676a02ce7ed2008f1cbc9f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaH_set</definition>
+        <argsstring>(lua_State *L, Table *t, const TValue *key, TValue *value)</argsstring>
+        <name>luaH_set</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="164" column="16" bodyfile="leasy/lua/ltable.c" bodystart="1195" bodyend="1199" declfile="leasy/lua/ltable.h" declline="164" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1a39985315613372d8f0b78a9d90717341" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaH_finishset</definition>
+        <argsstring>(lua_State *L, Table *t, const TValue *key, TValue *value, int hres)</argsstring>
+        <name>luaH_finishset</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_t_value" kindref="compound">TValue</ref> *</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>hres</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="167" column="16" bodyfile="leasy/lua/ltable.c" bodystart="1154" bodyend="1188" declfile="leasy/lua/ltable.h" declline="167" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1a226f2738cfb2497699d62e7380d38a25" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="struct_table" kindref="compound">Table</ref> *</type>
+        <definition>LUAI_FUNC Table * luaH_new</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaH_new</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="169" column="17" bodyfile="leasy/lua/ltable.c" bodystart="799" bodyend="808" declfile="leasy/lua/ltable.h" declline="169" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1ae4766b15dd5b7e67c08de66c1cff61b9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaH_resize</definition>
+        <argsstring>(lua_State *L, Table *t, unsigned nasize, unsigned nhsize)</argsstring>
+        <name>luaH_resize</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>nasize</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>nhsize</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="170" column="16" bodyfile="leasy/lua/ltable.c" bodystart="716" bodyend="748" declfile="leasy/lua/ltable.h" declline="170" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1a5e19ee816496686b3ecd3159c6c848c5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaH_resizearray</definition>
+        <argsstring>(lua_State *L, Table *t, unsigned nasize)</argsstring>
+        <name>luaH_resizearray</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>nasize</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="172" column="16" declfile="leasy/lua/ltable.h" declline="172" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1accf0bd8be305086394e47d4984957854" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="llimits_8h_1aac8c50ca0aa51c80523376da77c2c4d8" kindref="member">lu_mem</ref></type>
+        <definition>LUAI_FUNC lu_mem luaH_size</definition>
+        <argsstring>(Table *t)</argsstring>
+        <name>luaH_size</name>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="173" column="18" bodyfile="leasy/lua/ltable.c" bodystart="811" bodyend="816" declfile="leasy/lua/ltable.h" declline="173" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1aa2e2ed92ac2178bb87aa3a178c0a83bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaH_free</definition>
+        <argsstring>(lua_State *L, Table *t)</argsstring>
+        <name>luaH_free</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="174" column="16" bodyfile="leasy/lua/ltable.c" bodystart="822" bodyend="826" declfile="leasy/lua/ltable.h" declline="174" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1a55be2c48e6e2c113dabda3819f5301e7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> int</type>
+        <definition>LUAI_FUNC int luaH_next</definition>
+        <argsstring>(lua_State *L, Table *t, StkId key)</argsstring>
+        <name>luaH_next</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <param>
+          <type><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref></type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="175" column="15" bodyfile="leasy/lua/ltable.c" bodystart="361" bodyend="381" declfile="leasy/lua/ltable.h" declline="175" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="ltable_8h_1a077936f1c77ab8ca6f004e521467afef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref></type>
+        <definition>LUAI_FUNC lua_Unsigned luaH_getn</definition>
+        <argsstring>(lua_State *L, Table *t)</argsstring>
+        <name>luaH_getn</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/ltable.h" line="176" column="24" bodyfile="leasy/lua/ltable.c" bodystart="1301" bodyend="1343" declfile="leasy/lua/ltable.h" declline="176" declcolumn="24"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>ltable.h<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Lua<sp/>tables<sp/>(hash)</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ltable_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ltable_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lobject_8h" kindref="compound">lobject.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13" refid="ltable_8h_1a644cfa3b6d4be1782e818a8340b5f78b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>gnode(t,i)<sp/><sp/>(&amp;(t)-&gt;node[i])</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="ltable_8h_1acbbecd9bd8fbb72a17f6e2f5acf7113d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>gval(n)<sp/><sp/><sp/><sp/><sp/>(&amp;(n)-&gt;i_val)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15" refid="ltable_8h_1aac0e00b2296e00cfc818b74f1aff4f8b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>gnext(n)<sp/><sp/><sp/><sp/>((n)-&gt;u.next)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="19"><highlight class="comment">**<sp/>Clear<sp/>all<sp/>bits<sp/>of<sp/>fast-access<sp/>metamethods,<sp/>which<sp/>means<sp/>that<sp/>the<sp/>table</highlight></codeline>
+<codeline lineno="20"><highlight class="comment">**<sp/>may<sp/>have<sp/>any<sp/>of<sp/>these<sp/>metamethods.<sp/>(First<sp/>access<sp/>that<sp/>fails<sp/>after<sp/>the</highlight></codeline>
+<codeline lineno="21"><highlight class="comment">**<sp/>clearing<sp/>will<sp/>set<sp/>the<sp/>bit<sp/>again.)</highlight></codeline>
+<codeline lineno="22"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23" refid="ltable_8h_1a69534d37fbaf464430636bf437108530" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>invalidateTMcache(t)<sp/><sp/><sp/><sp/>((t)-&gt;flags<sp/>&amp;=<sp/>cast_byte(~maskflags))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="27"><highlight class="comment">**<sp/>Bit<sp/>BITDUMMY<sp/>set<sp/>in<sp/>&apos;flags&apos;<sp/>means<sp/>the<sp/>table<sp/>is<sp/>using<sp/>the<sp/>dummy<sp/>node</highlight></codeline>
+<codeline lineno="28"><highlight class="comment">**<sp/>for<sp/>its<sp/>hash<sp/>part.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="ltable_8h_1a10992ea3eca8febeb53da0e75217d127" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>BITDUMMY<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(1<sp/>&lt;&lt;<sp/>6)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="ltable_8h_1a44ec1f8e91c16395505cefa404e161c2" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NOTBITDUMMY<sp/><sp/><sp/><sp/><sp/>cast_byte(~BITDUMMY)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="ltable_8h_1a97b22167368e065caf9d8d11ae7ca1de" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>isdummy(t)<sp/><sp/><sp/><sp/><sp/><sp/>((t)-&gt;flags<sp/>&amp;<sp/>BITDUMMY)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="ltable_8h_1a4bb2b4ed22d4441dc2dc6baa024d88fb" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>setnodummy(t)<sp/><sp/><sp/><sp/><sp/><sp/><sp/>((t)-&gt;flags<sp/>&amp;=<sp/>NOTBITDUMMY)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="ltable_8h_1a7b467ef97c2013e02a8ca29da04fa1bb" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>setdummy(t)<sp/><sp/><sp/><sp/><sp/>((t)-&gt;flags<sp/>|=<sp/>BITDUMMY)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>allocated<sp/>size<sp/>for<sp/>hash<sp/>nodes<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="ltable_8h_1af3ab680af234ee7ea0f7e6078b4b73bf" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>allocsizenode(t)<sp/><sp/><sp/><sp/>(isdummy(t)<sp/>?<sp/>0<sp/>:<sp/>sizenode(t))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>returns<sp/>the<sp/>Node,<sp/>given<sp/>the<sp/>value<sp/>of<sp/>a<sp/>table<sp/>entry<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="ltable_8h_1aa318820e0b85f1a9b1c34821e3d37a10" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>nodefromval(v)<sp/><sp/>cast(Node<sp/>*,<sp/>(v))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="ltable_8h_1a2b173ca3509371168fed5faa75fd02ee" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaH_fastgeti(t,k,res,tag)<sp/>\</highlight></codeline>
+<codeline lineno="50"><highlight class="preprocessor"><sp/><sp/>{<sp/>Table<sp/>*h<sp/>=<sp/>t;<sp/>lua_Unsigned<sp/>u<sp/>=<sp/>l_castS2U(k)<sp/>-<sp/>1u;<sp/>\</highlight></codeline>
+<codeline lineno="51"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>if<sp/>((u<sp/>&lt;<sp/>h-&gt;asize))<sp/>{<sp/>\</highlight></codeline>
+<codeline lineno="52"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/>tag<sp/>=<sp/>*getArrTag(h,<sp/>u);<sp/>\</highlight></codeline>
+<codeline lineno="53"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(!tagisempty(tag))<sp/>{<sp/>farr2val(h,<sp/>u,<sp/>tag,<sp/>res);<sp/>}}<sp/>\</highlight></codeline>
+<codeline lineno="54"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>else<sp/>{<sp/>tag<sp/>=<sp/>luaH_getint(h,<sp/>(k),<sp/>res);<sp/>}}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57" refid="ltable_8h_1a40ea18434574c42819014d5dce3f187f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaH_fastseti(t,k,val,hres)<sp/>\</highlight></codeline>
+<codeline lineno="58"><highlight class="preprocessor"><sp/><sp/>{<sp/>Table<sp/>*h<sp/>=<sp/>t;<sp/>lua_Unsigned<sp/>u<sp/>=<sp/>l_castS2U(k)<sp/>-<sp/>1u;<sp/>\</highlight></codeline>
+<codeline lineno="59"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>if<sp/>((u<sp/>&lt;<sp/>h-&gt;asize))<sp/>{<sp/>\</highlight></codeline>
+<codeline lineno="60"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/>lu_byte<sp/>*tag<sp/>=<sp/>getArrTag(h,<sp/>u);<sp/>\</highlight></codeline>
+<codeline lineno="61"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(checknoTM(h-&gt;metatable,<sp/>TM_NEWINDEX)<sp/>||<sp/>!tagisempty(*tag))<sp/>\</highlight></codeline>
+<codeline lineno="62"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/>fval2arr(h,<sp/>u,<sp/>tag,<sp/>val);<sp/>hres<sp/>=<sp/>HOK;<sp/>}<sp/>\</highlight></codeline>
+<codeline lineno="63"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/>else<sp/>hres<sp/>=<sp/>~cast_int(u);<sp/>}<sp/>\</highlight></codeline>
+<codeline lineno="64"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>else<sp/>{<sp/>hres<sp/>=<sp/>luaH_psetint(h,<sp/>k,<sp/>val);<sp/>}}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>results<sp/>from<sp/>pset<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="ltable_8h_1ab0ad6b5a11bdd85b09068bab4357e04f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>HOK<sp/><sp/><sp/><sp/><sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="ltable_8h_1a0a61e2afa849546bb2711491c78a09fb" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>HNOTFOUND<sp/><sp/><sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70" refid="ltable_8h_1a6eb3819f70bd20a64e23e20e405de46f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>HNOTATABLE<sp/><sp/>2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71" refid="ltable_8h_1ab105a0920f2c2c07a8b345447c5e7047" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>HFIRSTNODE<sp/><sp/>3</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="74"><highlight class="comment">**<sp/>&apos;luaH_get*&apos;<sp/>operations<sp/>set<sp/>&apos;res&apos;,<sp/>unless<sp/>the<sp/>value<sp/>is<sp/>absent,<sp/>and</highlight></codeline>
+<codeline lineno="75"><highlight class="comment">**<sp/>return<sp/>the<sp/>tag<sp/>of<sp/>the<sp/>result.</highlight></codeline>
+<codeline lineno="76"><highlight class="comment">**<sp/>The<sp/>&apos;luaH_pset*&apos;<sp/>(pre-set)<sp/>operations<sp/>set<sp/>the<sp/>given<sp/>value<sp/>and<sp/>return</highlight></codeline>
+<codeline lineno="77"><highlight class="comment">**<sp/>HOK,<sp/>unless<sp/>the<sp/>original<sp/>value<sp/>is<sp/>absent.<sp/>In<sp/>that<sp/>case,<sp/>if<sp/>the<sp/>key</highlight></codeline>
+<codeline lineno="78"><highlight class="comment">**<sp/>is<sp/>really<sp/>absent,<sp/>they<sp/>return<sp/>HNOTFOUND.<sp/>Otherwise,<sp/>if<sp/>there<sp/>is<sp/>a</highlight></codeline>
+<codeline lineno="79"><highlight class="comment">**<sp/>slot<sp/>with<sp/>that<sp/>key<sp/>but<sp/>with<sp/>no<sp/>value,<sp/>&apos;luaH_pset*&apos;<sp/>return<sp/>an<sp/>encoding</highlight></codeline>
+<codeline lineno="80"><highlight class="comment">**<sp/>of<sp/>where<sp/>the<sp/>key<sp/>is<sp/>(usually<sp/>called<sp/>&apos;hres&apos;).<sp/>(pset<sp/>cannot<sp/>set<sp/>that</highlight></codeline>
+<codeline lineno="81"><highlight class="comment">**<sp/>value<sp/>because<sp/>there<sp/>might<sp/>be<sp/>a<sp/>metamethod.)<sp/>If<sp/>the<sp/>slot<sp/>is<sp/>in<sp/>the</highlight></codeline>
+<codeline lineno="82"><highlight class="comment">**<sp/>hash<sp/>part,<sp/>the<sp/>encoding<sp/>is<sp/>(HFIRSTNODE<sp/>+<sp/>hash<sp/>index);<sp/>if<sp/>the<sp/>slot<sp/>is</highlight></codeline>
+<codeline lineno="83"><highlight class="comment">**<sp/>in<sp/>the<sp/>array<sp/>part,<sp/>the<sp/>encoding<sp/>is<sp/>(~array<sp/>index),<sp/>a<sp/>negative<sp/>value.</highlight></codeline>
+<codeline lineno="84"><highlight class="comment">**<sp/>The<sp/>value<sp/>HNOTATABLE<sp/>is<sp/>used<sp/>by<sp/>the<sp/>fast<sp/>macros<sp/>to<sp/>signal<sp/>that<sp/>the</highlight></codeline>
+<codeline lineno="85"><highlight class="comment">**<sp/>value<sp/>being<sp/>indexed<sp/>is<sp/>not<sp/>a<sp/>table.</highlight></codeline>
+<codeline lineno="86"><highlight class="comment">**<sp/>(The<sp/>size<sp/>for<sp/>the<sp/>array<sp/>part<sp/>is<sp/>limited<sp/>by<sp/>the<sp/>maximum<sp/>power<sp/>of<sp/>two</highlight></codeline>
+<codeline lineno="87"><highlight class="comment">**<sp/>that<sp/>fits<sp/>in<sp/>an<sp/>unsigned<sp/>integer;<sp/>that<sp/>is<sp/>INT_MAX+1.<sp/>So,<sp/>the<sp/>C-index</highlight></codeline>
+<codeline lineno="88"><highlight class="comment">**<sp/>ranges<sp/>from<sp/>0,<sp/>which<sp/>encodes<sp/>to<sp/>-1,<sp/>to<sp/>INT_MAX,<sp/>which<sp/>encodes<sp/>to</highlight></codeline>
+<codeline lineno="89"><highlight class="comment">**<sp/>INT_MIN.<sp/>The<sp/>size<sp/>of<sp/>the<sp/>hash<sp/>part<sp/>is<sp/>limited<sp/>by<sp/>the<sp/>maximum<sp/>power<sp/>of</highlight></codeline>
+<codeline lineno="90"><highlight class="comment">**<sp/>two<sp/>that<sp/>fits<sp/>in<sp/>a<sp/>signed<sp/>integer;<sp/>that<sp/>is<sp/>(INT_MAX+1)/2.<sp/>So,<sp/>it<sp/>is</highlight></codeline>
+<codeline lineno="91"><highlight class="comment">**<sp/>safe<sp/>to<sp/>add<sp/>HFIRSTNODE<sp/>to<sp/>any<sp/>index<sp/>there.)</highlight></codeline>
+<codeline lineno="92"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="96"><highlight class="comment">**<sp/>The<sp/>array<sp/>part<sp/>of<sp/>a<sp/>table<sp/>is<sp/>represented<sp/>by<sp/>an<sp/>inverted<sp/>array<sp/>of</highlight></codeline>
+<codeline lineno="97"><highlight class="comment">**<sp/>values<sp/>followed<sp/>by<sp/>an<sp/>array<sp/>of<sp/>tags,<sp/>to<sp/>avoid<sp/>wasting<sp/>space<sp/>with</highlight></codeline>
+<codeline lineno="98"><highlight class="comment">**<sp/>padding.<sp/>In<sp/>between<sp/>them<sp/>there<sp/>is<sp/>an<sp/>unsigned<sp/>int,<sp/>explained<sp/>later.</highlight></codeline>
+<codeline lineno="99"><highlight class="comment">**<sp/>The<sp/>&apos;array&apos;<sp/>pointer<sp/>points<sp/>between<sp/>the<sp/>two<sp/>arrays,<sp/>so<sp/>that<sp/>values<sp/>are</highlight></codeline>
+<codeline lineno="100"><highlight class="comment">**<sp/>indexed<sp/>with<sp/>negative<sp/>indices<sp/>and<sp/>tags<sp/>with<sp/>non-negative<sp/>indices.</highlight></codeline>
+<codeline lineno="101"><highlight class="comment"></highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Values<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Tags</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/><sp/>--------------------------------------------------------</highlight></codeline>
+<codeline lineno="104"><highlight class="comment"><sp/><sp/>...<sp/><sp/>|<sp/><sp/><sp/>Value<sp/>1<sp/><sp/><sp/><sp/><sp/>|<sp/><sp/><sp/>Value<sp/>0<sp/><sp/><sp/><sp/><sp/>|unsigned|0|1|...</highlight></codeline>
+<codeline lineno="105"><highlight class="comment"><sp/><sp/>--------------------------------------------------------</highlight></codeline>
+<codeline lineno="106"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>^<sp/>t-&gt;array</highlight></codeline>
+<codeline lineno="107"><highlight class="comment"></highlight></codeline>
+<codeline lineno="108"><highlight class="comment">**<sp/>All<sp/>accesses<sp/>to<sp/>&apos;t-&gt;array&apos;<sp/>should<sp/>be<sp/>through<sp/>the<sp/>macros<sp/>&apos;getArrTag&apos;</highlight></codeline>
+<codeline lineno="109"><highlight class="comment">**<sp/>and<sp/>&apos;getArrVal&apos;.</highlight></codeline>
+<codeline lineno="110"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Computes<sp/>the<sp/>address<sp/>of<sp/>the<sp/>tag<sp/>for<sp/>the<sp/>abstract<sp/>C-index<sp/>&apos;k&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113" refid="ltable_8h_1a313a46d69e7a7c6507b232c062476fb8" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>getArrTag(t,k)<sp/><sp/>(cast(lu_byte*,<sp/>(t)-&gt;array)<sp/>+<sp/>sizeof(unsigned)<sp/>+<sp/>(k))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Computes<sp/>the<sp/>address<sp/>of<sp/>the<sp/>value<sp/>for<sp/>the<sp/>abstract<sp/>C-index<sp/>&apos;k&apos;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116" refid="ltable_8h_1ade20cdfd523d50990d8e0f766302f8a2" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>getArrVal(t,k)<sp/><sp/>((t)-&gt;array<sp/>-<sp/>1<sp/>-<sp/>(k))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="120"><highlight class="comment">**<sp/>The<sp/>unsigned<sp/>between<sp/>the<sp/>two<sp/>arrays<sp/>is<sp/>used<sp/>as<sp/>a<sp/>hint<sp/>for<sp/>#t;</highlight></codeline>
+<codeline lineno="121"><highlight class="comment">**<sp/>see<sp/>luaH_getn.<sp/>It<sp/>is<sp/>stored<sp/>there<sp/>to<sp/>avoid<sp/>wasting<sp/>space<sp/>in</highlight></codeline>
+<codeline lineno="122"><highlight class="comment">**<sp/>the<sp/>structure<sp/>Table<sp/>for<sp/>tables<sp/>with<sp/>no<sp/>array<sp/>part.</highlight></codeline>
+<codeline lineno="123"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="124" refid="ltable_8h_1a1fa639fadf21f3e9e1cd4a07ea4ca93b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lenhint(t)<sp/><sp/>cast(unsigned*,<sp/>(t)-&gt;array)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="128"><highlight class="comment">**<sp/>Move<sp/>TValues<sp/>to/from<sp/>arrays,<sp/>using<sp/>C<sp/>indices</highlight></codeline>
+<codeline lineno="129"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="130" refid="ltable_8h_1a4724bc32155985f6e2e7ef7c2aec5fe9" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>arr2obj(h,k,val)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="131"><highlight class="preprocessor"><sp/><sp/>((val)-&gt;tt_<sp/>=<sp/>*getArrTag(h,(k)),<sp/>(val)-&gt;value_<sp/>=<sp/>*getArrVal(h,(k)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133" refid="ltable_8h_1ae9bc3116f28b43afdc06d1549cc72a36" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>obj2arr(h,k,val)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="134"><highlight class="preprocessor"><sp/><sp/>(*getArrTag(h,(k))<sp/>=<sp/>(val)-&gt;tt_,<sp/>*getArrVal(h,(k))<sp/>=<sp/>(val)-&gt;value_)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="138"><highlight class="comment">**<sp/>Often,<sp/>we<sp/>need<sp/>to<sp/>check<sp/>the<sp/>tag<sp/>of<sp/>a<sp/>value<sp/>before<sp/>moving<sp/>it.<sp/>The</highlight></codeline>
+<codeline lineno="139"><highlight class="comment">**<sp/>following<sp/>macros<sp/>also<sp/>move<sp/>TValues<sp/>to/from<sp/>arrays,<sp/>but<sp/>receive<sp/>the</highlight></codeline>
+<codeline lineno="140"><highlight class="comment">**<sp/>precomputed<sp/>tag<sp/>value<sp/>or<sp/>address<sp/>as<sp/>an<sp/>extra<sp/>argument.</highlight></codeline>
+<codeline lineno="141"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="142" refid="ltable_8h_1a05cdf433ea75bde96fdf20b025290ce1" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>farr2val(h,k,tag,res)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="143"><highlight class="preprocessor"><sp/><sp/>((res)-&gt;tt_<sp/>=<sp/>tag,<sp/>(res)-&gt;value_<sp/>=<sp/>*getArrVal(h,(k)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="145" refid="ltable_8h_1a940e30a137cda5e4c5d0698442bd6839" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>fval2arr(h,k,tag,val)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="146"><highlight class="preprocessor"><sp/><sp/>(*tag<sp/>=<sp/>(val)-&gt;tt_,<sp/>*getArrVal(h,(k))<sp/>=<sp/>(val)-&gt;value_)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="ltable_8h_1aba1d7dc5ad7152a059101915ec0dcad4" kindref="member">luaH_get</ref><sp/>(<ref refid="struct_table" kindref="compound">Table</ref><sp/>*t,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*res);</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="ltable_8h_1aedec5832a6781a4fe8f3de7c2a76144b" kindref="member">luaH_getshortstr</ref><sp/>(<ref refid="struct_table" kindref="compound">Table</ref><sp/>*t,<sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*res);</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="ltable_8h_1a5454c72376783365b4534378b774f017" kindref="member">luaH_getstr</ref><sp/>(<ref refid="struct_table" kindref="compound">Table</ref><sp/>*t,<sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*res);</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/><ref refid="ltable_8h_1a6a542d74e5a43a675eb98c81e89d4fd4" kindref="member">luaH_getint</ref><sp/>(<ref refid="struct_table" kindref="compound">Table</ref><sp/>*t,<sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*res);</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Special<sp/>get<sp/>for<sp/>metamethods<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*<ref refid="ltable_8h_1a9f5d752a8b44b770b53bfdcb1483c65c" kindref="member">luaH_Hgetshortstr</ref><sp/>(<ref refid="struct_table" kindref="compound">Table</ref><sp/>*t,<sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>);</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="ltable_8h_1a39c02ce7da8b7b67a3969a5ce965c41c" kindref="member">luaH_psetint</ref><sp/>(<ref refid="struct_table" kindref="compound">Table</ref><sp/>*t,<sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*val);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="ltable_8h_1afb75711d2aa4f3eba64141dd2e005e30" kindref="member">luaH_psetshortstr</ref><sp/>(<ref refid="struct_table" kindref="compound">Table</ref><sp/>*t,<sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*val);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="ltable_8h_1a7ce2b87e99dbb6f0a7940e4da153a0a7" kindref="member">luaH_psetstr</ref><sp/>(<ref refid="struct_table" kindref="compound">Table</ref><sp/>*t,<sp/><ref refid="struct_t_string" kindref="compound">TString</ref><sp/>*<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*val);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="ltable_8h_1a43642596f87a566fad5f981b61e379c9" kindref="member">luaH_pset</ref><sp/>(<ref refid="struct_table" kindref="compound">Table</ref><sp/>*t,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,<sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*val);</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ltable_8h_1ac62838e269732b63812012592c454462" kindref="member">luaH_setint</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*t,<sp/><ref refid="lua_8h_1a362144baa0cfb14dc38fd21438053d73" kindref="member">lua_Integer</ref><sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*value);</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ltable_8h_1a8957db41a7676a02ce7ed2008f1cbc9f" kindref="member">luaH_set</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*t,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*value);</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ltable_8h_1a39985315613372d8f0b78a9d90717341" kindref="member">luaH_finishset</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*t,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>,</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*value,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>hres);</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*<ref refid="ltable_8h_1a226f2738cfb2497699d62e7380d38a25" kindref="member">luaH_new</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ltable_8h_1ae4766b15dd5b7e67c08de66c1cff61b9" kindref="member">luaH_resize</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*t,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>nasize,</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>nhsize);</highlight></codeline>
+<codeline lineno="172" refid="ltable_8h_1a5e19ee816496686b3ecd3159c6c848c5" refkind="member"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ltable_8h_1a5e19ee816496686b3ecd3159c6c848c5" kindref="member">luaH_resizearray</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*t,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>nasize);</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="llimits_8h_1aac8c50ca0aa51c80523376da77c2c4d8" kindref="member">lu_mem</ref><sp/><ref refid="ltable_8h_1accf0bd8be305086394e47d4984957854" kindref="member">luaH_size</ref><sp/>(<ref refid="struct_table" kindref="compound">Table</ref><sp/>*t);</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ltable_8h_1aa2e2ed92ac2178bb87aa3a178c0a83bb" kindref="member">luaH_free</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*t);</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="ltable_8h_1a55be2c48e6e2c113dabda3819f5301e7" kindref="member">luaH_next</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*t,<sp/><ref refid="lobject_8h_1a75170ac0f54a6beb06b8a7f9db47d073" kindref="member">StkId</ref><sp/><ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>);</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="lua_8h_1a2357bdcd9af1aaef0a6895a9c3b7eccf" kindref="member">lua_Unsigned</ref><sp/><ref refid="ltable_8h_1a077936f1c77ab8ca6f004e521467afef" kindref="member">luaH_getn</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*t);</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(LUA_DEBUG)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="union_node" kindref="compound">Node</ref><sp/>*luaH_mainposition<sp/>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*t,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_t_value" kindref="compound">TValue</ref><sp/>*<ref refid="midiprogram_8h_1a1d221e9815e0e109ad0af744a7a0af3f" kindref="member">key</ref>);</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/ltable.h"/>
+  </compounddef>
+</doxygen>

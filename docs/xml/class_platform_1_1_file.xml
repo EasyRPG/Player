@@ -1,0 +1,290 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_platform_1_1_file" kind="class" language="C++" prot="public">
+    <compoundname>Platform::File</compoundname>
+    <includes refid="platform_8h" local="no">platform.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_platform_1_1_file_1ae2e157af6c58b7e8621289ab371ec59d" prot="private" static="no" mutable="no">
+        <type>const std::string</type>
+        <definition>const std::string Platform::File::filename</definition>
+        <argsstring></argsstring>
+        <name>filename</name>
+        <qualifiedname>Platform::File::filename</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="104" column="19" bodyfile="platform.h" bodystart="104" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_platform_1_1_file_1ae88f513a9922c3942b8062ff9b88f590" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Platform::File::File</definition>
+        <argsstring>()=delete</argsstring>
+        <name>File</name>
+        <qualifiedname>Platform::File::File</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="56" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_file_1a8505fbc941e9d35a21dd02a6f2d28f89" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_platform_1_1_file_1ae88f513a9922c3942b8062ff9b88f590" kindref="member">File</ref> &amp;</type>
+        <definition>File &amp; Platform::File::operator=</definition>
+        <argsstring>(const File &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Platform::File::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_platform_1_1_file_1ae88f513a9922c3942b8062ff9b88f590" kindref="member">File</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="57" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_file_1a2322620032760681c5c1adb875152e97" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Platform::File::File</definition>
+        <argsstring>(const File &amp;)=delete</argsstring>
+        <name>File</name>
+        <qualifiedname>Platform::File::File</qualifiedname>
+        <param>
+          <type>const File &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="58" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_file_1a5b7dffb210c44be27d16ba89250238a5" prot="public" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Platform::File::File</definition>
+        <argsstring>(std::string name)</argsstring>
+        <name>File</name>
+        <qualifiedname>Platform::File::File</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Accesses a file.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_platform_1_1_file" kindref="compound">File</ref> to access </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="65" column="10" bodyfile="platform.cpp" bodystart="35" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_file_1a8d656fd7dd762b0462c274ac657135e5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Platform::File::~File</definition>
+        <argsstring>()=default</argsstring>
+        <name>~File</name>
+        <qualifiedname>Platform::File::~File</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="67" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_file_1a20c7e5a160606c0d0062e403095e1168" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Platform::File::Exists</definition>
+        <argsstring>() const</argsstring>
+        <name>Exists</name>
+        <qualifiedname>Platform::File::Exists</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>True when the file exists </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="70" column="6" bodyfile="platform.cpp" bodystart="45" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_file_1a2260a9c1007fb15926c4a2e03b28313d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Platform::File::IsFile</definition>
+        <argsstring>(bool follow_symlinks) const</argsstring>
+        <name>IsFile</name>
+        <qualifiedname>Platform::File::IsFile</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>follow_symlinks</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>follow_symlinks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to follow symlinks (if supported on this platform) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if it is a regular file </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="76" column="6" bodyfile="platform.cpp" bodystart="56" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_file_1a95fe1f020d078fee84a592e05092823f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Platform::File::IsDirectory</definition>
+        <argsstring>(bool follow_symlinks) const</argsstring>
+        <name>IsDirectory</name>
+        <qualifiedname>Platform::File::IsDirectory</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>follow_symlinks</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>follow_symlinks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to follow symlinks (if supported on this platform) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if it is a directory </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="82" column="6" bodyfile="platform.cpp" bodystart="60" bodyend="62"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_file_1a237946caee5c05a6a551502ec7f45b2f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespace_platform_1a21c8409c159650f93b6fdae62e17d0b2" kindref="member">FileType</ref></type>
+        <definition>Platform::FileType Platform::File::GetType</definition>
+        <argsstring>(bool follow_symlinks) const</argsstring>
+        <name>GetType</name>
+        <qualifiedname>Platform::File::GetType</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>follow_symlinks</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>follow_symlinks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to follow symlinks (if supported on this platform) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>type of the file or <ref refid="namespace_platform_1a21c8409c159650f93b6fdae62e17d0b2a88183b946cc5f0e8c96b2e66e1c74a7e" kindref="member">FileType::Unknown</ref> on error </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="88" column="10" bodyfile="platform.cpp" bodystart="64" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_file_1a06ea016d1e77b615a3f0ec9deca8766d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int64_t</type>
+        <definition>int64_t Platform::File::GetSize</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSize</name>
+        <qualifiedname>Platform::File::GetSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Filesize or -1 on error </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="91" column="9" bodyfile="platform.cpp" bodystart="104" bodyend="124"/>
+      </memberdef>
+      <memberdef kind="function" id="class_platform_1_1_file_1ac4a91f7f185cbbc749be8059e52998f4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Platform::File::MakeDirectory</definition>
+        <argsstring>(bool follow_symlinks) const</argsstring>
+        <name>MakeDirectory</name>
+        <qualifiedname>Platform::File::MakeDirectory</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>follow_symlinks</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates a directory recursively at the filename path. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>follow_symlinks</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to follow symlinks (if supported on this platform) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true when the directory was created. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="98" column="6" bodyfile="platform.cpp" bodystart="126" bodyend="190"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Wrapper around file access </para>
+    </detaileddescription>
+    <location file="platform.h" line="54" column="1" bodyfile="platform.h" bodystart="54" bodyend="106"/>
+    <listofallmembers>
+      <member refid="class_platform_1_1_file_1a20c7e5a160606c0d0062e403095e1168" prot="public" virt="non-virtual"><scope>Platform::File</scope><name>Exists</name></member>
+      <member refid="class_platform_1_1_file_1ae88f513a9922c3942b8062ff9b88f590" prot="public" virt="non-virtual"><scope>Platform::File</scope><name>File</name></member>
+      <member refid="class_platform_1_1_file_1a2322620032760681c5c1adb875152e97" prot="public" virt="non-virtual"><scope>Platform::File</scope><name>File</name></member>
+      <member refid="class_platform_1_1_file_1a5b7dffb210c44be27d16ba89250238a5" prot="public" virt="non-virtual"><scope>Platform::File</scope><name>File</name></member>
+      <member refid="class_platform_1_1_file_1ae2e157af6c58b7e8621289ab371ec59d" prot="private" virt="non-virtual"><scope>Platform::File</scope><name>filename</name></member>
+      <member refid="class_platform_1_1_file_1a06ea016d1e77b615a3f0ec9deca8766d" prot="public" virt="non-virtual"><scope>Platform::File</scope><name>GetSize</name></member>
+      <member refid="class_platform_1_1_file_1a237946caee5c05a6a551502ec7f45b2f" prot="public" virt="non-virtual"><scope>Platform::File</scope><name>GetType</name></member>
+      <member refid="class_platform_1_1_file_1a95fe1f020d078fee84a592e05092823f" prot="public" virt="non-virtual"><scope>Platform::File</scope><name>IsDirectory</name></member>
+      <member refid="class_platform_1_1_file_1a2260a9c1007fb15926c4a2e03b28313d" prot="public" virt="non-virtual"><scope>Platform::File</scope><name>IsFile</name></member>
+      <member refid="class_platform_1_1_file_1ac4a91f7f185cbbc749be8059e52998f4" prot="public" virt="non-virtual"><scope>Platform::File</scope><name>MakeDirectory</name></member>
+      <member refid="class_platform_1_1_file_1a8505fbc941e9d35a21dd02a6f2d28f89" prot="public" virt="non-virtual"><scope>Platform::File</scope><name>operator=</name></member>
+      <member refid="class_platform_1_1_file_1a8d656fd7dd762b0462c274ac657135e5" prot="public" virt="non-virtual"><scope>Platform::File</scope><name>~File</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

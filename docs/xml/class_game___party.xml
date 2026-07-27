@@ -1,0 +1,1677 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___party" kind="class" language="C++" prot="public">
+    <compoundname>Game_Party</compoundname>
+    <basecompoundref refid="class_game___party___base" prot="public" virt="non-virtual">Game_Party_Base</basecompoundref>
+    <includes refid="game__party_8h" local="no">game_party.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_game___party_1ada93fd4983380fe40137d516bc82a907" prot="public" static="no" strong="no">
+        <type></type>
+        <name>sys_timer</name>
+        <qualifiedname>Game_Party::sys_timer</qualifiedname>
+        <enumvalue id="class_game___party_1ada93fd4983380fe40137d516bc82a907aa328cc277b9d95803da18a0d14f6929a" prot="public">
+          <name>Timer1</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___party_1ada93fd4983380fe40137d516bc82a907aabc7a93645b5842acb0d186192f05bef" prot="public">
+          <name>Timer2</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="316" column="1" bodyfile="game_party.h" bodystart="316" bodyend="319"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___party_1a8a642da90641df91eec4c527b0a077bb" prot="private" static="no" mutable="no">
+        <type>lcf::rpg::SaveInventory</type>
+        <definition>lcf::rpg::SaveInventory Game_Party::data</definition>
+        <argsstring></argsstring>
+        <name>data</name>
+        <qualifiedname>Game_Party::data</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="421" column="25" bodyfile="game_party.h" bodystart="421" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___party_1aa6de29e0d8ffdf2d1a02140e175d4f01" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Party::Game_Party</definition>
+        <argsstring>()</argsstring>
+        <name>Game_Party</name>
+        <qualifiedname>Game_Party::Game_Party</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes <ref refid="class_game___party" kindref="compound">Game_Party</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="37" column="1" bodyfile="game_party.cpp" bodystart="38" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1ad8c7a2f6033c0b88e90d4a00f2b679f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::SetupNewGame</definition>
+        <argsstring>()</argsstring>
+        <name>SetupNewGame</name>
+        <qualifiedname>Game_Party::SetupNewGame</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initialize for new game </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="40" column="6" bodyfile="game_party.cpp" bodystart="40" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a64aea4520e8eeabd1a71a889a1468138" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::SetupBattleTest</definition>
+        <argsstring>()</argsstring>
+        <name>SetupBattleTest</name>
+        <qualifiedname>Game_Party::SetupBattleTest</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Setups battle test party </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="43" column="6" bodyfile="game_party.cpp" bodystart="104" bodyend="132"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a82b542e55c6140464e36e42370ee0c4f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::SetupFromSave</definition>
+        <argsstring>(lcf::rpg::SaveInventory save)</argsstring>
+        <name>SetupFromSave</name>
+        <qualifiedname>Game_Party::SetupFromSave</qualifiedname>
+        <param>
+          <type>lcf::rpg::SaveInventory</type>
+          <declname>save</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initialize from save game </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="46" column="6" bodyfile="game_party.cpp" bodystart="47" bodyend="80"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1ac91c8dfae8ed2b3373bcdb63a5fa358e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const lcf::rpg::SaveInventory &amp;</type>
+        <definition>const lcf::rpg::SaveInventory &amp; Game_Party::GetSaveData</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSaveData</name>
+        <qualifiedname>Game_Party::GetSaveData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>save game data </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="49" column="31" bodyfile="game_party.h" bodystart="426" bodyend="428"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a5566fae089dec772fd8a55e5bbc67baf" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> &amp;</type>
+        <definition>Game_Actor &amp; Game_Party::operator[]</definition>
+        <argsstring>(const int index) override</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>Game_Party::operator[]</qualifiedname>
+        <reimplements refid="class_game___party___base_1a095bec7070ff47df4003339892f3584a">operator[]</reimplements>
+        <param>
+          <type>const int</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets a battler from the party by position in the party</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of member to return </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Party battler </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="51" column="12" bodyfile="game_party.cpp" bodystart="82" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1aa623bc4c7c92879870385198cf25b404" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetBattlerCount</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetBattlerCount</name>
+        <qualifiedname>Game_Party::GetBattlerCount</qualifiedname>
+        <reimplements refid="class_game___party___base_1a821fd1269f3ef045dd801e526b03e117">GetBattlerCount</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns how many members are in the party</para>
+<para><simplesect kind="return"><para>Number of members in the party </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="53" column="5" bodyfile="game_party.cpp" bodystart="92" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1adbfa5e9b36cc6c18b1ab8ec766e59c8c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetVisibleBattlerCount</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetVisibleBattlerCount</name>
+        <qualifiedname>Game_Party::GetVisibleBattlerCount</qualifiedname>
+        <reimplements refid="class_game___party___base_1a866853d28e7860ae1091338ff4b521a7">GetVisibleBattlerCount</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns how many members are in the party and not hidden</para>
+<para><simplesect kind="return"><para>Number of members in the party who are not hidden </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="54" column="5" bodyfile="game_party.cpp" bodystart="96" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1adc9e0d7f2aee29b43c0d95da94e232cf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::AddActor</definition>
+        <argsstring>(int actor_id)</argsstring>
+        <name>AddActor</name>
+        <qualifiedname>Game_Party::AddActor</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>actor_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adds an actor to the party.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>actor_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>database actor ID. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="62" column="6" bodyfile="game_party.cpp" bodystart="461" bodyend="478"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a7e531f36dcb2c27988ca5da52c862209" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::RemoveActor</definition>
+        <argsstring>(int actor_id)</argsstring>
+        <name>RemoveActor</name>
+        <qualifiedname>Game_Party::RemoveActor</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>actor_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Removes an actor from the party.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>actor_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>database actor ID. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="69" column="6" bodyfile="game_party.cpp" bodystart="480" bodyend="495"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a63a22400369f50ec5d0d65c8cf1b7eea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::Clear</definition>
+        <argsstring>()</argsstring>
+        <name>Clear</name>
+        <qualifiedname>Game_Party::Clear</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Removes all actors from the party. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="74" column="6" bodyfile="game_party.cpp" bodystart="497" bodyend="499"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a62e056ab013415f9cb865409f8c51b0d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Party::IsActorInParty</definition>
+        <argsstring>(int actor_id)</argsstring>
+        <name>IsActorInParty</name>
+        <qualifiedname>Game_Party::IsActorInParty</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>actor_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if an actor is in party.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>actor_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>database actor ID. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether the actor is in party. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="82" column="6" bodyfile="game_party.cpp" bodystart="501" bodyend="503"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a3060011dcf201ee3a846fc38c2cfafba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetActorPositionInParty</definition>
+        <argsstring>(int actor_id)</argsstring>
+        <name>GetActorPositionInParty</name>
+        <qualifiedname>Game_Party::GetActorPositionInParty</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>actor_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets position of actor in party.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>actor_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>database actor ID </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Party position 0 - 3 or -1 if not in </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="90" column="5" bodyfile="game_party.cpp" bodystart="505" bodyend="509"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1aa89209e0f120d1b329dbcffde8433f9f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::GainGold</definition>
+        <argsstring>(int value)</argsstring>
+        <name>GainGold</name>
+        <qualifiedname>Game_Party::GainGold</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gains gold.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>gained gold. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="97" column="6" bodyfile="game_party.cpp" bodystart="171" bodyend="174"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1abece8ddf5fd82cd65539016f56c0f4b2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::LoseGold</definition>
+        <argsstring>(int value)</argsstring>
+        <name>LoseGold</name>
+        <qualifiedname>Game_Party::LoseGold</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Loses gold.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lost gold. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="104" column="6" bodyfile="game_party.cpp" bodystart="176" bodyend="179"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a96c9d107c7289f46f3dadec9ba9eb8ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::GetItems</definition>
+        <argsstring>(std::vector&lt; int &gt; &amp;item_list)</argsstring>
+        <name>GetItems</name>
+        <qualifiedname>Game_Party::GetItems</qualifiedname>
+        <param>
+          <type>std::vector&lt; int &gt; &amp;</type>
+          <declname>item_list</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns all items of the party sorted by item id.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>item_list</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>vector to fill. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="111" column="6" bodyfile="game_party.cpp" bodystart="134" bodyend="140"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a4a79fdb51a59c14acbd15151f691f7b1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetItemCount</definition>
+        <argsstring>(int item_id) const</argsstring>
+        <name>GetItemCount</name>
+        <qualifiedname>Game_Party::GetItemCount</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>item_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets number of item in inventory.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>item_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>database item ID. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>number of items. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="119" column="5" bodyfile="game_party.cpp" bodystart="142" bodyend="145"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a93b2a02431bf11ee0fee3c3a3d0be623" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetEquippedItemCount</definition>
+        <argsstring>(int item_id) const</argsstring>
+        <name>GetEquippedItemCount</name>
+        <qualifiedname>Game_Party::GetEquippedItemCount</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>item_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets number of item equipped by the party.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>item_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>database item ID. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>number of items. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="127" column="5" bodyfile="game_party.cpp" bodystart="147" bodyend="156"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1aee9fea9ee6e4185b0ca95eba93898abd" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetItemTotalCount</definition>
+        <argsstring>(int item_id) const</argsstring>
+        <name>GetItemTotalCount</name>
+        <qualifiedname>Game_Party::GetItemTotalCount</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>item_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets number of item in inventory and equipped by party.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>item_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>database item ID. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>number of items. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="135" column="5" bodyfile="game_party.cpp" bodystart="158" bodyend="160"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a938ce0eb6120c5fb28072081c0a4e714" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetMaxItemCount</definition>
+        <argsstring>(int item_id) const</argsstring>
+        <name>GetMaxItemCount</name>
+        <qualifiedname>Game_Party::GetMaxItemCount</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>item_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets maximum number of item allowed in inventory.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>item_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>database item ID. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>maximum number of items. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="143" column="5" bodyfile="game_party.cpp" bodystart="162" bodyend="169"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1acdae9abf09e658f286f07aa50f5a1507" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::AddItem</definition>
+        <argsstring>(int item_id, int amount)</argsstring>
+        <name>AddItem</name>
+        <qualifiedname>Game_Party::AddItem</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>item_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>amount</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gains an amount of items.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>item_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>database item ID. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>amount</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>gained quantity. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="151" column="6" bodyfile="game_party.cpp" bodystart="181" bodyend="218"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1aa7b590797987dbf33040c4d973b0c9f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::RemoveItem</definition>
+        <argsstring>(int item_id, int amount)</argsstring>
+        <name>RemoveItem</name>
+        <qualifiedname>Game_Party::RemoveItem</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>item_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>amount</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Loses an amount of items.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>item_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>database item ID. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>amount</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>lost quantity. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="159" column="6" bodyfile="game_party.cpp" bodystart="220" bodyend="222"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1aa6b661c28277eb85a45a8ea51d959813" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::ConsumeItemUse</definition>
+        <argsstring>(int item_id)</argsstring>
+        <name>ConsumeItemUse</name>
+        <qualifiedname>Game_Party::ConsumeItemUse</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>item_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Consumes one use of an item (eg. for multi-use items). Doesn&apos;t actually do anything with the item, just uses up one use.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>item_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>database item ID </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="167" column="6" bodyfile="game_party.cpp" bodystart="224" bodyend="268"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a61c68e1fd380c60b6ef7b1770e9b5dac" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Party::IsItemUsable</definition>
+        <argsstring>(int item_id, const Game_Actor *target=nullptr) const</argsstring>
+        <name>IsItemUsable</name>
+        <qualifiedname>Game_Party::IsItemUsable</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>item_id</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> *</type>
+          <declname>target</declname>
+          <defval>nullptr</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if item can be used. When a target is specified this also checks if the target can use the item.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>item_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>database item ID. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Target to test </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether the item can be used. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="177" column="6" bodyfile="game_party.cpp" bodystart="270" bodyend="322"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a506c9d8d91cce83e5fcc5dc6fddfa6a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Party::UseItem</definition>
+        <argsstring>(int item_id, Game_Actor *target=nullptr)</argsstring>
+        <name>UseItem</name>
+        <qualifiedname>Game_Party::UseItem</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>item_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> *</type>
+          <declname>target</declname>
+          <defval>nullptr</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Uses an item on an actor. Tests if using that item makes any sense (e.g. for HP healing items if there are any HP to heal)</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>item_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of item to use </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Target the item is used on (or NULL if its for the party) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="187" column="6" bodyfile="game_party.cpp" bodystart="324" bodyend="379"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1add27f42a55ef54c46e0355ceea5e03db" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Party::IsSkillUsable</definition>
+        <argsstring>(int skill_id, const Game_Actor *target=nullptr, bool from_item=false) const</argsstring>
+        <name>IsSkillUsable</name>
+        <qualifiedname>Game_Party::IsSkillUsable</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>skill_id</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> *</type>
+          <declname>target</declname>
+          <defval>nullptr</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>from_item</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines if a skill can be used. When a target is specified this also checks if the target can use the item.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>skill_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Skill to test </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Skill user to test </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>from_item</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Skill is invoked by an item. This alters the usable check outside of battles. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="197" column="6" bodyfile="game_party.cpp" bodystart="381" bodyend="437"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a9342b940dea78b5679eddcbba0324a78" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Party::UseSkill</definition>
+        <argsstring>(int skill_id, Game_Actor *source, Game_Actor *target=NULL)</argsstring>
+        <name>UseSkill</name>
+        <qualifiedname>Game_Party::UseSkill</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>skill_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> *</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> *</type>
+          <declname>target</declname>
+          <defval>NULL</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Uses a skill on an actor. Tests if using that skill makes any sense (e.g. for HP healing skills if there are any HP to heal)</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>skill_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of skill to use </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Actor using the skill </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Target the skill is used on (or NULL if its for the party) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="208" column="6" bodyfile="game_party.cpp" bodystart="439" bodyend="459"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1ad0d8c6fdb367faed04af2e8006cfb5d2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetGold</definition>
+        <argsstring>() const</argsstring>
+        <name>GetGold</name>
+        <qualifiedname>Game_Party::GetGold</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets gold possessed.</para>
+<para><simplesect kind="return"><para>gold possessed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="215" column="5" bodyfile="game_party.h" bodystart="462" bodyend="464"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a055655c299d47be46da4d6768862a8a9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetSteps</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSteps</name>
+        <qualifiedname>Game_Party::GetSteps</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets steps walked.</para>
+<para><simplesect kind="return"><para>steps walked. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="222" column="5" bodyfile="game_party.h" bodystart="466" bodyend="468"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a9df87a7e0373af56905ddc37856f9519" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::IncSteps</definition>
+        <argsstring>()</argsstring>
+        <name>IncSteps</name>
+        <qualifiedname>Game_Party::IncSteps</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Increment the number of steps walked by 1. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="227" column="6" bodyfile="game_party.h" bodystart="470" bodyend="472"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a9bd63e2fd0b143159f2f1bb5d192fcd8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> * &gt;</type>
+        <definition>std::vector&lt; Game_Actor * &gt; Game_Party::GetActors</definition>
+        <argsstring>() const</argsstring>
+        <name>GetActors</name>
+        <qualifiedname>Game_Party::GetActors</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets actors in party list.</para>
+<para><simplesect kind="return"><para>actors in party list. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="234" column="13" bodyfile="game_party.cpp" bodystart="511" bodyend="517"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a6d7335d4560106f2ade692e17ee2e1d0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> *</type>
+        <definition>Game_Actor * Game_Party::GetActor</definition>
+        <argsstring>(int idx) const</argsstring>
+        <name>GetActor</name>
+        <qualifiedname>Game_Party::GetActor</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>idx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get&apos;s the i&apos;th actor in the party.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>idx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the party index starting from 0.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>actor at index, or nullptr if no such actor </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="243" column="12" bodyfile="game_party.cpp" bodystart="519" bodyend="524"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1aa5505e22e3d3faa48a1a1ac5f7e718f9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetBattleCount</definition>
+        <argsstring>() const</argsstring>
+        <name>GetBattleCount</name>
+        <qualifiedname>Game_Party::GetBattleCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets number of battles.</para>
+<para><simplesect kind="return"><para>number of battles. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="250" column="5" bodyfile="game_party.h" bodystart="430" bodyend="432"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a61bbdbd45506e655219139c1e976f618" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::IncBattleCount</definition>
+        <argsstring>()</argsstring>
+        <name>IncBattleCount</name>
+        <qualifiedname>Game_Party::IncBattleCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Increment the number of battles by 1. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="255" column="6" bodyfile="game_party.h" bodystart="434" bodyend="436"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1afd566e4bf0fcc261a535d40fa85e2cce" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetWinCount</definition>
+        <argsstring>() const</argsstring>
+        <name>GetWinCount</name>
+        <qualifiedname>Game_Party::GetWinCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets number of battles wins.</para>
+<para><simplesect kind="return"><para>number of battles wins. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="262" column="5" bodyfile="game_party.h" bodystart="438" bodyend="440"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a1db7c05af635bc6aba47f359a6833825" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::IncWinCount</definition>
+        <argsstring>()</argsstring>
+        <name>IncWinCount</name>
+        <qualifiedname>Game_Party::IncWinCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Increment the number of battles wins by 1. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="267" column="6" bodyfile="game_party.h" bodystart="442" bodyend="444"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a04b10ca43e1d931b2b0607a456782889" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetDefeatCount</definition>
+        <argsstring>() const</argsstring>
+        <name>GetDefeatCount</name>
+        <qualifiedname>Game_Party::GetDefeatCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets number of battles defeats.</para>
+<para><simplesect kind="return"><para>number of battles defeats. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="274" column="5" bodyfile="game_party.h" bodystart="446" bodyend="448"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a61a330ceb08826ff6d8cd2c8e1581ed9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::IncDefeatCount</definition>
+        <argsstring>()</argsstring>
+        <name>IncDefeatCount</name>
+        <qualifiedname>Game_Party::IncDefeatCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Increment the number of battles defeats by 1. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="279" column="6" bodyfile="game_party.h" bodystart="450" bodyend="452"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a04ee5af50bc5c18338d43a98e6d4c954" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetRunCount</definition>
+        <argsstring>() const</argsstring>
+        <name>GetRunCount</name>
+        <qualifiedname>Game_Party::GetRunCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets number of battles escapes.</para>
+<para><simplesect kind="return"><para>number of battles escapes. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="286" column="5" bodyfile="game_party.h" bodystart="454" bodyend="456"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a8400e4fc7181fd9539eff39ae700fa85" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::IncRunCount</definition>
+        <argsstring>()</argsstring>
+        <name>IncRunCount</name>
+        <qualifiedname>Game_Party::IncRunCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Increment the number of battles escapes by 1. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="291" column="6" bodyfile="game_party.h" bodystart="458" bodyend="460"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a4d7c63d791e2082d300fc0302e332cb6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::ApplyDamage</definition>
+        <argsstring>(int damage, bool lethal)</argsstring>
+        <name>ApplyDamage</name>
+        <qualifiedname>Game_Party::ApplyDamage</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>damage</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>lethal</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Damages all actors in party by the same value. Used by damage terrain on the map.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>damage</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>How many damage to apply </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>lethal</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If the damage can be lethal (kill a character) or not </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="300" column="6" bodyfile="game_party.cpp" bodystart="526" bodyend="534"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a7cd6cdc0f97a91bd36badc320e635459" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetAverageLevel</definition>
+        <argsstring>()</argsstring>
+        <name>GetAverageLevel</name>
+        <qualifiedname>Game_Party::GetAverageLevel</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets average level of the party (for battle)</para>
+<para><simplesect kind="return"><para>average level </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="307" column="5" bodyfile="game_party.cpp" bodystart="641" bodyend="656"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1ab3e7a91c77737f7983bcf170dd4dc2a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetFatigue</definition>
+        <argsstring>()</argsstring>
+        <name>GetFatigue</name>
+        <qualifiedname>Game_Party::GetFatigue</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets party exhaustion level (for battle)</para>
+<para><simplesect kind="return"><para>exhaustion level </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="314" column="5" bodyfile="game_party.cpp" bodystart="658" bodyend="683"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a89e26962a7d7821f579d8968efe4de24" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::SetTimer</definition>
+        <argsstring>(int which, int seconds)</argsstring>
+        <name>SetTimer</name>
+        <qualifiedname>Game_Party::SetTimer</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>which</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>seconds</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets a timer.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>which</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which timer to set. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>seconds</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the time in seconds. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="327" column="6" bodyfile="game_party.cpp" bodystart="536" bodyend="547"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a4ec4ff2889b1ccd9d7d68a0c7b90e645" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::StartTimer</definition>
+        <argsstring>(int which, bool visible, bool battle)</argsstring>
+        <name>StartTimer</name>
+        <qualifiedname>Game_Party::StartTimer</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>which</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>visible</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>battle</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Starts a timer.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>which</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which timer to start. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>visible</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>whether the timer is visible. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>battle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>whether the timer runs during battle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="336" column="6" bodyfile="game_party.cpp" bodystart="549" bodyend="562"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a1269d898df0eb0b14d9a478501b1ad7b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::StopTimer</definition>
+        <argsstring>(int which)</argsstring>
+        <name>StopTimer</name>
+        <qualifiedname>Game_Party::StopTimer</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>which</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Stops a timer.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>which</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which timer to stop. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="343" column="6" bodyfile="game_party.cpp" bodystart="564" bodyend="575"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a2abecec6e43cb9a20fdf78bfd4643675" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::UpdateTimers</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateTimers</name>
+        <qualifiedname>Game_Party::UpdateTimers</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates all timers. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="348" column="6" bodyfile="game_party.cpp" bodystart="577" bodyend="608"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1af0c81ada5922f8a7b468068357a6480c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetTimerSeconds</definition>
+        <argsstring>(int which)</argsstring>
+        <name>GetTimerSeconds</name>
+        <qualifiedname>Game_Party::GetTimerSeconds</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>which</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get a timer&apos;s value in seconds.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>which</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which timer to read. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>number of seconds remaining. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="356" column="5" bodyfile="game_party.cpp" bodystart="610" bodyend="612"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a73dc8acf1cf8ee2790dbd93cc1b9a3ff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetTimerFrames</definition>
+        <argsstring>(int which)</argsstring>
+        <name>GetTimerFrames</name>
+        <qualifiedname>Game_Party::GetTimerFrames</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>which</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get a timer&apos;s value in frames.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>which</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which timer to read. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>number of frames remaining. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="364" column="5" bodyfile="game_party.cpp" bodystart="614" bodyend="623"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a839fcc2b15c33766c718cf9865c69706" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Party::GetTimerVisible</definition>
+        <argsstring>(int which, bool in_battle)</argsstring>
+        <name>GetTimerVisible</name>
+        <qualifiedname>Game_Party::GetTimerVisible</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>which</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>in_battle</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns whether a timer should be visible now</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>which</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which timer to read </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>in_battle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>whether we&apos;re currently in a battle.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if visible. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="374" column="6" bodyfile="game_party.cpp" bodystart="625" bodyend="639"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a50326f57a845cf7cbee7bbb82176ac5e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::RemoveInvalidData</definition>
+        <argsstring>()</argsstring>
+        <name>RemoveInvalidData</name>
+        <qualifiedname>Game_Party::RemoveInvalidData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Removes invalid actors and items from the party </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="379" column="6" bodyfile="game_party.cpp" bodystart="685" bodyend="707"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a85502a70c1ac39e1d956e82a04573a31" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; int16_t &gt;</type>
+        <definition>std::vector&lt; int16_t &gt; Game_Party::GetInflictedStates</definition>
+        <argsstring>() const</argsstring>
+        <name>GetInflictedStates</name>
+        <qualifiedname>Game_Party::GetInflictedStates</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="381" column="13" bodyfile="game_party.cpp" bodystart="709" bodyend="722"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a9c56db56217dfd346c423e1b39df8d5a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Party::ApplyStateDamage</definition>
+        <argsstring>()</argsstring>
+        <name>ApplyStateDamage</name>
+        <qualifiedname>Game_Party::ApplyStateDamage</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Applies damage to the game party based on their stats.</para>
+<para><simplesect kind="return"><para>Whether the actor suffered some damage. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="388" column="6" bodyfile="game_party.cpp" bodystart="724" bodyend="769"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a5e313174841fc0793112cd14ecad9669" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Party::IsAnyControllable</definition>
+        <argsstring>()</argsstring>
+        <name>IsAnyControllable</name>
+        <qualifiedname>Game_Party::IsAnyControllable</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Whether any party member accepts custom battle commands. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="393" column="6" bodyfile="game_party.cpp" bodystart="771" bodyend="778"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a575daf7836902e5e33c6525303709d59" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> *</type>
+        <definition>Game_Actor * Game_Party::GetHighestLeveledActorWhoCanUse</definition>
+        <argsstring>(const lcf::rpg::Item *) const</argsstring>
+        <name>GetHighestLeveledActorWhoCanUse</name>
+        <qualifiedname>Game_Party::GetHighestLeveledActorWhoCanUse</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Item *</type>
+          <defname>item</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the actor with the highest level who can act and use the given item. If there are many, choose the one with the earliest position in the group.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>the</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>item to check</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The first Highest leveled actor who can act. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="402" column="12" bodyfile="game_party.cpp" bodystart="780" bodyend="791"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a4e46431c3e3109df6e3cd9a4ce2b8699" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Party::GetTurns</definition>
+        <argsstring>() const</argsstring>
+        <name>GetTurns</name>
+        <qualifiedname>Game_Party::GetTurns</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>If a battle is running, returns the current battle turn for the party. Otherwise, returns the number of turns of the last battle</para>
+<para><simplesect kind="return"><para>number of turns </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="410" column="5" bodyfile="game_party.h" bodystart="474" bodyend="476"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a4389d50c69ce96132cc4e14f2cd2105f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::IncTurns</definition>
+        <argsstring>()</argsstring>
+        <name>IncTurns</name>
+        <qualifiedname>Game_Party::IncTurns</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Increment turn counter </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="413" column="6" bodyfile="game_party.h" bodystart="478" bodyend="480"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___party_1a9232d3b2ca6851dfe3ad11ca38628b36" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Party::ResetTurns</definition>
+        <argsstring>()</argsstring>
+        <name>ResetTurns</name>
+        <qualifiedname>Game_Party::ResetTurns</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reset turn counter to 0 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="416" column="6" bodyfile="game_party.h" bodystart="482" bodyend="484"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_game___party_1aec9df1c6ce4181becf6f044a23698ad8" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::pair&lt; int, bool &gt;</type>
+        <definition>std::pair&lt; int, bool &gt; Game_Party::GetItemIndex</definition>
+        <argsstring>(int item_id) const</argsstring>
+        <name>GetItemIndex</name>
+        <qualifiedname>Game_Party::GetItemIndex</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>item_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_party.h" line="419" column="11" bodyfile="game_party.cpp" bodystart="793" bodyend="797"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_game___party" kindref="compound">Game_Party</ref> class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Game_Party</label>
+        <link refid="class_game___party"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Game_Party_Base</label>
+        <link refid="class_game___party___base"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Game_Party</label>
+        <link refid="class_game___party"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Game_Party_Base</label>
+        <link refid="class_game___party___base"/>
+      </node>
+    </collaborationgraph>
+    <location file="game_party.h" line="32" column="1" bodyfile="game_party.h" bodystart="32" bodyend="422"/>
+    <listofallmembers>
+      <member refid="class_game___party_1adc9e0d7f2aee29b43c0d95da94e232cf" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>AddActor</name></member>
+      <member refid="class_game___party_1acdae9abf09e658f286f07aa50f5a1507" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>AddItem</name></member>
+      <member refid="class_game___party_1a4d7c63d791e2082d300fc0302e332cb6" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>ApplyDamage</name></member>
+      <member refid="class_game___party_1a9c56db56217dfd346c423e1b39df8d5a" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>ApplyStateDamage</name></member>
+      <member refid="class_game___party_1a63a22400369f50ec5d0d65c8cf1b7eea" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>Clear</name></member>
+      <member refid="class_game___party_1aa6b661c28277eb85a45a8ea51d959813" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>ConsumeItemUse</name></member>
+      <member refid="class_game___party_1a8a642da90641df91eec4c527b0a077bb" prot="private" virt="non-virtual"><scope>Game_Party</scope><name>data</name></member>
+      <member refid="class_game___party_1aa89209e0f120d1b329dbcffde8433f9f" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GainGold</name></member>
+      <member refid="class_game___party_1aa6de29e0d8ffdf2d1a02140e175d4f01" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>Game_Party</name></member>
+      <member refid="class_game___party___base_1abff96233b2f3f5b2641c9f4cc6f3f213" prot="public" virt="virtual"><scope>Game_Party</scope><name>GetActiveBattlers</name></member>
+      <member refid="class_game___party_1a6d7335d4560106f2ade692e17ee2e1d0" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetActor</name></member>
+      <member refid="class_game___party_1a3060011dcf201ee3a846fc38c2cfafba" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetActorPositionInParty</name></member>
+      <member refid="class_game___party_1a9bd63e2fd0b143159f2f1bb5d192fcd8" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetActors</name></member>
+      <member refid="class_game___party___base_1aaecb52f4b655eb4825de94840a21d522" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetAverageAgility</name></member>
+      <member refid="class_game___party_1a7cd6cdc0f97a91bd36badc320e635459" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetAverageLevel</name></member>
+      <member refid="class_game___party_1aa5505e22e3d3faa48a1a1ac5f7e718f9" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetBattleCount</name></member>
+      <member refid="class_game___party_1aa623bc4c7c92879870385198cf25b404" prot="public" virt="virtual"><scope>Game_Party</scope><name>GetBattlerCount</name></member>
+      <member refid="class_game___party___base_1a0e89ee3a41a2df84878a8b8d0a98008c" prot="public" virt="virtual"><scope>Game_Party</scope><name>GetBattlers</name></member>
+      <member refid="class_game___party___base_1a7acd39bc87d84b1152fd0669ef7cc67b" prot="public" virt="virtual"><scope>Game_Party</scope><name>GetDeadBattlers</name></member>
+      <member refid="class_game___party_1a04b10ca43e1d931b2b0607a456782889" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetDefeatCount</name></member>
+      <member refid="class_game___party_1a93b2a02431bf11ee0fee3c3a3d0be623" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetEquippedItemCount</name></member>
+      <member refid="class_game___party_1ab3e7a91c77737f7983bcf170dd4dc2a4" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetFatigue</name></member>
+      <member refid="class_game___party_1ad0d8c6fdb367faed04af2e8006cfb5d2" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetGold</name></member>
+      <member refid="class_game___party_1a575daf7836902e5e33c6525303709d59" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetHighestLeveledActorWhoCanUse</name></member>
+      <member refid="class_game___party_1a85502a70c1ac39e1d956e82a04573a31" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetInflictedStates</name></member>
+      <member refid="class_game___party_1a4a79fdb51a59c14acbd15151f691f7b1" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetItemCount</name></member>
+      <member refid="class_game___party_1aec9df1c6ce4181becf6f044a23698ad8" prot="private" virt="non-virtual"><scope>Game_Party</scope><name>GetItemIndex</name></member>
+      <member refid="class_game___party_1a96c9d107c7289f46f3dadec9ba9eb8ba" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetItems</name></member>
+      <member refid="class_game___party_1aee9fea9ee6e4185b0ca95eba93898abd" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetItemTotalCount</name></member>
+      <member refid="class_game___party_1a938ce0eb6120c5fb28072081c0a4e714" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetMaxItemCount</name></member>
+      <member refid="class_game___party___base_1aee9463dcc01c87395bf0a559edc7a156" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetMemberIndex</name></member>
+      <member refid="class_game___party___base_1af92468545b05992b8f6a7e7c482c5e32" prot="public" virt="virtual"><scope>Game_Party</scope><name>GetNextActiveBattler</name></member>
+      <member refid="class_game___party___base_1a5b9f8e6c98e78dee9f82d6eeba2d06df" prot="public" virt="virtual"><scope>Game_Party</scope><name>GetRandomActiveBattler</name></member>
+      <member refid="class_game___party___base_1a98fa2454690a665e2af3c49bce74f419" prot="public" virt="virtual"><scope>Game_Party</scope><name>GetRandomDeadBattler</name></member>
+      <member refid="class_game___party_1a04ee5af50bc5c18338d43a98e6d4c954" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetRunCount</name></member>
+      <member refid="class_game___party_1ac91c8dfae8ed2b3373bcdb63a5fa358e" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetSaveData</name></member>
+      <member refid="class_game___party_1a055655c299d47be46da4d6768862a8a9" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetSteps</name></member>
+      <member refid="class_game___party_1a73dc8acf1cf8ee2790dbd93cc1b9a3ff" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetTimerFrames</name></member>
+      <member refid="class_game___party_1af0c81ada5922f8a7b468068357a6480c" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetTimerSeconds</name></member>
+      <member refid="class_game___party_1a839fcc2b15c33766c718cf9865c69706" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetTimerVisible</name></member>
+      <member refid="class_game___party_1a4e46431c3e3109df6e3cd9a4ce2b8699" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetTurns</name></member>
+      <member refid="class_game___party_1adbfa5e9b36cc6c18b1ab8ec766e59c8c" prot="public" virt="virtual"><scope>Game_Party</scope><name>GetVisibleBattlerCount</name></member>
+      <member refid="class_game___party_1afd566e4bf0fcc261a535d40fa85e2cce" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>GetWinCount</name></member>
+      <member refid="class_game___party_1a61bbdbd45506e655219139c1e976f618" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>IncBattleCount</name></member>
+      <member refid="class_game___party_1a61a330ceb08826ff6d8cd2c8e1581ed9" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>IncDefeatCount</name></member>
+      <member refid="class_game___party_1a8400e4fc7181fd9539eff39ae700fa85" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>IncRunCount</name></member>
+      <member refid="class_game___party_1a9df87a7e0373af56905ddc37856f9519" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>IncSteps</name></member>
+      <member refid="class_game___party_1a4389d50c69ce96132cc4e14f2cd2105f" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>IncTurns</name></member>
+      <member refid="class_game___party_1a1db7c05af635bc6aba47f359a6833825" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>IncWinCount</name></member>
+      <member refid="class_game___party_1a62e056ab013415f9cb865409f8c51b0d" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>IsActorInParty</name></member>
+      <member refid="class_game___party___base_1aa43443a5b5f56716fb08de317e610273" prot="public" virt="virtual"><scope>Game_Party</scope><name>IsAnyActive</name></member>
+      <member refid="class_game___party_1a5e313174841fc0793112cd14ecad9669" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>IsAnyControllable</name></member>
+      <member refid="class_game___party_1a61c68e1fd380c60b6ef7b1770e9b5dac" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>IsItemUsable</name></member>
+      <member refid="class_game___party_1add27f42a55ef54c46e0355ceea5e03db" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>IsSkillUsable</name></member>
+      <member refid="class_game___party_1abece8ddf5fd82cd65539016f56c0f4b2" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>LoseGold</name></member>
+      <member refid="class_game___party_1a5566fae089dec772fd8a55e5bbc67baf" prot="public" virt="virtual"><scope>Game_Party</scope><name>operator[]</name></member>
+      <member refid="class_game___party_1a7e531f36dcb2c27988ca5da52c862209" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>RemoveActor</name></member>
+      <member refid="class_game___party_1a50326f57a845cf7cbee7bbb82176ac5e" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>RemoveInvalidData</name></member>
+      <member refid="class_game___party_1aa7b590797987dbf33040c4d973b0c9f8" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>RemoveItem</name></member>
+      <member refid="class_game___party_1a9232d3b2ca6851dfe3ad11ca38628b36" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>ResetTurns</name></member>
+      <member refid="class_game___party_1a89e26962a7d7821f579d8968efe4de24" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>SetTimer</name></member>
+      <member refid="class_game___party_1a64aea4520e8eeabd1a71a889a1468138" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>SetupBattleTest</name></member>
+      <member refid="class_game___party_1a82b542e55c6140464e36e42370ee0c4f" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>SetupFromSave</name></member>
+      <member refid="class_game___party_1ad8c7a2f6033c0b88e90d4a00f2b679f0" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>SetupNewGame</name></member>
+      <member refid="class_game___party_1a4ec4ff2889b1ccd9d7d68a0c7b90e645" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>StartTimer</name></member>
+      <member refid="class_game___party_1a1269d898df0eb0b14d9a478501b1ad7b" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>StopTimer</name></member>
+      <member refid="class_game___party_1ada93fd4983380fe40137d516bc82a907" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>sys_timer</name></member>
+      <member refid="class_game___party_1ada93fd4983380fe40137d516bc82a907aa328cc277b9d95803da18a0d14f6929a" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>Timer1</name></member>
+      <member refid="class_game___party_1ada93fd4983380fe40137d516bc82a907aabc7a93645b5842acb0d186192f05bef" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>Timer2</name></member>
+      <member refid="class_game___party_1a2abecec6e43cb9a20fdf78bfd4643675" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>UpdateTimers</name></member>
+      <member refid="class_game___party_1a506c9d8d91cce83e5fcc5dc6fddfa6a3" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>UseItem</name></member>
+      <member refid="class_game___party_1a9342b940dea78b5679eddcbba0324a78" prot="public" virt="non-virtual"><scope>Game_Party</scope><name>UseSkill</name></member>
+      <member refid="class_game___party___base_1a8b1fda73ee9191a7459fd02c666e429a" prot="public" virt="virtual"><scope>Game_Party</scope><name>~Game_Party_Base</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

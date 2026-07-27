@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ul2_1_1userdata__holder_3_01_t_00_01std_1_1enable__if__t_3_9typings2_1_1is__comple78baed4a32c6a3218677f77bf330edf" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ul2::userdata_holder&lt; T, std::enable_if_t&lt;!typings2::is_complete_v&lt; T &gt;||std::is_abstract_v&lt; T &gt; &gt; &gt;</compoundname>
+    <includes refid="lua__stack_8hpp" local="no">lua_stack.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ul2/lua_stack.hpp" line="191" column="1" bodyfile="leasy/ul2/lua_stack.hpp" bodystart="192" bodyend="194"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

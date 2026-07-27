@@ -93,3 +93,4 @@ constexpr Tone::Tone(int red, int green, int blue, int gray) :
 }
 
 #endif
+

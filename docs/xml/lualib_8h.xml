@@ -1,0 +1,858 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lualib_8h" kind="file" language="C++">
+    <compoundname>lualib.h</compoundname>
+    <includes refid="lua_8h" local="yes">lua.h</includes>
+    <includedby refid="lbaselib_8c" local="yes">leasy/lua/lbaselib.c</includedby>
+    <includedby refid="lcorolib_8c" local="yes">leasy/lua/lcorolib.c</includedby>
+    <includedby refid="ldblib_8c" local="yes">leasy/lua/ldblib.c</includedby>
+    <includedby refid="linit_8c" local="yes">leasy/lua/linit.c</includedby>
+    <includedby refid="liolib_8c" local="yes">leasy/lua/liolib.c</includedby>
+    <includedby refid="lmathlib_8c" local="yes">leasy/lua/lmathlib.c</includedby>
+    <includedby refid="loadlib_8c" local="yes">leasy/lua/loadlib.c</includedby>
+    <includedby refid="loslib_8c" local="yes">leasy/lua/loslib.c</includedby>
+    <includedby refid="lstrlib_8c" local="yes">leasy/lua/lstrlib.c</includedby>
+    <includedby refid="ltablib_8c" local="yes">leasy/lua/ltablib.c</includedby>
+    <includedby refid="lua_2lua_8hpp" local="yes">leasy/lua/lua.hpp</includedby>
+    <includedby refid="lutf8lib_8c" local="yes">leasy/lua/lutf8lib.c</includedby>
+    <incdepgraph>
+      <node id="2">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lualib.h</label>
+        <link refid="lualib_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>limits.h</label>
+      </node>
+      <node id="3">
+        <label>stdarg.h</label>
+      </node>
+      <node id="4">
+        <label>stddef.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="32">
+        <label>algo.cpp</label>
+        <link refid="algo_8cpp"/>
+      </node>
+      <node id="22">
+        <label>game_map.cpp</label>
+        <link refid="game__map_8cpp"/>
+      </node>
+      <node id="26">
+        <label>graphics.cpp</label>
+        <link refid="graphics_8cpp"/>
+      </node>
+      <node id="21">
+        <label>leasy/events.hpp</label>
+        <link refid="events_8hpp"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>leasy/iky7/anyf.hpp</label>
+        <link refid="anyf_8hpp"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>leasy/ily3/boot.cpp</label>
+        <link refid="boot_8cpp"/>
+      </node>
+      <node id="19">
+        <label>leasy/ily3/ily3.cpp</label>
+        <link refid="ily3_8cpp"/>
+      </node>
+      <node id="20">
+        <label>leasy/ily3/ily3.hpp</label>
+        <link refid="ily3_8hpp"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>leasy/ily3/libsys.cpp</label>
+        <link refid="libsys_8cpp"/>
+      </node>
+      <node id="15">
+        <label>leasy/ily3/libsys.hpp</label>
+        <link refid="libsys_8hpp"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>leasy/kits/rtt.hpp</label>
+        <link refid="rtt_8hpp"/>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>leasy/leasy.cpp</label>
+        <link refid="leasy_8cpp"/>
+      </node>
+      <node id="25">
+        <label>leasy/leasy.hpp</label>
+        <link refid="leasy_8hpp"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>leasy/lmain.cpp</label>
+        <link refid="lmain_8cpp"/>
+      </node>
+      <node id="2">
+        <label>leasy/lua/lbaselib.c</label>
+        <link refid="lbaselib_8c"/>
+      </node>
+      <node id="3">
+        <label>leasy/lua/lcorolib.c</label>
+        <link refid="lcorolib_8c"/>
+      </node>
+      <node id="4">
+        <label>leasy/lua/ldblib.c</label>
+        <link refid="ldblib_8c"/>
+      </node>
+      <node id="5">
+        <label>leasy/lua/linit.c</label>
+        <link refid="linit_8c"/>
+      </node>
+      <node id="6">
+        <label>leasy/lua/liolib.c</label>
+        <link refid="liolib_8c"/>
+      </node>
+      <node id="7">
+        <label>leasy/lua/lmathlib.c</label>
+        <link refid="lmathlib_8c"/>
+      </node>
+      <node id="8">
+        <label>leasy/lua/loadlib.c</label>
+        <link refid="loadlib_8c"/>
+      </node>
+      <node id="9">
+        <label>leasy/lua/loslib.c</label>
+        <link refid="loslib_8c"/>
+      </node>
+      <node id="10">
+        <label>leasy/lua/lstrlib.c</label>
+        <link refid="lstrlib_8c"/>
+      </node>
+      <node id="11">
+        <label>leasy/lua/ltablib.c</label>
+        <link refid="ltablib_8c"/>
+      </node>
+      <node id="12">
+        <label>leasy/lua/lua.hpp</label>
+        <link refid="lua_2lua_8hpp"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lualib.h</label>
+        <link refid="lualib_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="41">
+        <label>leasy/lua/lutf8lib.c</label>
+        <link refid="lutf8lib_8c"/>
+      </node>
+      <node id="30">
+        <label>leasy/metadata/class.hpp</label>
+        <link refid="class_8hpp"/>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>leasy/metadata/function.hpp</label>
+        <link refid="function_8hpp"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>leasy/metadata/metadata.hpp</label>
+        <link refid="metadata_8hpp"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>leasy/metadata/namespace.hpp</label>
+        <link refid="namespace_8hpp"/>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>leasy/metadata/reflection.hpp</label>
+        <link refid="reflection_8hpp"/>
+      </node>
+      <node id="34">
+        <label>leasy/metadata/type.cpp</label>
+        <link refid="type_8cpp"/>
+      </node>
+      <node id="37">
+        <label>leasy/metadata/type.hpp</label>
+        <link refid="type_8hpp"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>leasy/ui/winstream.hpp</label>
+        <link refid="winstream_8hpp"/>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>leasy/ul2/dispatcher.hpp</label>
+        <link refid="dispatcher_8hpp"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>leasy/ul2/function_wrapper.hpp</label>
+        <link refid="function__wrapper_8hpp"/>
+      </node>
+      <node id="16">
+        <label>leasy/ul2/lua_stack.hpp</label>
+        <link refid="lua__stack_8hpp"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>leasy/ul2/state.hpp</label>
+        <link refid="state_8hpp"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>platform/sdl/main.cpp</label>
+        <link refid="sdl_2main_8cpp"/>
+      </node>
+      <node id="24">
+        <label>player.cpp</label>
+        <link refid="player_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lualib_8h_1a06a8221265cf7c226030b5a16b18a1f0" prot="public" static="no">
+        <name>LUA_VERSUFFIX</name>
+        <initializer>&quot;_&quot; <ref refid="lua_8h_1a63a596b6a839201a9461aefb2b5297c3" kindref="member">LUA_VERSION_MAJOR</ref> &quot;_&quot; <ref refid="lua_8h_1a6650b301b9f1e26623859bd07a6952c5" kindref="member">LUA_VERSION_MINOR</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="15" column="9" bodyfile="leasy/lua/lualib.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1a5536fa189ea56cc119a669588a7d72ef" prot="public" static="no">
+        <name>LUA_GLIBK</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="17" column="9" bodyfile="leasy/lua/lualib.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1a875eb4d5f4d22b844254330b45f02b76" prot="public" static="no">
+        <name>LUA_LOADLIBNAME</name>
+        <initializer>&quot;package&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="20" column="9" bodyfile="leasy/lua/lualib.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1a059ff1230209587a31075ec343bf4b1a" prot="public" static="no">
+        <name>LUA_LOADLIBK</name>
+        <initializer>(<ref refid="lualib_8h_1a5536fa189ea56cc119a669588a7d72ef" kindref="member">LUA_GLIBK</ref> &lt;&lt; 1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="21" column="9" bodyfile="leasy/lua/lualib.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1a8548d3b29e4dffa749a4ca4288bec7e3" prot="public" static="no">
+        <name>LUA_COLIBNAME</name>
+        <initializer>&quot;coroutine&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="25" column="9" bodyfile="leasy/lua/lualib.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1a7e04acabe95c6b9d9aba029a2ceea2a2" prot="public" static="no">
+        <name>LUA_COLIBK</name>
+        <initializer>(<ref refid="lualib_8h_1a059ff1230209587a31075ec343bf4b1a" kindref="member">LUA_LOADLIBK</ref> &lt;&lt; 1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="26" column="9" bodyfile="leasy/lua/lualib.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1a4c656e7d665aa72e62976adc701795f9" prot="public" static="no">
+        <name>LUA_DBLIBNAME</name>
+        <initializer>&quot;debug&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="29" column="9" bodyfile="leasy/lua/lualib.h" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1a7ddfea21444b59d81dec78f3ee0bb481" prot="public" static="no">
+        <name>LUA_DBLIBK</name>
+        <initializer>(<ref refid="lualib_8h_1a7e04acabe95c6b9d9aba029a2ceea2a2" kindref="member">LUA_COLIBK</ref> &lt;&lt; 1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="30" column="9" bodyfile="leasy/lua/lualib.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1a54fc1c91f79390071a7b7fc341c9aac0" prot="public" static="no">
+        <name>LUA_IOLIBNAME</name>
+        <initializer>&quot;io&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="33" column="9" bodyfile="leasy/lua/lualib.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1a3fe7f28d5415c62a9a21bbd442d9494f" prot="public" static="no">
+        <name>LUA_IOLIBK</name>
+        <initializer>(<ref refid="lualib_8h_1a7ddfea21444b59d81dec78f3ee0bb481" kindref="member">LUA_DBLIBK</ref> &lt;&lt; 1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="34" column="9" bodyfile="leasy/lua/lualib.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1a18b55f45d0662ae9c460e4607913bbd7" prot="public" static="no">
+        <name>LUA_MATHLIBNAME</name>
+        <initializer>&quot;math&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="37" column="9" bodyfile="leasy/lua/lualib.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1a43dc75de44c94286ccb6f07a8e15aecc" prot="public" static="no">
+        <name>LUA_MATHLIBK</name>
+        <initializer>(<ref refid="lualib_8h_1a3fe7f28d5415c62a9a21bbd442d9494f" kindref="member">LUA_IOLIBK</ref> &lt;&lt; 1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="38" column="9" bodyfile="leasy/lua/lualib.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1ac89a67224db2eecc20aded867531e26d" prot="public" static="no">
+        <name>LUA_OSLIBNAME</name>
+        <initializer>&quot;os&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="41" column="9" bodyfile="leasy/lua/lualib.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1a40f4de7ada61f4bbed44c69be0fc0389" prot="public" static="no">
+        <name>LUA_OSLIBK</name>
+        <initializer>(<ref refid="lualib_8h_1a43dc75de44c94286ccb6f07a8e15aecc" kindref="member">LUA_MATHLIBK</ref> &lt;&lt; 1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="42" column="9" bodyfile="leasy/lua/lualib.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1aa973f7834b4cbf409e5a2752d91cf2c0" prot="public" static="no">
+        <name>LUA_STRLIBNAME</name>
+        <initializer>&quot;string&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="45" column="9" bodyfile="leasy/lua/lualib.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1a33704dc4f0f92ff05dbb9dc61911f1c3" prot="public" static="no">
+        <name>LUA_STRLIBK</name>
+        <initializer>(<ref refid="lualib_8h_1a40f4de7ada61f4bbed44c69be0fc0389" kindref="member">LUA_OSLIBK</ref> &lt;&lt; 1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="46" column="9" bodyfile="leasy/lua/lualib.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1aa9da6ee4401c3ea9591a60ae5514a4dd" prot="public" static="no">
+        <name>LUA_TABLIBNAME</name>
+        <initializer>&quot;table&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="49" column="9" bodyfile="leasy/lua/lualib.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1a44f6c5c7ffa17aabcc834cf5a561c601" prot="public" static="no">
+        <name>LUA_TABLIBK</name>
+        <initializer>(<ref refid="lualib_8h_1a33704dc4f0f92ff05dbb9dc61911f1c3" kindref="member">LUA_STRLIBK</ref> &lt;&lt; 1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="50" column="9" bodyfile="leasy/lua/lualib.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1abc11555bcb492e59444d8774bd8970d8" prot="public" static="no">
+        <name>LUA_UTF8LIBNAME</name>
+        <initializer>&quot;utf8&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="53" column="9" bodyfile="leasy/lua/lualib.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1a4a1394187f847bd0fb5e972ecb5dba48" prot="public" static="no">
+        <name>LUA_UTF8LIBK</name>
+        <initializer>(<ref refid="lualib_8h_1a44f6c5c7ffa17aabcc834cf5a561c601" kindref="member">LUA_TABLIBK</ref> &lt;&lt; 1)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="54" column="9" bodyfile="leasy/lua/lualib.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lualib_8h_1ac5514fd0a4698415649b36e84482e190" prot="public" static="no">
+        <name>luaL_openlibs</name>
+        <param><defname>L</defname></param>
+        <initializer><ref refid="lualib_8h_1ad09996aefb08d65ffee01b1729919261" kindref="member">luaL_openselectedlibs</ref>(L, ~0, 0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="62" column="9" bodyfile="leasy/lua/lualib.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="lualib_8h_1ae99bbf706d0fcfb0c1c7afbe3c4de382" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref> int</type>
+        <definition>LUAMOD_API int luaopen_base</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaopen_base</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="18" column="12" bodyfile="leasy/lua/lbaselib.c" bodystart="547" bodyend="558" declfile="leasy/lua/lualib.h" declline="18" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lualib_8h_1ab732e1ec253c9b8dc0c2ce4d74cb0083" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref> int</type>
+        <definition>LUAMOD_API int luaopen_package</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaopen_package</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="22" column="12" bodyfile="leasy/lua/loadlib.c" bodystart="724" bodyend="747" declfile="leasy/lua/lualib.h" declline="22" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lualib_8h_1a8515aa0d6a2e901a5397afd5e4250db2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref> int</type>
+        <definition>LUAMOD_API int luaopen_coroutine</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaopen_coroutine</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="27" column="12" bodyfile="leasy/lua/lcorolib.c" bodystart="221" bodyend="224" declfile="leasy/lua/lualib.h" declline="27" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lualib_8h_1ad94d3e2d0ca6d83a904a3ba9aad04f3b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref> int</type>
+        <definition>LUAMOD_API int luaopen_debug</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaopen_debug</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="31" column="12" bodyfile="leasy/lua/ldblib.c" bodystart="473" bodyend="476" declfile="leasy/lua/lualib.h" declline="31" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lualib_8h_1a2d3f245e532f3d582a4ff62bbd567149" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref> int</type>
+        <definition>LUAMOD_API int luaopen_io</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaopen_io</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="35" column="12" bodyfile="leasy/lua/liolib.c" bodystart="832" bodyend="840" declfile="leasy/lua/lualib.h" declline="35" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lualib_8h_1a78cbff06fd4d59cf3d7525fa6cc196ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref> int</type>
+        <definition>LUAMOD_API int luaopen_math</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaopen_math</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="39" column="12" bodyfile="leasy/lua/lmathlib.c" bodystart="752" bodyend="764" declfile="leasy/lua/lualib.h" declline="39" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lualib_8h_1a03d1c1c58e52032aee542b65a2b1c3ca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref> int</type>
+        <definition>LUAMOD_API int luaopen_os</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaopen_os</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="43" column="12" bodyfile="leasy/lua/loslib.c" bodystart="428" bodyend="431" declfile="leasy/lua/lualib.h" declline="43" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lualib_8h_1ab65aeff75cb100dde75e955c698c83b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref> int</type>
+        <definition>LUAMOD_API int luaopen_string</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaopen_string</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="47" column="12" bodyfile="leasy/lua/lstrlib.c" bodystart="1889" bodyend="1893" declfile="leasy/lua/lualib.h" declline="47" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lualib_8h_1acfb66f04d8d0ea06cb1c4c059b9e142b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref> int</type>
+        <definition>LUAMOD_API int luaopen_table</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaopen_table</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="51" column="12" bodyfile="leasy/lua/ltablib.c" bodystart="422" bodyend="425" declfile="leasy/lua/lualib.h" declline="51" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lualib_8h_1ae1247f71bc4b3f3be7da9c9d5c7668b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref> int</type>
+        <definition>LUAMOD_API int luaopen_utf8</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaopen_utf8</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="55" column="12" bodyfile="leasy/lua/lutf8lib.c" bodystart="285" bodyend="290" declfile="leasy/lua/lualib.h" declline="55" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="lualib_8h_1ad09996aefb08d65ffee01b1729919261" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref> void</type>
+        <definition>LUALIB_API void luaL_openselectedlibs</definition>
+        <argsstring>(lua_State *L, int load, int preload)</argsstring>
+        <name>luaL_openselectedlibs</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>load</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>preload</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lualib.h" line="59" column="12" bodyfile="leasy/lua/linit.c" bodystart="46" bodyend="62" declfile="leasy/lua/lualib.h" declline="59" declcolumn="12"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lualib.h<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Lua<sp/>standard<sp/>libraries</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>lualib_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lualib_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lua_8h" kindref="compound">lua.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>version<sp/>suffix<sp/>for<sp/>environment<sp/>variable<sp/>names<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15" refid="lualib_8h_1a06a8221265cf7c226030b5a16b18a1f0" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_VERSUFFIX<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&quot;_&quot;<sp/>LUA_VERSION_MAJOR<sp/>&quot;_&quot;<sp/>LUA_VERSION_MINOR</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17" refid="lualib_8h_1a5536fa189ea56cc119a669588a7d72ef" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_GLIBK<sp/><sp/><sp/><sp/><sp/><sp/><sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref><sp/>int<sp/>(<ref refid="lbaselib_8c_1ae99bbf706d0fcfb0c1c7afbe3c4de382" kindref="member">luaopen_base</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="lualib_8h_1a875eb4d5f4d22b844254330b45f02b76" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_LOADLIBNAME<sp/>&quot;package&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21" refid="lualib_8h_1a059ff1230209587a31075ec343bf4b1a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_LOADLIBK<sp/><sp/><sp/><sp/>(LUA_GLIBK<sp/>&lt;&lt;<sp/>1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref><sp/>int<sp/>(<ref refid="loadlib_8c_1ab732e1ec253c9b8dc0c2ce4d74cb0083" kindref="member">luaopen_package</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25" refid="lualib_8h_1a8548d3b29e4dffa749a4ca4288bec7e3" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_COLIBNAME<sp/><sp/><sp/>&quot;coroutine&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="lualib_8h_1a7e04acabe95c6b9d9aba029a2ceea2a2" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_COLIBK<sp/><sp/>(LUA_LOADLIBK<sp/>&lt;&lt;<sp/>1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref><sp/>int<sp/>(<ref refid="lcorolib_8c_1a8515aa0d6a2e901a5397afd5e4250db2" kindref="member">luaopen_coroutine</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="lualib_8h_1a4c656e7d665aa72e62976adc701795f9" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_DBLIBNAME<sp/><sp/><sp/>&quot;debug&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="lualib_8h_1a7ddfea21444b59d81dec78f3ee0bb481" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_DBLIBK<sp/><sp/>(LUA_COLIBK<sp/>&lt;&lt;<sp/>1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref><sp/>int<sp/>(<ref refid="ldblib_8c_1ad94d3e2d0ca6d83a904a3ba9aad04f3b" kindref="member">luaopen_debug</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="lualib_8h_1a54fc1c91f79390071a7b7fc341c9aac0" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_IOLIBNAME<sp/><sp/><sp/>&quot;io&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="lualib_8h_1a3fe7f28d5415c62a9a21bbd442d9494f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_IOLIBK<sp/><sp/>(LUA_DBLIBK<sp/>&lt;&lt;<sp/>1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref><sp/>int<sp/>(<ref refid="liolib_8c_1a2d3f245e532f3d582a4ff62bbd567149" kindref="member">luaopen_io</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="lualib_8h_1a18b55f45d0662ae9c460e4607913bbd7" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_MATHLIBNAME<sp/>&quot;math&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="lualib_8h_1a43dc75de44c94286ccb6f07a8e15aecc" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_MATHLIBK<sp/><sp/><sp/><sp/>(LUA_IOLIBK<sp/>&lt;&lt;<sp/>1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref><sp/>int<sp/>(<ref refid="lmathlib_8c_1a78cbff06fd4d59cf3d7525fa6cc196ba" kindref="member">luaopen_math</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="lualib_8h_1ac89a67224db2eecc20aded867531e26d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_OSLIBNAME<sp/><sp/><sp/>&quot;os&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="lualib_8h_1a40f4de7ada61f4bbed44c69be0fc0389" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_OSLIBK<sp/><sp/>(LUA_MATHLIBK<sp/>&lt;&lt;<sp/>1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref><sp/>int<sp/>(<ref refid="loslib_8c_1a03d1c1c58e52032aee542b65a2b1c3ca" kindref="member">luaopen_os</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="lualib_8h_1aa973f7834b4cbf409e5a2752d91cf2c0" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_STRLIBNAME<sp/><sp/>&quot;string&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="lualib_8h_1a33704dc4f0f92ff05dbb9dc61911f1c3" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_STRLIBK<sp/>(LUA_OSLIBK<sp/>&lt;&lt;<sp/>1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref><sp/>int<sp/>(<ref refid="lstrlib_8c_1ab65aeff75cb100dde75e955c698c83b8" kindref="member">luaopen_string</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="lualib_8h_1aa9da6ee4401c3ea9591a60ae5514a4dd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_TABLIBNAME<sp/><sp/>&quot;table&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50" refid="lualib_8h_1a44f6c5c7ffa17aabcc834cf5a561c601" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_TABLIBK<sp/>(LUA_STRLIBK<sp/>&lt;&lt;<sp/>1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref><sp/>int<sp/>(<ref refid="ltablib_8c_1acfb66f04d8d0ea06cb1c4c059b9e142b" kindref="member">luaopen_table</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="lualib_8h_1abc11555bcb492e59444d8774bd8970d8" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_UTF8LIBNAME<sp/>&quot;utf8&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54" refid="lualib_8h_1a4a1394187f847bd0fb5e972ecb5dba48" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUA_UTF8LIBK<sp/><sp/><sp/><sp/>(LUA_TABLIBK<sp/>&lt;&lt;<sp/>1)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><ref refid="luaconf_8h_1a8e877216dd2f0cf9a68255b494f82f50" kindref="member">LUAMOD_API</ref><sp/>int<sp/>(<ref refid="lualib_8h_1ae1247f71bc4b3f3be7da9c9d5c7668b1" kindref="member">luaopen_utf8</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>open<sp/>selected<sp/>libraries<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><ref refid="luaconf_8h_1a373d5a572c4c65a5f35a6e4ee9293c95" kindref="member">LUALIB_API</ref><sp/>void<sp/>(<ref refid="linit_8c_1ad09996aefb08d65ffee01b1729919261" kindref="member">luaL_openselectedlibs</ref>)<sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>load,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>preload);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>open<sp/>all<sp/>libraries<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="lualib_8h_1ac5514fd0a4698415649b36e84482e190" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaL_openlibs(L)<sp/><sp/><sp/><sp/>luaL_openselectedlibs(L,<sp/>~0,<sp/>0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lualib.h"/>
+  </compounddef>
+</doxygen>

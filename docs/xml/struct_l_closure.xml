@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_l_closure" kind="struct" language="C++" prot="public">
+    <compoundname>LClosure</compoundname>
+    <includes refid="lobject_8h" local="no">lobject.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_l_closure_1a6014e6d418f56b1ec866c449cab16044" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>LClosure::ClosureHeader</definition>
+        <argsstring></argsstring>
+        <name>ClosureHeader</name>
+        <qualifiedname>LClosure::ClosureHeader</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="707" column="3" bodyfile="leasy/lua/lobject.h" bodystart="707" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_l_closure_1a4cf173817d3897b0e70822e70d241d6c" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="struct_proto" kindref="compound">Proto</ref> *</type>
+        <definition>struct Proto* LClosure::p</definition>
+        <argsstring></argsstring>
+        <name>p</name>
+        <qualifiedname>LClosure::p</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="708" column="14" bodyfile="leasy/lua/lobject.h" bodystart="708" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_l_closure_1a94886e7c7df838f5fab36575b0554682" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_up_val" kindref="compound">UpVal</ref> *</type>
+        <definition>UpVal* LClosure::upvals[1]</definition>
+        <argsstring>[1]</argsstring>
+        <name>upvals</name>
+        <qualifiedname>LClosure::upvals</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="709" column="9" bodyfile="leasy/lua/lobject.h" bodystart="709" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="6">
+        <label>AbsLineInfo</label>
+        <link refid="struct_abs_line_info"/>
+      </node>
+      <node id="8">
+        <label>GCObject</label>
+        <link refid="struct_g_c_object"/>
+      </node>
+      <node id="1">
+        <label>LClosure</label>
+        <link refid="struct_l_closure"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>p</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>upvals</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>LocVar</label>
+        <link refid="struct_loc_var"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>varname</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Proto</label>
+        <link refid="struct_proto"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>k</edgelabel>
+        </childnode>
+        <childnode refid="2" relation="usage">
+          <edgelabel>p</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>upvalues</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>abslineinfo</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>locvars</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>source</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>gclist</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>TValue</label>
+        <link refid="struct_t_value"/>
+      </node>
+      <node id="9">
+        <label>UpVal</label>
+        <link refid="struct_up_val"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>p</edgelabel>
+          <edgelabel>value</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>next</edgelabel>
+          <edgelabel>previous</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Upvaldesc</label>
+        <link refid="struct_upvaldesc"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>name</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lobject.h" line="706" column="1" bodyfile="leasy/lua/lobject.h" bodystart="706" bodyend="710"/>
+    <listofallmembers>
+      <member refid="struct_l_closure_1a6014e6d418f56b1ec866c449cab16044" prot="public" virt="non-virtual"><scope>LClosure</scope><name>ClosureHeader</name></member>
+      <member refid="struct_l_closure_1a4cf173817d3897b0e70822e70d241d6c" prot="public" virt="non-virtual"><scope>LClosure</scope><name>p</name></member>
+      <member refid="struct_l_closure_1a94886e7c7df838f5fab36575b0554682" prot="public" virt="non-virtual"><scope>LClosure</scope><name>upvals</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,750 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_battle_animation" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>BattleAnimation</compoundname>
+    <basecompoundref refid="class_sprite" prot="public" virt="non-virtual">Sprite</basecompoundref>
+    <derivedcompoundref refid="class_battle_animation_battle" prot="public" virt="non-virtual">BattleAnimationBattle</derivedcompoundref>
+    <derivedcompoundref refid="class_battle_animation_battler" prot="public" virt="non-virtual">BattleAnimationBattler</derivedcompoundref>
+    <derivedcompoundref refid="class_battle_animation_map" prot="public" virt="non-virtual">BattleAnimationMap</derivedcompoundref>
+    <includes refid="battle__animation_8h" local="no">battle_animation.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" prot="protected" static="no" mutable="no">
+        <type>const lcf::rpg::Animation &amp;</type>
+        <definition>const lcf::rpg::Animation&amp; BattleAnimation::animation</definition>
+        <argsstring></argsstring>
+        <name>animation</name>
+        <qualifiedname>BattleAnimation::animation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="97" column="27" bodyfile="battle_animation.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_battle_animation_1acce5d9ed3e850f9deb262e050312cec0" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int BattleAnimation::frame</definition>
+        <argsstring></argsstring>
+        <name>frame</name>
+        <qualifiedname>BattleAnimation::frame</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="98" column="5" bodyfile="battle_animation.h" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_battle_animation_1a065f8f241f897526c8d4a7b1551c0475" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int BattleAnimation::num_frames</definition>
+        <argsstring></argsstring>
+        <name>num_frames</name>
+        <qualifiedname>BattleAnimation::num_frames</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="99" column="5" bodyfile="battle_animation.h" bodystart="99" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_battle_animation_1aaa54fffc4357ce65277bc545ea853e5c" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int BattleAnimation::screen_flash_timing</definition>
+        <argsstring></argsstring>
+        <name>screen_flash_timing</name>
+        <qualifiedname>BattleAnimation::screen_flash_timing</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="100" column="5" bodyfile="battle_animation.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_battle_animation_1ad63e43a253972b91c122da841a0d8c47" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int BattleAnimation::target_flash_timing</definition>
+        <argsstring></argsstring>
+        <name>target_flash_timing</name>
+        <qualifiedname>BattleAnimation::target_flash_timing</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="101" column="5" bodyfile="battle_animation.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_battle_animation_1aa9727836097bb50a0b65c8b693159d16" prot="protected" static="no" mutable="no">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding BattleAnimation::request_id</definition>
+        <argsstring></argsstring>
+        <name>request_id</name>
+        <qualifiedname>BattleAnimation::request_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="103" column="20" bodyfile="battle_animation.h" bodystart="103" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_battle_animation_1a4fbf55edc415246a02541fdeeab08612" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool BattleAnimation::only_sound</definition>
+        <argsstring></argsstring>
+        <name>only_sound</name>
+        <qualifiedname>BattleAnimation::only_sound</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="104" column="6" bodyfile="battle_animation.h" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_battle_animation_1a36b7ca7c32723570212381dd40cf220f" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool BattleAnimation::invert</definition>
+        <argsstring></argsstring>
+        <name>invert</name>
+        <qualifiedname>BattleAnimation::invert</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="105" column="6" bodyfile="battle_animation.h" bodystart="105" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_battle_animation_1ad1065b9da7c0947a87647aaec82dfc3f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BattleAnimation::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>BattleAnimation::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Update the animation to the next animation </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="39" column="6" bodyfile="battle_animation.cpp" bodystart="65" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1a9e591b8cc396c2a64f8ee5b5c3432e8b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int BattleAnimation::GetFrame</definition>
+        <argsstring>() const</argsstring>
+        <name>GetFrame</name>
+        <qualifiedname>BattleAnimation::GetFrame</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the current timing frame (2x the number of frames in the underlying animation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="42" column="5" bodyfile="battle_animation.h" bodystart="149" bodyend="151"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1a7a9e2cd68529ddbefeade09fdcfc31ca" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int BattleAnimation::GetRealFrame</definition>
+        <argsstring>() const</argsstring>
+        <name>GetRealFrame</name>
+        <qualifiedname>BattleAnimation::GetRealFrame</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the animation frame that is currently being displayed </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="45" column="5" bodyfile="battle_animation.h" bodystart="153" bodyend="155"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1a29821fb2a6c09bc7978ba6f495aeb5a1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int BattleAnimation::GetFrames</definition>
+        <argsstring>() const</argsstring>
+        <name>GetFrames</name>
+        <qualifiedname>BattleAnimation::GetFrames</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the number of frames the animation will play for </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="48" column="5" bodyfile="battle_animation.h" bodystart="157" bodyend="159"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1ae4bb9615843f26a2fe1678478b0e8b48" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int BattleAnimation::GetRealFrames</definition>
+        <argsstring>() const</argsstring>
+        <name>GetRealFrames</name>
+        <qualifiedname>BattleAnimation::GetRealFrames</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the number of frames in the underlying animation </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="51" column="5" bodyfile="battle_animation.h" bodystart="161" bodyend="163"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1a7216ccfe6f66cb2448c1c6e9d6269f9a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BattleAnimation::SetFrame</definition>
+        <argsstring>(int frame)</argsstring>
+        <name>SetFrame</name>
+        <qualifiedname>BattleAnimation::SetFrame</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>frame</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the current running frame</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>frame</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the frame to set. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="58" column="6" bodyfile="battle_animation.cpp" bodystart="400" bodyend="413"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1ac795090c6ee8442903eec3e9ec961aec" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool BattleAnimation::IsDone</definition>
+        <argsstring>() const</argsstring>
+        <name>IsDone</name>
+        <qualifiedname>BattleAnimation::IsDone</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if the animation has finished </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="61" column="6" bodyfile="battle_animation.h" bodystart="165" bodyend="167"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1a9b06b35b9872adbd7bd382e6e85caeb0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool BattleAnimation::IsOnlySound</definition>
+        <argsstring>() const</argsstring>
+        <name>IsOnlySound</name>
+        <qualifiedname>BattleAnimation::IsOnlySound</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if the animation only plays audio and doesn&apos;t display </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="64" column="6" bodyfile="battle_animation.h" bodystart="169" bodyend="171"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1a46137c451fe594bbadba7cc9203a7809" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int BattleAnimation::GetAnimationCellWidth</definition>
+        <argsstring>() const</argsstring>
+        <name>GetAnimationCellWidth</name>
+        <qualifiedname>BattleAnimation::GetAnimationCellWidth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the animation cell width </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="69" column="5" bodyfile="battle_animation.h" bodystart="173" bodyend="175"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1a807bc1f8a658b9aa177b113c9ffbd1d2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int BattleAnimation::GetAnimationCellHeight</definition>
+        <argsstring>() const</argsstring>
+        <name>GetAnimationCellHeight</name>
+        <qualifiedname>BattleAnimation::GetAnimationCellHeight</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the animation cell height </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="74" column="5" bodyfile="battle_animation.h" bodystart="177" bodyend="179"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1ac0df1e2470a7364bdc05f7b0cf27895d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BattleAnimation::SetInvert</definition>
+        <argsstring>(bool inverted)</argsstring>
+        <name>SetInvert</name>
+        <qualifiedname>BattleAnimation::SetInvert</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>inverted</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set if the animation is inverted</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inverted</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if the animation is inverted </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="81" column="6" bodyfile="battle_animation.cpp" bodystart="415" bodyend="417"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_battle_animation_1a965b86b1aa70f7b87867c61298a39f4b" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>BattleAnimation::BattleAnimation</definition>
+        <argsstring>(const lcf::rpg::Animation &amp;anim, bool only_sound=false, int cutoff=-1)</argsstring>
+        <name>BattleAnimation</name>
+        <qualifiedname>BattleAnimation::BattleAnimation</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Animation &amp;</type>
+          <declname>anim</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>only_sound</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cutoff</declname>
+          <defval>-1</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="84" column="1" bodyfile="battle_animation.cpp" bodystart="37" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1a4af3c1c8e2b58f57c15ce4dd931ce083" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void BattleAnimation::FlashTargets</definition>
+        <argsstring>(int r, int g, int b, int p)=0</argsstring>
+        <name>FlashTargets</name>
+        <qualifiedname>BattleAnimation::FlashTargets</qualifiedname>
+        <reimplementedby refid="class_battle_animation_battle_1ab67969422de12bf8b9719e73c041762c">FlashTargets</reimplementedby>
+        <reimplementedby refid="class_battle_animation_battler_1a56b8e309d50c9e6a5a3dbf65264c12f3">FlashTargets</reimplementedby>
+        <reimplementedby refid="class_battle_animation_map_1ab76791c072b59a9040b657eb3a509d0b">FlashTargets</reimplementedby>
+        <param>
+          <type>int</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="86" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1a9c69718e20a5e4ba692d3d7afa99d394" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void BattleAnimation::ShakeTargets</definition>
+        <argsstring>(int str, int spd, int time)=0</argsstring>
+        <name>ShakeTargets</name>
+        <qualifiedname>BattleAnimation::ShakeTargets</qualifiedname>
+        <reimplementedby refid="class_battle_animation_battle_1a7f78e72f4f96dce095f07e81422d30aa">ShakeTargets</reimplementedby>
+        <reimplementedby refid="class_battle_animation_battler_1ab80fdf1559dded1a3ce4e3f394967f84">ShakeTargets</reimplementedby>
+        <reimplementedby refid="class_battle_animation_map_1ae226f7a5def3c8888bfee94fd262248b">ShakeTargets</reimplementedby>
+        <param>
+          <type>int</type>
+          <declname>str</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>spd</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>time</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="87" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1a519790fc37d667776815911e013589f2" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BattleAnimation::DrawAt</definition>
+        <argsstring>(Bitmap &amp;dst, int x, int y)</argsstring>
+        <name>DrawAt</name>
+        <qualifiedname>BattleAnimation::DrawAt</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="88" column="6" bodyfile="battle_animation.cpp" bodystart="95" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1a20a80c0e92534632094b03c84ab94f13" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BattleAnimation::ProcessAnimationTiming</definition>
+        <argsstring>(const lcf::rpg::AnimationTiming &amp;timing)</argsstring>
+        <name>ProcessAnimationTiming</name>
+        <qualifiedname>BattleAnimation::ProcessAnimationTiming</qualifiedname>
+        <reimplementedby refid="class_battle_animation_battler_1a314ea2f11c275f461d5d1e3ae1138bfd">ProcessAnimationTiming</reimplementedby>
+        <param>
+          <type>const lcf::rpg::AnimationTiming &amp;</type>
+          <declname>timing</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="89" column="14" bodyfile="battle_animation.cpp" bodystart="150" bodyend="179"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1a9adf84fdc69160f511c16ecfcd814a23" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BattleAnimation::ProcessAnimationFlash</definition>
+        <argsstring>(const lcf::rpg::AnimationTiming &amp;timing)</argsstring>
+        <name>ProcessAnimationFlash</name>
+        <qualifiedname>BattleAnimation::ProcessAnimationFlash</qualifiedname>
+        <reimplementedby refid="class_battle_animation_battler_1a08b09591c6d3992875622de13ef3f886">ProcessAnimationFlash</reimplementedby>
+        <param>
+          <type>const lcf::rpg::AnimationTiming &amp;</type>
+          <declname>timing</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="90" column="14" bodyfile="battle_animation.cpp" bodystart="138" bodyend="148"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1a21d1269c5279ec4ffda9ca1e47c754f4" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BattleAnimation::OnBattleSpriteReady</definition>
+        <argsstring>(FileRequestResult *result)</argsstring>
+        <name>OnBattleSpriteReady</name>
+        <qualifiedname>BattleAnimation::OnBattleSpriteReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="91" column="6" bodyfile="battle_animation.cpp" bodystart="83" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1a3e28e58e04c5eae2287d4b6163af708b" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BattleAnimation::OnBattle2SpriteReady</definition>
+        <argsstring>(FileRequestResult *result)</argsstring>
+        <name>OnBattle2SpriteReady</name>
+        <qualifiedname>BattleAnimation::OnBattle2SpriteReady</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="92" column="6" bodyfile="battle_animation.cpp" bodystart="89" bodyend="93"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1a460072ba858ace5c0bb81ce3a5cbc780" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BattleAnimation::UpdateScreenFlash</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateScreenFlash</name>
+        <qualifiedname>BattleAnimation::UpdateScreenFlash</qualifiedname>
+        <reimplementedby refid="class_battle_animation_battler_1a599dbe12c984ff73e92b6ddbe22a5f4a">UpdateScreenFlash</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="93" column="14" bodyfile="battle_animation.cpp" bodystart="204" bodyend="208"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1ac597c5fb50f7cae29c7ea65eeccc69bc" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void BattleAnimation::UpdateTargetFlash</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateTargetFlash</name>
+        <qualifiedname>BattleAnimation::UpdateTargetFlash</qualifiedname>
+        <reimplementedby refid="class_battle_animation_battler_1aa6310c61f3d69baa8c5a7ccf78c6e03c">UpdateTargetFlash</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="94" column="14" bodyfile="battle_animation.cpp" bodystart="210" bodyend="214"/>
+      </memberdef>
+      <memberdef kind="function" id="class_battle_animation_1a4baaa539b44ac01fa720ae03d7525a62" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void BattleAnimation::UpdateFlashGeneric</definition>
+        <argsstring>(int timing_idx, int &amp;r, int &amp;g, int &amp;b, int &amp;p)</argsstring>
+        <name>UpdateFlashGeneric</name>
+        <qualifiedname>BattleAnimation::UpdateFlashGeneric</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>timing_idx</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="battle_animation.h" line="95" column="6" bodyfile="battle_animation.cpp" bodystart="188" bodyend="202"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>BattleAnimation</label>
+        <link refid="class_battle_animation"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>BattleAnimationBattle</label>
+        <link refid="class_battle_animation_battle"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>BattleAnimationBattler</label>
+        <link refid="class_battle_animation_battler"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>BattleAnimationMap</label>
+        <link refid="class_battle_animation_map"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="2">
+        <label>Sprite</label>
+        <link refid="class_sprite"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>BattleAnimation</label>
+        <link refid="class_battle_animation"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="2">
+        <label>Sprite</label>
+        <link refid="class_sprite"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="battle_animation.h" line="36" column="1" bodyfile="battle_animation.h" bodystart="36" bodyend="106"/>
+    <listofallmembers>
+      <member refid="class_battle_animation_1a58162e4e474f7f2ee04d0cef895a2d3b" prot="protected" virt="non-virtual"><scope>BattleAnimation</scope><name>animation</name></member>
+      <member refid="class_battle_animation_1a965b86b1aa70f7b87867c61298a39f4b" prot="protected" virt="non-virtual"><scope>BattleAnimation</scope><name>BattleAnimation</name></member>
+      <member refid="class_sprite_1a0a4a3bd44c2556cbbe47b4480fae2a5b" prot="public" virt="virtual"><scope>BattleAnimation</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>Drawable</name></member>
+      <member refid="class_battle_animation_1a519790fc37d667776815911e013589f2" prot="protected" virt="non-virtual"><scope>BattleAnimation</scope><name>DrawAt</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>Flags</name></member>
+      <member refid="class_battle_animation_1a4af3c1c8e2b58f57c15ce4dd931ce083" prot="protected" virt="pure-virtual"><scope>BattleAnimation</scope><name>FlashTargets</name></member>
+      <member refid="class_battle_animation_1acce5d9ed3e850f9deb262e050312cec0" prot="protected" virt="non-virtual"><scope>BattleAnimation</scope><name>frame</name></member>
+      <member refid="class_sprite_1ade47ec9b2fc6b79921a978ac85508eb4" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetAngle</name></member>
+      <member refid="class_battle_animation_1a807bc1f8a658b9aa177b113c9ffbd1d2" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetAnimationCellHeight</name></member>
+      <member refid="class_battle_animation_1a46137c451fe594bbadba7cc9203a7809" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetAnimationCellWidth</name></member>
+      <member refid="class_sprite_1a8692649cce1320c23d7216207805b990" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetBitmap</name></member>
+      <member refid="class_sprite_1aa34fbb968bfb9441bca6a7be8a1e9629" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetBitmap</name></member>
+      <member refid="class_sprite_1a699b7b199c7e2ea838878d9058401911" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetBlendColor</name></member>
+      <member refid="class_sprite_1ae5eb51cb5b55c057cbcafe69d13929a6" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetBlendType</name></member>
+      <member refid="class_sprite_1a9a5a480bc86ea9712a94303a53082da3" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetBushDepth</name></member>
+      <member refid="class_sprite_1a120a7dccaeea0d7fd7bac4f87b4b9d00" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetFlipX</name></member>
+      <member refid="class_sprite_1a7217243249b11d9046369cd3f0141adb" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetFlipY</name></member>
+      <member refid="class_battle_animation_1a9e591b8cc396c2a64f8ee5b5c3432e8b" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetFrame</name></member>
+      <member refid="class_battle_animation_1a29821fb2a6c09bc7978ba6f495aeb5a1" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetFrames</name></member>
+      <member refid="class_sprite_1ab10bdecf4bf20472b53a3102315180c2" prot="public" virt="virtual"><scope>BattleAnimation</scope><name>GetHeight</name></member>
+      <member refid="class_sprite_1ae6b8f3dd521db97853b3f2719e298db5" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetOpacity</name></member>
+      <member refid="class_sprite_1aa5c54c0b59a4f4247157e8446d588645" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetOx</name></member>
+      <member refid="class_sprite_1a8acf5af95db9d7f29958277c2625b8c7" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetOy</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_battle_animation_1a7a9e2cd68529ddbefeade09fdcfc31ca" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetRealFrame</name></member>
+      <member refid="class_battle_animation_1ae4bb9615843f26a2fe1678478b0e8b48" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetRealFrames</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetRenderOy</name></member>
+      <member refid="class_sprite_1ac50818cd2774516c70f2583d54845f98" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetSrcRect</name></member>
+      <member refid="class_sprite_1af315f162b8f1d0374d2bb4788f15eb59" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetTone</name></member>
+      <member refid="class_sprite_1add7a9fa3823099c15d04bd98764c00b8" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetWaverDepth</name></member>
+      <member refid="class_sprite_1a5781eeeb12fd97b447809efd0f14afea" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetWaverPhase</name></member>
+      <member refid="class_sprite_1a190fdb389450b2a425d3b7256b10b041" prot="public" virt="virtual"><scope>BattleAnimation</scope><name>GetWidth</name></member>
+      <member refid="class_sprite_1aa87fb1678e6d814923b390085c8b47ca" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetX</name></member>
+      <member refid="class_sprite_1af3bb2ded3b6d29905c717031e8e873e4" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetY</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetZ</name></member>
+      <member refid="class_sprite_1afdc1630a767fef01cb29f81983a25825" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetZoomX</name></member>
+      <member refid="class_sprite_1a7fc9c4d33c7fade504f93a86c34a2b66" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>GetZoomY</name></member>
+      <member refid="class_battle_animation_1a36b7ca7c32723570212381dd40cf220f" prot="protected" virt="non-virtual"><scope>BattleAnimation</scope><name>invert</name></member>
+      <member refid="class_battle_animation_1ac795090c6ee8442903eec3e9ec961aec" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>IsDone</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>IsGlobal</name></member>
+      <member refid="class_battle_animation_1a9b06b35b9872adbd7bd382e6e85caeb0" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>IsOnlySound</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>IsVisible</name></member>
+      <member refid="class_battle_animation_1a065f8f241f897526c8d4a7b1551c0475" prot="protected" virt="non-virtual"><scope>BattleAnimation</scope><name>num_frames</name></member>
+      <member refid="class_battle_animation_1a3e28e58e04c5eae2287d4b6163af708b" prot="protected" virt="non-virtual"><scope>BattleAnimation</scope><name>OnBattle2SpriteReady</name></member>
+      <member refid="class_battle_animation_1a21d1269c5279ec4ffda9ca1e47c754f4" prot="protected" virt="non-virtual"><scope>BattleAnimation</scope><name>OnBattleSpriteReady</name></member>
+      <member refid="class_battle_animation_1a4fbf55edc415246a02541fdeeab08612" prot="protected" virt="non-virtual"><scope>BattleAnimation</scope><name>only_sound</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>operator=</name></member>
+      <member refid="class_battle_animation_1a9adf84fdc69160f511c16ecfcd814a23" prot="protected" virt="virtual"><scope>BattleAnimation</scope><name>ProcessAnimationFlash</name></member>
+      <member refid="class_battle_animation_1a20a80c0e92534632094b03c84ab94f13" prot="protected" virt="virtual"><scope>BattleAnimation</scope><name>ProcessAnimationTiming</name></member>
+      <member refid="class_battle_animation_1aa9727836097bb50a0b65c8b693159d16" prot="protected" virt="non-virtual"><scope>BattleAnimation</scope><name>request_id</name></member>
+      <member refid="class_battle_animation_1aaa54fffc4357ce65277bc545ea853e5c" prot="protected" virt="non-virtual"><scope>BattleAnimation</scope><name>screen_flash_timing</name></member>
+      <member refid="class_sprite_1ab2ac97d71f9af168477ff5114e895021" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetAngle</name></member>
+      <member refid="class_sprite_1a0b1f8eb93adbfffb165acb30699ddd78" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetBitmap</name></member>
+      <member refid="class_sprite_1a5a80440fb552919c24e3320544554a62" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetBlendColor</name></member>
+      <member refid="class_sprite_1a662cbae14d3628d670b865157b247df1" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetBlendType</name></member>
+      <member refid="class_sprite_1a48f4b1522175b8aab5e7f2d6b11a9425" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetBushDepth</name></member>
+      <member refid="class_sprite_1a88b06fec2499b21fb21445269cbee15f" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetFlashEffect</name></member>
+      <member refid="class_sprite_1a85222d16191092db3e0d731f8a78d4a8" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetFlipX</name></member>
+      <member refid="class_sprite_1a909b9d49b660fa592b0b753f602dddef" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetFlipY</name></member>
+      <member refid="class_battle_animation_1a7216ccfe6f66cb2448c1c6e9d6269f9a" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetFrame</name></member>
+      <member refid="class_battle_animation_1ac0df1e2470a7364bdc05f7b0cf27895d" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetInvert</name></member>
+      <member refid="class_sprite_1a00ec8dcc661ae5acea3c013dc12c07f0" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetOpacity</name></member>
+      <member refid="class_sprite_1ae2504fad70205dd8064392da7ceb4f71" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetOx</name></member>
+      <member refid="class_sprite_1a0e189abc78607a4a6e011d6e394a43d7" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetOy</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetRenderOy</name></member>
+      <member refid="class_sprite_1ae0a9b0248ce543551c1486c824b2949c" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetSpriteRect</name></member>
+      <member refid="class_sprite_1a890398eafe1a9135d7baa939842a798a" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetSrcRect</name></member>
+      <member refid="class_sprite_1a89865e8080e634db19ab6409efc0ef2c" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetTone</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetVisible</name></member>
+      <member refid="class_sprite_1a505321681169327d559b7f59146fdec9" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetWaverDepth</name></member>
+      <member refid="class_sprite_1a85f701cd0eb6033b471f84bb24f192b8" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetWaverPhase</name></member>
+      <member refid="class_sprite_1a57277e7b2c107f36f587c46e99f7a48f" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetX</name></member>
+      <member refid="class_sprite_1a0012676d8951dbf2342de94acc18eecd" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetY</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetZ</name></member>
+      <member refid="class_sprite_1a3e7151dfb8645a3fbb71395625af985c" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetZoomX</name></member>
+      <member refid="class_sprite_1aad6019d133e5abac3323d671af4ed06b" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>SetZoomY</name></member>
+      <member refid="class_battle_animation_1a9c69718e20a5e4ba692d3d7afa99d394" prot="protected" virt="pure-virtual"><scope>BattleAnimation</scope><name>ShakeTargets</name></member>
+      <member refid="class_sprite_1aa3a20244c338653f65beaa26d6189581" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>Sprite</name></member>
+      <member refid="class_battle_animation_1ad63e43a253972b91c122da841a0d8c47" prot="protected" virt="non-virtual"><scope>BattleAnimation</scope><name>target_flash_timing</name></member>
+      <member refid="class_battle_animation_1ad1065b9da7c0947a87647aaec82dfc3f" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>Update</name></member>
+      <member refid="class_battle_animation_1a4baaa539b44ac01fa720ae03d7525a62" prot="protected" virt="non-virtual"><scope>BattleAnimation</scope><name>UpdateFlashGeneric</name></member>
+      <member refid="class_battle_animation_1a460072ba858ace5c0bb81ce3a5cbc780" prot="protected" virt="virtual"><scope>BattleAnimation</scope><name>UpdateScreenFlash</name></member>
+      <member refid="class_battle_animation_1ac597c5fb50f7cae29c7ea65eeccc69bc" prot="protected" virt="virtual"><scope>BattleAnimation</scope><name>UpdateTargetFlash</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>BattleAnimation</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>BattleAnimation</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

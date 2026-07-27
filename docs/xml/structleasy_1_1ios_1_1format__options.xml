@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ios_1_1format__options" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ios::format_options</compoundname>
+    <includes refid="lio_8hpp" local="no">lio.hpp</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structleasy_1_1ios_1_1format__options_1a8565b803fa9e74721710f7af216214df" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool leasy::ios::format_options::timestamp</definition>
+        <argsstring></argsstring>
+        <name>timestamp</name>
+        <qualifiedname>leasy::ios::format_options::timestamp</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="219" column="15" bodyfile="leasy/lio.hpp" bodystart="219" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1ios_1_1format__options_1aa08406cee9c1d68ca5ff5e9f6e55fbfa" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool leasy::ios::format_options::thread_id</definition>
+        <argsstring></argsstring>
+        <name>thread_id</name>
+        <qualifiedname>leasy::ios::format_options::thread_id</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="220" column="15" bodyfile="leasy/lio.hpp" bodystart="220" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1ios_1_1format__options_1afe9129dc98c33f79c094cc598a158b03" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string leasy::ios::format_options::prefix</definition>
+        <argsstring></argsstring>
+        <name>prefix</name>
+        <qualifiedname>leasy::ios::format_options::prefix</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="221" column="15" bodyfile="leasy/lio.hpp" bodystart="221" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1ios_1_1format__options_1a4d4df1401f5a411a98ba827bd677a6a5" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string leasy::ios::format_options::color</definition>
+        <argsstring></argsstring>
+        <name>color</name>
+        <qualifiedname>leasy::ios::format_options::color</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="222" column="15" bodyfile="leasy/lio.hpp" bodystart="222" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/lio.hpp" line="218" column="1" bodyfile="leasy/lio.hpp" bodystart="218" bodyend="223"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ios_1_1format__options_1a4d4df1401f5a411a98ba827bd677a6a5" prot="public" virt="non-virtual"><scope>leasy::ios::format_options</scope><name>color</name></member>
+      <member refid="structleasy_1_1ios_1_1format__options_1afe9129dc98c33f79c094cc598a158b03" prot="public" virt="non-virtual"><scope>leasy::ios::format_options</scope><name>prefix</name></member>
+      <member refid="structleasy_1_1ios_1_1format__options_1aa08406cee9c1d68ca5ff5e9f6e55fbfa" prot="public" virt="non-virtual"><scope>leasy::ios::format_options</scope><name>thread_id</name></member>
+      <member refid="structleasy_1_1ios_1_1format__options_1a8565b803fa9e74721710f7af216214df" prot="public" virt="non-virtual"><scope>leasy::ios::format_options</scope><name>timestamp</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

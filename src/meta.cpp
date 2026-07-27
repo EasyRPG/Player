@@ -284,3 +284,4 @@ void Meta::IdentifyCanonName(std::string_view lmtFile, std::string_view ldbFile)
 bool Meta::Empty() const {
 	return ini == nullptr || ini->ParseError() == -1;
 }
+

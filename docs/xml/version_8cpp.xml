@@ -1,0 +1,238 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="version_8cpp" kind="file" language="C++">
+    <compoundname>version.cpp</compoundname>
+    <includes refid="version_8h" local="yes">version.h</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>version.cpp</label>
+        <link refid="version_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>version.h</label>
+        <link refid="version_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>cstring</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespace_version">Version</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="version_8cpp_1a6df1d22fb5f09eccc23b9f399670cfd7" prot="public" static="no">
+        <name>STRINGIFY</name>
+        <param><defname>x</defname></param>
+        <initializer>#x</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="25" column="10" bodyfile="version.cpp" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="version_8cpp_1aa49b6a1041bf80c96599056af0bc5b4a" prot="public" static="no">
+        <name>TO_STRING</name>
+        <param><defname>x</defname></param>
+        <initializer><ref refid="version_8cpp_1a6df1d22fb5f09eccc23b9f399670cfd7" kindref="member">STRINGIFY</ref>(x)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="26" column="10" bodyfile="version.cpp" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="version_8cpp_1add318c000b07a6d7ad022f6d24279261" prot="public" static="no">
+        <name>EP_VERSION_MAJOR</name>
+        <initializer>0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="29" column="10" bodyfile="version.cpp" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="version_8cpp_1a4dc29d7d47e18379de4ed174c0aa1ee6" prot="public" static="no">
+        <name>EP_VERSION_MINOR</name>
+        <initializer>8</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="30" column="10" bodyfile="version.cpp" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="version_8cpp_1aff14af5772b53f1976b81e137f801502" prot="public" static="no">
+        <name>EP_VERSION_PATCH</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="31" column="10" bodyfile="version.cpp" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="version_8cpp_1aa62fdb63081f66c4196c1cfb06262258" prot="public" static="no">
+        <name>EP_VERSION_TWEAK</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="32" column="10" bodyfile="version.cpp" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="version_8cpp_1a14376b67a19c8dc7876946643eeaca81" prot="public" static="no">
+        <name>_VER1</name>
+        <initializer><ref refid="version_8cpp_1aa49b6a1041bf80c96599056af0bc5b4a" kindref="member">TO_STRING</ref>(<ref refid="version_8cpp_1add318c000b07a6d7ad022f6d24279261" kindref="member">EP_VERSION_MAJOR</ref>) &quot;.&quot; <ref refid="version_8cpp_1aa49b6a1041bf80c96599056af0bc5b4a" kindref="member">TO_STRING</ref>(<ref refid="version_8cpp_1a4dc29d7d47e18379de4ed174c0aa1ee6" kindref="member">EP_VERSION_MINOR</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="35" column="10" bodyfile="version.cpp" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="version_8cpp_1a7cf59225c78a9f79a19d62fb8b10de79" prot="public" static="no">
+        <name>_VER2</name>
+        <initializer><ref refid="version_8cpp_1aa49b6a1041bf80c96599056af0bc5b4a" kindref="member">TO_STRING</ref>(<ref refid="version_8cpp_1aff14af5772b53f1976b81e137f801502" kindref="member">EP_VERSION_PATCH</ref>) &quot;.&quot; <ref refid="version_8cpp_1aa49b6a1041bf80c96599056af0bc5b4a" kindref="member">TO_STRING</ref>(<ref refid="version_8cpp_1aa62fdb63081f66c4196c1cfb06262258" kindref="member">EP_VERSION_TWEAK</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="37" column="11" bodyfile="version.cpp" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="version_8cpp_1a15afb30f3cee74bbfcc32c50a8ff737c" prot="public" static="no">
+        <name>EP_VERSION</name>
+        <initializer><ref refid="version_8cpp_1a14376b67a19c8dc7876946643eeaca81" kindref="member">_VER1</ref> &quot;.&quot; <ref refid="version_8cpp_1a7cf59225c78a9f79a19d62fb8b10de79" kindref="member">_VER2</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="42" column="11" bodyfile="version.cpp" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="version_8cpp_1aacb7d942dfa15e021af4ed816fce10c6" prot="public" static="no">
+        <name>EP_VERSION_GIT</name>
+        <initializer>&quot;&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="50" column="10" bodyfile="version.cpp" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="version_8cpp_1a482f27ada76f022f9dff41caaccd1598" prot="public" static="no">
+        <name>EP_VERSION_APPEND</name>
+        <initializer>&quot;&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="version.cpp" line="53" column="10" bodyfile="version.cpp" bodystart="53" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="version_8h" kindref="compound">version.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Fallback<sp/>if<sp/>buildsystem<sp/>has<sp/>not<sp/>provided<sp/>a<sp/>version</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_VERSION</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#warning<sp/>&quot;No<sp/>version<sp/>specified<sp/>by<sp/>build<sp/>system,<sp/>using<sp/>defaults.&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Helper<sp/>Macros</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25" refid="version_8cpp_1a6df1d22fb5f09eccc23b9f399670cfd7" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#define<sp/>STRINGIFY(x)<sp/>#x</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="version_8cpp_1aa49b6a1041bf80c96599056af0bc5b4a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#define<sp/>TO_STRING(x)<sp/>STRINGIFY(x)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Set<sp/>by<sp/>release-helper.sh</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29" refid="version_8cpp_1add318c000b07a6d7ad022f6d24279261" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#define<sp/>EP_VERSION_MAJOR<sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="version_8cpp_1a4dc29d7d47e18379de4ed174c0aa1ee6" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#define<sp/>EP_VERSION_MINOR<sp/>8</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="version_8cpp_1aff14af5772b53f1976b81e137f801502" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#define<sp/>EP_VERSION_PATCH<sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="version_8cpp_1aa62fdb63081f66c4196c1cfb06262258" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#define<sp/>EP_VERSION_TWEAK<sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>concatenate<sp/>short<sp/>version<sp/>string</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="version_8cpp_1a14376b67a19c8dc7876946643eeaca81" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#define<sp/>_VER1<sp/>TO_STRING(EP_VERSION_MAJOR)<sp/>&quot;.&quot;<sp/>TO_STRING(EP_VERSION_MINOR)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#if<sp/>EP_VERSION_TWEAK<sp/>&gt;<sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="version_8cpp_1a7cf59225c78a9f79a19d62fb8b10de79" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#define<sp/>_VER2<sp/>TO_STRING(EP_VERSION_PATCH)<sp/>&quot;.&quot;<sp/>TO_STRING(EP_VERSION_TWEAK)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#elif<sp/>EP_VERSION_PATCH<sp/>&gt;<sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#define<sp/>_VER2<sp/>TO_STRING(EP_VERSION_PATCH)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#ifdef<sp/>_VER2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="version_8cpp_1a15afb30f3cee74bbfcc32c50a8ff737c" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#define<sp/>EP_VERSION<sp/>_VER1<sp/>&quot;.&quot;<sp/>_VER2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#define<sp/>EP_VERSION<sp/>_VER1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight><highlight class="comment">//<sp/>These<sp/>can<sp/>be<sp/>undefined</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_VERSION_GIT</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50" refid="version_8cpp_1aacb7d942dfa15e021af4ed816fce10c6" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#define<sp/>EP_VERSION_GIT<sp/>&quot;&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_VERSION_APPEND</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="version_8cpp_1a482f27ada76f022f9dff41caaccd1598" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/>#define<sp/>EP_VERSION_APPEND<sp/>&quot;&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="namespace_version" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_version" kindref="compound">Version</ref><sp/>{</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="namespace_version_1aa1306183eb54181a68e03a76960223ef" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/><ref refid="namespace_version_1aa1306183eb54181a68e03a76960223ef" kindref="member">STRING</ref>[]<sp/>=<sp/><ref refid="version_8cpp_1a15afb30f3cee74bbfcc32c50a8ff737c" kindref="member">EP_VERSION</ref>;</highlight></codeline>
+<codeline lineno="59" refid="namespace_version_1ab2bec3294bd2f71d45ca8c4ae42742f9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_version_1ab2bec3294bd2f71d45ca8c4ae42742f9" kindref="member">MAJOR</ref><sp/>=<sp/><ref refid="version_8cpp_1add318c000b07a6d7ad022f6d24279261" kindref="member">EP_VERSION_MAJOR</ref>;</highlight></codeline>
+<codeline lineno="60" refid="namespace_version_1ac3b4a5708c4a7d331a6a3fa58fb2c3ee" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_version_1ac3b4a5708c4a7d331a6a3fa58fb2c3ee" kindref="member">MINOR</ref><sp/>=<sp/><ref refid="version_8cpp_1a4dc29d7d47e18379de4ed174c0aa1ee6" kindref="member">EP_VERSION_MINOR</ref>;</highlight></codeline>
+<codeline lineno="61" refid="namespace_version_1a1b1cbf1d76c33e3bf8d319b9c2211e5c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_version_1a1b1cbf1d76c33e3bf8d319b9c2211e5c" kindref="member">PATCH</ref><sp/>=<sp/><ref refid="version_8cpp_1aff14af5772b53f1976b81e137f801502" kindref="member">EP_VERSION_PATCH</ref>;</highlight></codeline>
+<codeline lineno="62" refid="namespace_version_1ac776edcd04f232b710b7fec181dd5f4e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="namespace_version_1ac776edcd04f232b710b7fec181dd5f4e" kindref="member">TWEAK</ref><sp/>=<sp/><ref refid="version_8cpp_1aa62fdb63081f66c4196c1cfb06262258" kindref="member">EP_VERSION_TWEAK</ref>;</highlight></codeline>
+<codeline lineno="63" refid="namespace_version_1a9044b69e005be6c8b995f6ff0c6e892c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/><ref refid="namespace_version_1a9044b69e005be6c8b995f6ff0c6e892c" kindref="member">GIT</ref>[]<sp/>=<sp/><ref refid="version_8cpp_1aacb7d942dfa15e021af4ed816fce10c6" kindref="member">EP_VERSION_GIT</ref>;</highlight></codeline>
+<codeline lineno="64" refid="namespace_version_1a1116f3408ff2a1ac6151a6f18894170d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal"><sp/><ref refid="namespace_version_1a1116f3408ff2a1ac6151a6f18894170d" kindref="member">APPEND</ref>[]<sp/>=<sp/><ref refid="version_8cpp_1a482f27ada76f022f9dff41caaccd1598" kindref="member">EP_VERSION_APPEND</ref>;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="namespace_version_1afb61e596a826b119307dae8938c87bc6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="namespace_version_1afb61e596a826b119307dae8938c87bc6" kindref="member">GetVersionString</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>with_git,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>with_append)<sp/>{</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>ver<sp/>=<sp/><ref refid="namespace_version_1aa1306183eb54181a68e03a76960223ef" kindref="member">Version::STRING</ref>;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(with_git<sp/>&amp;&amp;<sp/>std::strlen(<ref refid="namespace_version_1a9044b69e005be6c8b995f6ff0c6e892c" kindref="member">GIT</ref>)<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ver<sp/>+=<sp/>std::string(</highlight><highlight class="stringliteral">&quot;<sp/>&quot;</highlight><highlight class="normal">)<sp/>+<sp/><ref refid="namespace_version_1a9044b69e005be6c8b995f6ff0c6e892c" kindref="member">GIT</ref>;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(with_append<sp/>&amp;&amp;<sp/>std::strlen(<ref refid="namespace_version_1a1116f3408ff2a1ac6151a6f18894170d" kindref="member">APPEND</ref>)<sp/>&gt;<sp/>0)<sp/>{</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ver<sp/>+=<sp/>std::string(</highlight><highlight class="stringliteral">&quot;<sp/>&quot;</highlight><highlight class="normal">)<sp/>+<sp/><ref refid="namespace_version_1a1116f3408ff2a1ac6151a6f18894170d" kindref="member">APPEND</ref>;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>ver;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="version.cpp"/>
+  </compounddef>
+</doxygen>

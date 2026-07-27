@@ -1,0 +1,3351 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___interpreter" kind="class" language="C++" prot="public">
+    <compoundname>Game_Interpreter</compoundname>
+    <basecompoundref refid="class_game___base_interpreter_context" prot="public" virt="non-virtual">Game_BaseInterpreterContext</basecompoundref>
+    <derivedcompoundref refid="class_game___interpreter___battle" prot="public" virt="non-virtual">Game_Interpreter_Battle</derivedcompoundref>
+    <derivedcompoundref refid="class_game___interpreter___map" prot="public" virt="non-virtual">Game_Interpreter_Map</derivedcompoundref>
+    <includes refid="game__interpreter_8h" local="no">game_interpreter.h</includes>
+    <innerclass refid="struct_game___interpreter_1_1_key_input_state" prot="protected">Game_Interpreter::KeyInputState</innerclass>
+    <sectiondef kind="protected-type">
+      <memberdef kind="enum" id="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2b" prot="protected" static="no" strong="yes">
+        <type></type>
+        <name>Keys</name>
+        <qualifiedname>Game_Interpreter::Keys</qualifiedname>
+        <enumvalue id="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba9b99cd9a69140a1d7c7d483df619ea02" prot="protected">
+          <name>eDown</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba97d352658db7b34c35502f9cd535e48b" prot="protected">
+          <name>eLeft</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2baf47864efb86f863a0080026825b1303d" prot="protected">
+          <name>eRight</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2bade2a1951a10731843b364fde00833a23" prot="protected">
+          <name>eUp</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2bab81fb787a6876deeeda8d3cb60018b7e" prot="protected">
+          <name>eDecision</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2bafa517a41eb0fc0c836791ecd5d902b50" prot="protected">
+          <name>eCancel</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba9e62f71ce009d65471fccb01fdb3245d" prot="protected">
+          <name>eShift</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba1f04be94c9f2469a472e930c9ccdaa45" prot="protected">
+          <name>eNumbers</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba7c4db72d07c1a284fdda6e51c4bc1453" prot="protected">
+          <name>eOperators</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2baa8b83783968fdb2693b2528ea2fbc065" prot="protected">
+          <name>eMouseLeft</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba6dfb1c9d1388375448172a2d2ad8bbc9" prot="protected">
+          <name>eMouseRight</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2baeee36d88d89282f8ce701d4c7bbedfee" prot="protected">
+          <name>eMouseMiddle</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2bacebe1c0a76c27a9a7a512e963a69b2d1" prot="protected">
+          <name>eMouseScrollDown</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2ba72610c9005f1ee08a25451767424c7b4" prot="protected">
+          <name>eMouseScrollUp</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="318" column="1" bodyfile="game_interpreter.h" bodystart="318" bodyend="334"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_game___interpreter_1aea7f9fef94b1b5ecdc8592575859b0b5" prot="public" static="no">
+        <type>lcf::rpg::EventCommand::Code</type>
+        <definition>using Game_Interpreter::Cmd = lcf::rpg::EventCommand::Code</definition>
+        <argsstring></argsstring>
+        <name>Cmd</name>
+        <qualifiedname>Game_Interpreter::Cmd</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="48" column="1" bodyfile="game_interpreter.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-static-attrib">
+      <memberdef kind="variable" id="class_game___interpreter_1a8f958b6593872b03b63822e26a2bac04" prot="protected" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Game_Interpreter::loop_limit</definition>
+        <argsstring></argsstring>
+        <name>loop_limit</name>
+        <qualifiedname>Game_Interpreter::loop_limit</qualifiedname>
+        <initializer>= 10000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="126" column="22" bodyfile="game_interpreter.h" bodystart="126" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___interpreter_1a8a6cc11c14c63bbab8ff5b52bed6093c" prot="protected" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Game_Interpreter::call_stack_limit</definition>
+        <argsstring></argsstring>
+        <name>call_stack_limit</name>
+        <qualifiedname>Game_Interpreter::call_stack_limit</qualifiedname>
+        <initializer>= 1000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="127" column="22" bodyfile="game_interpreter.h" bodystart="127" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___interpreter_1aaf7594be12e356b1bc052e310239c8f1" prot="protected" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Game_Interpreter::subcommand_sentinel</definition>
+        <argsstring></argsstring>
+        <name>subcommand_sentinel</name>
+        <qualifiedname>Game_Interpreter::subcommand_sentinel</qualifiedname>
+        <initializer>= 255</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="128" column="22" bodyfile="game_interpreter.h" bodystart="128" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_game___interpreter_1a0d60a7ac16ae14132bf5aabbc70c4f66" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::main_flag</definition>
+        <argsstring></argsstring>
+        <name>main_flag</name>
+        <qualifiedname>Game_Interpreter::main_flag</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="135" column="6" bodyfile="game_interpreter.h" bodystart="135" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___interpreter_1a75cffc20d4e33642025d4ac8ca160cb4" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Interpreter::loop_count</definition>
+        <argsstring></argsstring>
+        <name>loop_count</name>
+        <qualifiedname>Game_Interpreter::loop_count</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="137" column="5" bodyfile="game_interpreter.h" bodystart="137" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___interpreter_1a1dcc1d4ed876edb7f9b2a4636e19f80c" prot="protected" static="no" mutable="no">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding Game_Interpreter::request_id</definition>
+        <argsstring></argsstring>
+        <name>request_id</name>
+        <qualifiedname>Game_Interpreter::request_id</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="317" column="20" bodyfile="game_interpreter.h" bodystart="317" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___interpreter_1a8deff46edae44d7d426e38ee75cc1ede" prot="protected" static="no" mutable="no">
+        <type>lcf::rpg::SaveEventExecState</type>
+        <definition>lcf::rpg::SaveEventExecState Game_Interpreter::_state</definition>
+        <argsstring></argsstring>
+        <name>_state</name>
+        <qualifiedname>Game_Interpreter::_state</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="351" column="30" bodyfile="game_interpreter.h" bodystart="351" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___interpreter_1a46335e1e1c16974d73b183ae67612b7c" prot="protected" static="no" mutable="no">
+        <type><ref refid="struct_game___interpreter_1_1_key_input_state" kindref="compound">KeyInputState</ref></type>
+        <definition>KeyInputState Game_Interpreter::_keyinput</definition>
+        <argsstring></argsstring>
+        <name>_keyinput</name>
+        <qualifiedname>Game_Interpreter::_keyinput</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="352" column="15" bodyfile="game_interpreter.h" bodystart="352" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___interpreter_1a0791542402a644e15382dd42f412af2b" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp Game_Interpreter::_async_op</definition>
+        <argsstring></argsstring>
+        <name>_async_op</name>
+        <qualifiedname>Game_Interpreter::_async_op</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="353" column="9" bodyfile="game_interpreter.h" bodystart="353" bodyend="353"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="friend">
+      <memberdef kind="friend" id="class_game___interpreter_1ae60e888f01e861f90c85fcb73dca975f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>class</type>
+        <definition>friend class Scene_Debug</definition>
+        <argsstring></argsstring>
+        <name>Scene_Debug</name>
+        <qualifiedname>Game_Interpreter::Scene_Debug</qualifiedname>
+        <param>
+          <type><ref refid="class_scene___debug" kindref="compound">Scene_Debug</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="355" column="14" bodyfile="game_interpreter.h" bodystart="355" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_game___interpreter_1a46615f6ad530e53b6e9e978d3e42b711" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___interpreter" kindref="compound">Game_Interpreter</ref> &amp;</type>
+        <definition>Game_Interpreter &amp; Game_Interpreter::GetForegroundInterpreter</definition>
+        <argsstring>()</argsstring>
+        <name>GetForegroundInterpreter</name>
+        <qualifiedname>Game_Interpreter::GetForegroundInterpreter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="50" column="25" bodyfile="game_interpreter.cpp" bodystart="5774" bodyend="5778"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___interpreter_1a4c645dbae42426e39905c2a9c9e5a7f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Interpreter::Game_Interpreter</definition>
+        <argsstring>(bool _main_flag=false)</argsstring>
+        <name>Game_Interpreter</name>
+        <qualifiedname>Game_Interpreter::Game_Interpreter</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>_main_flag</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="52" column="1" bodyfile="game_interpreter.cpp" bodystart="81" bodyend="85"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a4dd38d34146fe09a7e2bcc8aae8309b6" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>Game_Interpreter::~Game_Interpreter</definition>
+        <argsstring>()</argsstring>
+        <name>~Game_Interpreter</name>
+        <qualifiedname>Game_Interpreter::~Game_Interpreter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="58" column="1" bodyfile="game_interpreter.cpp" bodystart="87" bodyend="88"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1abe054b320afc15c4fc57e08f210159ae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter::Clear</definition>
+        <argsstring>()</argsstring>
+        <name>Clear</name>
+        <qualifiedname>Game_Interpreter::Clear</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="60" column="6" bodyfile="game_interpreter.cpp" bodystart="91" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a82b55341ba75ad2e7b50962d9c26f7a9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::IsRunning</definition>
+        <argsstring>() const</argsstring>
+        <name>IsRunning</name>
+        <qualifiedname>Game_Interpreter::IsRunning</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="62" column="6" bodyfile="game_interpreter.cpp" bodystart="98" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a9c13628cf24867629e5b16be6dbb184b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Interpreter::GetLoopCount</definition>
+        <argsstring>() const</argsstring>
+        <name>GetLoopCount</name>
+        <qualifiedname>Game_Interpreter::GetLoopCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="63" column="5" bodyfile="game_interpreter.h" bodystart="393" bodyend="395"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a6b8ee36d4d28188dc32d442c0127b225" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::ReachedLoopLimit</definition>
+        <argsstring>() const</argsstring>
+        <name>ReachedLoopLimit</name>
+        <qualifiedname>Game_Interpreter::ReachedLoopLimit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="64" column="6" bodyfile="game_interpreter.cpp" bodystart="310" bodyend="312"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a87469ff80e344b9ce9daa4c75f103fc3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter::Update</definition>
+        <argsstring>(bool reset_loop_count=true)</argsstring>
+        <name>Update</name>
+        <qualifiedname>Game_Interpreter::Update</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>reset_loop_count</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="66" column="6" bodyfile="game_interpreter.cpp" bodystart="362" bodyend="536"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ab78318b453ffa99de7c32dfbc53c398d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter::Push</definition>
+        <argsstring>(std::vector&lt; lcf::rpg::EventCommand &gt; _list, int _event_id, bool started_by_decision_key=false, int event_page_id=0)</argsstring>
+        <name>Push</name>
+        <qualifiedname>Game_Interpreter::Push</qualifiedname>
+        <param>
+          <type>std::vector&lt; lcf::rpg::EventCommand &gt;</type>
+          <declname>_list</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>_event_id</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>started_by_decision_key</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>event_page_id</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="68" column="6" bodyfile="game_interpreter.cpp" bodystart="103" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1acdc900abd221a593c39a37dcf6478c4e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter::Push</definition>
+        <argsstring>(Game_Event *ev)</argsstring>
+        <name>Push</name>
+        <qualifiedname>Game_Interpreter::Push</qualifiedname>
+        <param>
+          <type><ref refid="class_game___event" kindref="compound">Game_Event</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="74" column="6" bodyfile="game_interpreter.cpp" bodystart="539" bodyend="541"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a16ebf104311a696f06119e72120df54d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter::Push</definition>
+        <argsstring>(Game_Event *ev, const lcf::rpg::EventPage *page, bool triggered_by_decision_key)</argsstring>
+        <name>Push</name>
+        <qualifiedname>Game_Interpreter::Push</qualifiedname>
+        <param>
+          <type><ref refid="class_game___event" kindref="compound">Game_Event</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::EventPage *</type>
+          <declname>page</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>triggered_by_decision_key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="75" column="6" bodyfile="game_interpreter.cpp" bodystart="543" bodyend="545"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aac06dd5e551aa3f4f04d1807542f4da7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter::Push</definition>
+        <argsstring>(Game_CommonEvent *ev)</argsstring>
+        <name>Push</name>
+        <qualifiedname>Game_Interpreter::Push</qualifiedname>
+        <param>
+          <type><ref refid="class_game___common_event" kindref="compound">Game_CommonEvent</ref> *</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="76" column="6" bodyfile="game_interpreter.cpp" bodystart="547" bodyend="549"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a552bf737962441e203dfbb9946311205" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter::InputButton</definition>
+        <argsstring>()</argsstring>
+        <name>InputButton</name>
+        <qualifiedname>Game_Interpreter::InputButton</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="78" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ad9538a0312c8c31dc4178d85f6994b01" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter::SetupChoices</definition>
+        <argsstring>(const std::vector&lt; std::string &gt; &amp;choices, int indent, PendingMessage &amp;pm)</argsstring>
+        <name>SetupChoices</name>
+        <qualifiedname>Game_Interpreter::SetupChoices</qualifiedname>
+        <param>
+          <type>const std::vector&lt; std::string &gt; &amp;</type>
+          <declname>choices</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>indent</declname>
+        </param>
+        <param>
+          <type><ref refid="class_pending_message" kindref="compound">PendingMessage</ref> &amp;</type>
+          <declname>pm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="79" column="6" bodyfile="game_interpreter.cpp" bodystart="970" bodyend="984"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a5e5f373b9753e227c44ba49002ba580d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::ExecuteCommand</definition>
+        <argsstring>()</argsstring>
+        <name>ExecuteCommand</name>
+        <qualifiedname>Game_Interpreter::ExecuteCommand</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="81" column="6" bodyfile="game_interpreter.cpp" bodystart="583" bodyend="587"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a404a2a8e0c9168bab3bf63290cb6ebd6" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::ExecuteCommand</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>ExecuteCommand</name>
+        <qualifiedname>Game_Interpreter::ExecuteCommand</qualifiedname>
+        <reimplementedby refid="class_game___interpreter___battle_1ad0a67b3be569d3f6894a76b998c339ce">ExecuteCommand</reimplementedby>
+        <reimplementedby refid="class_game___interpreter___map_1a92a3ac631a7e1478afc1cc509101a225">ExecuteCommand</reimplementedby>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="82" column="14" bodyfile="game_interpreter.cpp" bodystart="589" bodyend="807"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a2f98f13b6209d7586523f9242a58f90e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>const lcf::rpg::SaveEventExecState &amp;</type>
+        <definition>const lcf::rpg::SaveEventExecState &amp; Game_Interpreter::GetState</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetState</name>
+        <qualifiedname>Game_Interpreter::GetState</qualifiedname>
+        <reimplements refid="class_game___base_interpreter_context_1aee053407ee965cdf8f9544bece117414">GetState</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the interpreters current state information. For saving state into a save file, use GetSaveState instead. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="89" column="36" bodyfile="game_interpreter.cpp" bodystart="281" bodyend="283"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ad6409258d697149e11675e6bd34eab21" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>lcf::rpg::SaveEventExecState</type>
+        <definition>lcf::rpg::SaveEventExecState Game_Interpreter::GetSaveState</definition>
+        <argsstring>()</argsstring>
+        <name>GetSaveState</name>
+        <qualifiedname>Game_Interpreter::GetSaveState</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns a SaveEventExecState needed for the savefile.</para>
+<para><simplesect kind="return"><para>interpreter commands stored in SaveEventCommands </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="96" column="30" bodyfile="game_interpreter.cpp" bodystart="285" bodyend="289"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a7d1705d3b6f9cd6c2bca2a9f0269b2b2" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_game___character" kindref="compound">Game_Character</ref> *</type>
+        <definition>Game_Character * Game_Interpreter::GetCharacter</definition>
+        <argsstring>(int event_id, std::string_view origin) const override</argsstring>
+        <name>GetCharacter</name>
+        <qualifiedname>Game_Interpreter::GetCharacter</qualifiedname>
+        <reimplements refid="class_game___base_interpreter_context_1a6cb103dcd7c8cf4a4b6ffad3577193f0">GetCharacter</reimplements>
+        <param>
+          <type>int</type>
+          <declname>event_id</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>origin</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><ref refid="class_game___character" kindref="compound">Game_Character</ref> of the passed event_id </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="99" column="16" bodyfile="game_interpreter.cpp" bodystart="1522" bodyend="1538"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a510e6bc02f4d23cf2ff249986eab1e42" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Interpreter::GetCurrentEventId</definition>
+        <argsstring>() const</argsstring>
+        <name>GetCurrentEventId</name>
+        <qualifiedname>Game_Interpreter::GetCurrentEventId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the event_id of the current frame </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="102" column="5" bodyfile="game_interpreter.h" bodystart="379" bodyend="381"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ae32a9cf670563f96f7aedb46aa148314" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Game_Interpreter::GetThisEventId</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetThisEventId</name>
+        <qualifiedname>Game_Interpreter::GetThisEventId</qualifiedname>
+        <reimplements refid="class_game___base_interpreter_context_1a3d5b45cb46d26bd52f3d1e49889e0a6a">GetThisEventId</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the event_id used by &quot;ThisEvent&quot; in commands </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="105" column="5" bodyfile="game_interpreter.cpp" bodystart="314" bodyend="331"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ae47c48ecd454382620dc232c1e404acd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Interpreter::GetOriginalEventId</definition>
+        <argsstring>() const</argsstring>
+        <name>GetOriginalEventId</name>
+        <qualifiedname>Game_Interpreter::GetOriginalEventId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the event_id of the event at the base of the call stack </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="108" column="5" bodyfile="game_interpreter.h" bodystart="383" bodyend="385"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1af44d80ff4c9963f20908d13172e31d8a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter::ClearOriginalEventId</definition>
+        <argsstring>()</argsstring>
+        <name>ClearOriginalEventId</name>
+        <qualifiedname>Game_Interpreter::ClearOriginalEventId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the ID of the event at the base of the call stack to 0. Used by DestroyMapEvent to prevent triggering a sanity check when the event is destroyed. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="114" column="6" bodyfile="game_interpreter.h" bodystart="387" bodyend="391"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ac3d796cc8e189d2e4c077e30eab83912" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::IsAsyncPending</definition>
+        <argsstring>()</argsstring>
+        <name>IsAsyncPending</name>
+        <qualifiedname>Game_Interpreter::IsAsyncPending</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return true if the interpreter is waiting for an async operation and needs to be resumed </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="117" column="6" bodyfile="game_interpreter.h" bodystart="397" bodyend="399"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aa02ed61c936fab916281d940a7240555" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp Game_Interpreter::GetAsyncOp</definition>
+        <argsstring>() const</argsstring>
+        <name>GetAsyncOp</name>
+        <qualifiedname>Game_Interpreter::GetAsyncOp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return true if the interpreter is waiting for an async operation and needs to be resumed </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="120" column="9" bodyfile="game_interpreter.h" bodystart="401" bodyend="403"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ada596083e5275d71f31a1478ff97d64d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::IsWaitingForWaitCommand</definition>
+        <argsstring>() const</argsstring>
+        <name>IsWaitingForWaitCommand</name>
+        <qualifiedname>Game_Interpreter::IsWaitingForWaitCommand</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if wait command (time or key) is active. Used by 2k3 battle system </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="123" column="6" bodyfile="game_interpreter.cpp" bodystart="5780" bodyend="5782"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_game___interpreter_1a44b03a0b5ea2f0b298fa259d7f05c135" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>const lcf::rpg::SaveEventExecFrame &amp;</type>
+        <definition>const lcf::rpg::SaveEventExecFrame &amp; Game_Interpreter::GetFrame</definition>
+        <argsstring>() const override</argsstring>
+        <name>GetFrame</name>
+        <qualifiedname>Game_Interpreter::GetFrame</qualifiedname>
+        <reimplements refid="class_game___base_interpreter_context_1a22a59c88838a3595b838bcde4bcddc91">GetFrame</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="130" column="36" bodyfile="game_interpreter.h" bodystart="366" bodyend="370"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aeec408fa8ec452ae435f106c173c6ef2" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>lcf::rpg::SaveEventExecFrame &amp;</type>
+        <definition>lcf::rpg::SaveEventExecFrame &amp; Game_Interpreter::GetFrame</definition>
+        <argsstring>()</argsstring>
+        <name>GetFrame</name>
+        <qualifiedname>Game_Interpreter::GetFrame</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="131" column="30" bodyfile="game_interpreter.h" bodystart="372" bodyend="376"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ad3d7d9952b6e30d52d82f5db9e5f20b9" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const lcf::rpg::SaveEventExecFrame *</type>
+        <definition>const lcf::rpg::SaveEventExecFrame * Game_Interpreter::GetFramePtr</definition>
+        <argsstring>() const</argsstring>
+        <name>GetFramePtr</name>
+        <qualifiedname>Game_Interpreter::GetFramePtr</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="132" column="36" bodyfile="game_interpreter.h" bodystart="358" bodyend="360"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a169d5fe70d4fd80cbc3c70c7043f57c6" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>lcf::rpg::SaveEventExecFrame *</type>
+        <definition>lcf::rpg::SaveEventExecFrame * Game_Interpreter::GetFramePtr</definition>
+        <argsstring>()</argsstring>
+        <name>GetFramePtr</name>
+        <qualifiedname>Game_Interpreter::GetFramePtr</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="133" column="30" bodyfile="game_interpreter.h" bodystart="362" bodyend="364"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ab55246e3bbb783b838b66393f112510c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt; std::string &gt; Game_Interpreter::GetChoices</definition>
+        <argsstring>(int max_num_choices)</argsstring>
+        <name>GetChoices</name>
+        <qualifiedname>Game_Interpreter::GetChoices</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>max_num_choices</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets strings for choice selection. This is just a helper (private) method to avoid repeating code.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>max_num_choices</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The maximum number of choices to allow. Any choice with id &gt;= this value (cancel handler) is ignored. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="146" column="13" bodyfile="game_interpreter.cpp" bodystart="850" bodyend="874"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1af72c7ae119c80a0cb9531bee91a5a405" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Interpreter::OperateValue</definition>
+        <argsstring>(int operation, int operand_type, int operand)</argsstring>
+        <name>OperateValue</name>
+        <qualifiedname>Game_Interpreter::OperateValue</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>operation</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>operand_type</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>operand</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calculates operated value.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>operation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>operation (increase: 0, decrease: 1). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>operand_type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>operand type (0: set, 1: variable). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>operand</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>operand (number or var ID). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="155" column="5" bodyfile="game_interpreter.cpp" bodystart="1476" bodyend="1485"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a74e1af3920f25836c69e70f3bbdd9c46" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter::SkipToNextConditional</definition>
+        <argsstring>(std::initializer_list&lt; Cmd &gt; codes, int indent)</argsstring>
+        <name>SkipToNextConditional</name>
+        <qualifiedname>Game_Interpreter::SkipToNextConditional</qualifiedname>
+        <param>
+          <type>std::initializer_list&lt; <ref refid="class_game___interpreter_1aea7f9fef94b1b5ecdc8592575859b0b5" kindref="member">Cmd</ref> &gt;</type>
+          <declname>codes</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>indent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Skips to the next option in a chain of conditional commands. Works by skipping until we hit the end or the next command with com.indent &lt;= indent. The &lt;= protects against broken game code which terminates without a proper conditional.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>codes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which codes to check. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>indent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the indentation level to check </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="167" column="6" bodyfile="game_interpreter.cpp" bodystart="562" bodyend="580"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ad8db1b97275ec751f917fcc9a1c5c380" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter::SetupWait</definition>
+        <argsstring>(int duration)</argsstring>
+        <name>SetupWait</name>
+        <qualifiedname>Game_Interpreter::SetupWait</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>duration</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets up a wait (and closes the message box) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="172" column="6" bodyfile="game_interpreter.cpp" bodystart="292" bodyend="299"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a09545f2c15e77005b8c8cbd6eb47d8a1" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter::SetupWaitFrames</definition>
+        <argsstring>(int duration)</argsstring>
+        <name>SetupWaitFrames</name>
+        <qualifiedname>Game_Interpreter::SetupWaitFrames</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>duration</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets up a wait using frames (and closes the message box) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="177" column="6" bodyfile="game_interpreter.cpp" bodystart="301" bodyend="308"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a7d943704fa0d7c3e5347835280c11152" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::OnFinishStackFrame</definition>
+        <argsstring>()</argsstring>
+        <name>OnFinishStackFrame</name>
+        <qualifiedname>Game_Interpreter::OnFinishStackFrame</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>When current frame finishes executing we pop the stack </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="190" column="6" bodyfile="game_interpreter.cpp" bodystart="809" bodyend="848"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a47d2ff7ca2f8ebe98780852b57a746c7" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CheckGameOver</definition>
+        <argsstring>()</argsstring>
+        <name>CheckGameOver</name>
+        <qualifiedname>Game_Interpreter::CheckGameOver</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Triggers a game over when all party members are dead.</para>
+<para><simplesect kind="return"><para>true if game over was started. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="197" column="6" bodyfile="game_interpreter.cpp" bodystart="551" bodyend="560"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aac95bb5ff9f62f0e56077489a89e3086" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandOptionGeneric</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com, int option_sub_idx, std::initializer_list&lt; Cmd &gt; next)</argsstring>
+        <name>CommandOptionGeneric</name>
+        <qualifiedname>Game_Interpreter::CommandOptionGeneric</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>option_sub_idx</declname>
+        </param>
+        <param>
+          <type>std::initializer_list&lt; <ref refid="class_game___interpreter_1aea7f9fef94b1b5ecdc8592575859b0b5" kindref="member">Cmd</ref> &gt;</type>
+          <declname>next</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="199" column="6" bodyfile="game_interpreter.cpp" bodystart="876" bodyend="885"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a9b30ac0715ca464cc5430d6909333f73" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandShowMessage</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandShowMessage</name>
+        <qualifiedname>Game_Interpreter::CommandShowMessage</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="201" column="6" bodyfile="game_interpreter.cpp" bodystart="887" bodyend="939"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aa65e74b9eff25544536c5d5efbf03b3b" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandMessageOptions</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandMessageOptions</name>
+        <qualifiedname>Game_Interpreter::CommandMessageOptions</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="202" column="6" bodyfile="game_interpreter.cpp" bodystart="941" bodyend="955"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1af3c2414c3a8c9e5418fa416b599ab1b2" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeFaceGraphic</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeFaceGraphic</name>
+        <qualifiedname>Game_Interpreter::CommandChangeFaceGraphic</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="203" column="6" bodyfile="game_interpreter.cpp" bodystart="957" bodyend="968"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aafa884fd3f363f047a485644a15e71c3" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandShowChoices</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandShowChoices</name>
+        <qualifiedname>Game_Interpreter::CommandShowChoices</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="204" column="6" bodyfile="game_interpreter.cpp" bodystart="986" bodyend="1007"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a27b0041f52c00cab9237c8bad3b4ffa1" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandShowChoiceOption</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandShowChoiceOption</name>
+        <qualifiedname>Game_Interpreter::CommandShowChoiceOption</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="205" column="6" bodyfile="game_interpreter.cpp" bodystart="1010" bodyend="1013"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a04b2643b0991c8f7f1b1dc0837f0d070" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandShowChoiceEnd</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandShowChoiceEnd</name>
+        <qualifiedname>Game_Interpreter::CommandShowChoiceEnd</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="206" column="6" bodyfile="game_interpreter.cpp" bodystart="1015" bodyend="1017"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a72fb7e48ec9f72c700e6296704ee2f9a" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandInputNumber</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandInputNumber</name>
+        <qualifiedname>Game_Interpreter::CommandInputNumber</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="207" column="6" bodyfile="game_interpreter.cpp" bodystart="1019" bodyend="1038"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a08096287030e2ad775fea2821dfe280f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandControlSwitches</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandControlSwitches</name>
+        <qualifiedname>Game_Interpreter::CommandControlSwitches</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="208" column="6" bodyfile="game_interpreter.cpp" bodystart="1040" bodyend="1074"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aa4fddb4f523b90eff566d03cf377dfe0" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandControlVariables</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandControlVariables</name>
+        <qualifiedname>Game_Interpreter::CommandControlVariables</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="209" column="6" bodyfile="game_interpreter.cpp" bodystart="1076" bodyend="1474"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ad2547fa74ea9f14c8d7d0ee0dc5ada73" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandTimerOperation</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandTimerOperation</name>
+        <qualifiedname>Game_Interpreter::CommandTimerOperation</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="210" column="6" bodyfile="game_interpreter.cpp" bodystart="1540" bodyend="1568"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aa136144c62e364f7d552718fe571d6ec" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeGold</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeGold</name>
+        <qualifiedname>Game_Interpreter::CommandChangeGold</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="211" column="6" bodyfile="game_interpreter.cpp" bodystart="1570" bodyend="1582"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1acbc591f8cf96e98f2a747270a99ac6e8" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeItems</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeItems</name>
+        <qualifiedname>Game_Interpreter::CommandChangeItems</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="212" column="6" bodyfile="game_interpreter.cpp" bodystart="1584" bodyend="1619"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a1cfe8e4a84f997174fc059a5fe2a40d7" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangePartyMember</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangePartyMember</name>
+        <qualifiedname>Game_Interpreter::CommandChangePartyMember</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="213" column="6" bodyfile="game_interpreter.cpp" bodystart="1621" bodyend="1646"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a7a02a59594f95f28272551fd19e0fa66" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeExp</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeExp</name>
+        <qualifiedname>Game_Interpreter::CommandChangeExp</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="214" column="6" bodyfile="game_interpreter.cpp" bodystart="1655" bodyend="1683"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a955c948fa047df2c42c00c145cb84f02" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeLevel</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeLevel</name>
+        <qualifiedname>Game_Interpreter::CommandChangeLevel</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="215" column="6" bodyfile="game_interpreter.cpp" bodystart="1685" bodyend="1714"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a2d828c3ecd365d73be922fa6871e48f7" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeParameters</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeParameters</name>
+        <qualifiedname>Game_Interpreter::CommandChangeParameters</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="216" column="6" bodyfile="game_interpreter.cpp" bodystart="1716" bodyend="1754"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a0527ba8bea7232a7238502c9645615a9" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeSkills</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeSkills</name>
+        <qualifiedname>Game_Interpreter::CommandChangeSkills</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="217" column="6" bodyfile="game_interpreter.cpp" bodystart="1756" bodyend="1769"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a910a208782cfbee724e6268ea581ca2b" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeEquipment</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeEquipment</name>
+        <qualifiedname>Game_Interpreter::CommandChangeEquipment</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="218" column="6" bodyfile="game_interpreter.cpp" bodystart="1771" bodyend="1834"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a5bdd48109b6a4c1f4068563368229fd4" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeHP</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeHP</name>
+        <qualifiedname>Game_Interpreter::CommandChangeHP</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="219" column="6" bodyfile="game_interpreter.cpp" bodystart="1836" bodyend="1860"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a8ab1b772551d71a1d1fd803d5eebbb0e" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeSP</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeSP</name>
+        <qualifiedname>Game_Interpreter::CommandChangeSP</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="220" column="6" bodyfile="game_interpreter.cpp" bodystart="1862" bodyend="1878"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a556e560089fbb2a38bc4df481e423d6e" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeCondition</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeCondition</name>
+        <qualifiedname>Game_Interpreter::CommandChangeCondition</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="221" column="6" bodyfile="game_interpreter.cpp" bodystart="1880" bodyend="1900"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aed38ff5c5d9d82ccd426048c512c741c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandFullHeal</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandFullHeal</name>
+        <qualifiedname>Game_Interpreter::CommandFullHeal</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="222" column="6" bodyfile="game_interpreter.cpp" bodystart="1902" bodyend="1913"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aa29789c2cf760b67b06886fdfa543194" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandSimulatedAttack</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandSimulatedAttack</name>
+        <qualifiedname>Game_Interpreter::CommandSimulatedAttack</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="223" column="6" bodyfile="game_interpreter.cpp" bodystart="1915" bodyend="1939"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a0761e0a5f97e11445bc2efa3afbe5f99" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandWait</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandWait</name>
+        <qualifiedname>Game_Interpreter::CommandWait</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="224" column="6" bodyfile="game_interpreter.cpp" bodystart="1941" bodyend="1986"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aef706a164426cf429dda84a40111162b" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandPlayBGM</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandPlayBGM</name>
+        <qualifiedname>Game_Interpreter::CommandPlayBGM</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="225" column="6" bodyfile="game_interpreter.cpp" bodystart="1988" bodyend="1999"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a0e122aea419f106e7ee9b9eb11f8ed54" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandFadeOutBGM</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandFadeOutBGM</name>
+        <qualifiedname>Game_Interpreter::CommandFadeOutBGM</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="226" column="6" bodyfile="game_interpreter.cpp" bodystart="2001" bodyend="2005"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a4f3b4631b03b2b06a351e7c5713727dd" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandPlaySound</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandPlaySound</name>
+        <qualifiedname>Game_Interpreter::CommandPlaySound</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="227" column="6" bodyfile="game_interpreter.cpp" bodystart="2007" bodyend="2017"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a03fd3ba60c4efa3b3b1b0ee109bd560c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandEndEventProcessing</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandEndEventProcessing</name>
+        <qualifiedname>Game_Interpreter::CommandEndEventProcessing</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="228" column="6" bodyfile="game_interpreter.cpp" bodystart="2019" bodyend="2022"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1affd4dc4765d7b548d29b7badf5c12684" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandComment</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandComment</name>
+        <qualifiedname>Game_Interpreter::CommandComment</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="229" column="6" bodyfile="game_interpreter.cpp" bodystart="2074" bodyend="2083"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1abf809d236473a78f013c15aefe563019" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandGameOver</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandGameOver</name>
+        <qualifiedname>Game_Interpreter::CommandGameOver</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="230" column="6" bodyfile="game_interpreter.cpp" bodystart="2093" bodyend="2103"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a139cea5046c62ed0187e451e81034739" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeHeroName</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeHeroName</name>
+        <qualifiedname>Game_Interpreter::CommandChangeHeroName</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="231" column="6" bodyfile="game_interpreter.cpp" bodystart="2105" bodyend="2116"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a7ea9ee0622876dbf9476018e45f9d4ca" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeHeroTitle</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeHeroTitle</name>
+        <qualifiedname>Game_Interpreter::CommandChangeHeroTitle</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="232" column="6" bodyfile="game_interpreter.cpp" bodystart="2118" bodyend="2129"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a9bcbe9f8dfbde2954528ef2c96a41b24" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeSpriteAssociation</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeSpriteAssociation</name>
+        <qualifiedname>Game_Interpreter::CommandChangeSpriteAssociation</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="233" column="6" bodyfile="game_interpreter.cpp" bodystart="2131" bodyend="2147"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a54e166e9e6a2d3c1057577ebaebb1b5c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeActorFace</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeActorFace</name>
+        <qualifiedname>Game_Interpreter::CommandChangeActorFace</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="234" column="6" bodyfile="game_interpreter.cpp" bodystart="2149" bodyend="2161"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a5ceb64f7967605f5fc95342e724e7195" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeVehicleGraphic</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeVehicleGraphic</name>
+        <qualifiedname>Game_Interpreter::CommandChangeVehicleGraphic</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="235" column="6" bodyfile="game_interpreter.cpp" bodystart="2163" bodyend="2179"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1af2b1453c14c6927a34eb0704b0b877be" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeSystemBGM</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeSystemBGM</name>
+        <qualifiedname>Game_Interpreter::CommandChangeSystemBGM</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="236" column="6" bodyfile="game_interpreter.cpp" bodystart="2181" bodyend="2191"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a8e7d3936858b93534aa51c7ca14fa3cf" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeSystemSFX</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeSystemSFX</name>
+        <qualifiedname>Game_Interpreter::CommandChangeSystemSFX</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="237" column="6" bodyfile="game_interpreter.cpp" bodystart="2193" bodyend="2202"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a206cf4081443a63fc0b8e56d4e4e2678" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeSystemGraphics</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeSystemGraphics</name>
+        <qualifiedname>Game_Interpreter::CommandChangeSystemGraphics</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="238" column="6" bodyfile="game_interpreter.cpp" bodystart="2204" bodyend="2210"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a67392323d0811f42fcf0f4d8e2a7a648" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeScreenTransitions</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeScreenTransitions</name>
+        <qualifiedname>Game_Interpreter::CommandChangeScreenTransitions</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="239" column="6" bodyfile="game_interpreter.cpp" bodystart="2212" bodyend="2215"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a09a02aa1f0b197c002b90f75b70f53bd" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandMemorizeLocation</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandMemorizeLocation</name>
+        <qualifiedname>Game_Interpreter::CommandMemorizeLocation</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="240" column="6" bodyfile="game_interpreter.cpp" bodystart="2217" bodyend="2227"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a30bed17b20ea82e45576a957f9186691" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandSetVehicleLocation</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandSetVehicleLocation</name>
+        <qualifiedname>Game_Interpreter::CommandSetVehicleLocation</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="241" column="6" bodyfile="game_interpreter.cpp" bodystart="2229" bodyend="2290"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a1210cf181bd22b3787a8b283ce9ea574" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeEventLocation</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeEventLocation</name>
+        <qualifiedname>Game_Interpreter::CommandChangeEventLocation</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="242" column="6" bodyfile="game_interpreter.cpp" bodystart="2292" bodyend="2313"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a3bc149bafb32e75c06c0700be4eea9df" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandTradeEventLocations</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandTradeEventLocations</name>
+        <qualifiedname>Game_Interpreter::CommandTradeEventLocations</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="243" column="6" bodyfile="game_interpreter.cpp" bodystart="2315" bodyend="2336"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a29cda1bcfd93b7e3fdb5b0218227eb7c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandStoreTerrainID</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandStoreTerrainID</name>
+        <qualifiedname>Game_Interpreter::CommandStoreTerrainID</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="244" column="6" bodyfile="game_interpreter.cpp" bodystart="2338" bodyend="2345"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a143995bfabe52cd36b3f2f1dcaafa006" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandStoreEventID</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandStoreEventID</name>
+        <qualifiedname>Game_Interpreter::CommandStoreEventID</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="245" column="6" bodyfile="game_interpreter.cpp" bodystart="2347" bodyend="2355"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a52053c1f7bcf8b18503eea9f2227e100" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandEraseScreen</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandEraseScreen</name>
+        <qualifiedname>Game_Interpreter::CommandEraseScreen</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="246" column="6" bodyfile="game_interpreter.cpp" bodystart="2357" bodyend="2448"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aa53b992812260b38353b88451c953370" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandShowScreen</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandShowScreen</name>
+        <qualifiedname>Game_Interpreter::CommandShowScreen</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="247" column="6" bodyfile="game_interpreter.cpp" bodystart="2450" bodyend="2534"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aff9b77e92a751baafb9fcda76f127af2" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandTintScreen</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandTintScreen</name>
+        <qualifiedname>Game_Interpreter::CommandTintScreen</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="248" column="6" bodyfile="game_interpreter.cpp" bodystart="2536" bodyend="2551"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a1644db312a42abb5434e75da22dd4038" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandFlashScreen</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandFlashScreen</name>
+        <qualifiedname>Game_Interpreter::CommandFlashScreen</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="249" column="6" bodyfile="game_interpreter.cpp" bodystart="2553" bodyend="2583"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ac186926f7a8a992d24d2dbf5fa8886e5" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandShakeScreen</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandShakeScreen</name>
+        <qualifiedname>Game_Interpreter::CommandShakeScreen</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="250" column="6" bodyfile="game_interpreter.cpp" bodystart="2585" bodyend="2617"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1acb353c32a5382180bd8abf48606527c8" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandWeatherEffects</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandWeatherEffects</name>
+        <qualifiedname>Game_Interpreter::CommandWeatherEffects</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="251" column="6" bodyfile="game_interpreter.cpp" bodystart="2619" bodyend="2632"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a933490867ec6a274e8ba683a220ca1e4" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandShowPicture</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandShowPicture</name>
+        <qualifiedname>Game_Interpreter::CommandShowPicture</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="252" column="6" bodyfile="game_interpreter.cpp" bodystart="2730" bodyend="2878"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a0dd5fbdb7fcc80c81a8b1b643ad111c0" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandMovePicture</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandMovePicture</name>
+        <qualifiedname>Game_Interpreter::CommandMovePicture</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="253" column="6" bodyfile="game_interpreter.cpp" bodystart="2880" bodyend="3033"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aef46e2a14f0f309d84a635d6b35cb4dd" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandErasePicture</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandErasePicture</name>
+        <qualifiedname>Game_Interpreter::CommandErasePicture</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="254" column="6" bodyfile="game_interpreter.cpp" bodystart="3035" bodyend="3109"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a9c8be3dec58a83e5708d317fe6f3595f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandPlayerVisibility</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandPlayerVisibility</name>
+        <qualifiedname>Game_Interpreter::CommandPlayerVisibility</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="255" column="6" bodyfile="game_interpreter.cpp" bodystart="3111" bodyend="3119"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a44a06cf772b0186f9652f0386b8163c9" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandMoveEvent</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandMoveEvent</name>
+        <qualifiedname>Game_Interpreter::CommandMoveEvent</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="256" column="6" bodyfile="game_interpreter.cpp" bodystart="3121" bodyend="3150"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ac50794c5ba7d2f114bcf82f31af013e7" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandMemorizeBGM</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandMemorizeBGM</name>
+        <qualifiedname>Game_Interpreter::CommandMemorizeBGM</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="257" column="6" bodyfile="game_interpreter.cpp" bodystart="3152" bodyend="3155"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ad6631dfade1d5bfe42fc1461bd4f3906" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandPlayMemorizedBGM</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandPlayMemorizedBGM</name>
+        <qualifiedname>Game_Interpreter::CommandPlayMemorizedBGM</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="258" column="6" bodyfile="game_interpreter.cpp" bodystart="3157" bodyend="3160"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ace395385facc5e269c9653ff213c957b" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandKeyInputProc</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandKeyInputProc</name>
+        <qualifiedname>Game_Interpreter::CommandKeyInputProc</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="259" column="6" bodyfile="game_interpreter.cpp" bodystart="3231" bodyend="3356"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a96677a668844610c9c1bf7e2b2911202" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeMapTileset</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeMapTileset</name>
+        <qualifiedname>Game_Interpreter::CommandChangeMapTileset</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="260" column="6" bodyfile="game_interpreter.cpp" bodystart="3358" bodyend="3375"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aa31cb770abec0baca5c7c75cbb9c46aa" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangePBG</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangePBG</name>
+        <qualifiedname>Game_Interpreter::CommandChangePBG</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="261" column="6" bodyfile="game_interpreter.cpp" bodystart="3377" bodyend="3396"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a3111df9fe1022c674c824ac31418b84a" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeEncounterSteps</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeEncounterSteps</name>
+        <qualifiedname>Game_Interpreter::CommandChangeEncounterSteps</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="262" column="6" bodyfile="game_interpreter.cpp" bodystart="3398" bodyend="3404"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a5744617f17714da02aad5d73168c5f03" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandTileSubstitution</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandTileSubstitution</name>
+        <qualifiedname>Game_Interpreter::CommandTileSubstitution</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="263" column="6" bodyfile="game_interpreter.cpp" bodystart="3406" bodyend="3420"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a0e8f297e918b0a66b4d36f8154453226" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandTeleportTargets</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandTeleportTargets</name>
+        <qualifiedname>Game_Interpreter::CommandTeleportTargets</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="264" column="6" bodyfile="game_interpreter.cpp" bodystart="3422" bodyend="3436"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1afb3b9c24d1d9892604848a36881dcf4b" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeTeleportAccess</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeTeleportAccess</name>
+        <qualifiedname>Game_Interpreter::CommandChangeTeleportAccess</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="265" column="6" bodyfile="game_interpreter.cpp" bodystart="3438" bodyend="3441"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a858f215a1e0498b957f433a0dcd24b7e" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandEscapeTarget</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandEscapeTarget</name>
+        <qualifiedname>Game_Interpreter::CommandEscapeTarget</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="266" column="6" bodyfile="game_interpreter.cpp" bodystart="3443" bodyend="3451"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aa8fbc1982b549a099d37272232bb57d5" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeEscapeAccess</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeEscapeAccess</name>
+        <qualifiedname>Game_Interpreter::CommandChangeEscapeAccess</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="267" column="6" bodyfile="game_interpreter.cpp" bodystart="3453" bodyend="3456"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ad9c51e6b81cdc92c68b77dbb95cc763f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeSaveAccess</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeSaveAccess</name>
+        <qualifiedname>Game_Interpreter::CommandChangeSaveAccess</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="268" column="6" bodyfile="game_interpreter.cpp" bodystart="3458" bodyend="3461"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a7dc5e67de02cf32192b3b7159ff302c0" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeMainMenuAccess</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeMainMenuAccess</name>
+        <qualifiedname>Game_Interpreter::CommandChangeMainMenuAccess</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="269" column="6" bodyfile="game_interpreter.cpp" bodystart="3463" bodyend="3466"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ae13843be47e13cd26012d10f34d1ea86" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandConditionalBranch</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandConditionalBranch</name>
+        <qualifiedname>Game_Interpreter::CommandConditionalBranch</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="270" column="6" bodyfile="game_interpreter.cpp" bodystart="3468" bodyend="3728"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a391e8094d5b1ecf7b01a8446439b0261" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandElseBranch</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandElseBranch</name>
+        <qualifiedname>Game_Interpreter::CommandElseBranch</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="271" column="6" bodyfile="game_interpreter.cpp" bodystart="3731" bodyend="3733"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1af1249707724db420b67e82434cbdb501" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandEndBranch</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandEndBranch</name>
+        <qualifiedname>Game_Interpreter::CommandEndBranch</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="272" column="6" bodyfile="game_interpreter.cpp" bodystart="3735" bodyend="3737"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aef0ec9b29c52204243e97aa5bc59edb4" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandJumpToLabel</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandJumpToLabel</name>
+        <qualifiedname>Game_Interpreter::CommandJumpToLabel</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="273" column="6" bodyfile="game_interpreter.cpp" bodystart="3739" bodyend="3756"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a9f979bd8fff4ab8803cd8b67be505566" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandLoop</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandLoop</name>
+        <qualifiedname>Game_Interpreter::CommandLoop</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="274" column="6" bodyfile="game_interpreter.cpp" bodystart="3758" bodyend="3818"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aea6e782fdc6d97e27eda2bc663ca458f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandBreakLoop</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandBreakLoop</name>
+        <qualifiedname>Game_Interpreter::CommandBreakLoop</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="275" column="6" bodyfile="game_interpreter.cpp" bodystart="3820" bodyend="3845"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ac92e0548b59b562d10139e51c1fd009b" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandEndLoop</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandEndLoop</name>
+        <qualifiedname>Game_Interpreter::CommandEndLoop</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="276" column="6" bodyfile="game_interpreter.cpp" bodystart="3847" bodyend="3923"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a0bdea58e80b6b1a58bb93148acf48015" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandEraseEvent</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandEraseEvent</name>
+        <qualifiedname>Game_Interpreter::CommandEraseEvent</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="277" column="6" bodyfile="game_interpreter.cpp" bodystart="3925" bodyend="3961"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a1f97f6cf5785e455142d175369a0f871" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandCallEvent</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandCallEvent</name>
+        <qualifiedname>Game_Interpreter::CommandCallEvent</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="278" column="6" bodyfile="game_interpreter.cpp" bodystart="3963" bodyend="4018"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aab75cb8ff04587bd24c368f8ee667bf3" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandReturnToTitleScreen</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandReturnToTitleScreen</name>
+        <qualifiedname>Game_Interpreter::CommandReturnToTitleScreen</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="279" column="6" bodyfile="game_interpreter.cpp" bodystart="4020" bodyend="4027"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a82ea4697b7d3424568eb30fc74620512" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeClass</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeClass</name>
+        <qualifiedname>Game_Interpreter::CommandChangeClass</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="280" column="6" bodyfile="game_interpreter.cpp" bodystart="4029" bodyend="4072"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a0a64d9ad41a9d843ba1c0568cbad1429" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandChangeBattleCommands</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandChangeBattleCommands</name>
+        <qualifiedname>Game_Interpreter::CommandChangeBattleCommands</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="281" column="6" bodyfile="game_interpreter.cpp" bodystart="4074" bodyend="4087"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a7f27aa3f0b83fa62ade332a53d2362a6" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandExitGame</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandExitGame</name>
+        <qualifiedname>Game_Interpreter::CommandExitGame</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="282" column="6" bodyfile="game_interpreter.cpp" bodystart="4089" bodyend="4100"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a67f189836ffd272fa410cdea6f85ae32" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandToggleFullscreen</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandToggleFullscreen</name>
+        <qualifiedname>Game_Interpreter::CommandToggleFullscreen</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="283" column="6" bodyfile="game_interpreter.cpp" bodystart="4102" bodyend="4115"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1afd62cf348f7c0b70ace064b1217fc834" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandOpenVideoOptions</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandOpenVideoOptions</name>
+        <qualifiedname>Game_Interpreter::CommandOpenVideoOptions</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="284" column="6" bodyfile="game_interpreter.cpp" bodystart="4117" bodyend="4139"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a1bf80ea23a7a4a529a537dc2e2f7096f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandManiacGetSaveInfo</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacGetSaveInfo</name>
+        <qualifiedname>Game_Interpreter::CommandManiacGetSaveInfo</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="285" column="6" bodyfile="game_interpreter.cpp" bodystart="4318" bodyend="4396"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1afff479239f7a43d357607d81a6b6df65" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandManiacSave</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacSave</name>
+        <qualifiedname>Game_Interpreter::CommandManiacSave</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="286" column="6" bodyfile="game_interpreter.cpp" bodystart="4398" bodyend="4416"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ad4bb3a00a22100d223eca8c3de84d9ca" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandManiacLoad</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacLoad</name>
+        <qualifiedname>Game_Interpreter::CommandManiacLoad</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="287" column="6" bodyfile="game_interpreter.cpp" bodystart="4418" bodyend="4447"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1af2db51a5a00e41deb20b80517dd4b383" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandManiacEndLoadProcess</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacEndLoadProcess</name>
+        <qualifiedname>Game_Interpreter::CommandManiacEndLoadProcess</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="288" column="6" bodyfile="game_interpreter.cpp" bodystart="4449" bodyend="4452"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aa1761126912bfb6f7822ebec609a774a" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandManiacGetMousePosition</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacGetMousePosition</name>
+        <qualifiedname>Game_Interpreter::CommandManiacGetMousePosition</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="289" column="6" bodyfile="game_interpreter.cpp" bodystart="4454" bodyend="4477"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1af65b35fd3c3496bb1c7dff161d4fb2af" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandManiacSetMousePosition</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacSetMousePosition</name>
+        <qualifiedname>Game_Interpreter::CommandManiacSetMousePosition</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="290" column="6" bodyfile="game_interpreter.cpp" bodystart="4479" bodyend="4486"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1abb22dfedf589fa3401cfe6b5709041cf" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandManiacShowStringPicture</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacShowStringPicture</name>
+        <qualifiedname>Game_Interpreter::CommandManiacShowStringPicture</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="291" column="6" bodyfile="game_interpreter.cpp" bodystart="4488" bodyend="4625"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ae53830043a3dfaca312032c9d2d404d4" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandManiacGetPictureInfo</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacGetPictureInfo</name>
+        <qualifiedname>Game_Interpreter::CommandManiacGetPictureInfo</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="292" column="6" bodyfile="game_interpreter.cpp" bodystart="4627" bodyend="4692"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aa9143aad046d1ab32b2129f292ed9cae" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandManiacControlVarArray</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacControlVarArray</name>
+        <qualifiedname>Game_Interpreter::CommandManiacControlVarArray</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="293" column="6" bodyfile="game_interpreter.cpp" bodystart="4694" bodyend="4785"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aeb6bc9803e68c08f360134a8ea5fbf0f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandManiacKeyInputProcEx</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacKeyInputProcEx</name>
+        <qualifiedname>Game_Interpreter::CommandManiacKeyInputProcEx</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="294" column="6" bodyfile="game_interpreter.cpp" bodystart="4787" bodyend="4819"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a92ea3bfd697bb9453837dc07b0c208f2" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandManiacRewriteMap</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacRewriteMap</name>
+        <qualifiedname>Game_Interpreter::CommandManiacRewriteMap</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="295" column="6" bodyfile="game_interpreter.cpp" bodystart="4821" bodyend="4857"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a361c06d1408e5a2ae5d93a2a69b1749d" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandManiacControlGlobalSave</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacControlGlobalSave</name>
+        <qualifiedname>Game_Interpreter::CommandManiacControlGlobalSave</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="296" column="6" bodyfile="game_interpreter.cpp" bodystart="4859" bodyend="4985"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a2a660c9aed78d688d7d48fc7be321fd5" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandManiacChangePictureId</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacChangePictureId</name>
+        <qualifiedname>Game_Interpreter::CommandManiacChangePictureId</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="297" column="6" bodyfile="game_interpreter.cpp" bodystart="4987" bodyend="4994"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ab43e8d5fe92ac43743926b38cc0e21fc" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandManiacSetGameOption</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacSetGameOption</name>
+        <qualifiedname>Game_Interpreter::CommandManiacSetGameOption</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="298" column="6" bodyfile="game_interpreter.cpp" bodystart="4996" bodyend="5012"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ad3e8cd494101f7b29a064f1d56b74f66" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandManiacControlStrings</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacControlStrings</name>
+        <qualifiedname>Game_Interpreter::CommandManiacControlStrings</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="299" column="6" bodyfile="game_interpreter.cpp" bodystart="5014" bodyend="5306"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ad1067bfd5059d216045b240994ba3548" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandManiacCallCommand</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacCallCommand</name>
+        <qualifiedname>Game_Interpreter::CommandManiacCallCommand</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="300" column="6" bodyfile="game_interpreter.cpp" bodystart="5308" bodyend="5388"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a25e88d2ed3b5f3ec6c04b7abc8a74162" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandEasyRpgSetInterpreterFlag</name>
+        <qualifiedname>Game_Interpreter::CommandEasyRpgSetInterpreterFlag</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="301" column="6" bodyfile="game_interpreter.cpp" bodystart="5390" bodyend="5493"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a9465eed80bc4e00f35391fe20e9c3e2c" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandEasyRpgProcessJson</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandEasyRpgProcessJson</name>
+        <qualifiedname>Game_Interpreter::CommandEasyRpgProcessJson</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="302" column="6" bodyfile="game_interpreter.cpp" bodystart="5495" bodyend="5721"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a8806c892dacadea350990e12369b7a7e" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandEasyRpgCloneMapEvent</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandEasyRpgCloneMapEvent</name>
+        <qualifiedname>Game_Interpreter::CommandEasyRpgCloneMapEvent</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="303" column="6" bodyfile="game_interpreter.cpp" bodystart="5723" bodyend="5756"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a221ea790132c7db90f698fb66a89a39b" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandEasyRpgDestroyMapEvent</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandEasyRpgDestroyMapEvent</name>
+        <qualifiedname>Game_Interpreter::CommandEasyRpgDestroyMapEvent</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="304" column="6" bodyfile="game_interpreter.cpp" bodystart="5758" bodyend="5772"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a23c2e20cad7341f70d90b18370452c02" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::CommandManiacGetGameInfo</definition>
+        <argsstring>(lcf::rpg::EventCommand const &amp;com)</argsstring>
+        <name>CommandManiacGetGameInfo</name>
+        <qualifiedname>Game_Interpreter::CommandManiacGetGameInfo</qualifiedname>
+        <param>
+          <type>lcf::rpg::EventCommand const &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="305" column="6" bodyfile="game_interpreter.cpp" bodystart="4141" bodyend="4316"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ad37fd70718341354915dd6458a021938" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter::SetSubcommandIndex</definition>
+        <argsstring>(int indent, int idx)</argsstring>
+        <name>SetSubcommandIndex</name>
+        <qualifiedname>Game_Interpreter::SetSubcommandIndex</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>indent</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>idx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="307" column="6" bodyfile="game_interpreter.cpp" bodystart="345" bodyend="347"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a4f59bbf6b9b3aaa20ed4087861ec1c53" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint8_t &amp;</type>
+        <definition>uint8_t &amp; Game_Interpreter::ReserveSubcommandIndex</definition>
+        <argsstring>(int indent)</argsstring>
+        <name>ReserveSubcommandIndex</name>
+        <qualifiedname>Game_Interpreter::ReserveSubcommandIndex</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>indent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="308" column="9" bodyfile="game_interpreter.cpp" bodystart="333" bodyend="343"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a36663bc6fab30c291525f0befb8ffa45" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Interpreter::GetSubcommandIndex</definition>
+        <argsstring>(int indent) const</argsstring>
+        <name>GetSubcommandIndex</name>
+        <qualifiedname>Game_Interpreter::GetSubcommandIndex</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>indent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="309" column="5" bodyfile="game_interpreter.cpp" bodystart="349" bodyend="359"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1aa0a5a5f24aad210a07e0e8ab6a395da6" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter::ForegroundTextPush</definition>
+        <argsstring>(PendingMessage pm)</argsstring>
+        <name>ForegroundTextPush</name>
+        <qualifiedname>Game_Interpreter::ForegroundTextPush</qualifiedname>
+        <param>
+          <type><ref refid="class_pending_message" kindref="compound">PendingMessage</ref></type>
+          <declname>pm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="311" column="6" bodyfile="game_interpreter.cpp" bodystart="1648" bodyend="1653"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1ab6def7f0eee05ab01c32384b9225ae56" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter::EndEventProcessing</definition>
+        <argsstring>()</argsstring>
+        <name>EndEventProcessing</name>
+        <qualifiedname>Game_Interpreter::EndEventProcessing</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="312" column="6" bodyfile="game_interpreter.cpp" bodystart="2085" bodyend="2091"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a921b0e92b396e6f4ab9c4df07a99cd52" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::optional&lt; bool &gt;</type>
+        <definition>std::optional&lt; bool &gt; Game_Interpreter::HandleDynRpgScript</definition>
+        <argsstring>(const lcf::rpg::EventCommand &amp;com)</argsstring>
+        <name>HandleDynRpgScript</name>
+        <qualifiedname>Game_Interpreter::HandleDynRpgScript</qualifiedname>
+        <param>
+          <type>const lcf::rpg::EventCommand &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="314" column="15" bodyfile="game_interpreter.cpp" bodystart="2024" bodyend="2059"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a98ec0b440ee7f4a8fd1f85a3d8188420" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::optional&lt; bool &gt;</type>
+        <definition>std::optional&lt; bool &gt; Game_Interpreter::HandleDestinyScript</definition>
+        <argsstring>(const lcf::rpg::EventCommand &amp;com)</argsstring>
+        <name>HandleDestinyScript</name>
+        <qualifiedname>Game_Interpreter::HandleDestinyScript</qualifiedname>
+        <param>
+          <type>const lcf::rpg::EventCommand &amp;</type>
+          <declname>com</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="315" column="15" bodyfile="game_interpreter.cpp" bodystart="2061" bodyend="2072"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___interpreter_1a96bd7e1677520378961da5d7f4d44a05" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Interpreter::ManiacBitmask</definition>
+        <argsstring>(int value, int mask) const</argsstring>
+        <name>ManiacBitmask</name>
+        <qualifiedname>Game_Interpreter::ManiacBitmask</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>mask</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="349" column="5" bodyfile="game_interpreter.cpp" bodystart="5784" bodyend="5790"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-static-func">
+      <memberdef kind="function" id="class_game___interpreter_1afbeba0273309b6f44ffc06b8b1773c13" prot="protected" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="class_game___actor" kindref="compound">Game_Actor</ref> * &gt;</type>
+        <definition>std::vector&lt; Game_Actor * &gt; Game_Interpreter::GetActors</definition>
+        <argsstring>(int mode, int id)</argsstring>
+        <name>GetActors</name>
+        <qualifiedname>Game_Interpreter::GetActors</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>mode</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Calculates list of actors.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>mode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>0: party, 1: specific actor, 2: actor referenced by variable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>actor ID (mode = 1) or variable ID (mode = 2). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="185" column="20" bodyfile="game_interpreter.cpp" bodystart="1487" bodyend="1520"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_game___interpreter" kindref="compound">Game_Interpreter</ref> class </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Game_BaseInterpreterContext</label>
+        <link refid="class_game___base_interpreter_context"/>
+      </node>
+      <node id="1">
+        <label>Game_Interpreter</label>
+        <link refid="class_game___interpreter"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Game_Interpreter_Battle</label>
+        <link refid="class_game___interpreter___battle"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Game_Interpreter_Map</label>
+        <link refid="class_game___interpreter___map"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="4">
+        <label>AsyncOp</label>
+        <link refid="class_async_op"/>
+      </node>
+      <node id="2">
+        <label>Game_BaseInterpreterContext</label>
+        <link refid="class_game___base_interpreter_context"/>
+      </node>
+      <node id="1">
+        <label>Game_Interpreter</label>
+        <link refid="class_game___interpreter"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>_keyinput</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>_async_op</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Game_Interpreter::KeyInputState</label>
+        <link refid="struct_game___interpreter_1_1_key_input_state"/>
+      </node>
+    </collaborationgraph>
+    <location file="game_interpreter.h" line="45" column="1" bodyfile="game_interpreter.h" bodystart="46" bodyend="356"/>
+    <listofallmembers>
+      <member refid="class_game___interpreter_1a0791542402a644e15382dd42f412af2b" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>_async_op</name></member>
+      <member refid="class_game___interpreter_1a46335e1e1c16974d73b183ae67612b7c" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>_keyinput</name></member>
+      <member refid="class_game___interpreter_1a8deff46edae44d7d426e38ee75cc1ede" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>_state</name></member>
+      <member refid="class_game___interpreter_1a8a6cc11c14c63bbab8ff5b52bed6093c" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>call_stack_limit</name></member>
+      <member refid="class_game___interpreter_1a47d2ff7ca2f8ebe98780852b57a746c7" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CheckGameOver</name></member>
+      <member refid="class_game___interpreter_1abe054b320afc15c4fc57e08f210159ae" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>Clear</name></member>
+      <member refid="class_game___interpreter_1af44d80ff4c9963f20908d13172e31d8a" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>ClearOriginalEventId</name></member>
+      <member refid="class_game___interpreter_1aea7f9fef94b1b5ecdc8592575859b0b5" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>Cmd</name></member>
+      <member refid="class_game___base_interpreter_context_1afceb98cd2f1e559f0da86c25d77657ab" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CmdSetup</name></member>
+      <member refid="class_game___interpreter_1aea6e782fdc6d97e27eda2bc663ca458f" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandBreakLoop</name></member>
+      <member refid="class_game___interpreter_1a1f97f6cf5785e455142d175369a0f871" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandCallEvent</name></member>
+      <member refid="class_game___interpreter_1a54e166e9e6a2d3c1057577ebaebb1b5c" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeActorFace</name></member>
+      <member refid="class_game___interpreter_1a0a64d9ad41a9d843ba1c0568cbad1429" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeBattleCommands</name></member>
+      <member refid="class_game___interpreter_1a82ea4697b7d3424568eb30fc74620512" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeClass</name></member>
+      <member refid="class_game___interpreter_1a556e560089fbb2a38bc4df481e423d6e" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeCondition</name></member>
+      <member refid="class_game___interpreter_1a3111df9fe1022c674c824ac31418b84a" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeEncounterSteps</name></member>
+      <member refid="class_game___interpreter_1a910a208782cfbee724e6268ea581ca2b" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeEquipment</name></member>
+      <member refid="class_game___interpreter_1aa8fbc1982b549a099d37272232bb57d5" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeEscapeAccess</name></member>
+      <member refid="class_game___interpreter_1a1210cf181bd22b3787a8b283ce9ea574" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeEventLocation</name></member>
+      <member refid="class_game___interpreter_1a7a02a59594f95f28272551fd19e0fa66" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeExp</name></member>
+      <member refid="class_game___interpreter_1af3c2414c3a8c9e5418fa416b599ab1b2" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeFaceGraphic</name></member>
+      <member refid="class_game___interpreter_1aa136144c62e364f7d552718fe571d6ec" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeGold</name></member>
+      <member refid="class_game___interpreter_1a139cea5046c62ed0187e451e81034739" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeHeroName</name></member>
+      <member refid="class_game___interpreter_1a7ea9ee0622876dbf9476018e45f9d4ca" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeHeroTitle</name></member>
+      <member refid="class_game___interpreter_1a5bdd48109b6a4c1f4068563368229fd4" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeHP</name></member>
+      <member refid="class_game___interpreter_1acbc591f8cf96e98f2a747270a99ac6e8" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeItems</name></member>
+      <member refid="class_game___interpreter_1a955c948fa047df2c42c00c145cb84f02" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeLevel</name></member>
+      <member refid="class_game___interpreter_1a7dc5e67de02cf32192b3b7159ff302c0" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeMainMenuAccess</name></member>
+      <member refid="class_game___interpreter_1a96677a668844610c9c1bf7e2b2911202" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeMapTileset</name></member>
+      <member refid="class_game___interpreter_1a2d828c3ecd365d73be922fa6871e48f7" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeParameters</name></member>
+      <member refid="class_game___interpreter_1a1cfe8e4a84f997174fc059a5fe2a40d7" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangePartyMember</name></member>
+      <member refid="class_game___interpreter_1aa31cb770abec0baca5c7c75cbb9c46aa" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangePBG</name></member>
+      <member refid="class_game___interpreter_1ad9c51e6b81cdc92c68b77dbb95cc763f" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeSaveAccess</name></member>
+      <member refid="class_game___interpreter_1a67392323d0811f42fcf0f4d8e2a7a648" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeScreenTransitions</name></member>
+      <member refid="class_game___interpreter_1a0527ba8bea7232a7238502c9645615a9" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeSkills</name></member>
+      <member refid="class_game___interpreter_1a8ab1b772551d71a1d1fd803d5eebbb0e" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeSP</name></member>
+      <member refid="class_game___interpreter_1a9bcbe9f8dfbde2954528ef2c96a41b24" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeSpriteAssociation</name></member>
+      <member refid="class_game___interpreter_1af2b1453c14c6927a34eb0704b0b877be" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeSystemBGM</name></member>
+      <member refid="class_game___interpreter_1a206cf4081443a63fc0b8e56d4e4e2678" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeSystemGraphics</name></member>
+      <member refid="class_game___interpreter_1a8e7d3936858b93534aa51c7ca14fa3cf" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeSystemSFX</name></member>
+      <member refid="class_game___interpreter_1afb3b9c24d1d9892604848a36881dcf4b" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeTeleportAccess</name></member>
+      <member refid="class_game___interpreter_1a5ceb64f7967605f5fc95342e724e7195" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandChangeVehicleGraphic</name></member>
+      <member refid="class_game___interpreter_1affd4dc4765d7b548d29b7badf5c12684" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandComment</name></member>
+      <member refid="class_game___interpreter_1ae13843be47e13cd26012d10f34d1ea86" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandConditionalBranch</name></member>
+      <member refid="class_game___interpreter_1a08096287030e2ad775fea2821dfe280f" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandControlSwitches</name></member>
+      <member refid="class_game___interpreter_1aa4fddb4f523b90eff566d03cf377dfe0" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandControlVariables</name></member>
+      <member refid="class_game___interpreter_1a8806c892dacadea350990e12369b7a7e" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandEasyRpgCloneMapEvent</name></member>
+      <member refid="class_game___interpreter_1a221ea790132c7db90f698fb66a89a39b" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandEasyRpgDestroyMapEvent</name></member>
+      <member refid="class_game___interpreter_1a9465eed80bc4e00f35391fe20e9c3e2c" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandEasyRpgProcessJson</name></member>
+      <member refid="class_game___interpreter_1a25e88d2ed3b5f3ec6c04b7abc8a74162" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandEasyRpgSetInterpreterFlag</name></member>
+      <member refid="class_game___interpreter_1a391e8094d5b1ecf7b01a8446439b0261" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandElseBranch</name></member>
+      <member refid="class_game___interpreter_1af1249707724db420b67e82434cbdb501" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandEndBranch</name></member>
+      <member refid="class_game___interpreter_1a03fd3ba60c4efa3b3b1b0ee109bd560c" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandEndEventProcessing</name></member>
+      <member refid="class_game___interpreter_1ac92e0548b59b562d10139e51c1fd009b" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandEndLoop</name></member>
+      <member refid="class_game___interpreter_1a0bdea58e80b6b1a58bb93148acf48015" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandEraseEvent</name></member>
+      <member refid="class_game___interpreter_1aef46e2a14f0f309d84a635d6b35cb4dd" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandErasePicture</name></member>
+      <member refid="class_game___interpreter_1a52053c1f7bcf8b18503eea9f2227e100" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandEraseScreen</name></member>
+      <member refid="class_game___interpreter_1a858f215a1e0498b957f433a0dcd24b7e" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandEscapeTarget</name></member>
+      <member refid="class_game___interpreter_1a7f27aa3f0b83fa62ade332a53d2362a6" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandExitGame</name></member>
+      <member refid="class_game___interpreter_1a0e122aea419f106e7ee9b9eb11f8ed54" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandFadeOutBGM</name></member>
+      <member refid="class_game___interpreter_1a1644db312a42abb5434e75da22dd4038" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandFlashScreen</name></member>
+      <member refid="class_game___interpreter_1aed38ff5c5d9d82ccd426048c512c741c" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandFullHeal</name></member>
+      <member refid="class_game___interpreter_1abf809d236473a78f013c15aefe563019" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandGameOver</name></member>
+      <member refid="class_game___interpreter_1a72fb7e48ec9f72c700e6296704ee2f9a" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandInputNumber</name></member>
+      <member refid="class_game___interpreter_1aef0ec9b29c52204243e97aa5bc59edb4" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandJumpToLabel</name></member>
+      <member refid="class_game___interpreter_1ace395385facc5e269c9653ff213c957b" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandKeyInputProc</name></member>
+      <member refid="class_game___interpreter_1a9f979bd8fff4ab8803cd8b67be505566" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandLoop</name></member>
+      <member refid="class_game___interpreter_1ad1067bfd5059d216045b240994ba3548" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandManiacCallCommand</name></member>
+      <member refid="class_game___interpreter_1a2a660c9aed78d688d7d48fc7be321fd5" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandManiacChangePictureId</name></member>
+      <member refid="class_game___interpreter_1a361c06d1408e5a2ae5d93a2a69b1749d" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandManiacControlGlobalSave</name></member>
+      <member refid="class_game___interpreter_1ad3e8cd494101f7b29a064f1d56b74f66" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandManiacControlStrings</name></member>
+      <member refid="class_game___interpreter_1aa9143aad046d1ab32b2129f292ed9cae" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandManiacControlVarArray</name></member>
+      <member refid="class_game___interpreter_1af2db51a5a00e41deb20b80517dd4b383" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandManiacEndLoadProcess</name></member>
+      <member refid="class_game___interpreter_1a23c2e20cad7341f70d90b18370452c02" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandManiacGetGameInfo</name></member>
+      <member refid="class_game___interpreter_1aa1761126912bfb6f7822ebec609a774a" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandManiacGetMousePosition</name></member>
+      <member refid="class_game___interpreter_1ae53830043a3dfaca312032c9d2d404d4" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandManiacGetPictureInfo</name></member>
+      <member refid="class_game___interpreter_1a1bf80ea23a7a4a529a537dc2e2f7096f" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandManiacGetSaveInfo</name></member>
+      <member refid="class_game___interpreter_1aeb6bc9803e68c08f360134a8ea5fbf0f" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandManiacKeyInputProcEx</name></member>
+      <member refid="class_game___interpreter_1ad4bb3a00a22100d223eca8c3de84d9ca" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandManiacLoad</name></member>
+      <member refid="class_game___interpreter_1a92ea3bfd697bb9453837dc07b0c208f2" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandManiacRewriteMap</name></member>
+      <member refid="class_game___interpreter_1afff479239f7a43d357607d81a6b6df65" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandManiacSave</name></member>
+      <member refid="class_game___interpreter_1ab43e8d5fe92ac43743926b38cc0e21fc" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandManiacSetGameOption</name></member>
+      <member refid="class_game___interpreter_1af65b35fd3c3496bb1c7dff161d4fb2af" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandManiacSetMousePosition</name></member>
+      <member refid="class_game___interpreter_1abb22dfedf589fa3401cfe6b5709041cf" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandManiacShowStringPicture</name></member>
+      <member refid="class_game___interpreter_1ac50794c5ba7d2f114bcf82f31af013e7" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandMemorizeBGM</name></member>
+      <member refid="class_game___interpreter_1a09a02aa1f0b197c002b90f75b70f53bd" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandMemorizeLocation</name></member>
+      <member refid="class_game___interpreter_1aa65e74b9eff25544536c5d5efbf03b3b" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandMessageOptions</name></member>
+      <member refid="class_game___interpreter_1a44a06cf772b0186f9652f0386b8163c9" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandMoveEvent</name></member>
+      <member refid="class_game___interpreter_1a0dd5fbdb7fcc80c81a8b1b643ad111c0" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandMovePicture</name></member>
+      <member refid="class_game___interpreter_1afd62cf348f7c0b70ace064b1217fc834" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandOpenVideoOptions</name></member>
+      <member refid="class_game___interpreter_1aac95bb5ff9f62f0e56077489a89e3086" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandOptionGeneric</name></member>
+      <member refid="class_game___interpreter_1aef706a164426cf429dda84a40111162b" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandPlayBGM</name></member>
+      <member refid="class_game___interpreter_1a9c8be3dec58a83e5708d317fe6f3595f" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandPlayerVisibility</name></member>
+      <member refid="class_game___interpreter_1ad6631dfade1d5bfe42fc1461bd4f3906" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandPlayMemorizedBGM</name></member>
+      <member refid="class_game___interpreter_1a4f3b4631b03b2b06a351e7c5713727dd" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandPlaySound</name></member>
+      <member refid="class_game___interpreter_1aab75cb8ff04587bd24c368f8ee667bf3" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandReturnToTitleScreen</name></member>
+      <member refid="class_game___interpreter_1a30bed17b20ea82e45576a957f9186691" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandSetVehicleLocation</name></member>
+      <member refid="class_game___interpreter_1ac186926f7a8a992d24d2dbf5fa8886e5" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandShakeScreen</name></member>
+      <member refid="class_game___interpreter_1a04b2643b0991c8f7f1b1dc0837f0d070" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandShowChoiceEnd</name></member>
+      <member refid="class_game___interpreter_1a27b0041f52c00cab9237c8bad3b4ffa1" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandShowChoiceOption</name></member>
+      <member refid="class_game___interpreter_1aafa884fd3f363f047a485644a15e71c3" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandShowChoices</name></member>
+      <member refid="class_game___interpreter_1a9b30ac0715ca464cc5430d6909333f73" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandShowMessage</name></member>
+      <member refid="class_game___interpreter_1a933490867ec6a274e8ba683a220ca1e4" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandShowPicture</name></member>
+      <member refid="class_game___interpreter_1aa53b992812260b38353b88451c953370" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandShowScreen</name></member>
+      <member refid="class_game___interpreter_1aa29789c2cf760b67b06886fdfa543194" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandSimulatedAttack</name></member>
+      <member refid="class_game___interpreter_1a143995bfabe52cd36b3f2f1dcaafa006" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandStoreEventID</name></member>
+      <member refid="class_game___interpreter_1a29cda1bcfd93b7e3fdb5b0218227eb7c" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandStoreTerrainID</name></member>
+      <member refid="class_game___interpreter_1a0e8f297e918b0a66b4d36f8154453226" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandTeleportTargets</name></member>
+      <member refid="class_game___interpreter_1a5744617f17714da02aad5d73168c5f03" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandTileSubstitution</name></member>
+      <member refid="class_game___interpreter_1ad2547fa74ea9f14c8d7d0ee0dc5ada73" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandTimerOperation</name></member>
+      <member refid="class_game___interpreter_1aff9b77e92a751baafb9fcda76f127af2" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandTintScreen</name></member>
+      <member refid="class_game___interpreter_1a67f189836ffd272fa410cdea6f85ae32" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandToggleFullscreen</name></member>
+      <member refid="class_game___interpreter_1a3bc149bafb32e75c06c0700be4eea9df" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandTradeEventLocations</name></member>
+      <member refid="class_game___interpreter_1a0761e0a5f97e11445bc2efa3afbe5f99" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandWait</name></member>
+      <member refid="class_game___interpreter_1acb353c32a5382180bd8abf48606527c8" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>CommandWeatherEffects</name></member>
+      <member refid="class_game___base_interpreter_context_1a1a41c3fde574ddf2c9b7fae7c9e81214" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>DecodeTargetEvaluationMode</name></member>
+      <member refid="class_game___interpreter_1ab6def7f0eee05ab01c32384b9225ae56" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>EndEventProcessing</name></member>
+      <member refid="class_game___interpreter_1a5e5f373b9753e227c44ba49002ba580d" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>ExecuteCommand</name></member>
+      <member refid="class_game___interpreter_1a404a2a8e0c9168bab3bf63290cb6ebd6" prot="public" virt="virtual"><scope>Game_Interpreter</scope><name>ExecuteCommand</name></member>
+      <member refid="class_game___interpreter_1aa0a5a5f24aad210a07e0e8ab6a395da6" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>ForegroundTextPush</name></member>
+      <member refid="class_game___interpreter_1a4c645dbae42426e39905c2a9c9e5a7f8" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>Game_Interpreter</name></member>
+      <member refid="class_game___interpreter_1afbeba0273309b6f44ffc06b8b1773c13" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>GetActors</name></member>
+      <member refid="class_game___interpreter_1aa02ed61c936fab916281d940a7240555" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>GetAsyncOp</name></member>
+      <member refid="class_game___interpreter_1a7d1705d3b6f9cd6c2bca2a9f0269b2b2" prot="public" virt="virtual"><scope>Game_Interpreter</scope><name>GetCharacter</name></member>
+      <member refid="class_game___interpreter_1ab55246e3bbb783b838b66393f112510c" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>GetChoices</name></member>
+      <member refid="class_game___interpreter_1a510e6bc02f4d23cf2ff249986eab1e42" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>GetCurrentEventId</name></member>
+      <member refid="class_game___interpreter_1a46615f6ad530e53b6e9e978d3e42b711" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>GetForegroundInterpreter</name></member>
+      <member refid="class_game___interpreter_1a44b03a0b5ea2f0b298fa259d7f05c135" prot="protected" virt="virtual"><scope>Game_Interpreter</scope><name>GetFrame</name></member>
+      <member refid="class_game___interpreter_1aeec408fa8ec452ae435f106c173c6ef2" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>GetFrame</name></member>
+      <member refid="class_game___interpreter_1ad3d7d9952b6e30d52d82f5db9e5f20b9" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>GetFramePtr</name></member>
+      <member refid="class_game___interpreter_1a169d5fe70d4fd80cbc3c70c7043f57c6" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>GetFramePtr</name></member>
+      <member refid="class_game___interpreter_1a9c13628cf24867629e5b16be6dbb184b" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>GetLoopCount</name></member>
+      <member refid="class_game___interpreter_1ae47c48ecd454382620dc232c1e404acd" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>GetOriginalEventId</name></member>
+      <member refid="class_game___base_interpreter_context_1a10142f54bf1363ba3b88a4d00944ef03" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>GetRuntimeFlag</name></member>
+      <member refid="class_game___interpreter_1ad6409258d697149e11675e6bd34eab21" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>GetSaveState</name></member>
+      <member refid="class_game___interpreter_1a2f98f13b6209d7586523f9242a58f90e" prot="public" virt="virtual"><scope>Game_Interpreter</scope><name>GetState</name></member>
+      <member refid="class_game___interpreter_1a36663bc6fab30c291525f0befb8ffa45" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>GetSubcommandIndex</name></member>
+      <member refid="class_game___interpreter_1ae32a9cf670563f96f7aedb46aa148314" prot="public" virt="virtual"><scope>Game_Interpreter</scope><name>GetThisEventId</name></member>
+      <member refid="class_game___interpreter_1a98ec0b440ee7f4a8fd1f85a3d8188420" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>HandleDestinyScript</name></member>
+      <member refid="class_game___interpreter_1a921b0e92b396e6f4ab9c4df07a99cd52" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>HandleDynRpgScript</name></member>
+      <member refid="class_game___interpreter_1a552bf737962441e203dfbb9946311205" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>InputButton</name></member>
+      <member refid="class_game___interpreter_1ac3d796cc8e189d2e4c077e30eab83912" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>IsAsyncPending</name></member>
+      <member refid="class_game___interpreter_1a82b55341ba75ad2e7b50962d9c26f7a9" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>IsRunning</name></member>
+      <member refid="class_game___interpreter_1ada596083e5275d71f31a1478ff97d64d" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>IsWaitingForWaitCommand</name></member>
+      <member refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2b" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>Keys</name></member>
+      <member refid="class_game___interpreter_1a75cffc20d4e33642025d4ac8ca160cb4" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>loop_count</name></member>
+      <member refid="class_game___interpreter_1a8f958b6593872b03b63822e26a2bac04" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>loop_limit</name></member>
+      <member refid="class_game___interpreter_1a0d60a7ac16ae14132bf5aabbc70c4f66" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>main_flag</name></member>
+      <member refid="class_game___interpreter_1a96bd7e1677520378961da5d7f4d44a05" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>ManiacBitmask</name></member>
+      <member refid="class_game___base_interpreter_context_1a61f153febc72e303b78c27f8eb05dba4" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>MemFnCls</name></member>
+      <member refid="class_game___interpreter_1a7d943704fa0d7c3e5347835280c11152" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>OnFinishStackFrame</name></member>
+      <member refid="class_game___interpreter_1af72c7ae119c80a0cb9531bee91a5a405" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>OperateValue</name></member>
+      <member refid="class_game___interpreter_1ab78318b453ffa99de7c32dfbc53c398d" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>Push</name></member>
+      <member refid="class_game___interpreter_1acdc900abd221a593c39a37dcf6478c4e" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>Push</name></member>
+      <member refid="class_game___interpreter_1a16ebf104311a696f06119e72120df54d" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>Push</name></member>
+      <member refid="class_game___interpreter_1aac06dd5e551aa3f4f04d1807542f4da7" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>Push</name></member>
+      <member refid="class_game___interpreter_1a6b8ee36d4d28188dc32d442c0127b225" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>ReachedLoopLimit</name></member>
+      <member refid="class_game___interpreter_1a1dcc1d4ed876edb7f9b2a4636e19f80c" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>request_id</name></member>
+      <member refid="class_game___interpreter_1a4f59bbf6b9b3aaa20ed4087861ec1c53" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>ReserveSubcommandIndex</name></member>
+      <member refid="class_game___interpreter_1ae60e888f01e861f90c85fcb73dca975f" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>Scene_Debug</name></member>
+      <member refid="class_game___interpreter_1ad37fd70718341354915dd6458a021938" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>SetSubcommandIndex</name></member>
+      <member refid="class_game___interpreter_1ad9538a0312c8c31dc4178d85f6994b01" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>SetupChoices</name></member>
+      <member refid="class_game___interpreter_1ad8db1b97275ec751f917fcc9a1c5c380" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>SetupWait</name></member>
+      <member refid="class_game___interpreter_1a09545f2c15e77005b8c8cbd6eb47d8a1" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>SetupWaitFrames</name></member>
+      <member refid="class_game___interpreter_1a74e1af3920f25836c69e70f3bbdd9c46" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>SkipToNextConditional</name></member>
+      <member refid="class_game___interpreter_1aaf7594be12e356b1bc052e310239c8f1" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>subcommand_sentinel</name></member>
+      <member refid="class_game___interpreter_1a87469ff80e344b9ce9daa4c75f103fc3" prot="public" virt="non-virtual"><scope>Game_Interpreter</scope><name>Update</name></member>
+      <member refid="class_game___base_interpreter_context_1a48d3d7b4929dd127af559e2a924aa19f" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>ValueOrVariable</name></member>
+      <member refid="class_game___base_interpreter_context_1a53974070e68b2083235aaac836526c54" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>ValueOrVariableBitfield</name></member>
+      <member refid="class_game___base_interpreter_context_1a07cd3d4bd8419c2fbe6ae2ad33eae3cf" prot="protected" virt="non-virtual"><scope>Game_Interpreter</scope><name>ValueOrVariableBitfield</name></member>
+      <member refid="class_game___base_interpreter_context_1af5a2804abcfd66518de598fa8bb297df" prot="public" virt="virtual"><scope>Game_Interpreter</scope><name>~Game_BaseInterpreterContext</name></member>
+      <member refid="class_game___interpreter_1a4dd38d34146fe09a7e2bcc8aae8309b6" prot="public" virt="virtual"><scope>Game_Interpreter</scope><name>~Game_Interpreter</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

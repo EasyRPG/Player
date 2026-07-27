@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1ios_1_1attachment" kind="class" language="C++" prot="public">
+    <compoundname>leasy::ios::attachment</compoundname>
+    <includes refid="lio_8hpp" local="no">lio.hpp</includes>
+    <sectiondef kind="friend">
+      <memberdef kind="friend" id="classleasy_1_1ios_1_1attachment_1a4cc6de7554512d923e180085bb97fa94" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>class</type>
+        <definition>friend class channel</definition>
+        <argsstring></argsstring>
+        <name>channel</name>
+        <qualifiedname>leasy::ios::attachment::channel</qualifiedname>
+        <param>
+          <type>channel</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="177" column="16" bodyfile="leasy/lio.hpp" bodystart="177" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1attachment_1a305eb25917467f21a8db3f8d6afc3e56" prot="private" static="no" mutable="no">
+        <type><ref refid="classleasy_1_1ios_1_1attachment_1a4cc6de7554512d923e180085bb97fa94" kindref="member">channel</ref> *</type>
+        <definition>channel* leasy::ios::attachment::owner_</definition>
+        <argsstring></argsstring>
+        <name>owner_</name>
+        <qualifiedname>leasy::ios::attachment::owner_</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="214" column="25" bodyfile="leasy/lio.hpp" bodystart="214" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1attachment_1aa948056fcfa22c4864b2966fcfa6f546" prot="private" static="no" mutable="no">
+        <type>std::shared_ptr&lt; <ref refid="classleasy_1_1ios_1_1sink" kindref="compound">sink</ref> &gt;</type>
+        <definition>std::shared_ptr&lt;sink&gt; leasy::ios::attachment::sink_</definition>
+        <argsstring></argsstring>
+        <name>sink_</name>
+        <qualifiedname>leasy::ios::attachment::sink_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="215" column="20" bodyfile="leasy/lio.hpp" bodystart="215" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1ios_1_1attachment_1ab553bbcec058c2aaae00201ea726d558" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ios::attachment::attachment</definition>
+        <argsstring>()=default</argsstring>
+        <name>attachment</name>
+        <qualifiedname>leasy::ios::attachment::attachment</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="179" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1attachment_1a3bf77245495e9c7ab19a14fc3f3d90e1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ios::attachment::attachment</definition>
+        <argsstring>(const attachment &amp;)=delete</argsstring>
+        <name>attachment</name>
+        <qualifiedname>leasy::ios::attachment::attachment</qualifiedname>
+        <param>
+          <type>const attachment &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="181" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1attachment_1a87dd7a72f583620f5745c8c98e569cb4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classleasy_1_1ios_1_1attachment_1ab553bbcec058c2aaae00201ea726d558" kindref="member">attachment</ref> &amp;</type>
+        <definition>attachment &amp; leasy::ios::attachment::operator=</definition>
+        <argsstring>(const attachment &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>leasy::ios::attachment::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="classleasy_1_1ios_1_1attachment_1ab553bbcec058c2aaae00201ea726d558" kindref="member">attachment</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="182" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1attachment_1ac08ac10e415784169295db5e2e555752" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ios::attachment::attachment</definition>
+        <argsstring>(attachment &amp;&amp;other) noexcept</argsstring>
+        <name>attachment</name>
+        <qualifiedname>leasy::ios::attachment::attachment</qualifiedname>
+        <param>
+          <type>attachment &amp;&amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="184" column="10" bodyfile="leasy/lio.hpp" bodystart="184" bodyend="188"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1attachment_1aa088344372b5599fd94f037c35679fae" prot="public" static="no" const="no" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <type><ref refid="classleasy_1_1ios_1_1attachment_1ab553bbcec058c2aaae00201ea726d558" kindref="member">attachment</ref> &amp;</type>
+        <definition>attachment &amp; leasy::ios::attachment::operator=</definition>
+        <argsstring>(attachment &amp;&amp;other) noexcept</argsstring>
+        <name>operator=</name>
+        <qualifiedname>leasy::ios::attachment::operator=</qualifiedname>
+        <param>
+          <type><ref refid="classleasy_1_1ios_1_1attachment_1ab553bbcec058c2aaae00201ea726d558" kindref="member">attachment</ref> &amp;&amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="190" column="21" bodyfile="leasy/lio.hpp" bodystart="190" bodyend="198"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1attachment_1ae8a3ac0e2adc1fe2b030aa26e7c32ed7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ios::attachment::~attachment</definition>
+        <argsstring>()</argsstring>
+        <name>~attachment</name>
+        <qualifiedname>leasy::ios::attachment::~attachment</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="200" column="10" bodyfile="leasy/lio.hpp" bodystart="200" bodyend="202"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1attachment_1a2ef6c29dc0477e62e28314825fcebd32" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ios::attachment::disconnect</definition>
+        <argsstring>()</argsstring>
+        <name>disconnect</name>
+        <qualifiedname>leasy::ios::attachment::disconnect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="204" column="15" bodyfile="leasy/lio.hpp" bodystart="359" bodyend="365"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1attachment_1a5fa33bd3ab3130734dcf2071a12b713d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool leasy::ios::attachment::connected</definition>
+        <argsstring>() const</argsstring>
+        <name>connected</name>
+        <qualifiedname>leasy::ios::attachment::connected</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="206" column="15" bodyfile="leasy/lio.hpp" bodystart="206" bodyend="208"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classleasy_1_1ios_1_1attachment_1afa5a8b6da12b528cb95273721a3f4af2" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ios::attachment::attachment</definition>
+        <argsstring>(channel *owner, std::shared_ptr&lt; sink &gt; sink)</argsstring>
+        <name>attachment</name>
+        <qualifiedname>leasy::ios::attachment::attachment</qualifiedname>
+        <param>
+          <type><ref refid="classleasy_1_1ios_1_1attachment_1a4cc6de7554512d923e180085bb97fa94" kindref="member">channel</ref> *</type>
+          <declname>owner</declname>
+        </param>
+        <param>
+          <type>std::shared_ptr&lt; <ref refid="classleasy_1_1ios_1_1sink" kindref="compound">sink</ref> &gt;</type>
+          <declname>sink</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="211" column="10" bodyfile="leasy/lio.hpp" bodystart="211" bodyend="212"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/lio.hpp" line="176" column="1" bodyfile="leasy/lio.hpp" bodystart="176" bodyend="216"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1ios_1_1attachment_1ab553bbcec058c2aaae00201ea726d558" prot="public" virt="non-virtual"><scope>leasy::ios::attachment</scope><name>attachment</name></member>
+      <member refid="classleasy_1_1ios_1_1attachment_1a3bf77245495e9c7ab19a14fc3f3d90e1" prot="public" virt="non-virtual"><scope>leasy::ios::attachment</scope><name>attachment</name></member>
+      <member refid="classleasy_1_1ios_1_1attachment_1ac08ac10e415784169295db5e2e555752" prot="public" virt="non-virtual"><scope>leasy::ios::attachment</scope><name>attachment</name></member>
+      <member refid="classleasy_1_1ios_1_1attachment_1afa5a8b6da12b528cb95273721a3f4af2" prot="private" virt="non-virtual"><scope>leasy::ios::attachment</scope><name>attachment</name></member>
+      <member refid="classleasy_1_1ios_1_1attachment_1a4cc6de7554512d923e180085bb97fa94" prot="private" virt="non-virtual"><scope>leasy::ios::attachment</scope><name>channel</name></member>
+      <member refid="classleasy_1_1ios_1_1attachment_1a5fa33bd3ab3130734dcf2071a12b713d" prot="public" virt="non-virtual"><scope>leasy::ios::attachment</scope><name>connected</name></member>
+      <member refid="classleasy_1_1ios_1_1attachment_1a2ef6c29dc0477e62e28314825fcebd32" prot="public" virt="non-virtual"><scope>leasy::ios::attachment</scope><name>disconnect</name></member>
+      <member refid="classleasy_1_1ios_1_1attachment_1a87dd7a72f583620f5745c8c98e569cb4" prot="public" virt="non-virtual"><scope>leasy::ios::attachment</scope><name>operator=</name></member>
+      <member refid="classleasy_1_1ios_1_1attachment_1aa088344372b5599fd94f037c35679fae" prot="public" virt="non-virtual"><scope>leasy::ios::attachment</scope><name>operator=</name></member>
+      <member refid="classleasy_1_1ios_1_1attachment_1a305eb25917467f21a8db3f8d6afc3e56" prot="private" virt="non-virtual"><scope>leasy::ios::attachment</scope><name>owner_</name></member>
+      <member refid="classleasy_1_1ios_1_1attachment_1aa948056fcfa22c4864b2966fcfa6f546" prot="private" virt="non-virtual"><scope>leasy::ios::attachment</scope><name>sink_</name></member>
+      <member refid="classleasy_1_1ios_1_1attachment_1ae8a3ac0e2adc1fe2b030aa26e7c32ed7" prot="public" virt="non-virtual"><scope>leasy::ios::attachment</scope><name>~attachment</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,3159 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_game___map" kind="namespace" language="C++">
+    <compoundname>Game_Map</compoundname>
+    <innernamespace refid="namespace_game___map_1_1_caching">Game_Map::Caching</innernamespace>
+    <innernamespace refid="namespace_game___map_1_1_parallax">Game_Map::Parallax</innernamespace>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_game___map_1a584d9272793180dacd95cb0421cada90" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::SetupCommon</definition>
+        <argsstring>()</argsstring>
+        <name>SetupCommon</name>
+        <qualifiedname>Game_Map::SetupCommon</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.cpp" line="104" column="6" bodyfile="game_map.cpp" bodystart="382" bodyend="400" declfile="game_map.cpp" declline="104" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a6b0e067620f3f99ffa00376ad4f79294" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Init</definition>
+        <argsstring>()</argsstring>
+        <name>Init</name>
+        <qualifiedname>Game_Map::Init</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initialize <ref refid="namespace_game___map" kindref="compound">Game_Map</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="85" column="6" bodyfile="game_map.cpp" bodystart="113" bodyend="130" declfile="game_map.h" declline="85" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ac905eacbb6a4e3fb6f4b31901890736f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::InitCommonEvents</definition>
+        <argsstring>()</argsstring>
+        <name>InitCommonEvents</name>
+        <qualifiedname>Game_Map::InitCommonEvents</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initialized Common Events. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="90" column="6" bodyfile="game_map.cpp" bodystart="132" bodyend="139" declfile="game_map.h" declline="90" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ab28a94eed3790a504adf0a94a9174702" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Quit</definition>
+        <argsstring>()</argsstring>
+        <name>Quit</name>
+        <qualifiedname>Game_Map::Quit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Quits (frees) <ref refid="namespace_game___map" kindref="compound">Game_Map</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="95" column="6" bodyfile="game_map.cpp" bodystart="148" bodyend="154" declfile="game_map.h" declline="95" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a1c1e22cf5435734e79694dfff0c71446" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Dispose</definition>
+        <argsstring>()</argsstring>
+        <name>Dispose</name>
+        <qualifiedname>Game_Map::Dispose</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Disposes <ref refid="namespace_game___map" kindref="compound">Game_Map</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="98" column="6" bodyfile="game_map.cpp" bodystart="141" bodyend="146" declfile="game_map.h" declline="98" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a4ce325e163a74d199ab1a27bb21407ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::CloneMapEvent</definition>
+        <argsstring>(int src_map_id, int src_event_id, int target_x, int target_y, int target_event_id, std::string_view target_name)</argsstring>
+        <name>CloneMapEvent</name>
+        <qualifiedname>Game_Map::CloneMapEvent</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>src_map_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>src_event_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>target_x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>target_y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>target_event_id</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>target_name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Clones a map event.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>src_map_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Source map where to clone the event from </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src_event_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Source event ID to clone </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target_x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Where to place the new event (X coordinate) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target_y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Where to place the new event (Y coordinate) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target_event_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>New event ID. When &lt;= 0 a free ID is selected. When the ID exists the event is overwritten. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target_name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>New name of the event. When empty the original name is used. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the cloning was successful. It will fail when source map or the src/target event do not exist. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="111" column="6" bodyfile="game_map.cpp" bodystart="448" bodyend="514" declfile="game_map.h" declline="111" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a56e5b666761794bf42043a01457b40d6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::DestroyMapEvent</definition>
+        <argsstring>(const int event_id, bool from_clone=false)</argsstring>
+        <name>DestroyMapEvent</name>
+        <qualifiedname>Game_Map::DestroyMapEvent</qualifiedname>
+        <param>
+          <type>const int</type>
+          <declname>event_id</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>from_clone</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Deletes a map event.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>event_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Event ID to delete </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>from_clone</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>When true this function was invoked by CloneMapEvent. This silences warnings and skips refreshes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the event was deleted. This will fail when the event does not exist. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="120" column="6" bodyfile="game_map.cpp" bodystart="516" bodyend="559" declfile="game_map.h" declline="120" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a7682dde07bba54160d0042a571a407cc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::TranslateMapMessages</definition>
+        <argsstring>(int mapId, lcf::rpg::Map &amp;map)</argsstring>
+        <name>TranslateMapMessages</name>
+        <qualifiedname>Game_Map::TranslateMapMessages</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>mapId</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::Map &amp;</type>
+          <declname>map</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="122" column="6" bodyfile="game_map.cpp" bodystart="561" bodyend="565" declfile="game_map.h" declline="122" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a8c1164208efa2a2f6556c42ae1905be7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::CreateMapEvents</definition>
+        <argsstring>()</argsstring>
+        <name>CreateMapEvents</name>
+        <qualifiedname>Game_Map::CreateMapEvents</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="123" column="6" bodyfile="game_map.cpp" bodystart="402" bodyend="408" declfile="game_map.h" declline="123" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a297484e7cfc284904610f0397450872f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::UpdateUnderlyingEventReferences</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateUnderlyingEventReferences</name>
+        <qualifiedname>Game_Map::UpdateUnderlyingEventReferences</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="124" column="6" bodyfile="game_map.cpp" bodystart="568" bodyend="576" declfile="game_map.h" declline="124" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ac14da91d32790f8623edffae1ee0b8a7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::AddEventToCache</definition>
+        <argsstring>(const lcf::rpg::Event &amp;ev)</argsstring>
+        <name>AddEventToCache</name>
+        <qualifiedname>Game_Map::AddEventToCache</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Event &amp;</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="125" column="6" bodyfile="game_map.cpp" bodystart="410" bodyend="424" declfile="game_map.h" declline="125" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a7652bca0e231885793fa2eb053ec1cb9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::RemoveEventFromCache</definition>
+        <argsstring>(const lcf::rpg::Event &amp;ev)</argsstring>
+        <name>RemoveEventFromCache</name>
+        <qualifiedname>Game_Map::RemoveEventFromCache</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Event &amp;</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="126" column="6" bodyfile="game_map.cpp" bodystart="426" bodyend="440" declfile="game_map.h" declline="126" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a8d9969dae13c85850fa1acd9ca8d9519" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const lcf::rpg::Event *</type>
+        <definition>const lcf::rpg::Event * Game_Map::FindEventById</definition>
+        <argsstring>(const std::vector&lt; lcf::rpg::Event &gt; &amp;events, int event_id)</argsstring>
+        <name>FindEventById</name>
+        <qualifiedname>Game_Map::FindEventById</qualifiedname>
+        <param>
+          <type>const std::vector&lt; lcf::rpg::Event &gt; &amp;</type>
+          <declname>events</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>event_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="127" column="23" bodyfile="game_map.cpp" bodystart="578" bodyend="585" declfile="game_map.h" declline="127" declcolumn="23"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1af365ab80a269e3de2d4033fae6bbf885" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetNextAvailableEventId</definition>
+        <argsstring>()</argsstring>
+        <name>GetNextAvailableEventId</name>
+        <qualifiedname>Game_Map::GetNextAvailableEventId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="128" column="5" bodyfile="game_map.cpp" bodystart="587" bodyend="589" declfile="game_map.h" declline="128" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a3fd74fb41d73a5711d6b1b3c50ec611e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unique_ptr&lt; lcf::rpg::Map &gt;</type>
+        <definition>std::unique_ptr&lt; lcf::rpg::Map &gt; Game_Map::LoadMapFile</definition>
+        <argsstring>(int map_id)</argsstring>
+        <name>LoadMapFile</name>
+        <qualifiedname>Game_Map::LoadMapFile</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>map_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Loads the map from disk</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the id of the map to load </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the map, or nullptr if it couldn&apos;t be loaded </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="136" column="17" bodyfile="game_map.cpp" bodystart="333" bodyend="380" declfile="game_map.h" declline="136" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1af87b5ad6b5a23540c81428a56dab9d8d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Setup</definition>
+        <argsstring>(std::unique_ptr&lt; lcf::rpg::Map &gt; map)</argsstring>
+        <name>Setup</name>
+        <qualifiedname>Game_Map::Setup</qualifiedname>
+        <param>
+          <type>std::unique_ptr&lt; lcf::rpg::Map &gt;</type>
+          <declname>map</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Setups a new map.</para>
+<para><simplesect kind="pre"><para><ref refid="namespace_main___data_1aec95cb7effa69078c1aa6af2bde13632" kindref="member">Main_Data::game_player</ref>-&gt;<ref refid="namespace_game___map_1aba8fa8714eb265f2136427344e659135" kindref="member">GetMapId()</ref> reflects the new map. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="143" column="6" bodyfile="game_map.cpp" bodystart="162" bodyend="222" declfile="game_map.h" declline="143" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1aa066f5a9152bc4a6ae9a06a22cf3e35a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::SetupFromSave</definition>
+        <argsstring>(std::unique_ptr&lt; lcf::rpg::Map &gt; map, lcf::rpg::SaveMapInfo save_map, lcf::rpg::SaveVehicleLocation save_boat, lcf::rpg::SaveVehicleLocation save_ship, lcf::rpg::SaveVehicleLocation save_airship, lcf::rpg::SaveEventExecState save_fg_exec, lcf::rpg::SavePanorama save_pan, std::vector&lt; lcf::rpg::SaveCommonEvent &gt; save_ce)</argsstring>
+        <name>SetupFromSave</name>
+        <qualifiedname>Game_Map::SetupFromSave</qualifiedname>
+        <param>
+          <type>std::unique_ptr&lt; lcf::rpg::Map &gt;</type>
+          <declname>map</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::SaveMapInfo</type>
+          <declname>save_map</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::SaveVehicleLocation</type>
+          <declname>save_boat</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::SaveVehicleLocation</type>
+          <declname>save_ship</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::SaveVehicleLocation</type>
+          <declname>save_airship</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::SaveEventExecState</type>
+          <declname>save_fg_exec</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::SavePanorama</type>
+          <declname>save_pan</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; lcf::rpg::SaveCommonEvent &gt;</type>
+          <declname>save_ce</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Setups a map from a savegame.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The map data </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>save_map</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The map state </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>save_boat</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The boat state </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>save_ship</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The ship state </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>save_airship</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The airship state </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>save_fg_exec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The foreground interpreter state </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>save_pan</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The panorama state </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>save_ce</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- The common event state </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="157" column="6" bodyfile="game_map.cpp" bodystart="224" bodyend="331" declfile="game_map.h" declline="157" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1af9ac6ad1ab66b2d6e5a5f9b059c69109" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::PrepareSave</definition>
+        <argsstring>(lcf::rpg::Save &amp;save)</argsstring>
+        <name>PrepareSave</name>
+        <qualifiedname>Game_Map::PrepareSave</qualifiedname>
+        <param>
+          <type>lcf::rpg::Save &amp;</type>
+          <declname>save</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Copies event data into lcf::rpg::Save data.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>save</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- save data to populate. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="172" column="6" bodyfile="game_map.cpp" bodystart="591" bodyend="624" declfile="game_map.h" declline="172" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ab9a74bcdea6f61ac5e4053ef32ee4798" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::PlayBgm</definition>
+        <argsstring>()</argsstring>
+        <name>PlayBgm</name>
+        <qualifiedname>Game_Map::PlayBgm</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Runs map. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="177" column="6" bodyfile="game_map.cpp" bodystart="626" bodyend="643" declfile="game_map.h" declline="177" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a14348915c999196588b888d503b45c37" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Refresh</definition>
+        <argsstring>()</argsstring>
+        <name>Refresh</name>
+        <qualifiedname>Game_Map::Refresh</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Refreshes the map. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="182" column="6" bodyfile="game_map.cpp" bodystart="649" bodyend="657" declfile="game_map.h" declline="182" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a506621b314e50e73069e5fee02d913bf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::OnContinueFromBattle</definition>
+        <argsstring>()</argsstring>
+        <name>OnContinueFromBattle</name>
+        <qualifiedname>Game_Map::OnContinueFromBattle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Actions to perform after finishing a battle </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="185" column="6" bodyfile="game_map.cpp" bodystart="107" bodyend="109" declfile="game_map.h" declline="185" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a1134d3d00ccbd2d5746a87b110f86b12" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Scroll</definition>
+        <argsstring>(int dx, int dy)</argsstring>
+        <name>Scroll</name>
+        <qualifiedname>Game_Map::Scroll</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>dx</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Scrolls the map view in the given directions.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>amount to scroll along x-axis in 1/16th pixels </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>amount to scroll along x-axis in 1/16th pixels </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="193" column="6" bodyfile="game_map.cpp" bodystart="664" bodyend="681" declfile="game_map.h" declline="193" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a8bc7a5d01bde2486108cfd04c614db11" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::AddScreenX</definition>
+        <argsstring>(int &amp;screen_x, int &amp;inc)</argsstring>
+        <name>AddScreenX</name>
+        <qualifiedname>Game_Map::AddScreenX</qualifiedname>
+        <param>
+          <type>int &amp;</type>
+          <declname>screen_x</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>inc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adds inc, a distance in sixteenths of a pixel, to screen_x, the x-position of a screen. The sum is clamped (for non-looping maps) and wrapped (for looping maps) to fit in the map range. If the sum is clamped, inc is updated to be actual amount that it changed by. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="202" column="6" bodyfile="game_map.cpp" bodystart="694" bodyend="701" declfile="game_map.h" declline="202" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ac706658e30b6fd2716558ed9a4c4e208" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::AddScreenY</definition>
+        <argsstring>(int &amp;screen_y, int &amp;inc)</argsstring>
+        <name>AddScreenY</name>
+        <qualifiedname>Game_Map::AddScreenY</qualifiedname>
+        <param>
+          <type>int &amp;</type>
+          <declname>screen_y</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>inc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Same as AddScreenX, but for the Y-direction. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="205" column="6" bodyfile="game_map.cpp" bodystart="703" bodyend="710" declfile="game_map.h" declline="205" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ab410be7e70209e56e6a7e37ab8a2bb03" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::IsValid</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>IsValid</name>
+        <qualifiedname>Game_Map::IsValid</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if a tile coordinate is valid.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile y. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether is valid. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="214" column="6" bodyfile="game_map.cpp" bodystart="712" bodyend="714" declfile="game_map.h" declline="214" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a25dc19711261eca40662b234aa380ef7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::MakeWay</definition>
+        <argsstring>(const Game_Character &amp;self, int from_x, int from_y, int to_x, int to_y)</argsstring>
+        <name>MakeWay</name>
+        <qualifiedname>Game_Map::MakeWay</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___character" kindref="compound">Game_Character</ref> &amp;</type>
+          <declname>self</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>from_x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>from_y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>to_x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>to_y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Clears the way for a move by self to (x,y). Any events that block the way are updated early to give them a chance to move out of the way.</para>
+<para>Returns true if move is possible.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>self</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Character to move. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>from_x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>from tile x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>from_y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>from tile y. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>to_x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>to new tile x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>to_y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>to new tile y. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether is passable. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="230" column="6" bodyfile="game_map.cpp" bodystart="942" bodyend="950" declfile="game_map.h" declline="230" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1af2a10a94b6f3be47ba3765f2bd860f40" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::CheckWay</definition>
+        <argsstring>(const Game_Character &amp;self, int from_x, int from_y, int to_x, int to_y, bool check_events_and_vehicles, Span&lt; int &gt; ignore_some_events_by_id)</argsstring>
+        <name>CheckWay</name>
+        <qualifiedname>Game_Map::CheckWay</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___character" kindref="compound">Game_Character</ref> &amp;</type>
+          <declname>self</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>from_x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>from_y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>to_x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>to_y</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>check_events_and_vehicles</declname>
+        </param>
+        <param>
+          <type>Span&lt; int &gt;</type>
+          <declname>ignore_some_events_by_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Check if a move of self is possible to (to_x,to_y). Any events that are blocked will also be checked for collision.</para>
+<para>Returns true if move is possible.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>self</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Character to move. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>from_x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>from tile x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>from_y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>from tile y. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>to_x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>to new tile x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>to_y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>to new tile y. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>check_events_and_events</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Optional) Whether to check events, or only consider map collision. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ignore_some_events_by_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Optional) A set of specific event IDs to ignore. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether move is possible. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="251" column="6" bodyfile="game_map.cpp" bodystart="814" bodyend="824" declfile="game_map.h" declline="251" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1aff0b9948c1408b4098e6e30576ee0060" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::CheckWay</definition>
+        <argsstring>(const Game_Character &amp;self, int from_x, int from_y, int to_x, int to_y)</argsstring>
+        <name>CheckWay</name>
+        <qualifiedname>Game_Map::CheckWay</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___character" kindref="compound">Game_Character</ref> &amp;</type>
+          <declname>self</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>from_x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>from_y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>to_x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>to_y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Shorter version of CheckWay. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="258" column="6" bodyfile="game_map.cpp" bodystart="804" bodyend="812" declfile="game_map.h" declline="258" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a390c0305cff703d1854c9ce67fa33952" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::CheckOrMakeWayEx</definition>
+        <argsstring>(const Game_Character &amp;self, int from_x, int from_y, int to_x, int to_y, bool check_events_and_vehicles, Span&lt; int &gt; ignore_some_events_by_id, bool make_way)</argsstring>
+        <name>CheckOrMakeWayEx</name>
+        <qualifiedname>Game_Map::CheckOrMakeWayEx</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___character" kindref="compound">Game_Character</ref> &amp;</type>
+          <declname>self</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>from_x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>from_y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>to_x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>to_y</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>check_events_and_vehicles</declname>
+        </param>
+        <param>
+          <type>Span&lt; int &gt;</type>
+          <declname>ignore_some_events_by_id</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>make_way</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Extended function behind MakeWay and CheckWay that allows controlling exactly which events are ignored in the collision, and whether events should be prompted to make way with side effects (for MakeWay) or not (for CheckWay).</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>self</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>See CheckWay or MakeWay. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>from_x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>See CheckWay or MakeWay. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>from_y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>See CheckWay or MakeWay. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>to_x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>See CheckWay or MakeWay. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>to_y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>See CheckWay or MakeWay. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>check_events_and_vehicles</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>whether to check events, or only consider map collision. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>make_way</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to cause side effects. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ignore_some_events_by_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A set of specific event IDs to ignore. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>See CheckWay or MakeWay. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="281" column="7" bodyfile="game_map.cpp" bodystart="826" bodyend="940" declfile="game_map.h" declline="281" declcolumn="7"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ab486a88161f7f78b05c48199341ee4e4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::CanLandAirship</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>CanLandAirship</name>
+        <qualifiedname>Game_Map::CanLandAirship</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if possible to land the airship at (x,y)</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile y. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether is posible to land airship </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="295" column="6" bodyfile="game_map.cpp" bodystart="953" bodyend="991" declfile="game_map.h" declline="295" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a6433aa4d8fba878f111badd728a5c13e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::CanEmbarkShip</definition>
+        <argsstring>(Game_Player &amp;player, int x, int y)</argsstring>
+        <name>CanEmbarkShip</name>
+        <qualifiedname>Game_Map::CanEmbarkShip</qualifiedname>
+        <param>
+          <type><ref refid="class_game___player" kindref="compound">Game_Player</ref> &amp;</type>
+          <declname>player</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if possible to embark the boat or ship at (x,y)</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>player</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the player </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile y. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether is posible to disembark the boat or ship </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="305" column="6" bodyfile="game_map.cpp" bodystart="993" bodyend="996" declfile="game_map.h" declline="305" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a0a7b68a8bf35b872a77840dd4b4a2e9a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::CanDisembarkShip</definition>
+        <argsstring>(Game_Player &amp;player, int x, int y)</argsstring>
+        <name>CanDisembarkShip</name>
+        <qualifiedname>Game_Map::CanDisembarkShip</qualifiedname>
+        <param>
+          <type><ref refid="class_game___player" kindref="compound">Game_Player</ref> &amp;</type>
+          <declname>player</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if possible to disembark the boat or ship to (x,y)</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>player</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the player </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile y. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether is posible to disembark the boat or ship </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="315" column="6" bodyfile="game_map.cpp" bodystart="998" bodyend="1015" declfile="game_map.h" declline="315" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ac086c217576eded3978da8f2c426ecf4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; uint8_t &gt;</type>
+        <definition>std::vector&lt; uint8_t &gt; Game_Map::GetTilesLayer</definition>
+        <argsstring>(int layer)</argsstring>
+        <name>GetTilesLayer</name>
+        <qualifiedname>Game_Map::GetTilesLayer</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>layer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return the tiles array for the given tiles layer.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>layer</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which layer to return </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="322" column="13" bodyfile="game_map.cpp" bodystart="645" bodyend="647" declfile="game_map.h" declline="322" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a34248e966d1c6546967f554c3f532bb1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetBushDepth</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>GetBushDepth</name>
+        <qualifiedname>Game_Map::GetBushDepth</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the bush depth at a certain tile.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile y. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>bush depth. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="331" column="5" bodyfile="game_map.cpp" bodystart="1134" bodyend="1143" declfile="game_map.h" declline="331" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a422156bdc0715db9d4e97d254396d0d6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::IsCounter</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>IsCounter</name>
+        <qualifiedname>Game_Map::IsCounter</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets if a tile has counter flag.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile y. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether has the counter flag. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="340" column="6" bodyfile="game_map.cpp" bodystart="1145" bodyend="1152" declfile="game_map.h" declline="340" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a09a5d133183d855a23f2ed3559db59df" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetTerrainTag</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>GetTerrainTag</name>
+        <qualifiedname>Game_Map::GetTerrainTag</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets designated tile terrain tag.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>tile y. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>terrain tag ID. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="349" column="5" bodyfile="game_map.cpp" bodystart="1154" bodyend="1192" declfile="game_map.h" declline="349" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a8d690c80b4f17e4d2486c667f90ae9e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::CheckEvent</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>CheckEvent</name>
+        <qualifiedname>Game_Map::CheckEvent</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets designated position event.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: tile x </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>: tile y </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>event id, 0 if no event found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="358" column="5" bodyfile="game_map.cpp" bodystart="1253" bodyend="1261" declfile="game_map.h" declline="358" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a095cbdfec8a465690c7a4ab4865a1d3b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Update</definition>
+        <argsstring>(MapUpdateAsyncContext &amp;actx, bool is_preupdate=false)</argsstring>
+        <name>Update</name>
+        <qualifiedname>Game_Map::Update</qualifiedname>
+        <param>
+          <type><ref refid="class_map_update_async_context" kindref="compound">MapUpdateAsyncContext</ref> &amp;</type>
+          <declname>actx</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>is_preupdate</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the map state.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>actx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>asynchronous operations context. In out param. If IsActive() when passed in, will resume to that point. If IsActive() after return in, will suspend from that point. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>is_preupdate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Update only common events and map events </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="368" column="6" bodyfile="game_map.cpp" bodystart="1263" bodyend="1325" declfile="game_map.h" declline="368" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a24a0aed528bb59f0fa8730946bbcce16" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const lcf::rpg::MapInfo &amp;</type>
+        <definition>lcf::rpg::MapInfo const  &amp; Game_Map::GetMapInfo</definition>
+        <argsstring>()</argsstring>
+        <name>GetMapInfo</name>
+        <qualifiedname>Game_Map::GetMapInfo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets current map info.</para>
+<para><simplesect kind="return"><para>current map_info. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="375" column="25" bodyfile="game_map.cpp" bodystart="1480" bodyend="1482" declfile="game_map.h" declline="375" declcolumn="25"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a2f49839285d8e2251044e29b43f925b0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const lcf::rpg::MapInfo &amp;</type>
+        <definition>lcf::rpg::MapInfo const  &amp; Game_Map::GetMapInfo</definition>
+        <argsstring>(int map_id)</argsstring>
+        <name>GetMapInfo</name>
+        <qualifiedname>Game_Map::GetMapInfo</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>map_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets map info of the specified map id.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>map id </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>map_info. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="383" column="25" bodyfile="game_map.cpp" bodystart="1484" bodyend="1493" declfile="game_map.h" declline="383" declcolumn="25"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ac07bdc2a121bc523c5c06bc9a9cefabb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const lcf::rpg::MapInfo &amp;</type>
+        <definition>const lcf::rpg::MapInfo &amp; Game_Map::GetParentMapInfo</definition>
+        <argsstring>()</argsstring>
+        <name>GetParentMapInfo</name>
+        <qualifiedname>Game_Map::GetParentMapInfo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the map info of the parent map of the current map. The root of the tree has ID 0.</para>
+<para><simplesect kind="return"><para>parent map info </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="391" column="25" bodyfile="game_map.cpp" bodystart="1495" bodyend="1497" declfile="game_map.h" declline="391" declcolumn="25"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1af431ac03d60e645adc0bfb1d758a7acb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const lcf::rpg::MapInfo &amp;</type>
+        <definition>const lcf::rpg::MapInfo &amp; Game_Map::GetParentMapInfo</definition>
+        <argsstring>(const lcf::rpg::MapInfo &amp;map_info)</argsstring>
+        <name>GetParentMapInfo</name>
+        <qualifiedname>Game_Map::GetParentMapInfo</qualifiedname>
+        <param>
+          <type>const lcf::rpg::MapInfo &amp;</type>
+          <declname>map_info</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets map info of the parent map. The root of the tree has ID 0.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_info</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>map info whose parent to retrieve </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>parent map info </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="400" column="25" bodyfile="game_map.cpp" bodystart="1499" bodyend="1501" declfile="game_map.h" declline="400" declcolumn="25"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a81c2d7be0f1add314f0a1a18dfe1852b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>lcf::rpg::Map const &amp;</type>
+        <definition>lcf::rpg::Map const  &amp; Game_Map::GetMap</definition>
+        <argsstring>()</argsstring>
+        <name>GetMap</name>
+        <qualifiedname>Game_Map::GetMap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets current map.</para>
+<para><simplesect kind="return"><para>current map. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="407" column="21" bodyfile="game_map.cpp" bodystart="1503" bodyend="1505" declfile="game_map.h" declline="407" declcolumn="21"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1aba8fa8714eb265f2136427344e659135" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetMapId</definition>
+        <argsstring>()</argsstring>
+        <name>GetMapId</name>
+        <qualifiedname>Game_Map::GetMapId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets current map ID.</para>
+<para><simplesect kind="return"><para>current map ID. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="414" column="5" bodyfile="game_map.cpp" bodystart="1507" bodyend="1509" declfile="game_map.h" declline="414" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1aed51434b822ce6da48262e9e9e7d150d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::PrintPathToMap</definition>
+        <argsstring>()</argsstring>
+        <name>PrintPathToMap</name>
+        <qualifiedname>Game_Map::PrintPathToMap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Outputs the path in the map tree to reach the current map. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="419" column="6" bodyfile="game_map.cpp" bodystart="1511" bodyend="1523" declfile="game_map.h" declline="419" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a32528c63a99484a79d2af61fe9a43a95" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetTilesX</definition>
+        <argsstring>()</argsstring>
+        <name>GetTilesX</name>
+        <qualifiedname>Game_Map::GetTilesX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>amount of tiles in x direction </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="422" column="5" bodyfile="game_map.cpp" bodystart="1525" bodyend="1527" declfile="game_map.h" declline="422" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ad5d875e291d4492eaa37a9ba77dd55d7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetTilesY</definition>
+        <argsstring>()</argsstring>
+        <name>GetTilesY</name>
+        <qualifiedname>Game_Map::GetTilesY</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>amount of tiles in y direction </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="425" column="5" bodyfile="game_map.cpp" bodystart="1529" bodyend="1531" declfile="game_map.h" declline="425" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a18973dcff35e3c7524a08f3e51f7f553" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetOriginalEncounterSteps</definition>
+        <argsstring>()</argsstring>
+        <name>GetOriginalEncounterSteps</name>
+        <qualifiedname>Game_Map::GetOriginalEncounterSteps</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>original map battle encounter rate steps. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="428" column="5" bodyfile="game_map.cpp" bodystart="1533" bodyend="1535" declfile="game_map.h" declline="428" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a84a23b3c164b58755e0453eef29de053" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetEncounterSteps</definition>
+        <argsstring>()</argsstring>
+        <name>GetEncounterSteps</name>
+        <qualifiedname>Game_Map::GetEncounterSteps</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>battle encounter steps. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="431" column="5" bodyfile="game_map.cpp" bodystart="1537" bodyend="1539" declfile="game_map.h" declline="431" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a9c5faf768be5eac814d16fff9d271210" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::SetEncounterSteps</definition>
+        <argsstring>(int step)</argsstring>
+        <name>SetEncounterSteps</name>
+        <qualifiedname>Game_Map::SetEncounterSteps</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>step</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets battle encounter steps.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>step</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>encounter steps. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="438" column="6" bodyfile="game_map.cpp" bodystart="1541" bodyend="1546" declfile="game_map.h" declline="438" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1af07ee1cc228672f3a0b0c96b55f9c86a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt; int &gt; Game_Map::GetEncountersAt</definition>
+        <argsstring>(int x, int y)</argsstring>
+        <name>GetEncountersAt</name>
+        <qualifiedname>Game_Map::GetEncountersAt</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets possible encounters at a location. Respects areas and terrain settings.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x position </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y position </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Possible encounters </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="448" column="13" bodyfile="game_map.cpp" bodystart="1548" bodyend="1592" declfile="game_map.h" declline="448" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a8faad8491f7fdf1a1bb2593889b6182e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::PrepareEncounter</definition>
+        <argsstring>(BattleArgs &amp;args)</argsstring>
+        <name>PrepareEncounter</name>
+        <qualifiedname>Game_Map::PrepareEncounter</qualifiedname>
+        <param>
+          <type><ref refid="struct_battle_args" kindref="compound">BattleArgs</ref> &amp;</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates all battle data based on the current player position and starts a random encounter.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>args</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the arguments to pass to battle scene.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if battle starts, false if no monsters are at the current map position or encounter rate is 0 </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="459" column="6" bodyfile="game_map.cpp" bodystart="1618" bodyend="1657" declfile="game_map.h" declline="459" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1aeb6fb42eb6896c79b057241807d114f5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::SetupBattle</definition>
+        <argsstring>(BattleArgs &amp;args)</argsstring>
+        <name>SetupBattle</name>
+        <qualifiedname>Game_Map::SetupBattle</qualifiedname>
+        <param>
+          <type><ref refid="struct_battle_args" kindref="compound">BattleArgs</ref> &amp;</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates all battle data based on the current player position.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>args</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the arguments to pass to battle scene. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="466" column="6" bodyfile="game_map.cpp" bodystart="1659" bodyend="1673" declfile="game_map.h" declline="466" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a9169219ec54dc69facb77381e5b45307" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; short &gt; &amp;</type>
+        <definition>std::vector&lt; short &gt; &amp; Game_Map::GetMapDataDown</definition>
+        <argsstring>()</argsstring>
+        <name>GetMapDataDown</name>
+        <qualifiedname>Game_Map::GetMapDataDown</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets lower layer map data.</para>
+<para><simplesect kind="return"><para>lower layer map data. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="473" column="13" bodyfile="game_map.cpp" bodystart="1675" bodyend="1677" declfile="game_map.h" declline="473" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a3bceaa1fce3c6b579c87a79f22844bb0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; short &gt; &amp;</type>
+        <definition>std::vector&lt; short &gt; &amp; Game_Map::GetMapDataUp</definition>
+        <argsstring>()</argsstring>
+        <name>GetMapDataUp</name>
+        <qualifiedname>Game_Map::GetMapDataUp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets upper layer map data.</para>
+<para><simplesect kind="return"><para>upper layer map data. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="480" column="13" bodyfile="game_map.cpp" bodystart="1679" bodyend="1681" declfile="game_map.h" declline="480" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a1d0a973e7f49881a886003f6f769551a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetOriginalChipset</definition>
+        <argsstring>()</argsstring>
+        <name>GetOriginalChipset</name>
+        <qualifiedname>Game_Map::GetOriginalChipset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>original map chipset ID </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="483" column="5" bodyfile="game_map.cpp" bodystart="1683" bodyend="1685" declfile="game_map.h" declline="483" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1aa478bb56c99d7470fe9d4439d543e774" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetChipset</definition>
+        <argsstring>()</argsstring>
+        <name>GetChipset</name>
+        <qualifiedname>Game_Map::GetChipset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>current chipset ID </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="486" column="5" bodyfile="game_map.cpp" bodystart="1687" bodyend="1689" declfile="game_map.h" declline="486" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ae3835d789224cc226a22e284128968db" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_Map::GetChipsetName</definition>
+        <argsstring>()</argsstring>
+        <name>GetChipsetName</name>
+        <qualifiedname>Game_Map::GetChipsetName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>chipset filename. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="489" column="18" bodyfile="game_map.cpp" bodystart="1691" bodyend="1695" declfile="game_map.h" declline="489" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a3c9d68a804b0cf5d8a3d4eba1ed7220d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetPositionX</definition>
+        <argsstring>()</argsstring>
+        <name>GetPositionX</name>
+        <qualifiedname>Game_Map::GetPositionX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the offset of the screen from the left edge of the map, ignoring screen shaking. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="495" column="5" bodyfile="game_map.cpp" bodystart="1697" bodyend="1699" declfile="game_map.h" declline="495" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a76433ded7bd9da4b2caaa96f33b0edb9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetDisplayX</definition>
+        <argsstring>()</argsstring>
+        <name>GetDisplayX</name>
+        <qualifiedname>Game_Map::GetDisplayX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the offset of the screen from the left edge of the map, taking shaking into account. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="501" column="5" bodyfile="game_map.cpp" bodystart="1701" bodyend="1703" declfile="game_map.h" declline="501" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a6dd0257e7bd6edbfb8842a4c1d2e62ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::SetPositionX</definition>
+        <argsstring>(int new_position_x, bool reset_panorama=true)</argsstring>
+        <name>SetPositionX</name>
+        <qualifiedname>Game_Map::SetPositionX</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>new_position_x</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>reset_panorama</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the offset of the screen from the left edge of the map, as given by GetPositionX.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>new_position_x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new position x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>reset_panorama</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>whether to reset panorama </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="510" column="6" bodyfile="game_map.cpp" bodystart="1705" bodyend="1719" declfile="game_map.h" declline="510" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1aaeaf8d72f69b28ff73aa64351f56b056" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetPositionY</definition>
+        <argsstring>()</argsstring>
+        <name>GetPositionY</name>
+        <qualifiedname>Game_Map::GetPositionY</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets display y. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="515" column="5" bodyfile="game_map.cpp" bodystart="1721" bodyend="1723" declfile="game_map.h" declline="515" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1aa3dc012489de1bd33dc721628ac2b786" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetDisplayY</definition>
+        <argsstring>()</argsstring>
+        <name>GetDisplayY</name>
+        <qualifiedname>Game_Map::GetDisplayY</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets display y. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="520" column="5" bodyfile="game_map.cpp" bodystart="1725" bodyend="1727" declfile="game_map.h" declline="520" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a52384804f1751b8d67f9d37e2415ed33" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::SetPositionY</definition>
+        <argsstring>(int new_position_y, bool reset_panorama=true)</argsstring>
+        <name>SetPositionY</name>
+        <qualifiedname>Game_Map::SetPositionY</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>new_position_y</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>reset_panorama</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the offset of the screen from the top edge of the map.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>new_position_y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new position y. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>reset_panorama</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>whether to reset panorama </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="529" column="6" bodyfile="game_map.cpp" bodystart="1729" bodyend="1743" declfile="game_map.h" declline="529" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ad4be71a416775377c05fbc0dc837ff8d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::GetNeedRefresh</definition>
+        <argsstring>()</argsstring>
+        <name>GetNeedRefresh</name>
+        <qualifiedname>Game_Map::GetNeedRefresh</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>need refresh flag. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="534" column="6" bodyfile="game_map.cpp" bodystart="1745" bodyend="1752" declfile="game_map.h" declline="534" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a93aff6e28b5fe2334503361ac0cd2099" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___interpreter___map" kindref="compound">Game_Interpreter_Map</ref> &amp;</type>
+        <definition>Game_Interpreter_Map &amp; Game_Map::GetInterpreter</definition>
+        <argsstring>()</argsstring>
+        <name>GetInterpreter</name>
+        <qualifiedname>Game_Map::GetInterpreter</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the game interpreter.</para>
+<para><simplesect kind="return"><para>the game interpreter. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="541" column="22" bodyfile="game_map.cpp" bodystart="659" bodyend="662" declfile="game_map.h" declline="541" declcolumn="22"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a0bcd2bf3130209584409c4a2cf156716" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::SetNeedRefresh</definition>
+        <argsstring>(bool refresh)</argsstring>
+        <name>SetNeedRefresh</name>
+        <qualifiedname>Game_Map::SetNeedRefresh</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>refresh</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the need refresh flag.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>refresh</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>need refresh flag. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="548" column="6" bodyfile="game_map.cpp" bodystart="1754" bodyend="1756" declfile="game_map.h" declline="548" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a8f1ccdc4198fadfeeab62f925fdc0785" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; unsigned char &gt; &amp;</type>
+        <definition>std::vector&lt; unsigned char &gt; &amp; Game_Map::GetPassagesDown</definition>
+        <argsstring>()</argsstring>
+        <name>GetPassagesDown</name>
+        <qualifiedname>Game_Map::GetPassagesDown</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets lower passages list.</para>
+<para><simplesect kind="return"><para>lower passages list. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="555" column="13" bodyfile="game_map.cpp" bodystart="1784" bodyend="1786" declfile="game_map.h" declline="555" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ae16bbb8f8bd5f5fac19c4b1bf52510be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; unsigned char &gt; &amp;</type>
+        <definition>std::vector&lt; unsigned char &gt; &amp; Game_Map::GetPassagesUp</definition>
+        <argsstring>()</argsstring>
+        <name>GetPassagesUp</name>
+        <qualifiedname>Game_Map::GetPassagesUp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets upper passages list.</para>
+<para><simplesect kind="return"><para>upper passages list. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="562" column="13" bodyfile="game_map.cpp" bodystart="1788" bodyend="1790" declfile="game_map.h" declline="562" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a2348ab12f0ce633b3ec741bf91684b57" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetAnimationType</definition>
+        <argsstring>()</argsstring>
+        <name>GetAnimationType</name>
+        <qualifiedname>Game_Map::GetAnimationType</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets chipset animation type.</para>
+<para><simplesect kind="return"><para>chipset animation type. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="569" column="5" bodyfile="game_map.cpp" bodystart="1792" bodyend="1794" declfile="game_map.h" declline="569" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a7360568e2a7b7784ac42aa624ba249b0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetAnimationSpeed</definition>
+        <argsstring>()</argsstring>
+        <name>GetAnimationSpeed</name>
+        <qualifiedname>Game_Map::GetAnimationSpeed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets chipset animation speed.</para>
+<para><simplesect kind="return"><para>chipset animation speed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="576" column="5" bodyfile="game_map.cpp" bodystart="1796" bodyend="1798" declfile="game_map.h" declline="576" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a80ae659eb33b5a70f869612d8525286e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="class_game___event" kindref="compound">Game_Event</ref> &gt; &amp;</type>
+        <definition>std::vector&lt; Game_Event &gt; &amp; Game_Map::GetEvents</definition>
+        <argsstring>()</argsstring>
+        <name>GetEvents</name>
+        <qualifiedname>Game_Map::GetEvents</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets events list.</para>
+<para><simplesect kind="return"><para>events list. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="583" column="13" bodyfile="game_map.cpp" bodystart="1800" bodyend="1802" declfile="game_map.h" declline="583" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a7cbe055fa5c9d9688c9614ec7e406452" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetHighestEventId</definition>
+        <argsstring>()</argsstring>
+        <name>GetHighestEventId</name>
+        <qualifiedname>Game_Map::GetHighestEventId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>highest event id present on the map, or 0 if no events </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="586" column="5" bodyfile="game_map.cpp" bodystart="1804" bodyend="1810" declfile="game_map.h" declline="586" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1aff6a46e0fecd4d389ec665536b43fb07" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___event" kindref="compound">Game_Event</ref> *</type>
+        <definition>Game_Event * Game_Map::GetEvent</definition>
+        <argsstring>(int event_id)</argsstring>
+        <name>GetEvent</name>
+        <qualifiedname>Game_Map::GetEvent</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>event_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets pointer to event.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>event_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>event ID </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>pointer to event. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="594" column="12" bodyfile="game_map.cpp" bodystart="1812" bodyend="1816" declfile="game_map.h" declline="594" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ae5b76f21ff97cb0f6017b44e0aa3740f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="class_game___common_event" kindref="compound">Game_CommonEvent</ref> &gt; &amp;</type>
+        <definition>std::vector&lt; Game_CommonEvent &gt; &amp; Game_Map::GetCommonEvents</definition>
+        <argsstring>()</argsstring>
+        <name>GetCommonEvents</name>
+        <qualifiedname>Game_Map::GetCommonEvents</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets common events list.</para>
+<para><simplesect kind="return"><para>common events list. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="601" column="13" bodyfile="game_map.cpp" bodystart="1818" bodyend="1820" declfile="game_map.h" declline="601" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a3bf824ff4644e7e421b9164d2567d088" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___event" kindref="compound">Game_Event</ref> *</type>
+        <definition>Game_Event * Game_Map::GetEventAt</definition>
+        <argsstring>(int x, int y, bool require_active)</argsstring>
+        <name>GetEventAt</name>
+        <qualifiedname>Game_Map::GetEventAt</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>require_active</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>x position on the map </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>y position on the map </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>require_active</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, ignore events which are not active. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the event with the highest id at (x,y) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="609" column="12" bodyfile="game_map.cpp" bodystart="1194" bodyend="1203" declfile="game_map.h" declline="609" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ad16754efdc20be6ae4a9290cbd4fe4c3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::LoopHorizontal</definition>
+        <argsstring>()</argsstring>
+        <name>LoopHorizontal</name>
+        <qualifiedname>Game_Map::LoopHorizontal</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="611" column="6" bodyfile="game_map.cpp" bodystart="1205" bodyend="1207" declfile="game_map.h" declline="611" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a4a5b311672c2a47a2408b3a5660a2036" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::LoopVertical</definition>
+        <argsstring>()</argsstring>
+        <name>LoopVertical</name>
+        <qualifiedname>Game_Map::LoopVertical</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="612" column="6" bodyfile="game_map.cpp" bodystart="1209" bodyend="1211" declfile="game_map.h" declline="612" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a002d9b91a3eaff857efb3beee7ddfaff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::RoundX</definition>
+        <argsstring>(int x, int units=1)</argsstring>
+        <name>RoundX</name>
+        <qualifiedname>Game_Map::RoundX</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>units</declname>
+          <defval>1</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="614" column="5" bodyfile="game_map.cpp" bodystart="1213" bodyend="1219" declfile="game_map.h" declline="614" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a692e56c6d8dd9482edfec08b8086355e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::RoundY</definition>
+        <argsstring>(int y, int units=1)</argsstring>
+        <name>RoundY</name>
+        <qualifiedname>Game_Map::RoundY</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>units</declname>
+          <defval>1</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="615" column="5" bodyfile="game_map.cpp" bodystart="1221" bodyend="1227" declfile="game_map.h" declline="615" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a30b634d78f3574a5bb692d2da1ead592" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::RoundDx</definition>
+        <argsstring>(int x, int units=1)</argsstring>
+        <name>RoundDx</name>
+        <qualifiedname>Game_Map::RoundDx</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>units</declname>
+          <defval>1</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="617" column="5" bodyfile="game_map.cpp" bodystart="1229" bodyend="1235" declfile="game_map.h" declline="617" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1aeef77d56232872204c2eed31738945c4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::RoundDy</definition>
+        <argsstring>(int y, int units=1)</argsstring>
+        <name>RoundDy</name>
+        <qualifiedname>Game_Map::RoundDy</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>units</declname>
+          <defval>1</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="618" column="5" bodyfile="game_map.cpp" bodystart="1237" bodyend="1243" declfile="game_map.h" declline="618" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1aa2aa31e9d54ff8ce763292bf3ddb0c4b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::XwithDirection</definition>
+        <argsstring>(int x, int direction)</argsstring>
+        <name>XwithDirection</name>
+        <qualifiedname>Game_Map::XwithDirection</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>direction</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="620" column="5" bodyfile="game_map.cpp" bodystart="1245" bodyend="1247" declfile="game_map.h" declline="620" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ad255cb120e97996f23a441a506c19286" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::YwithDirection</definition>
+        <argsstring>(int y, int direction)</argsstring>
+        <name>YwithDirection</name>
+        <qualifiedname>Game_Map::YwithDirection</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>direction</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="621" column="5" bodyfile="game_map.cpp" bodystart="1249" bodyend="1251" declfile="game_map.h" declline="621" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a4cd0e573425b0f8754c94d28ea2982b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string_view</type>
+        <definition>std::string_view Game_Map::GetMapName</definition>
+        <argsstring>(int id)</argsstring>
+        <name>GetMapName</name>
+        <qualifiedname>Game_Map::GetMapName</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the map name from MapInfo vector using map ID.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>map ID. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>map name from MapInfo vector. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="629" column="18" bodyfile="game_map.cpp" bodystart="1822" bodyend="1830" declfile="game_map.h" declline="629" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a8de888e90832de41c81f3cfed68b53af" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::SetChipset</definition>
+        <argsstring>(int id)</argsstring>
+        <name>SetChipset</name>
+        <qualifiedname>Game_Map::SetChipset</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the chipset.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>new chipset ID. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="636" column="6" bodyfile="game_map.cpp" bodystart="1832" bodyend="1852" declfile="game_map.h" declline="636" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a7123ab5c8608a6ae566434661d5e2645" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::ReloadChipset</definition>
+        <argsstring>()</argsstring>
+        <name>ReloadChipset</name>
+        <qualifiedname>Game_Map::ReloadChipset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="638" column="6" bodyfile="game_map.cpp" bodystart="1854" bodyend="1860" declfile="game_map.h" declline="638" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1af45245565ebb14b0b94bba85e93a4173" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::OnTranslationChanged</definition>
+        <argsstring>()</argsstring>
+        <name>OnTranslationChanged</name>
+        <qualifiedname>Game_Map::OnTranslationChanged</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="640" column="6" bodyfile="game_map.cpp" bodystart="1862" bodyend="1867" declfile="game_map.h" declline="640" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ad067ff782cc56c2e2d2a02c28503b16d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_game___vehicle" kindref="compound">Game_Vehicle</ref> *</type>
+        <definition>Game_Vehicle * Game_Map::GetVehicle</definition>
+        <argsstring>(Game_Vehicle::Type which)</argsstring>
+        <name>GetVehicle</name>
+        <qualifiedname>Game_Map::GetVehicle</qualifiedname>
+        <param>
+          <type><ref refid="class_game___vehicle_1a9c3a795cbe2144dd4ebf289c95e815a5" kindref="member">Game_Vehicle::Type</ref></type>
+          <declname>which</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="642" column="14" bodyfile="game_map.cpp" bodystart="1869" bodyend="1877" declfile="game_map.h" declline="642" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a0bee8509a67d0799b108dca8eba6095f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::SubstituteDown</definition>
+        <argsstring>(int old_id, int new_id)</argsstring>
+        <name>SubstituteDown</name>
+        <qualifiedname>Game_Map::SubstituteDown</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>old_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>new_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="643" column="5" bodyfile="game_map.cpp" bodystart="1937" bodyend="1939" declfile="game_map.h" declline="643" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a43d22836edf32c77e6656344d982cb5d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::SubstituteUp</definition>
+        <argsstring>(int old_id, int new_id)</argsstring>
+        <name>SubstituteUp</name>
+        <qualifiedname>Game_Map::SubstituteUp</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>old_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>new_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="644" column="5" bodyfile="game_map.cpp" bodystart="1941" bodyend="1943" declfile="game_map.h" declline="644" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a8340df6c2f18accbbd8e636d78929099" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::ReplaceTileAt</definition>
+        <argsstring>(int x, int y, int new_id, int layer)</argsstring>
+        <name>ReplaceTileAt</name>
+        <qualifiedname>Game_Map::ReplaceTileAt</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>new_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>layer</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="645" column="6" bodyfile="game_map.cpp" bodystart="1945" bodyend="1949" declfile="game_map.h" declline="645" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1af876fa98b91256acd7bec79dd609db46" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetTileIdAt</definition>
+        <argsstring>(int x, int y, int layer, bool chip_id_or_index=false)</argsstring>
+        <name>GetTileIdAt</name>
+        <qualifiedname>Game_Map::GetTileIdAt</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>layer</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>chip_id_or_index</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="647" column="5" bodyfile="game_map.cpp" bodystart="1951" bodyend="1963" declfile="game_map.h" declline="647" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1afb9b0c1d10df0cecde473a62885c1638" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt; int &gt; Game_Map::GetTilesIdAt</definition>
+        <argsstring>(Rect coords, int layer, bool chip_id_or_index=false)</argsstring>
+        <name>GetTilesIdAt</name>
+        <qualifiedname>Game_Map::GetTilesIdAt</qualifiedname>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+          <declname>coords</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>layer</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>chip_id_or_index</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="648" column="13" bodyfile="game_map.cpp" bodystart="1965" bodyend="1973" declfile="game_map.h" declline="648" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a89a1cee4e877adefca377b0636fe85a9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::IsPassableTile</definition>
+        <argsstring>(const Game_Character *self, int bit, int x, int y, bool check_events_and_vehicles, bool check_map_geometry)</argsstring>
+        <name>IsPassableTile</name>
+        <qualifiedname>Game_Map::IsPassableTile</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___character" kindref="compound">Game_Character</ref> *</type>
+          <declname>self</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>bit</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>check_events_and_vehicles</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>check_map_geometry</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if its possible to step onto the tile at (x,y) The check includes tile graphic events checks.</para>
+<para>Returns true if move is possible.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>self</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Character to move. If not nullptr, checks the vehicle type and performs vehicle specific checks if is vehicle. Also ignores self in the event tile graphic checks if self is not nullptr. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>bit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which direction bits to check </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>target tile x. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>target tile y. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>check_events_and_vehicles</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to consider events and vehicles. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>check_map_geometry</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to take map collision into account. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether is passable. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="665" column="6" bodyfile="game_map.cpp" bodystart="1054" bodyend="1132" declfile="game_map.h" declline="665" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a96909e536d7e1d7d309b30ef35593045" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::IsPassableTile</definition>
+        <argsstring>(const Game_Character *self, int bit, int x, int y)</argsstring>
+        <name>IsPassableTile</name>
+        <qualifiedname>Game_Map::IsPassableTile</qualifiedname>
+        <param>
+          <type>const <ref refid="class_game___character" kindref="compound">Game_Character</ref> *</type>
+          <declname>self</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>bit</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="669" column="6" bodyfile="game_map.cpp" bodystart="1046" bodyend="1052" declfile="game_map.h" declline="669" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a51048580620a4c43837525bb82401a0c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::IsPassableLowerTile</definition>
+        <argsstring>(int bit, int tile_index)</argsstring>
+        <name>IsPassableLowerTile</name>
+        <qualifiedname>Game_Map::IsPassableLowerTile</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>bit</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>tile_index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if the lower tile at (x,y) is passable by the player.</para>
+<para>Returns true if move is possible.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>bit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>which direction bits to check </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tile_index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the tile index </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>whether is passable. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="680" column="6" bodyfile="game_map.cpp" bodystart="1017" bodyend="1044" declfile="game_map.h" declline="680" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a10cd221cf23962b0b2fa472d12d0531b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::IsAnyEventStarting</definition>
+        <argsstring>()</argsstring>
+        <name>IsAnyEventStarting</name>
+        <qualifiedname>Game_Map::IsAnyEventStarting</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets whether there are any starting non-parallel event or common event. Used as a workaround for the Game <ref refid="namespace_player" kindref="compound">Player</ref>.</para>
+<para><simplesect kind="return"><para>whether any starting non-parallel (common) event is starting </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="688" column="6" bodyfile="game_map.cpp" bodystart="1879" bodyend="1889" declfile="game_map.h" declline="688" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1af2122fb25c4366f9a3371a45f069ff3a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Map::GetMapSaveCount</definition>
+        <argsstring>()</argsstring>
+        <name>GetMapSaveCount</name>
+        <qualifiedname>Game_Map::GetMapSaveCount</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the number of times this map was saved in the editor </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="691" column="5" bodyfile="game_map.cpp" bodystart="156" bodyend="160" declfile="game_map.h" declline="691" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1acc28ee28092b1a1f5fe521c5dbb79825" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::IsAnyMovePending</definition>
+        <argsstring>()</argsstring>
+        <name>IsAnyMovePending</name>
+        <qualifiedname>Game_Map::IsAnyMovePending</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if any event on this map has an active move route </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="694" column="6" bodyfile="game_map.cpp" bodystart="1891" bodyend="1911" declfile="game_map.h" declline="694" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a0af59c3ab16fed8f4d7971ead03f8d84" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::RemoveAllPendingMoves</definition>
+        <argsstring>()</argsstring>
+        <name>RemoveAllPendingMoves</name>
+        <qualifiedname>Game_Map::RemoveAllPendingMoves</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Cancel active move routes for all events on this map </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="697" column="6" bodyfile="game_map.cpp" bodystart="1913" bodyend="1924" declfile="game_map.h" declline="697" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a907a35077baf89f44080dcef0e9a9630" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::UpdateProcessedFlags</definition>
+        <argsstring>(bool is_preupdate)</argsstring>
+        <name>UpdateProcessedFlags</name>
+        <qualifiedname>Game_Map::UpdateProcessedFlags</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>is_preupdate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="699" column="6" bodyfile="game_map.cpp" bodystart="1327" bodyend="1339" declfile="game_map.h" declline="699" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ae2f45fc8bb68dddd6b1e575429a7877b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::UpdateCommonEvents</definition>
+        <argsstring>(MapUpdateAsyncContext &amp;actx)</argsstring>
+        <name>UpdateCommonEvents</name>
+        <qualifiedname>Game_Map::UpdateCommonEvents</qualifiedname>
+        <param>
+          <type><ref refid="class_map_update_async_context" kindref="compound">MapUpdateAsyncContext</ref> &amp;</type>
+          <declname>actx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="700" column="6" bodyfile="game_map.cpp" bodystart="1342" bodyend="1367" declfile="game_map.h" declline="700" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a4807f62a2cac4ffb42e92ced2df8f301" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::UpdateMapEvents</definition>
+        <argsstring>(MapUpdateAsyncContext &amp;actx)</argsstring>
+        <name>UpdateMapEvents</name>
+        <qualifiedname>Game_Map::UpdateMapEvents</qualifiedname>
+        <param>
+          <type><ref refid="class_map_update_async_context" kindref="compound">MapUpdateAsyncContext</ref> &amp;</type>
+          <declname>actx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="701" column="6" bodyfile="game_map.cpp" bodystart="1369" bodyend="1394" declfile="game_map.h" declline="701" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ad6feca574be23dd88beb7f64b85737fb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::UpdateMessage</definition>
+        <argsstring>(MapUpdateAsyncContext &amp;actx)</argsstring>
+        <name>UpdateMessage</name>
+        <qualifiedname>Game_Map::UpdateMessage</qualifiedname>
+        <param>
+          <type><ref refid="class_map_update_async_context" kindref="compound">MapUpdateAsyncContext</ref> &amp;</type>
+          <declname>actx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="702" column="6" bodyfile="game_map.cpp" bodystart="1396" bodyend="1410" declfile="game_map.h" declline="702" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a0c2e3b0586113f09a0e6f5c01b69e5d1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Map::UpdateForegroundEvents</definition>
+        <argsstring>(MapUpdateAsyncContext &amp;actx)</argsstring>
+        <name>UpdateForegroundEvents</name>
+        <qualifiedname>Game_Map::UpdateForegroundEvents</qualifiedname>
+        <param>
+          <type><ref refid="class_map_update_async_context" kindref="compound">MapUpdateAsyncContext</ref> &amp;</type>
+          <declname>actx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="703" column="6" bodyfile="game_map.cpp" bodystart="1412" bodyend="1478" declfile="game_map.h" declline="703" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a9d4e6a186e2ed6fd61a2819a805e4882" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Game_Map::ConstructMapName</definition>
+        <argsstring>(int map_id, bool is_easyrpg)</argsstring>
+        <name>ConstructMapName</name>
+        <qualifiedname>Game_Map::ConstructMapName</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>map_id</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>is_easyrpg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Construct a map name, either for EasyRPG or RPG Maker projects</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The ID of the map to construct </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>is_easyrpg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Is the an easyrpg (emu) project, or an RPG Maker (lmu) one? </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The map name, as Map&lt;map_id&gt;.&lt;map_extension&gt; </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="712" column="13" bodyfile="game_map.cpp" bodystart="1975" bodyend="1983" declfile="game_map.h" declline="712" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a9d34ce01de2cfe76291d7472b30cc7ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_file_request_async" kindref="compound">FileRequestAsync</ref> *</type>
+        <definition>FileRequestAsync * Game_Map::RequestMap</definition>
+        <argsstring>(int map_id)</argsstring>
+        <name>RequestMap</name>
+        <qualifiedname>Game_Map::RequestMap</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>map_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="714" column="18" bodyfile="game_map.cpp" bodystart="1985" bodyend="1993" declfile="game_map.h" declline="714" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1aad13382345e1a51071ab387bcf4694ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::SetNeedRefreshForSwitchChange</definition>
+        <argsstring>(int switch_id)</argsstring>
+        <name>SetNeedRefreshForSwitchChange</name>
+        <qualifiedname>Game_Map::SetNeedRefreshForSwitchChange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>switch_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="752" column="6" bodyfile="game_map.cpp" bodystart="1758" bodyend="1763" declfile="game_map.h" declline="752" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a055bff3558ebc72eeac29cdf12a202d9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::SetNeedRefreshForVarChange</definition>
+        <argsstring>(int var_id)</argsstring>
+        <name>SetNeedRefreshForVarChange</name>
+        <qualifiedname>Game_Map::SetNeedRefreshForVarChange</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>var_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="753" column="6" bodyfile="game_map.cpp" bodystart="1765" bodyend="1770" declfile="game_map.h" declline="753" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1a17b3aeb2e7461d850243391592547480" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::SetNeedRefreshForSwitchChange</definition>
+        <argsstring>(std::initializer_list&lt; int &gt; switch_ids)</argsstring>
+        <name>SetNeedRefreshForSwitchChange</name>
+        <qualifiedname>Game_Map::SetNeedRefreshForSwitchChange</qualifiedname>
+        <param>
+          <type>std::initializer_list&lt; int &gt;</type>
+          <declname>switch_ids</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="754" column="6" bodyfile="game_map.cpp" bodystart="1772" bodyend="1776" declfile="game_map.h" declline="754" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___map_1ae62612c081369295acd09f2c07069ae7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::SetNeedRefreshForVarChange</definition>
+        <argsstring>(std::initializer_list&lt; int &gt; var_ids)</argsstring>
+        <name>SetNeedRefreshForVarChange</name>
+        <qualifiedname>Game_Map::SetNeedRefreshForVarChange</qualifiedname>
+        <param>
+          <type>std::initializer_list&lt; int &gt;</type>
+          <declname>var_ids</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="755" column="6" bodyfile="game_map.cpp" bodystart="1778" bodyend="1782" declfile="game_map.h" declline="755" declcolumn="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="namespace_game___map" kindref="compound">Game_Map</ref> namespace </para>
+    </detaileddescription>
+    <location file="game_map.cpp" line="103" column="1"/>
+  </compounddef>
+</doxygen>

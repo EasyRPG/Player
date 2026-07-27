@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_upvaldesc" kind="struct" language="C++" prot="public">
+    <compoundname>Upvaldesc</compoundname>
+    <includes refid="lobject_8h" local="no">lobject.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_upvaldesc_1a8870289fbc6611275d093ef1c08cf9ed" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>TString* Upvaldesc::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>Upvaldesc::name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="549" column="11" bodyfile="leasy/lua/lobject.h" bodystart="549" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_upvaldesc_1a1e5182ac7b8b72848ed71b7b4844e3d1" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte Upvaldesc::instack</definition>
+        <argsstring></argsstring>
+        <name>instack</name>
+        <qualifiedname>Upvaldesc::instack</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="550" column="11" bodyfile="leasy/lua/lobject.h" bodystart="550" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_upvaldesc_1a8478ecca9cb593200c562a0837aedfac" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte Upvaldesc::idx</definition>
+        <argsstring></argsstring>
+        <name>idx</name>
+        <qualifiedname>Upvaldesc::idx</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="551" column="11" bodyfile="leasy/lua/lobject.h" bodystart="551" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_upvaldesc_1a1315fb98c5f398c3f3323967cb9ec7ba" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+        <definition>lu_byte Upvaldesc::kind</definition>
+        <argsstring></argsstring>
+        <name>kind</name>
+        <qualifiedname>Upvaldesc::kind</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="552" column="11" bodyfile="leasy/lua/lobject.h" bodystart="552" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Upvaldesc</label>
+        <link refid="struct_upvaldesc"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>name</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lobject.h" line="548" column="1" bodyfile="leasy/lua/lobject.h" bodystart="548" bodyend="553"/>
+    <listofallmembers>
+      <member refid="struct_upvaldesc_1a8478ecca9cb593200c562a0837aedfac" prot="public" virt="non-virtual"><scope>Upvaldesc</scope><name>idx</name></member>
+      <member refid="struct_upvaldesc_1a1e5182ac7b8b72848ed71b7b4844e3d1" prot="public" virt="non-virtual"><scope>Upvaldesc</scope><name>instack</name></member>
+      <member refid="struct_upvaldesc_1a1315fb98c5f398c3f3323967cb9ec7ba" prot="public" virt="non-virtual"><scope>Upvaldesc</scope><name>kind</name></member>
+      <member refid="struct_upvaldesc_1a8870289fbc6611275d093ef1c08cf9ed" prot="public" virt="non-virtual"><scope>Upvaldesc</scope><name>name</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

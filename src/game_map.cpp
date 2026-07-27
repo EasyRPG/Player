@@ -2287,3 +2287,4 @@ bool Game_Map::Parallax::FakeXPosition() {
 bool Game_Map::Parallax::FakeYPosition() {
 	return parallax_fake_y;
 }
+

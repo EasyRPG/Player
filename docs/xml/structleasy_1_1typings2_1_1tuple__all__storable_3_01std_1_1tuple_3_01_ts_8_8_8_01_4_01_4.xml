@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1typings2_1_1tuple__all__storable_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::typings2::tuple_all_storable&lt; std::tuple&lt; Ts... &gt; &gt;</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::bool_constant&lt;(can_store_by_value&lt; std::remove_reference_t&lt; std::remove_const_t&lt; Ts &gt; &gt; &gt; &amp;&amp;...)&gt;</basecompoundref>
+    <includes refid="metatypes_8hpp" local="no">metatypes.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type>typename...</type>
+        <declname>Ts</declname>
+        <defname>Ts</defname>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>leasy::typings2::tuple_all_storable&lt; std::tuple&lt; Ts... &gt; &gt;</label>
+        <link refid="structleasy_1_1typings2_1_1tuple__all__storable_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::bool_constant&lt;(can_store_by_value&lt; std::remove_reference_t&lt; std::remove_const_t&lt; Ts &gt; &gt; &gt; &amp;&amp;...)&gt;</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>leasy::typings2::tuple_all_storable&lt; std::tuple&lt; Ts... &gt; &gt;</label>
+        <link refid="structleasy_1_1typings2_1_1tuple__all__storable_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::bool_constant&lt;(can_store_by_value&lt; std::remove_reference_t&lt; std::remove_const_t&lt; Ts &gt; &gt; &gt; &amp;&amp;...)&gt;</label>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/typings/metatypes.hpp" line="85" column="3" bodyfile="leasy/typings/metatypes.hpp" bodystart="86" bodyend="86"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

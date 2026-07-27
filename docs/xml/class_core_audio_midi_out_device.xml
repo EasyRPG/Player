@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_core_audio_midi_out_device" kind="class" language="C++" prot="public">
+    <compoundname>CoreAudioMidiOutDevice</compoundname>
+    <basecompoundref refid="class_midi_decoder" prot="public" virt="non-virtual">MidiDecoder</basecompoundref>
+    <includes refid="midiout__device__coreaudio_8h" local="no">midiout_device_coreaudio.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_core_audio_midi_out_device_1ab6c6d39b6da1335eec5c3117e2a30cb8" prot="private" static="no" mutable="no">
+        <type>AudioUnit</type>
+        <definition>AudioUnit CoreAudioMidiOutDevice::midi_out</definition>
+        <argsstring></argsstring>
+        <name>midi_out</name>
+        <qualifiedname>CoreAudioMidiOutDevice::midi_out</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/macos/midiout_device_coreaudio.h" line="39" column="11" bodyfile="platform/macos/midiout_device_coreaudio.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_core_audio_midi_out_device_1ae3f71141ceb4ecd3ccc0b0ebcdfd9e3f" prot="private" static="no" mutable="no">
+        <type>AUGraph</type>
+        <definition>AUGraph CoreAudioMidiOutDevice::graph</definition>
+        <argsstring></argsstring>
+        <name>graph</name>
+        <qualifiedname>CoreAudioMidiOutDevice::graph</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/macos/midiout_device_coreaudio.h" line="40" column="9" bodyfile="platform/macos/midiout_device_coreaudio.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_core_audio_midi_out_device_1a49a964295ea2e5d2f7714652f2e268fb" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool CoreAudioMidiOutDevice::works</definition>
+        <argsstring></argsstring>
+        <name>works</name>
+        <qualifiedname>CoreAudioMidiOutDevice::works</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/macos/midiout_device_coreaudio.h" line="41" column="6" bodyfile="platform/macos/midiout_device_coreaudio.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_core_audio_midi_out_device_1a7630468d841e76134dc6250ee067170e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CoreAudioMidiOutDevice::CoreAudioMidiOutDevice</definition>
+        <argsstring>(std::string &amp;status_message)</argsstring>
+        <name>CoreAudioMidiOutDevice</name>
+        <qualifiedname>CoreAudioMidiOutDevice::CoreAudioMidiOutDevice</qualifiedname>
+        <param>
+          <type>std::string &amp;</type>
+          <declname>status_message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/macos/midiout_device_coreaudio.h" line="29" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_core_audio_midi_out_device_1a599fcc80fca1313cb3b7217d7fbb72c8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CoreAudioMidiOutDevice::~CoreAudioMidiOutDevice</definition>
+        <argsstring>()</argsstring>
+        <name>~CoreAudioMidiOutDevice</name>
+        <qualifiedname>CoreAudioMidiOutDevice::~CoreAudioMidiOutDevice</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/macos/midiout_device_coreaudio.h" line="30" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_core_audio_midi_out_device_1abfb4862c9bad9699b5275acc665b2554" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CoreAudioMidiOutDevice::SendMidiMessage</definition>
+        <argsstring>(uint32_t message) override</argsstring>
+        <name>SendMidiMessage</name>
+        <qualifiedname>CoreAudioMidiOutDevice::SendMidiMessage</qualifiedname>
+        <reimplements refid="class_midi_decoder_1a224acd738e2f9c66e4caabdfb4653d61">SendMidiMessage</reimplements>
+        <param>
+          <type>uint32_t</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Forwards a Midi message to the Midi decoder</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Midi message </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/macos/midiout_device_coreaudio.h" line="32" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_core_audio_midi_out_device_1a865f7f485433cb31a040af8db66dbba9" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CoreAudioMidiOutDevice::SendSysExMessage</definition>
+        <argsstring>(const uint8_t *data, size_t size) override</argsstring>
+        <name>SendSysExMessage</name>
+        <qualifiedname>CoreAudioMidiOutDevice::SendSysExMessage</qualifiedname>
+        <reimplements refid="class_midi_decoder_1a15e5774605a1d77b05e5d332ebef74c9">SendSysExMessage</reimplements>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Forwards a SysEx Message to the Midi Decoder</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>sysex content </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>size</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>length of sysex content (data) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/macos/midiout_device_coreaudio.h" line="33" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_core_audio_midi_out_device_1aab885a27841f4e6f364a1e56a26cd529" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string CoreAudioMidiOutDevice::GetName</definition>
+        <argsstring>() override</argsstring>
+        <name>GetName</name>
+        <qualifiedname>CoreAudioMidiOutDevice::GetName</qualifiedname>
+        <reimplements refid="class_midi_decoder_1af4d40d12d6758967cb2dcb73f3a06900">GetName</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the unique name of the Midi decoder.</para>
+<para><simplesect kind="return"><para>decoder name </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/macos/midiout_device_coreaudio.h" line="34" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_core_audio_midi_out_device_1a2ece989795acb2be194047fd5514ff9a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool CoreAudioMidiOutDevice::NeedsSoftReset</definition>
+        <argsstring>() override</argsstring>
+        <name>NeedsSoftReset</name>
+        <qualifiedname>CoreAudioMidiOutDevice::NeedsSoftReset</qualifiedname>
+        <reimplements refid="class_midi_decoder_1afd17f90102463d31d3b739936f3e70dd">NeedsSoftReset</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/macos/midiout_device_coreaudio.h" line="35" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_core_audio_midi_out_device_1a5a5c8626a917ffed327eaba2ec642d77" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool CoreAudioMidiOutDevice::IsInitialized</definition>
+        <argsstring>() const</argsstring>
+        <name>IsInitialized</name>
+        <qualifiedname>CoreAudioMidiOutDevice::IsInitialized</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/macos/midiout_device_coreaudio.h" line="36" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Plays MIDI through the Apple&apos;s AudioToolbox </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>CoreAudioMidiOutDevice</label>
+        <link refid="class_core_audio_midi_out_device"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MidiDecoder</label>
+        <link refid="class_midi_decoder"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>CoreAudioMidiOutDevice</label>
+        <link refid="class_core_audio_midi_out_device"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MidiDecoder</label>
+        <link refid="class_midi_decoder"/>
+      </node>
+    </collaborationgraph>
+    <location file="platform/macos/midiout_device_coreaudio.h" line="27" column="1" bodyfile="platform/macos/midiout_device_coreaudio.h" bodystart="27" bodyend="42"/>
+    <listofallmembers>
+      <member refid="class_midi_decoder_1a03c883f6c10808ce7f95559018eb9f07" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>ChangeFluidsynthSoundfont</name></member>
+      <member refid="class_midi_decoder_1a3df91771d3a83c4d52c5706af9619fa7" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>CheckFluidsynth</name></member>
+      <member refid="class_midi_decoder_1a9beb09513b83be3c65ace1c700cb7b13" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>CheckWildMidi</name></member>
+      <member refid="class_core_audio_midi_out_device_1a7630468d841e76134dc6250ee067170e" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>CoreAudioMidiOutDevice</name></member>
+      <member refid="class_midi_decoder_1aea38a9c8766ad49ee47cd509b71889f3" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>Create</name></member>
+      <member refid="class_midi_decoder_1ab90e4f43be463ff0f045f320569d6d3f" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>CreateFluidsynth</name></member>
+      <member refid="class_midi_decoder_1a1bfc000db967fff83a03b9737ae22571" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>CreateFmMidi</name></member>
+      <member refid="class_midi_decoder_1ac027fd25d15a3eab594f85448c3e9aac" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>CreateWildMidi</name></member>
+      <member refid="class_midi_decoder_1a9b662741035e2a82a9b7e2aa9a406bd8" prot="public" virt="virtual"><scope>CoreAudioMidiOutDevice</scope><name>FillBuffer</name></member>
+      <member refid="class_midi_decoder_1a4cc4e1c89b089d4ebeaab82d89a8332c" prot="protected" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>frequency</name></member>
+      <member refid="class_midi_decoder_1a6417064ebe5f3b42299facc0b54f341b" prot="public" virt="virtual"><scope>CoreAudioMidiOutDevice</scope><name>GetFormat</name></member>
+      <member refid="class_core_audio_midi_out_device_1aab885a27841f4e6f364a1e56a26cd529" prot="public" virt="virtual"><scope>CoreAudioMidiOutDevice</scope><name>GetName</name></member>
+      <member refid="class_core_audio_midi_out_device_1ae3f71141ceb4ecd3ccc0b0ebcdfd9e3f" prot="private" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>graph</name></member>
+      <member refid="class_core_audio_midi_out_device_1a5a5c8626a917ffed327eaba2ec642d77" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>IsInitialized</name></member>
+      <member refid="class_core_audio_midi_out_device_1ab6c6d39b6da1335eec5c3117e2a30cb8" prot="private" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>midi_out</name></member>
+      <member refid="class_midi_decoder_1a9111f9360e9afe04c4a36e1fb45181e2" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>MidiDecoder</name></member>
+      <member refid="class_midi_decoder_1a282d792c6c08f01e8980bae08bc9be90" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>MidiDecoder</name></member>
+      <member refid="class_midi_decoder_1a83eb8eec90b545be05f4d5506d22a3cd" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>MidiDecoder</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>MidiEvent</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92aefb0f519c3e8dacf7f5e687d0d27c4a6" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>MidiEvent_ChannelPressure</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92adea32a25b2d36ebbfe69c3efac1e1501" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>MidiEvent_Controller</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92ab3c25e6206ee22d077812a5a3b94a211" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>MidiEvent_KeyPressure</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a27cba7e4508b870ae8ea80ca162c4433" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>MidiEvent_NoteOff</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a53a94fde6f981169615b7d5427cccb78" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>MidiEvent_NoteOn</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92aa1ff6af7ff6c70ca07022bf620b3ccd3" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>MidiEvent_PitchBend</name></member>
+      <member refid="class_midi_decoder_1aca140555320c9af77b4751b5504efe92a3509a9d33ea0da16a480395a0ee4af5e" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>MidiEvent_ProgramChange</name></member>
+      <member refid="class_core_audio_midi_out_device_1a2ece989795acb2be194047fd5514ff9a" prot="public" virt="virtual"><scope>CoreAudioMidiOutDevice</scope><name>NeedsSoftReset</name></member>
+      <member refid="class_midi_decoder_1a6806f9b6c94b9275b4495d8466692b4a" prot="public" virt="virtual"><scope>CoreAudioMidiOutDevice</scope><name>OnNewMidi</name></member>
+      <member refid="class_midi_decoder_1a622decc74141fffbb272c8be23af0215" prot="public" virt="virtual"><scope>CoreAudioMidiOutDevice</scope><name>Open</name></member>
+      <member refid="class_midi_decoder_1a463917459cc34a694f53c50b9e00f267" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>operator=</name></member>
+      <member refid="class_midi_decoder_1a4b5c64f6f1256d07812614519240a6bb" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>operator=</name></member>
+      <member refid="class_midi_decoder_1aa4c0f006466de50a3f7c84460cf0f1ea" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>Reset</name></member>
+      <member refid="class_midi_decoder_1abad45713922fef863804905572041ef0" prot="public" virt="virtual"><scope>CoreAudioMidiOutDevice</scope><name>Seek</name></member>
+      <member refid="class_core_audio_midi_out_device_1abfb4862c9bad9699b5275acc665b2554" prot="public" virt="virtual"><scope>CoreAudioMidiOutDevice</scope><name>SendMidiMessage</name></member>
+      <member refid="class_core_audio_midi_out_device_1a865f7f485433cb31a040af8db66dbba9" prot="public" virt="virtual"><scope>CoreAudioMidiOutDevice</scope><name>SendSysExMessage</name></member>
+      <member refid="class_midi_decoder_1aecab4ef828716841e2c6f5468a734961" prot="public" virt="virtual"><scope>CoreAudioMidiOutDevice</scope><name>SetFormat</name></member>
+      <member refid="class_midi_decoder_1ab492d527453d3b8513c2e7c2cb34b237" prot="public" virt="virtual"><scope>CoreAudioMidiOutDevice</scope><name>SetPitch</name></member>
+      <member refid="class_midi_decoder_1a07adfc534e13ab8dabac2ca2abf68676" prot="public" virt="virtual"><scope>CoreAudioMidiOutDevice</scope><name>SupportsMidiMessages</name></member>
+      <member refid="class_core_audio_midi_out_device_1a49a964295ea2e5d2f7714652f2e268fb" prot="private" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>works</name></member>
+      <member refid="class_core_audio_midi_out_device_1a599fcc80fca1313cb3b7217d7fbb72c8" prot="public" virt="non-virtual"><scope>CoreAudioMidiOutDevice</scope><name>~CoreAudioMidiOutDevice</name></member>
+      <member refid="class_midi_decoder_1a62bb942c2ce3a52b4f8903b80bb94065" prot="public" virt="virtual"><scope>CoreAudioMidiOutDevice</scope><name>~MidiDecoder</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,1398 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_file_finder" kind="namespace" language="C++">
+    <compoundname>FileFinder</compoundname>
+    <innerclass refid="struct_file_finder_1_1_game_entry" prot="public">FileFinder::GameEntry</innerclass>
+    <innerclass refid="struct_file_finder_1_1_fs_entry" prot="public">FileFinder::FsEntry</innerclass>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_file_finder_1a428f945a3463676f892b1c6890319a35" prot="public" static="no" strong="no">
+        <type></type>
+        <name>ProjectType</name>
+        <qualifiedname>FileFinder::ProjectType</qualifiedname>
+        <enumvalue id="namespace_file_finder_1a428f945a3463676f892b1c6890319a35a813ee66d1ad62366b59f3ec04d4d3b39" prot="public">
+          <name>Unknown</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_file_finder_1a428f945a3463676f892b1c6890319a35a2541ebb3d65384b651b5269fa25b1ef0" prot="public">
+          <name>Supported</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_file_finder_1a428f945a3463676f892b1c6890319a35a1c3f0f048e0938bbf029a3c0a3779a36" prot="public">
+          <name>RpgMakerXp</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_file_finder_1a428f945a3463676f892b1c6890319a35a6eab67f679ba6c65cd8e2a95c862d177" prot="public">
+          <name>RpgMakerVx</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_file_finder_1a428f945a3463676f892b1c6890319a35aa087f37b50aa2f2ca8842c51eb1c33d4" prot="public">
+          <name>RpgMakerVxAce</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_file_finder_1a428f945a3463676f892b1c6890319a35a0d89d197945340ee929e6d0e9a66df31" prot="public">
+          <name>RpgMakerMvMz</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_file_finder_1a428f945a3463676f892b1c6890319a35a5099233f590def5acd1b3373e78ece1c" prot="public">
+          <name>WolfRpgEditor</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_file_finder_1a428f945a3463676f892b1c6890319a35a9fa5f54692ce15d10c1457f138b5875e" prot="public">
+          <name>Encrypted2k3Maniacs</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_file_finder_1a428f945a3463676f892b1c6890319a35a998eb101ee56c1bd908d4179954c9022" prot="public">
+          <name>RpgMaker95</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_file_finder_1a428f945a3463676f892b1c6890319a35af0452780c0a622c39d6b05c2aea0775a" prot="public">
+          <name>SimRpgMaker95</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Type of the project. Used to differentiate between supported games (2kX or EasyRPG) and known but unsupported (i.e. newer RPG Makers). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="54" column="1" bodyfile="filefinder.h" bodystart="54" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_file_finder_1ae0bc5bc2f2fd71b6ea058bef335b84c9" prot="public" static="no" strong="no">
+        <type></type>
+        <name>KnownFileSize</name>
+        <qualifiedname>FileFinder::KnownFileSize</qualifiedname>
+        <enumvalue id="namespace_file_finder_1ae0bc5bc2f2fd71b6ea058bef335b84c9a0ba60323b1d849afe707b9846a4e7d6d" prot="public">
+          <name>OFFICIAL_HARMONY_DLL</name>
+          <initializer>= 473600</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Known file sizes </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="361" column="1" bodyfile="filefinder.h" bodystart="361" bodyend="363"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_file_finder_1a7f8223d5d7fe0474bd78ee0b5947efe8" prot="public" static="no" strong="no">
+        <type></type>
+        <name>RpgrtMajorUpdateThreshold</name>
+        <qualifiedname>FileFinder::RpgrtMajorUpdateThreshold</qualifiedname>
+        <enumvalue id="namespace_file_finder_1a7f8223d5d7fe0474bd78ee0b5947efe8a90104eb0f50c669cba89c0cc0d8e5480" prot="public">
+          <name>RPG2K</name>
+          <initializer>= 735000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_file_finder_1a7f8223d5d7fe0474bd78ee0b5947efe8a32492fef7517eac667cd1be26a6452fe" prot="public">
+          <name>RPG2K3</name>
+          <initializer>= 927000</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>RPG_RT.exe file size thresholds</para>
+<para>2k v1.51 (Japanese) : 746496 2k v1.50 (Japanese) : 745984 <ndash/> threshold (2k) <ndash/> : 735000 2k v1.10 (Japanese) : 726016</para>
+<para>2k3 v1.09a (Japanese) : 950784 2k3 v1.06 (Japanese) : 949248 2k3 v1.05 (Japanese) : unknown <ndash/> threshold (2k3) <ndash/> : 927000 2k3 v1.04 (Japanese) : 913408 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="385" column="1" bodyfile="filefinder.h" bodystart="385" bodyend="388"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_file_finder_1a2c07f6ffacf1f02201354328f0fab52e" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const auto</type>
+        <definition>const auto FileFinder::IMG_TYPES</definition>
+        <argsstring></argsstring>
+        <name>IMG_TYPES</name>
+        <qualifiedname>FileFinder::IMG_TYPES</qualifiedname>
+        <initializer>= <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(&quot;.bmp&quot;, &quot;.png&quot;, &quot;.xyz&quot;)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="42" column="22" bodyfile="filefinder.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_file_finder_1a5bc07470995d5dfdcce18b36bd5dbefa" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const auto</type>
+        <definition>const auto FileFinder::MUSIC_TYPES</definition>
+        <argsstring></argsstring>
+        <name>MUSIC_TYPES</name>
+        <qualifiedname>FileFinder::MUSIC_TYPES</qualifiedname>
+        <initializer>                     = <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(
+&quot;.opus&quot;, &quot;.oga&quot;, &quot;.ogg&quot;, &quot;.wav&quot;, &quot;.mid&quot;, &quot;.midi&quot;, &quot;.mp3&quot;, &quot;.wma&quot;)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="43" column="22" bodyfile="filefinder.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_file_finder_1af55c33512deb42634c3148a1192c0979" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const auto</type>
+        <definition>const auto FileFinder::SOUND_TYPES</definition>
+        <argsstring></argsstring>
+        <name>SOUND_TYPES</name>
+        <qualifiedname>FileFinder::SOUND_TYPES</qualifiedname>
+        <initializer>                     = <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(
+&quot;.opus&quot;, &quot;.oga&quot;, &quot;.ogg&quot;, &quot;.wav&quot;, &quot;.mp3&quot;, &quot;.wma&quot;)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="45" column="22" bodyfile="filefinder.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_file_finder_1ac8ba10efef8386363b71e15675147019" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const auto</type>
+        <definition>const auto FileFinder::FONTS_TYPES</definition>
+        <argsstring></argsstring>
+        <name>FONTS_TYPES</name>
+        <qualifiedname>FileFinder::FONTS_TYPES</qualifiedname>
+        <initializer>= <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(&quot;.fon&quot;, &quot;.fnt&quot;, &quot;.bdf&quot;, &quot;.ttf&quot;, &quot;.ttc&quot;, &quot;.otf&quot;, &quot;.woff2&quot;, &quot;.woff&quot;)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="47" column="22" bodyfile="filefinder.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_file_finder_1a0650a420319499e5fe7a4a748971678e" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const auto</type>
+        <definition>const auto FileFinder::TEXT_TYPES</definition>
+        <argsstring></argsstring>
+        <name>TEXT_TYPES</name>
+        <qualifiedname>FileFinder::TEXT_TYPES</qualifiedname>
+        <initializer>= <ref refid="namespace_utils_1a669ca908bf054812942d50cce2c98fa2" kindref="member">Utils::MakeSvArray</ref>(&quot;.txt&quot;, &quot;.csv&quot;, &quot;&quot;)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="48" column="22" bodyfile="filefinder.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_file_finder_1ac949ac951251536f6f853a0c8e57872f" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>auto</type>
+        <definition>auto FileFinder::kProjectType</definition>
+        <argsstring></argsstring>
+        <name>kProjectType</name>
+        <qualifiedname>FileFinder::kProjectType</qualifiedname>
+        <initializer>                        = lcf::makeEnumTags&lt;<ref refid="namespace_file_finder_1a428f945a3463676f892b1c6890319a35" kindref="member">ProjectType</ref>&gt;(
+    &quot;Unknown&quot;,
+    &quot;Supported&quot;,
+    &quot;RPG Maker XP&quot;,
+    &quot;RPG Maker VX&quot;,
+    &quot;RPG Maker VX Ace&quot;,
+    &quot;RPG Maker MV/MZ&quot;,
+    &quot;Wolf RPG Editor&quot;,
+    &quot;Encrypted 2k3MP&quot;,
+    &quot;RPG Maker 95&quot;,
+    &quot;Sim RPG Maker 95&quot;
+)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="69" column="16" bodyfile="filefinder.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_file_finder_1a6ec1919694ca3f87d04397df238063d6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void FileFinder::Quit</definition>
+        <argsstring>()</argsstring>
+        <name>Quit</name>
+        <qualifiedname>FileFinder::Quit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Quits <ref refid="namespace_file_finder" kindref="compound">FileFinder</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="101" column="6" bodyfile="filefinder.cpp" bodystart="293" bodyend="295" declfile="filefinder.h" declline="101" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a0cd8859916ec624e3c39672f3646cce2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+        <definition>FilesystemView FileFinder::Root</definition>
+        <argsstring>()</argsstring>
+        <name>Root</name>
+        <qualifiedname>FileFinder::Root</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A filesystem handle for arbitrary file access inside the host filesystem </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="104" column="16" bodyfile="filefinder.cpp" bodystart="133" bodyend="139" declfile="filefinder.h" declline="104" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a61591fb755d88f0c37a3bd804bf0af92" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+        <definition>FilesystemView FileFinder::Game</definition>
+        <argsstring>()</argsstring>
+        <name>Game</name>
+        <qualifiedname>FileFinder::Game</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A filesystem handle for file access inside the game directory </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="107" column="16" bodyfile="filefinder.cpp" bodystart="66" bodyend="68" declfile="filefinder.h" declline="107" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1ad086654646f86d7dec6bed88307a82b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void FileFinder::SetGameFilesystem</definition>
+        <argsstring>(FilesystemView filesystem)</argsstring>
+        <name>SetGameFilesystem</name>
+        <qualifiedname>FileFinder::SetGameFilesystem</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+          <declname>filesystem</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the game filesystem.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>filesystem</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Game filesystem to use. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="114" column="6" bodyfile="filefinder.cpp" bodystart="70" bodyend="72" declfile="filefinder.h" declline="114" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1afb22dd1b2c3627f81970492c4c0a765b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+        <definition>FilesystemView FileFinder::Save</definition>
+        <argsstring>()</argsstring>
+        <name>Save</name>
+        <qualifiedname>FileFinder::Save</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>A filesystem handle for file access inside the save directory. Do not expect that this is the same as the game filesystem. The path is based on Main_Data::SavePath but could be redirected when the path is not writable because the filesystem does not support it.</para>
+<para><simplesect kind="return"><para>Save filesystem handle </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="124" column="16" bodyfile="filefinder.cpp" bodystart="74" bodyend="127" declfile="filefinder.h" declline="124" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a57397990d206428071cc0d9d36ddd6b9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void FileFinder::SetSaveFilesystem</definition>
+        <argsstring>(FilesystemView filesystem)</argsstring>
+        <name>SetSaveFilesystem</name>
+        <qualifiedname>FileFinder::SetSaveFilesystem</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+          <declname>filesystem</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the save filesystem.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>filesystem</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Save filesystem to use. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="131" column="6" bodyfile="filefinder.cpp" bodystart="129" bodyend="131" declfile="filefinder.h" declline="131" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a22439a4897f492de7218c7dd35e4a58d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string FileFinder::FindImage</definition>
+        <argsstring>(std::string_view dir, std::string_view name)</argsstring>
+        <name>FindImage</name>
+        <qualifiedname>FileFinder::FindImage</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>dir</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Finds an image file in the current RPG Maker game.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dir</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>directory to check. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>image file name to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>path to file. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="140" column="13" bodyfile="filefinder.cpp" bodystart="443" bodyend="446" declfile="filefinder.h" declline="140" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a4cabdc80038b2e5ca610f517ab898a24" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string FileFinder::FindMusic</definition>
+        <argsstring>(std::string_view name)</argsstring>
+        <name>FindMusic</name>
+        <qualifiedname>FileFinder::FindMusic</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Finds a music file in the current RPG Maker game.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the music path and name. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>path to file. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="148" column="13" bodyfile="filefinder.cpp" bodystart="448" bodyend="452" declfile="filefinder.h" declline="148" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a152992fdd37baffead82ab05b4a2386c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string FileFinder::FindSound</definition>
+        <argsstring>(std::string_view name)</argsstring>
+        <name>FindSound</name>
+        <qualifiedname>FileFinder::FindSound</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Finds a sound file in the current RPG Maker game.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the sound path and name. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>path to file. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="156" column="13" bodyfile="filefinder.cpp" bodystart="454" bodyend="457" declfile="filefinder.h" declline="156" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1af36e2db9de8514dbb1dcb9fd6120338b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string FileFinder::FindFont</definition>
+        <argsstring>(std::string_view name)</argsstring>
+        <name>FindFont</name>
+        <qualifiedname>FileFinder::FindFont</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Finds a font file. Searches through the current RPG Maker game and the <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> directories.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the font name. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>path to file. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="165" column="13" bodyfile="filefinder.cpp" bodystart="459" bodyend="462" declfile="filefinder.h" declline="165" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a802d40fc0547a6d90b9a267409a3f136" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream FileFinder::OpenImage</definition>
+        <argsstring>(std::string_view dir, std::string_view name)</argsstring>
+        <name>OpenImage</name>
+        <qualifiedname>FileFinder::OpenImage</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>dir</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Finds an image file and opens a file handle to it. Searches through the current RPG Maker game and the <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> directories.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dir</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>directory to check. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>image file name to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>read handle on success or invalid handle if not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="175" column="32" bodyfile="filefinder.cpp" bodystart="501" bodyend="504" declfile="filefinder.h" declline="175" declcolumn="32"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1af5e6d8b0f7e410323ee3641845156f66" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream FileFinder::OpenMusic</definition>
+        <argsstring>(std::string_view name)</argsstring>
+        <name>OpenMusic</name>
+        <qualifiedname>FileFinder::OpenMusic</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Finds a music file and opens a file handle to it. Searches through the Music folder of the current RPG Maker game and the <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> directories.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the music path and name. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>read handle on success or invalid handle if not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="185" column="32" bodyfile="filefinder.cpp" bodystart="506" bodyend="509" declfile="filefinder.h" declline="185" declcolumn="32"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a63728182a069a7464baaded58f7aff99" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream FileFinder::OpenSound</definition>
+        <argsstring>(std::string_view name)</argsstring>
+        <name>OpenSound</name>
+        <qualifiedname>FileFinder::OpenSound</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Finds a sound file and opens a file handle to it. Searches through the Sound folder of the current RPG Maker game and the <ref refid="namespace_r_t_p" kindref="compound">RTP</ref> directories.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the sound path and name. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>read handle on success or invalid handle if not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="195" column="32" bodyfile="filefinder.cpp" bodystart="511" bodyend="514" declfile="filefinder.h" declline="195" declcolumn="32"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a8e2696b74148966b3346e624c6946030" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream FileFinder::OpenFont</definition>
+        <argsstring>(std::string_view name)</argsstring>
+        <name>OpenFont</name>
+        <qualifiedname>FileFinder::OpenFont</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Finds a font file and opens a file handle to it. Searches through the <ref refid="class_font" kindref="compound">Font</ref> folder of the current RPG Maker game.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the font path and name. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>read handle on success or invalid handle if not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="204" column="32" bodyfile="filefinder.cpp" bodystart="516" bodyend="519" declfile="filefinder.h" declline="204" declcolumn="32"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1ad07d050f0b0fd9cbe1f8bcd680d5cb4f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream FileFinder::OpenText</definition>
+        <argsstring>(std::string_view name)</argsstring>
+        <name>OpenText</name>
+        <qualifiedname>FileFinder::OpenText</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Finds a text file and opens a file handle to it. Searches through the <ref refid="namespace_text" kindref="compound">Text</ref> folder of the current RPG Maker game. Will also search through the directory save files are written to as a fallback, as it needs to account for files written by the game as well.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the text path and name. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>read handle on success or invalid handle if not found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="215" column="32" bodyfile="filefinder.cpp" bodystart="521" bodyend="524" declfile="filefinder.h" declline="215" declcolumn="32"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a1bb2791576cc7c8947a827d1c35342f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void FileFinder::WriteText</definition>
+        <argsstring>(std::string_view name, std::string_view data)</argsstring>
+        <name>WriteText</name>
+        <qualifiedname>FileFinder::WriteText</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Writes data to a txt file. If the file exists, it will be overwritten.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the text file path and name </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the content of the text file to be written </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="224" column="6" declfile="filefinder.h" declline="224" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a4fd812bde01ba517d506ff2b5ccb1821" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string FileFinder::MakePath</definition>
+        <argsstring>(std::string_view dir, std::string_view name)</argsstring>
+        <name>MakePath</name>
+        <qualifiedname>FileFinder::MakePath</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>dir</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Appends name to directory.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dir</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>base directory. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>file name to be appended to dir. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>combined path </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="233" column="13" bodyfile="filefinder.cpp" bodystart="141" bodyend="156" declfile="filefinder.h" declline="233" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a8ded9500141b4bcce2b7f6d7eb36359d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::string</type>
+        <definition>std::string FileFinder::MakePath</definition>
+        <argsstring>(lcf::Span&lt; T &gt; components)</argsstring>
+        <name>MakePath</name>
+        <qualifiedname>FileFinder::MakePath</qualifiedname>
+        <param>
+          <type>lcf::Span&lt; T &gt;</type>
+          <declname>components</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates a path out of multiple components</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to join </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="241" column="13" bodyfile="filefinder.h" bodystart="417" bodyend="423" declfile="filefinder.h" declline="241" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a649f8f8b3d4b37a6758c5bb9ca9333b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string FileFinder::MakeCanonical</definition>
+        <argsstring>(std::string_view path, int initial_deepness=-1)</argsstring>
+        <name>MakeCanonical</name>
+        <qualifiedname>FileFinder::MakeCanonical</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>initial_deepness</declname>
+          <defval>-1</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Converts a path to the canonical equivalent. This generates a path that does not contain &quot;..&quot; or &quot;.&quot; directories.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to normalize </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>initial_deepness</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>How deep the passed path is relative to the game root </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>canonical path </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="251" column="13" bodyfile="filefinder.cpp" bodystart="158" bodyend="202" declfile="filefinder.h" declline="251" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1adefd174880c3d809105f0865f68ffcbe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt; std::string &gt; FileFinder::SplitPath</definition>
+        <argsstring>(std::string_view path)</argsstring>
+        <name>SplitPath</name>
+        <qualifiedname>FileFinder::SplitPath</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Splits a path in it&apos;s components.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to split </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Vector containing path components </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="259" column="13" bodyfile="filefinder.cpp" bodystart="204" bodyend="217" declfile="filefinder.h" declline="259" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1af59e3745d6d049b996edd3c1b8a2faea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::pair&lt; std::string, std::string &gt;</type>
+        <definition>std::pair&lt; std::string, std::string &gt; FileFinder::GetPathAndFilename</definition>
+        <argsstring>(std::string_view path)</argsstring>
+        <name>GetPathAndFilename</name>
+        <qualifiedname>FileFinder::GetPathAndFilename</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Splits a path into path and filename.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to split </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pair containing dir and name </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="267" column="11" bodyfile="filefinder.cpp" bodystart="219" bodyend="245" declfile="filefinder.h" declline="267" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a78f7367a3817d8dd2934e41399c1e8e0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void FileFinder::ConvertPathDelimiters</definition>
+        <argsstring>(std::string &amp;path)</argsstring>
+        <name>ConvertPathDelimiters</name>
+        <qualifiedname>FileFinder::ConvertPathDelimiters</qualifiedname>
+        <param>
+          <type>std::string &amp;</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Converts all path delimiters to the platform delimiters. \ on Windows, / on others.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>to convert </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="275" column="6" bodyfile="filefinder.cpp" bodystart="247" bodyend="261" declfile="filefinder.h" declline="275" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1addd028b2b118e1db78aad572152e0b88" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string FileFinder::GetPathInsidePath</definition>
+        <argsstring>(std::string_view path_to, std::string_view path_in)</argsstring>
+        <name>GetPathInsidePath</name>
+        <qualifiedname>FileFinder::GetPathInsidePath</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>path_to</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>path_in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the part of &quot;path_in&quot; that is inside &quot;path_to&quot;. e.g. <ref refid="namespace_input" kindref="compound">Input</ref>: /h/e/game, /h/e/game/Music/a.wav; <ref refid="namespace_output" kindref="compound">Output</ref>: Music/a.wav</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path_to</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path to a primary folder of path_in </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>path_in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Absolute path to the file, must start with path_to</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The part of path_in that is inside path_to. path_in when the path is not in path_to </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="286" column="13" bodyfile="filefinder.cpp" bodystart="263" bodyend="274" declfile="filefinder.h" declline="286" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a8f72e879ab3890a43af01bba334f6821" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string FileFinder::GetPathInsideGamePath</definition>
+        <argsstring>(std::string_view path_in)</argsstring>
+        <name>GetPathInsideGamePath</name>
+        <qualifiedname>FileFinder::GetPathInsideGamePath</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>path_in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return the part of &quot;path_in&quot; that is inside the current games directory.</para>
+<para><simplesect kind="see"><para><ref refid="namespace_file_finder_1addd028b2b118e1db78aad572152e0b88" kindref="member">GetPathInsidePath</ref> </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path_in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An absolute path inside the game directory </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The part of path_in that is inside the game directory, path_in when it&apos;s not in the directory </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="295" column="13" bodyfile="filefinder.cpp" bodystart="276" bodyend="278" declfile="filefinder.h" declline="295" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a7c8cedf047074a322d5cbfe2f2172d16" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FileFinder::IsSupportedArchiveExtension</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>IsSupportedArchiveExtension</name>
+        <qualifiedname>FileFinder::IsSupportedArchiveExtension</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks whether a passed path ends with a supported extension for an archive, e.g. &quot;.zip&quot;</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>path to check </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true when the path ends on an archive extension </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="303" column="6" bodyfile="filefinder.cpp" bodystart="280" bodyend="291" declfile="filefinder.h" declline="303" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1aa1f686ec1e2720c277465b4d8ed1601e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FileFinder::IsValidProject</definition>
+        <argsstring>(const FilesystemView &amp;fs)</argsstring>
+        <name>IsValidProject</name>
+        <qualifiedname>FileFinder::IsValidProject</qualifiedname>
+        <param>
+          <type>const <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> &amp;</type>
+          <declname>fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>p</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>fs Tree to check </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the tree contains a valid RPG2k(3) or EasyRPG project </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="309" column="6" bodyfile="filefinder.cpp" bodystart="297" bodyend="299" declfile="filefinder.h" declline="309" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1af2b2af0b4357f8ebce88e2f62c648a72" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FileFinder::IsRPG2kProject</definition>
+        <argsstring>(const FilesystemView &amp;fs)</argsstring>
+        <name>IsRPG2kProject</name>
+        <qualifiedname>FileFinder::IsRPG2kProject</qualifiedname>
+        <param>
+          <type>const <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> &amp;</type>
+          <declname>fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>p</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>fs Tree to check </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the tree contains a valid RPG2k(3) project </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="315" column="6" bodyfile="filefinder.cpp" bodystart="301" bodyend="304" declfile="filefinder.h" declline="315" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1aaf580f4db72d832d99c027a2c21b427d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FileFinder::IsEasyRpgProject</definition>
+        <argsstring>(const FilesystemView &amp;fs)</argsstring>
+        <name>IsEasyRpgProject</name>
+        <qualifiedname>FileFinder::IsEasyRpgProject</qualifiedname>
+        <param>
+          <type>const <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> &amp;</type>
+          <declname>fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>p</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>fs Tree to check </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Whether the tree contains a valid EasyRPG project </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="321" column="6" bodyfile="filefinder.cpp" bodystart="306" bodyend="309" declfile="filefinder.h" declline="321" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a4cc847abb62d04095f9a98f87527574f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FileFinder::IsRPG2kProjectWithRenames</definition>
+        <argsstring>(const FilesystemView &amp;fs)</argsstring>
+        <name>IsRPG2kProjectWithRenames</name>
+        <qualifiedname>FileFinder::IsRPG2kProjectWithRenames</qualifiedname>
+        <param>
+          <type>const <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> &amp;</type>
+          <declname>fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines if the directory in question represents an RPG2k project with non-standard database, map tree, or map file names.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory tree in question </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if this is likely an RPG2k project; false otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="330" column="6" bodyfile="filefinder.cpp" bodystart="311" bodyend="313" declfile="filefinder.h" declline="330" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a0dda23c3e68d76abccacd6928b83c5ea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespace_file_finder_1a428f945a3463676f892b1c6890319a35" kindref="member">ProjectType</ref></type>
+        <definition>FileFinder::ProjectType FileFinder::GetProjectType</definition>
+        <argsstring>(const FilesystemView &amp;fs)</argsstring>
+        <name>GetProjectType</name>
+        <qualifiedname>FileFinder::GetProjectType</qualifiedname>
+        <param>
+          <type>const <ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> &amp;</type>
+          <declname>fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>p</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>fs Tree to check </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Project type whether the tree contains a supported project type, known but unsupported engines, or something unknown </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="336" column="13" bodyfile="filefinder.cpp" bodystart="315" bodyend="359" declfile="filefinder.h" declline="336" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a558b3d5c43e1807b9035db8017e59aac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FileFinder::OpenViewToEasyRpgFile</definition>
+        <argsstring>(FilesystemView &amp;fs)</argsstring>
+        <name>OpenViewToEasyRpgFile</name>
+        <qualifiedname>FileFinder::OpenViewToEasyRpgFile</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref> &amp;</type>
+          <declname>fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines if the directory contains a single file/directory ending in &quot;.easyrpg&quot; for use in the autostart feature.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory tree to check. Is replaced with a view to the game for autorun. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true when autorun is possible, fs contains the new view; when false fs is not modified </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="345" column="6" bodyfile="filefinder.cpp" bodystart="361" bodyend="393" declfile="filefinder.h" declline="345" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1aebb2a968be27f43051fb87f176a71a0d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FileFinder::HasSavegame</definition>
+        <argsstring>()</argsstring>
+        <name>HasSavegame</name>
+        <qualifiedname>FileFinder::HasSavegame</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks whether the save directory contains any savegame with name SaveXX.lsd (XX from 00 to 15).</para>
+<para><simplesect kind="return"><para>If directory tree contains a savegame </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="353" column="6" bodyfile="filefinder.cpp" bodystart="395" bodyend="397" declfile="filefinder.h" declline="353" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a218598f16d366202fd5e8c46915d4454" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int FileFinder::GetSavegames</definition>
+        <argsstring>()</argsstring>
+        <name>GetSavegames</name>
+        <qualifiedname>FileFinder::GetSavegames</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Amount of savegames in the save directory </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="356" column="5" bodyfile="filefinder.cpp" bodystart="399" bodyend="412" declfile="filefinder.h" declline="356" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a1a8a308c23be3103405ab0f9330ebf6c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FileFinder::IsMajorUpdatedTree</definition>
+        <argsstring>()</argsstring>
+        <name>IsMajorUpdatedTree</name>
+        <qualifiedname>FileFinder::IsMajorUpdatedTree</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks whether the game is created with RPG2k &gt;= 1.50 or RPG2k3 &gt;= 1.05.</para>
+<para><simplesect kind="return"><para>true if RPG2k &gt;= 1.50 or RPG2k3 &gt;= 1.05, otherwise false. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="370" column="6" bodyfile="filefinder.cpp" bodystart="526" bodyend="572" declfile="filefinder.h" declline="370" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a7068e2d8bcbe62ac8c85613f21a29160" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string FileFinder::GetFullFilesystemPath</definition>
+        <argsstring>(FilesystemView fs)</argsstring>
+        <name>GetFullFilesystemPath</name>
+        <qualifiedname>FileFinder::GetFullFilesystemPath</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+          <declname>fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Utility function for getting a complete filesystem path.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_filesystem" kindref="compound">Filesystem</ref> to use </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>complete path </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="396" column="13" bodyfile="filefinder.cpp" bodystart="574" bodyend="582" declfile="filefinder.h" declline="396" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1aaf23d238a1188f785967e595fe359f49" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void FileFinder::DumpFilesystem</definition>
+        <argsstring>(FilesystemView fs)</argsstring>
+        <name>DumpFilesystem</name>
+        <qualifiedname>FileFinder::DumpFilesystem</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+          <declname>fs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Utility function for debug printing of a filesystem path.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_filesystem" kindref="compound">Filesystem</ref> to use </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="403" column="6" bodyfile="filefinder.cpp" bodystart="584" bodyend="591" declfile="filefinder.h" declline="403" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_file_finder_1a8266baba5c3aa00676618b082839dbba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="struct_file_finder_1_1_fs_entry" kindref="compound">FsEntry</ref> &gt;</type>
+        <definition>std::vector&lt; FileFinder::FsEntry &gt; FileFinder::FindGames</definition>
+        <argsstring>(FilesystemView fs, int recursion_limit=3, int game_limit=5)</argsstring>
+        <name>FindGames</name>
+        <qualifiedname>FileFinder::FindGames</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+          <declname>fs</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>recursion_limit</declname>
+          <defval>3</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>game_limit</declname>
+          <defval>5</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Searches recursively for game directories.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_filesystem" kindref="compound">Filesystem</ref> where the search starts </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>recursion_limit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Recursion depth </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>game_limit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Abort the search when this amount of games was found. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Vector of game entries (filesystem view + project type) found </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="413" column="13" bodyfile="filefinder.cpp" bodystart="593" bodyend="621" declfile="filefinder.h" declline="413" declcolumn="13"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="namespace_file_finder" kindref="compound">FileFinder</ref> contains helper methods for finding case insensitive files paths. </para>
+    </detaileddescription>
+    <location file="filefinder.h" line="41" column="1"/>
+  </compounddef>
+</doxygen>

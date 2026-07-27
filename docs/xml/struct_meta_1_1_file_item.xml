@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_meta_1_1_file_item" kind="struct" language="C++" prot="public">
+    <compoundname>Meta::FileItem</compoundname>
+    <includes refid="meta_8h" local="no">meta.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_meta_1_1_file_item_1a99f8033aadd2c87596668e49b0bdcf64" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Meta::FileItem::short_path</definition>
+        <argsstring></argsstring>
+        <name>short_path</name>
+        <qualifiedname>Meta::FileItem::short_path</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="71" column="13" bodyfile="meta.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_meta_1_1_file_item_1ae277c274e637108ec1eb5109c7e6562a" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Meta::FileItem::full_path</definition>
+        <argsstring></argsstring>
+        <name>full_path</name>
+        <qualifiedname>Meta::FileItem::full_path</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="72" column="13" bodyfile="meta.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_meta_1_1_file_item_1a8af179b6e055ba97fe105f73ebe6022d" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Meta::FileItem::file_id</definition>
+        <argsstring></argsstring>
+        <name>file_id</name>
+        <qualifiedname>Meta::FileItem::file_id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="meta.h" line="73" column="5" bodyfile="meta.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Small struct used for loading a list of potential import saves piecemeal </para>
+    </detaileddescription>
+    <location file="meta.h" line="70" column="1" bodyfile="meta.h" bodystart="70" bodyend="74"/>
+    <listofallmembers>
+      <member refid="struct_meta_1_1_file_item_1a8af179b6e055ba97fe105f73ebe6022d" prot="public" virt="non-virtual"><scope>Meta::FileItem</scope><name>file_id</name></member>
+      <member refid="struct_meta_1_1_file_item_1ae277c274e637108ec1eb5109c7e6562a" prot="public" virt="non-virtual"><scope>Meta::FileItem</scope><name>full_path</name></member>
+      <member refid="struct_meta_1_1_file_item_1a99f8033aadd2c87596668e49b0bdcf64" prot="public" virt="non-virtual"><scope>Meta::FileItem</scope><name>short_path</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

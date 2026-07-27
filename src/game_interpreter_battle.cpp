@@ -962,3 +962,4 @@ bool Game_Interpreter_Battle::CommandManiacGetBattleInfo(lcf::rpg::EventCommand 
 	return true;
 }
 
+

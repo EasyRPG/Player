@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="exfont_8h" kind="file" language="C++">
+    <compoundname>exfont.h</compoundname>
+    <includes local="no">stdint.h</includes>
+    <includedby refid="cache_8cpp" local="yes">cache.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>exfont.h</label>
+        <link refid="exfont_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>cache.cpp</label>
+        <link refid="cache_8cpp"/>
+      </node>
+      <node id="1">
+        <label>exfont.h</label>
+        <link refid="exfont_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="exfont_8h_1a738f1db5e302c2b87314ca69737f9591" prot="public" static="no">
+        <name>EP_EXFONT_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exfont.h" line="23" column="9" bodyfile="exfont.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="exfont_8h_1a68c02303666d84ca1075752f95014a8f" prot="public" static="no" mutable="no">
+        <type>const uint8_t</type>
+        <definition>const uint8_t exfont_h[]</definition>
+        <argsstring>[]</argsstring>
+        <name>exfont_h</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="exfont.h" line="27" column="15" bodyfile="exfont.h" bodystart="27" bodyend="95"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>default<sp/>EXFONT,<sp/>composed<sp/>by<sp/>filosofiamanga</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="comment">//<sp/>https://community.easyrpg.org/t/volunteer-for-exfont-replacement/56</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_EXFONT_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23" refid="exfont_8h_1a738f1db5e302c2b87314ca69737f9591" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_EXFONT_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27" refid="exfont_8h_1a68c02303666d84ca1075752f95014a8f" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t<sp/><ref refid="exfont_8h_1a68c02303666d84ca1075752f95014a8f" kindref="member">exfont_h</ref>[]<sp/>=<sp/>{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>0x89,<sp/>0x50,<sp/>0x4e,<sp/>0x47,<sp/>0x0d,<sp/>0x0a,<sp/>0x1a,<sp/>0x0a,<sp/>0x00,<sp/>0x00,<sp/>0x00,<sp/>0x0d,</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>0x49,<sp/>0x48,<sp/>0x44,<sp/>0x52,<sp/>0x00,<sp/>0x00,<sp/>0x00,<sp/>0x9c,<sp/>0x00,<sp/>0x00,<sp/>0x00,<sp/>0x30,</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>0x01,<sp/>0x00,<sp/>0x00,<sp/>0x00,<sp/>0x00,<sp/>0xcc,<sp/>0x1d,<sp/>0x2e,<sp/>0x75,<sp/>0x00,<sp/>0x00,<sp/>0x02,</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/>0xe6,<sp/>0x49,<sp/>0x44,<sp/>0x41,<sp/>0x54,<sp/>0x78,<sp/>0xda,<sp/>0x7d,<sp/>0x91,<sp/>0x4f,<sp/>0x68,<sp/>0x13,</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>0x4b,<sp/>0x1c,<sp/>0xc7,<sp/>0xbf,<sp/>0xb3,<sp/>0x3b,<sp/>0x76,<sp/>0x97,<sp/>0x10,<sp/>0xf6,<sp/>0x4d,<sp/>0xfc,</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>0x1b,<sp/>0xc8,<sp/>0x62,<sp/>0xb6,<sp/>0xa1,<sp/>0x87,<sp/>0x16,<sp/>0x8a,<sp/>0x6d,<sp/>0x40,<sp/>0xa1,<sp/>0x60,</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>0x30,<sp/>0x93,<sp/>0x76,<sp/>0xad,<sp/>0xab,<sp/>0x94,<sp/>0xb4,<sp/>0x7a,<sp/>0x7a,<sp/>0x87,<sp/>0x82,<sp/>0x45,</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>0x83,<sp/>0x27,<sp/>0x2b,<sp/>0x95,<sp/>0x5e,<sp/>0x04,<sp/>0x8b,<sp/>0x8e,<sp/>0xdb,<sp/>0x8a,<sp/>0x41,<sp/>0x44,</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>0x9a,<sp/>0x83,<sp/>0x27,<sp/>0x2f,<sp/>0xb1,<sp/>0xc8,<sp/>0x3b,<sp/>0xe7,<sp/>0x41,<sp/>0x91,<sp/>0x1e,<sp/>0xa7,</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>0x2a,<sp/>0x0d,<sp/>0xef,<sp/>0xf2,<sp/>0x9e,<sp/>0x47,<sp/>0x29,<sp/>0x16,<sp/>0xc6,<sp/>0x1a,<sp/>0xe4,<sp/>0x1d,</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>0x44,<sp/>0xf7,<sp/>0xa0,<sp/>0x10,<sp/>0xb1,<sp/>0xb4,<sp/>0xce,<sp/>0x1a,<sp/>0x15,<sp/>0x0f,<sp/>0xea,<sp/>0x97,</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>0x61,<sp/>0xe6,<sp/>0xc7,<sp/>0x87,<sp/>0xdf,<sp/>0xcc,<sp/>0x7c,<sp/>0xbf,<sp/>0xfc,<sp/>0x20,<sp/>0xad,<sp/>0x2d,</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>0x0a,<sp/>0xee,<sp/>0x9a,<sp/>0x69,<sp/>0x80,<sp/>0x03,<sp/>0x60,<sp/>0x94,<sp/>0x56,<sp/>0x24,<sp/>0xea,<sp/>0x94,</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>0x26,<sp/>0xcc,<sp/>0x15,<sp/>0x4b,<sp/>0x28,<sp/>0x07,<sp/>0xdc,<sp/>0x5a,<sp/>0xb5,<sp/>0x99,<sp/>0x11,<sp/>0x68,</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>0x38,<sp/>0xb1,<sp/>0xeb,<sp/>0xfd,<sp/>0x4e,<sp/>0x8b,<sp/>0x1a,<sp/>0x25,<sp/>0x96,<sp/>0x22,<sp/>0x11,<sp/>0xd6,</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>0x16,<sp/>0xe7,<sp/>0x48,<sp/>0xa4,<sp/>0x61,<sp/>0xef,<sp/>0xcd,<sp/>0xe5,<sp/>0xeb,<sp/>0x4f,<sp/>0x63,<sp/>0xe8,</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>0x09,<sp/>0x4e,<sp/>0xf8,<sp/>0x62,<sp/>0xa7,<sp/>0x73,<sp/>0xef,<sp/>0xf1,<sp/>0xbd,<sp/>0xfb,<sp/>0xa8,<sp/>0x4f,</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>0x72,<sp/>0x81,<sp/>0x86,<sp/>0xd7,<sp/>0xf8,<sp/>0xe2,<sp/>0x01,<sp/>0xda,<sp/>0xd2,<sp/>0x30,<sp/>0x71,<sp/>0x7c,</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>0x39,<sp/>0x61,<sp/>0x2f,<sp/>0x19,<sp/>0xb9,<sp/>0x20,<sp/>0x05,<sp/>0xb5,<sp/>0xc6,<sp/>0x17,<sp/>0xd3,<sp/>0x37,</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>0xd8,<sp/>0x11,<sp/>0x81,<sp/>0x5d,<sp/>0x37,<sp/>0x97,<sp/>0x53,<sp/>0xd4,<sp/>0x37,<sp/>0x52,<sp/>0xcc,<sp/>0x21,</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>0x2c,<sp/>0x24,<sp/>0x8c,<sp/>0x0d,<sp/>0xdb,<sp/>0x59,<sp/>0xc0,<sp/>0x08,<sp/>0xff,<sp/>0x2f,<sp/>0xea,<sp/>0x37,</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>0xbb,<sp/>0x19,<sp/>0x35,<sp/>0xec,<sp/>0x90,<sp/>0x28,<sp/>0xf8,<sp/>0x94,<sp/>0x02,<sp/>0x7b,<sp/>0x4a,<sp/>0x13,</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>0xfa,<sp/>0xf7,<sp/>0x8b,<sp/>0x9e,<sp/>0x8a,<sp/>0x61,<sp/>0x97,<sp/>0x4b,<sp/>0x43,<sp/>0xbb,<sp/>0x28,<sp/>0x90,</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>0x94,<sp/>0x75,<sp/>0xed,<sp/>0x73,<sp/>0x70,<sp/>0x35,<sp/>0xca,<sp/>0x12,<sp/>0xb6,<sp/>0x06,<sp/>0x66,<sp/>0x12,</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>0x46,<sp/>0x01,<sp/>0x78,<sp/>0x5c,<sp/>0xdb,<sp/>0xfe,<sp/>0x03,<sp/>0x9c,<sp/>0x42,<sp/>0xcd,<sp/>0x81,<sp/>0x01,</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>0x3a,<sp/>0xc5,<sp/>0xcf,<sp/>0x75,<sp/>0xac,<sp/>0x73,<sp/>0x90,<sp/>0xe8,<sp/>0x47,<sp/>0x58,<sp/>0xb4,<sp/>0x5c,</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>0xd1,<sp/>0xdf,<sp/>0x55,<sp/>0x0c,<sp/>0xed,<sp/>0x47,<sp/>0x52,<sp/>0x3d,<sp/>0x42,<sp/>0x41,<sp/>0x3e,<sp/>0x0e,</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>0xe4,<sp/>0x14,<sp/>0x06,<sp/>0xab,<sp/>0x4b,<sp/>0x53,<sp/>0x4f,<sp/>0xda,<sp/>0xcf,<sp/>0x1f,<sp/>0xdb,<sp/>0xff,</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>0x74,<sp/>0x47,<sp/>0x27,<sp/>0x91,<sp/>0x2c,<sp/>0xfd,<sp/>0xb5,<sp/>0xee,<sp/>0x09,<sp/>0x0c,<sp/>0x06,<sp/>0x9b,</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>0xf9,<sp/>0x1b,<sp/>0x8d,<sp/>0xea,<sp/>0x39,<sp/>0x7b,<sp/>0x23,<sp/>0x67,<sp/>0x4f,<sp/>0xe3,<sp/>0xf0,<sp/>0x48,</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>0x5f,<sp/>0x4f,<sp/>0x06,<sp/>0x18,<sp/>0x5c,<sp/>0x68,<sp/>0x39,<sp/>0xa4,<sp/>0xf1,<sp/>0x3c,<sp/>0xd7,<sp/>0x81,</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>0x95,<sp/>0xd1,<sp/>0xa5,<sp/>0x40,<sp/>0xc3,<sp/>0x2c,<sp/>0x54,<sp/>0x86,<sp/>0x34,<sp/>0x2e,<sp/>0xaf,<sp/>0xda,</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>0x1b,<sp/>0x4b,<sp/>0x1a,<sp/>0xca,<sp/>0x31,<sp/>0x89,<sp/>0x1d,<sp/>0x05,<sp/>0x0f,<sp/>0x4a,<sp/>0x5f,<sp/>0x0f,</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>0xfb,<sp/>0xab,<sp/>0x1b,<sp/>0x0f,<sp/>0xd8,<sp/>0xf4,<sp/>0xc0,<sp/>0xd6,<sp/>0x9f,<sp/>0xc3,<sp/>0xba,<sp/>0x33,</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>0x86,<sp/>0x9e,<sp/>0x86,<sp/>0xbd,<sp/>0xd5,<sp/>0x8d,<sp/>0xf1,<sp/>0x83,<sp/>0x1a,<sp/>0xce,<sp/>0x8c,<sp/>0xae,</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>0x77,<sp/>0x60,<sp/>0x7e,<sp/>0xbe,<sp/>0x7d,<sp/>0x3e,<sp/>0xa8,<sp/>0xbe,<sp/>0x10,<sp/>0x98,<sp/>0x1e,<sp/>0xc1,</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>0xd4,<sp/>0xc9,<sp/>0x1e,<sp/>0x4f,<sp/>0xc4,<sp/>0x30,<sp/>0x93,<sp/>0xec,<sp/>0xca,<sp/>0xfe,<sp/>0xb7,<sp/>0x40,</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>0xc6,<sp/>0xb7,<sp/>0xa7,<sp/>0x47,<sp/>0xc1,<sp/>0x87,<sp/>0x63,<sp/>0x9f,<sp/>0x47,<sp/>0x78,<sp/>0x27,<sp/>0x2c,</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>0x35,<sp/>0x06,<sp/>0xb6,<sp/>0x2f,<sp/>0xde,<sp/>0x81,<sp/>0x29,<sp/>0xf0,<sp/>0x2b,<sp/>0x39,<sp/>0xe8,<sp/>0x74,</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>0x72,<sp/>0xbd,<sp/>0xb2,<sp/>0x5f,<sp/>0x76,<sp/>0x07,<sp/>0xc8,<sp/>0xcf,<sp/>0xa7,<sp/>0xf3,<sp/>0x42,<sp/>0x17,</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>0xf5,<sp/>0xbc,<sp/>0xa8,<sp/>0x7b,<sp/>0x42,<sp/>0xe5,<sp/>0x85,<sp/>0x4a,<sp/>0x01,<sp/>0xdc,<sp/>0xa7,<sp/>0x9c,</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>0xf3,<sp/>0x0c,<sp/>0x61,<sp/>0xa7,<sp/>0xbe,<sp/>0x8c,<sp/>0xfe,<sp/>0xea,<sp/>0x6a,<sp/>0xe3,<sp/>0x3b,<sp/>0x9c,</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>0x35,<sp/>0xec,<sp/>0x85,<sp/>0x5c,<sp/>0xa0,<sp/>0x47,<sp/>0xb0,<sp/>0xf3,<sp/>0x2a,<sp/>0x9d,<sp/>0x00,<sp/>0x6a,</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>0x7d,<sp/>0xbb,<sp/>0x6b,<sp/>0x5e,<sp/>0xfd,<sp/>0x20,<sp/>0xa5,<sp/>0xb5,<sp/>0x9e,<sp/>0x87,<sp/>0xf9,<sp/>0x5b,</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>0xee,<sp/>0xbf,<sp/>0x17,<sp/>0xc6,<sp/>0x32,<sp/>0x80,<sp/>0xe8,<sp/>0x35,<sp/>0x84,<sp/>0x57,<sp/>0x87,<sp/>0xbd,</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>0x79,<sp/>0xbf,<sp/>0xef,<sp/>0x0c,<sp/>0x2f,<sp/>0x3b,<sp/>0xad,<sp/>0x37,<sp/>0xaf,<sp/>0xaf,<sp/>0xca,<sp/>0x18,</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>0xde,<sp/>0xed,<sp/>0x9e,<sp/>0xb8,<sp/>0x62,<sp/>0x6f,<sp/>0x96,<sp/>0xfd,<sp/>0x87,<sp/>0xb7,<sp/>0xfb,<sp/>0x5f,</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/>0x5f,<sp/>0x5e,<sp/>0x1b,<sp/>0xfb,<sp/>0xa4,<sp/>0x70,<sp/>0xda,<sp/>0x6f,<sp/>0x9d,<sp/>0x2e,<sp/>0x4d,<sp/>0x14,</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>0xac,<sp/>0xc9,<sp/>0x9e,<sp/>0x30,<sp/>0xb8,<sp/>0x37,<sp/>0xb0,<sp/>0x7d,<sp/>0x74,<sp/>0x3e,<sp/>0xfd,<sp/>0x41,</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>0xa1,<sp/>0xac,<sp/>0x3f,<sp/>0x2a,<sp/>0x45,<sp/>0xfb,<sp/>0xc1,<sp/>0x53,<sp/>0x84,<sp/>0x55,<sp/>0x9a,<sp/>0x93,</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>0x59,<sp/>0xd2,<sp/>0xa8,<sp/>0xc8,<sp/>0x8e,<sp/>0x4f,<sp/>0xb5,<sp/>0x1b,<sp/>0x3c,<sp/>0x81,<sp/>0x3a,<sp/>0x8d,</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>0x9d,<sp/>0x2b,<sp/>0xfa,<sp/>0x2d,<sp/>0x51,<sp/>0x32,<sp/>0xae,<sp/>0xb5,<sp/>0xdb,<sp/>0x46,<sp/>0xbc,<sp/>0xe3,</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>0xe7,<sp/>0xca,<sp/>0x42,<sp/>0x7a,<sp/>0x02,<sp/>0x00,<sp/>0xa7,<sp/>0xba,<sp/>0xf9,<sp/>0xfb,<sp/>0xdc,<sp/>0xc3,</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>0x67,<sp/>0x0e,<sp/>0xb4,<sp/>0x54,<sp/>0x17,<sp/>0x54,<sp/>0xd2,<sp/>0xdc,<sp/>0xf2,<sp/>0x60,<sp/>0x5f,<sp/>0x07,</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>0x2e,<sp/>0x49,<sp/>0x59,<sp/>0xf3,<sp/>0x18,<sp/>0x48,<sp/>0x64,<sp/>0x41,<sp/>0xb9,<sp/>0x28,<sp/>0xcc,<sp/>0xc0,</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>0xbd,<sp/>0x02,<sp/>0x54,<sp/>0x9a,<sp/>0xed,<sp/>0x43,<sp/>0xc2,<sp/>0x76,<sp/>0xcc,<sp/>0x15,<sp/>0x53,<sp/>0xa8,</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>0x21,<sp/>0x14,<sp/>0x86,<sp/>0xfc,<sp/>0x21,<sp/>0x0d,<sp/>0x8b,<sp/>0xb7,<sp/>0xda,<sp/>0x67,<sp/>0x79,<sp/>0x32,</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>0x63,<sp/>0x4d,<sp/>0x7e,<sp/>0x94,<sp/>0x6a,<sp/>0x56,<sp/>0xcd,<sp/>0xb9,<sp/>0xfe,<sp/>0xcc,<sp/>0x1c,<sp/>0x70,</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>0xcf,<sp/>0x93,<sp/>0x1a,<sp/>0xa6,<sp/>0x9c,<sp/>0xf2,<sp/>0xf6,<sp/>0xdb,<sp/>0xf2,<sp/>0x3b,<sp/>0xd5,<sp/>0x72,</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>0x7c,<sp/>0x55,<sp/>0x06,<sp/>0xe4,<sp/>0xb9,<sp/>0x67,<sp/>0x67,<sp/>0xb9,<sp/>0x9b,<sp/>0x81,<sp/>0xfa,<sp/>0xd8,</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>0x9c,<sp/>0x9c,<sp/>0x7d,<sp/>0xf9,<sp/>0xd4,<sp/>0x6a,<sp/>0xca,<sp/>0x13,<sp/>0x40,<sp/>0x5e,<sp/>0xc8,<sp/>0x43,</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>0x61,<sp/>0x41,<sp/>0x47,<sp/>0x30,<sp/>0xe7,<sp/>0x57,<sp/>0x86,<sp/>0xcc,<sp/>0x05,<sp/>0xb3,<sp/>0x29,<sp/>0x46,</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>0x04,<sp/>0x1c,<sp/>0xc8,<sp/>0x5a,<sp/>0x77,<sp/>0x1b,<sp/>0x50,<sp/>0x16,<sp/>0x89,<sp/>0x5c,<sp/>0x0b,<sp/>0x1a,</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>0x12,<sp/>0x81,<sp/>0xbf,<sp/>0xeb,<sp/>0xd2,<sp/>0x41,<sp/>0xf4,<sp/>0xd5,<sp/>0xa7,<sp/>0x81,<sp/>0x6c,<sp/>0x53,</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>0xd7,<sp/>0x90,<sp/>0x53,<sp/>0x9d,<sp/>0x44,<sp/>0x71,<sp/>0x76,<sp/>0x8a,<sp/>0xdf,<sp/>0xe8,<sp/>0x33,<sp/>0x43,</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>0x9c,<sp/>0x0b,<sp/>0xee,<sp/>0x67,<sp/>0x61,<sp/>0xd8,<sp/>0x9e,<sp/>0x00,<sp/>0x00,<sp/>0x00,<sp/>0x00,<sp/>0x49,</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>0x45,<sp/>0x4e,<sp/>0x44,<sp/>0xae,<sp/>0x42,<sp/>0x60,<sp/>0x82</highlight></codeline>
+<codeline lineno="95"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="exfont.h"/>
+  </compounddef>
+</doxygen>

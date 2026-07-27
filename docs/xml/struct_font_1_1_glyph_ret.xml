@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_font_1_1_glyph_ret" kind="struct" language="C++" prot="public">
+    <compoundname>Font::GlyphRet</compoundname>
+    <includes refid="font_8h" local="no">font.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_font_1_1_glyph_ret_1ac47d54de766da6dfa671e243d1592fc4" prot="public" static="no" mutable="no">
+        <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+        <definition>BitmapRef Font::GlyphRet::bitmap</definition>
+        <argsstring></argsstring>
+        <name>bitmap</name>
+        <qualifiedname>Font::GlyphRet::bitmap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>bitmap which the glyph pixels are located within </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="49" column="11" bodyfile="font.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_font_1_1_glyph_ret_1a98ef1a514af135278158595ec6778f94" prot="public" static="no" mutable="no">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Font::GlyphRet::advance</definition>
+        <argsstring></argsstring>
+        <name>advance</name>
+        <qualifiedname>Font::GlyphRet::advance</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>How far to advance the x/y offset after drawing for the next glyph. y value is only relevant for vertical layouts. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="54" column="7" bodyfile="font.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_font_1_1_glyph_ret_1a348a61fc92b3de8b1626077ce009ae07" prot="public" static="no" mutable="no">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Font::GlyphRet::offset</definition>
+        <argsstring></argsstring>
+        <name>offset</name>
+        <qualifiedname>Font::GlyphRet::offset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>x/y position in the buffer where the glyph is rendered at </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="56" column="7" bodyfile="font.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_font_1_1_glyph_ret_1aab95b954e2d121e9fd95f4786ec04ecb" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Font::GlyphRet::has_color</definition>
+        <argsstring></argsstring>
+        <name>has_color</name>
+        <qualifiedname>Font::GlyphRet::has_color</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>When enabled the glyph is colored and not masked with the system graphic </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="58" column="6" bodyfile="font.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Contains bitmap and metrics of a glyph </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>Font::GlyphRet</label>
+        <link refid="struct_font_1_1_glyph_ret"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>advance</edgelabel>
+          <edgelabel>offset</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+    </collaborationgraph>
+    <location file="font.h" line="47" column="1" bodyfile="font.h" bodystart="47" bodyend="59"/>
+    <listofallmembers>
+      <member refid="struct_font_1_1_glyph_ret_1a98ef1a514af135278158595ec6778f94" prot="public" virt="non-virtual"><scope>Font::GlyphRet</scope><name>advance</name></member>
+      <member refid="struct_font_1_1_glyph_ret_1ac47d54de766da6dfa671e243d1592fc4" prot="public" virt="non-virtual"><scope>Font::GlyphRet</scope><name>bitmap</name></member>
+      <member refid="struct_font_1_1_glyph_ret_1aab95b954e2d121e9fd95f4786ec04ecb" prot="public" virt="non-virtual"><scope>Font::GlyphRet</scope><name>has_color</name></member>
+      <member refid="struct_font_1_1_glyph_ret_1a348a61fc92b3de8b1626077ce009ae07" prot="public" virt="non-virtual"><scope>Font::GlyphRet</scope><name>offset</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

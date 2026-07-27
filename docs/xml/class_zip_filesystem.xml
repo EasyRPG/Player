@@ -1,0 +1,512 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_zip_filesystem" kind="class" language="C++" prot="public">
+    <compoundname>ZipFilesystem</compoundname>
+    <basecompoundref refid="class_filesystem" prot="public" virt="non-virtual">Filesystem</basecompoundref>
+    <includes refid="filesystem__zip_8h" local="no">filesystem_zip.h</includes>
+    <innerclass refid="struct_zip_filesystem_1_1_zip_entry" prot="private">ZipFilesystem::ZipEntry</innerclass>
+    <sectiondef kind="user-defined">
+      <memberdef kind="function" id="class_zip_filesystem_1ad13e0648b1c882b6ababf0e000932a63" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool ZipFilesystem::IsFile</definition>
+        <argsstring>(std::string_view path) const override</argsstring>
+        <name>IsFile</name>
+        <qualifiedname>ZipFilesystem::IsFile</qualifiedname>
+        <reimplements refid="class_filesystem_1a75033a685c27d9a04cd82ecc1611bc00">IsFile</reimplements>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Implementation of abstract methods </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="48" column="6" bodyfile="filesystem_zip.cpp" bodystart="332" bodyend="339"/>
+      </memberdef>
+      <memberdef kind="function" id="class_zip_filesystem_1aae523a4451585aa626739c1ffdc410ba" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool ZipFilesystem::IsDirectory</definition>
+        <argsstring>(std::string_view path, bool follow_symlinks) const override</argsstring>
+        <name>IsDirectory</name>
+        <qualifiedname>ZipFilesystem::IsDirectory</qualifiedname>
+        <reimplements refid="class_filesystem_1afbed80d8fefd923add5f839401eda2e3">IsDirectory</reimplements>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>follow_symlinks</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="49" column="6" bodyfile="filesystem_zip.cpp" bodystart="341" bodyend="348"/>
+      </memberdef>
+      <memberdef kind="function" id="class_zip_filesystem_1a390fad6ea8e6c5ee0b19b40f0b7ce2d3" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool ZipFilesystem::Exists</definition>
+        <argsstring>(std::string_view path) const override</argsstring>
+        <name>Exists</name>
+        <qualifiedname>ZipFilesystem::Exists</qualifiedname>
+        <reimplements refid="class_filesystem_1a8c65f9af44aefee4d3b6fb4357608cec">Exists</reimplements>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="50" column="6" bodyfile="filesystem_zip.cpp" bodystart="350" bodyend="354"/>
+      </memberdef>
+      <memberdef kind="function" id="class_zip_filesystem_1a56fb8255e92c106333c22adf10902372" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int64_t</type>
+        <definition>int64_t ZipFilesystem::GetFilesize</definition>
+        <argsstring>(std::string_view path) const override</argsstring>
+        <name>GetFilesize</name>
+        <qualifiedname>ZipFilesystem::GetFilesize</qualifiedname>
+        <reimplements refid="class_filesystem_1a486585c3773c1ec18ee0154af3528eb0">GetFilesize</reimplements>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="51" column="9" bodyfile="filesystem_zip.cpp" bodystart="356" bodyend="363"/>
+      </memberdef>
+      <memberdef kind="function" id="class_zip_filesystem_1a29b2a55cda3905ec2d901f093d00ce63" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::streambuf *</type>
+        <definition>std::streambuf * ZipFilesystem::CreateInputStreambuffer</definition>
+        <argsstring>(std::string_view path, std::ios_base::openmode mode) const override</argsstring>
+        <name>CreateInputStreambuffer</name>
+        <qualifiedname>ZipFilesystem::CreateInputStreambuffer</qualifiedname>
+        <reimplements refid="class_filesystem_1aef33876f56d776123196026867ef9361">CreateInputStreambuffer</reimplements>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type>std::ios_base::openmode</type>
+          <declname>mode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="52" column="16" bodyfile="filesystem_zip.cpp" bodystart="365" bodyend="434"/>
+      </memberdef>
+      <memberdef kind="function" id="class_zip_filesystem_1a3547ce48d9adc1760e05a5b9ee087513" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool ZipFilesystem::GetDirectoryContent</definition>
+        <argsstring>(std::string_view path, std::vector&lt; DirectoryTree::Entry &gt; &amp;entries) const override</argsstring>
+        <name>GetDirectoryContent</name>
+        <qualifiedname>ZipFilesystem::GetDirectoryContent</qualifiedname>
+        <reimplements refid="class_filesystem_1a2c816e9dbd010079080cdbd6c3f16518">GetDirectoryContent</reimplements>
+        <param>
+          <type>std::string_view</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; <ref refid="struct_directory_tree_1_1_entry" kindref="compound">DirectoryTree::Entry</ref> &gt; &amp;</type>
+          <declname>entries</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Abstract methods to be implemented by filesystems. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="53" column="6" bodyfile="filesystem_zip.cpp" bodystart="436" bodyend="470"/>
+      </memberdef>
+      <memberdef kind="function" id="class_zip_filesystem_1ad5e8ff903611baf2afbaee7c38db0775" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string ZipFilesystem::Describe</definition>
+        <argsstring>() const override</argsstring>
+        <name>Describe</name>
+        <qualifiedname>ZipFilesystem::Describe</qualifiedname>
+        <reimplements refid="class_filesystem_1a9c4aacd54841726079b311972e0b3b45">Describe</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="54" column="13" bodyfile="filesystem_zip.cpp" bodystart="490" bodyend="492"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-type">
+      <memberdef kind="enum" id="class_zip_filesystem_1a21f554217e2e58459479fb0295df227f" prot="private" static="no" strong="yes">
+        <type></type>
+        <name>StorageMethod</name>
+        <qualifiedname>ZipFilesystem::StorageMethod</qualifiedname>
+        <enumvalue id="class_zip_filesystem_1a21f554217e2e58459479fb0295df227fa88183b946cc5f0e8c96b2e66e1c74a7e" prot="private">
+          <name>Unknown</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_zip_filesystem_1a21f554217e2e58459479fb0295df227fa4cd8413207629a963225f4314b53adcd" prot="private">
+          <name>Plain</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_zip_filesystem_1a21f554217e2e58459479fb0295df227fae2430ff724c45c3d68893fb1a3584426" prot="private">
+          <name>Deflate</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="58" column="1" bodyfile="filesystem_zip.h" bodystart="58" bodyend="58"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_zip_filesystem_1ad609b68a7e27a5de212d611fca819453" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::pair&lt; std::string, ZipEntry &gt; &gt;</type>
+        <definition>std::vector&lt;std::pair&lt;std::string, ZipEntry&gt; &gt; ZipFilesystem::zip_entries</definition>
+        <argsstring></argsstring>
+        <name>zip_entries</name>
+        <qualifiedname>ZipFilesystem::zip_entries</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="71" column="13" bodyfile="filesystem_zip.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_zip_filesystem_1a3c3a91f8d43505feb48867d4325f226f" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::pair&lt; std::string, ZipEntry &gt; &gt;</type>
+        <definition>std::vector&lt;std::pair&lt;std::string, ZipEntry&gt; &gt; ZipFilesystem::zip_entries_cp437</definition>
+        <argsstring></argsstring>
+        <name>zip_entries_cp437</name>
+        <qualifiedname>ZipFilesystem::zip_entries_cp437</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="72" column="13" bodyfile="filesystem_zip.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_zip_filesystem_1a8116a0778d68471d8f89f85241fd542c" prot="private" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string ZipFilesystem::encoding</definition>
+        <argsstring></argsstring>
+        <name>encoding</name>
+        <qualifiedname>ZipFilesystem::encoding</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="73" column="13" bodyfile="filesystem_zip.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_zip_filesystem_1aeed7597586564358dfca6631918cdce3" prot="private" static="no" mutable="yes">
+        <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+        <definition>Filesystem_Stream::InputStream ZipFilesystem::zip_is</definition>
+        <argsstring></argsstring>
+        <name>zip_is</name>
+        <qualifiedname>ZipFilesystem::zip_is</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="74" column="40" bodyfile="filesystem_zip.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_zip_filesystem_1a547499e56666a443d4be724bb2bfc7fa" prot="private" static="no" mutable="yes">
+        <type>std::vector&lt; char &gt;</type>
+        <definition>std::vector&lt;char&gt; ZipFilesystem::filename_buffer</definition>
+        <argsstring></argsstring>
+        <name>filename_buffer</name>
+        <qualifiedname>ZipFilesystem::filename_buffer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="75" column="21" bodyfile="filesystem_zip.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_zip_filesystem_1a43ab16f549c4077a3ed9bdb5577f03a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>ZipFilesystem::ZipFilesystem</definition>
+        <argsstring>(std::string base_path, FilesystemView parent_fs, std::string_view encoding=&quot;&quot;)</argsstring>
+        <name>ZipFilesystem</name>
+        <qualifiedname>ZipFilesystem::ZipFilesystem</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>base_path</declname>
+        </param>
+        <param>
+          <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+          <declname>parent_fs</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>encoding</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes a filesystem inside the given ZIP File</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>base_path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Path passed to parent_fs to open the zip file </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>parent_fs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_filesystem" kindref="compound">Filesystem</ref> used to create handles on the zip file </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>encoding</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Encoding to use, use empty string for autodetection </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="41" column="1" bodyfile="filesystem_zip.cpp" bodystart="55" bodyend="208"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_zip_filesystem_1aa53c50464d170131d1556552c00a6066" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ZipFilesystem::FindCentralDirectory</definition>
+        <argsstring>(std::istream &amp;stream, uint32_t &amp;offset, uint32_t &amp;size, uint16_t &amp;num_entries) const</argsstring>
+        <name>FindCentralDirectory</name>
+        <qualifiedname>ZipFilesystem::FindCentralDirectory</qualifiedname>
+        <param>
+          <type>std::istream &amp;</type>
+          <declname>stream</declname>
+        </param>
+        <param>
+          <type>uint32_t &amp;</type>
+          <declname>offset</declname>
+        </param>
+        <param>
+          <type>uint32_t &amp;</type>
+          <declname>size</declname>
+        </param>
+        <param>
+          <type>uint16_t &amp;</type>
+          <declname>num_entries</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="66" column="6" bodyfile="filesystem_zip.cpp" bodystart="210" bodyend="252"/>
+      </memberdef>
+      <memberdef kind="function" id="class_zip_filesystem_1a21eea29df2c0b948f2ba8ea27ae8e0f5" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ZipFilesystem::ReadCentralDirectoryEntry</definition>
+        <argsstring>(std::istream &amp;zipfile, std::string &amp;filepath, ZipEntry &amp;entry, bool &amp;is_utf8) const</argsstring>
+        <name>ReadCentralDirectoryEntry</name>
+        <qualifiedname>ZipFilesystem::ReadCentralDirectoryEntry</qualifiedname>
+        <param>
+          <type>std::istream &amp;</type>
+          <declname>zipfile</declname>
+        </param>
+        <param>
+          <type>std::string &amp;</type>
+          <declname>filepath</declname>
+        </param>
+        <param>
+          <type>ZipEntry &amp;</type>
+          <declname>entry</declname>
+        </param>
+        <param>
+          <type>bool &amp;</type>
+          <declname>is_utf8</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="67" column="6" bodyfile="filesystem_zip.cpp" bodystart="254" bodyend="290"/>
+      </memberdef>
+      <memberdef kind="function" id="class_zip_filesystem_1aa476bac579b6292c97b79cea0351e0eb" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ZipFilesystem::ReadLocalHeader</definition>
+        <argsstring>(std::istream &amp;zipfile, StorageMethod &amp;method, ZipEntry &amp;entry) const</argsstring>
+        <name>ReadLocalHeader</name>
+        <qualifiedname>ZipFilesystem::ReadLocalHeader</qualifiedname>
+        <param>
+          <type>std::istream &amp;</type>
+          <declname>zipfile</declname>
+        </param>
+        <param>
+          <type>StorageMethod &amp;</type>
+          <declname>method</declname>
+        </param>
+        <param>
+          <type>ZipEntry &amp;</type>
+          <declname>entry</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="68" column="6" bodyfile="filesystem_zip.cpp" bodystart="292" bodyend="330"/>
+      </memberdef>
+      <memberdef kind="function" id="class_zip_filesystem_1a00d5d9d9a7844892ba77dd7cc7aa1995" prot="private" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const ZipEntry *</type>
+        <definition>const ZipFilesystem::ZipEntry * ZipFilesystem::Find</definition>
+        <argsstring>(std::string_view what) const</argsstring>
+        <name>Find</name>
+        <qualifiedname>ZipFilesystem::Find</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>what</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filesystem_zip.h" line="69" column="16" bodyfile="filesystem_zip.cpp" bodystart="472" bodyend="488"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>A virtual filesystem that allows file/directory operations inside a ZIP archive. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Filesystem</label>
+        <link refid="class_filesystem"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>ZipFilesystem</label>
+        <link refid="class_zip_filesystem"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>std::enable_shared_from_this&lt; Filesystem &gt;</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Filesystem</label>
+        <link refid="class_filesystem"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>ZipFilesystem</label>
+        <link refid="class_zip_filesystem"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>std::enable_shared_from_this&lt; Filesystem &gt;</label>
+      </node>
+    </collaborationgraph>
+    <location file="filesystem_zip.h" line="32" column="1" bodyfile="filesystem_zip.h" bodystart="32" bodyend="76"/>
+    <listofallmembers>
+      <member refid="class_filesystem_1a331ca9b0aa193dbe2b840efead198cf6" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>ClearCache</name></member>
+      <member refid="class_filesystem_1abff967a12cdc171e62f1d7b2c23dda7e" prot="public" virt="virtual"><scope>ZipFilesystem</scope><name>Create</name></member>
+      <member refid="class_zip_filesystem_1a29b2a55cda3905ec2d901f093d00ce63" prot="protected" virt="virtual"><scope>ZipFilesystem</scope><name>CreateInputStreambuffer</name></member>
+      <member refid="class_filesystem_1ad927487c8d499175f84b501cf55978e5" prot="protected" virt="virtual"><scope>ZipFilesystem</scope><name>CreateOutputStreambuffer</name></member>
+      <member refid="class_zip_filesystem_1ad5e8ff903611baf2afbaee7c38db0775" prot="protected" virt="virtual"><scope>ZipFilesystem</scope><name>Describe</name></member>
+      <member refid="class_filesystem_1a12cd9c6ef56e9c660e26638f9fbe32e8" prot="protected" virt="non-virtual"><scope>ZipFilesystem</scope><name>DirectoryTree</name></member>
+      <member refid="class_zip_filesystem_1a8116a0778d68471d8f89f85241fd542c" prot="private" virt="non-virtual"><scope>ZipFilesystem</scope><name>encoding</name></member>
+      <member refid="class_zip_filesystem_1a390fad6ea8e6c5ee0b19b40f0b7ce2d3" prot="protected" virt="virtual"><scope>ZipFilesystem</scope><name>Exists</name></member>
+      <member refid="class_filesystem_1a66f857cb70591532b9ce3869d6ebdd8f" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>Feature</name></member>
+      <member refid="class_zip_filesystem_1a547499e56666a443d4be724bb2bfc7fa" prot="private" virt="non-virtual"><scope>ZipFilesystem</scope><name>filename_buffer</name></member>
+      <member refid="class_filesystem_1a9134daaffbc1e9ce8777e82d6156c3a8" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>Filesystem</name></member>
+      <member refid="class_filesystem_1a08cda41273632a4295e3ff067b3aff13" prot="protected" virt="non-virtual"><scope>ZipFilesystem</scope><name>Filesystem</name></member>
+      <member refid="class_filesystem_1a5f6d2b59075737de3e42fd9fd4b5c630" prot="protected" virt="non-virtual"><scope>ZipFilesystem</scope><name>FilesystemView</name></member>
+      <member refid="class_zip_filesystem_1a00d5d9d9a7844892ba77dd7cc7aa1995" prot="private" virt="non-virtual"><scope>ZipFilesystem</scope><name>Find</name></member>
+      <member refid="class_zip_filesystem_1aa53c50464d170131d1556552c00a6066" prot="private" virt="non-virtual"><scope>ZipFilesystem</scope><name>FindCentralDirectory</name></member>
+      <member refid="class_filesystem_1ab0cef94a40e9c3c509930f3cf891140d" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>FindFile</name></member>
+      <member refid="class_filesystem_1acc956bb84dd1c943ce8e0bba62994f87" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>FindFile</name></member>
+      <member refid="class_filesystem_1ab9f928ab9e50f752bc1f5a94b644a353" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>FindFile</name></member>
+      <member refid="class_zip_filesystem_1a3547ce48d9adc1760e05a5b9ee087513" prot="protected" virt="virtual"><scope>ZipFilesystem</scope><name>GetDirectoryContent</name></member>
+      <member refid="class_zip_filesystem_1a56fb8255e92c106333c22adf10902372" prot="protected" virt="virtual"><scope>ZipFilesystem</scope><name>GetFilesize</name></member>
+      <member refid="class_filesystem_1aa6a067c40a362f4b9dd12f7149f11d1f" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>GetParent</name></member>
+      <member refid="class_filesystem_1a164f1d20f6f4d8b7417c110df12b2e5f" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>GetPath</name></member>
+      <member refid="class_zip_filesystem_1aae523a4451585aa626739c1ffdc410ba" prot="protected" virt="virtual"><scope>ZipFilesystem</scope><name>IsDirectory</name></member>
+      <member refid="class_filesystem_1a9e7223b57a3218c4ed39766cebd8e082" prot="public" virt="virtual"><scope>ZipFilesystem</scope><name>IsFeatureSupported</name></member>
+      <member refid="class_zip_filesystem_1ad13e0648b1c882b6ababf0e000932a63" prot="protected" virt="virtual"><scope>ZipFilesystem</scope><name>IsFile</name></member>
+      <member refid="class_filesystem_1a786711e868cfeea684762fcced413dcd" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>IsValid</name></member>
+      <member refid="class_filesystem_1a94f9fe077344ed5e76266a9cd1147a70" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>ListDirectory</name></member>
+      <member refid="class_filesystem_1a23468b198fbbc856fc2a378a715d3a1f" prot="public" virt="virtual"><scope>ZipFilesystem</scope><name>MakeDirectory</name></member>
+      <member refid="class_filesystem_1a9f5c63aa6a89cf4f3ce8a38e4788f286" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>OpenFile</name></member>
+      <member refid="class_filesystem_1a2528354a2ed91a680d0d6776294e9485" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>OpenFile</name></member>
+      <member refid="class_filesystem_1abc4360ad939f1f4db35e72a7f3bfc37c" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>OpenFile</name></member>
+      <member refid="class_filesystem_1aad5bdaf652be46e2f0fd99b585dc578a" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>OpenInputStream</name></member>
+      <member refid="class_filesystem_1a7686c171a7f426944546a18fec0bf82e" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>OpenOrCreateInputStream</name></member>
+      <member refid="class_filesystem_1a51a0e53b3c17e0faaa8739abb8be55e3" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>OpenOutputStream</name></member>
+      <member refid="class_filesystem_1aee47c25d22263f76e02b6fc355511f1c" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>operator FilesystemView</name></member>
+      <member refid="class_filesystem_1a8baf837224c837bd1c455205c653a9ce" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>operator=</name></member>
+      <member refid="class_zip_filesystem_1a21eea29df2c0b948f2ba8ea27ae8e0f5" prot="private" virt="non-virtual"><scope>ZipFilesystem</scope><name>ReadCentralDirectoryEntry</name></member>
+      <member refid="class_zip_filesystem_1aa476bac579b6292c97b79cea0351e0eb" prot="private" virt="non-virtual"><scope>ZipFilesystem</scope><name>ReadLocalHeader</name></member>
+      <member refid="class_filesystem_1ac13ad5f5406780861097715cdd850cca" prot="protected" virt="non-virtual"><scope>ZipFilesystem</scope><name>RootFilesystem</name></member>
+      <member refid="class_zip_filesystem_1a21f554217e2e58459479fb0295df227f" prot="private" virt="non-virtual"><scope>ZipFilesystem</scope><name>StorageMethod</name></member>
+      <member refid="class_filesystem_1a19b0c31c587829e25299194149c2dac0" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>Subtree</name></member>
+      <member refid="class_filesystem_1a2bb5d8bd203dde6ff4a50f056458e380" prot="protected" virt="non-virtual"><scope>ZipFilesystem</scope><name>tree</name></member>
+      <member refid="class_zip_filesystem_1ad609b68a7e27a5de212d611fca819453" prot="private" virt="non-virtual"><scope>ZipFilesystem</scope><name>zip_entries</name></member>
+      <member refid="class_zip_filesystem_1a3c3a91f8d43505feb48867d4325f226f" prot="private" virt="non-virtual"><scope>ZipFilesystem</scope><name>zip_entries_cp437</name></member>
+      <member refid="class_zip_filesystem_1aeed7597586564358dfca6631918cdce3" prot="private" virt="non-virtual"><scope>ZipFilesystem</scope><name>zip_is</name></member>
+      <member refid="class_zip_filesystem_1a43ab16f549c4077a3ed9bdb5577f03a4" prot="public" virt="non-virtual"><scope>ZipFilesystem</scope><name>ZipFilesystem</name></member>
+      <member refid="class_filesystem_1a6004d02393974507891e1fb34c0dab93" prot="public" virt="virtual"><scope>ZipFilesystem</scope><name>~Filesystem</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

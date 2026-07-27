@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structbits__traits_3_01_t_p_f_00_018_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>bits_traits&lt; TPF, 8 &gt;</compoundname>
+    <includes refid="pixel__format_8h" local="no">pixel_format.h</includes>
+    <templateparamlist>
+      <param>
+        <type>class TPF</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="structbits__traits_3_01_t_p_f_00_018_01_4_1a4975e7823984a34d27eb2ab66ae47bb7" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>static uint32_t bits_traits&lt; TPF, 8 &gt;::get_uint32_t</definition>
+        <argsstring>(const uint8_t *p)</argsstring>
+        <name>get_uint32_t</name>
+        <qualifiedname>bits_traits&lt; TPF, 8 &gt;::get_uint32_t</qualifiedname>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="210" column="24" bodyfile="pixel_format.h" bodystart="210" bodyend="212"/>
+      </memberdef>
+      <memberdef kind="function" id="structbits__traits_3_01_t_p_f_00_018_01_4_1a4f953826fd0f941c00d9312ce8d9f36e" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void bits_traits&lt; TPF, 8 &gt;::set_uint32_t</definition>
+        <argsstring>(uint8_t *p, uint32_t pix)</argsstring>
+        <name>set_uint32_t</name>
+        <qualifiedname>bits_traits&lt; TPF, 8 &gt;::set_uint32_t</qualifiedname>
+        <param>
+          <type>uint8_t *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>pix</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="213" column="20" bodyfile="pixel_format.h" bodystart="213" bodyend="215"/>
+      </memberdef>
+      <memberdef kind="function" id="structbits__traits_3_01_t_p_f_00_018_01_4_1a5d47cda02aa62cc1687046c5e8c0e597" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void bits_traits&lt; TPF, 8 &gt;::copy_pixel</definition>
+        <argsstring>(uint8_t *dst, const uint8_t *src)</argsstring>
+        <name>copy_pixel</name>
+        <qualifiedname>bits_traits&lt; TPF, 8 &gt;::copy_pixel</qualifiedname>
+        <param>
+          <type>uint8_t *</type>
+          <declname>dst</declname>
+        </param>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>src</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="216" column="20" bodyfile="pixel_format.h" bodystart="216" bodyend="218"/>
+      </memberdef>
+      <memberdef kind="function" id="structbits__traits_3_01_t_p_f_00_018_01_4_1aa878752d22e63c67c635b4c7654811b6" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void bits_traits&lt; TPF, 8 &gt;::set_pixels</definition>
+        <argsstring>(uint8_t *dst, const uint8_t *src, int n)</argsstring>
+        <name>set_pixels</name>
+        <qualifiedname>bits_traits&lt; TPF, 8 &gt;::set_pixels</qualifiedname>
+        <param>
+          <type>uint8_t *</type>
+          <declname>dst</declname>
+        </param>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="219" column="20" bodyfile="pixel_format.h" bodystart="219" bodyend="223"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pixel_format.h" line="209" column="1" bodyfile="pixel_format.h" bodystart="209" bodyend="224"/>
+    <listofallmembers>
+      <member refid="structbits__traits_3_01_t_p_f_00_018_01_4_1a5d47cda02aa62cc1687046c5e8c0e597" prot="public" virt="non-virtual"><scope>bits_traits&lt; TPF, 8 &gt;</scope><name>copy_pixel</name></member>
+      <member refid="structbits__traits_3_01_t_p_f_00_018_01_4_1a4975e7823984a34d27eb2ab66ae47bb7" prot="public" virt="non-virtual"><scope>bits_traits&lt; TPF, 8 &gt;</scope><name>get_uint32_t</name></member>
+      <member refid="structbits__traits_3_01_t_p_f_00_018_01_4_1aa878752d22e63c67c635b4c7654811b6" prot="public" virt="non-virtual"><scope>bits_traits&lt; TPF, 8 &gt;</scope><name>set_pixels</name></member>
+      <member refid="structbits__traits_3_01_t_p_f_00_018_01_4_1a4f953826fd0f941c00d9312ce8d9f36e" prot="public" virt="non-virtual"><scope>bits_traits&lt; TPF, 8 &gt;</scope><name>set_uint32_t</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,186 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="bitmapfont__glyph_8h" kind="file" language="C++">
+    <compoundname>bitmapfont_glyph.h</compoundname>
+    <includes local="no">stdint.h</includes>
+    <includedby refid="bitmapfont_8h" local="yes">bitmapfont.h</includedby>
+    <includedby refid="bitmapfont__rmg2000_8h" local="yes">generated/bitmapfont_rmg2000.h</includedby>
+    <includedby refid="bitmapfont__ttyp0_8h" local="yes">generated/bitmapfont_ttyp0.h</includedby>
+    <includedby refid="bitmapfont__wqy_8h" local="yes">generated/bitmapfont_wqy.h</includedby>
+    <includedby refid="shinonome__gothic_8h" local="yes">generated/shinonome_gothic.h</includedby>
+    <includedby refid="shinonome__mincho_8h" local="yes">generated/shinonome_mincho.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>bitmapfont_glyph.h</label>
+        <link refid="bitmapfont__glyph_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>bitmapfont.h</label>
+        <link refid="bitmapfont_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>bitmapfont_glyph.h</label>
+        <link refid="bitmapfont__glyph_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>font.cpp</label>
+        <link refid="font_8cpp"/>
+      </node>
+      <node id="4">
+        <label>generated/bitmapfont_rmg2000.h</label>
+        <link refid="bitmapfont__rmg2000_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>generated/bitmapfont_ttyp0.h</label>
+        <link refid="bitmapfont__ttyp0_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>generated/bitmapfont_wqy.h</label>
+        <link refid="bitmapfont__wqy_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>generated/shinonome_gothic.h</label>
+        <link refid="shinonome__gothic_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>generated/shinonome_mincho.h</label>
+        <link refid="shinonome__mincho_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="struct_bitmap_font_glyph" prot="public">BitmapFontGlyph</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="bitmapfont__glyph_8h_1afd24492911e8c56f0b04d799e3d51d8b" prot="public" static="no">
+        <name>EP_BITMAPFONT_GLYPH_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmapfont_glyph.h" line="3" column="9" bodyfile="bitmapfont_glyph.h" bodystart="3" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="bitmapfont__glyph_8h_1ab753fa2cb7647a3ad77590ba84390c4d" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>const <ref refid="struct_bitmap_font_glyph" kindref="compound">BitmapFontGlyph</ref></type>
+        <definition>const BitmapFontGlyph BITMAPFONT_REPLACEMENT_GLYPH</definition>
+        <argsstring></argsstring>
+        <name>BITMAPFONT_REPLACEMENT_GLYPH</name>
+        <initializer>= { 65533, true, { 96, 240, 504, 924, 1902, 3967, 4031, 1982, 1020, 440, 240, 96 } }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmapfont_glyph.h" line="21" column="33" bodyfile="bitmapfont_glyph.h" bodystart="21" bodyend="21"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="bitmapfont__glyph_8h_1a7519af599cb29b94b93085f1eaf89587" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool operator&lt;</definition>
+        <argsstring>(const BitmapFontGlyph &amp;lhs, uint32_t const code)</argsstring>
+        <name>operator&lt;</name>
+        <param>
+          <type>const <ref refid="struct_bitmap_font_glyph" kindref="compound">BitmapFontGlyph</ref> &amp;</type>
+          <declname>lhs</declname>
+        </param>
+        <param>
+          <type>uint32_t const</type>
+          <declname>code</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmapfont_glyph.h" line="13" column="11" bodyfile="bitmapfont_glyph.h" bodystart="13" bodyend="15"/>
+      </memberdef>
+      <memberdef kind="function" id="bitmapfont__glyph_8h_1a10baeb1ed1942bd5d695f9115990bbb4" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool operator&lt;</definition>
+        <argsstring>(const BitmapFontGlyph &amp;lhs, const BitmapFontGlyph &amp;rhs)</argsstring>
+        <name>operator&lt;</name>
+        <param>
+          <type>const <ref refid="struct_bitmap_font_glyph" kindref="compound">BitmapFontGlyph</ref> &amp;</type>
+          <declname>lhs</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_bitmap_font_glyph" kindref="compound">BitmapFontGlyph</ref> &amp;</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmapfont_glyph.h" line="17" column="11" bodyfile="bitmapfont_glyph.h" bodystart="17" bodyend="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_BITMAPFONT_GLYPH_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3" refid="bitmapfont__glyph_8h_1afd24492911e8c56f0b04d799e3d51d8b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_BITMAPFONT_GLYPH_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7" refid="struct_bitmap_font_glyph" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_bitmap_font_glyph" kindref="compound">BitmapFontGlyph</ref><sp/>{</highlight></codeline>
+<codeline lineno="8" refid="struct_bitmap_font_glyph_1a2cd90bf3d30c3904554f80067faad37f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="struct_bitmap_font_glyph_1a2cd90bf3d30c3904554f80067faad37f" kindref="member">code</ref>;</highlight></codeline>
+<codeline lineno="9" refid="struct_bitmap_font_glyph_1acd2c209423c921670ad5d341a391e9b3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="struct_bitmap_font_glyph_1acd2c209423c921670ad5d341a391e9b3" kindref="member">is_full</ref>;</highlight></codeline>
+<codeline lineno="10" refid="struct_bitmap_font_glyph_1a2e1a7c3f5d1a287aca167a46bcb8bb55" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint16_t<sp/><ref refid="struct_bitmap_font_glyph_1a2e1a7c3f5d1a287aca167a46bcb8bb55" kindref="member">data</ref>[12];</highlight></codeline>
+<codeline lineno="11"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13" refid="bitmapfont__glyph_8h_1a7519af599cb29b94b93085f1eaf89587" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="bitmapfont__glyph_8h_1a7519af599cb29b94b93085f1eaf89587" kindref="member">operator&lt;</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_bitmap_font_glyph" kindref="compound">BitmapFontGlyph</ref>&amp;<sp/>lhs,<sp/>uint32_t<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>code)<sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lhs.<ref refid="struct_bitmap_font_glyph_1a2cd90bf3d30c3904554f80067faad37f" kindref="member">code</ref><sp/>&lt;<sp/>code;</highlight></codeline>
+<codeline lineno="15"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17" refid="bitmapfont__glyph_8h_1a10baeb1ed1942bd5d695f9115990bbb4" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="bitmapfont__glyph_8h_1a7519af599cb29b94b93085f1eaf89587" kindref="member">operator&lt;</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_bitmap_font_glyph" kindref="compound">BitmapFontGlyph</ref>&amp;<sp/>lhs,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_bitmap_font_glyph" kindref="compound">BitmapFontGlyph</ref>&amp;<sp/>rhs)<sp/>{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>lhs.<ref refid="struct_bitmap_font_glyph_1a2cd90bf3d30c3904554f80067faad37f" kindref="member">code</ref><sp/>&lt;<sp/>rhs.<ref refid="struct_bitmap_font_glyph_1a2cd90bf3d30c3904554f80067faad37f" kindref="member">code</ref>;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21" refid="bitmapfont__glyph_8h_1ab753fa2cb7647a3ad77590ba84390c4d" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_bitmap_font_glyph" kindref="compound">BitmapFontGlyph</ref><sp/><ref refid="bitmapfont__glyph_8h_1ab753fa2cb7647a3ad77590ba84390c4d" kindref="member">BITMAPFONT_REPLACEMENT_GLYPH</ref><sp/>=<sp/>{<sp/>65533,<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">,<sp/>{<sp/>96,<sp/>240,<sp/>504,<sp/>924,<sp/>1902,<sp/>3967,<sp/>4031,<sp/>1982,<sp/>1020,<sp/>440,<sp/>240,<sp/>96<sp/>}<sp/>};</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="bitmapfont_glyph.h"/>
+  </compounddef>
+</doxygen>

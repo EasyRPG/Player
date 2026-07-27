@@ -1,0 +1,262 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1metadata_1_1function" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>leasy::metadata::function</compoundname>
+    <basecompoundref refid="classleasy_1_1metadata_1_1function__base__t" prot="public" virt="non-virtual">leasy::metadata::function_base_t</basecompoundref>
+    <includes refid="function_8hpp" local="no">function.hpp</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classleasy_1_1metadata_1_1function_1af59ed6b53473e2bd4261e81c3061695a" prot="private" static="no" mutable="no">
+        <type>std::function&lt; std::any(const std::vector&lt; std::any &gt; &amp;)&gt;</type>
+        <definition>std::function&lt;std::any(const std::vector&lt;std::any&gt;&amp;)&gt; leasy::metadata::function::native_bridge</definition>
+        <argsstring></argsstring>
+        <name>native_bridge</name>
+        <qualifiedname>leasy::metadata::function::native_bridge</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="67" column="19" bodyfile="leasy/metadata/function.hpp" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1metadata_1_1function_1ae436e8604633a17fc92298d6cd050f94" prot="private" static="no" mutable="no">
+        <type>std::function&lt; int(<ref refid="structlua___state" kindref="compound">lua_State</ref> *)&gt;</type>
+        <definition>std::function&lt;int(lua_State*)&gt; leasy::metadata::function::lua_bridge</definition>
+        <argsstring></argsstring>
+        <name>lua_bridge</name>
+        <qualifiedname>leasy::metadata::function::lua_bridge</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="68" column="19" bodyfile="leasy/metadata/function.hpp" bodystart="68" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classleasy_1_1metadata_1_1function_1a6ce0d7ed9ddce9000ab15d99175fc494" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="classleasy_1_1metadata_1_1_type_info" kindref="compound">TypeInfo</ref> &gt;</type>
+        <definition>std::vector&lt;TypeInfo&gt; leasy::metadata::function::arguments</definition>
+        <argsstring></argsstring>
+        <name>arguments</name>
+        <qualifiedname>leasy::metadata::function::arguments</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="71" column="17" bodyfile="leasy/metadata/function.hpp" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classleasy_1_1metadata_1_1function_1a43fd0ef883930012a7dbe019a36aeaf7" prot="public" static="no" mutable="no">
+        <type><ref refid="classleasy_1_1metadata_1_1_type_info" kindref="compound">TypeInfo</ref></type>
+        <definition>TypeInfo leasy::metadata::function::return_type</definition>
+        <argsstring></argsstring>
+        <name>return_type</name>
+        <qualifiedname>leasy::metadata::function::return_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="72" column="14" bodyfile="leasy/metadata/function.hpp" bodystart="72" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1function_1ad3a139faae9b63cafebfff198b0e8396" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::pair&lt; bool, std::string &gt;</type>
+        <definition>std::pair&lt; bool, std::string &gt; leasy::metadata::function::is_callable</definition>
+        <argsstring>(const std::vector&lt; std::any &gt; &amp;args) const override</argsstring>
+        <name>is_callable</name>
+        <qualifiedname>leasy::metadata::function::is_callable</qualifiedname>
+        <reimplements refid="classleasy_1_1metadata_1_1function__base__t_1a4191d0d015a76b420d98064b10f24eab">is_callable</reimplements>
+        <param>
+          <type>const std::vector&lt; std::any &gt; &amp;</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="74" column="22" bodyfile="leasy/metadata/function.hpp" bodystart="74" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1function_1aa57e8a4e1b99246a272de1ba748002fd" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::any</type>
+        <definition>std::any leasy::metadata::function::call</definition>
+        <argsstring>(const std::vector&lt; std::any &gt; &amp;args) const override</argsstring>
+        <name>call</name>
+        <qualifiedname>leasy::metadata::function::call</qualifiedname>
+        <reimplements refid="classleasy_1_1metadata_1_1function__base__t_1a1f415e9591840be8beac967f9131cbd2">call</reimplements>
+        <param>
+          <type>const std::vector&lt; std::any &gt; &amp;</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="78" column="21" bodyfile="leasy/metadata/function.hpp" bodystart="78" bodyend="80"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1function_1aa08bfd7fd00d9264908d956cdf7ac03c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::function&lt; int(<ref refid="structlua___state" kindref="compound">lua_State</ref> *)&gt;</type>
+        <definition>std::function&lt; int(lua_State *)&gt; leasy::metadata::function::lua</definition>
+        <argsstring>() const override</argsstring>
+        <name>lua</name>
+        <qualifiedname>leasy::metadata::function::lua</qualifiedname>
+        <reimplements refid="classleasy_1_1metadata_1_1function__base__t_1a42715055f5630b60e8c830f95de3a388">lua</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="82" column="26" bodyfile="leasy/metadata/function.hpp" bodystart="82" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1function_1a745ae80b7878aceeab8f16d674a8c689" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void leasy::metadata::function::bind</definition>
+        <argsstring>(ul2::lstate &amp;state) const override</argsstring>
+        <name>bind</name>
+        <qualifiedname>leasy::metadata::function::bind</qualifiedname>
+        <reimplements refid="classleasy_1_1metadata_1_1_data_1a8776e154751bda5ca9d54b684c2c5699">bind</reimplements>
+        <param>
+          <type><ref refid="classleasy_1_1ul2_1_1lstate" kindref="compound">ul2::lstate</ref> &amp;</type>
+          <declname>state</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="86" column="17" bodyfile="leasy/metadata/function.hpp" bodystart="86" bodyend="88"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1function_1a118e838c5e2b5781b72e425585bb366b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="classleasy_1_1metadata_1_1_object" kindref="compound">Object</ref></type>
+        <definition>Object leasy::metadata::function::dump</definition>
+        <argsstring>() const override</argsstring>
+        <name>dump</name>
+        <qualifiedname>leasy::metadata::function::dump</qualifiedname>
+        <reimplements refid="classleasy_1_1metadata_1_1_data_1aa147e2dbf84c5b9edc0874e0492c8a5e">dump</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="90" column="19" bodyfile="leasy/metadata/function.hpp" bodystart="90" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1function_1a00e6541aea39c4245e1b660140ae5291" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::metadata::function::function</definition>
+        <argsstring>()</argsstring>
+        <name>function</name>
+        <qualifiedname>leasy::metadata::function::function</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="97" column="12" bodyfile="leasy/metadata/function.hpp" bodystart="97" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1metadata_1_1function_1ac3221577ca811e60be49993ee88e4327" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Fn</type>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>leasy::metadata::function::function</definition>
+        <argsstring>(const std::string &amp;name, const Fn &amp;f)</argsstring>
+        <name>function</name>
+        <qualifiedname>leasy::metadata::function::function</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>const Fn &amp;</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/function.hpp" line="103" column="12" bodyfile="leasy/metadata/function.hpp" bodystart="103" bodyend="110"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>leasy::metadata::Data</label>
+        <link refid="classleasy_1_1metadata_1_1_data"/>
+      </node>
+      <node id="1">
+        <label>leasy::metadata::function</label>
+        <link refid="classleasy_1_1metadata_1_1function"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>leasy::metadata::function_base_t</label>
+        <link refid="classleasy_1_1metadata_1_1function__base__t"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>leasy::metadata::Data</label>
+        <link refid="classleasy_1_1metadata_1_1_data"/>
+      </node>
+      <node id="4">
+        <label>leasy::metadata::TypeInfo</label>
+        <link refid="classleasy_1_1metadata_1_1_type_info"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>leasy::metadata::function</label>
+        <link refid="classleasy_1_1metadata_1_1function"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>return_type</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>leasy::metadata::function_base_t</label>
+        <link refid="classleasy_1_1metadata_1_1function__base__t"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/metadata/function.hpp" line="65" column="3" bodyfile="leasy/metadata/function.hpp" bodystart="65" bodyend="111"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1metadata_1_1function_1a6ce0d7ed9ddce9000ab15d99175fc494" prot="public" virt="non-virtual"><scope>leasy::metadata::function</scope><name>arguments</name></member>
+      <member refid="classleasy_1_1metadata_1_1function_1a745ae80b7878aceeab8f16d674a8c689" prot="public" virt="virtual"><scope>leasy::metadata::function</scope><name>bind</name></member>
+      <member refid="classleasy_1_1metadata_1_1function_1aa57e8a4e1b99246a272de1ba748002fd" prot="public" virt="virtual"><scope>leasy::metadata::function</scope><name>call</name></member>
+      <member refid="classleasy_1_1metadata_1_1function_1a118e838c5e2b5781b72e425585bb366b" prot="public" virt="virtual"><scope>leasy::metadata::function</scope><name>dump</name></member>
+      <member refid="classleasy_1_1metadata_1_1function_1a00e6541aea39c4245e1b660140ae5291" prot="public" virt="non-virtual"><scope>leasy::metadata::function</scope><name>function</name></member>
+      <member refid="classleasy_1_1metadata_1_1function_1ac3221577ca811e60be49993ee88e4327" prot="public" virt="non-virtual"><scope>leasy::metadata::function</scope><name>function</name></member>
+      <member refid="classleasy_1_1metadata_1_1function_1ad3a139faae9b63cafebfff198b0e8396" prot="public" virt="virtual"><scope>leasy::metadata::function</scope><name>is_callable</name></member>
+      <member refid="classleasy_1_1metadata_1_1function_1aa08bfd7fd00d9264908d956cdf7ac03c" prot="public" virt="virtual"><scope>leasy::metadata::function</scope><name>lua</name></member>
+      <member refid="classleasy_1_1metadata_1_1function_1ae436e8604633a17fc92298d6cd050f94" prot="private" virt="non-virtual"><scope>leasy::metadata::function</scope><name>lua_bridge</name></member>
+      <member refid="classleasy_1_1metadata_1_1function__base__t_1aac3a26cb956eea1305b511a642e9e42f" prot="public" virt="non-virtual"><scope>leasy::metadata::function</scope><name>name</name></member>
+      <member refid="classleasy_1_1metadata_1_1function_1af59ed6b53473e2bd4261e81c3061695a" prot="private" virt="non-virtual"><scope>leasy::metadata::function</scope><name>native_bridge</name></member>
+      <member refid="classleasy_1_1metadata_1_1function_1a43fd0ef883930012a7dbe019a36aeaf7" prot="public" virt="non-virtual"><scope>leasy::metadata::function</scope><name>return_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

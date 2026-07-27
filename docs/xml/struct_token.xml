@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_token" kind="struct" language="C++" prot="public">
+    <compoundname>Token</compoundname>
+    <includes refid="llex_8h" local="no">llex.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_token_1a92d1dfeae343659449f1bc29d6731c5d" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Token::token</definition>
+        <argsstring></argsstring>
+        <name>token</name>
+        <qualifiedname>Token::token</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="57" column="7" bodyfile="leasy/lua/llex.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_token_1a87067a25b1e511befc45d56cf535ef59" prot="public" static="no" mutable="no">
+        <type><ref refid="union_sem_info" kindref="compound">SemInfo</ref></type>
+        <definition>SemInfo Token::seminfo</definition>
+        <argsstring></argsstring>
+        <name>seminfo</name>
+        <qualifiedname>Token::seminfo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/llex.h" line="58" column="11" bodyfile="leasy/lua/llex.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>SemInfo</label>
+        <link refid="union_sem_info"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>ts</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Token</label>
+        <link refid="struct_token"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>seminfo</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/llex.h" line="56" column="1" bodyfile="leasy/lua/llex.h" bodystart="56" bodyend="59"/>
+    <listofallmembers>
+      <member refid="struct_token_1a87067a25b1e511befc45d56cf535ef59" prot="public" virt="non-virtual"><scope>Token</scope><name>seminfo</name></member>
+      <member refid="struct_token_1a92d1dfeae343659449f1bc29d6731c5d" prot="public" virt="non-virtual"><scope>Token</scope><name>token</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

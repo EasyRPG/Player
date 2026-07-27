@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_game___battle_algorithm" kind="namespace" language="C++">
+    <compoundname>Game_BattleAlgorithm</compoundname>
+    <innerclass refid="struct_game___battle_algorithm_1_1_state_effect" prot="public">Game_BattleAlgorithm::StateEffect</innerclass>
+    <innerclass refid="struct_game___battle_algorithm_1_1_attribute_effect" prot="public">Game_BattleAlgorithm::AttributeEffect</innerclass>
+    <innerclass refid="class_game___battle_algorithm_1_1_algorithm_base" prot="public">Game_BattleAlgorithm::AlgorithmBase</innerclass>
+    <innerclass refid="class_game___battle_algorithm_1_1_none" prot="public">Game_BattleAlgorithm::None</innerclass>
+    <innerclass refid="class_game___battle_algorithm_1_1_normal" prot="public">Game_BattleAlgorithm::Normal</innerclass>
+    <innerclass refid="class_game___battle_algorithm_1_1_skill" prot="public">Game_BattleAlgorithm::Skill</innerclass>
+    <innerclass refid="class_game___battle_algorithm_1_1_item" prot="public">Game_BattleAlgorithm::Item</innerclass>
+    <innerclass refid="class_game___battle_algorithm_1_1_defend" prot="public">Game_BattleAlgorithm::Defend</innerclass>
+    <innerclass refid="class_game___battle_algorithm_1_1_observe" prot="public">Game_BattleAlgorithm::Observe</innerclass>
+    <innerclass refid="class_game___battle_algorithm_1_1_charge" prot="public">Game_BattleAlgorithm::Charge</innerclass>
+    <innerclass refid="class_game___battle_algorithm_1_1_self_destruct" prot="public">Game_BattleAlgorithm::SelfDestruct</innerclass>
+    <innerclass refid="class_game___battle_algorithm_1_1_escape" prot="public">Game_BattleAlgorithm::Escape</innerclass>
+    <innerclass refid="class_game___battle_algorithm_1_1_transform" prot="public">Game_BattleAlgorithm::Transform</innerclass>
+    <innerclass refid="class_game___battle_algorithm_1_1_do_nothing" prot="public">Game_BattleAlgorithm::DoNothing</innerclass>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_game___battle_algorithm_1a9e8c86c4814743490f1fdaad507ae97c" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>Type</name>
+        <qualifiedname>Game_BattleAlgorithm::Type</qualifiedname>
+        <enumvalue id="namespace_game___battle_algorithm_1a9e8c86c4814743490f1fdaad507ae97ca6adf97f83acf6453d4a6a4b1070f3754" prot="public">
+          <name>None</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___battle_algorithm_1a9e8c86c4814743490f1fdaad507ae97ca960b44c579bc2f6818d2daaf9e4c16f0" prot="public">
+          <name>Normal</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___battle_algorithm_1a9e8c86c4814743490f1fdaad507ae97ca88bb766f0cc321759ed2eeb0bc06be5d" prot="public">
+          <name>Skill</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___battle_algorithm_1a9e8c86c4814743490f1fdaad507ae97ca7d74f3b92b19da5e606d737d339a9679" prot="public">
+          <name>Item</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___battle_algorithm_1a9e8c86c4814743490f1fdaad507ae97ca4aec8c62cef82bc80bd3192973dc8609" prot="public">
+          <name>Defend</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___battle_algorithm_1a9e8c86c4814743490f1fdaad507ae97ca4ca0accb888b0555a1334634ef52ed61" prot="public">
+          <name>Observe</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___battle_algorithm_1a9e8c86c4814743490f1fdaad507ae97ca517349a3cdc1acf50617693e3ba33988" prot="public">
+          <name>Charge</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___battle_algorithm_1a9e8c86c4814743490f1fdaad507ae97ca0e40db3b593f30da392370025b26753a" prot="public">
+          <name>SelfDestruct</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___battle_algorithm_1a9e8c86c4814743490f1fdaad507ae97ca013ec032d3460d4be4431c6ab1f8f224" prot="public">
+          <name>Escape</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___battle_algorithm_1a9e8c86c4814743490f1fdaad507ae97ca2ff4148554480a37f85efd299df04850" prot="public">
+          <name>Transform</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_game___battle_algorithm_1a9e8c86c4814743490f1fdaad507ae97ca71b7f3fcd4098ebf8a3b387579d90dd7" prot="public">
+          <name>DoNothing</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_battlealgorithm.h" line="44" column="1" bodyfile="game_battlealgorithm.h" bodystart="44" bodyend="56"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Contains algorithms to handle the different battle attacks, skills and items. The algorithms support single targets and party targets. For party targets the caller is responsible for retargeting using TargetNext.</para>
+<para>The action is simulated using Execute and the results can be applied after the simulation by calling Apply. </para>
+    </detaileddescription>
+    <location file="game_battlealgorithm.h" line="42" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classmidisequencer_1_1output" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>midisequencer::output</compoundname>
+    <basecompoundref refid="classmidisequencer_1_1uncopyable" prot="private" virt="non-virtual">midisequencer::uncopyable</basecompoundref>
+    <derivedcompoundref refid="class_audio_decoder_midi" prot="public" virt="non-virtual">AudioDecoderMidi</derivedcompoundref>
+    <includes refid="midisequencer_8h" local="no">midisequencer.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classmidisequencer_1_1output_1a5296a8eab74c523cba3072158777ef97" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void midisequencer::output::midi_message</definition>
+        <argsstring>(int port, uint_least32_t message)=0</argsstring>
+        <name>midi_message</name>
+        <qualifiedname>midisequencer::output::midi_message</qualifiedname>
+        <reimplementedby refid="class_audio_decoder_midi_1a84cf46ba53178cdeef01ba99c720dbe0">midi_message</reimplementedby>
+        <param>
+          <type>int</type>
+          <declname>port</declname>
+        </param>
+        <param>
+          <type>uint_least32_t</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="62" column="22"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1output_1a015fed410423611559440a0046501ac1" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void midisequencer::output::sysex_message</definition>
+        <argsstring>(int port, const void *data, std::size_t size)=0</argsstring>
+        <name>sysex_message</name>
+        <qualifiedname>midisequencer::output::sysex_message</qualifiedname>
+        <reimplementedby refid="class_audio_decoder_midi_1a9a9efc44e211cc0f83d8d59c09fbfec9">sysex_message</reimplementedby>
+        <param>
+          <type>int</type>
+          <declname>port</declname>
+        </param>
+        <param>
+          <type>const void *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="63" column="22"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1output_1a232ba8f79db59b14bcd7f870cd8d559a" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void midisequencer::output::meta_event</definition>
+        <argsstring>(int type, const void *data, std::size_t size)=0</argsstring>
+        <name>meta_event</name>
+        <qualifiedname>midisequencer::output::meta_event</qualifiedname>
+        <reimplementedby refid="class_audio_decoder_midi_1a61452030bdb0fb8699fc25cc8e0c7377">meta_event</reimplementedby>
+        <param>
+          <type>int</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>const void *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="64" column="22"/>
+      </memberdef>
+      <memberdef kind="function" id="classmidisequencer_1_1output_1ab0a77944817bba99243b8556a4371462" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void midisequencer::output::reset</definition>
+        <argsstring>()=0</argsstring>
+        <name>reset</name>
+        <qualifiedname>midisequencer::output::reset</qualifiedname>
+        <reimplementedby refid="class_audio_decoder_midi_1ac4507aec194efae1fdf90f6113f6f990">reset</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="65" column="22"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classmidisequencer_1_1output_1a4aadd64c0c016c380a277d19357e552e" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>midisequencer::output::~output</definition>
+        <argsstring>()</argsstring>
+        <name>~output</name>
+        <qualifiedname>midisequencer::output::~output</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="midisequencer.h" line="67" column="9" bodyfile="midisequencer.h" bodystart="67" bodyend="67"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>AudioDecoderMidi</label>
+        <link refid="class_audio_decoder_midi"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>midisequencer::output</label>
+        <link refid="classmidisequencer_1_1output"/>
+        <childnode refid="2" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>midisequencer::uncopyable</label>
+        <link refid="classmidisequencer_1_1uncopyable"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>midisequencer::output</label>
+        <link refid="classmidisequencer_1_1output"/>
+        <childnode refid="2" relation="private-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>midisequencer::uncopyable</label>
+        <link refid="classmidisequencer_1_1uncopyable"/>
+      </node>
+    </collaborationgraph>
+    <location file="midisequencer.h" line="60" column="5" bodyfile="midisequencer.h" bodystart="60" bodyend="68"/>
+    <listofallmembers>
+      <member refid="classmidisequencer_1_1output_1a232ba8f79db59b14bcd7f870cd8d559a" prot="public" virt="pure-virtual"><scope>midisequencer::output</scope><name>meta_event</name></member>
+      <member refid="classmidisequencer_1_1output_1a5296a8eab74c523cba3072158777ef97" prot="public" virt="pure-virtual"><scope>midisequencer::output</scope><name>midi_message</name></member>
+      <member refid="classmidisequencer_1_1output_1ab0a77944817bba99243b8556a4371462" prot="public" virt="pure-virtual"><scope>midisequencer::output</scope><name>reset</name></member>
+      <member refid="classmidisequencer_1_1output_1a015fed410423611559440a0046501ac1" prot="public" virt="pure-virtual"><scope>midisequencer::output</scope><name>sysex_message</name></member>
+      <member refid="classmidisequencer_1_1output_1a4aadd64c0c016c380a277d19357e552e" prot="protected" virt="non-virtual"><scope>midisequencer::output</scope><name>~output</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

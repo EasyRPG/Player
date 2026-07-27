@@ -695,3 +695,4 @@ typedef PixelFormatT<16,PF::DynamicMasks,PF::StaticAlpha,PF::NoAlpha,PF::NotAlig
 typedef PixelFormatT<16,PF::DynamicMasks,PF::DynamicAlpha,PF::NoAlpha,PF::NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16_d;
 
 #endif
+

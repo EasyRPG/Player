@@ -1,0 +1,216 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_async_handler" kind="namespace" language="C++">
+    <compoundname>AsyncHandler</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_async_handler_1ad7d80a79381bd982c4a92e50b6d39ce7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AsyncHandler::CreateRequestMapping</definition>
+        <argsstring>(const std::string &amp;file)</argsstring>
+        <name>CreateRequestMapping</name>
+        <qualifiedname>AsyncHandler::CreateRequestMapping</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>file</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Parses the specified JSON file. The file mapping read from this file will be used for further ajax requests. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="41" column="6" bodyfile="async_handler.cpp" bodystart="142" bodyend="214" declfile="async_handler.h" declline="41" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_async_handler_1aeecfbee98c9c656fd76ec1d30330927a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AsyncHandler::ClearRequests</definition>
+        <argsstring>()</argsstring>
+        <name>ClearRequests</name>
+        <qualifiedname>AsyncHandler::ClearRequests</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Clears all finished requests. They will hit the server again. Called after changing the language to ensure the assets are replaced. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="47" column="6" bodyfile="async_handler.cpp" bodystart="216" bodyend="226" declfile="async_handler.h" declline="47" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_async_handler_1a9fda46064b52ed2379e26e9483993fe1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_file_request_async" kindref="compound">FileRequestAsync</ref> *</type>
+        <definition>FileRequestAsync * AsyncHandler::RequestFile</definition>
+        <argsstring>(std::string_view folder_name, std::string_view file_name)</argsstring>
+        <name>RequestFile</name>
+        <qualifiedname>AsyncHandler::RequestFile</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>folder_name</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>file_name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates a request to a file. When the same file was already requested this will return an already existing request. The caller shouldn&apos;t choose different code path depending on new or existing requests.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>folder_name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>folder where the file is stored </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>file_name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the requested file requested. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The async request. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="60" column="18" bodyfile="async_handler.cpp" bodystart="228" bodyend="240" declfile="async_handler.h" declline="60" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_async_handler_1a171aafa1ea470b26f1818d894f75f49a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_file_request_async" kindref="compound">FileRequestAsync</ref> *</type>
+        <definition>FileRequestAsync * AsyncHandler::RequestFile</definition>
+        <argsstring>(std::string_view file_name)</argsstring>
+        <name>RequestFile</name>
+        <qualifiedname>AsyncHandler::RequestFile</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>file_name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates a request to a file. When the same file was already requested this will return an already existing request. The caller shouldn&apos;t choose different code path depending on new or existing requests.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>file_name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the requested file requested. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The async request. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="72" column="18" bodyfile="async_handler.cpp" bodystart="242" bodyend="244" declfile="async_handler.h" declline="72" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_async_handler_1ac91fb356889aedb9e97894dbc06c0b5a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool AsyncHandler::IsImportantFilePending</definition>
+        <argsstring>()</argsstring>
+        <name>IsImportantFilePending</name>
+        <qualifiedname>AsyncHandler::IsImportantFilePending</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if any file with important-flag hasn&apos;t finished downloading yet.</para>
+<para><simplesect kind="return"><para>If any file with important-flag is pending. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="79" column="6" bodyfile="async_handler.cpp" bodystart="275" bodyend="277" declfile="async_handler.h" declline="79" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_async_handler_1adb0f3e2a41343312ee95863431375e1f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool AsyncHandler::IsGraphicFilePending</definition>
+        <argsstring>()</argsstring>
+        <name>IsGraphicFilePending</name>
+        <qualifiedname>AsyncHandler::IsGraphicFilePending</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if any file with graphic-flag hasn&apos;t finished downloading yet.</para>
+<para><simplesect kind="return"><para>If any file with graphic-flag is pending. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="86" column="6" bodyfile="async_handler.cpp" bodystart="279" bodyend="281" declfile="async_handler.h" declline="86" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_async_handler_1a53079ab2f1a671db90370fa42c113703" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool AsyncHandler::IsFilePending</definition>
+        <argsstring>(bool important, bool graphic)</argsstring>
+        <name>IsFilePending</name>
+        <qualifiedname>AsyncHandler::IsFilePending</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>important</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>graphic</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks if any file is hasn&apos;t finished downloading yet.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>important</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>check only important files </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>graphic</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>check only graphic files</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>If any file with params is pending. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="96" column="6" bodyfile="async_handler.cpp" bodystart="246" bodyend="263" declfile="async_handler.h" declline="96" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_async_handler_1a1936dafc96b1ddfbe28f37068e97afb4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void AsyncHandler::SaveFilesystem</definition>
+        <argsstring>()</argsstring>
+        <name>SaveFilesystem</name>
+        <qualifiedname>AsyncHandler::SaveFilesystem</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Saves the state of the Save filesystem. Only works on emscripten, noop on other platforms. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="async_handler.h" line="102" column="6" bodyfile="async_handler.cpp" bodystart="265" bodyend="273" declfile="async_handler.h" declline="102" declcolumn="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="namespace_async_handler" kindref="compound">AsyncHandler</ref> supports asynchronous file requests for platforms that don&apos;t support synchronous IO (e.g. Emscripten). </para>
+    </detaileddescription>
+    <location file="async_handler.h" line="36" column="1"/>
+  </compounddef>
+</doxygen>

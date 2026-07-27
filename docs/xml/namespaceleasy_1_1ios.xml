@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1ios" kind="namespace" language="C++">
+    <compoundname>leasy::ios</compoundname>
+    <innerclass refid="classleasy_1_1ios_1_1buffer" prot="public">leasy::ios::buffer</innerclass>
+    <innerclass refid="classleasy_1_1ios_1_1sink" prot="public">leasy::ios::sink</innerclass>
+    <innerclass refid="classleasy_1_1ios_1_1console__sink" prot="public">leasy::ios::console_sink</innerclass>
+    <innerclass refid="classleasy_1_1ios_1_1file__sink" prot="public">leasy::ios::file_sink</innerclass>
+    <innerclass refid="classleasy_1_1ios_1_1memory__sink" prot="public">leasy::ios::memory_sink</innerclass>
+    <innerclass refid="classleasy_1_1ios_1_1attachment" prot="public">leasy::ios::attachment</innerclass>
+    <innerclass refid="structleasy_1_1ios_1_1format__options" prot="public">leasy::ios::format_options</innerclass>
+    <innerclass refid="classleasy_1_1ios_1_1channel" prot="public">leasy::ios::channel</innerclass>
+    <innerclass refid="classleasy_1_1ios_1_1temp__file" prot="public">leasy::ios::temp_file</innerclass>
+    <innerclass refid="classleasy_1_1ios_1_1io__system" prot="public">leasy::ios::io_system</innerclass>
+    <innernamespace refid="namespaceleasy_1_1ios_1_1ansi">leasy::ios::ansi</innernamespace>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceleasy_1_1ios_1afdd6f6d598478b23796dda249f1a3fd6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::shared_ptr&lt; <ref refid="classleasy_1_1ios_1_1sink" kindref="compound">sink</ref> &gt;</type>
+        <definition>std::shared_ptr&lt; sink &gt; leasy::ios::console</definition>
+        <argsstring>(std::ostream &amp;stream=std::cout)</argsstring>
+        <name>console</name>
+        <qualifiedname>leasy::ios::console</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>stream</declname>
+          <defval>std::cout</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="396" column="24" bodyfile="leasy/lio.hpp" bodystart="396" bodyend="398"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ios_1a1c7f570130c50d8595fc9216f2160c8f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::shared_ptr&lt; <ref refid="classleasy_1_1ios_1_1sink" kindref="compound">sink</ref> &gt;</type>
+        <definition>std::shared_ptr&lt; sink &gt; leasy::ios::file</definition>
+        <argsstring>(const std::filesystem::path &amp;path)</argsstring>
+        <name>file</name>
+        <qualifiedname>leasy::ios::file</qualifiedname>
+        <param>
+          <type>const std::filesystem::path &amp;</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="400" column="24" bodyfile="leasy/lio.hpp" bodystart="400" bodyend="402"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1ios_1a2cc39548dfd4ec48e6df215fb8ee1310" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::shared_ptr&lt; <ref refid="classleasy_1_1ios_1_1memory__sink" kindref="compound">memory_sink</ref> &gt;</type>
+        <definition>std::shared_ptr&lt; memory_sink &gt; leasy::ios::memory</definition>
+        <argsstring>()</argsstring>
+        <name>memory</name>
+        <qualifiedname>leasy::ios::memory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="404" column="24" bodyfile="leasy/lio.hpp" bodystart="404" bodyend="406"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><hruler/>
+ ██╗ ███████╗ █████╗ ███████╗██╗ ██╗ ██║ ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝ ██║ █████╗ ███████║███████╗ ╚████╔╝ ██║ ██╔══╝ ██╔══██║╚════██║ ╚██╔╝ ███████╗███████╗██║ ██║███████║ ██║ ╚══════╝╚══════╝╚═╝ ╚═╝╚══════╝ ╚═╝ <verbatim>    The EasyRPG engine, with runtime extensions, easily.
+</verbatim></para>
+<para>Developed by @wys <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink></para>
+<para>This file is free and open source. You may credit its usage in sources by using this Github profile: <ulink url="https://github.com/wys-prog">https://github.com/wys-prog</ulink>.</para>
+<para>You may see the evolution of this file at <ulink url="https://github.com/wys-prog/leasy">https://github.com/wys-prog/leasy</ulink>.</para>
+<para><ulink url="mailto:0xEF9087A@wys-prog.https">0xEF9087A@wys-prog.https</ulink>://github.com/wys-prog/leasy </para>
+    </detaileddescription>
+    <location file="leasy/lio.hpp" line="43" column="1"/>
+  </compounddef>
+</doxygen>

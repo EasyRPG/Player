@@ -1,0 +1,211 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_destiny_1_1_version" kind="struct" language="C++" prot="public">
+    <compoundname>Destiny::Version</compoundname>
+    <includes refid="game__destiny_8h" local="no">game_destiny.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_destiny_1_1_version_1a31e73842912b5a355d149aa4e17d3d6a" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t Destiny::Version::ver_major</definition>
+        <argsstring></argsstring>
+        <name>ver_major</name>
+        <qualifiedname>Destiny::Version::ver_major</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="146" column="10" bodyfile="game_destiny.h" bodystart="146" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_destiny_1_1_version_1a33a539908fccba96cfc0febecdd26f0a" prot="public" static="no" mutable="no">
+        <type>uint16_t</type>
+        <definition>uint16_t Destiny::Version::ver_minor</definition>
+        <argsstring></argsstring>
+        <name>ver_minor</name>
+        <qualifiedname>Destiny::Version::ver_minor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="147" column="10" bodyfile="game_destiny.h" bodystart="147" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_destiny_1_1_version_1ad30c8a98b3e5a1ee36301a53898f6de0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Destiny::Version::Version</definition>
+        <argsstring>()</argsstring>
+        <name>Version</name>
+        <qualifiedname>Destiny::Version::Version</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="149" column="1" bodyfile="game_destiny.h" bodystart="149" bodyend="150"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_destiny_1_1_version_1ad33489a2a40f557920a69293578931b1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Destiny::Version::Version</definition>
+        <argsstring>(uint32_t version)</argsstring>
+        <name>Version</name>
+        <qualifiedname>Destiny::Version::Version</qualifiedname>
+        <param>
+          <type>uint32_t</type>
+          <declname>version</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="151" column="1" bodyfile="game_destiny.h" bodystart="151" bodyend="155"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_destiny_1_1_version_1a45119ee9c0e38329de77eff33b4a7727" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Destiny::Version::toString</definition>
+        <argsstring>() const</argsstring>
+        <name>toString</name>
+        <qualifiedname>Destiny::Version::toString</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="157" column="13" bodyfile="game_destiny.h" bodystart="157" bodyend="163"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_destiny_1_1_version_1a238b83f0844122e696dc2b1e411b2a3c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Destiny::Version::operator==</definition>
+        <argsstring>(Version &amp;other) const</argsstring>
+        <name>operator==</name>
+        <qualifiedname>Destiny::Version::operator==</qualifiedname>
+        <param>
+          <type><ref refid="struct_destiny_1_1_version_1ad30c8a98b3e5a1ee36301a53898f6de0" kindref="member">Version</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="165" column="13" bodyfile="game_destiny.h" bodystart="165" bodyend="168"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_destiny_1_1_version_1a9a584bc221f3c88dbdb1af31a9ad630a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Destiny::Version::operator!=</definition>
+        <argsstring>(Version &amp;other) const</argsstring>
+        <name>operator!=</name>
+        <qualifiedname>Destiny::Version::operator!=</qualifiedname>
+        <param>
+          <type><ref refid="struct_destiny_1_1_version_1ad30c8a98b3e5a1ee36301a53898f6de0" kindref="member">Version</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="170" column="13" bodyfile="game_destiny.h" bodystart="170" bodyend="173"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_destiny_1_1_version_1a4bf9cb48d04493f63452fa5642668df1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Destiny::Version::operator&gt;</definition>
+        <argsstring>(Version &amp;other) const</argsstring>
+        <name>operator&gt;</name>
+        <qualifiedname>Destiny::Version::operator&gt;</qualifiedname>
+        <param>
+          <type><ref refid="struct_destiny_1_1_version_1ad30c8a98b3e5a1ee36301a53898f6de0" kindref="member">Version</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="175" column="13" bodyfile="game_destiny.h" bodystart="175" bodyend="180"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_destiny_1_1_version_1ae007e7adc8ad447ad402c583b568a64e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Destiny::Version::operator&lt;</definition>
+        <argsstring>(Version &amp;other) const</argsstring>
+        <name>operator&lt;</name>
+        <qualifiedname>Destiny::Version::operator&lt;</qualifiedname>
+        <param>
+          <type><ref refid="struct_destiny_1_1_version_1ad30c8a98b3e5a1ee36301a53898f6de0" kindref="member">Version</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="182" column="8" bodyfile="game_destiny.h" bodystart="182" bodyend="187"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_destiny_1_1_version_1a19c5ef852fbff237c9ea5290ddf32cba" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Destiny::Version::operator&gt;=</definition>
+        <argsstring>(Version &amp;other) const</argsstring>
+        <name>operator&gt;=</name>
+        <qualifiedname>Destiny::Version::operator&gt;=</qualifiedname>
+        <param>
+          <type><ref refid="struct_destiny_1_1_version_1ad30c8a98b3e5a1ee36301a53898f6de0" kindref="member">Version</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="189" column="13" bodyfile="game_destiny.h" bodystart="189" bodyend="192"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_destiny_1_1_version_1aaffd14b5fcb89620429c4afe9b03f5a6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Destiny::Version::operator&lt;=</definition>
+        <argsstring>(Version &amp;other) const</argsstring>
+        <name>operator&lt;=</name>
+        <qualifiedname>Destiny::Version::operator&lt;=</qualifiedname>
+        <param>
+          <type><ref refid="struct_destiny_1_1_version_1ad30c8a98b3e5a1ee36301a53898f6de0" kindref="member">Version</ref> &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_destiny.h" line="194" column="8" bodyfile="game_destiny.h" bodystart="194" bodyend="197"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_destiny.h" line="144" column="1" bodyfile="game_destiny.h" bodystart="145" bodyend="198"/>
+    <listofallmembers>
+      <member refid="struct_destiny_1_1_version_1a9a584bc221f3c88dbdb1af31a9ad630a" prot="public" virt="non-virtual"><scope>Destiny::Version</scope><name>operator!=</name></member>
+      <member refid="struct_destiny_1_1_version_1ae007e7adc8ad447ad402c583b568a64e" prot="public" virt="non-virtual"><scope>Destiny::Version</scope><name>operator&lt;</name></member>
+      <member refid="struct_destiny_1_1_version_1aaffd14b5fcb89620429c4afe9b03f5a6" prot="public" virt="non-virtual"><scope>Destiny::Version</scope><name>operator&lt;=</name></member>
+      <member refid="struct_destiny_1_1_version_1a238b83f0844122e696dc2b1e411b2a3c" prot="public" virt="non-virtual"><scope>Destiny::Version</scope><name>operator==</name></member>
+      <member refid="struct_destiny_1_1_version_1a4bf9cb48d04493f63452fa5642668df1" prot="public" virt="non-virtual"><scope>Destiny::Version</scope><name>operator&gt;</name></member>
+      <member refid="struct_destiny_1_1_version_1a19c5ef852fbff237c9ea5290ddf32cba" prot="public" virt="non-virtual"><scope>Destiny::Version</scope><name>operator&gt;=</name></member>
+      <member refid="struct_destiny_1_1_version_1a45119ee9c0e38329de77eff33b4a7727" prot="public" virt="non-virtual"><scope>Destiny::Version</scope><name>toString</name></member>
+      <member refid="struct_destiny_1_1_version_1a31e73842912b5a355d149aa4e17d3d6a" prot="public" virt="non-virtual"><scope>Destiny::Version</scope><name>ver_major</name></member>
+      <member refid="struct_destiny_1_1_version_1a33a539908fccba96cfc0febecdd26f0a" prot="public" virt="non-virtual"><scope>Destiny::Version</scope><name>ver_minor</name></member>
+      <member refid="struct_destiny_1_1_version_1ad30c8a98b3e5a1ee36301a53898f6de0" prot="public" virt="non-virtual"><scope>Destiny::Version</scope><name>Version</name></member>
+      <member refid="struct_destiny_1_1_version_1ad33489a2a40f557920a69293578931b1" prot="public" virt="non-virtual"><scope>Destiny::Version</scope><name>Version</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

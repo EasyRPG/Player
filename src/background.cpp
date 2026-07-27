@@ -144,3 +144,4 @@ void Background::Draw(Bitmap& dst) {
 		dst.ToneBlit(0, 0, dst, dst.GetRect(), tone_effect, Opacity::Opaque());
 	}
 }
+

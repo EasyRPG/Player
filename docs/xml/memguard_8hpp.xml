@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="memguard_8hpp" kind="file" language="C++">
+    <compoundname>memguard.hpp</compoundname>
+    <includes local="no">cstdlib</includes>
+    <includedby refid="drawable__object_8cpp" local="yes">leasy/libs2/drawable_object.cpp</includedby>
+    <includedby refid="drawable__object_8hpp" local="yes">leasy/libs2/drawable_object.hpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/ily3/memguard.hpp</label>
+        <link refid="memguard_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>cstdlib</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>leasy/ily3/memguard.hpp</label>
+        <link refid="memguard_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>leasy/libs2/drawable_object.cpp</label>
+        <link refid="drawable__object_8cpp"/>
+      </node>
+      <node id="3">
+        <label>leasy/libs2/drawable_object.hpp</label>
+        <link refid="drawable__object_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structleasy_1_1ily3_1_1guard" prot="public">leasy::ily3::guard</innerclass>
+    <innernamespace refid="namespaceleasy">leasy</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1ily3">leasy::ily3</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstdlib&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1ily3" kindref="compound">leasy::ily3</ref><sp/>{</highlight></codeline>
+<codeline lineno="28" refid="structleasy_1_1ily3_1_1guard" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;<sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structleasy_1_1ily3_1_1guard_1acb48057b82bd29e9d07736928b3ff1f5" kindref="member">guard</ref><sp/>final<sp/>{</highlight></codeline>
+<codeline lineno="29" refid="structleasy_1_1ily3_1_1guard_1a0a58a2860927185fdda9bacf05f1598d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>T<sp/><ref refid="structleasy_1_1ily3_1_1guard_1a0a58a2860927185fdda9bacf05f1598d" kindref="member">resource</ref>;</highlight></codeline>
+<codeline lineno="30" refid="structleasy_1_1ily3_1_1guard_1a838c17106dce0e61e5a461b8056e7758" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/>(*<ref refid="structleasy_1_1ily3_1_1guard_1a838c17106dce0e61e5a461b8056e7758" kindref="member">deleter</ref>)(T*)<sp/>=<sp/>[](T*)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>{};</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="structleasy_1_1ily3_1_1guard_1acb48057b82bd29e9d07736928b3ff1f5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ily3_1_1guard_1acb48057b82bd29e9d07736928b3ff1f5" kindref="member">guard</ref>()<sp/>{}</highlight></codeline>
+<codeline lineno="33" refid="structleasy_1_1ily3_1_1guard_1a3b03e2e3b5232f26610ca9a8d99e28d4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ily3_1_1guard_1a3b03e2e3b5232f26610ca9a8d99e28d4" kindref="member">guard</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T<sp/>&amp;RES)</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="structleasy_1_1ily3_1_1guard_1a0a58a2860927185fdda9bacf05f1598d" kindref="member">resource</ref>(RES)<sp/>{}</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="36" refid="structleasy_1_1ily3_1_1guard_1a333ac0cdca8915e4c096a4467f5fd192" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ily3_1_1guard_1a333ac0cdca8915e4c096a4467f5fd192" kindref="member">guard</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T<sp/>&amp;RES,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">(*_deleter)(T*))<sp/></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="structleasy_1_1ily3_1_1guard_1a0a58a2860927185fdda9bacf05f1598d" kindref="member">resource</ref>(RES),<sp/><ref refid="structleasy_1_1ily3_1_1guard_1a838c17106dce0e61e5a461b8056e7758" kindref="member">deleter</ref>(_deleter)<sp/>{}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="39" refid="structleasy_1_1ily3_1_1guard_1a188d13c1695d28c6dfccb087bbfbd158" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ily3_1_1guard_1a188d13c1695d28c6dfccb087bbfbd158" kindref="member">~guard</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structleasy_1_1ily3_1_1guard_1a838c17106dce0e61e5a461b8056e7758" kindref="member">deleter</ref>(&amp;this-&gt;resource);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="structleasy_1_1ily3_1_1guard_1ac56f2b884bca9dc333f5e77c98bacb89" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ily3_1_1guard_1ac56f2b884bca9dc333f5e77c98bacb89" kindref="member">operator=</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T<sp/>&amp;other)<sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structleasy_1_1ily3_1_1guard_1a838c17106dce0e61e5a461b8056e7758" kindref="member">deleter</ref>(&amp;this-&gt;resource);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;resource<sp/>=<sp/>other;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="structleasy_1_1ily3_1_1guard_1a9d4dee1655ca15388618609ded2094e2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structleasy_1_1ily3_1_1guard_1a9d4dee1655ca15388618609ded2094e2" kindref="member">reset</ref>(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structleasy_1_1ily3_1_1guard_1a838c17106dce0e61e5a461b8056e7758" kindref="member">deleter</ref>(&amp;this-&gt;resource);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;resource<sp/>=<sp/>T();</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="53"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="leasy/ily3/memguard.hpp"/>
+  </compounddef>
+</doxygen>

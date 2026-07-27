@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="time_8hpp" kind="file" language="C++">
+    <compoundname>time.hpp</compoundname>
+    <includes local="no">chrono</includes>
+    <includes local="no">string</includes>
+    <includes local="no">thread</includes>
+    <includes local="no">functional</includes>
+    <includedby refid="lmain_8cpp" local="yes">leasy/lmain.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/iky7/time.hpp</label>
+        <link refid="time_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>chrono</label>
+      </node>
+      <node id="5">
+        <label>functional</label>
+      </node>
+      <node id="3">
+        <label>string</label>
+      </node>
+      <node id="4">
+        <label>thread</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>leasy/iky7/time.hpp</label>
+        <link refid="time_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>leasy/lmain.cpp</label>
+        <link refid="lmain_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classleasy_1_1iky7_1_1time" prot="public">leasy::iky7::time</innerclass>
+    <innernamespace refid="namespaceleasy">leasy</innernamespace>
+    <innernamespace refid="namespaceleasy_1_1iky7">leasy::iky7</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;chrono&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;thread&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;functional&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceleasy_1_1iky7" kindref="compound">leasy::iky7</ref><sp/>{</highlight></codeline>
+<codeline lineno="32" refid="classleasy_1_1iky7_1_1time" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classleasy_1_1iky7_1_1time_1a1c9dd9fcefe8e574dd11b29d809dde73" kindref="member">time</ref><sp/>{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>std::chrono::duration&lt;uint64_t&gt;<sp/>p;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="37" refid="classleasy_1_1iky7_1_1time_1a1c9dd9fcefe8e574dd11b29d809dde73" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1iky7_1_1time_1a1c9dd9fcefe8e574dd11b29d809dde73" kindref="member">time</ref>()<sp/>:<sp/>p(<ref refid="namespacestd" kindref="compound">std</ref>::chrono::high_resolution_clock::now().time_since_epoch().count())<sp/>{}</highlight></codeline>
+<codeline lineno="38" refid="classleasy_1_1iky7_1_1time_1a5ed21ec73b91be75905b06c6d03f1aec" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1iky7_1_1time_1a1c9dd9fcefe8e574dd11b29d809dde73" kindref="member">time</ref><sp/><ref refid="classleasy_1_1iky7_1_1time_1a5ed21ec73b91be75905b06c6d03f1aec" kindref="member">then</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::function&lt;</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">(<ref refid="classleasy_1_1iky7_1_1time_1a1c9dd9fcefe8e574dd11b29d809dde73" kindref="member">time</ref>)&gt;<sp/>&amp;f)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="comment">//<sp/>f<sp/>stands<sp/>for<sp/>&quot;FUCK<sp/>YOU<sp/>MEAN&quot;<sp/>(lol)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>f(*</highlight><highlight class="keyword">this</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1iky7_1_1time_1a1c9dd9fcefe8e574dd11b29d809dde73" kindref="member">time</ref>();<sp/></highlight><highlight class="comment">//<sp/>this<sp/>gon&apos;<sp/>return<sp/>when<sp/>the<sp/>function<sp/>actually<sp/>finishes<sp/>executing<sp/>(lol<sp/>yo<sp/>dum)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="classleasy_1_1iky7_1_1time_1ad860ef183f15030d4ef90eaf5982f262" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1iky7_1_1time_1a1c9dd9fcefe8e574dd11b29d809dde73" kindref="member">time</ref><sp/><ref refid="classleasy_1_1iky7_1_1time_1ad860ef183f15030d4ef90eaf5982f262" kindref="member">wait</ref>(uint64_t<sp/>ms)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>std::this_thread::sleep_for(std::chrono::milliseconds(ms));</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classleasy_1_1iky7_1_1time_1a1c9dd9fcefe8e574dd11b29d809dde73" kindref="member">time</ref>();</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="classleasy_1_1iky7_1_1time_1a3ded03f31a501dc8bbaf0238c33a697f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/>std::chrono::duration&lt;uint64_t&gt;<sp/><ref refid="classleasy_1_1iky7_1_1time_1a3ded03f31a501dc8bbaf0238c33a697f" kindref="member">internalpoint</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>this-&gt;p;<sp/>}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="50"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/iky7/time.hpp"/>
+  </compounddef>
+</doxygen>

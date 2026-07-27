@@ -1,0 +1,706 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_translation" kind="class" language="C++" prot="public">
+    <compoundname>Translation</compoundname>
+    <includes refid="translation_8h" local="no">translation.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_translation_1a8d67332e70839c0bd799704183693c5d" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_dictionary" kindref="compound">Dictionary</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Dictionary&gt; Translation::sys</definition>
+        <argsstring></argsstring>
+        <name>sys</name>
+        <qualifiedname>Translation::sys</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="302" column="17" bodyfile="translation.h" bodystart="302" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_translation_1aa0283cc52c4e242a2f44e0531c10dd37" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_dictionary" kindref="compound">Dictionary</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Dictionary&gt; Translation::common</definition>
+        <argsstring></argsstring>
+        <name>common</name>
+        <qualifiedname>Translation::common</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="303" column="17" bodyfile="translation.h" bodystart="303" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_translation_1afacf19c24455dd03ebff915041500d76" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_dictionary" kindref="compound">Dictionary</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Dictionary&gt; Translation::battle</definition>
+        <argsstring></argsstring>
+        <name>battle</name>
+        <qualifiedname>Translation::battle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="304" column="17" bodyfile="translation.h" bodystart="304" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_translation_1a8e8b6a930ad58d9baf86de849395fe3f" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_dictionary" kindref="compound">Dictionary</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Dictionary&gt; Translation::mapnames</definition>
+        <argsstring></argsstring>
+        <name>mapnames</name>
+        <qualifiedname>Translation::mapnames</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="305" column="17" bodyfile="translation.h" bodystart="305" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_translation_1aa1f740f5d8a32b5d16d93771ec84aa9b" prot="private" static="no" mutable="no">
+        <type>std::unordered_map&lt; std::string, std::unique_ptr&lt; <ref refid="class_dictionary" kindref="compound">Dictionary</ref> &gt; &gt;</type>
+        <definition>std::unordered_map&lt;std::string, std::unique_ptr&lt;Dictionary&gt; &gt; Translation::maps</definition>
+        <argsstring></argsstring>
+        <name>maps</name>
+        <qualifiedname>Translation::maps</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="306" column="20" bodyfile="translation.h" bodystart="306" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_translation_1a5aa4907e0c58d8261d4ca413fcbf81fc" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="struct_language" kindref="compound">Language</ref> &gt;</type>
+        <definition>std::vector&lt;Language&gt; Translation::languages</definition>
+        <argsstring></argsstring>
+        <name>languages</name>
+        <qualifiedname>Translation::languages</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="309" column="13" bodyfile="translation.h" bodystart="309" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_translation_1a4a8caa0cf6b9017385ab8eb877c67769" prot="private" static="no" mutable="no">
+        <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+        <definition>FilesystemView Translation::translation_root_fs</definition>
+        <argsstring></argsstring>
+        <name>translation_root_fs</name>
+        <qualifiedname>Translation::translation_root_fs</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="312" column="16" bodyfile="translation.h" bodystart="312" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_translation_1aea287be3c9b09d095f7763e24da2040e" prot="private" static="no" mutable="no">
+        <type><ref refid="struct_language" kindref="compound">Language</ref></type>
+        <definition>Language Translation::current_language</definition>
+        <argsstring></argsstring>
+        <name>current_language</name>
+        <qualifiedname>Translation::current_language</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="315" column="10" bodyfile="translation.h" bodystart="315" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_translation_1af67822487d25aeb83f80e07609827ae5" prot="private" static="no" mutable="no">
+        <type><ref refid="struct_language" kindref="compound">Language</ref></type>
+        <definition>Language Translation::default_language</definition>
+        <argsstring></argsstring>
+        <name>default_language</name>
+        <qualifiedname>Translation::default_language</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="319" column="10" bodyfile="translation.h" bodystart="319" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_translation_1ac84ffd41aba51ffa95a0df7b5dfeead3" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref> &gt;</type>
+        <definition>std::vector&lt;FileRequestBinding&gt; Translation::requests</definition>
+        <argsstring></argsstring>
+        <name>requests</name>
+        <qualifiedname>Translation::requests</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="321" column="13" bodyfile="translation.h" bodystart="321" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_translation_1abaa2115a4ecd37e61d02c5e3ecfb9022" prot="private" static="no" mutable="no">
+        <type><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref></type>
+        <definition>FileRequestBinding Translation::map_request</definition>
+        <argsstring></argsstring>
+        <name>map_request</name>
+        <qualifiedname>Translation::map_request</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="322" column="20" bodyfile="translation.h" bodystart="322" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_translation_1a2fadcd17c5ea728d0821c10cd0094318" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Translation::request_counter</definition>
+        <argsstring></argsstring>
+        <name>request_counter</name>
+        <qualifiedname>Translation::request_counter</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="323" column="5" bodyfile="translation.h" bodystart="323" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_translation_1a67d328546612e3d10707fc7768987e7f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Translation::InitTranslations</definition>
+        <argsstring>()</argsstring>
+        <name>InitTranslations</name>
+        <qualifiedname>Translation::InitTranslations</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Scan the Languages directory and build up a list of known languages. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="168" column="6" bodyfile="translation.cpp" bodystart="88" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1a48efa01ff5c28cb6beb5f5ed87ebf4fa" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Translation::HasTranslations</definition>
+        <argsstring>() const</argsstring>
+        <name>HasTranslations</name>
+        <qualifiedname>Translation::HasTranslations</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Do any translations besides the default exist?</para>
+<para><simplesect kind="return"><para>True if there is at least one translation (language); false otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="175" column="6" bodyfile="translation.cpp" bodystart="150" bodyend="153"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1a0710dabd2b099bb60ae415d8e23d9d3e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_filesystem_view" kindref="compound">FilesystemView</ref></type>
+        <definition>FilesystemView Translation::GetRootTree</definition>
+        <argsstring>() const</argsstring>
+        <name>GetRootTree</name>
+        <qualifiedname>Translation::GetRootTree</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieve the root directory tree for all Languages</para>
+<para><simplesect kind="return"><para>the Languages directory tree. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="182" column="16" bodyfile="translation.cpp" bodystart="145" bodyend="148"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1afc7ee1031dea334902554263eb955b69" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::vector&lt; <ref refid="struct_language" kindref="compound">Language</ref> &gt; &amp;</type>
+        <definition>const std::vector&lt; Language &gt; &amp; Translation::GetLanguages</definition>
+        <argsstring>() const</argsstring>
+        <name>GetLanguages</name>
+        <qualifiedname>Translation::GetLanguages</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieves a vector of all known languages.</para>
+<para><simplesect kind="return"><para>the Languages vector </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="189" column="19" bodyfile="translation.cpp" bodystart="155" bodyend="158"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1ab6d46d8639d87e5d87a14c1884c93719" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Translation::SelectLanguage</definition>
+        <argsstring>(std::string_view lang_id)</argsstring>
+        <name>SelectLanguage</name>
+        <qualifiedname>Translation::SelectLanguage</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>lang_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Switches to a given language. Resets the database and the Image <ref refid="namespace_cache" kindref="compound">Cache</ref>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>lang_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The language ID (or &quot;&quot; for &quot;Default&quot;) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="196" column="6" bodyfile="translation.cpp" bodystart="161" bodyend="193"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1aa60a4912b2a67f1d64389d6bf6460c4c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Translation::RequestAndAddMap</definition>
+        <argsstring>(int map_id)</argsstring>
+        <name>RequestAndAddMap</name>
+        <qualifiedname>Translation::RequestAndAddMap</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>map_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Does a async fetch of a map po file. Only used by the web player.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>map whose po file to fetch </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="204" column="6" bodyfile="translation.cpp" bodystart="239" bodyend="265"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1a494af027c91c4c8a3f1160254ac66909" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Translation::RewriteMapMessages</definition>
+        <argsstring>(std::string_view map_name, lcf::rpg::Map &amp;map)</argsstring>
+        <name>RewriteMapMessages</name>
+        <qualifiedname>Translation::RewriteMapMessages</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>map_name</declname>
+        </param>
+        <param>
+          <type>lcf::rpg::Map &amp;</type>
+          <declname>map</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Rewrite all Messages and Choices in this Map</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>map_name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the map with formatting similar to the .po file; e.g., &quot;map0104.po&quot; </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>map</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The map object itself (for modifying). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="212" column="6" bodyfile="translation.cpp" bodystart="794" bodyend="805"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1afd030111ea4e9c8ea15e4d3d234a0a4e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="struct_language" kindref="compound">Language</ref> &amp;</type>
+        <definition>const Language &amp; Translation::GetCurrentLanguage</definition>
+        <argsstring>() const</argsstring>
+        <name>GetCurrentLanguage</name>
+        <qualifiedname>Translation::GetCurrentLanguage</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieve the current language.</para>
+<para><simplesect kind="return"><para>the current language </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="219" column="16" bodyfile="translation.cpp" bodystart="135" bodyend="138"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1ab50c82373be9882882b9621b15a67296" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="struct_language" kindref="compound">Language</ref> &amp;</type>
+        <definition>const Language &amp; Translation::GetDefaultLanguage</definition>
+        <argsstring>() const</argsstring>
+        <name>GetDefaultLanguage</name>
+        <qualifiedname>Translation::GetDefaultLanguage</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Retrieves information about the builtin language of the game. This is obtained from Meta.ini in the &quot;default&quot; directory.</para>
+<para><simplesect kind="return"><para>the default language </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="227" column="16" bodyfile="translation.cpp" bodystart="140" bodyend="143"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1adea82dc444f4497f260403239a46b192" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Translation::Reset</definition>
+        <argsstring>()</argsstring>
+        <name>Reset</name>
+        <qualifiedname>Translation::Reset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reset all saved language data and revert to &quot;no translation&quot;. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="232" column="6" bodyfile="translation.cpp" bodystart="78" bodyend="86"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_translation_1aa9133f598d9a0a2b9cdb7ad39608ba02" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Translation::SelectLanguageAsync</definition>
+        <argsstring>(FileRequestResult *result, std::string_view lang_id)</argsstring>
+        <name>SelectLanguageAsync</name>
+        <qualifiedname>Translation::SelectLanguageAsync</qualifiedname>
+        <param>
+          <type><ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref> *</type>
+          <declname>result</declname>
+        </param>
+        <param>
+          <type>std::string_view</type>
+          <declname>lang_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="235" column="6" bodyfile="translation.cpp" bodystart="195" bodyend="237"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1a786f125a5920a361c3190a83251ec658" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Translation::ClearTranslationLookups</definition>
+        <argsstring>()</argsstring>
+        <name>ClearTranslationLookups</name>
+        <qualifiedname>Translation::ClearTranslationLookups</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reset all lookups loaded from .po files for the active language. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="240" column="6" bodyfile="translation.cpp" bodystart="814" bodyend="821"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1a0fa57a529111a1f66d98aa0172a44d5a" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Translation::ParsePoFile</definition>
+        <argsstring>(Filesystem_Stream::InputStream is, Dictionary &amp;out)</argsstring>
+        <name>ParsePoFile</name>
+        <qualifiedname>Translation::ParsePoFile</qualifiedname>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+          <declname>is</declname>
+        </param>
+        <param>
+          <type><ref refid="class_dictionary" kindref="compound">Dictionary</ref> &amp;</type>
+          <declname>out</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Parse a .po file and save its language-related strings.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>is</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Handle to a Po file to read. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="class_dictionary" kindref="compound">Dictionary</ref> to save these entries in (output). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="248" column="6" bodyfile="translation.cpp" bodystart="807" bodyend="812"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1a8db99e65e199ce7a9acd1091108d3f81" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Translation::RewriteDatabase</definition>
+        <argsstring>()</argsstring>
+        <name>RewriteDatabase</name>
+        <qualifiedname>Translation::RewriteDatabase</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Rewrite RPG_RT.ldb with the current translation entries </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="253" column="6" bodyfile="translation.cpp" bodystart="345" bodyend="374"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1a58f7d4c9f0728c191d2a10fe5ec20518" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Translation::RewriteTreemapNames</definition>
+        <argsstring>()</argsstring>
+        <name>RewriteTreemapNames</name>
+        <qualifiedname>Translation::RewriteTreemapNames</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Rewrite RPG_RT.lmt with the current translation entries </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="258" column="6" bodyfile="translation.cpp" bodystart="376" bodyend="383"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1a2b925c3ba49987eaca222c61c8c29f7a" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Translation::RewriteBattleEventMessages</definition>
+        <argsstring>()</argsstring>
+        <name>RewriteBattleEventMessages</name>
+        <qualifiedname>Translation::RewriteBattleEventMessages</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Rewrite all Battle Messages with the current translation entries </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="263" column="6" bodyfile="translation.cpp" bodystart="385" bodyend="395"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1a7bacdb7aab1294748a8868a932cf1fb5" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Translation::RewriteCommonEventMessages</definition>
+        <argsstring>()</argsstring>
+        <name>RewriteCommonEventMessages</name>
+        <qualifiedname>Translation::RewriteCommonEventMessages</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Rewrite all Common Event Messages with the current translation entries </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="268" column="6" bodyfile="translation.cpp" bodystart="398" bodyend="406"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1a2a62ce95e7cf760466f36cf98d0e903a" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::vector&lt; std::string &gt; &gt;</type>
+        <definition>std::vector&lt; std::vector&lt; std::string &gt; &gt; Translation::TranslateMessageStream</definition>
+        <argsstring>(const Dictionary &amp;dict, const std::stringstream &amp;msg, char trimChar)</argsstring>
+        <name>TranslateMessageStream</name>
+        <qualifiedname>Translation::TranslateMessageStream</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dictionary" kindref="compound">Dictionary</ref> &amp;</type>
+          <declname>dict</declname>
+        </param>
+        <param>
+          <type>const std::stringstream &amp;</type>
+          <declname>msg</declname>
+        </param>
+        <param>
+          <type>char</type>
+          <declname>trimChar</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Convert a stream of msgbox or choices to a list of output message boxes</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dict</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The dictionary to use for translation </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The message string to use for lookup. String with newlines. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>trimChar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Trim this character if the lookup string ends with this. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A vector of Message Boxes, where each Message Box is represented as a vector of lines (strings), or an empty vector if there is no translation. It is guaranteed that each MessageBox vector will have at least one entry (containing &quot;&quot;) if it would otherwise be empty; this can happen if the message box insertion commands are used. Note that the last MessageBox vector may contain translated &quot;Choice&quot; entries (it is based on the input). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="280" column="13" bodyfile="translation.cpp" bodystart="634" bodyend="671"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1acf5539046228befe57b78248612b351c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Translation::RewriteEventCommandMessage</definition>
+        <argsstring>(const Dictionary &amp;dict, std::vector&lt; lcf::rpg::EventCommand &gt; &amp;commands)</argsstring>
+        <name>RewriteEventCommandMessage</name>
+        <qualifiedname>Translation::RewriteEventCommandMessage</qualifiedname>
+        <param>
+          <type>const <ref refid="class_dictionary" kindref="compound">Dictionary</ref> &amp;</type>
+          <declname>dict</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; lcf::rpg::EventCommand &gt; &amp;</type>
+          <declname>commands</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Rewrite a list of event commands (from any map, battle, or common event) given a dictionary. Takes into account deleting and adding message boxes.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dict</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The dictionary to use for translation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>commands</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The commands to search through and update. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="289" column="6" bodyfile="translation.cpp" bodystart="674" bodyend="792"/>
+      </memberdef>
+      <memberdef kind="function" id="class_translation_1a1ebc08d34de771865c220edc7dca9a41" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Translation::ParseLanguageFiles</definition>
+        <argsstring>(std::string_view lang_id)</argsstring>
+        <name>ParseLanguageFiles</name>
+        <qualifiedname>Translation::ParseLanguageFiles</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>lang_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Parse all .po files for the given language.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>lang_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The ID of the language to parse, or &quot;&quot; for Default (no parsing is done) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the language directory was found; false otherwise </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="translation.h" line="299" column="6" bodyfile="translation.cpp" bodystart="267" bodyend="342"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Class that holds a list of all available translations and tracks the current one. Allows changing the language and rewriting the database. </para>
+    </detaileddescription>
+    <location file="translation.h" line="163" column="1" bodyfile="translation.h" bodystart="163" bodyend="324"/>
+    <listofallmembers>
+      <member refid="class_translation_1afacf19c24455dd03ebff915041500d76" prot="private" virt="non-virtual"><scope>Translation</scope><name>battle</name></member>
+      <member refid="class_translation_1a786f125a5920a361c3190a83251ec658" prot="private" virt="non-virtual"><scope>Translation</scope><name>ClearTranslationLookups</name></member>
+      <member refid="class_translation_1aa0283cc52c4e242a2f44e0531c10dd37" prot="private" virt="non-virtual"><scope>Translation</scope><name>common</name></member>
+      <member refid="class_translation_1aea287be3c9b09d095f7763e24da2040e" prot="private" virt="non-virtual"><scope>Translation</scope><name>current_language</name></member>
+      <member refid="class_translation_1af67822487d25aeb83f80e07609827ae5" prot="private" virt="non-virtual"><scope>Translation</scope><name>default_language</name></member>
+      <member refid="class_translation_1afd030111ea4e9c8ea15e4d3d234a0a4e" prot="public" virt="non-virtual"><scope>Translation</scope><name>GetCurrentLanguage</name></member>
+      <member refid="class_translation_1ab50c82373be9882882b9621b15a67296" prot="public" virt="non-virtual"><scope>Translation</scope><name>GetDefaultLanguage</name></member>
+      <member refid="class_translation_1afc7ee1031dea334902554263eb955b69" prot="public" virt="non-virtual"><scope>Translation</scope><name>GetLanguages</name></member>
+      <member refid="class_translation_1a0710dabd2b099bb60ae415d8e23d9d3e" prot="public" virt="non-virtual"><scope>Translation</scope><name>GetRootTree</name></member>
+      <member refid="class_translation_1a48efa01ff5c28cb6beb5f5ed87ebf4fa" prot="public" virt="non-virtual"><scope>Translation</scope><name>HasTranslations</name></member>
+      <member refid="class_translation_1a67d328546612e3d10707fc7768987e7f" prot="public" virt="non-virtual"><scope>Translation</scope><name>InitTranslations</name></member>
+      <member refid="class_translation_1a5aa4907e0c58d8261d4ca413fcbf81fc" prot="private" virt="non-virtual"><scope>Translation</scope><name>languages</name></member>
+      <member refid="class_translation_1abaa2115a4ecd37e61d02c5e3ecfb9022" prot="private" virt="non-virtual"><scope>Translation</scope><name>map_request</name></member>
+      <member refid="class_translation_1a8e8b6a930ad58d9baf86de849395fe3f" prot="private" virt="non-virtual"><scope>Translation</scope><name>mapnames</name></member>
+      <member refid="class_translation_1aa1f740f5d8a32b5d16d93771ec84aa9b" prot="private" virt="non-virtual"><scope>Translation</scope><name>maps</name></member>
+      <member refid="class_translation_1a1ebc08d34de771865c220edc7dca9a41" prot="private" virt="non-virtual"><scope>Translation</scope><name>ParseLanguageFiles</name></member>
+      <member refid="class_translation_1a0fa57a529111a1f66d98aa0172a44d5a" prot="private" virt="non-virtual"><scope>Translation</scope><name>ParsePoFile</name></member>
+      <member refid="class_translation_1a2fadcd17c5ea728d0821c10cd0094318" prot="private" virt="non-virtual"><scope>Translation</scope><name>request_counter</name></member>
+      <member refid="class_translation_1aa60a4912b2a67f1d64389d6bf6460c4c" prot="public" virt="non-virtual"><scope>Translation</scope><name>RequestAndAddMap</name></member>
+      <member refid="class_translation_1ac84ffd41aba51ffa95a0df7b5dfeead3" prot="private" virt="non-virtual"><scope>Translation</scope><name>requests</name></member>
+      <member refid="class_translation_1adea82dc444f4497f260403239a46b192" prot="public" virt="non-virtual"><scope>Translation</scope><name>Reset</name></member>
+      <member refid="class_translation_1a2b925c3ba49987eaca222c61c8c29f7a" prot="private" virt="non-virtual"><scope>Translation</scope><name>RewriteBattleEventMessages</name></member>
+      <member refid="class_translation_1a7bacdb7aab1294748a8868a932cf1fb5" prot="private" virt="non-virtual"><scope>Translation</scope><name>RewriteCommonEventMessages</name></member>
+      <member refid="class_translation_1a8db99e65e199ce7a9acd1091108d3f81" prot="private" virt="non-virtual"><scope>Translation</scope><name>RewriteDatabase</name></member>
+      <member refid="class_translation_1acf5539046228befe57b78248612b351c" prot="private" virt="non-virtual"><scope>Translation</scope><name>RewriteEventCommandMessage</name></member>
+      <member refid="class_translation_1a494af027c91c4c8a3f1160254ac66909" prot="public" virt="non-virtual"><scope>Translation</scope><name>RewriteMapMessages</name></member>
+      <member refid="class_translation_1a58f7d4c9f0728c191d2a10fe5ec20518" prot="private" virt="non-virtual"><scope>Translation</scope><name>RewriteTreemapNames</name></member>
+      <member refid="class_translation_1ab6d46d8639d87e5d87a14c1884c93719" prot="public" virt="non-virtual"><scope>Translation</scope><name>SelectLanguage</name></member>
+      <member refid="class_translation_1aa9133f598d9a0a2b9cdb7ad39608ba02" prot="private" virt="non-virtual"><scope>Translation</scope><name>SelectLanguageAsync</name></member>
+      <member refid="class_translation_1a8d67332e70839c0bd799704183693c5d" prot="private" virt="non-virtual"><scope>Translation</scope><name>sys</name></member>
+      <member refid="class_translation_1a2a62ce95e7cf760466f36cf98d0e903a" prot="private" virt="non-virtual"><scope>Translation</scope><name>TranslateMessageStream</name></member>
+      <member refid="class_translation_1a4a8caa0cf6b9017385ab8eb877c67769" prot="private" virt="non-virtual"><scope>Translation</scope><name>translation_root_fs</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

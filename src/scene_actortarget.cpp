@@ -176,3 +176,4 @@ void Scene_ActorTarget::UpdateSkill() {
 		target_window->Refresh();
 	}
 }
+

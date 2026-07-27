@@ -1,0 +1,1686 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="scene__battle__rpg2k3_8h" kind="file" language="C++">
+    <compoundname>scene_battle_rpg2k3.h</compoundname>
+    <includes refid="scene__battle_8h" local="yes">scene_battle.h</includes>
+    <includes refid="async__handler_8h" local="yes">async_handler.h</includes>
+    <includes refid="window__actorsp_8h" local="yes">window_actorsp.h</includes>
+    <includedby refid="scene__battle_8cpp" local="yes">scene_battle.cpp</includedby>
+    <includedby refid="scene__battle__rpg2k3_8cpp" local="yes">scene_battle_rpg2k3.cpp</includedby>
+    <incdepgraph>
+      <node id="41">
+        <label>async_handler.h</label>
+        <link refid="async__handler_8h"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="98">
+        <label>async_op.h</label>
+        <link refid="async__op_8h"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+      </node>
+      <node id="102">
+        <label>background.h</label>
+        <link refid="background_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>battle_animation.h</label>
+        <link refid="battle__animation_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="104">
+        <label>bitmap.h</label>
+        <link refid="bitmap_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="106" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+        <childnode refid="110" relation="include">
+        </childnode>
+        <childnode refid="111" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>color.h</label>
+        <link refid="color_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="94">
+        <label>compiler.h</label>
+        <link refid="compiler_8h"/>
+      </node>
+      <node id="81">
+        <label>config_param.h</label>
+        <link refid="config__param_8h"/>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+      </node>
+      <node id="63">
+        <label>directory_tree.h</label>
+        <link refid="directory__tree_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>drawable.h</label>
+        <link refid="drawable_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="99">
+        <label>drawable_list.h</label>
+        <link refid="drawable__list_8h"/>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>fileext_guesser.h</label>
+        <link refid="fileext__guesser_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+      </node>
+      <node id="67">
+        <label>filefinder.h</label>
+        <link refid="filefinder_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="70" relation="include">
+        </childnode>
+        <childnode refid="71" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="60">
+        <label>filesystem.h</label>
+        <link refid="filesystem_8h"/>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="63" relation="include">
+        </childnode>
+      </node>
+      <node id="68">
+        <label>filesystem_stream.h</label>
+        <link refid="filesystem__stream_8h"/>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="62" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>flash.h</label>
+        <link refid="flash_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="86">
+        <label>flat_map.h</label>
+        <link refid="flat__map_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="59" relation="include">
+        </childnode>
+      </node>
+      <node id="136">
+        <label>font.h</label>
+        <link refid="font_8h"/>
+        <childnode refid="68" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="137" relation="include">
+        </childnode>
+      </node>
+      <node id="49">
+        <label>game_actor.h</label>
+        <link refid="game__actor_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+      </node>
+      <node id="148">
+        <label>game_battle.h</label>
+        <link refid="game__battle_8h"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="127" relation="include">
+        </childnode>
+        <childnode refid="122" relation="include">
+        </childnode>
+        <childnode refid="149" relation="include">
+        </childnode>
+        <childnode refid="150" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>game_battler.h</label>
+        <link refid="game__battler_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>game_character.h</label>
+        <link refid="game__character_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="74">
+        <label>game_clock.h</label>
+        <link refid="game__clock_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="76" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="80">
+        <label>game_config.h</label>
+        <link refid="game__config_8h"/>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="60" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="84" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="88">
+        <label>game_config_game.h</label>
+        <link refid="game__config__game_8h"/>
+        <childnode refid="81" relation="include">
+        </childnode>
+        <childnode refid="68" relation="include">
+        </childnode>
+      </node>
+      <node id="54">
+        <label>game_enemy.h</label>
+        <link refid="game__enemy_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="96" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="152">
+        <label>game_interpreter.h</label>
+        <link refid="game__interpreter_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="153" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="83" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+      </node>
+      <node id="150">
+        <label>game_interpreter_battle.h</label>
+        <link refid="game__interpreter__battle_8h"/>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="151" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="152" relation="include">
+        </childnode>
+      </node>
+      <node id="89">
+        <label>game_interpreter_shared.h</label>
+        <link refid="game__interpreter__shared_8h"/>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="92" relation="include">
+        </childnode>
+        <childnode refid="93" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="94" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+      </node>
+      <node id="84">
+        <label>input_buttons.h</label>
+        <link refid="input__buttons_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="85" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+        <childnode refid="86" relation="include">
+        </childnode>
+        <childnode refid="87" relation="include">
+        </childnode>
+      </node>
+      <node id="87">
+        <label>keys.h</label>
+        <link refid="keys_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="69" relation="include">
+        </childnode>
+      </node>
+      <node id="119">
+        <label>lcf/data.h</label>
+        <link refid="data_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="120" relation="include">
+        </childnode>
+        <childnode refid="121" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="122" relation="include">
+        </childnode>
+        <childnode refid="123" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="124" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+        <childnode refid="125" relation="include">
+        </childnode>
+        <childnode refid="126" relation="include">
+        </childnode>
+        <childnode refid="127" relation="include">
+        </childnode>
+        <childnode refid="128" relation="include">
+        </childnode>
+        <childnode refid="129" relation="include">
+        </childnode>
+        <childnode refid="130" relation="include">
+        </childnode>
+        <childnode refid="131" relation="include">
+        </childnode>
+        <childnode refid="132" relation="include">
+        </childnode>
+        <childnode refid="133" relation="include">
+        </childnode>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="134" relation="include">
+        </childnode>
+        <childnode refid="135" relation="include">
+        </childnode>
+      </node>
+      <node id="118">
+        <label>main_data.h</label>
+        <link refid="main__data_8h"/>
+        <childnode refid="119" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>memory_management.h</label>
+        <link refid="memory__management_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="64">
+        <label>meta.h</label>
+        <link refid="meta_8h"/>
+        <childnode refid="65" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="66" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+      </node>
+      <node id="111">
+        <label>opacity.h</label>
+        <link refid="opacity_8h"/>
+        <childnode refid="61" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="112" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>options.h</label>
+        <link refid="options_8h"/>
+      </node>
+      <node id="146">
+        <label>pending_message.h</label>
+        <link refid="pending__message_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="147" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+      </node>
+      <node id="106">
+        <label>pixel_format.h</label>
+        <link refid="pixel__format_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="107" relation="include">
+        </childnode>
+        <childnode refid="108" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="110">
+        <label>pixman_image_ptr.h</label>
+        <link refid="pixman__image__ptr_8h"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="105" relation="include">
+        </childnode>
+      </node>
+      <node id="76">
+        <label>platform/clock.h</label>
+        <link refid="clock_8h"/>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="77" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>player.h</label>
+        <link refid="player_8h"/>
+        <childnode refid="57" relation="include">
+        </childnode>
+        <childnode refid="64" relation="include">
+        </childnode>
+        <childnode refid="72" relation="include">
+        </childnode>
+        <childnode refid="74" relation="include">
+        </childnode>
+        <childnode refid="80" relation="include">
+        </childnode>
+        <childnode refid="88" relation="include">
+        </childnode>
+        <childnode refid="89" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="95" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>point.h</label>
+        <link refid="point_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>rect.h</label>
+        <link refid="rect_8h"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="97">
+        <label>scene.h</label>
+        <link refid="scene_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+        <childnode refid="99" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="100" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>scene_battle.h</label>
+        <link refid="scene__battle_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="97" relation="include">
+        </childnode>
+        <childnode refid="101" relation="include">
+        </childnode>
+        <childnode refid="115" relation="include">
+        </childnode>
+        <childnode refid="138" relation="include">
+        </childnode>
+        <childnode refid="140" relation="include">
+        </childnode>
+        <childnode refid="141" relation="include">
+        </childnode>
+        <childnode refid="142" relation="include">
+        </childnode>
+        <childnode refid="143" relation="include">
+        </childnode>
+        <childnode refid="148" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>scene_battle_rpg2k3.h</label>
+        <link refid="scene__battle__rpg2k3_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="154" relation="include">
+        </childnode>
+      </node>
+      <node id="103">
+        <label>screen.h</label>
+        <link refid="screen_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>span.h</label>
+        <link refid="span_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>sprite.h</label>
+        <link refid="sprite_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>sprite_actor.h</label>
+        <link refid="sprite__actor_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="35">
+        <label>sprite_battler.h</label>
+        <link refid="sprite__battler_8h"/>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="113">
+        <label>sprite_character.h</label>
+        <link refid="sprite__character_8h"/>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="55">
+        <label>sprite_enemy.h</label>
+        <link refid="sprite__enemy_8h"/>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="114">
+        <label>sprite_timer.h</label>
+        <link refid="sprite__timer_8h"/>
+        <childnode refid="36" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>sprite_weapon.h</label>
+        <link refid="sprite__weapon_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+      </node>
+      <node id="101">
+        <label>spriteset_battle.h</label>
+        <link refid="spriteset__battle_8h"/>
+        <childnode refid="102" relation="include">
+        </childnode>
+        <childnode refid="103" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="113" relation="include">
+        </childnode>
+        <childnode refid="114" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>state.h</label>
+        <link refid="state_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="79">
+        <label>std_clock.h</label>
+        <link refid="std__clock_8h"/>
+        <childnode refid="75" relation="include">
+        </childnode>
+        <childnode refid="78" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>system.h</label>
+        <link refid="system_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="149">
+        <label>teleport_target.h</label>
+        <link refid="teleport__target_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="109">
+        <label>text.h</label>
+        <link refid="text_8h"/>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>tone.h</label>
+        <link refid="tone_8h"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="72">
+        <label>translation.h</label>
+        <link refid="translation_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="73" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="58" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="67" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>utils.h</label>
+        <link refid="utils_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="117">
+        <label>window.h</label>
+        <link refid="window_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="154">
+        <label>window_actorsp.h</label>
+        <link refid="window__actorsp_8h"/>
+        <childnode refid="116" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+      </node>
+      <node id="116">
+        <label>window_base.h</label>
+        <link refid="window__base_8h"/>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="117" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="118" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="65" relation="include">
+        </childnode>
+      </node>
+      <node id="142">
+        <label>window_battlestatus.h</label>
+        <link refid="window__battlestatus_8h"/>
+        <childnode refid="139" relation="include">
+        </childnode>
+        <childnode refid="104" relation="include">
+        </childnode>
+      </node>
+      <node id="141">
+        <label>window_command.h</label>
+        <link refid="window__command_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="139" relation="include">
+        </childnode>
+        <childnode refid="136" relation="include">
+        </childnode>
+      </node>
+      <node id="144">
+        <label>window_gold.h</label>
+        <link refid="window__gold_8h"/>
+        <childnode refid="116" relation="include">
+        </childnode>
+      </node>
+      <node id="115">
+        <label>window_help.h</label>
+        <link refid="window__help_8h"/>
+        <childnode refid="116" relation="include">
+        </childnode>
+        <childnode refid="109" relation="include">
+        </childnode>
+        <childnode refid="136" relation="include">
+        </childnode>
+      </node>
+      <node id="138">
+        <label>window_item.h</label>
+        <link refid="window__item_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="115" relation="include">
+        </childnode>
+        <childnode refid="139" relation="include">
+        </childnode>
+      </node>
+      <node id="143">
+        <label>window_message.h</label>
+        <link refid="window__message_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="144" relation="include">
+        </childnode>
+        <childnode refid="145" relation="include">
+        </childnode>
+        <childnode refid="139" relation="include">
+        </childnode>
+        <childnode refid="146" relation="include">
+        </childnode>
+        <childnode refid="98" relation="include">
+        </childnode>
+      </node>
+      <node id="145">
+        <label>window_numberinput.h</label>
+        <link refid="window__numberinput_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="139" relation="include">
+        </childnode>
+      </node>
+      <node id="139">
+        <label>window_selectable.h</label>
+        <link refid="window__selectable_8h"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="116" relation="include">
+        </childnode>
+        <childnode refid="115" relation="include">
+        </childnode>
+      </node>
+      <node id="140">
+        <label>window_skill.h</label>
+        <link refid="window__skill_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="139" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>algorithm</label>
+      </node>
+      <node id="82">
+        <label>array</label>
+      </node>
+      <node id="147">
+        <label>bitset</label>
+      </node>
+      <node id="61">
+        <label>cassert</label>
+      </node>
+      <node id="75">
+        <label>chrono</label>
+      </node>
+      <node id="112">
+        <label>climits</label>
+      </node>
+      <node id="9">
+        <label>cstdint</label>
+      </node>
+      <node id="70">
+        <label>cstdio</label>
+      </node>
+      <node id="107">
+        <label>cstdlib</label>
+      </node>
+      <node id="108">
+        <label>cstring</label>
+      </node>
+      <node id="25">
+        <label>ctime</label>
+      </node>
+      <node id="3">
+        <label>deque</label>
+      </node>
+      <node id="30">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="31">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="26">
+        <label>functional</label>
+      </node>
+      <node id="85">
+        <label>initializer_list</label>
+      </node>
+      <node id="71">
+        <label>ios</label>
+      </node>
+      <node id="62">
+        <label>istream</label>
+      </node>
+      <node id="153">
+        <label>lcf/dbarray.h</label>
+      </node>
+      <node id="14">
+        <label>lcf/dbbitarray.h</label>
+      </node>
+      <node id="29">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="69">
+        <label>lcf/enum_tags.h</label>
+      </node>
+      <node id="83">
+        <label>lcf/flag_set.h</label>
+      </node>
+      <node id="66">
+        <label>lcf/inireader.h</label>
+      </node>
+      <node id="5">
+        <label>lcf/rpg/actor.h</label>
+      </node>
+      <node id="48">
+        <label>lcf/rpg/animation.h</label>
+      </node>
+      <node id="123">
+        <label>lcf/rpg/attribute.h</label>
+      </node>
+      <node id="130">
+        <label>lcf/rpg/battlecommand.h</label>
+      </node>
+      <node id="131">
+        <label>lcf/rpg/battleranimation.h</label>
+      </node>
+      <node id="125">
+        <label>lcf/rpg/chipset.h</label>
+      </node>
+      <node id="129">
+        <label>lcf/rpg/class.h</label>
+      </node>
+      <node id="128">
+        <label>lcf/rpg/commonevent.h</label>
+      </node>
+      <node id="135">
+        <label>lcf/rpg/database.h</label>
+      </node>
+      <node id="6">
+        <label>lcf/rpg/enemy.h</label>
+      </node>
+      <node id="96">
+        <label>lcf/rpg/enemyaction.h</label>
+      </node>
+      <node id="90">
+        <label>lcf/rpg/eventcommand.h</label>
+      </node>
+      <node id="46">
+        <label>lcf/rpg/eventpage.h</label>
+      </node>
+      <node id="50">
+        <label>lcf/rpg/fwd.h</label>
+      </node>
+      <node id="121">
+        <label>lcf/rpg/item.h</label>
+      </node>
+      <node id="52">
+        <label>lcf/rpg/learning.h</label>
+      </node>
+      <node id="91">
+        <label>lcf/rpg/movecommand.h</label>
+      </node>
+      <node id="45">
+        <label>lcf/rpg/moveroute.h</label>
+      </node>
+      <node id="133">
+        <label>lcf/rpg/music.h</label>
+      </node>
+      <node id="51">
+        <label>lcf/rpg/saveactor.h</label>
+      </node>
+      <node id="93">
+        <label>lcf/rpg/saveeventexecframe.h</label>
+      </node>
+      <node id="92">
+        <label>lcf/rpg/saveeventexecstate.h</label>
+      </node>
+      <node id="47">
+        <label>lcf/rpg/savemapeventbase.h</label>
+      </node>
+      <node id="100">
+        <label>lcf/rpg/savesystem.h</label>
+      </node>
+      <node id="120">
+        <label>lcf/rpg/skill.h</label>
+      </node>
+      <node id="132">
+        <label>lcf/rpg/sound.h</label>
+      </node>
+      <node id="13">
+        <label>lcf/rpg/state.h</label>
+      </node>
+      <node id="127">
+        <label>lcf/rpg/system.h</label>
+      </node>
+      <node id="126">
+        <label>lcf/rpg/terms.h</label>
+      </node>
+      <node id="124">
+        <label>lcf/rpg/terrain.h</label>
+      </node>
+      <node id="134">
+        <label>lcf/rpg/treemap.h</label>
+      </node>
+      <node id="122">
+        <label>lcf/rpg/troop.h</label>
+      </node>
+      <node id="4">
+        <label>lcf/rpg/troopmember.h</label>
+      </node>
+      <node id="151">
+        <label>lcf/rpg/trooppagecondition.h</label>
+      </node>
+      <node id="137">
+        <label>lcf/scope_guard.h</label>
+      </node>
+      <node id="33">
+        <label>lcf/span.h</label>
+      </node>
+      <node id="28">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="12">
+        <label>limits</label>
+      </node>
+      <node id="65">
+        <label>map</label>
+      </node>
+      <node id="18">
+        <label>memory</label>
+      </node>
+      <node id="95">
+        <label>optional</label>
+      </node>
+      <node id="22">
+        <label>ostream</label>
+      </node>
+      <node id="105">
+        <label>pixman.h</label>
+      </node>
+      <node id="73">
+        <label>sstream</label>
+      </node>
+      <node id="10">
+        <label>string</label>
+      </node>
+      <node id="78">
+        <label>thread</label>
+      </node>
+      <node id="21">
+        <label>tuple</label>
+      </node>
+      <node id="77">
+        <label>type_traits</label>
+      </node>
+      <node id="58">
+        <label>unordered_map</label>
+      </node>
+      <node id="44">
+        <label>unordered_set</label>
+      </node>
+      <node id="59">
+        <label>utility</label>
+      </node>
+      <node id="11">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>scene_battle.cpp</label>
+        <link refid="scene__battle_8cpp"/>
+      </node>
+      <node id="3">
+        <label>scene_battle_rpg2k3.cpp</label>
+        <link refid="scene__battle__rpg2k3_8cpp"/>
+      </node>
+      <node id="1">
+        <label>scene_battle_rpg2k3.h</label>
+        <link refid="scene__battle__rpg2k3_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_scene___battle___rpg2k3" prot="public">Scene_Battle_Rpg2k3</innerclass>
+    <innerclass refid="struct_scene___battle___rpg2k3_1_1_float_text" prot="protected">Scene_Battle_Rpg2k3::FloatText</innerclass>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="scene__battle__rpg2k3_8h_1af9f0058442460864e6b7d37b5030221a" prot="public" static="no">
+        <name>EP_SCENE_BATTLE_RPG2K3_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="20" column="9" bodyfile="scene_battle_rpg2k3.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="scene__battle__rpg2k3_8h_1ad03804192cd3c53c54e53891b8182cba" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int cba_num_move_frames</definition>
+        <argsstring></argsstring>
+        <name>cba_num_move_frames</name>
+        <initializer>= 25</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle_rpg2k3.h" line="30" column="15" bodyfile="scene_battle_rpg2k3.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_SCENE_BATTLE_RPG2K3_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="scene__battle__rpg2k3_8h_1af9f0058442460864e6b7d37b5030221a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_SCENE_BATTLE_RPG2K3_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Headers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="scene__battle_8h" kindref="compound">scene_battle.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="async__handler_8h" kindref="compound">async_handler.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="window__actorsp_8h" kindref="compound">window_actorsp.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="comment">//<sp/>CBA<sp/>constant</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="comment">//<sp/>The<sp/>CBA<sp/>move<sp/>frame<sp/>counter<sp/>is<sp/>incremented<sp/>twice<sp/>per<sp/>frame<sp/>in<sp/>RPG_RT,</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="comment">//<sp/>so<sp/>the<sp/>effective<sp/>frame<sp/>count<sp/>is<sp/>13</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="scene__battle__rpg2k3_8h_1ad03804192cd3c53c54e53891b8182cba" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="scene__battle__rpg2k3_8h_1ad03804192cd3c53c54e53891b8182cba" kindref="member">cba_num_move_frames</ref><sp/>=<sp/>25;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="class_scene___battle___rpg2k3" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_scene___battle___rpg2k3_1a41fb4743a9cc0ad7704733c0a26d4958" kindref="member">Scene_Battle_Rpg2k3</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle_1a632c347b5ac88c194d3d9f9a9364870b" kindref="member">Scene_Battle</ref><sp/>{</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="39" refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref><sp/>{</highlight></codeline>
+<codeline lineno="41" refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9a2db0ec3771ec326705edb0f4cb07a1a4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9a2db0ec3771ec326705edb0f4cb07a1a4" kindref="member">eWaitTillNextFrame</ref>,</highlight></codeline>
+<codeline lineno="43" refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9a1b0b550593ae273a38b3ab827ff83025" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9a1b0b550593ae273a38b3ab827ff83025" kindref="member">eContinueThisFrame</ref>,</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47" refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/>{</highlight></codeline>
+<codeline lineno="49" refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953a3234684b884abcd480a33ceb1573354c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953a3234684b884abcd480a33ceb1573354c" kindref="member">eContinue</ref>,</highlight></codeline>
+<codeline lineno="51" refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953a36db84b578ba3a3bb2d72f6a8504dbfe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953a36db84b578ba3a3bb2d72f6a8504dbfe" kindref="member">eWait</ref>,</highlight></codeline>
+<codeline lineno="53" refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953aa3407aaa3c024bffb7f22b326dfbba1b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953aa3407aaa3c024bffb7f22b326dfbba1b" kindref="member">eFinished</ref>,</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="class_scene___battle___rpg2k3_1acd4c072b321782396d57956c0691bc20" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1acd4c072b321782396d57956c0691bc20" kindref="member">EventTriggerType</ref><sp/>{</highlight></codeline>
+<codeline lineno="57" refid="class_scene___battle___rpg2k3_1acd4c072b321782396d57956c0691bc20a35df5dab14cbb58a5611aa704da3148f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1acd4c072b321782396d57956c0691bc20a35df5dab14cbb58a5611aa704da3148f" kindref="member">eBeforeBattleAction</ref>,</highlight></codeline>
+<codeline lineno="58" refid="class_scene___battle___rpg2k3_1acd4c072b321782396d57956c0691bc20a43b8f04e7b3cf5f3347581ef227df217" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1acd4c072b321782396d57956c0691bc20a43b8f04e7b3cf5f3347581ef227df217" kindref="member">eAfterBattleAction</ref>,</highlight></codeline>
+<codeline lineno="59" refid="class_scene___battle___rpg2k3_1acd4c072b321782396d57956c0691bc20a205a605c9a22391af5e09fa60fe30678" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1acd4c072b321782396d57956c0691bc20a205a605c9a22391af5e09fa60fe30678" kindref="member">eAll</ref>,</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16" kindref="member">BattleActionState</ref><sp/>{</highlight></codeline>
+<codeline lineno="63" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ab7e3a7ad795da19198daac221b9fe092" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ab7e3a7ad795da19198daac221b9fe092" kindref="member">BattleActionState_Begin</ref>,</highlight></codeline>
+<codeline lineno="64" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a09635c9f990784566c522381f844b1b3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a09635c9f990784566c522381f844b1b3" kindref="member">BattleActionState_PreEvents</ref>,</highlight></codeline>
+<codeline lineno="65" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16acc862e6239ca8affda23470c065e54e9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16acc862e6239ca8affda23470c065e54e9" kindref="member">BattleActionState_Conditions</ref>,</highlight></codeline>
+<codeline lineno="66" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16aaae229a8b55ef2b2523a2ae84bf063fe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16aaae229a8b55ef2b2523a2ae84bf063fe" kindref="member">BattleActionState_Notify</ref>,</highlight></codeline>
+<codeline lineno="67" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a86847e3d3e8a2aedff280778d7d4bac5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a86847e3d3e8a2aedff280778d7d4bac5" kindref="member">BattleActionState_Combo</ref>,</highlight></codeline>
+<codeline lineno="68" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a27e22608508efd7dc34248e882222324" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a27e22608508efd7dc34248e882222324" kindref="member">BattleActionState_StartAlgo</ref>,</highlight></codeline>
+<codeline lineno="69" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ad033179f22fb3931a6f9d84868469379" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ad033179f22fb3931a6f9d84868469379" kindref="member">BattleActionState_CBAInit</ref>,</highlight></codeline>
+<codeline lineno="70" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16af53a601545f2a8d3177260c83b87c8f7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16af53a601545f2a8d3177260c83b87c8f7" kindref="member">BattleActionState_CBAMove</ref>,</highlight></codeline>
+<codeline lineno="71" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ac35c153e441ed26142af8c6f9e0da440" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ac35c153e441ed26142af8c6f9e0da440" kindref="member">BattleActionState_StartAnimation</ref>,</highlight></codeline>
+<codeline lineno="72" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a91062de47952b59f0fea627a0d7a3631" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a91062de47952b59f0fea627a0d7a3631" kindref="member">BattleActionState_CBARangedWeaponInit</ref>,</highlight></codeline>
+<codeline lineno="73" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a44a9292b4ad37148b8fc39e7f5e59e6c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a44a9292b4ad37148b8fc39e7f5e59e6c" kindref="member">BattleActionState_CBARangedWeaponMove</ref>,</highlight></codeline>
+<codeline lineno="74" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a3ed664208a522156e2e03bf91497a528" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a3ed664208a522156e2e03bf91497a528" kindref="member">BattleActionState_Animation</ref>,</highlight></codeline>
+<codeline lineno="75" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ae470612826b553880b10298c5b4852e0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ae470612826b553880b10298c5b4852e0" kindref="member">BattleActionState_AnimationReflect</ref>,</highlight></codeline>
+<codeline lineno="76" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ae4d4d8803b4fad764c494c54c100411b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ae4d4d8803b4fad764c494c54c100411b" kindref="member">BattleActionState_FinishPose</ref>,</highlight></codeline>
+<codeline lineno="77" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a8b4e2d740e8e64a3d7982a81d765f324" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a8b4e2d740e8e64a3d7982a81d765f324" kindref="member">BattleActionState_Execute</ref>,</highlight></codeline>
+<codeline lineno="78" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ae69104cfdd4c4690292fe5fb9f8b3408" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ae69104cfdd4c4690292fe5fb9f8b3408" kindref="member">BattleActionState_SwitchEvents</ref>,</highlight></codeline>
+<codeline lineno="79" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a65a09e53fee30f9e6feb1a9a12e196ff" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a65a09e53fee30f9e6feb1a9a12e196ff" kindref="member">BattleActionState_Apply</ref>,</highlight></codeline>
+<codeline lineno="80" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16aae29fe55f4ef3d0c94321fe995de7a31" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16aae29fe55f4ef3d0c94321fe995de7a31" kindref="member">BattleActionState_PostAction</ref>,</highlight></codeline>
+<codeline lineno="81" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a892366001f971127f7d818c87aac7fd9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a892366001f971127f7d818c87aac7fd9" kindref="member">BattleActionState_PostEvents</ref>,</highlight></codeline>
+<codeline lineno="82" refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a49e2c5786d0ab9849f8629853b2198fb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16a49e2c5786d0ab9849f8629853b2198fb" kindref="member">BattleActionState_Finished</ref></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a41fb4743a9cc0ad7704733c0a26d4958" kindref="member">Scene_Battle_Rpg2k3</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_battle_args" kindref="compound">BattleArgs</ref>&amp;<sp/>args);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1ae2961ddbce624953186217f0f5d4c54c" kindref="member">~Scene_Battle_Rpg2k3</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ab7be015e7f7bce13a8d807f357b4c2e5" kindref="member">Start</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a613a751c86b60d8bc946d1c6a1aafae9" kindref="member">vUpdate</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a7174b0fd8228534b79a57db924daff91" kindref="member">OnPartyChanged</ref>(<ref refid="class_game___actor" kindref="compound">Game_Actor</ref>*<sp/>actor,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>add)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a554583ac1275a5bc6b0da3c2ea1453ed" kindref="member">OnEventHpChanged</ref>(<ref refid="class_game___battler" kindref="compound">Game_Battler</ref>*<sp/>battler,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>hp)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a2ba7a14610ce292104513e5e4ae06aea" kindref="member">Start2</ref>();</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a8165c42fe6d136dd86f58054c0b03179" kindref="member">InitAtbGauge</ref>(<ref refid="class_game___battler" kindref="compound">Game_Battler</ref>&amp;<sp/>battler,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>preempt_atb,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ambush_atb);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a26e59b8262ace767c0fcdfc647cd95cc" kindref="member">InitBattleCondition</ref>(lcf::rpg::System::BattleCondition<sp/>condition);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ac61f04b146c5eafcff23b407f6e77924" kindref="member">InitEnemies</ref>();</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ac3c87905820c9efaba51803d94327080" kindref="member">InitActors</ref>();</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a1f0bd568a36fbfbe66a282d7928edb89" kindref="member">InitAtbGauges</ref>();</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ac6e88644b6795674a7c0ba2687960454" kindref="member">UpdateEnemiesDirection</ref>();</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a70378691c11ff58269545923f5c69303" kindref="member">UpdateActorsDirection</ref>();</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ab219bee2d977ac321d6b177b9f5e049d" kindref="member">IsAtbAccumulating</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ad238bb96b86db2312d5f9e3217a382e2" kindref="member">IsBattleActionPending</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ac7c52825487ba9ba3a6d65c0eddaec9c" kindref="member">CreateEnemyActions</ref>();</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ae087450509fd23bc4b14ff725aeb7169" kindref="member">CreateActorAutoActions</ref>();</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a9e9b4c33630919feb0c8ed29d71fb860" kindref="member">UpdateAtb</ref>();</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a5d4f726909f9f8ba9b80967ac6d758df" kindref="member">UpdateAnimations</ref>();</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ab5ec668f5889df8e6b8e43a412fb112e" kindref="member">UpdateBattleState</ref>();</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a7ad867ba5d8d14b739e8fd07fb6c1b13" kindref="member">OnSystem2Ready</ref>(<ref refid="struct_file_request_result" kindref="compound">FileRequestResult</ref>*<sp/>result);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1aba236dcfa37c599da4a3e94941848218" kindref="member">SetupSystem2Graphics</ref>();</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a0d295ee51cbb4559a7e6442f9ee1cdb3" kindref="member">CreateUi</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1aadf009440e80f8818be8e26820f9fc59" kindref="member">CreateEnemySprites</ref>();</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ade37fde21c1902d1c9ebbd1e16bbdb9d" kindref="member">CreateActorSprites</ref>();</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a009da28a9482323c4b7d06e727cd3f50" kindref="member">ResetAllBattlerZ</ref>();</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a24d78c88683824505a77b1a489499f38" kindref="member">CreateBattleTargetWindow</ref>();</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a408070777da16de3e26372aa9ad939a5" kindref="member">CreateBattleStatusWindow</ref>();</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a0659ec5f9cbbdc16bd7e07422f4aefa5" kindref="member">CreateBattleCommandWindow</ref>();</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a9020c31a24bc3ae9dffa3024d478a60c" kindref="member">RefreshTargetWindow</ref>();</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ae84cad934da78b66f53bb8f22b90eb68" kindref="member">RefreshCommandWindow</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___actor" kindref="compound">Game_Actor</ref>*<sp/>actor);</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a084ea4b2f99302ee898db0dcb416b320" kindref="member">SetActiveActor</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>idx);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127" refid="class_scene___battle___rpg2k3_1ae6d4146d7b632488cc0bb320796ea2a1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum<sp/>class</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ae6d4146d7b632488cc0bb320796ea2a1" kindref="member">FloatTextType</ref><sp/>{</highlight></codeline>
+<codeline lineno="128" refid="class_scene___battle___rpg2k3_1ae6d4146d7b632488cc0bb320796ea2a1ab9f24e83531326204197015b2f43a93f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1ae6d4146d7b632488cc0bb320796ea2a1ab9f24e83531326204197015b2f43a93f" kindref="member">Damage</ref><sp/>=<sp/>0,</highlight></codeline>
+<codeline lineno="129" refid="class_scene___battle___rpg2k3_1ae6d4146d7b632488cc0bb320796ea2a1af357105e6becc3076a3da9b43465051a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1ae6d4146d7b632488cc0bb320796ea2a1af357105e6becc3076a3da9b43465051a" kindref="member">Heal</ref><sp/>=<sp/>1,</highlight></codeline>
+<codeline lineno="130" refid="class_scene___battle___rpg2k3_1ae6d4146d7b632488cc0bb320796ea2a1ae7ddb7cd777b59610b220bcfa80bd95f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1ae6d4146d7b632488cc0bb320796ea2a1ae7ddb7cd777b59610b220bcfa80bd95f" kindref="member">Miss</ref><sp/>=<sp/>2,</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1affb7b5da6a2dc48713a0b74c047166e4" kindref="member">DrawFloatText</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>y,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>color,<sp/>std::string_view<sp/>text,<sp/><ref refid="class_game___battler" kindref="compound">Game_Battler</ref>*<sp/>battler,<sp/><ref refid="class_scene___battle___rpg2k3_1ae6d4146d7b632488cc0bb320796ea2a1" kindref="member">FloatTextType</ref><sp/><ref refid="class_scene_1a8320189e28f3918a4f0200aedb97ccb5" kindref="member">type</ref>);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a4d11dddb4aaf912527486f74004a56e9" kindref="member">IsTransparent</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a306a026dc5169efed60e181ecdbb0e75" kindref="member">SetState</ref>(<ref refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5" kindref="member">Scene_Battle::State</ref><sp/>new_state)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a54b7a732633a3b08daff594397203bb1" kindref="member">FaceTarget</ref>(<ref refid="class_game___actor" kindref="compound">Game_Actor</ref>&amp;<sp/>source,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___battler" kindref="compound">Game_Battler</ref>&amp;<sp/>target);</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141" refid="class_scene___battle___rpg2k3_1ac43a24cd759fcf497dfa780c43f72f65" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ac43a24cd759fcf497dfa780c43f72f65" kindref="member">CommandSelected</ref>();</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1addfcde9012af0fcd1c76d3eb203636a5" kindref="member">AttackSelected</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1acf71738db704bdfce6823ab50e40b1b0" kindref="member">SubskillSelected</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>command);</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a401b1244911c25d8073a4236f585978e" kindref="member">SpecialSelected</ref>();</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a8e466f3814f4e64440ac917afb3ca5cc" kindref="member">EscapeSelected</ref>();</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1acac8d2fa405b7c11c326bfb00515206a" kindref="member">RowSelected</ref>();</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a3e7d5ab97e260926134baaa10a319b39" kindref="member">ActionSelectedCallback</ref>(<ref refid="class_game___battler" kindref="compound">Game_Battler</ref>*<sp/>for_battler)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1aea03ccb37b0efcd2e8427a56313a01e8" kindref="member">ShowNotification</ref>(std::string<sp/>text);</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ad19ff0884f5cd9d3ed75c3c36dddc1ff" kindref="member">EndNotification</ref>();</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153" refid="class_scene___battle___rpg2k3_1ac9875e50743a4dd73e0e7c68c405a6bc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ac9875e50743a4dd73e0e7c68c405a6bc" kindref="member">IsEscapeAllowed</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">//<sp/>disable<sp/>accidental<sp/>calls<sp/>to<sp/>base<sp/>class<sp/>version</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1addb45a0f8aa8b04b1232e4695d180a04" kindref="member">IsEscapeAllowedFromOptionWindow</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ae3fbbf9c2babf106b1ed7243afa9380b" kindref="member">IsEscapeAllowedFromActorCommand</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ada297f1a6609560a834f573bfc951f2c" kindref="member">CheckAnimFlip</ref>(<ref refid="class_game___battler" kindref="compound">Game_Battler</ref>*<sp/>battler);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a807724d01238959c8674b620da285fe4" kindref="member">SetWait</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>min_wait,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>max_wait);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a7656745f3aedd5dbcbec1e2286988dc0" kindref="member">CheckWait</ref>();</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a82c18ed5d229702cbd22eef4ef45ab32" kindref="member">ResetWindows</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>make_invisible);</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a2394ca0afca89cfe8eabaecd9135a431" kindref="member">MoveCommandWindows</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>x,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>frames);</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a3285ca4ca9644e49c6680a12c680bc12" kindref="member">SetSceneActionSubState</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>substate);</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1abb6017d99526be4328a04b620bf427fa" kindref="member">ReturnToMainBattleState</ref>();</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>SceneAction<sp/>State<sp/>Machine<sp/>Driver</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1ab5086ba0b385f284d8d06725034d3bc0" kindref="member">ProcessSceneAction</ref>();</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>SceneAction<sp/>State<sp/>Machine<sp/>Handlers</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1aab390c13e22310433b48ec219b5a7981" kindref="member">ProcessSceneActionStart</ref>();</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a4787ae793b387d44e6bbbce34d43303d" kindref="member">ProcessSceneActionFightAutoEscape</ref>();</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a9c754b731e6048720d175dec0c953e21" kindref="member">ProcessSceneActionActor</ref>();</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a54e62174bafb58b9dadf545fcefaa84c" kindref="member">ProcessSceneActionAutoBattle</ref>();</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1aa6bb943481b6851ded7f876ec0c4554e" kindref="member">ProcessSceneActionCommand</ref>();</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1ae84f7b95721119b73f6e69e56978d62d" kindref="member">ProcessSceneActionItem</ref>();</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1ab4268266bbe1ac2ea3fda679c79255c0" kindref="member">ProcessSceneActionSkill</ref>();</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a4b8b27886b956d336d70be24c71069e5" kindref="member">ProcessSceneActionEnemyTarget</ref>();</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a1c4ba770c7524d44fcf18ed7f9822ec0" kindref="member">ProcessSceneActionAllyTarget</ref>();</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a76a1c521a5a0713dbd92c5d8c5df2f93" kindref="member">ProcessSceneActionBattle</ref>();</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a5918e9bb1558e45fabaa22cd34569079" kindref="member">ProcessSceneActionVictory</ref>();</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1ab15b0c499793c4f91601801bedafa3f9" kindref="member">ProcessSceneActionDefeat</ref>();</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a024b47ddd7eb87bfe3fc470c04d00ca9" kindref="member">SceneActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a5bb4aed8b45d110720ab87e53397a1ee" kindref="member">ProcessSceneActionEscape</ref>();</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a6a45215a8721456645428014507656a6" kindref="member">NextTurn</ref>(<ref refid="class_game___battler" kindref="compound">Game_Battler</ref>*<sp/>battler);</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a82179fefe0bcb5c6e55dd8d578221629" kindref="member">CheckBattleEndAndScheduleEvents</ref>(<ref refid="class_scene___battle___rpg2k3_1acd4c072b321782396d57956c0691bc20" kindref="member">EventTriggerType</ref><sp/>tt,<sp/><ref refid="class_game___battler" kindref="compound">Game_Battler</ref>*<sp/>source);</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ad21e5e72e3d9d1ea276571ce8ec20af3" kindref="member">CheckBattleEndConditions</ref>();</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ad4d37c7edcf99bea6fb493854791fa0b" kindref="member">SetBattleActionState</ref>(<ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16" kindref="member">BattleActionState</ref><sp/><ref refid="class_scene___battle_1ab65527778a347272b9c7130c0a6921f3" kindref="member">state</ref>);</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1aefbc4a1bc73f63318fd4b3ff5e4411ad" kindref="member">ProcessBattleAction</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a867db6775ddcff04465e26c450a8bf94" kindref="member">ProcessBattleActionBegin</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1ab22f38a7137440c71eda6422d3f70f78" kindref="member">ProcessBattleActionPreEvents</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1aae436866fbdc2adeebc9479e4286b5b8" kindref="member">ProcessBattleActionConditions</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a3ab1efe1183caff762bfe7e364e1f254" kindref="member">ProcessBattleActionNotify</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a88bfd426617f1b95716f8d08df4e697a" kindref="member">ProcessBattleActionCombo</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a0229bf3aed586cb37c8f6106487e521c" kindref="member">ProcessBattleActionStartAlgo</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a980b3d5ed1ee8ef1cf2428818b3a4183" kindref="member">ProcessBattleActionCBAInit</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a4cab8c092c831c96d5e850589beb7b83" kindref="member">ProcessBattleActionCBAMove</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a9a49083d0ce5cea8b64574688d49d11c" kindref="member">ProcessBattleActionStartAnimation</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a09e3ae807d88656cbe23704aebaf6832" kindref="member">ProcessBattleActionCBARangedWeaponInit</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a2b23bb14c44109b3aa5c9097b56713b0" kindref="member">ProcessBattleActionCBARangedWeaponMove</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a121b5d60d48be474c38790be6605277c" kindref="member">ProcessBattleActionAnimation</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a5b63b41fcbbf5f60c85621d0ec4b3d51" kindref="member">ProcessBattleActionAnimationReflect</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a848b3fd2ae0061e3b371cdb6bac19e42" kindref="member">ProcessBattleActionFinishPose</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a58e955195c407302e568331a27432a43" kindref="member">ProcessBattleActionExecute</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1ae2c1851da772110cffb79e3b72a14d92" kindref="member">ProcessBattleActionSwitchEvents</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a118aa407f854aac5dc099f1da24a8153" kindref="member">ProcessBattleActionApply</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a8a56d80fa22aec2687a6b939bf31f498" kindref="member">ProcessBattleActionPostAction</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a7bbf9babf8a9843e441e4882e5344ee2" kindref="member">ProcessBattleActionPostEvents</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_scene___battle___rpg2k3_1a70314838f807191ffb473e73b544a953" kindref="member">BattleActionReturn</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a51717983b82a719f7e1f8842f90e1a50" kindref="member">ProcessBattleActionFinished</ref>(<ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/>action);</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/><ref refid="class_scene___battle___rpg2k3_1aae54735ed44859f8ac88af77969b0229" kindref="member">GetBattleCommandNames</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___actor" kindref="compound">Game_Actor</ref>*<sp/>actor);</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ac76a7f9630922ba109292e476cb6762d" kindref="member">SetBattleCommandsDisable</ref>(<ref refid="class_window___command" kindref="compound">Window_Command</ref>&amp;<sp/>window,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___actor" kindref="compound">Game_Actor</ref>*<sp/>actor);</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight></codeline>
+<codeline lineno="220" refid="class_scene___battle___rpg2k3_1a1c63f94f3e670d3124414d1dc7fe7886" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;Sprite&gt;<sp/><ref refid="class_scene___battle___rpg2k3_1a1c63f94f3e670d3124414d1dc7fe7886" kindref="member">ally_cursor</ref>,<sp/><ref refid="class_scene___battle___rpg2k3_1a2186dffcb3306d9c7cd742290d72c77e" kindref="member">enemy_cursor</ref>;</highlight></codeline>
+<codeline lineno="221"><highlight class="normal"></highlight></codeline>
+<codeline lineno="222" refid="struct_scene___battle___rpg2k3_1_1_float_text" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_scene___battle___rpg2k3_1_1_float_text" kindref="compound">FloatText</ref><sp/>{</highlight></codeline>
+<codeline lineno="223" refid="struct_scene___battle___rpg2k3_1_1_float_text_1a1f3d10373de2219fcf83beaf791c0348" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::shared_ptr&lt;Sprite&gt;<sp/><ref refid="struct_scene___battle___rpg2k3_1_1_float_text_1a1f3d10373de2219fcf83beaf791c0348" kindref="member">sprite</ref>;</highlight></codeline>
+<codeline lineno="224" refid="struct_scene___battle___rpg2k3_1_1_float_text_1ae38e90daf863d422071c6cbdeeeef174" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_scene___battle___rpg2k3_1_1_float_text_1ae38e90daf863d422071c6cbdeeeef174" kindref="member">remaining_time</ref><sp/>=<sp/>30;</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"></highlight></codeline>
+<codeline lineno="227" refid="class_scene___battle___rpg2k3_1a03505cec718697a558caecd3e02d0ae4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;FloatText&gt;<sp/><ref refid="class_scene___battle___rpg2k3_1a03505cec718697a558caecd3e02d0ae4" kindref="member">floating_texts</ref>;</highlight></codeline>
+<codeline lineno="228" refid="class_scene___battle___rpg2k3_1a8a765b276eae9533d93ce6665677b131" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a8a765b276eae9533d93ce6665677b131" kindref="member">battle_action_wait</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="229" refid="class_scene___battle___rpg2k3_1a907c7f93c90c683a921064834bf360a9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a907c7f93c90c683a921064834bf360a9" kindref="member">battle_action_min_wait</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="230" refid="class_scene___battle___rpg2k3_1aa749daf39efc262b906e4c0605130019" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1aa749daf39efc262b906e4c0605130019" kindref="member">scene_action_substate</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="231" refid="class_scene___battle___rpg2k3_1aafa1ba93bed21182996f0719360bbfda" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1aafa1ba93bed21182996f0719360bbfda" kindref="member">battle_action_state</ref><sp/>=<sp/><ref refid="class_scene___battle___rpg2k3_1af7fc8ec1b952ffe8c81b1ff64956bb16ab7e3a7ad795da19198daac221b9fe092" kindref="member">BattleActionState_Begin</ref>;</highlight></codeline>
+<codeline lineno="232" refid="class_scene___battle___rpg2k3_1abfd14fc85f1b68990162b415df928576" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1abfd14fc85f1b68990162b415df928576" kindref="member">battle_end_timer</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"></highlight></codeline>
+<codeline lineno="234" refid="class_scene___battle___rpg2k3_1a080f74631bc53bba906a012ca3a9710d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;Window_ActorSp&gt;<sp/><ref refid="class_scene___battle___rpg2k3_1a080f74631bc53bba906a012ca3a9710d" kindref="member">sp_window</ref>;</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1aeeb20ec903dc6e93aacf7acb4c520bcd" kindref="member">RecreateSpWindow</ref>(<ref refid="class_game___battler" kindref="compound">Game_Battler</ref>*<sp/>battler);</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight></codeline>
+<codeline lineno="237" refid="class_scene___battle___rpg2k3_1a23c42fd8813594b42105f0e38e95c3a7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="async__handler_8h_1a371020a25d265dd88e9a5c6fae1690c9" kindref="member">FileRequestBinding</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a23c42fd8813594b42105f0e38e95c3a7" kindref="member">request_id</ref>;</highlight></codeline>
+<codeline lineno="238" refid="class_scene___battle___rpg2k3_1a1827978333055ae431091ec668a4c71a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::shared_ptr&lt;Game_BattleAlgorithm::AlgorithmBase&gt;<sp/><ref refid="class_scene___battle___rpg2k3_1a1827978333055ae431091ec668a4c71a" kindref="member">pending_battle_action</ref><sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="239" refid="class_scene___battle___rpg2k3_1ab073978f6d63ae5459272d309d664496" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ab073978f6d63ae5459272d309d664496" kindref="member">first_strike</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="240" refid="class_scene___battle___rpg2k3_1aca54e0958831d3519941460c1afb9505" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1aca54e0958831d3519941460c1afb9505" kindref="member">running_away</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="241" refid="class_scene___battle___rpg2k3_1a4bbc3f8b48f8188a4f8fd2bee6d50e64" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a4bbc3f8b48f8188a4f8fd2bee6d50e64" kindref="member">resume_from_debug_scene</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="242" refid="class_scene___battle___rpg2k3_1a7f2cb869a561fa487385033fa63fb791" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a7f2cb869a561fa487385033fa63fb791" kindref="member">auto_battle</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="243"><highlight class="normal"></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>CBA<sp/>stuff</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1aad8954e90e8f297c71d2f3b855cec5e1" kindref="member">CBAInit</ref>();</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1af5b9c774ab124ee72ff0ac10b8b13893" kindref="member">CBAMove</ref>();</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"></highlight></codeline>
+<codeline lineno="248" refid="class_scene___battle___rpg2k3_1ae92dc5f5a9451bea7b68713bf3a84827" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_game___battle_algorithm_1_1_algorithm_base" kindref="compound">Game_BattleAlgorithm::AlgorithmBase</ref>*<sp/><ref refid="class_scene___battle___rpg2k3_1ae92dc5f5a9451bea7b68713bf3a84827" kindref="member">cba_action</ref>;</highlight></codeline>
+<codeline lineno="249" refid="class_scene___battle___rpg2k3_1ad3c79d575f6009c94e15a655cb8b3ba9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1ad3c79d575f6009c94e15a655cb8b3ba9" kindref="member">cba_direction_back</ref><sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="250" refid="class_scene___battle___rpg2k3_1a86a4dfd87c178a51e009af9aa11b23bb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a86a4dfd87c178a51e009af9aa11b23bb" kindref="member">cba_move_frame</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="251" refid="class_scene___battle___rpg2k3_1add8ab56d9b0d6a0f1314f0ae094a11f4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref><sp/><ref refid="class_scene___battle___rpg2k3_1add8ab56d9b0d6a0f1314f0ae094a11f4" kindref="member">cba_start_pos</ref>;</highlight></codeline>
+<codeline lineno="252" refid="class_scene___battle___rpg2k3_1aeb26d4eb8f67cb9a8dbef13eecab96fc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref><sp/><ref refid="class_scene___battle___rpg2k3_1aeb26d4eb8f67cb9a8dbef13eecab96fc" kindref="member">cba_end_pos</ref>;</highlight></codeline>
+<codeline lineno="253"><highlight class="normal"></highlight></codeline>
+<codeline lineno="254" refid="class_scene___battle___rpg2k3_1a2dfafe1e5b2b32bfa4c8dc88006c4a69" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::pair&lt;Game_Battler&amp;,<sp/>std::unique_ptr&lt;Sprite_Weapon&gt;&gt;&gt;<sp/><ref refid="class_scene___battle___rpg2k3_1a2dfafe1e5b2b32bfa4c8dc88006c4a69" kindref="member">cba_ranged</ref>;</highlight></codeline>
+<codeline lineno="255" refid="class_scene___battle___rpg2k3_1a651ddb39e0e48b731a483cc68a53848a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref><sp/><ref refid="class_scene___battle___rpg2k3_1a651ddb39e0e48b731a483cc68a53848a" kindref="member">cba_ranged_center</ref>;</highlight></codeline>
+<codeline lineno="256" refid="class_scene___battle___rpg2k3_1a4be9b2c956822d8f958f5e6afb114ec4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a4be9b2c956822d8f958f5e6afb114ec4" kindref="member">cba_ranged_weapon_move_frame</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="257" refid="class_scene___battle___rpg2k3_1a4ee1e6aadd47beac72a585a10cfe0094" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a4ee1e6aadd47beac72a585a10cfe0094" kindref="member">cba_num_ranged_weapon_move_frames</ref><sp/>=<sp/>60;</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"></highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>ATB<sp/>order<sp/>stuff</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a8397d61a70edae1df7b751b9e6a40ef2" kindref="member">UpdateReadyActors</ref>();</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_scene___battle___rpg2k3_1a22ba0862090de2c4ec3966522e1e943e" kindref="member">GetNextReadyActor</ref>();</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"></highlight></codeline>
+<codeline lineno="263" refid="class_scene___battle___rpg2k3_1a6b076cb7f90bc98221ec50546e373f87" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;int&gt;<sp/><ref refid="class_scene___battle___rpg2k3_1a6b076cb7f90bc98221ec50546e373f87" kindref="member">atb_order</ref>;</highlight></codeline>
+<codeline lineno="264"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"></highlight></codeline>
+<codeline lineno="266"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="267"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="scene_battle_rpg2k3.h"/>
+  </compounddef>
+</doxygen>

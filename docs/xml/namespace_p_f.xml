@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_p_f" kind="namespace" language="C++">
+    <compoundname>PF</compoundname>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_p_f_1a2efd68b89cc15c64bf0f69e2c7ea6c85" prot="public" static="no" strong="no">
+        <type></type>
+        <name>AlphaType</name>
+        <qualifiedname>PF::AlphaType</qualifiedname>
+        <enumvalue id="namespace_p_f_1a2efd68b89cc15c64bf0f69e2c7ea6c85a393005ae51a5ac49e9813b18ddff9281" prot="public">
+          <name>NoAlpha</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_p_f_1a2efd68b89cc15c64bf0f69e2c7ea6c85a2fcc0ed56d5a041ff16035c4bb245d77" prot="public">
+          <name>Alpha</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="32" column="1" bodyfile="pixel_format.h" bodystart="32" bodyend="32"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_p_f_1a323a70e21a8a35900f0d3e524d823fea" prot="public" static="no" strong="no">
+        <type></type>
+        <name>OpacityType</name>
+        <qualifiedname>PF::OpacityType</qualifiedname>
+        <enumvalue id="namespace_p_f_1a323a70e21a8a35900f0d3e524d823feaaae8e5162023df30e3e422e7cd5eb7b1c" prot="public">
+          <name>Opaque</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_p_f_1a323a70e21a8a35900f0d3e524d823feaa028234f4106c51b7fdc0939f1e86463e" prot="public">
+          <name>Binary</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_p_f_1a323a70e21a8a35900f0d3e524d823feaa8ea8163caec45d2a63183a99734dc169" prot="public">
+          <name>Variable</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="33" column="1" bodyfile="pixel_format.h" bodystart="33" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_p_f_1a8d2ac35d811c211aa1143cb26aee828a" prot="public" static="no" strong="no">
+        <type></type>
+        <name>@032161145303221166130057100151301370136305057306</name>
+        <qualifiedname>PF::@032161145303221166130057100151301370136305057306</qualifiedname>
+        <enumvalue id="namespace_p_f_1a8d2ac35d811c211aa1143cb26aee828aaaf0cb1716297c3b4a8c57693c8ca034d" prot="public">
+          <name>ONE</name>
+          <initializer>= 255</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="34" column="1" bodyfile="pixel_format.h" bodystart="34" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_p_f_1a580286b9a23a5efb3b63afed4c26c065" prot="public" static="no" strong="no">
+        <type></type>
+        <name>@005033154226055265110316207247046323014333160233</name>
+        <qualifiedname>PF::@005033154226055265110316207247046323014333160233</qualifiedname>
+        <enumvalue id="namespace_p_f_1a580286b9a23a5efb3b63afed4c26c065a001613fb004e5088a370730fffa78c24" prot="public">
+          <name>StaticMasks</name>
+          <initializer>= false</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_p_f_1a580286b9a23a5efb3b63afed4c26c065a3a08d34dcb20c57e36ac44f7742512e3" prot="public">
+          <name>DynamicMasks</name>
+          <initializer>= true</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="35" column="1" bodyfile="pixel_format.h" bodystart="35" bodyend="35"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_p_f_1ad4e559347d4206fe9e95ca2f1e345ea9" prot="public" static="no" strong="no">
+        <type></type>
+        <name>@313076033003362133331235170041275272072261042323</name>
+        <qualifiedname>PF::@313076033003362133331235170041275272072261042323</qualifiedname>
+        <enumvalue id="namespace_p_f_1ad4e559347d4206fe9e95ca2f1e345ea9ae59a0c3ec8e808c4fdf13687ed427873" prot="public">
+          <name>StaticAlpha</name>
+          <initializer>= false</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_p_f_1ad4e559347d4206fe9e95ca2f1e345ea9ac27bb60785027e2a9cf4b1db70f01161" prot="public">
+          <name>DynamicAlpha</name>
+          <initializer>= true</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="36" column="1" bodyfile="pixel_format.h" bodystart="36" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespace_p_f_1a749786a372b9b8b76caa4a027571b9ef" prot="public" static="no" strong="no">
+        <type></type>
+        <name>@367200245146276362177376130051344237012146134237</name>
+        <qualifiedname>PF::@367200245146276362177376130051344237012146134237</qualifiedname>
+        <enumvalue id="namespace_p_f_1a749786a372b9b8b76caa4a027571b9efacef6a4e043628399dc01a2da5591036f" prot="public">
+          <name>NotAligned</name>
+          <initializer>= false</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_p_f_1a749786a372b9b8b76caa4a027571b9efacd499ba1892d74cc1c255298cfa26903" prot="public">
+          <name>IsAligned</name>
+          <initializer>= true</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="37" column="1" bodyfile="pixel_format.h" bodystart="37" bodyend="37"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Enums. </para>
+    </detaileddescription>
+    <location file="pixel_format.h" line="31" column="1"/>
+  </compounddef>
+</doxygen>

@@ -30,3 +30,4 @@ namespace ImagePNG {
 }
 
 #endif
+

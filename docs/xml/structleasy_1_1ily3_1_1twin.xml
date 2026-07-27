@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structleasy_1_1ily3_1_1twin" kind="struct" language="C++" prot="public">
+    <compoundname>leasy::ily3::twin</compoundname>
+    <includes refid="basetypes_8hpp" local="no">basetypes.hpp</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structleasy_1_1ily3_1_1twin_1a4853d8355611c75b649563162b5ccd23" prot="public" static="no" mutable="no">
+        <type>T</type>
+        <definition>T leasy::ily3::twin&lt; T &gt;::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <qualifiedname>leasy::ily3::twin::x</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/basetypes.hpp" line="34" column="7" bodyfile="leasy/ily3/basetypes.hpp" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structleasy_1_1ily3_1_1twin_1afe8fc5c2c02bf4d698a548440391dc2b" prot="public" static="no" mutable="no">
+        <type>T</type>
+        <definition>T leasy::ily3::twin&lt; T &gt;::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <qualifiedname>leasy::ily3::twin::y</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/basetypes.hpp" line="34" column="9" bodyfile="leasy/ily3/basetypes.hpp" bodystart="34" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structleasy_1_1ily3_1_1twin_1a4c408d9d345d7ef824e65e8d09fe9301" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ily3::twin&lt; T &gt;::twin</definition>
+        <argsstring>()</argsstring>
+        <name>twin</name>
+        <qualifiedname>leasy::ily3::twin::twin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/basetypes.hpp" line="36" column="12" bodyfile="leasy/ily3/basetypes.hpp" bodystart="36" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="structleasy_1_1ily3_1_1twin_1aa2895f8c7e0262b2fc0e218e3bc85e94" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>leasy::ily3::twin&lt; T &gt;::twin</definition>
+        <argsstring>(const T &amp;a, const T &amp;b)</argsstring>
+        <name>twin</name>
+        <qualifiedname>leasy::ily3::twin::twin</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/ily3/basetypes.hpp" line="37" column="12" bodyfile="leasy/ily3/basetypes.hpp" bodystart="37" bodyend="38"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/ily3/basetypes.hpp" line="33" column="14" bodyfile="leasy/ily3/basetypes.hpp" bodystart="33" bodyend="39"/>
+    <listofallmembers>
+      <member refid="structleasy_1_1ily3_1_1twin_1a4c408d9d345d7ef824e65e8d09fe9301" prot="public" virt="non-virtual"><scope>leasy::ily3::twin</scope><name>twin</name></member>
+      <member refid="structleasy_1_1ily3_1_1twin_1aa2895f8c7e0262b2fc0e218e3bc85e94" prot="public" virt="non-virtual"><scope>leasy::ily3::twin</scope><name>twin</name></member>
+      <member refid="structleasy_1_1ily3_1_1twin_1a4853d8355611c75b649563162b5ccd23" prot="public" virt="non-virtual"><scope>leasy::ily3::twin</scope><name>x</name></member>
+      <member refid="structleasy_1_1ily3_1_1twin_1afe8fc5c2c02bf4d698a548440391dc2b" prot="public" virt="non-virtual"><scope>leasy::ily3::twin</scope><name>y</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

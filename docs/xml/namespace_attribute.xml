@@ -1,0 +1,299 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_attribute" kind="namespace" language="C++">
+    <compoundname>Attribute</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_attribute_1a87fc473467c5077ac9fadcf5d31cd193" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Attribute::GetAttributeRateModifier</definition>
+        <argsstring>(int attribute_id, int rate)</argsstring>
+        <name>GetAttributeRateModifier</name>
+        <qualifiedname>Attribute::GetAttributeRateModifier</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>attribute_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>rate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the attribute damage multiplier/protection (A-E).</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>attribute_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="namespace_attribute" kindref="compound">Attribute</ref> to test </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="namespace_attribute" kindref="compound">Attribute</ref> rate to get </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="namespace_attribute" kindref="compound">Attribute</ref> rate </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="attribute.cpp" line="32" column="5" bodyfile="attribute.cpp" bodystart="32" bodyend="41" declfile="attribute.h" declline="40" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_attribute_1a89777ae23386ca4c0a0a5a460aa75c16" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Attribute::GetAttributeRateModifier</definition>
+        <argsstring>(const lcf::rpg::Attribute &amp;attr, int rate)</argsstring>
+        <name>GetAttributeRateModifier</name>
+        <qualifiedname>Attribute::GetAttributeRateModifier</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Attribute &amp;</type>
+          <declname>attr</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>rate</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the attribute damage multiplier/protection (A-E).</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>attr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="namespace_attribute" kindref="compound">Attribute</ref> to test </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="namespace_attribute" kindref="compound">Attribute</ref> rate to get </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="namespace_attribute" kindref="compound">Attribute</ref> rate </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="attribute.cpp" line="43" column="5" bodyfile="attribute.cpp" bodystart="43" bodyend="60" declfile="attribute.h" declline="49" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_attribute_1af40d4b8dde22dee126573f66400b00d6" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool Attribute::HasAttribute</definition>
+        <argsstring>(Span&lt; const lcf::DBBitArray * &gt; attribute_sets, int id)</argsstring>
+        <name>HasAttribute</name>
+        <qualifiedname>Attribute::HasAttribute</qualifiedname>
+        <param>
+          <type>Span&lt; const lcf::DBBitArray * &gt;</type>
+          <declname>attribute_sets</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="attribute.cpp" line="62" column="13" bodyfile="attribute.cpp" bodystart="62" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_attribute_1a3ba7793cec54492fb6fc9cb5ab81919e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Attribute::ApplyAttributeMultiplier</definition>
+        <argsstring>(int effect, const Game_Battler &amp;target, Span&lt; const lcf::DBBitArray * &gt; attribute_sets)</argsstring>
+        <name>ApplyAttributeMultiplier</name>
+        <qualifiedname>Attribute::ApplyAttributeMultiplier</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>effect</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>Span&lt; const lcf::DBBitArray * &gt;</type>
+          <declname>attribute_sets</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Modifies the effect by weapon attributes against the target.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>effect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Base effect to adjust </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>attribute_sets</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A Span of attribute bitsets to check for attributes to apply against the target. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Target to apply attributes against </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>modified effect </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="attribute.cpp" line="72" column="5" bodyfile="attribute.cpp" bodystart="72" bodyend="118" declfile="attribute.h" declline="80" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_attribute_1afac1157c0f3bc197a4994c66f294a7ad" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Attribute::ApplyAttributeNormalAttackMultiplier</definition>
+        <argsstring>(int effect, const Game_Battler &amp;source_battler, const Game_Battler &amp;target, Game_Battler::Weapon weapon)</argsstring>
+        <name>ApplyAttributeNormalAttackMultiplier</name>
+        <qualifiedname>Attribute::ApplyAttributeNormalAttackMultiplier</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>effect</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>source</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___battler_1a2dc2fea4b0095dcb7821cbaab7967386" kindref="member">Game_Battler::Weapon</ref></type>
+          <declname>weapon</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Modifies the effect by weapon attributes against the target.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>effect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Base effect to adjust </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Source who is attacking target </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Target to apply attributes against </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>weapon</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The weapon to use, or kWeaponAll </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>modified effect </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="attribute.cpp" line="120" column="5" bodyfile="attribute.cpp" bodystart="120" bodyend="154" declfile="attribute.h" declline="60" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_attribute_1a4905a927efa49cb2ab4184e5638f65f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Attribute::ApplyAttributeSkillMultiplier</definition>
+        <argsstring>(int effect, const Game_Battler &amp;target, const lcf::rpg::Skill &amp;skill)</argsstring>
+        <name>ApplyAttributeSkillMultiplier</name>
+        <qualifiedname>Attribute::ApplyAttributeSkillMultiplier</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>effect</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Skill &amp;</type>
+          <declname>skill</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Modifies the effect by weapon attributes against the target.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>effect</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Base effect to adjust </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Target to apply attributes against </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>skill</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Skill being used against target </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>modified effect </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="attribute.cpp" line="156" column="5" bodyfile="attribute.cpp" bodystart="156" bodyend="159" declfile="attribute.h" declline="70" declcolumn="5"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Namespace of functions dealing with attribute modifiers </para>
+    </detaileddescription>
+    <location file="attribute.cpp" line="30" column="1"/>
+  </compounddef>
+</doxygen>

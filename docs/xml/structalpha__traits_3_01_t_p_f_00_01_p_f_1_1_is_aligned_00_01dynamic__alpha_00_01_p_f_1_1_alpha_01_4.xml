@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="structalpha__traits_3_01_t_p_f_00_01_p_f_1_1_is_aligned_00_01dynamic__alpha_00_01_p_f_1_1_alpha_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>alpha_traits&lt; TPF, PF::IsAligned, dynamic_alpha, PF::Alpha &gt;</compoundname>
+    <includes refid="pixel__format_8h" local="no">pixel_format.h</includes>
+    <templateparamlist>
+      <param>
+        <type>class TPF</type>
+      </param>
+      <param>
+        <type>bool</type>
+        <declname>dynamic_alpha</declname>
+        <defname>dynamic_alpha</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="structalpha__traits_3_01_t_p_f_00_01_p_f_1_1_is_aligned_00_01dynamic__alpha_00_01_p_f_1_1_alpha_01_4_1a66c9752d9d078a36b8257fb3420323e1" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>uint8_t</type>
+        <definition>static uint8_t alpha_traits&lt; TPF, PF::IsAligned, dynamic_alpha, PF::Alpha &gt;::get_alpha</definition>
+        <argsstring>(const TPF *pf, const uint8_t *p)</argsstring>
+        <name>get_alpha</name>
+        <qualifiedname>alpha_traits&lt; TPF, PF::IsAligned, dynamic_alpha, PF::Alpha &gt;::get_alpha</qualifiedname>
+        <param>
+          <type>const TPF *</type>
+          <declname>pf</declname>
+        </param>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="357" column="23" bodyfile="pixel_format.h" bodystart="357" bodyend="359"/>
+      </memberdef>
+      <memberdef kind="function" id="structalpha__traits_3_01_t_p_f_00_01_p_f_1_1_is_aligned_00_01dynamic__alpha_00_01_p_f_1_1_alpha_01_4_1a10dee59e9224eea83462568e31064522" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void alpha_traits&lt; TPF, PF::IsAligned, dynamic_alpha, PF::Alpha &gt;::set_alpha</definition>
+        <argsstring>(const TPF *pf, uint8_t *p, uint8_t alpha)</argsstring>
+        <name>set_alpha</name>
+        <qualifiedname>alpha_traits&lt; TPF, PF::IsAligned, dynamic_alpha, PF::Alpha &gt;::set_alpha</qualifiedname>
+        <param>
+          <type>const TPF *</type>
+          <declname>pf</declname>
+        </param>
+        <param>
+          <type>uint8_t *</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>alpha</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="360" column="20" bodyfile="pixel_format.h" bodystart="360" bodyend="363"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pixel_format.h" line="356" column="1" bodyfile="pixel_format.h" bodystart="356" bodyend="364"/>
+    <listofallmembers>
+      <member refid="structalpha__traits_3_01_t_p_f_00_01_p_f_1_1_is_aligned_00_01dynamic__alpha_00_01_p_f_1_1_alpha_01_4_1a66c9752d9d078a36b8257fb3420323e1" prot="public" virt="non-virtual"><scope>alpha_traits&lt; TPF, PF::IsAligned, dynamic_alpha, PF::Alpha &gt;</scope><name>get_alpha</name></member>
+      <member refid="structalpha__traits_3_01_t_p_f_00_01_p_f_1_1_is_aligned_00_01dynamic__alpha_00_01_p_f_1_1_alpha_01_4_1a10dee59e9224eea83462568e31064522" prot="public" virt="non-virtual"><scope>alpha_traits&lt; TPF, PF::IsAligned, dynamic_alpha, PF::Alpha &gt;</scope><name>set_alpha</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

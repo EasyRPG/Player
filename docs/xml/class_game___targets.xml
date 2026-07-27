@@ -1,0 +1,265 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___targets" kind="class" language="C++" prot="public">
+    <compoundname>Game_Targets</compoundname>
+    <includes refid="game__targets_8h" local="no">game_targets.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___targets_1a85925b7332c453f4820b126d0c0c7b8b" prot="private" static="no" mutable="no">
+        <type>lcf::rpg::SaveTarget</type>
+        <definition>lcf::rpg::SaveTarget Game_Targets::escape</definition>
+        <argsstring></argsstring>
+        <name>escape</name>
+        <qualifiedname>Game_Targets::escape</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_targets.h" line="42" column="22" bodyfile="game_targets.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_game___targets_1adf2fe752647ee21794e3b3995277861e" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; lcf::rpg::SaveTarget &gt;</type>
+        <definition>std::vector&lt;lcf::rpg::SaveTarget&gt; Game_Targets::teleports</definition>
+        <argsstring></argsstring>
+        <name>teleports</name>
+        <qualifiedname>Game_Targets::teleports</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_targets.h" line="43" column="13" bodyfile="game_targets.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___targets_1afbeae4b27c6872ef36bdbb7054f041b9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Game_Targets::Game_Targets</definition>
+        <argsstring>()=default</argsstring>
+        <name>Game_Targets</name>
+        <qualifiedname>Game_Targets::Game_Targets</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_targets.h" line="27" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___targets_1a8e912a44e368f82c7b0ddc5da3ac5961" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Targets::SetSaveData</definition>
+        <argsstring>(std::vector&lt; lcf::rpg::SaveTarget &gt; save)</argsstring>
+        <name>SetSaveData</name>
+        <qualifiedname>Game_Targets::SetSaveData</qualifiedname>
+        <param>
+          <type>std::vector&lt; lcf::rpg::SaveTarget &gt;</type>
+          <declname>save</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_targets.h" line="29" column="6" bodyfile="game_targets.cpp" bodystart="68" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___targets_1a006c70fc1e7998d7b8003b4f4e5c61a3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; lcf::rpg::SaveTarget &gt;</type>
+        <definition>std::vector&lt; lcf::rpg::SaveTarget &gt; Game_Targets::GetSaveData</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSaveData</name>
+        <qualifiedname>Game_Targets::GetSaveData</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_targets.h" line="30" column="13" bodyfile="game_targets.cpp" bodystart="80" bodyend="85"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___targets_1a2ac8c4a6da4921c8a68d26f8557c3244" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Targets::AddTeleportTarget</definition>
+        <argsstring>(int map_id, int x, int y, bool switch_on, int switch_id)</argsstring>
+        <name>AddTeleportTarget</name>
+        <qualifiedname>Game_Targets::AddTeleportTarget</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>map_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>switch_on</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>switch_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_targets.h" line="32" column="6" bodyfile="game_targets.cpp" bodystart="29" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___targets_1ae37075c2b30de16e3c30814163b035f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Targets::RemoveTeleportTarget</definition>
+        <argsstring>(int map_id)</argsstring>
+        <name>RemoveTeleportTarget</name>
+        <qualifiedname>Game_Targets::RemoveTeleportTarget</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>map_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_targets.h" line="33" column="6" bodyfile="game_targets.cpp" bodystart="48" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___targets_1a823d649a0a9c60731b770855604426b0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Targets::HasTeleportTargets</definition>
+        <argsstring>() const</argsstring>
+        <name>HasTeleportTargets</name>
+        <qualifiedname>Game_Targets::HasTeleportTargets</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_targets.h" line="34" column="6" bodyfile="game_targets.h" bodystart="47" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___targets_1acfed048bb0f6af2599bccc0c658dfa30" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const lcf::rpg::SaveTarget *</type>
+        <definition>const lcf::rpg::SaveTarget * Game_Targets::GetTeleportTarget</definition>
+        <argsstring>(int map_id) const</argsstring>
+        <name>GetTeleportTarget</name>
+        <qualifiedname>Game_Targets::GetTeleportTarget</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>map_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_targets.h" line="35" column="28" bodyfile="game_targets.cpp" bodystart="55" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___targets_1aff5d727ad265679008a36e00ca08ee6f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::vector&lt; lcf::rpg::SaveTarget &gt; &amp;</type>
+        <definition>const std::vector&lt; lcf::rpg::SaveTarget &gt; &amp; Game_Targets::GetTeleportTargets</definition>
+        <argsstring>() const</argsstring>
+        <name>GetTeleportTargets</name>
+        <qualifiedname>Game_Targets::GetTeleportTargets</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_targets.h" line="36" column="19" bodyfile="game_targets.h" bodystart="51" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___targets_1a57735dd755b59b9b27594c39767863c5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Targets::SetEscapeTarget</definition>
+        <argsstring>(int map_id, int x, int y, bool switch_on, int switch_id)</argsstring>
+        <name>SetEscapeTarget</name>
+        <qualifiedname>Game_Targets::SetEscapeTarget</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>map_id</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>y</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>switch_on</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>switch_id</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_targets.h" line="38" column="6" bodyfile="game_targets.cpp" bodystart="60" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___targets_1ac83bc2333914536f490691c0b0289844" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Targets::HasEscapeTarget</definition>
+        <argsstring>() const</argsstring>
+        <name>HasEscapeTarget</name>
+        <qualifiedname>Game_Targets::HasEscapeTarget</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_targets.h" line="39" column="6" bodyfile="game_targets.h" bodystart="55" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___targets_1aefaef263ec2146cc424805c3554ade75" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const lcf::rpg::SaveTarget &amp;</type>
+        <definition>const lcf::rpg::SaveTarget &amp; Game_Targets::GetEscapeTarget</definition>
+        <argsstring>() const</argsstring>
+        <name>GetEscapeTarget</name>
+        <qualifiedname>Game_Targets::GetEscapeTarget</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_targets.h" line="40" column="28" bodyfile="game_targets.h" bodystart="59" bodyend="61"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_targets.h" line="25" column="1" bodyfile="game_targets.h" bodystart="25" bodyend="44"/>
+    <listofallmembers>
+      <member refid="class_game___targets_1a2ac8c4a6da4921c8a68d26f8557c3244" prot="public" virt="non-virtual"><scope>Game_Targets</scope><name>AddTeleportTarget</name></member>
+      <member refid="class_game___targets_1a85925b7332c453f4820b126d0c0c7b8b" prot="private" virt="non-virtual"><scope>Game_Targets</scope><name>escape</name></member>
+      <member refid="class_game___targets_1afbeae4b27c6872ef36bdbb7054f041b9" prot="public" virt="non-virtual"><scope>Game_Targets</scope><name>Game_Targets</name></member>
+      <member refid="class_game___targets_1aefaef263ec2146cc424805c3554ade75" prot="public" virt="non-virtual"><scope>Game_Targets</scope><name>GetEscapeTarget</name></member>
+      <member refid="class_game___targets_1a006c70fc1e7998d7b8003b4f4e5c61a3" prot="public" virt="non-virtual"><scope>Game_Targets</scope><name>GetSaveData</name></member>
+      <member refid="class_game___targets_1acfed048bb0f6af2599bccc0c658dfa30" prot="public" virt="non-virtual"><scope>Game_Targets</scope><name>GetTeleportTarget</name></member>
+      <member refid="class_game___targets_1aff5d727ad265679008a36e00ca08ee6f" prot="public" virt="non-virtual"><scope>Game_Targets</scope><name>GetTeleportTargets</name></member>
+      <member refid="class_game___targets_1ac83bc2333914536f490691c0b0289844" prot="public" virt="non-virtual"><scope>Game_Targets</scope><name>HasEscapeTarget</name></member>
+      <member refid="class_game___targets_1a823d649a0a9c60731b770855604426b0" prot="public" virt="non-virtual"><scope>Game_Targets</scope><name>HasTeleportTargets</name></member>
+      <member refid="class_game___targets_1ae37075c2b30de16e3c30814163b035f1" prot="public" virt="non-virtual"><scope>Game_Targets</scope><name>RemoveTeleportTarget</name></member>
+      <member refid="class_game___targets_1a57735dd755b59b9b27594c39767863c5" prot="public" virt="non-virtual"><scope>Game_Targets</scope><name>SetEscapeTarget</name></member>
+      <member refid="class_game___targets_1a8e912a44e368f82c7b0ddc5da3ac5961" prot="public" virt="non-virtual"><scope>Game_Targets</scope><name>SetSaveData</name></member>
+      <member refid="class_game___targets_1adf2fe752647ee21794e3b3995277861e" prot="private" virt="non-virtual"><scope>Game_Targets</scope><name>teleports</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

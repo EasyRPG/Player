@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespaceleasy_1_1metadata_1_1lua_1_1detail" kind="namespace" language="C++">
+    <compoundname>leasy::metadata::lua::detail</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceleasy_1_1metadata_1_1lua_1_1detail_1a5b7d6dffe46d591f6c49428525cbdda7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::metadata::lua::detail::pad</definition>
+        <argsstring>(std::ostream &amp;, const options &amp;, size_t depth)</argsstring>
+        <name>pad</name>
+        <qualifiedname>leasy::metadata::lua::detail::pad</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <defname>os</defname>
+        </param>
+        <param>
+          <type>const <ref refid="structleasy_1_1metadata_1_1lua_1_1options" kindref="compound">options</ref> &amp;</type>
+          <defname>opts</defname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>depth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/lua.hpp" line="43" column="11" bodyfile="leasy/metadata/lua.hpp" bodystart="48" bodyend="52" declfile="leasy/metadata/lua.hpp" declline="43" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1metadata_1_1lua_1_1detail_1a29eb25bb4cdaff74fdfebb14d24174b6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::metadata::lua::detail::escape</definition>
+        <argsstring>(std::ostream &amp;, const string &amp;)</argsstring>
+        <name>escape</name>
+        <qualifiedname>leasy::metadata::lua::detail::escape</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <defname>os</defname>
+        </param>
+        <param>
+          <type>const <ref refid="namespaceleasy_1_1metadata_1a6a91c63d6b7d38496def2d40cdf3463e" kindref="member">string</ref> &amp;</type>
+          <defname>s</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/lua.hpp" line="44" column="11" bodyfile="leasy/metadata/lua.hpp" bodystart="54" bodyend="74" declfile="leasy/metadata/lua.hpp" declline="44" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceleasy_1_1metadata_1_1lua_1_1detail_1ace57af3f374177f9e27f90c578402732" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::metadata::lua::detail::emit</definition>
+        <argsstring>(std::ostream &amp;, const object &amp;, const options &amp;, size_t depth)</argsstring>
+        <name>emit</name>
+        <qualifiedname>leasy::metadata::lua::detail::emit</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <defname>os</defname>
+        </param>
+        <param>
+          <type>const object &amp;</type>
+          <defname>obj</defname>
+        </param>
+        <param>
+          <type>const <ref refid="structleasy_1_1metadata_1_1lua_1_1options" kindref="compound">options</ref> &amp;</type>
+          <defname>opts</defname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>depth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/metadata/lua.hpp" line="45" column="11" bodyfile="leasy/metadata/lua.hpp" bodystart="79" bodyend="115" declfile="leasy/metadata/lua.hpp" declline="45" declcolumn="11"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/metadata/lua.hpp" line="42" column="3"/>
+  </compounddef>
+</doxygen>

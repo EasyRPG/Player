@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_048b8333038616dc3a4f6850366c0966" kind="dir">
+    <compoundname>platform/psp</compoundname>
+    <innerfile refid="psp__input__buttons_8cpp">psp_input_buttons.cpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/psp/"/>
+  </compounddef>
+</doxygen>

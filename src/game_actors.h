@@ -75,3 +75,4 @@ inline int Game_Actors::GetNumActors() const {
 }
 
 #endif
+

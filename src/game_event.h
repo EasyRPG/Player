@@ -231,3 +231,4 @@ inline bool Game_Event::IsVisible() const {
 }
 
 #endif
+

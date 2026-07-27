@@ -1,0 +1,254 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="game__message__terms_8h" kind="file" language="C++">
+    <compoundname>game_message_terms.h</compoundname>
+    <includes local="no">string</includes>
+    <includes refid="string__view_8h" local="yes">string_view.h</includes>
+    <includes local="no">lcf/rpg/fwd.h</includes>
+    <includedby refid="game__actor_8cpp" local="yes">game_actor.cpp</includedby>
+    <includedby refid="game__battlealgorithm_8cpp" local="yes">game_battlealgorithm.cpp</includedby>
+    <includedby refid="game__message__terms_8cpp" local="yes">game_message_terms.cpp</includedby>
+    <includedby refid="scene__battle__rpg2k_8cpp" local="yes">scene_battle_rpg2k.cpp</includedby>
+    <includedby refid="scene__battle__rpg2k3_8cpp" local="yes">scene_battle_rpg2k3.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>game_message_terms.h</label>
+        <link refid="game__message__terms_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>string_view.h</label>
+        <link refid="string__view_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>fmt/format.h</label>
+      </node>
+      <node id="7">
+        <label>fmt/ostream.h</label>
+      </node>
+      <node id="5">
+        <label>lcf/dbstring.h</label>
+      </node>
+      <node id="8">
+        <label>lcf/rpg/fwd.h</label>
+      </node>
+      <node id="4">
+        <label>lcf/string_view.h</label>
+      </node>
+      <node id="2">
+        <label>string</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>game_actor.cpp</label>
+        <link refid="game__actor_8cpp"/>
+      </node>
+      <node id="3">
+        <label>game_battlealgorithm.cpp</label>
+        <link refid="game__battlealgorithm_8cpp"/>
+      </node>
+      <node id="4">
+        <label>game_message_terms.cpp</label>
+        <link refid="game__message__terms_8cpp"/>
+      </node>
+      <node id="1">
+        <label>game_message_terms.h</label>
+        <link refid="game__message__terms_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>scene_battle_rpg2k.cpp</label>
+        <link refid="scene__battle__rpg2k_8cpp"/>
+      </node>
+      <node id="6">
+        <label>scene_battle_rpg2k3.cpp</label>
+        <link refid="scene__battle__rpg2k3_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespace_actor_message">ActorMessage</innernamespace>
+    <innernamespace refid="namespace_battle_message">BattleMessage</innernamespace>
+    <innernamespace refid="namespace_party_message">PartyMessage</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="game__message__terms_8h_1a68c7fcb359f07021e3233be4b629534a" prot="public" static="no">
+        <name>EP_GAME_MESSAGE_TERMS_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message_terms.h" line="20" column="9" bodyfile="game_message_terms.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>EasyRPG<sp/>Player.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>free<sp/>software:<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or<sp/>modify</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>as<sp/>published<sp/>by</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>the<sp/>Free<sp/>Software<sp/>Foundation,<sp/>either<sp/>version<sp/>3<sp/>of<sp/>the<sp/>License,<sp/>or</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>EasyRPG<sp/>Player<sp/>is<sp/>distributed<sp/>in<sp/>the<sp/>hope<sp/>that<sp/>it<sp/>will<sp/>be<sp/>useful,</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>but<sp/>WITHOUT<sp/>ANY<sp/>WARRANTY;<sp/>without<sp/>even<sp/>the<sp/>implied<sp/>warranty<sp/>of</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>MERCHANTABILITY<sp/>or<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE.<sp/>See<sp/>the</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>GNU<sp/>General<sp/>Public<sp/>License<sp/>for<sp/>more<sp/>details.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>You<sp/>should<sp/>have<sp/>received<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>GNU<sp/>General<sp/>Public<sp/>License</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>along<sp/>with<sp/>EasyRPG<sp/>Player.<sp/>If<sp/>not,<sp/>see<sp/>&lt;http://www.gnu.org/licenses/&gt;.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_GAME_MESSAGE_TERMS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="game__message__terms_8h_1a68c7fcb359f07021e3233be4b629534a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_GAME_MESSAGE_TERMS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="string__view_8h" kindref="compound">string_view.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;lcf/rpg/fwd.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_game___actor" kindref="compound">Game_Actor</ref>;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_game___battler" kindref="compound">Game_Battler</ref>;</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_actor_message" kindref="compound">ActorMessage</ref><sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal">std::string<sp/><ref refid="namespace_actor_message_1af9a579143a695b32c032e7913643d6f0" kindref="member">GetLevelUpMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___actor" kindref="compound">Game_Actor</ref>&amp;<sp/>actor,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>new_level);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal">std::string<sp/><ref refid="namespace_actor_message_1a7fd0e07776b2719f4eb43ab32baa888f" kindref="member">GetLearningMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_game___actor" kindref="compound">Game_Actor</ref>&amp;<sp/>actor,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Skill&amp;<sp/>skill);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>ActorMessage</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_battle_message" kindref="compound">BattleMessage</ref><sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a8bf730c3b7f2ac480874aac6279dd426" kindref="member">GetStateInflictMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::State&amp;<sp/>state);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a08ed0237f7ede61af586dff05a912197" kindref="member">GetStateRecoveryMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::State&amp;<sp/>state);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a74ab896434aadfcf04ec52b7b33609bd" kindref="member">GetStateAffectedMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::State&amp;<sp/>state);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a79534f6a1012f6d2019506ce81e7b4a4" kindref="member">GetStateAlreadyMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::State&amp;<sp/>state);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1aae3133b5b42aba4657715599c4647ebc" kindref="member">GetDeathMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a1412ff7cd36a05e2bb05d91621a29d3f" kindref="member">GetPhysicalFailureMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target);</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1ac5a5745d9b586699dd364c343d26cc2e" kindref="member">GetSkillFailureMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Skill&amp;<sp/>skill);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a7ccc1a9320ad5ef9e183377955b30eff" kindref="member">GetUndamagedMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1ab797c0bbedc0dcc6f50d45173eb3d80f" kindref="member">GetCriticalHitMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1ad0d711ed62ecaab5a7dcb48a9249b85c" kindref="member">GetHpRecoveredMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a7be6337554ea10f0b7e5c062e603928f" kindref="member">GetSpRecoveredMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a20e605c40c21369a6919807dfff6fcde" kindref="member">GetParameterAbsorbedMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value,<sp/>std::string_view<sp/>points);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1ac2d2ce2bb6d3a7f7ff27a1fe513c0e44" kindref="member">GetHpAbsorbedMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a849ab8daf9ead155ca90edfc27395884" kindref="member">GetSpAbsorbedMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a8af00bd185720c02f4c98df9fd469921" kindref="member">GetAtkAbsorbedMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a4263848d812bbf6e6c3820d65bb61cab" kindref="member">GetDefAbsorbedMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a49a6f938fa155bd1501fdf23cd883134" kindref="member">GetSpiAbsorbedMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a9579a149be58c91d723b45e973755857" kindref="member">GetAgiAbsorbedMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a5832417c275201249aee3e4f91cc4c7b" kindref="member">GetDamagedMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1ad57554d5855c7d80758ee23c6aee645d" kindref="member">GetParameterChangeMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value,<sp/>std::string_view<sp/>points);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a63d436c624751d30398a4b246819bc4f" kindref="member">GetSpReduceMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a468d37b33d51dc8cd89887b9e40bd9d8" kindref="member">GetAtkChangeMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1ae516de318ce0b639d4c63a10eeced24e" kindref="member">GetDefChangeMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1aaf30d345d9508319905d599e862dab6a" kindref="member">GetSpiChangeMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a0268762ef4a6fedcfbe36c77e66e46a1" kindref="member">GetAgiChangeMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1ac5920f5ae471d2b50f1a11344b55f4c9" kindref="member">GetAttributeShiftMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>target,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>value,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Attribute&amp;<sp/>attribute);</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1aff090e7435df66b38e99d56aed848c03" kindref="member">GetNormalAttackStartMessage2k</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a900d44e1267d99dd9233d90bd76507fe" kindref="member">GetDefendStartMessage2k</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1add2fd27e93dec3c8c5bb21cf539b203f" kindref="member">GetObserveStartMessage2k</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1aa99bcdaa49b472528bd078de11680ee2" kindref="member">GetChargeUpStartMessage2k</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a1cc3e3f01b2343309784b84b7f4a2745" kindref="member">GetSelfDestructStartMessage2k</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1aa3f3d88fec32c422345666307072d369" kindref="member">GetEscapeStartMessage2k</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source);</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1ad412e1128028de0b4786f6b65f689b8e" kindref="member">GetTransformStartMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Enemy&amp;<sp/>new_enemy);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1ad510f2e1045de30c4e532b6aa21642bf" kindref="member">GetSkillFirstStartMessage2k</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler*<sp/>target,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Skill&amp;<sp/>skill);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1accbfac26dd01b630c2ef96e3c1f1c100" kindref="member">GetSkillSecondStartMessage2k</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler*<sp/>target,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Skill&amp;<sp/>skill);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a9e6633843c9c5328e112c3583c621097" kindref="member">GetItemStartMessage2k</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Item&amp;<sp/>item);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1adc0d73d25bb9a7a967dcc937885ac4f1" kindref="member">GetDoubleAttackStartMessage2k3</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source);</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1adc8756a9a8965e8fc515f4b8b42e3db3" kindref="member">GetSkillStartMessage2k3</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler*<sp/>target,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Skill&amp;<sp/>skill);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a5168f3b2fad2b3003e4224dcea333f36" kindref="member">GetItemStartMessage2k3</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Item&amp;<sp/>item);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a7f70794ebdb92285510e1e27a2912768" kindref="member">GetObserveStartMessage2k3</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source);</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a295dc0fd9addf723beaae2fbc76b6b09" kindref="member">GetDefendStartMessage2k3</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a0318ee5d80a667a92059909dd2804624" kindref="member">GetChargeUpStartMessage2k3</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a8eb5af1b2b593a42495f86e31d6ca0f0" kindref="member">GetSelfDestructStartMessage2k3</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal">std::string<sp/><ref refid="namespace_battle_message_1a9b9357b98d670d662b2ac9edc8ee7e6b" kindref="member">GetEscapeStartMessage2k3</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Game_Battler&amp;<sp/>source);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>BattleMessage</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_party_message" kindref="compound">PartyMessage</ref><sp/>{</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal">std::string<sp/><ref refid="namespace_party_message_1a19c4fe36354e4c45f06f5efe36ee6025" kindref="member">GetExperienceGainedMessage</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>exp);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal">std::string<sp/><ref refid="namespace_party_message_1a45ce4483ac51c3632a410d03daef06e2" kindref="member">GetGoldReceivedMessage</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>money);</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal">std::string<sp/><ref refid="namespace_party_message_1a9d13586b6872f8e000fd71dd1a82098e" kindref="member">GetItemReceivedMessage</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>lcf::rpg::Item*<sp/>item);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PartyMessage</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="game_message_terms.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,877 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_game___message" kind="namespace" language="C++">
+    <compoundname>Game_Message</compoundname>
+    <innerclass refid="struct_game___message_1_1_parse_param_result" prot="public">Game_Message::ParseParamResult</innerclass>
+    <innerclass refid="struct_game___message_1_1_parse_param_string_result" prot="public">Game_Message::ParseParamStringResult</innerclass>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespace_game___message_1a01b50a734f0b013bf603197d6956551f" prot="public" static="no">
+        <type>const std::function&lt; void(std::string_view line)&gt;</type>
+        <definition>using Game_Message::WordWrapCallback = const std::function&lt;void(std::string_view line)&gt;</definition>
+        <argsstring></argsstring>
+        <name>WordWrapCallback</name>
+        <qualifiedname>Game_Message::WordWrapCallback</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_callback" kindref="compound">Callback</ref> type for WordWrap function </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="64" column="1" bodyfile="game_message.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_game___message_1ad424420a0546ede77080edfafa451c25" prot="public" static="yes" mutable="no">
+        <type>const int</type>
+        <definition>const int Game_Message::MAX_LINE</definition>
+        <argsstring></argsstring>
+        <name>MAX_LINE</name>
+        <qualifiedname>Game_Message::MAX_LINE</qualifiedname>
+        <initializer>= 4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="36" column="18" bodyfile="game_message.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_game___message_1ac334a12b48a4fdb01c0f9d609a83f9d3" prot="public" static="no" extern="yes" mutable="no">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt;std::string&gt; Game_Message::texts</definition>
+        <argsstring></argsstring>
+        <name>texts</name>
+        <qualifiedname>Game_Message::texts</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Contains the different lines of text. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="46" column="20" declfile="game_message.h" declline="46" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_game___message_1a61e894cb2e9d458634b0e28023dbbbd5" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Game_Message::easyrpg_default_max_recursion</definition>
+        <argsstring></argsstring>
+        <name>easyrpg_default_max_recursion</name>
+        <qualifiedname>Game_Message::easyrpg_default_max_recursion</qualifiedname>
+        <initializer>= 8</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="104" column="22" bodyfile="game_message.h" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_game___message_1a05014a8705ecd15b24e0c4e4a23fa4fc" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Game_Message::rpg_rt_default_max_recursion</definition>
+        <argsstring></argsstring>
+        <name>rpg_rt_default_max_recursion</name>
+        <qualifiedname>Game_Message::rpg_rt_default_max_recursion</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="106" column="22" bodyfile="game_message.h" bodystart="106" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_game___message_1a1cabb5803547aea9e8151fe0ade56a7c" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Game_Message::default_max_recursion</definition>
+        <argsstring></argsstring>
+        <name>default_max_recursion</name>
+        <qualifiedname>Game_Message::default_max_recursion</qualifiedname>
+        <initializer>= easyrpg_default_max_recursion</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="108" column="22" bodyfile="game_message.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_game___message_1ab48a7c508a9ff31079b64a34e911c86f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Message::SetWindow</definition>
+        <argsstring>(Window_Message *window)</argsstring>
+        <name>SetWindow</name>
+        <qualifiedname>Game_Message::SetWindow</qualifiedname>
+        <param>
+          <type><ref refid="class_window___message" kindref="compound">Window_Message</ref> *</type>
+          <declname>window</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the window used to display the text </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="39" column="6" bodyfile="game_message.cpp" bodystart="40" bodyend="42" declfile="game_message.h" declline="39" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___message_1a6c388a24a7505c8958de95ddb5ac2788" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_window___message" kindref="compound">Window_Message</ref> *</type>
+        <definition>Window_Message * Game_Message::GetWindow</definition>
+        <argsstring>()</argsstring>
+        <name>GetWindow</name>
+        <qualifiedname>Game_Message::GetWindow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="41" column="16" bodyfile="game_message.cpp" bodystart="44" bodyend="46" declfile="game_message.h" declline="41" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___message_1af22a4b23fabd9390c5405bab3904b406" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_async_op" kindref="compound">AsyncOp</ref></type>
+        <definition>AsyncOp Game_Message::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>Game_Message::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="43" column="9" bodyfile="game_message.cpp" bodystart="128" bodyend="134" declfile="game_message.h" declline="43" declcolumn="9"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___message_1acf322cf69f5269d828c9d2c8a0566e8e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Message::GetRealPosition</definition>
+        <argsstring>()</argsstring>
+        <name>GetRealPosition</name>
+        <qualifiedname>Game_Message::GetRealPosition</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Determines the position of the message box respecting the player&apos;s map position and if obstructing is allowed.</para>
+<para><simplesect kind="return"><para>Best message box position </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="54" column="5" bodyfile="game_message.cpp" bodystart="48" bodyend="82" declfile="game_message.h" declline="54" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___message_1ad4e66d45f3369c91fdd642c487867685" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Message::SetPendingMessage</definition>
+        <argsstring>(PendingMessage &amp;&amp;pm)</argsstring>
+        <name>SetPendingMessage</name>
+        <qualifiedname>Game_Message::SetPendingMessage</qualifiedname>
+        <param>
+          <type><ref refid="class_pending_message" kindref="compound">PendingMessage</ref> &amp;&amp;</type>
+          <declname>pm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets pending message text for the messaging system to display.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pm</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>- the pending message text </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="61" column="6" bodyfile="game_message.cpp" bodystart="136" bodyend="144" declfile="game_message.h" declline="61" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___message_1a9afd18c0cbff01a166cf418cb997d5f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Message::WordWrap</definition>
+        <argsstring>(std::string_view line, int limit, const WordWrapCallback &amp;callback)</argsstring>
+        <name>WordWrap</name>
+        <qualifiedname>Game_Message::WordWrap</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>line</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>limit</declname>
+        </param>
+        <param>
+          <type>const <ref refid="namespace_game___message_1a01b50a734f0b013bf603197d6956551f" kindref="member">WordWrapCallback</ref> &amp;</type>
+          <declname>callback</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Breaks the line into lines, each of which is equal or less than a specified limit in pixels in the given font (except in cases when breaking by spaces can&apos;t produce a short line), and calls the callback for each resulting line.</para>
+<para><ref refid="class_font_1a0c0af671fc4de3e9ba8b758869080142" kindref="member">Font::Default()</ref> will be used to determine the word breaking. The caller is responsible for ensuring that <ref refid="class_font_1a0c0af671fc4de3e9ba8b758869080142" kindref="member">Font::Default()</ref> either does not change between calling this function and displaying the results, or at least that the changed font has same metrics as the font used to calculate the line sizes.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">line</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The line that will be broken into lines and added into the lines vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">limit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>maximum size of each line after word-breaking. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>callback</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a function to be called for each word-wrapped line </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="84" column="5" bodyfile="game_message.cpp" bodystart="84" bodyend="86" declfile="game_message.h" declline="84" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___message_1ad440581b20c63c183b65fd2d19dc955c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Message::WordWrap</definition>
+        <argsstring>(std::string_view line, int limit, const WordWrapCallback &amp;callback, const Font &amp;font)</argsstring>
+        <name>WordWrap</name>
+        <qualifiedname>Game_Message::WordWrap</qualifiedname>
+        <param>
+          <type>std::string_view</type>
+          <declname>line</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>limit</declname>
+        </param>
+        <param>
+          <type>const <ref refid="namespace_game___message_1a01b50a734f0b013bf603197d6956551f" kindref="member">WordWrapCallback</ref> &amp;</type>
+          <declname>callback</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_font" kindref="compound">Font</ref> &amp;</type>
+          <declname>font</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="85" column="5" bodyfile="game_message.cpp" bodystart="88" bodyend="126" declfile="game_message.h" declline="85" declcolumn="5"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___message_1ab08bda14d6bd2c1de87c3fe36016c002" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Message::CanShowMessage</definition>
+        <argsstring>(bool foreground)</argsstring>
+        <name>CanShowMessage</name>
+        <qualifiedname>Game_Message::CanShowMessage</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>foreground</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return if it&apos;s legal to show a new message box.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>foreground</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>true if this is in the foreground context, otherwise parallel context. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if we can show a message box. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="93" column="6" bodyfile="game_message.cpp" bodystart="154" bodyend="156" declfile="game_message.h" declline="93" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___message_1afb26e67c2f0e32febd8e05d34f7119b4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Message::IsMessagePending</definition>
+        <argsstring>()</argsstring>
+        <name>IsMessagePending</name>
+        <qualifiedname>Game_Message::IsMessagePending</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if there is message text pending </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="96" column="6" bodyfile="game_message.cpp" bodystart="146" bodyend="148" declfile="game_message.h" declline="96" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___message_1af924b2ed5854f7e9de3177d00a27475c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Game_Message::IsMessageActive</definition>
+        <argsstring>()</argsstring>
+        <name>IsMessageActive</name>
+        <qualifiedname>Game_Message::IsMessageActive</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if message window is running </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="98" column="6" bodyfile="game_message.cpp" bodystart="150" bodyend="152" declfile="game_message.h" declline="98" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___message_1acd8ed9a0c9580b1d0242c003f8c2a04b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::optional&lt; std::string &gt;</type>
+        <definition>std::optional&lt; std::string &gt; Game_Message::CommandCodeInserter</definition>
+        <argsstring>(char ch, const char **iter, const char *end, uint32_t escape_char)</argsstring>
+        <name>CommandCodeInserter</name>
+        <qualifiedname>Game_Message::CommandCodeInserter</qualifiedname>
+        <param>
+          <type>char</type>
+          <declname>ch</declname>
+        </param>
+        <param>
+          <type>const char **</type>
+          <declname>iter</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>end</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>escape_char</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The command code parser for the message box </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="101" column="15" bodyfile="game_message.cpp" bodystart="173" bodyend="186" declfile="game_message.h" declline="101" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___message_1a9b445e79fcd74faaf902ee74328cd381" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_game___message_1_1_parse_param_result" kindref="compound">ParseParamResult</ref></type>
+        <definition>Game_Message::ParseParamResult Game_Message::ParseVariable</definition>
+        <argsstring>(const char *iter, const char *end, uint32_t escape_char, bool skip_prefix=false, int max_recursion=default_max_recursion)</argsstring>
+        <name>ParseVariable</name>
+        <qualifiedname>Game_Message::ParseVariable</qualifiedname>
+        <param>
+          <type>const char *</type>
+          <declname>iter</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>end</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>escape_char</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>skip_prefix</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>max_recursion</declname>
+          <defval>default_max_recursion</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Parse a \v[] variable string</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iter</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>start of utf8 string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>end</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>end of utf8 string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>escape_char</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the escape character to use </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>skip_prefix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, assume prefix was already parsed and iter starts at the first left bracket. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>max_recursion</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>How many times to allow recursive variable lookups.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>\refer <ref refid="struct_game___message_1_1_parse_param_result" kindref="compound">ParseParamResult</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="136" column="18" bodyfile="game_message.cpp" bodystart="353" bodyend="355" declfile="game_message.h" declline="136" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___message_1ae0645f9ec73802405b4d8aaf153d52b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_game___message_1_1_parse_param_result" kindref="compound">ParseParamResult</ref></type>
+        <definition>Game_Message::ParseParamResult Game_Message::ParseString</definition>
+        <argsstring>(const char *iter, const char *end, uint32_t escape_char, bool skip_prefix=false, int max_recursion=default_max_recursion)</argsstring>
+        <name>ParseString</name>
+        <qualifiedname>Game_Message::ParseString</qualifiedname>
+        <param>
+          <type>const char *</type>
+          <declname>iter</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>end</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>escape_char</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>skip_prefix</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>max_recursion</declname>
+          <defval>default_max_recursion</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Parse a \t[] variable string</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iter</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>start of utf8 string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>end</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>end of utf8 string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>escape_char</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the escape character to use </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>skip_prefix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, assume prefix was already parsed and iter starts at the first left bracket. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>max_recursion</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>How many times to allow recursive variable lookups.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>\refer <ref refid="struct_game___message_1_1_parse_param_result" kindref="compound">ParseParamResult</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="148" column="18" bodyfile="game_message.cpp" bodystart="357" bodyend="359" declfile="game_message.h" declline="148" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___message_1a2ee0b2845a4d939de708ae6c5413b476" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_game___message_1_1_parse_param_result" kindref="compound">ParseParamResult</ref></type>
+        <definition>Game_Message::ParseParamResult Game_Message::ParseColor</definition>
+        <argsstring>(const char *iter, const char *end, uint32_t escape_char, bool skip_prefix=false, int max_recursion=default_max_recursion)</argsstring>
+        <name>ParseColor</name>
+        <qualifiedname>Game_Message::ParseColor</qualifiedname>
+        <param>
+          <type>const char *</type>
+          <declname>iter</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>end</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>escape_char</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>skip_prefix</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>max_recursion</declname>
+          <defval>default_max_recursion</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Parse a <computeroutput></computeroutput>[] color string</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iter</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>start of utf8 string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>end</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>end of utf8 string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>escape_char</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the escape character to use </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>skip_prefix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, assume prefix was already parsed and iter starts at the first left bracket. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>max_recursion</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>How many times to allow recursive variable lookups.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>\refer <ref refid="struct_game___message_1_1_parse_param_result" kindref="compound">ParseParamResult</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="160" column="18" bodyfile="game_message.cpp" bodystart="361" bodyend="363" declfile="game_message.h" declline="160" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___message_1a5037a0d5fc4eeab465c1d30d09de01e3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_game___message_1_1_parse_param_result" kindref="compound">ParseParamResult</ref></type>
+        <definition>Game_Message::ParseParamResult Game_Message::ParseSpeed</definition>
+        <argsstring>(const char *iter, const char *end, uint32_t escape_char, bool skip_prefix=false, int max_recursion=default_max_recursion)</argsstring>
+        <name>ParseSpeed</name>
+        <qualifiedname>Game_Message::ParseSpeed</qualifiedname>
+        <param>
+          <type>const char *</type>
+          <declname>iter</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>end</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>escape_char</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>skip_prefix</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>max_recursion</declname>
+          <defval>default_max_recursion</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Parse a \s[] speed string</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iter</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>start of utf8 string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>end</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>end of utf8 string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>escape_char</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the escape character to use </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>skip_prefix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, assume prefix was already parsed and iter starts at the first left bracket. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>max_recursion</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>How many times to allow recursive variable lookups.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>\refer <ref refid="struct_game___message_1_1_parse_param_result" kindref="compound">ParseParamResult</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="172" column="18" bodyfile="game_message.cpp" bodystart="365" bodyend="367" declfile="game_message.h" declline="172" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___message_1a0d72ae5b0859287ac41f16f5c0cc6484" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_game___message_1_1_parse_param_result" kindref="compound">ParseParamResult</ref></type>
+        <definition>Game_Message::ParseParamResult Game_Message::ParseActor</definition>
+        <argsstring>(const char *iter, const char *end, uint32_t escape_char, bool skip_prefix=false, int max_recursion=default_max_recursion)</argsstring>
+        <name>ParseActor</name>
+        <qualifiedname>Game_Message::ParseActor</qualifiedname>
+        <param>
+          <type>const char *</type>
+          <declname>iter</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>end</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>escape_char</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>skip_prefix</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>max_recursion</declname>
+          <defval>default_max_recursion</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Parse a <linebreak/>
+[] actor name string</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>iter</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>start of utf8 string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>end</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>end of utf8 string </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>escape_char</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the escape character to use </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>skip_prefix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if true, assume prefix was already parsed and iter starts at the first left bracket. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>max_recursion</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>How many times to allow recursive variable lookups.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>\refer <ref refid="struct_game___message_1_1_parse_param_result" kindref="compound">ParseParamResult</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="184" column="18" bodyfile="game_message.cpp" bodystart="369" bodyend="371" declfile="game_message.h" declline="184" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___message_1a49feeed2fe4dd7dfa3262e23eca06d7e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_game___message_1_1_parse_param_result" kindref="compound">Game_Message::ParseParamResult</ref></type>
+        <definition>Game_Message::ParseParamResult Game_Message::ParseParam</definition>
+        <argsstring>(char upper, char lower, const char *iter, const char *end, uint32_t escape_char, bool skip_prefix=false, int max_recursion=default_max_recursion)</argsstring>
+        <name>ParseParam</name>
+        <qualifiedname>Game_Message::ParseParam</qualifiedname>
+        <param>
+          <type>char</type>
+          <declname>upper</declname>
+        </param>
+        <param>
+          <type>char</type>
+          <declname>lower</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>iter</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>end</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>escape_char</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>skip_prefix</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>max_recursion</declname>
+          <defval>default_max_recursion</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="186" column="32" bodyfile="game_message.cpp" bodystart="188" bodyend="285" declfile="game_message.h" declline="186" declcolumn="32"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_game___message_1a8aee2a78af8ac7178ce9e97c85d0ada3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_game___message_1_1_parse_param_string_result" kindref="compound">Game_Message::ParseParamStringResult</ref></type>
+        <definition>Game_Message::ParseParamStringResult Game_Message::ParseStringParam</definition>
+        <argsstring>(char upper, char lower, const char *iter, const char *end, uint32_t escape_char, bool skip_prefix=false, int max_recursion=default_max_recursion)</argsstring>
+        <name>ParseStringParam</name>
+        <qualifiedname>Game_Message::ParseStringParam</qualifiedname>
+        <param>
+          <type>char</type>
+          <declname>upper</declname>
+        </param>
+        <param>
+          <type>char</type>
+          <declname>lower</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>iter</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>end</declname>
+        </param>
+        <param>
+          <type>uint32_t</type>
+          <declname>escape_char</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>skip_prefix</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>max_recursion</declname>
+          <defval>default_max_recursion</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_message.h" line="188" column="38" bodyfile="game_message.cpp" bodystart="287" bodyend="351" declfile="game_message.h" declline="188" declcolumn="38"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_message.h" line="34" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_dyn_rpg_1_1_text_plugin" kind="class" language="C++" prot="public">
+    <compoundname>DynRpg::TextPlugin</compoundname>
+    <basecompoundref refid="class_dyn_rpg_plugin" prot="public" virt="non-virtual">DynRpgPlugin</basecompoundref>
+    <includes refid="dynrpg__textplugin_8h" local="no">dynrpg_textplugin.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_dyn_rpg_1_1_text_plugin_1abde69da2c5d02b081d0b56583ba38d25" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>DynRpg::TextPlugin::TextPlugin</definition>
+        <argsstring>(Game_DynRpg &amp;instance)</argsstring>
+        <name>TextPlugin</name>
+        <qualifiedname>DynRpg::TextPlugin::TextPlugin</qualifiedname>
+        <param>
+          <type><ref refid="class_game___dyn_rpg" kindref="compound">Game_DynRpg</ref> &amp;</type>
+          <declname>instance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.h" line="27" column="1" bodyfile="dynrpg_textplugin.h" bodystart="27" bodyend="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_1_1_text_plugin_1a4f2d47728abfd14b52ca624f91630a0e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>DynRpg::TextPlugin::~TextPlugin</definition>
+        <argsstring>() override</argsstring>
+        <name>~TextPlugin</name>
+        <qualifiedname>DynRpg::TextPlugin::~TextPlugin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.h" line="28" column="1" bodyfile="dynrpg_textplugin.cpp" bodystart="427" bodyend="429"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_1_1_text_plugin_1a13571fb28043974566fa9fc6e4e0334c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool DynRpg::TextPlugin::Invoke</definition>
+        <argsstring>(std::string_view func, dyn_arg_list args, bool &amp;do_yield, Game_Interpreter *interpreter) override</argsstring>
+        <name>Invoke</name>
+        <qualifiedname>DynRpg::TextPlugin::Invoke</qualifiedname>
+        <reimplements refid="class_dyn_rpg_plugin_1a7be6e589cf86951092eb137fa893d698">Invoke</reimplements>
+        <param>
+          <type>std::string_view</type>
+          <declname>func</declname>
+        </param>
+        <param>
+          <type><ref refid="game__dynrpg_8h_1a06857b7795496bb79087d64b6cd3b07e" kindref="member">dyn_arg_list</ref></type>
+          <declname>args</declname>
+        </param>
+        <param>
+          <type>bool &amp;</type>
+          <declname>do_yield</declname>
+        </param>
+        <param>
+          <type><ref refid="class_game___interpreter" kindref="compound">Game_Interpreter</ref> *</type>
+          <declname>interpreter</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.h" line="30" column="6" bodyfile="dynrpg_textplugin.cpp" bodystart="402" bodyend="419"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_1_1_text_plugin_1a82c23704c9db4f63bda018db8f445f00" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void DynRpg::TextPlugin::Update</definition>
+        <argsstring>() override</argsstring>
+        <name>Update</name>
+        <qualifiedname>DynRpg::TextPlugin::Update</qualifiedname>
+        <reimplements refid="class_dyn_rpg_plugin_1ab8b8bdec068e59c56dc5ff3e01fbb380">Update</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.h" line="31" column="6" bodyfile="dynrpg_textplugin.cpp" bodystart="421" bodyend="425"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_1_1_text_plugin_1abd22078106ec5928ef7145aec32f7239" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void DynRpg::TextPlugin::Load</definition>
+        <argsstring>(const std::vector&lt; uint8_t &gt; &amp;) override</argsstring>
+        <name>Load</name>
+        <qualifiedname>DynRpg::TextPlugin::Load</qualifiedname>
+        <reimplements refid="class_dyn_rpg_plugin_1a9d25ce0f2b50da723a837f267caf2401">Load</reimplements>
+        <param>
+          <type>const std::vector&lt; uint8_t &gt; &amp;</type>
+          <defname>in_buffer</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.h" line="32" column="6" bodyfile="dynrpg_textplugin.cpp" bodystart="431" bodyend="492"/>
+      </memberdef>
+      <memberdef kind="function" id="class_dyn_rpg_1_1_text_plugin_1ae6f6f8616999aeaab692380ac6f75338" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>std::vector&lt; uint8_t &gt;</type>
+        <definition>std::vector&lt; uint8_t &gt; DynRpg::TextPlugin::Save</definition>
+        <argsstring>() override</argsstring>
+        <name>Save</name>
+        <qualifiedname>DynRpg::TextPlugin::Save</qualifiedname>
+        <reimplements refid="class_dyn_rpg_plugin_1ab210b1204b729aefb1bc497afe05cbb4">Save</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="dynrpg_textplugin.h" line="33" column="13" bodyfile="dynrpg_textplugin.cpp" bodystart="494" bodyend="508"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>DynRpg::TextPlugin</label>
+        <link refid="class_dyn_rpg_1_1_text_plugin"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>DynRpgPlugin</label>
+        <link refid="class_dyn_rpg_plugin"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>DynRpg::TextPlugin</label>
+        <link refid="class_dyn_rpg_1_1_text_plugin"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>DynRpgPlugin</label>
+        <link refid="class_dyn_rpg_plugin"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>instance</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Game_DynRpg</label>
+        <link refid="class_game___dyn_rpg"/>
+      </node>
+    </collaborationgraph>
+    <location file="dynrpg_textplugin.h" line="25" column="1" bodyfile="dynrpg_textplugin.h" bodystart="25" bodyend="34"/>
+    <listofallmembers>
+      <member refid="class_dyn_rpg_plugin_1a1b41ccb11aea261f8e55e139f8be6c70" prot="public" virt="non-virtual"><scope>DynRpg::TextPlugin</scope><name>DynRpgPlugin</name></member>
+      <member refid="class_dyn_rpg_plugin_1a5a6dac0e7a2541abe8533330bc176791" prot="public" virt="non-virtual"><scope>DynRpg::TextPlugin</scope><name>DynRpgPlugin</name></member>
+      <member refid="class_dyn_rpg_plugin_1a90ee1d66270a9b10daa69056e25efeba" prot="public" virt="non-virtual"><scope>DynRpg::TextPlugin</scope><name>GetIdentifier</name></member>
+      <member refid="class_dyn_rpg_plugin_1a5fb12d4ea55c3def42a0a9bd8648ab1d" prot="protected" virt="non-virtual"><scope>DynRpg::TextPlugin</scope><name>instance</name></member>
+      <member refid="class_dyn_rpg_1_1_text_plugin_1a13571fb28043974566fa9fc6e4e0334c" prot="public" virt="virtual"><scope>DynRpg::TextPlugin</scope><name>Invoke</name></member>
+      <member refid="class_dyn_rpg_1_1_text_plugin_1abd22078106ec5928ef7145aec32f7239" prot="public" virt="virtual"><scope>DynRpg::TextPlugin</scope><name>Load</name></member>
+      <member refid="class_dyn_rpg_1_1_text_plugin_1ae6f6f8616999aeaab692380ac6f75338" prot="public" virt="virtual"><scope>DynRpg::TextPlugin</scope><name>Save</name></member>
+      <member refid="class_dyn_rpg_1_1_text_plugin_1abde69da2c5d02b081d0b56583ba38d25" prot="public" virt="non-virtual"><scope>DynRpg::TextPlugin</scope><name>TextPlugin</name></member>
+      <member refid="class_dyn_rpg_1_1_text_plugin_1a82c23704c9db4f63bda018db8f445f00" prot="public" virt="virtual"><scope>DynRpg::TextPlugin</scope><name>Update</name></member>
+      <member refid="class_dyn_rpg_plugin_1a140e190a33a5025c9a125eac0fcba2a7" prot="public" virt="virtual"><scope>DynRpg::TextPlugin</scope><name>~DynRpgPlugin</name></member>
+      <member refid="class_dyn_rpg_1_1_text_plugin_1a4f2d47728abfd14b52ca624f91630a0e" prot="public" virt="non-virtual"><scope>DynRpg::TextPlugin</scope><name>~TextPlugin</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

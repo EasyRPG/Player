@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_game___map_1_1_caching_1_1_map_event_cache" kind="class" language="C++" prot="public">
+    <compoundname>Game_Map::Caching::MapEventCache</compoundname>
+    <includes refid="game__map_8h" local="no">game_map.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_game___map_1_1_caching_1_1_map_event_cache_1acb5c52638a168f75e5073f3aa328a79e" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; Game_Map::Caching::MapEventCache::event_ids</definition>
+        <argsstring></argsstring>
+        <name>event_ids</name>
+        <qualifiedname>Game_Map::Caching::MapEventCache::event_ids</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="723" column="13" bodyfile="game_map.h" bodystart="723" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_game___map_1_1_caching_1_1_map_event_cache_1a4154f3a1b4e1e7f215a265d2f97224ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Caching::MapEventCache::AddEvent</definition>
+        <argsstring>(const lcf::rpg::Event &amp;ev)</argsstring>
+        <name>AddEvent</name>
+        <qualifiedname>Game_Map::Caching::MapEventCache::AddEvent</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Event &amp;</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="719" column="6" bodyfile="game_map.cpp" bodystart="1997" bodyend="2003"/>
+      </memberdef>
+      <memberdef kind="function" id="class_game___map_1_1_caching_1_1_map_event_cache_1a51a9c149e00545cd40167d013b27a4f4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Map::Caching::MapEventCache::RemoveEvent</definition>
+        <argsstring>(const lcf::rpg::Event &amp;ev)</argsstring>
+        <name>RemoveEvent</name>
+        <qualifiedname>Game_Map::Caching::MapEventCache::RemoveEvent</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Event &amp;</type>
+          <declname>ev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_map.h" line="720" column="6" bodyfile="game_map.cpp" bodystart="2005" bodyend="2013"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_map.h" line="717" column="1" bodyfile="game_map.h" bodystart="717" bodyend="724"/>
+    <listofallmembers>
+      <member refid="class_game___map_1_1_caching_1_1_map_event_cache_1a4154f3a1b4e1e7f215a265d2f97224ef" prot="public" virt="non-virtual"><scope>Game_Map::Caching::MapEventCache</scope><name>AddEvent</name></member>
+      <member refid="class_game___map_1_1_caching_1_1_map_event_cache_1acb5c52638a168f75e5073f3aa328a79e" prot="private" virt="non-virtual"><scope>Game_Map::Caching::MapEventCache</scope><name>event_ids</name></member>
+      <member refid="class_game___map_1_1_caching_1_1_map_event_cache_1a51a9c149e00545cd40167d013b27a4f4" prot="public" virt="non-virtual"><scope>Game_Map::Caching::MapEventCache</scope><name>RemoveEvent</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

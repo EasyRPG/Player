@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_platform" kind="namespace" language="C++">
+    <compoundname>Platform</compoundname>
+    <innerclass refid="class_platform_1_1_file" prot="public">Platform::File</innerclass>
+    <innerclass refid="class_platform_1_1_directory" prot="public">Platform::Directory</innerclass>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_platform_1a21c8409c159650f93b6fdae62e17d0b2" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>FileType</name>
+        <qualifiedname>Platform::FileType</qualifiedname>
+        <enumvalue id="namespace_platform_1a21c8409c159650f93b6fdae62e17d0b2a0b27918290ff5323bea1e3b78a9cf04e" prot="public">
+          <name>File</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_platform_1a21c8409c159650f93b6fdae62e17d0b2ae73cda510e8bb947f7e61089e5581494" prot="public">
+          <name>Directory</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_platform_1a21c8409c159650f93b6fdae62e17d0b2a6311ae17c1ee52b36e68aaf4ad066387" prot="public">
+          <name>Other</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_platform_1a21c8409c159650f93b6fdae62e17d0b2a88183b946cc5f0e8c96b2e66e1c74a7e" prot="public">
+          <name>Unknown</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform.h" line="46" column="1" bodyfile="platform.h" bodystart="46" bodyend="51"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Provides abstractions for accessing operating system APIs.</para>
+<para>Don&apos;t use them directly, use <ref refid="namespace_file_finder" kindref="compound">FileFinder</ref> instead </para>
+    </detaileddescription>
+    <location file="platform.h" line="45" column="1"/>
+  </compounddef>
+</doxygen>

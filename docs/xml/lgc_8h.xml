@@ -1,0 +1,1563 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="lgc_8h" kind="file" language="C++">
+    <compoundname>lgc.h</compoundname>
+    <includes local="no">stddef.h</includes>
+    <includes refid="lobject_8h" local="yes">lobject.h</includes>
+    <includes refid="lstate_8h" local="yes">lstate.h</includes>
+    <includedby refid="lapi_8c" local="yes">leasy/lua/lapi.c</includedby>
+    <includedby refid="lcode_8c" local="yes">leasy/lua/lcode.c</includedby>
+    <includedby refid="ldo_8c" local="yes">leasy/lua/ldo.c</includedby>
+    <includedby refid="ldump_8c" local="yes">leasy/lua/ldump.c</includedby>
+    <includedby refid="lfunc_8c" local="yes">leasy/lua/lfunc.c</includedby>
+    <includedby refid="lgc_8c" local="yes">leasy/lua/lgc.c</includedby>
+    <includedby refid="llex_8c" local="yes">leasy/lua/llex.c</includedby>
+    <includedby refid="lmem_8c" local="yes">leasy/lua/lmem.c</includedby>
+    <includedby refid="lstate_8c" local="yes">leasy/lua/lstate.c</includedby>
+    <includedby refid="lstring_8h" local="yes">leasy/lua/lstring.h</includedby>
+    <includedby refid="ltable_8c" local="yes">leasy/lua/ltable.c</includedby>
+    <includedby refid="ltm_8c" local="yes">leasy/lua/ltm.c</includedby>
+    <includedby refid="lvm_8c" local="yes">leasy/lua/lvm.c</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>leasy/lua/lgc.h</label>
+        <link refid="lgc_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>llimits.h</label>
+        <link refid="llimits_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>lmem.h</label>
+        <link refid="lmem_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>lobject.h</label>
+        <link refid="lobject_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>lstate.h</label>
+        <link refid="lstate_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>ltm.h</label>
+        <link refid="ltm_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>lua.h</label>
+        <link refid="lua_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>luaconf.h</label>
+        <link refid="luaconf_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>lzio.h</label>
+        <link refid="lzio_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>limits.h</label>
+      </node>
+      <node id="13">
+        <label>signal.h</label>
+      </node>
+      <node id="4">
+        <label>stdarg.h</label>
+      </node>
+      <node id="2">
+        <label>stddef.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>leasy/lua/lapi.c</label>
+        <link refid="lapi_8c"/>
+      </node>
+      <node id="3">
+        <label>leasy/lua/lcode.c</label>
+        <link refid="lcode_8c"/>
+      </node>
+      <node id="12">
+        <label>leasy/lua/ldebug.c</label>
+        <link refid="ldebug_8c"/>
+      </node>
+      <node id="4">
+        <label>leasy/lua/ldo.c</label>
+        <link refid="ldo_8c"/>
+      </node>
+      <node id="5">
+        <label>leasy/lua/ldump.c</label>
+        <link refid="ldump_8c"/>
+      </node>
+      <node id="6">
+        <label>leasy/lua/lfunc.c</label>
+        <link refid="lfunc_8c"/>
+      </node>
+      <node id="7">
+        <label>leasy/lua/lgc.c</label>
+        <link refid="lgc_8c"/>
+      </node>
+      <node id="1">
+        <label>leasy/lua/lgc.h</label>
+        <link refid="lgc_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>leasy/lua/llex.c</label>
+        <link refid="llex_8c"/>
+      </node>
+      <node id="9">
+        <label>leasy/lua/lmem.c</label>
+        <link refid="lmem_8c"/>
+      </node>
+      <node id="13">
+        <label>leasy/lua/lobject.c</label>
+        <link refid="lobject_8c"/>
+      </node>
+      <node id="14">
+        <label>leasy/lua/lparser.c</label>
+        <link refid="lparser_8c"/>
+      </node>
+      <node id="10">
+        <label>leasy/lua/lstate.c</label>
+        <link refid="lstate_8c"/>
+      </node>
+      <node id="15">
+        <label>leasy/lua/lstring.c</label>
+        <link refid="lstring_8c"/>
+      </node>
+      <node id="11">
+        <label>leasy/lua/lstring.h</label>
+        <link refid="lstring_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>leasy/lua/ltable.c</label>
+        <link refid="ltable_8c"/>
+      </node>
+      <node id="17">
+        <label>leasy/lua/ltm.c</label>
+        <link refid="ltm_8c"/>
+      </node>
+      <node id="18">
+        <label>leasy/lua/lundump.c</label>
+        <link refid="lundump_8c"/>
+      </node>
+      <node id="19">
+        <label>leasy/lua/lvm.c</label>
+        <link refid="lvm_8c"/>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="lgc_8h_1a2ed301793747f3a2d0a7fc7d64d482fd" prot="public" static="no">
+        <name>GCSpropagate</name>
+        <initializer>0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="35" column="9" bodyfile="leasy/lua/lgc.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a7d4a80ad5991cca9822822f63deef987" prot="public" static="no">
+        <name>GCSenteratomic</name>
+        <initializer>1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="36" column="9" bodyfile="leasy/lua/lgc.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a7c7806ab609fa3c19ed9c2b688e10730" prot="public" static="no">
+        <name>GCSatomic</name>
+        <initializer>2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="37" column="9" bodyfile="leasy/lua/lgc.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1aac9b5b472434aa8d38a89b46b6b29196" prot="public" static="no">
+        <name>GCSswpallgc</name>
+        <initializer>3</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="38" column="9" bodyfile="leasy/lua/lgc.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a9d28766c63918e69c9ea3853a3e6c4c0" prot="public" static="no">
+        <name>GCSswpfinobj</name>
+        <initializer>4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="39" column="9" bodyfile="leasy/lua/lgc.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a152f379e712cbc7f0bfa2c6a3e15166d" prot="public" static="no">
+        <name>GCSswptobefnz</name>
+        <initializer>5</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="40" column="9" bodyfile="leasy/lua/lgc.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a4e40597ebd731cafa743cd9a8e0db709" prot="public" static="no">
+        <name>GCSswpend</name>
+        <initializer>6</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="41" column="9" bodyfile="leasy/lua/lgc.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a84094ff0ba3d8c7d4f84984e74f7705a" prot="public" static="no">
+        <name>GCScallfin</name>
+        <initializer>7</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="42" column="9" bodyfile="leasy/lua/lgc.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1ab546d91106ec5cfdba254de13e5b5c5f" prot="public" static="no">
+        <name>GCSpause</name>
+        <initializer>8</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="43" column="9" bodyfile="leasy/lua/lgc.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a860db734bc919435aba75c30e4fe261b" prot="public" static="no">
+        <name>issweepphase</name>
+        <param><defname>g</defname></param>
+        <initializer>(<ref refid="lgc_8h_1aac9b5b472434aa8d38a89b46b6b29196" kindref="member">GCSswpallgc</ref> &lt;= (g)-&gt;gcstate &amp;&amp; (g)-&gt;gcstate &lt;= <ref refid="lgc_8h_1a4e40597ebd731cafa743cd9a8e0db709" kindref="member">GCSswpend</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="46" column="9" bodyfile="leasy/lua/lgc.h" bodystart="46" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a40b40242e96f45f8d04dcf4feb1475ae" prot="public" static="no">
+        <name>keepinvariant</name>
+        <param><defname>g</defname></param>
+        <initializer>((g)-&gt;gcstate &lt;= <ref refid="lgc_8h_1a7c7806ab609fa3c19ed9c2b688e10730" kindref="member">GCSatomic</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="58" column="9" bodyfile="leasy/lua/lgc.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a486033531260010debe876a076dd2a41" prot="public" static="no">
+        <name>resetbits</name>
+        <param><defname>x</defname></param>
+        <param><defname>m</defname></param>
+        <initializer>((x) &amp;= <ref refid="llimits_8h_1a596f5b6e992f53a5a4e5732083448dd4" kindref="member">cast_byte</ref>(~(m)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="64" column="9" bodyfile="leasy/lua/lgc.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1ada181faae5c9af4ed7392057c5dcbbae" prot="public" static="no">
+        <name>setbits</name>
+        <param><defname>x</defname></param>
+        <param><defname>m</defname></param>
+        <initializer>((x) |= (m))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="65" column="9" bodyfile="leasy/lua/lgc.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a7612bc83b764b507e12e08417a053854" prot="public" static="no">
+        <name>testbits</name>
+        <param><defname>x</defname></param>
+        <param><defname>m</defname></param>
+        <initializer>((x) &amp; (m))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="66" column="9" bodyfile="leasy/lua/lgc.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1af25866c39979dd1f72110cbd3a1a427d" prot="public" static="no">
+        <name>bitmask</name>
+        <param><defname>b</defname></param>
+        <initializer>(1&lt;&lt;(b))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="67" column="9" bodyfile="leasy/lua/lgc.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a39293d5e5fbd7bb9a24556b3e2f15d43" prot="public" static="no">
+        <name>bit2mask</name>
+        <param><defname>b1</defname></param>
+        <param><defname>b2</defname></param>
+        <initializer>(<ref refid="lgc_8h_1af25866c39979dd1f72110cbd3a1a427d" kindref="member">bitmask</ref>(b1) | <ref refid="lgc_8h_1af25866c39979dd1f72110cbd3a1a427d" kindref="member">bitmask</ref>(b2))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="68" column="9" bodyfile="leasy/lua/lgc.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1aad559b25ee580ea2894c540dc817e41f" prot="public" static="no">
+        <name>l_setbit</name>
+        <param><defname>x</defname></param>
+        <param><defname>b</defname></param>
+        <initializer><ref refid="lgc_8h_1ada181faae5c9af4ed7392057c5dcbbae" kindref="member">setbits</ref>(x, <ref refid="lgc_8h_1af25866c39979dd1f72110cbd3a1a427d" kindref="member">bitmask</ref>(b))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="69" column="9" bodyfile="leasy/lua/lgc.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1aca0beb244185329a1b8f0e695ef47748" prot="public" static="no">
+        <name>resetbit</name>
+        <param><defname>x</defname></param>
+        <param><defname>b</defname></param>
+        <initializer><ref refid="lgc_8h_1a486033531260010debe876a076dd2a41" kindref="member">resetbits</ref>(x, <ref refid="lgc_8h_1af25866c39979dd1f72110cbd3a1a427d" kindref="member">bitmask</ref>(b))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="70" column="9" bodyfile="leasy/lua/lgc.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a25c19ff3161e2a2395ba69fdef49915f" prot="public" static="no">
+        <name>testbit</name>
+        <param><defname>x</defname></param>
+        <param><defname>b</defname></param>
+        <initializer><ref refid="lgc_8h_1a7612bc83b764b507e12e08417a053854" kindref="member">testbits</ref>(x, <ref refid="lgc_8h_1af25866c39979dd1f72110cbd3a1a427d" kindref="member">bitmask</ref>(b))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="71" column="9" bodyfile="leasy/lua/lgc.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a4b3ebb4bccaf9a33e772a2f4515519e6" prot="public" static="no">
+        <name>WHITE0BIT</name>
+        <initializer>3  /* object is white (type 0) */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="79" column="9" bodyfile="leasy/lua/lgc.h" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a7de7885f3d09155a2c530154ec045d72" prot="public" static="no">
+        <name>WHITE1BIT</name>
+        <initializer>4  /* object is white (type 1) */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="80" column="9" bodyfile="leasy/lua/lgc.h" bodystart="80" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1acd17af3c46cb360dc67cad2b33b6a26f" prot="public" static="no">
+        <name>BLACKBIT</name>
+        <initializer>5  /* object is black */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="81" column="9" bodyfile="leasy/lua/lgc.h" bodystart="81" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a92211ad01420ac616819ba8f61ca7365" prot="public" static="no">
+        <name>FINALIZEDBIT</name>
+        <initializer>6  /* object has been marked for finalization */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="82" column="9" bodyfile="leasy/lua/lgc.h" bodystart="82" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1ab85d4eae1efa2e1a40d2f41bdbbda226" prot="public" static="no">
+        <name>TESTBIT</name>
+        <initializer>7</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="84" column="9" bodyfile="leasy/lua/lgc.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a0acb34c1b3d1234f11ee9fdc34df3f71" prot="public" static="no">
+        <name>WHITEBITS</name>
+        <initializer><ref refid="lgc_8h_1a39293d5e5fbd7bb9a24556b3e2f15d43" kindref="member">bit2mask</ref>(<ref refid="lgc_8h_1a4b3ebb4bccaf9a33e772a2f4515519e6" kindref="member">WHITE0BIT</ref>, <ref refid="lgc_8h_1a7de7885f3d09155a2c530154ec045d72" kindref="member">WHITE1BIT</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="88" column="9" bodyfile="leasy/lua/lgc.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a4c0ce78d476460d2e54914301f4a4bf7" prot="public" static="no">
+        <name>iswhite</name>
+        <param><defname>x</defname></param>
+        <initializer><ref refid="lgc_8h_1a7612bc83b764b507e12e08417a053854" kindref="member">testbits</ref>((x)-&gt;marked, <ref refid="lgc_8h_1a0acb34c1b3d1234f11ee9fdc34df3f71" kindref="member">WHITEBITS</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="91" column="9" bodyfile="leasy/lua/lgc.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1ac1e4847ad9a91e4cea36520dc9078365" prot="public" static="no">
+        <name>isblack</name>
+        <param><defname>x</defname></param>
+        <initializer><ref refid="lgc_8h_1a25c19ff3161e2a2395ba69fdef49915f" kindref="member">testbit</ref>((x)-&gt;marked, <ref refid="lgc_8h_1acd17af3c46cb360dc67cad2b33b6a26f" kindref="member">BLACKBIT</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="92" column="9" bodyfile="leasy/lua/lgc.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1ad417e22072630b33cf74a3055b27d8d7" prot="public" static="no">
+        <name>isgray</name>
+        <param><defname>x</defname></param>
+        <initializer>/* neither white nor black */  \
+(!<ref refid="lgc_8h_1a7612bc83b764b507e12e08417a053854" kindref="member">testbits</ref>((x)-&gt;marked, <ref refid="lgc_8h_1a0acb34c1b3d1234f11ee9fdc34df3f71" kindref="member">WHITEBITS</ref> | <ref refid="lgc_8h_1af25866c39979dd1f72110cbd3a1a427d" kindref="member">bitmask</ref>(<ref refid="lgc_8h_1acd17af3c46cb360dc67cad2b33b6a26f" kindref="member">BLACKBIT</ref>)))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="93" column="9" bodyfile="leasy/lua/lgc.h" bodystart="93" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a6d17f226d57a796f7741f457400cf8bd" prot="public" static="no">
+        <name>tofinalize</name>
+        <param><defname>x</defname></param>
+        <initializer><ref refid="lgc_8h_1a25c19ff3161e2a2395ba69fdef49915f" kindref="member">testbit</ref>((x)-&gt;marked, <ref refid="lgc_8h_1a92211ad01420ac616819ba8f61ca7365" kindref="member">FINALIZEDBIT</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="96" column="9" bodyfile="leasy/lua/lgc.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a486df16493498577d4081a8c231154f0" prot="public" static="no">
+        <name>otherwhite</name>
+        <param><defname>g</defname></param>
+        <initializer>((g)-&gt;currentwhite ^ <ref refid="lgc_8h_1a0acb34c1b3d1234f11ee9fdc34df3f71" kindref="member">WHITEBITS</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="98" column="9" bodyfile="leasy/lua/lgc.h" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a0540e865b6cd21e83104cf427c968c86" prot="public" static="no">
+        <name>isdeadm</name>
+        <param><defname>ow</defname></param>
+        <param><defname>m</defname></param>
+        <initializer>((m) &amp; (ow))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="99" column="9" bodyfile="leasy/lua/lgc.h" bodystart="99" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1acc409eb45f598d23d8388fc9e96189ea" prot="public" static="no">
+        <name>isdead</name>
+        <param><defname>g</defname></param>
+        <param><defname>v</defname></param>
+        <initializer><ref refid="lgc_8h_1a0540e865b6cd21e83104cf427c968c86" kindref="member">isdeadm</ref>(<ref refid="lgc_8h_1a486df16493498577d4081a8c231154f0" kindref="member">otherwhite</ref>(g), (v)-&gt;marked)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="100" column="9" bodyfile="leasy/lua/lgc.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a28e94f77147fd242f514b98a1b251486" prot="public" static="no">
+        <name>changewhite</name>
+        <param><defname>x</defname></param>
+        <initializer>((x)-&gt;marked ^= <ref refid="lgc_8h_1a0acb34c1b3d1234f11ee9fdc34df3f71" kindref="member">WHITEBITS</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="102" column="9" bodyfile="leasy/lua/lgc.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a990de0d171d8b5425a5515d0bff78789" prot="public" static="no">
+        <name>nw2black</name>
+        <param><defname>x</defname></param>
+        <initializer><ref refid="llimits_8h_1afac1404af62451f8653440ecb6e773fc" kindref="member">check_exp</ref>(!<ref refid="lgc_8h_1a4c0ce78d476460d2e54914301f4a4bf7" kindref="member">iswhite</ref>(x), <ref refid="lgc_8h_1aad559b25ee580ea2894c540dc817e41f" kindref="member">l_setbit</ref>((x)-&gt;marked, <ref refid="lgc_8h_1acd17af3c46cb360dc67cad2b33b6a26f" kindref="member">BLACKBIT</ref>))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="103" column="9" bodyfile="leasy/lua/lgc.h" bodystart="103" bodyend="104"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1afaa8a52c4097cf3a5eacd88db94092da" prot="public" static="no">
+        <name>luaC_white</name>
+        <param><defname>g</defname></param>
+        <initializer><ref refid="llimits_8h_1a596f5b6e992f53a5a4e5732083448dd4" kindref="member">cast_byte</ref>((g)-&gt;currentwhite &amp; <ref refid="lgc_8h_1a0acb34c1b3d1234f11ee9fdc34df3f71" kindref="member">WHITEBITS</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="106" column="9" bodyfile="leasy/lua/lgc.h" bodystart="106" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a611544eedb63012098eab46a011fe618" prot="public" static="no">
+        <name>G_NEW</name>
+        <initializer>0   /* created in current cycle */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="110" column="9" bodyfile="leasy/lua/lgc.h" bodystart="110" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1aa8c9510ab591432a3b80e90519156116" prot="public" static="no">
+        <name>G_SURVIVAL</name>
+        <initializer>1   /* created in previous cycle */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="111" column="9" bodyfile="leasy/lua/lgc.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a19ac124332eabcbdcb744e14923700b9" prot="public" static="no">
+        <name>G_OLD0</name>
+        <initializer>2   /* marked old by frw. barrier in this cycle */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="112" column="9" bodyfile="leasy/lua/lgc.h" bodystart="112" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a266a8ec4a8dbacf8d7b99dca3adcac90" prot="public" static="no">
+        <name>G_OLD1</name>
+        <initializer>3   /* first full cycle as old */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="113" column="9" bodyfile="leasy/lua/lgc.h" bodystart="113" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a96372e9b92aa939f300e0477ba112716" prot="public" static="no">
+        <name>G_OLD</name>
+        <initializer>4   /* really old object (not to be visited) */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="114" column="9" bodyfile="leasy/lua/lgc.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1ae2c1796f4fb3359730723ce0acd2d162" prot="public" static="no">
+        <name>G_TOUCHED1</name>
+        <initializer>5   /* old object touched this cycle */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="115" column="9" bodyfile="leasy/lua/lgc.h" bodystart="115" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1ac2b8a2255c79c9f43f88d1625767e1bf" prot="public" static="no">
+        <name>G_TOUCHED2</name>
+        <initializer>6   /* old object touched in previous cycle */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="116" column="9" bodyfile="leasy/lua/lgc.h" bodystart="116" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a3b446e7d0b31628385b7a1f444192e9a" prot="public" static="no">
+        <name>AGEBITS</name>
+        <initializer>7  /* all age bits (111) */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="118" column="9" bodyfile="leasy/lua/lgc.h" bodystart="118" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1ae68465c1574c4b45a05a6548ad934235" prot="public" static="no">
+        <name>getage</name>
+        <param><defname>o</defname></param>
+        <initializer>((o)-&gt;marked &amp; <ref refid="lgc_8h_1a3b446e7d0b31628385b7a1f444192e9a" kindref="member">AGEBITS</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="120" column="9" bodyfile="leasy/lua/lgc.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a42f07cc5f8f0a9d97989f7769f00c3f2" prot="public" static="no">
+        <name>setage</name>
+        <param><defname>o</defname></param>
+        <param><defname>a</defname></param>
+        <initializer>((o)-&gt;marked = <ref refid="llimits_8h_1a596f5b6e992f53a5a4e5732083448dd4" kindref="member">cast_byte</ref>(((o)-&gt;marked &amp; (~<ref refid="lgc_8h_1a3b446e7d0b31628385b7a1f444192e9a" kindref="member">AGEBITS</ref>)) | a))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="121" column="9" bodyfile="leasy/lua/lgc.h" bodystart="121" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a24d47e523ecf2d6e475a34913ce06b05" prot="public" static="no">
+        <name>isold</name>
+        <param><defname>o</defname></param>
+        <initializer>(<ref refid="lgc_8h_1ae68465c1574c4b45a05a6548ad934235" kindref="member">getage</ref>(o) &gt; <ref refid="lgc_8h_1aa8c9510ab591432a3b80e90519156116" kindref="member">G_SURVIVAL</ref>)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="122" column="9" bodyfile="leasy/lua/lgc.h" bodystart="122" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a75afc280d9665ab6b1bbeadf0b3befbf" prot="public" static="no">
+        <name>LUAI_MINORMAJOR</name>
+        <initializer>70</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="173" column="9" bodyfile="leasy/lua/lgc.h" bodystart="173" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1acbba30c63ec5cad91d33a8d913b70d3a" prot="public" static="no">
+        <name>LUAI_MAJORMINOR</name>
+        <initializer>50</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="179" column="9" bodyfile="leasy/lua/lgc.h" bodystart="179" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a1660119f32a7ea875ce967d1ef8deadc" prot="public" static="no">
+        <name>LUAI_GENMINORMUL</name>
+        <initializer>20</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="185" column="9" bodyfile="leasy/lua/lgc.h" bodystart="185" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a961a6871328af0c7bb50169633e15fd9" prot="public" static="no">
+        <name>LUAI_GCPAUSE</name>
+        <initializer>250</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="191" column="9" bodyfile="leasy/lua/lgc.h" bodystart="191" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1adccc1cf9bf213c770940796d73635444" prot="public" static="no">
+        <name>LUAI_GCMUL</name>
+        <initializer>200</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="198" column="9" bodyfile="leasy/lua/lgc.h" bodystart="198" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a5289131664af0f4b111556cb5b4bfe9c" prot="public" static="no">
+        <name>LUAI_GCSTEPSIZE</name>
+        <initializer>(200 * sizeof(<ref refid="struct_table" kindref="compound">Table</ref>))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="201" column="9" bodyfile="leasy/lua/lgc.h" bodystart="201" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a80483641ed59e34e8a6fb0dc18c32021" prot="public" static="no">
+        <name>setgcparam</name>
+        <param><defname>g</defname></param>
+        <param><defname>p</defname></param>
+        <param><defname>v</defname></param>
+        <initializer>(g-&gt;gcparams[LUA_GCP##p] = <ref refid="lobject_8c_1a95619a9321a2a2f2630f250734986525" kindref="member">luaO_codeparam</ref>(v))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="204" column="9" bodyfile="leasy/lua/lgc.h" bodystart="204" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a574ac4892252b218889f3af264b489d4" prot="public" static="no">
+        <name>applygcparam</name>
+        <param><defname>g</defname></param>
+        <param><defname>p</defname></param>
+        <param><defname>x</defname></param>
+        <initializer><ref refid="lobject_8c_1af3125a767113bc412a0abdf68f698436" kindref="member">luaO_applyparam</ref>(g-&gt;gcparams[LUA_GCP##p], x)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="205" column="9" bodyfile="leasy/lua/lgc.h" bodystart="205" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1aa9890d156587456839976f603182f149" prot="public" static="no">
+        <name>GCSTPUSR</name>
+        <initializer>1  /* bit true when GC stopped by user */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="213" column="9" bodyfile="leasy/lua/lgc.h" bodystart="213" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1ab06b1865fce256860b3d3725ba8a5bac" prot="public" static="no">
+        <name>GCSTPGC</name>
+        <initializer>2  /* bit true when GC stopped by itself */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="214" column="9" bodyfile="leasy/lua/lgc.h" bodystart="214" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a653c5ba27eb73b11e98b24be5ad6a482" prot="public" static="no">
+        <name>GCSTPCLS</name>
+        <initializer>4  /* bit true when closing Lua state */</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="215" column="9" bodyfile="leasy/lua/lgc.h" bodystart="215" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1aacd605dd207b4569b464c38b2a5532d8" prot="public" static="no">
+        <name>gcrunning</name>
+        <param><defname>g</defname></param>
+        <initializer>((g)-&gt;gcstp == 0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="216" column="9" bodyfile="leasy/lua/lgc.h" bodystart="216" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1ab14170ef8c48c4e3c6e00cc89886a26d" prot="public" static="no">
+        <name>condchangemem</name>
+        <param><defname>L</defname></param>
+        <param><defname>pre</defname></param>
+        <param><defname>pos</defname></param>
+        <param><defname>emg</defname></param>
+        <initializer>((void)0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="227" column="9" bodyfile="leasy/lua/lgc.h" bodystart="227" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a52f302b0dac5467152f322c8fe1c1a3e" prot="public" static="no">
+        <name>luaC_condGC</name>
+        <param><defname>L</defname></param>
+        <param><defname>pre</defname></param>
+        <param><defname>pos</defname></param>
+        <initializer>{ if (<ref refid="lstate_8h_1a103db2de6edf3420c6c6c9a282562406" kindref="member">G</ref>(L)-&gt;GCdebt &lt;= 0) { pre; <ref refid="lgc_8h_1a6c71cc4b9e503c0e96c0c4ffcff93900" kindref="member">luaC_step</ref>(L); pos;}; \
+  <ref refid="lgc_8h_1ab14170ef8c48c4e3c6e00cc89886a26d" kindref="member">condchangemem</ref>(L,pre,pos,0); }</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="233" column="9" bodyfile="leasy/lua/lgc.h" bodystart="233" bodyend="235"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1ad013db5004ccc5fbe8a6450caa1f1ad9" prot="public" static="no">
+        <name>luaC_checkGC</name>
+        <param><defname>L</defname></param>
+        <initializer><ref refid="lgc_8h_1a52f302b0dac5467152f322c8fe1c1a3e" kindref="member">luaC_condGC</ref>(L,(void)0,(void)0)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="238" column="9" bodyfile="leasy/lua/lgc.h" bodystart="238" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a90ac4f3c7085a418025edcc7215e8983" prot="public" static="no">
+        <name>luaC_objbarrier</name>
+        <param><defname>L</defname></param>
+        <param><defname>p</defname></param>
+        <param><defname>o</defname></param>
+        <initializer>(  \
+(<ref refid="lgc_8h_1ac1e4847ad9a91e4cea36520dc9078365" kindref="member">isblack</ref>(p) &amp;&amp; <ref refid="lgc_8h_1a4c0ce78d476460d2e54914301f4a4bf7" kindref="member">iswhite</ref>(o)) ? \
+<ref refid="lgc_8h_1ac5106ee2a18cde8bc3bd92e5891ad8e5" kindref="member">luaC_barrier_</ref>(L,<ref refid="lstate_8h_1a254ca29aba03e47440082d4591a9734e" kindref="member">obj2gco</ref>(p),<ref refid="lstate_8h_1a254ca29aba03e47440082d4591a9734e" kindref="member">obj2gco</ref>(o)) : <ref refid="llimits_8h_1a52a5166d7dc0590b63a9331cfc0f4564" kindref="member">cast_void</ref>(0))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="241" column="9" bodyfile="leasy/lua/lgc.h" bodystart="241" bodyend="243"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a21660a316c42bc1aad10f115e2261bca" prot="public" static="no">
+        <name>luaC_barrier</name>
+        <param><defname>L</defname></param>
+        <param><defname>p</defname></param>
+        <param><defname>v</defname></param>
+        <initializer>(  \
+<ref refid="lobject_8h_1aaabdb414706e6a904461e39967557185" kindref="member">iscollectable</ref>(v) ? <ref refid="lgc_8h_1a90ac4f3c7085a418025edcc7215e8983" kindref="member">luaC_objbarrier</ref>(L,p,<ref refid="lobject_8h_1a05cdf6070135f10ad37e1048a730b634" kindref="member">gcvalue</ref>(v)) : <ref refid="llimits_8h_1a52a5166d7dc0590b63a9331cfc0f4564" kindref="member">cast_void</ref>(0))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="245" column="9" bodyfile="leasy/lua/lgc.h" bodystart="245" bodyend="246"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1aabe37ed7d61a6f603f8a3b259c34c846" prot="public" static="no">
+        <name>luaC_objbarrierback</name>
+        <param><defname>L</defname></param>
+        <param><defname>p</defname></param>
+        <param><defname>o</defname></param>
+        <initializer>(  \
+(<ref refid="lgc_8h_1ac1e4847ad9a91e4cea36520dc9078365" kindref="member">isblack</ref>(p) &amp;&amp; <ref refid="lgc_8h_1a4c0ce78d476460d2e54914301f4a4bf7" kindref="member">iswhite</ref>(o)) ? <ref refid="lgc_8h_1a65d1fcc6e437592a5a893406cce7d8e3" kindref="member">luaC_barrierback_</ref>(L,p) : <ref refid="llimits_8h_1a52a5166d7dc0590b63a9331cfc0f4564" kindref="member">cast_void</ref>(0))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="248" column="9" bodyfile="leasy/lua/lgc.h" bodystart="248" bodyend="249"/>
+      </memberdef>
+      <memberdef kind="define" id="lgc_8h_1a60903f232a1c51d22de556ea4c144f3a" prot="public" static="no">
+        <name>luaC_barrierback</name>
+        <param><defname>L</defname></param>
+        <param><defname>p</defname></param>
+        <param><defname>v</defname></param>
+        <initializer>(  \
+<ref refid="lobject_8h_1aaabdb414706e6a904461e39967557185" kindref="member">iscollectable</ref>(v) ? <ref refid="lgc_8h_1aabe37ed7d61a6f603f8a3b259c34c846" kindref="member">luaC_objbarrierback</ref>(L, p, <ref refid="lobject_8h_1a05cdf6070135f10ad37e1048a730b634" kindref="member">gcvalue</ref>(v)) : <ref refid="llimits_8h_1a52a5166d7dc0590b63a9331cfc0f4564" kindref="member">cast_void</ref>(0))</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="251" column="9" bodyfile="leasy/lua/lgc.h" bodystart="251" bodyend="252"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="lgc_8h_1a242d4a66c025c294ec2c1ec4fe75e804" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaC_fix</definition>
+        <argsstring>(lua_State *L, GCObject *o)</argsstring>
+        <name>luaC_fix</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+          <declname>o</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="254" column="16" bodyfile="leasy/lua/lgc.c" bodystart="282" bodyend="290" declfile="leasy/lua/lgc.h" declline="254" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lgc_8h_1a9aa52a500c9cc2076edb1707e6d8a045" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaC_freeallobjects</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaC_freeallobjects</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="255" column="16" bodyfile="leasy/lua/lgc.c" bodystart="1529" bodyend="1540" declfile="leasy/lua/lgc.h" declline="255" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lgc_8h_1a6c71cc4b9e503c0e96c0c4ffcff93900" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaC_step</definition>
+        <argsstring>(lua_State *L)</argsstring>
+        <name>luaC_step</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="256" column="16" bodyfile="leasy/lua/lgc.c" bodystart="1740" bodyend="1760" declfile="leasy/lua/lgc.h" declline="256" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lgc_8h_1a5a4ac037c6e209635c83018e5ffae3df" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaC_runtilstate</definition>
+        <argsstring>(lua_State *L, int state, int fast)</argsstring>
+        <name>luaC_runtilstate</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>state</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>fast</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="257" column="16" bodyfile="leasy/lua/lgc.c" bodystart="1694" bodyend="1699" declfile="leasy/lua/lgc.h" declline="257" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lgc_8h_1aa0b753c3ed80e1eed0379ec58592c404" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaC_fullgc</definition>
+        <argsstring>(lua_State *L, int isemergency)</argsstring>
+        <name>luaC_fullgc</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>isemergency</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="258" column="16" bodyfile="leasy/lua/lgc.c" bodystart="1786" bodyend="1800" declfile="leasy/lua/lgc.h" declline="258" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lgc_8h_1abcb3d3772356b12e5e9ed7dbf82c70d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>LUAI_FUNC GCObject * luaC_newobj</definition>
+        <argsstring>(lua_State *L, lu_byte tt, size_t sz)</argsstring>
+        <name>luaC_newobj</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+          <declname>tt</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>sz</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="259" column="20" bodyfile="leasy/lua/lgc.c" bodystart="312" bodyend="314" declfile="leasy/lua/lgc.h" declline="259" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="function" id="lgc_8h_1a92ef79baff325e6a3ec6c77cb7bb3741" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> <ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+        <definition>LUAI_FUNC GCObject * luaC_newobjdt</definition>
+        <argsstring>(lua_State *L, lu_byte tt, size_t sz, size_t offset)</argsstring>
+        <name>luaC_newobjdt</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref></type>
+          <declname>tt</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>sz</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>offset</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="260" column="20" bodyfile="leasy/lua/lgc.c" bodystart="297" bodyend="306" declfile="leasy/lua/lgc.h" declline="260" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="function" id="lgc_8h_1ac5106ee2a18cde8bc3bd92e5891ad8e5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaC_barrier_</definition>
+        <argsstring>(lua_State *L, GCObject *o, GCObject *v)</argsstring>
+        <name>luaC_barrier_</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="262" column="16" bodyfile="leasy/lua/lgc.c" bodystart="246" bodyend="261" declfile="leasy/lua/lgc.h" declline="262" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lgc_8h_1a65d1fcc6e437592a5a893406cce7d8e3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaC_barrierback_</definition>
+        <argsstring>(lua_State *L, GCObject *o)</argsstring>
+        <name>luaC_barrierback_</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+          <declname>o</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="263" column="16" bodyfile="leasy/lua/lgc.c" bodystart="268" bodyend="279" declfile="leasy/lua/lgc.h" declline="263" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lgc_8h_1a15870c09448216ce5c4e1ff63d39e0a9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaC_checkfinalizer</definition>
+        <argsstring>(lua_State *L, GCObject *o, Table *mt)</argsstring>
+        <name>luaC_checkfinalizer</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_g_c_object" kindref="compound">GCObject</ref> *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_table" kindref="compound">Table</ref> *</type>
+          <declname>mt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="264" column="16" bodyfile="leasy/lua/lgc.c" bodystart="1068" bodyend="1090" declfile="leasy/lua/lgc.h" declline="264" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="lgc_8h_1a45671ff26d738167ce8e421cc233fc59" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref> void</type>
+        <definition>LUAI_FUNC void luaC_changemode</definition>
+        <argsstring>(lua_State *L, int newmode)</argsstring>
+        <name>luaC_changemode</name>
+        <param>
+          <type><ref refid="structlua___state" kindref="compound">lua_State</ref> *</type>
+          <declname>L</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>newmode</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lgc.h" line="265" column="16" bodyfile="leasy/lua/lgc.c" bodystart="1440" bodyend="1452" declfile="leasy/lua/lgc.h" declline="265" declcolumn="16"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment">**<sp/>$Id:<sp/>lgc.h<sp/>$</highlight></codeline>
+<codeline lineno="3"><highlight class="comment">**<sp/>Garbage<sp/>Collector</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">**<sp/>See<sp/>Copyright<sp/>Notice<sp/>in<sp/>lua.h</highlight></codeline>
+<codeline lineno="5"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>lgc_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>lgc_h</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stddef.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lobject_8h" kindref="compound">lobject.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="lstate_8h" kindref="compound">lstate.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment">**<sp/>Collectable<sp/>objects<sp/>may<sp/>have<sp/>one<sp/>of<sp/>three<sp/>colors:<sp/>white,<sp/>which<sp/>means</highlight></codeline>
+<codeline lineno="19"><highlight class="comment">**<sp/>the<sp/>object<sp/>is<sp/>not<sp/>marked;<sp/>gray,<sp/>which<sp/>means<sp/>the<sp/>object<sp/>is<sp/>marked,<sp/>but</highlight></codeline>
+<codeline lineno="20"><highlight class="comment">**<sp/>its<sp/>references<sp/>may<sp/>be<sp/>not<sp/>marked;<sp/>and<sp/>black,<sp/>which<sp/>means<sp/>that<sp/>the</highlight></codeline>
+<codeline lineno="21"><highlight class="comment">**<sp/>object<sp/>and<sp/>all<sp/>its<sp/>references<sp/>are<sp/>marked.<sp/><sp/>The<sp/>main<sp/>invariant<sp/>of<sp/>the</highlight></codeline>
+<codeline lineno="22"><highlight class="comment">**<sp/>garbage<sp/>collector,<sp/>while<sp/>marking<sp/>objects,<sp/>is<sp/>that<sp/>a<sp/>black<sp/>object<sp/>can</highlight></codeline>
+<codeline lineno="23"><highlight class="comment">**<sp/>never<sp/>point<sp/>to<sp/>a<sp/>white<sp/>one.<sp/>Moreover,<sp/>any<sp/>gray<sp/>object<sp/>must<sp/>be<sp/>in<sp/>a</highlight></codeline>
+<codeline lineno="24"><highlight class="comment">**<sp/>&quot;gray<sp/>list&quot;<sp/>(gray,<sp/>grayagain,<sp/>weak,<sp/>allweak,<sp/>ephemeron)<sp/>so<sp/>that<sp/>it</highlight></codeline>
+<codeline lineno="25"><highlight class="comment">**<sp/>can<sp/>be<sp/>visited<sp/>again<sp/>before<sp/>finishing<sp/>the<sp/>collection<sp/>cycle.<sp/>(Open</highlight></codeline>
+<codeline lineno="26"><highlight class="comment">**<sp/>upvalues<sp/>are<sp/>an<sp/>exception<sp/>to<sp/>this<sp/>rule,<sp/>as<sp/>they<sp/>are<sp/>attached<sp/>to</highlight></codeline>
+<codeline lineno="27"><highlight class="comment">**<sp/>a<sp/>corresponding<sp/>thread.)<sp/><sp/>These<sp/>lists<sp/>have<sp/>no<sp/>meaning<sp/>when<sp/>the</highlight></codeline>
+<codeline lineno="28"><highlight class="comment">**<sp/>invariant<sp/>is<sp/>not<sp/>being<sp/>enforced<sp/>(e.g.,<sp/>sweep<sp/>phase).</highlight></codeline>
+<codeline lineno="29"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="33"><highlight class="comment">**<sp/>Possible<sp/>states<sp/>of<sp/>the<sp/>Garbage<sp/>Collector</highlight></codeline>
+<codeline lineno="34"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="lgc_8h_1a2ed301793747f3a2d0a7fc7d64d482fd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GCSpropagate<sp/><sp/><sp/><sp/>0</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="lgc_8h_1a7d4a80ad5991cca9822822f63deef987" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GCSenteratomic<sp/><sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="lgc_8h_1a7c7806ab609fa3c19ed9c2b688e10730" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GCSatomic<sp/><sp/><sp/>2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="lgc_8h_1aac9b5b472434aa8d38a89b46b6b29196" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GCSswpallgc<sp/>3</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39" refid="lgc_8h_1a9d28766c63918e69c9ea3853a3e6c4c0" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GCSswpfinobj<sp/><sp/><sp/><sp/>4</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="lgc_8h_1a152f379e712cbc7f0bfa2c6a3e15166d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GCSswptobefnz<sp/><sp/><sp/>5</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="lgc_8h_1a4e40597ebd731cafa743cd9a8e0db709" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GCSswpend<sp/><sp/><sp/>6</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="lgc_8h_1a84094ff0ba3d8c7d4f84984e74f7705a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GCScallfin<sp/><sp/>7</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="lgc_8h_1ab546d91106ec5cfdba254de13e5b5c5f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GCSpause<sp/><sp/><sp/><sp/>8</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46" refid="lgc_8h_1a860db734bc919435aba75c30e4fe261b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>issweepphase(g)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="47"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>(GCSswpallgc<sp/>&lt;=<sp/>(g)-&gt;gcstate<sp/>&amp;&amp;<sp/>(g)-&gt;gcstate<sp/>&lt;=<sp/>GCSswpend)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="51"><highlight class="comment">**<sp/>macro<sp/>to<sp/>tell<sp/>when<sp/>main<sp/>invariant<sp/>(white<sp/>objects<sp/>cannot<sp/>point<sp/>to<sp/>black</highlight></codeline>
+<codeline lineno="52"><highlight class="comment">**<sp/>ones)<sp/>must<sp/>be<sp/>kept.<sp/>During<sp/>a<sp/>collection,<sp/>the<sp/>sweep<sp/>phase<sp/>may<sp/>break</highlight></codeline>
+<codeline lineno="53"><highlight class="comment">**<sp/>the<sp/>invariant,<sp/>as<sp/>objects<sp/>turned<sp/>white<sp/>may<sp/>point<sp/>to<sp/>still-black</highlight></codeline>
+<codeline lineno="54"><highlight class="comment">**<sp/>objects.<sp/>The<sp/>invariant<sp/>is<sp/>restored<sp/>when<sp/>sweep<sp/>ends<sp/>and<sp/>all<sp/>objects</highlight></codeline>
+<codeline lineno="55"><highlight class="comment">**<sp/>are<sp/>white<sp/>again.</highlight></codeline>
+<codeline lineno="56"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="lgc_8h_1a40b40242e96f45f8d04dcf4feb1475ae" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>keepinvariant(g)<sp/><sp/><sp/><sp/>((g)-&gt;gcstate<sp/>&lt;=<sp/>GCSatomic)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="62"><highlight class="comment">**<sp/>some<sp/>useful<sp/>bit<sp/>tricks</highlight></codeline>
+<codeline lineno="63"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="64" refid="lgc_8h_1a486033531260010debe876a076dd2a41" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>resetbits(x,m)<sp/><sp/><sp/><sp/><sp/><sp/>((x)<sp/>&amp;=<sp/>cast_byte(~(m)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="lgc_8h_1ada181faae5c9af4ed7392057c5dcbbae" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>setbits(x,m)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>((x)<sp/>|=<sp/>(m))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="lgc_8h_1a7612bc83b764b507e12e08417a053854" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>testbits(x,m)<sp/><sp/><sp/><sp/><sp/><sp/><sp/>((x)<sp/>&amp;<sp/>(m))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67" refid="lgc_8h_1af25866c39979dd1f72110cbd3a1a427d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>bitmask(b)<sp/><sp/><sp/><sp/><sp/><sp/>(1&lt;&lt;(b))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="lgc_8h_1a39293d5e5fbd7bb9a24556b3e2f15d43" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>bit2mask(b1,b2)<sp/><sp/><sp/><sp/><sp/>(bitmask(b1)<sp/>|<sp/>bitmask(b2))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="lgc_8h_1aad559b25ee580ea2894c540dc817e41f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>l_setbit(x,b)<sp/><sp/><sp/><sp/><sp/><sp/><sp/>setbits(x,<sp/>bitmask(b))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70" refid="lgc_8h_1aca0beb244185329a1b8f0e695ef47748" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>resetbit(x,b)<sp/><sp/><sp/><sp/><sp/><sp/><sp/>resetbits(x,<sp/>bitmask(b))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71" refid="lgc_8h_1a25c19ff3161e2a2395ba69fdef49915f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>testbit(x,b)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>testbits(x,<sp/>bitmask(b))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="75"><highlight class="comment">**<sp/>Layout<sp/>for<sp/>bit<sp/>use<sp/>in<sp/>&apos;marked&apos;<sp/>field.<sp/>First<sp/>three<sp/>bits<sp/>are</highlight></codeline>
+<codeline lineno="76"><highlight class="comment">**<sp/>used<sp/>for<sp/>object<sp/>&quot;age&quot;<sp/>in<sp/>generational<sp/>mode.<sp/>Last<sp/>bit<sp/>is<sp/>used</highlight></codeline>
+<codeline lineno="77"><highlight class="comment">**<sp/>by<sp/>tests.</highlight></codeline>
+<codeline lineno="78"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79" refid="lgc_8h_1a4b3ebb4bccaf9a33e772a2f4515519e6" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>WHITE0BIT<sp/><sp/><sp/>3<sp/><sp/></highlight><highlight class="comment">/*<sp/>object<sp/>is<sp/>white<sp/>(type<sp/>0)<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80" refid="lgc_8h_1a7de7885f3d09155a2c530154ec045d72" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>WHITE1BIT<sp/><sp/><sp/>4<sp/><sp/></highlight><highlight class="comment">/*<sp/>object<sp/>is<sp/>white<sp/>(type<sp/>1)<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81" refid="lgc_8h_1acd17af3c46cb360dc67cad2b33b6a26f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>BLACKBIT<sp/><sp/><sp/><sp/>5<sp/><sp/></highlight><highlight class="comment">/*<sp/>object<sp/>is<sp/>black<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82" refid="lgc_8h_1a92211ad01420ac616819ba8f61ca7365" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>FINALIZEDBIT<sp/><sp/><sp/><sp/>6<sp/><sp/></highlight><highlight class="comment">/*<sp/>object<sp/>has<sp/>been<sp/>marked<sp/>for<sp/>finalization<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84" refid="lgc_8h_1ab85d4eae1efa2e1a40d2f41bdbbda226" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TESTBIT<sp/><sp/><sp/><sp/><sp/>7</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88" refid="lgc_8h_1a0acb34c1b3d1234f11ee9fdc34df3f71" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>WHITEBITS<sp/><sp/><sp/>bit2mask(WHITE0BIT,<sp/>WHITE1BIT)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91" refid="lgc_8h_1a4c0ce78d476460d2e54914301f4a4bf7" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>iswhite(x)<sp/><sp/><sp/><sp/><sp/><sp/>testbits((x)-&gt;marked,<sp/>WHITEBITS)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92" refid="lgc_8h_1ac1e4847ad9a91e4cea36520dc9078365" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>isblack(x)<sp/><sp/><sp/><sp/><sp/><sp/>testbit((x)-&gt;marked,<sp/>BLACKBIT)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93" refid="lgc_8h_1ad417e22072630b33cf74a3055b27d8d7" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>isgray(x)<sp/><sp/></highlight><highlight class="comment">/*<sp/>neither<sp/>white<sp/>nor<sp/>black<sp/>*/</highlight><highlight class="preprocessor"><sp/><sp/>\</highlight></codeline>
+<codeline lineno="94"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>(!testbits((x)-&gt;marked,<sp/>WHITEBITS<sp/>|<sp/>bitmask(BLACKBIT)))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96" refid="lgc_8h_1a6d17f226d57a796f7741f457400cf8bd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>tofinalize(x)<sp/><sp/><sp/>testbit((x)-&gt;marked,<sp/>FINALIZEDBIT)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98" refid="lgc_8h_1a486df16493498577d4081a8c231154f0" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>otherwhite(g)<sp/><sp/><sp/>((g)-&gt;currentwhite<sp/>^<sp/>WHITEBITS)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99" refid="lgc_8h_1a0540e865b6cd21e83104cf427c968c86" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>isdeadm(ow,m)<sp/><sp/><sp/>((m)<sp/>&amp;<sp/>(ow))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100" refid="lgc_8h_1acc409eb45f598d23d8388fc9e96189ea" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>isdead(g,v)<sp/>isdeadm(otherwhite(g),<sp/>(v)-&gt;marked)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102" refid="lgc_8h_1a28e94f77147fd242f514b98a1b251486" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>changewhite(x)<sp/><sp/>((x)-&gt;marked<sp/>^=<sp/>WHITEBITS)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="103" refid="lgc_8h_1a990de0d171d8b5425a5515d0bff78789" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>nw2black(x)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="104"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>check_exp(!iswhite(x),<sp/>l_setbit((x)-&gt;marked,<sp/>BLACKBIT))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106" refid="lgc_8h_1afaa8a52c4097cf3a5eacd88db94092da" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaC_white(g)<sp/><sp/><sp/>cast_byte((g)-&gt;currentwhite<sp/>&amp;<sp/>WHITEBITS)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>object<sp/>age<sp/>in<sp/>generational<sp/>mode<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110" refid="lgc_8h_1a611544eedb63012098eab46a011fe618" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>G_NEW<sp/><sp/><sp/><sp/><sp/><sp/><sp/>0<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>created<sp/>in<sp/>current<sp/>cycle<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111" refid="lgc_8h_1aa8c9510ab591432a3b80e90519156116" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>G_SURVIVAL<sp/><sp/>1<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>created<sp/>in<sp/>previous<sp/>cycle<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112" refid="lgc_8h_1a19ac124332eabcbdcb744e14923700b9" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>G_OLD0<sp/><sp/><sp/><sp/><sp/><sp/>2<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>marked<sp/>old<sp/>by<sp/>frw.<sp/>barrier<sp/>in<sp/>this<sp/>cycle<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113" refid="lgc_8h_1a266a8ec4a8dbacf8d7b99dca3adcac90" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>G_OLD1<sp/><sp/><sp/><sp/><sp/><sp/>3<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>first<sp/>full<sp/>cycle<sp/>as<sp/>old<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114" refid="lgc_8h_1a96372e9b92aa939f300e0477ba112716" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>G_OLD<sp/><sp/><sp/><sp/><sp/><sp/><sp/>4<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>really<sp/>old<sp/>object<sp/>(not<sp/>to<sp/>be<sp/>visited)<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="115" refid="lgc_8h_1ae2c1796f4fb3359730723ce0acd2d162" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>G_TOUCHED1<sp/><sp/>5<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>old<sp/>object<sp/>touched<sp/>this<sp/>cycle<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116" refid="lgc_8h_1ac2b8a2255c79c9f43f88d1625767e1bf" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>G_TOUCHED2<sp/><sp/>6<sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>old<sp/>object<sp/>touched<sp/>in<sp/>previous<sp/>cycle<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118" refid="lgc_8h_1a3b446e7d0b31628385b7a1f444192e9a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>AGEBITS<sp/><sp/><sp/><sp/><sp/>7<sp/><sp/></highlight><highlight class="comment">/*<sp/>all<sp/>age<sp/>bits<sp/>(111)<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120" refid="lgc_8h_1ae68465c1574c4b45a05a6548ad934235" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>getage(o)<sp/><sp/><sp/>((o)-&gt;marked<sp/>&amp;<sp/>AGEBITS)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="121" refid="lgc_8h_1a42f07cc5f8f0a9d97989f7769f00c3f2" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>setage(o,a)<sp/><sp/>((o)-&gt;marked<sp/>=<sp/>cast_byte(((o)-&gt;marked<sp/>&amp;<sp/>(~AGEBITS))<sp/>|<sp/>a))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122" refid="lgc_8h_1a24d47e523ecf2d6e475a34913ce06b05" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>isold(o)<sp/><sp/><sp/><sp/>(getage(o)<sp/>&gt;<sp/>G_SURVIVAL)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="126"><highlight class="comment">**<sp/>In<sp/>generational<sp/>mode,<sp/>objects<sp/>are<sp/>created<sp/>&apos;new&apos;.<sp/>After<sp/>surviving<sp/>one</highlight></codeline>
+<codeline lineno="127"><highlight class="comment">**<sp/>cycle,<sp/>they<sp/>become<sp/>&apos;survival&apos;.<sp/>Both<sp/>&apos;new&apos;<sp/>and<sp/>&apos;survival&apos;<sp/>can<sp/>point</highlight></codeline>
+<codeline lineno="128"><highlight class="comment">**<sp/>to<sp/>any<sp/>other<sp/>object,<sp/>as<sp/>they<sp/>are<sp/>traversed<sp/>at<sp/>the<sp/>end<sp/>of<sp/>the<sp/>cycle.</highlight></codeline>
+<codeline lineno="129"><highlight class="comment">**<sp/>We<sp/>call<sp/>them<sp/>both<sp/>&apos;young&apos;<sp/>objects.</highlight></codeline>
+<codeline lineno="130"><highlight class="comment">**<sp/>If<sp/>a<sp/>survival<sp/>object<sp/>survives<sp/>another<sp/>cycle,<sp/>it<sp/>becomes<sp/>&apos;old1&apos;.</highlight></codeline>
+<codeline lineno="131"><highlight class="comment">**<sp/>&apos;old1&apos;<sp/>objects<sp/>can<sp/>still<sp/>point<sp/>to<sp/>survival<sp/>objects<sp/>(but<sp/>not<sp/>to</highlight></codeline>
+<codeline lineno="132"><highlight class="comment">**<sp/>new<sp/>objects),<sp/>so<sp/>they<sp/>still<sp/>must<sp/>be<sp/>traversed.<sp/>After<sp/>another<sp/>cycle</highlight></codeline>
+<codeline lineno="133"><highlight class="comment">**<sp/>(that,<sp/>being<sp/>old,<sp/>&apos;old1&apos;<sp/>objects<sp/>will<sp/>&quot;survive&quot;<sp/>no<sp/>matter<sp/>what)</highlight></codeline>
+<codeline lineno="134"><highlight class="comment">**<sp/>finally<sp/>the<sp/>&apos;old1&apos;<sp/>object<sp/>becomes<sp/>really<sp/>&apos;old&apos;,<sp/>and<sp/>then<sp/>they</highlight></codeline>
+<codeline lineno="135"><highlight class="comment">**<sp/>are<sp/>no<sp/>more<sp/>traversed.</highlight></codeline>
+<codeline lineno="136"><highlight class="comment">**</highlight></codeline>
+<codeline lineno="137"><highlight class="comment">**<sp/>To<sp/>keep<sp/>its<sp/>invariants,<sp/>the<sp/>generational<sp/>mode<sp/>uses<sp/>the<sp/>same<sp/>barriers</highlight></codeline>
+<codeline lineno="138"><highlight class="comment">**<sp/>also<sp/>used<sp/>by<sp/>the<sp/>incremental<sp/>mode.<sp/>If<sp/>a<sp/>young<sp/>object<sp/>is<sp/>caught<sp/>in<sp/>a</highlight></codeline>
+<codeline lineno="139"><highlight class="comment">**<sp/>forward<sp/>barrier,<sp/>it<sp/>cannot<sp/>become<sp/>old<sp/>immediately,<sp/>because<sp/>it<sp/>can</highlight></codeline>
+<codeline lineno="140"><highlight class="comment">**<sp/>still<sp/>point<sp/>to<sp/>other<sp/>young<sp/>objects.<sp/>Instead,<sp/>it<sp/>becomes<sp/>&apos;old0&apos;,</highlight></codeline>
+<codeline lineno="141"><highlight class="comment">**<sp/>which<sp/>in<sp/>the<sp/>next<sp/>cycle<sp/>becomes<sp/>&apos;old1&apos;.<sp/>So,<sp/>&apos;old0&apos;<sp/>objects<sp/>is</highlight></codeline>
+<codeline lineno="142"><highlight class="comment">**<sp/>old<sp/>but<sp/>can<sp/>point<sp/>to<sp/>new<sp/>and<sp/>survival<sp/>objects;<sp/>&apos;old1&apos;<sp/>is<sp/>old</highlight></codeline>
+<codeline lineno="143"><highlight class="comment">**<sp/>but<sp/>cannot<sp/>point<sp/>to<sp/>new<sp/>objects;<sp/>and<sp/>&apos;old&apos;<sp/>cannot<sp/>point<sp/>to<sp/>any</highlight></codeline>
+<codeline lineno="144"><highlight class="comment">**<sp/>young<sp/>object.</highlight></codeline>
+<codeline lineno="145"><highlight class="comment">**</highlight></codeline>
+<codeline lineno="146"><highlight class="comment">**<sp/>If<sp/>any<sp/>old<sp/>object<sp/>(&apos;old0&apos;,<sp/>&apos;old1&apos;,<sp/>&apos;old&apos;)<sp/>is<sp/>caught<sp/>in<sp/>a<sp/>back</highlight></codeline>
+<codeline lineno="147"><highlight class="comment">**<sp/>barrier,<sp/>it<sp/>becomes<sp/>&apos;touched1&apos;<sp/>and<sp/>goes<sp/>into<sp/>a<sp/>gray<sp/>list,<sp/>to<sp/>be</highlight></codeline>
+<codeline lineno="148"><highlight class="comment">**<sp/>visited<sp/>at<sp/>the<sp/>end<sp/>of<sp/>the<sp/>cycle.<sp/><sp/>There<sp/>it<sp/>evolves<sp/>to<sp/>&apos;touched2&apos;,</highlight></codeline>
+<codeline lineno="149"><highlight class="comment">**<sp/>which<sp/>can<sp/>point<sp/>to<sp/>survivals<sp/>but<sp/>not<sp/>to<sp/>new<sp/>objects.<sp/>In<sp/>yet<sp/>another</highlight></codeline>
+<codeline lineno="150"><highlight class="comment">**<sp/>cycle<sp/>then<sp/>it<sp/>becomes<sp/>&apos;old&apos;<sp/>again.</highlight></codeline>
+<codeline lineno="151"><highlight class="comment">**</highlight></codeline>
+<codeline lineno="152"><highlight class="comment">**<sp/>The<sp/>generational<sp/>mode<sp/>must<sp/>also<sp/>control<sp/>the<sp/>colors<sp/>of<sp/>objects,</highlight></codeline>
+<codeline lineno="153"><highlight class="comment">**<sp/>because<sp/>of<sp/>the<sp/>barriers.<sp/><sp/>While<sp/>the<sp/>mutator<sp/>is<sp/>running,<sp/>young<sp/>objects</highlight></codeline>
+<codeline lineno="154"><highlight class="comment">**<sp/>are<sp/>kept<sp/>white.<sp/>&apos;old&apos;,<sp/>&apos;old1&apos;,<sp/>and<sp/>&apos;touched2&apos;<sp/>objects<sp/>are<sp/>kept<sp/>black,</highlight></codeline>
+<codeline lineno="155"><highlight class="comment">**<sp/>as<sp/>they<sp/>cannot<sp/>point<sp/>to<sp/>new<sp/>objects;<sp/>exceptions<sp/>are<sp/>threads<sp/>and<sp/>open</highlight></codeline>
+<codeline lineno="156"><highlight class="comment">**<sp/>upvalues,<sp/>which<sp/>age<sp/>to<sp/>&apos;old1&apos;<sp/>and<sp/>&apos;old&apos;<sp/>but<sp/>are<sp/>kept<sp/>gray.<sp/>&apos;old0&apos;</highlight></codeline>
+<codeline lineno="157"><highlight class="comment">**<sp/>objects<sp/>may<sp/>be<sp/>gray<sp/>or<sp/>black,<sp/>as<sp/>in<sp/>the<sp/>incremental<sp/>mode.<sp/>&apos;touched1&apos;</highlight></codeline>
+<codeline lineno="158"><highlight class="comment">**<sp/>objects<sp/>are<sp/>kept<sp/>gray,<sp/>as<sp/>they<sp/>must<sp/>be<sp/>visited<sp/>again<sp/>at<sp/>the<sp/>end<sp/>of</highlight></codeline>
+<codeline lineno="159"><highlight class="comment">**<sp/>the<sp/>cycle.</highlight></codeline>
+<codeline lineno="160"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="164"><highlight class="comment">**<sp/>{======================================================</highlight></codeline>
+<codeline lineno="165"><highlight class="comment">**<sp/>Default<sp/>Values<sp/>for<sp/>GC<sp/>parameters</highlight></codeline>
+<codeline lineno="166"><highlight class="comment">**<sp/>=======================================================</highlight></codeline>
+<codeline lineno="167"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="170"><highlight class="comment">**<sp/>Minor<sp/>collections<sp/>will<sp/>shift<sp/>to<sp/>major<sp/>ones<sp/>after<sp/>LUAI_MINORMAJOR%</highlight></codeline>
+<codeline lineno="171"><highlight class="comment">**<sp/>bytes<sp/>become<sp/>old.</highlight></codeline>
+<codeline lineno="172"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="173" refid="lgc_8h_1a75afc280d9665ab6b1bbeadf0b3befbf" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUAI_MINORMAJOR<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>70</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="176"><highlight class="comment">**<sp/>Major<sp/>collections<sp/>will<sp/>shift<sp/>to<sp/>minor<sp/>ones<sp/>after<sp/>a<sp/>collection</highlight></codeline>
+<codeline lineno="177"><highlight class="comment">**<sp/>collects<sp/>at<sp/>least<sp/>LUAI_MAJORMINOR%<sp/>of<sp/>the<sp/>new<sp/>bytes.</highlight></codeline>
+<codeline lineno="178"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="179" refid="lgc_8h_1acbba30c63ec5cad91d33a8d913b70d3a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUAI_MAJORMINOR<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>50</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="182"><highlight class="comment">**<sp/>A<sp/>young<sp/>(minor)<sp/>collection<sp/>will<sp/>run<sp/>after<sp/>creating<sp/>LUAI_GENMINORMUL%</highlight></codeline>
+<codeline lineno="183"><highlight class="comment">**<sp/>new<sp/>bytes.</highlight></codeline>
+<codeline lineno="184"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="185" refid="lgc_8h_1a1660119f32a7ea875ce967d1ef8deadc" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUAI_GENMINORMUL<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>20</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>incremental<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Number<sp/>of<sp/>bytes<sp/>must<sp/>be<sp/>LUAI_GCPAUSE%<sp/>before<sp/>starting<sp/>new<sp/>cycle<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="191" refid="lgc_8h_1a961a6871328af0c7bb50169633e15fd9" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUAI_GCPAUSE<sp/><sp/><sp/><sp/>250</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="194"><highlight class="comment">**<sp/>Step<sp/>multiplier:<sp/>The<sp/>collector<sp/>handles<sp/>LUAI_GCMUL%<sp/>work<sp/>units<sp/>for</highlight></codeline>
+<codeline lineno="195"><highlight class="comment">**<sp/>each<sp/>new<sp/>allocated<sp/>word.<sp/>(Each<sp/>&quot;work<sp/>unit&quot;<sp/>corresponds<sp/>roughly<sp/>to</highlight></codeline>
+<codeline lineno="196"><highlight class="comment">**<sp/>sweeping<sp/>one<sp/>object<sp/>or<sp/>traversing<sp/>one<sp/>slot.)</highlight></codeline>
+<codeline lineno="197"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="198" refid="lgc_8h_1adccc1cf9bf213c770940796d73635444" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUAI_GCMUL<sp/><sp/><sp/><sp/><sp/><sp/>200</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>How<sp/>many<sp/>bytes<sp/>to<sp/>allocate<sp/>before<sp/>next<sp/>GC<sp/>step<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="201" refid="lgc_8h_1a5289131664af0f4b111556cb5b4bfe9c" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>LUAI_GCSTEPSIZE<sp/>(200<sp/>*<sp/>sizeof(Table))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight></codeline>
+<codeline lineno="204" refid="lgc_8h_1a80483641ed59e34e8a6fb0dc18c32021" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>setgcparam(g,p,v)<sp/><sp/>(g-&gt;gcparams[LUA_GCP##p]<sp/>=<sp/>luaO_codeparam(v))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="205" refid="lgc_8h_1a574ac4892252b218889f3af264b489d4" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>applygcparam(g,p,x)<sp/><sp/>luaO_applyparam(g-&gt;gcparams[LUA_GCP##p],<sp/>x)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>}======================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"></highlight></codeline>
+<codeline lineno="209"><highlight class="normal"></highlight></codeline>
+<codeline lineno="210"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="211"><highlight class="comment">**<sp/>Control<sp/>when<sp/>GC<sp/>is<sp/>running:</highlight></codeline>
+<codeline lineno="212"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="213" refid="lgc_8h_1aa9890d156587456839976f603182f149" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GCSTPUSR<sp/><sp/><sp/><sp/>1<sp/><sp/></highlight><highlight class="comment">/*<sp/>bit<sp/>true<sp/>when<sp/>GC<sp/>stopped<sp/>by<sp/>user<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="214" refid="lgc_8h_1ab06b1865fce256860b3d3725ba8a5bac" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GCSTPGC<sp/><sp/><sp/><sp/><sp/>2<sp/><sp/></highlight><highlight class="comment">/*<sp/>bit<sp/>true<sp/>when<sp/>GC<sp/>stopped<sp/>by<sp/>itself<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="215" refid="lgc_8h_1a653c5ba27eb73b11e98b24be5ad6a482" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GCSTPCLS<sp/><sp/><sp/><sp/>4<sp/><sp/></highlight><highlight class="comment">/*<sp/>bit<sp/>true<sp/>when<sp/>closing<sp/>Lua<sp/>state<sp/>*/</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="216" refid="lgc_8h_1aacd605dd207b4569b464c38b2a5532d8" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>gcrunning(g)<sp/><sp/><sp/><sp/>((g)-&gt;gcstp<sp/>==<sp/>0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"></highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="220"><highlight class="comment">**<sp/>Does<sp/>one<sp/>step<sp/>of<sp/>collection<sp/>when<sp/>debt<sp/>becomes<sp/>zero.<sp/>&apos;pre&apos;/&apos;pos&apos;</highlight></codeline>
+<codeline lineno="221"><highlight class="comment">**<sp/>allows<sp/>some<sp/>adjustments<sp/>to<sp/>be<sp/>done<sp/>only<sp/>when<sp/>needed.<sp/>macro</highlight></codeline>
+<codeline lineno="222"><highlight class="comment">**<sp/>&apos;condchangemem&apos;<sp/>is<sp/>used<sp/>only<sp/>for<sp/>heavy<sp/>tests<sp/>(forcing<sp/>a<sp/>full</highlight></codeline>
+<codeline lineno="223"><highlight class="comment">**<sp/>GC<sp/>cycle<sp/>on<sp/>every<sp/>opportunity)</highlight></codeline>
+<codeline lineno="224"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="225"><highlight class="normal"></highlight></codeline>
+<codeline lineno="226"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>!defined(HARDMEMTESTS)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="227" refid="lgc_8h_1ab14170ef8c48c4e3c6e00cc89886a26d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>condchangemem(L,pre,pos,emg)<sp/><sp/><sp/><sp/>((void)0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="228"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="229"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>condchangemem(L,pre,pos,emg)<sp/><sp/>\</highlight></codeline>
+<codeline lineno="230"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>{<sp/>if<sp/>(gcrunning(G(L)))<sp/>{<sp/>pre;<sp/>luaC_fullgc(L,<sp/>emg);<sp/>pos;<sp/>}<sp/>}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="231"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"></highlight></codeline>
+<codeline lineno="233" refid="lgc_8h_1a52f302b0dac5467152f322c8fe1c1a3e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaC_condGC(L,pre,pos)<sp/>\</highlight></codeline>
+<codeline lineno="234"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>{<sp/>if<sp/>(G(L)-&gt;GCdebt<sp/>&lt;=<sp/>0)<sp/>{<sp/>pre;<sp/>luaC_step(L);<sp/>pos;};<sp/>\</highlight></codeline>
+<codeline lineno="235"><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/>condchangemem(L,pre,pos,0);<sp/>}</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight></codeline>
+<codeline lineno="237"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>more<sp/>often<sp/>than<sp/>not,<sp/>&apos;pre&apos;/&apos;pos&apos;<sp/>are<sp/>empty<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="238" refid="lgc_8h_1ad013db5004ccc5fbe8a6450caa1f1ad9" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaC_checkGC(L)<sp/><sp/><sp/><sp/><sp/>luaC_condGC(L,(void)0,(void)0)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="239"><highlight class="normal"></highlight></codeline>
+<codeline lineno="240"><highlight class="normal"></highlight></codeline>
+<codeline lineno="241" refid="lgc_8h_1a90ac4f3c7085a418025edcc7215e8983" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaC_objbarrier(L,p,o)<sp/>(<sp/><sp/>\</highlight></codeline>
+<codeline lineno="242"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>(isblack(p)<sp/>&amp;&amp;<sp/>iswhite(o))<sp/>?<sp/>\</highlight></codeline>
+<codeline lineno="243"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>luaC_barrier_(L,obj2gco(p),obj2gco(o))<sp/>:<sp/>cast_void(0))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="244"><highlight class="normal"></highlight></codeline>
+<codeline lineno="245" refid="lgc_8h_1a21660a316c42bc1aad10f115e2261bca" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaC_barrier(L,p,v)<sp/>(<sp/><sp/>\</highlight></codeline>
+<codeline lineno="246"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>iscollectable(v)<sp/>?<sp/>luaC_objbarrier(L,p,gcvalue(v))<sp/>:<sp/>cast_void(0))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="247"><highlight class="normal"></highlight></codeline>
+<codeline lineno="248" refid="lgc_8h_1aabe37ed7d61a6f603f8a3b259c34c846" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaC_objbarrierback(L,p,o)<sp/>(<sp/><sp/>\</highlight></codeline>
+<codeline lineno="249"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>(isblack(p)<sp/>&amp;&amp;<sp/>iswhite(o))<sp/>?<sp/>luaC_barrierback_(L,p)<sp/>:<sp/>cast_void(0))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="250"><highlight class="normal"></highlight></codeline>
+<codeline lineno="251" refid="lgc_8h_1a60903f232a1c51d22de556ea4c144f3a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>luaC_barrierback(L,p,v)<sp/>(<sp/><sp/>\</highlight></codeline>
+<codeline lineno="252"><highlight class="preprocessor"><sp/><sp/><sp/><sp/>iscollectable(v)<sp/>?<sp/>luaC_objbarrierback(L,<sp/>p,<sp/>gcvalue(v))<sp/>:<sp/>cast_void(0))</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lgc_8h_1a242d4a66c025c294ec2c1ec4fe75e804" kindref="member">luaC_fix</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_g_c_object" kindref="compound">GCObject</ref><sp/>*o);</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lgc_8h_1a9aa52a500c9cc2076edb1707e6d8a045" kindref="member">luaC_freeallobjects</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lgc_8h_1a6c71cc4b9e503c0e96c0c4ffcff93900" kindref="member">luaC_step</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L);</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lgc_8h_1a5a4ac037c6e209635c83018e5ffae3df" kindref="member">luaC_runtilstate</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>state,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>fast);</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lgc_8h_1aa0b753c3ed80e1eed0379ec58592c404" kindref="member">luaC_fullgc</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>isemergency);</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="struct_g_c_object" kindref="compound">GCObject</ref><sp/>*<ref refid="lgc_8h_1abcb3d3772356b12e5e9ed7dbf82c70d4" kindref="member">luaC_newobj</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/>tt,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>sz);</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/><ref refid="struct_g_c_object" kindref="compound">GCObject</ref><sp/>*<ref refid="lgc_8h_1a92ef79baff325e6a3ec6c77cb7bb3741" kindref="member">luaC_newobjdt</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="llimits_8h_1ae1fe9ac10d9803bd1d7bdf30b18bad68" kindref="member">lu_byte</ref><sp/>tt,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>sz,</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>offset);</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lgc_8h_1ac5106ee2a18cde8bc3bd92e5891ad8e5" kindref="member">luaC_barrier_</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_g_c_object" kindref="compound">GCObject</ref><sp/>*o,<sp/><ref refid="struct_g_c_object" kindref="compound">GCObject</ref><sp/>*v);</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lgc_8h_1a65d1fcc6e437592a5a893406cce7d8e3" kindref="member">luaC_barrierback_</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_g_c_object" kindref="compound">GCObject</ref><sp/>*o);</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lgc_8h_1a15870c09448216ce5c4e1ff63d39e0a9" kindref="member">luaC_checkfinalizer</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/><ref refid="struct_g_c_object" kindref="compound">GCObject</ref><sp/>*o,<sp/><ref refid="struct_table" kindref="compound">Table</ref><sp/>*mt);</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><ref refid="llimits_8h_1a3f43b35a70c93f2cfde1db42a5a24f1e" kindref="member">LUAI_FUNC</ref><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="lgc_8h_1a45671ff26d738167ce8e421cc233fc59" kindref="member">luaC_changemode</ref><sp/>(<ref refid="structlua___state" kindref="compound">lua_State</ref><sp/>*L,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>newmode);</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"></highlight></codeline>
+<codeline lineno="267"><highlight class="normal"></highlight></codeline>
+<codeline lineno="268"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="269"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="leasy/lua/lgc.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_file_finder_1_1_game_entry" kind="struct" language="C++" prot="public">
+    <compoundname>FileFinder::GameEntry</compoundname>
+    <includes refid="filefinder_8h" local="no">filefinder.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_file_finder_1_1_game_entry_1aaf7baaf8f4363cd1ae747a3ff6723476" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string FileFinder::GameEntry::dir_name</definition>
+        <argsstring></argsstring>
+        <name>dir_name</name>
+        <qualifiedname>FileFinder::GameEntry::dir_name</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="86" column="13" bodyfile="filefinder.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_file_finder_1_1_game_entry_1acc98ebf768b5bde32786a7092b0156c0" prot="public" static="no" mutable="no">
+        <type><ref refid="namespace_file_finder_1a428f945a3463676f892b1c6890319a35" kindref="member">ProjectType</ref></type>
+        <definition>ProjectType FileFinder::GameEntry::type</definition>
+        <argsstring></argsstring>
+        <name>type</name>
+        <qualifiedname>FileFinder::GameEntry::type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="filefinder.h" line="87" column="13" bodyfile="filefinder.h" bodystart="87" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Helper struct combining the project&apos;s directory and its type (used by Game Browser) </para>
+    </detaileddescription>
+    <location file="filefinder.h" line="85" column="1" bodyfile="filefinder.h" bodystart="85" bodyend="88"/>
+    <listofallmembers>
+      <member refid="struct_file_finder_1_1_game_entry_1aaf7baaf8f4363cd1ae747a3ff6723476" prot="public" virt="non-virtual"><scope>FileFinder::GameEntry</scope><name>dir_name</name></member>
+      <member refid="struct_file_finder_1_1_game_entry_1acc98ebf768b5bde32786a7092b0156c0" prot="public" virt="non-virtual"><scope>FileFinder::GameEntry</scope><name>type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

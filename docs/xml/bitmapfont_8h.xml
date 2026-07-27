@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="bitmapfont_8h" kind="file" language="C++">
+    <compoundname>bitmapfont.h</compoundname>
+    <includes refid="bitmapfont__glyph_8h" local="yes">bitmapfont_glyph.h</includes>
+    <includes refid="shinonome__gothic_8h" local="yes">generated/shinonome_gothic.h</includes>
+    <includes refid="shinonome__mincho_8h" local="yes">generated/shinonome_mincho.h</includes>
+    <includes refid="bitmapfont__rmg2000_8h" local="yes">generated/bitmapfont_rmg2000.h</includes>
+    <includes refid="bitmapfont__ttyp0_8h" local="yes">generated/bitmapfont_ttyp0.h</includes>
+    <includes refid="bitmapfont__wqy_8h" local="yes">generated/bitmapfont_wqy.h</includes>
+    <includedby refid="font_8cpp" local="yes">font.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>bitmapfont.h</label>
+        <link refid="bitmapfont_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>bitmapfont_glyph.h</label>
+        <link refid="bitmapfont__glyph_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>generated/bitmapfont_rmg2000.h</label>
+        <link refid="bitmapfont__rmg2000_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>generated/bitmapfont_ttyp0.h</label>
+        <link refid="bitmapfont__ttyp0_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>generated/bitmapfont_wqy.h</label>
+        <link refid="bitmapfont__wqy_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>generated/shinonome_gothic.h</label>
+        <link refid="shinonome__gothic_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>generated/shinonome_mincho.h</label>
+        <link refid="shinonome__mincho_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>array</label>
+      </node>
+      <node id="3">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>bitmapfont.h</label>
+        <link refid="bitmapfont_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>font.cpp</label>
+        <link refid="font_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="bitmapfont_8h_1a3cdcc797f4c0db8ef081c89535c22c6f" prot="public" static="no">
+        <name>EP_BITMAPFONT_H</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="bitmapfont.h" line="3" column="9" bodyfile="bitmapfont.h" bodystart="3" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>EP_BITMAPFONT_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3" refid="bitmapfont_8h_1a3cdcc797f4c0db8ef081c89535c22c6f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>EP_BITMAPFONT_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="bitmapfont__glyph_8h" kindref="compound">bitmapfont_glyph.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="shinonome__gothic_8h" kindref="compound">generated/shinonome_gothic.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="shinonome__mincho_8h" kindref="compound">generated/shinonome_mincho.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="bitmapfont__rmg2000_8h" kindref="compound">generated/bitmapfont_rmg2000.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="bitmapfont__ttyp0_8h" kindref="compound">generated/bitmapfont_ttyp0.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="bitmapfont__wqy_8h" kindref="compound">generated/bitmapfont_wqy.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>EP_BITMAPFONT_H</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="bitmapfont.h"/>
+  </compounddef>
+</doxygen>

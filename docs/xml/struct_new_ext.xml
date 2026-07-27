@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_new_ext" kind="struct" language="C++" prot="public">
+    <compoundname>NewExt</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_new_ext_1a05de45f4e04b67ed5e8b5b5d01505ac5" prot="public" static="no" mutable="no">
+        <type><ref refid="llimits_8h_1aab58a246c9e0a85c4c2ed0fd8d6724bb" kindref="member">ls_byte</ref></type>
+        <definition>ls_byte NewExt::kind</definition>
+        <argsstring></argsstring>
+        <name>kind</name>
+        <qualifiedname>NewExt::kind</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.c" line="304" column="11" bodyfile="leasy/lua/lstring.c" bodystart="304" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_new_ext_1a634277ae5c41cab8936236a0367cd031" prot="public" static="no" mutable="no">
+        <type>const char *</type>
+        <definition>const char* NewExt::s</definition>
+        <argsstring></argsstring>
+        <name>s</name>
+        <qualifiedname>NewExt::s</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.c" line="305" column="14" bodyfile="leasy/lua/lstring.c" bodystart="305" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_new_ext_1acfaa005f11aaf045e40f35af642f312d" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t NewExt::len</definition>
+        <argsstring></argsstring>
+        <name>len</name>
+        <qualifiedname>NewExt::len</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.c" line="306" column="11" bodyfile="leasy/lua/lstring.c" bodystart="306" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_new_ext_1aced3c93c7a82ed2e19f872bcd2d126b0" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_t_string" kindref="compound">TString</ref> *</type>
+        <definition>TString* NewExt::ts</definition>
+        <argsstring></argsstring>
+        <name>ts</name>
+        <qualifiedname>NewExt::ts</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lstring.c" line="307" column="11" bodyfile="leasy/lua/lstring.c" bodystart="307" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>NewExt</label>
+        <link refid="struct_new_ext"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>ts</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>TString</label>
+        <link refid="struct_t_string"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>hnext</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/lua/lstring.c" line="303" column="1" bodyfile="leasy/lua/lstring.c" bodystart="303" bodyend="308"/>
+    <listofallmembers>
+      <member refid="struct_new_ext_1a05de45f4e04b67ed5e8b5b5d01505ac5" prot="public" virt="non-virtual"><scope>NewExt</scope><name>kind</name></member>
+      <member refid="struct_new_ext_1acfaa005f11aaf045e40f35af642f312d" prot="public" virt="non-virtual"><scope>NewExt</scope><name>len</name></member>
+      <member refid="struct_new_ext_1a634277ae5c41cab8936236a0367cd031" prot="public" virt="non-virtual"><scope>NewExt</scope><name>s</name></member>
+      <member refid="struct_new_ext_1aced3c93c7a82ed2e19f872bcd2d126b0" prot="public" virt="non-virtual"><scope>NewExt</scope><name>ts</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

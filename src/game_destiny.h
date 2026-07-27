@@ -479,3 +479,4 @@ private:
 	void CheckVersionInfo();
 };
 #endif // !EP_GAME_DESTINY_H
+

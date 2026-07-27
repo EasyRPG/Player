@@ -1,0 +1,302 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_sprite___picture" kind="class" language="C++" prot="public">
+    <compoundname>Sprite_Picture</compoundname>
+    <basecompoundref refid="class_sprite" prot="public" virt="non-virtual">Sprite</basecompoundref>
+    <includes refid="sprite__picture_8h" local="no">sprite_picture.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_sprite___picture_1af3879655b658fe57cd55f17a41191903" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Sprite_Picture::last_spritesheet_frame</definition>
+        <argsstring></argsstring>
+        <name>last_spritesheet_frame</name>
+        <qualifiedname>Sprite_Picture::last_spritesheet_frame</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_picture.h" line="49" column="5" bodyfile="sprite_picture.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___picture_1a9ccf122d318e8369c732863034a7409b" prot="private" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Sprite_Picture::pic_id</definition>
+        <argsstring></argsstring>
+        <name>pic_id</name>
+        <qualifiedname>Sprite_Picture::pic_id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_picture.h" line="50" column="11" bodyfile="sprite_picture.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___picture_1a249d9ef212a880e20b115c4dfbd254ea" prot="private" static="no" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Sprite_Picture::feature_spritesheet</definition>
+        <argsstring></argsstring>
+        <name>feature_spritesheet</name>
+        <qualifiedname>Sprite_Picture::feature_spritesheet</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_picture.h" line="51" column="12" bodyfile="sprite_picture.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___picture_1aebcc3e01ffb20fee9acf09860831f982" prot="private" static="no" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Sprite_Picture::feature_priority_layers</definition>
+        <argsstring></argsstring>
+        <name>feature_priority_layers</name>
+        <qualifiedname>Sprite_Picture::feature_priority_layers</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_picture.h" line="52" column="12" bodyfile="sprite_picture.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_sprite___picture_1a628fcf5de74a6446d459b28263459db1" prot="private" static="no" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Sprite_Picture::feature_bottom_trans</definition>
+        <argsstring></argsstring>
+        <name>feature_bottom_trans</name>
+        <qualifiedname>Sprite_Picture::feature_bottom_trans</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_picture.h" line="53" column="12" bodyfile="sprite_picture.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_sprite___picture_1ae47c6153a6c9850d74b2f28567525648" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Sprite_Picture::Sprite_Picture</definition>
+        <argsstring>(int pic_id, Drawable::Flags flags=Drawable::Flags::Default)</argsstring>
+        <name>Sprite_Picture</name>
+        <qualifiedname>Sprite_Picture::Sprite_Picture</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>pic_id</declname>
+        </param>
+        <param>
+          <type><ref refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" kindref="member">Drawable::Flags</ref></type>
+          <declname>flags</declname>
+          <defval><ref refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85a7a1920d61156abc05a60135aefe8bc67" kindref="member">Drawable::Flags::Default</ref></defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pic_id</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the picture id </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_picture.h" line="36" column="1" bodyfile="sprite_picture.cpp" bodystart="28" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___picture_1a5f4769e22afa889e3ecea3e663668934" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Sprite_Picture::Draw</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Sprite_Picture::Draw</qualifiedname>
+        <reimplements refid="class_sprite_1a0a4a3bd44c2556cbbe47b4480fae2a5b">Draw</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_picture.h" line="38" column="6" bodyfile="sprite_picture.cpp" bodystart="64" bodyend="175"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___picture_1a9c65b9769652d4290116c6b4f04fca3c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Sprite_Picture::OnPictureShow</definition>
+        <argsstring>()</argsstring>
+        <name>OnPictureShow</name>
+        <qualifiedname>Sprite_Picture::OnPictureShow</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_picture.h" line="40" column="6" bodyfile="sprite_picture.cpp" bodystart="41" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___picture_1afcb8d42e363533e54d01132d74fef9b0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Sprite_Picture::GetFrameWidth</definition>
+        <argsstring>() const</argsstring>
+        <name>GetFrameWidth</name>
+        <qualifiedname>Sprite_Picture::GetFrameWidth</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Width of a single spritesheet frame or the entire width if the picture has no spritesheet </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_picture.h" line="43" column="5" bodyfile="sprite_picture.cpp" bodystart="177" bodyend="189"/>
+      </memberdef>
+      <memberdef kind="function" id="class_sprite___picture_1a6a616dc2c527a122204ab606ce489f58" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Sprite_Picture::GetFrameHeight</definition>
+        <argsstring>() const</argsstring>
+        <name>GetFrameHeight</name>
+        <qualifiedname>Sprite_Picture::GetFrameHeight</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Height of a single spritesheet frame or the entire width if the picture has no spritesheet </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="sprite_picture.h" line="46" column="5" bodyfile="sprite_picture.cpp" bodystart="191" bodyend="203"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_sprite" kindref="compound">Sprite</ref> picture class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="2">
+        <label>Sprite</label>
+        <link refid="class_sprite"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Sprite_Picture</label>
+        <link refid="class_sprite___picture"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>Drawable</label>
+        <link refid="class_drawable"/>
+      </node>
+      <node id="2">
+        <label>Sprite</label>
+        <link refid="class_sprite"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Sprite_Picture</label>
+        <link refid="class_sprite___picture"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="sprite_picture.h" line="29" column="1" bodyfile="sprite_picture.h" bodystart="29" bodyend="54"/>
+    <listofallmembers>
+      <member refid="class_sprite___picture_1a5f4769e22afa889e3ecea3e663668934" prot="public" virt="virtual"><scope>Sprite_Picture</scope><name>Draw</name></member>
+      <member refid="class_drawable_1ab3ac412b0979a5519cdc1fe2ddf9f9b4" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>Drawable</name></member>
+      <member refid="class_drawable_1af5daeee24d8880387fa62f6531f52ce6" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>Drawable</name></member>
+      <member refid="class_sprite___picture_1a628fcf5de74a6446d459b28263459db1" prot="private" virt="non-virtual"><scope>Sprite_Picture</scope><name>feature_bottom_trans</name></member>
+      <member refid="class_sprite___picture_1aebcc3e01ffb20fee9acf09860831f982" prot="private" virt="non-virtual"><scope>Sprite_Picture</scope><name>feature_priority_layers</name></member>
+      <member refid="class_sprite___picture_1a249d9ef212a880e20b115c4dfbd254ea" prot="private" virt="non-virtual"><scope>Sprite_Picture</scope><name>feature_spritesheet</name></member>
+      <member refid="class_drawable_1acd533f8562608859b8c22b8f3dbfcf85" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>Flags</name></member>
+      <member refid="class_sprite_1ade47ec9b2fc6b79921a978ac85508eb4" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetAngle</name></member>
+      <member refid="class_sprite_1a8692649cce1320c23d7216207805b990" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetBitmap</name></member>
+      <member refid="class_sprite_1aa34fbb968bfb9441bca6a7be8a1e9629" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetBitmap</name></member>
+      <member refid="class_sprite_1a699b7b199c7e2ea838878d9058401911" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetBlendColor</name></member>
+      <member refid="class_sprite_1ae5eb51cb5b55c057cbcafe69d13929a6" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetBlendType</name></member>
+      <member refid="class_sprite_1a9a5a480bc86ea9712a94303a53082da3" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetBushDepth</name></member>
+      <member refid="class_sprite_1a120a7dccaeea0d7fd7bac4f87b4b9d00" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetFlipX</name></member>
+      <member refid="class_sprite_1a7217243249b11d9046369cd3f0141adb" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetFlipY</name></member>
+      <member refid="class_sprite___picture_1a6a616dc2c527a122204ab606ce489f58" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetFrameHeight</name></member>
+      <member refid="class_sprite___picture_1afcb8d42e363533e54d01132d74fef9b0" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetFrameWidth</name></member>
+      <member refid="class_sprite_1ab10bdecf4bf20472b53a3102315180c2" prot="public" virt="virtual"><scope>Sprite_Picture</scope><name>GetHeight</name></member>
+      <member refid="class_sprite_1ae6b8f3dd521db97853b3f2719e298db5" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetOpacity</name></member>
+      <member refid="class_sprite_1aa5c54c0b59a4f4247157e8446d588645" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetOx</name></member>
+      <member refid="class_sprite_1a8acf5af95db9d7f29958277c2625b8c7" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetOy</name></member>
+      <member refid="class_drawable_1ac34f66020989dcc774e6bc8f10d2e854" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetPriorityForBattleLayer</name></member>
+      <member refid="class_drawable_1a6b70c8901c175d8382c5aeff3c18e475" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetPriorityForMapLayer</name></member>
+      <member refid="class_drawable_1a699f071dbeeeaddc4cc478f127f1ddf2" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetRenderOx</name></member>
+      <member refid="class_drawable_1a9a92fe4066da9923c2e860438fd6e2fd" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetRenderOy</name></member>
+      <member refid="class_sprite_1ac50818cd2774516c70f2583d54845f98" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetSrcRect</name></member>
+      <member refid="class_sprite_1af315f162b8f1d0374d2bb4788f15eb59" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetTone</name></member>
+      <member refid="class_sprite_1add7a9fa3823099c15d04bd98764c00b8" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetWaverDepth</name></member>
+      <member refid="class_sprite_1a5781eeeb12fd97b447809efd0f14afea" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetWaverPhase</name></member>
+      <member refid="class_sprite_1a190fdb389450b2a425d3b7256b10b041" prot="public" virt="virtual"><scope>Sprite_Picture</scope><name>GetWidth</name></member>
+      <member refid="class_sprite_1aa87fb1678e6d814923b390085c8b47ca" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetX</name></member>
+      <member refid="class_sprite_1af3bb2ded3b6d29905c717031e8e873e4" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetY</name></member>
+      <member refid="class_drawable_1a61b471fe6059a4201ec065378fabcccd" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetZ</name></member>
+      <member refid="class_sprite_1afdc1630a767fef01cb29f81983a25825" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetZoomX</name></member>
+      <member refid="class_sprite_1a7fc9c4d33c7fade504f93a86c34a2b66" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>GetZoomY</name></member>
+      <member refid="class_drawable_1a8fe3b6897af74057feb5886ed14a6fe1" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>IsGlobal</name></member>
+      <member refid="class_drawable_1a2ef3d5e09e4e8213360a2f82960316f4" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>IsShared</name></member>
+      <member refid="class_drawable_1a89866e4a5b9aabd6e3f9c0ab5ffea809" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>IsVisible</name></member>
+      <member refid="class_sprite___picture_1af3879655b658fe57cd55f17a41191903" prot="private" virt="non-virtual"><scope>Sprite_Picture</scope><name>last_spritesheet_frame</name></member>
+      <member refid="class_sprite___picture_1a9c65b9769652d4290116c6b4f04fca3c" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>OnPictureShow</name></member>
+      <member refid="class_drawable_1a203bb6b83536f17c538b9e81a311ff5f" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>operator=</name></member>
+      <member refid="class_sprite___picture_1a9ccf122d318e8369c732863034a7409b" prot="private" virt="non-virtual"><scope>Sprite_Picture</scope><name>pic_id</name></member>
+      <member refid="class_sprite_1ab2ac97d71f9af168477ff5114e895021" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetAngle</name></member>
+      <member refid="class_sprite_1a0b1f8eb93adbfffb165acb30699ddd78" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetBitmap</name></member>
+      <member refid="class_sprite_1a5a80440fb552919c24e3320544554a62" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetBlendColor</name></member>
+      <member refid="class_sprite_1a662cbae14d3628d670b865157b247df1" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetBlendType</name></member>
+      <member refid="class_sprite_1a48f4b1522175b8aab5e7f2d6b11a9425" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetBushDepth</name></member>
+      <member refid="class_sprite_1a88b06fec2499b21fb21445269cbee15f" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetFlashEffect</name></member>
+      <member refid="class_sprite_1a85222d16191092db3e0d731f8a78d4a8" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetFlipX</name></member>
+      <member refid="class_sprite_1a909b9d49b660fa592b0b753f602dddef" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetFlipY</name></member>
+      <member refid="class_sprite_1a00ec8dcc661ae5acea3c013dc12c07f0" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetOpacity</name></member>
+      <member refid="class_sprite_1ae2504fad70205dd8064392da7ceb4f71" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetOx</name></member>
+      <member refid="class_sprite_1a0e189abc78607a4a6e011d6e394a43d7" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetOy</name></member>
+      <member refid="class_drawable_1a39fbac8e2a616b42e4ebe014088cba83" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetRenderOx</name></member>
+      <member refid="class_drawable_1a3d134e743ee91e5c57e01184d5bd015a" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetRenderOy</name></member>
+      <member refid="class_sprite_1ae0a9b0248ce543551c1486c824b2949c" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetSpriteRect</name></member>
+      <member refid="class_sprite_1a890398eafe1a9135d7baa939842a798a" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetSrcRect</name></member>
+      <member refid="class_sprite_1a89865e8080e634db19ab6409efc0ef2c" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetTone</name></member>
+      <member refid="class_drawable_1a6ba54fc0011085ddd7d5bb57e647d423" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetVisible</name></member>
+      <member refid="class_sprite_1a505321681169327d559b7f59146fdec9" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetWaverDepth</name></member>
+      <member refid="class_sprite_1a85f701cd0eb6033b471f84bb24f192b8" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetWaverPhase</name></member>
+      <member refid="class_sprite_1a57277e7b2c107f36f587c46e99f7a48f" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetX</name></member>
+      <member refid="class_sprite_1a0012676d8951dbf2342de94acc18eecd" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetY</name></member>
+      <member refid="class_drawable_1adca759a32560110ac620c54ce0cf1470" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetZ</name></member>
+      <member refid="class_sprite_1a3e7151dfb8645a3fbb71395625af985c" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetZoomX</name></member>
+      <member refid="class_sprite_1aad6019d133e5abac3323d671af4ed06b" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>SetZoomY</name></member>
+      <member refid="class_sprite_1aa3a20244c338653f65beaa26d6189581" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>Sprite</name></member>
+      <member refid="class_sprite___picture_1ae47c6153a6c9850d74b2f28567525648" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>Sprite_Picture</name></member>
+      <member refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" prot="public" virt="non-virtual"><scope>Sprite_Picture</scope><name>Z_t</name></member>
+      <member refid="class_drawable_1a5db44942658aab760a7418e338582e0a" prot="public" virt="virtual"><scope>Sprite_Picture</scope><name>~Drawable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

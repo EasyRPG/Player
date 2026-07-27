@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_9b3b89bd36bdd845fa0acb610ef7d0f5" kind="dir">
+    <compoundname>platform/psvita</compoundname>
+    <innerfile refid="platform_2psvita_2audio_8cpp">audio.cpp</innerfile>
+    <innerfile refid="platform_2psvita_2audio_8h">audio.h</innerfile>
+    <innerfile refid="psvita_2clock_8h">clock.h</innerfile>
+    <innerfile refid="psvita_2input__buttons_8cpp">input_buttons.cpp</innerfile>
+    <innerfile refid="psvita_2main_8cpp">main.cpp</innerfile>
+    <innerfile refid="psvita_2ui_8cpp">ui.cpp</innerfile>
+    <innerfile refid="psvita_2ui_8h">ui.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="platform/psvita/"/>
+  </compounddef>
+</doxygen>

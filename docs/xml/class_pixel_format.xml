@@ -1,0 +1,300 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_pixel_format" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>PixelFormat</compoundname>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; 32, PF::StaticMasks, PF::StaticAlpha, PF::Alpha, PF::IsAligned, 8, 16, 8, 8, 8, 0, 8, 24 &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; 32, PF::StaticMasks, PF::StaticAlpha, PF::Alpha, PF::IsAligned, 8, 0, 8, 8, 8, 16, 8, 24 &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; 32, PF::StaticMasks, PF::StaticAlpha, PF::Alpha, PF::IsAligned, 8, 24, 8, 16, 8, 8, 8, 0 &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; 32, PF::StaticMasks, PF::StaticAlpha, PF::Alpha, PF::IsAligned, 8, 8, 8, 16, 8, 24, 8, 0 &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; 32, PF::StaticMasks, PF::StaticAlpha, PF::NoAlpha, PF::IsAligned, 8, 16, 8, 8, 8, 0, 8, 24 &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; 32, PF::StaticMasks, PF::StaticAlpha, PF::NoAlpha, PF::IsAligned, 8, 0, 8, 8, 8, 16, 8, 24 &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; 32, PF::StaticMasks, PF::StaticAlpha, PF::NoAlpha, PF::IsAligned, 8, 24, 8, 16, 8, 8, 8, 0 &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; 32, PF::StaticMasks, PF::StaticAlpha, PF::NoAlpha, PF::IsAligned, 8, 8, 8, 16, 8, 24, 8, 0 &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; 8, PF::StaticMasks, PF::StaticAlpha, PF::NoAlpha, PF::IsAligned, 8, 0, 8, 0, 8, 0, 0, 0 &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; 32, PF::DynamicMasks, PF::StaticAlpha, PF::Alpha, PF::IsAligned, 0, 0, 0, 0, 0, 0, 0, 0 &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; 32, PF::DynamicMasks, PF::StaticAlpha, PF::NoAlpha, PF::IsAligned, 0, 0, 0, 0, 0, 0, 0, 0 &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; 32, PF::DynamicMasks, PF::DynamicAlpha, PF::NoAlpha, PF::IsAligned, 0, 0, 0, 0, 0, 0, 0, 0 &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; 24, PF::DynamicMasks, PF::StaticAlpha, PF::NoAlpha, PF::IsAligned, 0, 0, 0, 0, 0, 0, 0, 0 &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; 24, PF::DynamicMasks, PF::DynamicAlpha, PF::NoAlpha, PF::IsAligned, 0, 0, 0, 0, 0, 0, 0, 0 &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; 16, PF::DynamicMasks, PF::StaticAlpha, PF::Alpha, PF::NotAligned, 0, 0, 0, 0, 0, 0, 0, 0 &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; 16, PF::DynamicMasks, PF::StaticAlpha, PF::NoAlpha, PF::NotAligned, 0, 0, 0, 0, 0, 0, 0, 0 &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; 16, PF::DynamicMasks, PF::DynamicAlpha, PF::NoAlpha, PF::NotAligned, 0, 0, 0, 0, 0, 0, 0, 0 &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_pixel_format_t" prot="public" virt="non-virtual">PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;</derivedcompoundref>
+    <includes refid="pixel__format_8h" local="no">pixel_format.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_pixel_format_1ab7b090934f3a409ca630982876549e51" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>PixelFormat::PixelFormat</definition>
+        <argsstring>()</argsstring>
+        <name>PixelFormat</name>
+        <qualifiedname>PixelFormat::PixelFormat</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="487" column="1" bodyfile="pixel_format.h" bodystart="487" bodyend="487"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_1a9cc17552bce0d6589994050650eeb5d6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool PixelFormat::Match</definition>
+        <argsstring>(const DynamicFormat &amp;ref) const =0</argsstring>
+        <name>Match</name>
+        <qualifiedname>PixelFormat::Match</qualifiedname>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1ae727265a07f2d76f559821aec679c75b">Match</reimplementedby>
+        <param>
+          <type>const <ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref> &amp;</type>
+          <declname>ref</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="489" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_1a0508043dcf860b848c1b4f7a0d39c609" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int PixelFormat::Bits</definition>
+        <argsstring>() const =0</argsstring>
+        <name>Bits</name>
+        <qualifiedname>PixelFormat::Bits</qualifiedname>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a0d98299eac535619183e034d84e5dd56">Bits</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="490" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_1a0f9d9d988a1d4c74cbfd970fdb088e7a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool PixelFormat::HasAlpha</definition>
+        <argsstring>() const =0</argsstring>
+        <name>HasAlpha</name>
+        <qualifiedname>PixelFormat::HasAlpha</qualifiedname>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a9ee6e0e05ab7a200058814b3ec2b5d1b">HasAlpha</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="491" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_pixel_format_1ab1d3a307a8eb96cf4a6326df6d7d4305" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const <ref refid="class_dynamic_format" kindref="compound">DynamicFormat</ref> &amp;</type>
+        <definition>virtual const DynamicFormat &amp; PixelFormat::Format</definition>
+        <argsstring>() const =0</argsstring>
+        <name>Format</name>
+        <qualifiedname>PixelFormat::Format</qualifiedname>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <reimplementedby refid="class_pixel_format_t_1a63b5848ba3793409f3dd1d3bffc8415c">Format</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pixel_format.h" line="492" column="29"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_pixel_format" kindref="compound">PixelFormat</ref> abstract base class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>PixelFormat</label>
+        <link refid="class_pixel_format"/>
+      </node>
+      <node id="19">
+        <label>PixelFormatT&lt; BITS, DYNAMIC_MASKS, DYNAMIC_ALPHA, ALPHA, ALIGNED, RB, RS, GB, GS, BB, BS, AB, AS &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>PixelFormatT&lt; 16, PF::DynamicMasks, PF::DynamicAlpha, PF::NoAlpha, PF::NotAligned, 0, 0, 0, 0, 0, 0, 0, 0 &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>PixelFormatT&lt; 16, PF::DynamicMasks, PF::StaticAlpha, PF::Alpha, PF::NotAligned, 0, 0, 0, 0, 0, 0, 0, 0 &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>PixelFormatT&lt; 16, PF::DynamicMasks, PF::StaticAlpha, PF::NoAlpha, PF::NotAligned, 0, 0, 0, 0, 0, 0, 0, 0 &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>PixelFormatT&lt; 24, PF::DynamicMasks, PF::DynamicAlpha, PF::NoAlpha, PF::IsAligned, 0, 0, 0, 0, 0, 0, 0, 0 &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>PixelFormatT&lt; 24, PF::DynamicMasks, PF::StaticAlpha, PF::NoAlpha, PF::IsAligned, 0, 0, 0, 0, 0, 0, 0, 0 &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>PixelFormatT&lt; 32, PF::DynamicMasks, PF::DynamicAlpha, PF::NoAlpha, PF::IsAligned, 0, 0, 0, 0, 0, 0, 0, 0 &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>PixelFormatT&lt; 32, PF::DynamicMasks, PF::StaticAlpha, PF::Alpha, PF::IsAligned, 0, 0, 0, 0, 0, 0, 0, 0 &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>PixelFormatT&lt; 32, PF::DynamicMasks, PF::StaticAlpha, PF::NoAlpha, PF::IsAligned, 0, 0, 0, 0, 0, 0, 0, 0 &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>PixelFormatT&lt; 32, PF::StaticMasks, PF::StaticAlpha, PF::Alpha, PF::IsAligned, 8, 0, 8, 8, 8, 16, 8, 24 &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PixelFormatT&lt; 32, PF::StaticMasks, PF::StaticAlpha, PF::Alpha, PF::IsAligned, 8, 16, 8, 8, 8, 0, 8, 24 &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>PixelFormatT&lt; 32, PF::StaticMasks, PF::StaticAlpha, PF::Alpha, PF::IsAligned, 8, 24, 8, 16, 8, 8, 8, 0 &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>PixelFormatT&lt; 32, PF::StaticMasks, PF::StaticAlpha, PF::Alpha, PF::IsAligned, 8, 8, 8, 16, 8, 24, 8, 0 &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>PixelFormatT&lt; 32, PF::StaticMasks, PF::StaticAlpha, PF::NoAlpha, PF::IsAligned, 8, 0, 8, 8, 8, 16, 8, 24 &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>PixelFormatT&lt; 32, PF::StaticMasks, PF::StaticAlpha, PF::NoAlpha, PF::IsAligned, 8, 16, 8, 8, 8, 0, 8, 24 &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>PixelFormatT&lt; 32, PF::StaticMasks, PF::StaticAlpha, PF::NoAlpha, PF::IsAligned, 8, 24, 8, 16, 8, 8, 8, 0 &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>PixelFormatT&lt; 32, PF::StaticMasks, PF::StaticAlpha, PF::NoAlpha, PF::IsAligned, 8, 8, 8, 16, 8, 24, 8, 0 &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>PixelFormatT&lt; 8, PF::StaticMasks, PF::StaticAlpha, PF::NoAlpha, PF::IsAligned, 8, 0, 8, 0, 8, 0, 0, 0 &gt;</label>
+        <link refid="class_pixel_format_t"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="pixel_format.h" line="485" column="1" bodyfile="pixel_format.h" bodystart="485" bodyend="493"/>
+    <listofallmembers>
+      <member refid="class_pixel_format_1a0508043dcf860b848c1b4f7a0d39c609" prot="public" virt="pure-virtual"><scope>PixelFormat</scope><name>Bits</name></member>
+      <member refid="class_pixel_format_1ab1d3a307a8eb96cf4a6326df6d7d4305" prot="public" virt="pure-virtual"><scope>PixelFormat</scope><name>Format</name></member>
+      <member refid="class_pixel_format_1a0f9d9d988a1d4c74cbfd970fdb088e7a" prot="public" virt="pure-virtual"><scope>PixelFormat</scope><name>HasAlpha</name></member>
+      <member refid="class_pixel_format_1a9cc17552bce0d6589994050650eeb5d6" prot="public" virt="pure-virtual"><scope>PixelFormat</scope><name>Match</name></member>
+      <member refid="class_pixel_format_1ab7b090934f3a409ca630982876549e51" prot="public" virt="non-virtual"><scope>PixelFormat</scope><name>PixelFormat</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

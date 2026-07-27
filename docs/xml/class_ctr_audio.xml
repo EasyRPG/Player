@@ -1,0 +1,584 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_ctr_audio" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>CtrAudio</compoundname>
+    <basecompoundref refid="struct_audio_interface" prot="public" virt="non-virtual">AudioInterface</basecompoundref>
+    <includes refid="platform_23ds_2audio_8h" local="no">audio.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_ctr_audio_1adb30b802e8c9494028883f02b93d0316" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CtrAudio::CtrAudio</definition>
+        <argsstring>(const Game_ConfigAudio &amp;cfg)</argsstring>
+        <name>CtrAudio</name>
+        <qualifiedname>CtrAudio::CtrAudio</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_game___config_audio" kindref="compound">Game_ConfigAudio</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="33" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1abc01efa542a90a358575cd6f33661324" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>CtrAudio::~CtrAudio</definition>
+        <argsstring>()</argsstring>
+        <name>~CtrAudio</name>
+        <qualifiedname>CtrAudio::~CtrAudio</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="34" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1a2734e552d04848fd37ad485add12767c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CtrAudio::BGM_Play</definition>
+        <argsstring>(Filesystem_Stream::InputStream stream, int volume, int pitch, int fadein) override</argsstring>
+        <name>BGM_Play</name>
+        <qualifiedname>CtrAudio::BGM_Play</qualifiedname>
+        <reimplements refid="struct_audio_interface_1aa5e813f12b0f700ff5cc1b89f1e42345">BGM_Play</reimplements>
+        <param>
+          <type><ref refid="class_filesystem___stream_1_1_input_stream" kindref="compound">Filesystem_Stream::InputStream</ref></type>
+          <declname>stream</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>volume</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>pitch</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>fadein</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Plays a background music.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>file to play. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>volume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>volume. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pitch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pitch. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>fadein</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>fadein. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="36" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1a142565124bf2b39233c426ed1a0293ca" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CtrAudio::BGM_Pause</definition>
+        <argsstring>() override</argsstring>
+        <name>BGM_Pause</name>
+        <qualifiedname>CtrAudio::BGM_Pause</qualifiedname>
+        <reimplements refid="struct_audio_interface_1a63c3c366f6a6e67a77e84ff7bbf53059">BGM_Pause</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Pauses the currently playing background music. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="37" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1af4f4eaab996cd470ead7dec91d95bf7b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CtrAudio::BGM_Resume</definition>
+        <argsstring>() override</argsstring>
+        <name>BGM_Resume</name>
+        <qualifiedname>CtrAudio::BGM_Resume</qualifiedname>
+        <reimplements refid="struct_audio_interface_1a6c0e1fc24c5bedc036203f031a6e8823">BGM_Resume</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Resumes the currently playing background music. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="38" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1ad8c45545a37ae3cebcb486ee78b42d1f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CtrAudio::BGM_Stop</definition>
+        <argsstring>() override</argsstring>
+        <name>BGM_Stop</name>
+        <qualifiedname>CtrAudio::BGM_Stop</qualifiedname>
+        <reimplements refid="struct_audio_interface_1a5c999d36bc47c7dc20d5eec061bbeabb">BGM_Stop</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Stops the currently playing background music. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="39" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1aaaa561077d8b8970405acd4ef5539fbe" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool CtrAudio::BGM_PlayedOnce</definition>
+        <argsstring>() const override</argsstring>
+        <name>BGM_PlayedOnce</name>
+        <qualifiedname>CtrAudio::BGM_PlayedOnce</qualifiedname>
+        <reimplements refid="struct_audio_interface_1ad32c5db309cfbda7a0b19655e0c57022">BGM_PlayedOnce</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns whether the background music has played at least once. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="40" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1a1537aeefc857e1c93e97d61d0caff983" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool CtrAudio::BGM_IsPlaying</definition>
+        <argsstring>() const override</argsstring>
+        <name>BGM_IsPlaying</name>
+        <qualifiedname>CtrAudio::BGM_IsPlaying</qualifiedname>
+        <reimplements refid="struct_audio_interface_1afca63e45db9af8863c9cb386185a68b6">BGM_IsPlaying</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Reports if a music file is currently being played.</para>
+<para><simplesect kind="return"><para>true when BGM is playing </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="41" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1afdc7bffebc7230a4f56e9fd97b33eb73" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int CtrAudio::BGM_GetTicks</definition>
+        <argsstring>() const override</argsstring>
+        <name>BGM_GetTicks</name>
+        <qualifiedname>CtrAudio::BGM_GetTicks</qualifiedname>
+        <reimplements refid="struct_audio_interface_1aa1029fed4b4865edc1ef6e4b8b69e0ae">BGM_GetTicks</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns the current MIDI tick of the background music. Only useful when the BGM is a MIDI track. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="42" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1aa40af9b298cf4c1883d3e77056228bb9" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CtrAudio::BGM_Fade</definition>
+        <argsstring>(int fade) override</argsstring>
+        <name>BGM_Fade</name>
+        <qualifiedname>CtrAudio::BGM_Fade</qualifiedname>
+        <reimplements refid="struct_audio_interface_1a10656df1a8e4b3e016413014faa8afcb">BGM_Fade</reimplements>
+        <param>
+          <type>int</type>
+          <declname>fade</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Does a fade out of the background music.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fade</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>fade out time. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="43" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1a6982234ec1d97c804f84060dc284a832" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CtrAudio::BGM_Volume</definition>
+        <argsstring>(int volume) override</argsstring>
+        <name>BGM_Volume</name>
+        <qualifiedname>CtrAudio::BGM_Volume</qualifiedname>
+        <reimplements refid="struct_audio_interface_1a1264d313ca8c1927492d66b4401e7492">BGM_Volume</reimplements>
+        <param>
+          <type>int</type>
+          <declname>volume</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adjusts the volume of the currently playing background music.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>volume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>volume </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="44" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1aedab10d1b7d8978d8c6d4e84ff466054" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CtrAudio::BGM_Pitch</definition>
+        <argsstring>(int pitch) override</argsstring>
+        <name>BGM_Pitch</name>
+        <qualifiedname>CtrAudio::BGM_Pitch</qualifiedname>
+        <reimplements refid="struct_audio_interface_1a2f05c8b5f06ce846c8e88e725197194e">BGM_Pitch</reimplements>
+        <param>
+          <type>int</type>
+          <declname>pitch</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adjusts the pitch of the currently playing background music.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pitch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pitch </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="45" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1a4157a7bfb440421a0e7a18af97f7123b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string CtrAudio::BGM_GetType</definition>
+        <argsstring>() const override</argsstring>
+        <name>BGM_GetType</name>
+        <qualifiedname>CtrAudio::BGM_GetType</qualifiedname>
+        <reimplements refid="struct_audio_interface_1a684f27f256c63e7c2f164c7fbf7b30d7">BGM_GetType</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Type of music being played. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="46" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1a34fbd5d6be54f0c35b66a95f4bd30ae0" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CtrAudio::SE_Play</definition>
+        <argsstring>(std::unique_ptr&lt; AudioSeCache &gt; se, int volume, int pitch) override</argsstring>
+        <name>SE_Play</name>
+        <qualifiedname>CtrAudio::SE_Play</qualifiedname>
+        <reimplements refid="struct_audio_interface_1a9cb2340e795fdd828de4cd652d43d614">SE_Play</reimplements>
+        <param>
+          <type>std::unique_ptr&lt; <ref refid="class_audio_se_cache" kindref="compound">AudioSeCache</ref> &gt;</type>
+          <declname>se</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>volume</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>pitch</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Plays a sound effect.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>se</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>se to play. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>volume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>volume. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pitch</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pitch. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="47" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1a27a78f9d2582cf5ff6c2d03452e6441e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CtrAudio::SE_Stop</definition>
+        <argsstring>() override</argsstring>
+        <name>SE_Stop</name>
+        <qualifiedname>CtrAudio::SE_Stop</qualifiedname>
+        <reimplements refid="struct_audio_interface_1a8cb2a23c66962f995a0f836b7f7a6f7c">SE_Stop</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Stops the currently playing sound effect. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="48" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1a5fe16a9597b6a0f700d654e5ac27f392" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void CtrAudio::Update</definition>
+        <argsstring>() override</argsstring>
+        <name>Update</name>
+        <qualifiedname>CtrAudio::Update</qualifiedname>
+        <reimplements refid="struct_audio_interface_1ac979ffbf31cb53540c7022168a51970d">Update</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Update audio. Must be called each frame. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="49" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1af6a5bdd7e0b607b942a48f71501b95b6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void CtrAudio::vGetConfig</definition>
+        <argsstring>(Game_ConfigAudio &amp;) const override</argsstring>
+        <name>vGetConfig</name>
+        <qualifiedname>CtrAudio::vGetConfig</qualifiedname>
+        <reimplements refid="struct_audio_interface_1af623f1d38f8e6da5aa94ea14d09f018c">vGetConfig</reimplements>
+        <param>
+          <type><ref refid="struct_game___config_audio" kindref="compound">Game_ConfigAudio</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="51" column="6" bodyfile="platform/3ds/audio.h" bodystart="51" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1ab127765302f96388b58b4bef8c06c98e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void CtrAudio::LockMutex</definition>
+        <argsstring>() const</argsstring>
+        <name>LockMutex</name>
+        <qualifiedname>CtrAudio::LockMutex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="53" column="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_ctr_audio_1ad3165ecb7c6f0f142baa25716bac0f46" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void CtrAudio::UnlockMutex</definition>
+        <argsstring>() const</argsstring>
+        <name>UnlockMutex</name>
+        <qualifiedname>CtrAudio::UnlockMutex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/3ds/audio.h" line="54" column="6"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>AudioInterface</label>
+        <link refid="struct_audio_interface"/>
+      </node>
+      <node id="1">
+        <label>CtrAudio</label>
+        <link refid="class_ctr_audio"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>AudioInterface</label>
+        <link refid="struct_audio_interface"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>cfg</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>ConfigParam&lt; std::string &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="5">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="10">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="1">
+        <label>CtrAudio</label>
+        <link refid="class_ctr_audio"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Game_ConfigAudio</label>
+        <link refid="struct_game___config_audio"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>music_volume</edgelabel>
+          <edgelabel>sound_volume</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>fluidsynth_midi</edgelabel>
+          <edgelabel>native_midi</edgelabel>
+          <edgelabel>wildmidi_midi</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>fmmidi_midi</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>soundfont</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>LockedConfigParam&lt; std::string &gt;</label>
+        <link refid="class_locked_config_param"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>PathConfigParam</label>
+        <link refid="class_path_config_param"/>
+        <childnode refid="12" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>StringConfigParam</label>
+        <link refid="class_config_param"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="platform/3ds/audio.h" line="31" column="1" bodyfile="platform/3ds/audio.h" bodystart="31" bodyend="55"/>
+    <listofallmembers>
+      <member refid="struct_audio_interface_1a9c45557ddc2a1429df7be8d75a473011" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>AudioInterface</name></member>
+      <member refid="class_ctr_audio_1aa40af9b298cf4c1883d3e77056228bb9" prot="public" virt="virtual"><scope>CtrAudio</scope><name>BGM_Fade</name></member>
+      <member refid="struct_audio_interface_1af908cc5d16f32e883bff0ae7a75a9750" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>BGM_GetGlobalVolume</name></member>
+      <member refid="class_ctr_audio_1afdc7bffebc7230a4f56e9fd97b33eb73" prot="public" virt="virtual"><scope>CtrAudio</scope><name>BGM_GetTicks</name></member>
+      <member refid="class_ctr_audio_1a4157a7bfb440421a0e7a18af97f7123b" prot="public" virt="virtual"><scope>CtrAudio</scope><name>BGM_GetType</name></member>
+      <member refid="class_ctr_audio_1a1537aeefc857e1c93e97d61d0caff983" prot="public" virt="virtual"><scope>CtrAudio</scope><name>BGM_IsPlaying</name></member>
+      <member refid="class_ctr_audio_1a142565124bf2b39233c426ed1a0293ca" prot="public" virt="virtual"><scope>CtrAudio</scope><name>BGM_Pause</name></member>
+      <member refid="class_ctr_audio_1aedab10d1b7d8978d8c6d4e84ff466054" prot="public" virt="virtual"><scope>CtrAudio</scope><name>BGM_Pitch</name></member>
+      <member refid="class_ctr_audio_1a2734e552d04848fd37ad485add12767c" prot="public" virt="virtual"><scope>CtrAudio</scope><name>BGM_Play</name></member>
+      <member refid="class_ctr_audio_1aaaa561077d8b8970405acd4ef5539fbe" prot="public" virt="virtual"><scope>CtrAudio</scope><name>BGM_PlayedOnce</name></member>
+      <member refid="class_ctr_audio_1af4f4eaab996cd470ead7dec91d95bf7b" prot="public" virt="virtual"><scope>CtrAudio</scope><name>BGM_Resume</name></member>
+      <member refid="struct_audio_interface_1adb5e46889f939439998026d257052f07" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>BGM_SetGlobalVolume</name></member>
+      <member refid="class_ctr_audio_1ad8c45545a37ae3cebcb486ee78b42d1f" prot="public" virt="virtual"><scope>CtrAudio</scope><name>BGM_Stop</name></member>
+      <member refid="class_ctr_audio_1a6982234ec1d97c804f84060dc284a832" prot="public" virt="virtual"><scope>CtrAudio</scope><name>BGM_Volume</name></member>
+      <member refid="struct_audio_interface_1ad751ed86af60ced4f37d7091b91f823b" prot="protected" virt="non-virtual"><scope>CtrAudio</scope><name>cfg</name></member>
+      <member refid="struct_audio_interface_1ab0b6a6be94283bf823cbaaa99fc318e3" prot="public" virt="virtual"><scope>CtrAudio</scope><name>CreateAndGetMidiOut</name></member>
+      <member refid="class_ctr_audio_1adb30b802e8c9494028883f02b93d0316" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>CtrAudio</name></member>
+      <member refid="struct_audio_interface_1adee5375400b4ca5766688d41f0556128" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>GetConfig</name></member>
+      <member refid="struct_audio_interface_1acd8cb626f3ab05de21f5f2bf4f6f8705" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>GetFluidsynthEnabled</name></member>
+      <member refid="struct_audio_interface_1a2110824b87384e8d25305c5994b9388e" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>GetFluidsynthSoundfont</name></member>
+      <member refid="struct_audio_interface_1a9505d2347489b105f34e8e9d8a1bc0a6" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>GetNativeMidiEnabled</name></member>
+      <member refid="struct_audio_interface_1a276c5e6104212f238ad196e38bd8616a" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>GetWildMidiEnabled</name></member>
+      <member refid="class_ctr_audio_1ab127765302f96388b58b4bef8c06c98e" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>LockMutex</name></member>
+      <member refid="struct_audio_interface_1af76756316f54120859688ddd465d6d63" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>SE_GetGlobalVolume</name></member>
+      <member refid="class_ctr_audio_1a34fbd5d6be54f0c35b66a95f4bd30ae0" prot="public" virt="virtual"><scope>CtrAudio</scope><name>SE_Play</name></member>
+      <member refid="struct_audio_interface_1addcdf36521311bc0fcf761c78c8870fd" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>SE_SetGlobalVolume</name></member>
+      <member refid="class_ctr_audio_1a27a78f9d2582cf5ff6c2d03452e6441e" prot="public" virt="virtual"><scope>CtrAudio</scope><name>SE_Stop</name></member>
+      <member refid="struct_audio_interface_1ad2bd03f936f089f7812450b7d204be0b" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>SetFluidsynthEnabled</name></member>
+      <member refid="struct_audio_interface_1a2856838fa110c28901e72df2a8dd3466" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>SetFluidsynthSoundfont</name></member>
+      <member refid="struct_audio_interface_1a840f26eedce549fb677874e0c767cdb7" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>SetNativeMidiEnabled</name></member>
+      <member refid="struct_audio_interface_1a9b02af54c27102366a662fa4e4b52849" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>SetWildMidiEnabled</name></member>
+      <member refid="class_ctr_audio_1ad3165ecb7c6f0f142baa25716bac0f46" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>UnlockMutex</name></member>
+      <member refid="class_ctr_audio_1a5fe16a9597b6a0f700d654e5ac27f392" prot="public" virt="virtual"><scope>CtrAudio</scope><name>Update</name></member>
+      <member refid="class_ctr_audio_1af6a5bdd7e0b607b942a48f71501b95b6" prot="public" virt="virtual"><scope>CtrAudio</scope><name>vGetConfig</name></member>
+      <member refid="struct_audio_interface_1ac4ff9429ec5962d3985d182ec9b3d088" prot="public" virt="virtual"><scope>CtrAudio</scope><name>~AudioInterface</name></member>
+      <member refid="class_ctr_audio_1abc01efa542a90a358575cd6f33661324" prot="public" virt="non-virtual"><scope>CtrAudio</scope><name>~CtrAudio</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

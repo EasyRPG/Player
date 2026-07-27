@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_0d357167234000321173012257165205144344163027200334" kind="namespace" language="C++">
+    <compoundname>@357167234000321173012257165205144344163027200334</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>This file is part of EasyRPG <ref refid="namespace_player" kindref="compound">Player</ref>.</para>
+<para>EasyRPG <ref refid="namespace_player" kindref="compound">Player</ref> is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</para>
+<para>EasyRPG <ref refid="namespace_player" kindref="compound">Player</ref> is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</para>
+<para>You should have received a copy of the GNU General Public License along with EasyRPG <ref refid="namespace_player" kindref="compound">Player</ref>. If not, see <ulink url="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</ulink>. </para>
+    </detaileddescription>
+    <location file="platform/switch/ui.cpp" line="49" column="1"/>
+  </compounddef>
+</doxygen>

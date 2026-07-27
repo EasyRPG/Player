@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1metadata_1_1_object" kind="class" language="C++" prot="public">
+    <compoundname>leasy::metadata::Object</compoundname>
+    <basecompoundref refid="classleasy_1_1kits_1_1variant" prot="public" virt="non-virtual">leasy::kits::variant&lt; null, integer, uinteger, number, boolean, string, Array, Map &gt;</basecompoundref>
+    <includes refid="object_8hpp" local="no">object.hpp</includes>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>leasy::kits::variant&lt; null, integer, uinteger, number, boolean, string, Array, Map &gt;</label>
+        <link refid="classleasy_1_1kits_1_1variant"/>
+      </node>
+      <node id="1">
+        <label>leasy::metadata::Object</label>
+        <link refid="classleasy_1_1metadata_1_1_object"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>leasy::kits::variant&lt; null, integer, uinteger, number, boolean, string, Array, Map &gt;</label>
+        <link refid="classleasy_1_1kits_1_1variant"/>
+      </node>
+      <node id="1">
+        <label>leasy::metadata::Object</label>
+        <link refid="classleasy_1_1metadata_1_1_object"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="leasy/metadata/object.hpp" line="66" column="3" bodyfile="leasy/metadata/object.hpp" bodystart="69" bodyend="74"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1kits_1_1variant_1ad793cbe3aa25bbbaa38007198fc89e35" prot="public" virt="non-virtual"><scope>leasy::metadata::Object</scope><name>internal</name></member>
+      <member refid="classleasy_1_1kits_1_1variant_1ae6d568f4d7a6f48df75fbc059673fd97" prot="public" virt="non-virtual"><scope>leasy::metadata::Object</scope><name>set</name></member>
+      <member refid="classleasy_1_1kits_1_1variant_1a23200f138a7f0d66e33226e0d16c1c72" prot="protected" virt="non-virtual"><scope>leasy::metadata::Object</scope><name>value</name></member>
+      <member refid="classleasy_1_1kits_1_1variant_1acee108c0f76474b2a2a2304ebe5b8ab9" prot="public" virt="non-virtual"><scope>leasy::metadata::Object</scope><name>variant</name></member>
+      <member refid="classleasy_1_1kits_1_1variant_1a5d92e496e70f88a05d8541201a65bf9e" prot="public" virt="non-virtual"><scope>leasy::metadata::Object</scope><name>when</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

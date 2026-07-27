@@ -341,3 +341,4 @@ bool Interpreter::BlockComment()
 
 	return true;
 }
+

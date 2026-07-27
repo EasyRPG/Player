@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_keyboard___layout" kind="struct" language="C++" prot="public">
+    <compoundname>Keyboard_Layout</compoundname>
+    <includes refid="window__keyboard_8h" local="no">window_keyboard.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_keyboard___layout_1a659603e70875b22f5200a72caaf18ec8" prot="public" static="no" mutable="no">
+        <type>const std::string</type>
+        <definition>const std::string Keyboard_Layout::key_text</definition>
+        <argsstring></argsstring>
+        <name>key_text</name>
+        <qualifiedname>Keyboard_Layout::key_text</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_keyboard.h" line="101" column="19" bodyfile="window_keyboard.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_keyboard___layout_1ad18e02d59974792b902f4242bc4a052e" prot="public" static="no" mutable="no">
+        <type>const std::string</type>
+        <definition>const std::string Keyboard_Layout::items[Window_Keyboard::row_max][Window_Keyboard::col_max]</definition>
+        <argsstring>[Window_Keyboard::row_max][Window_Keyboard::col_max]</argsstring>
+        <name>items</name>
+        <qualifiedname>Keyboard_Layout::items</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_keyboard.h" line="102" column="19" bodyfile="window_keyboard.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Keyboard layout struct. Defines which keys are available and how the key to switch here is named </para>
+    </detaileddescription>
+    <location file="window_keyboard.h" line="100" column="1" bodyfile="window_keyboard.h" bodystart="100" bodyend="103"/>
+    <listofallmembers>
+      <member refid="struct_keyboard___layout_1ad18e02d59974792b902f4242bc4a052e" prot="public" virt="non-virtual"><scope>Keyboard_Layout</scope><name>items</name></member>
+      <member refid="struct_keyboard___layout_1a659603e70875b22f5200a72caaf18ec8" prot="public" virt="non-virtual"><scope>Keyboard_Layout</scope><name>key_text</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

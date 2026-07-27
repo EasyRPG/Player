@@ -1,0 +1,545 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_flat_unique_multi_map" kind="class" language="C++" prot="public">
+    <compoundname>FlatUniqueMultiMap</compoundname>
+    <includes refid="flat__map_8h" local="no">flat_map.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename K</type>
+      </param>
+      <param>
+        <type>typename V</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" prot="public" static="no">
+        <type>std::pair&lt; K, V &gt;</type>
+        <definition>using FlatUniqueMultiMap&lt; K, V &gt;::pair_type = std::pair&lt;K,V&gt;</definition>
+        <argsstring></argsstring>
+        <name>pair_type</name>
+        <qualifiedname>FlatUniqueMultiMap::pair_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="41" column="1" bodyfile="flat_map.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" prot="public" static="no">
+        <type>K</type>
+        <definition>using FlatUniqueMultiMap&lt; K, V &gt;::first_type = K</definition>
+        <argsstring></argsstring>
+        <name>first_type</name>
+        <qualifiedname>FlatUniqueMultiMap::first_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="42" column="1" bodyfile="flat_map.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_flat_unique_multi_map_1ad620e80ee368842f5182296ae0119f42" prot="public" static="no">
+        <type>V</type>
+        <definition>using FlatUniqueMultiMap&lt; K, V &gt;::second_type = V</definition>
+        <argsstring></argsstring>
+        <name>second_type</name>
+        <qualifiedname>FlatUniqueMultiMap::second_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="43" column="1" bodyfile="flat_map.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_flat_unique_multi_map_1a7d1cfdd311d17078fe3b306241bbe9d0" prot="public" static="no">
+        <type>std::vector&lt; <ref refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" kindref="member">pair_type</ref> &gt;</type>
+        <definition>using FlatUniqueMultiMap&lt; K, V &gt;::container_type = std::vector&lt;pair_type&gt;</definition>
+        <argsstring></argsstring>
+        <name>container_type</name>
+        <qualifiedname>FlatUniqueMultiMap::container_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="44" column="1" bodyfile="flat_map.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_flat_unique_multi_map_1aa507a7486f4bcc71997fd08ca6b7a2df" prot="public" static="no">
+        <type>typename container_type::const_iterator</type>
+        <definition>using FlatUniqueMultiMap&lt; K, V &gt;::iterator = typename container_type::const_iterator</definition>
+        <argsstring></argsstring>
+        <name>iterator</name>
+        <qualifiedname>FlatUniqueMultiMap::iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="46" column="1" bodyfile="flat_map.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_flat_unique_multi_map_1abf98702ff3dc49f0f4e91b8ac9d794af" prot="private" static="no" mutable="no">
+        <type><ref refid="class_flat_unique_multi_map_1a7d1cfdd311d17078fe3b306241bbe9d0" kindref="member">container_type</ref></type>
+        <definition>container_type FlatUniqueMultiMap&lt; K, V &gt;::mappings</definition>
+        <argsstring></argsstring>
+        <name>mappings</name>
+        <qualifiedname>FlatUniqueMultiMap::mappings</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="138" column="16" bodyfile="flat_map.h" bodystart="138" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_flat_unique_multi_map_1a00e5b40f85d8e33d61cfae3a78d27e89" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>FlatUniqueMultiMap&lt; K, V &gt;::FlatUniqueMultiMap</definition>
+        <argsstring>()=default</argsstring>
+        <name>FlatUniqueMultiMap</name>
+        <qualifiedname>FlatUniqueMultiMap::FlatUniqueMultiMap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Construct an empty map </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="49" column="1"/>
+      </memberdef>
+      <memberdef kind="function" id="class_flat_unique_multi_map_1a0ca6d770d65a89d21a59a68e68b465b9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>FlatUniqueMultiMap&lt; K, V &gt;::FlatUniqueMultiMap</definition>
+        <argsstring>(std::initializer_list&lt; pair_type &gt; ilist)</argsstring>
+        <name>FlatUniqueMultiMap</name>
+        <qualifiedname>FlatUniqueMultiMap::FlatUniqueMultiMap</qualifiedname>
+        <param>
+          <type>std::initializer_list&lt; <ref refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" kindref="member">pair_type</ref> &gt;</type>
+          <declname>ilist</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Construct a map with the given (key, value) pairs. Any duplicates in the list will be dropped. Which of the duplicate elements get removed is implementation defined.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ilist</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the list of initial (key, value) pairs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="58" column="1" bodyfile="flat_map.h" bodystart="142" bodyend="147"/>
+      </memberdef>
+      <memberdef kind="function" id="class_flat_unique_multi_map_1a0216cdb72731b2fdffe697b47e59f903" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_flat_unique_multi_map_1aa507a7486f4bcc71997fd08ca6b7a2df" kindref="member">iterator</ref></type>
+        <definition>FlatUniqueMultiMap&lt; K, V &gt;::iterator FlatUniqueMultiMap&lt; K, V &gt;::LowerBound</definition>
+        <argsstring>(const pair_type &amp;pt) const</argsstring>
+        <name>LowerBound</name>
+        <qualifiedname>FlatUniqueMultiMap::LowerBound</qualifiedname>
+        <param>
+          <type>const <ref refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" kindref="member">pair_type</ref> &amp;</type>
+          <declname>pt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return lower bound of (key, value) pair</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the pair to lookup. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>iterator to the first element greater than or equal to pt. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="66" column="10" bodyfile="flat_map.h" bodystart="150" bodyend="152"/>
+      </memberdef>
+      <memberdef kind="function" id="class_flat_unique_multi_map_1a77fe9ab233a9bdd400190ec89e5b4b5e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_flat_unique_multi_map_1aa507a7486f4bcc71997fd08ca6b7a2df" kindref="member">iterator</ref></type>
+        <definition>FlatUniqueMultiMap&lt; K, V &gt;::iterator FlatUniqueMultiMap&lt; K, V &gt;::LowerBound</definition>
+        <argsstring>(const first_type &amp;key) const</argsstring>
+        <name>LowerBound</name>
+        <qualifiedname>FlatUniqueMultiMap::LowerBound</qualifiedname>
+        <param>
+          <type>const <ref refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" kindref="member">first_type</ref> &amp;</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Return lower bound of key</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the pair to lookup. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>iterator to the first element whose key is greater than or equal to key. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="74" column="10" bodyfile="flat_map.h" bodystart="155" bodyend="157"/>
+      </memberdef>
+      <memberdef kind="function" id="class_flat_unique_multi_map_1abb1766649ad696571465164bbb430566" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FlatUniqueMultiMap&lt; K, V &gt;::Has</definition>
+        <argsstring>(const pair_type &amp;pt) const</argsstring>
+        <name>Has</name>
+        <qualifiedname>FlatUniqueMultiMap::Has</qualifiedname>
+        <param>
+          <type>const <ref refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" kindref="member">pair_type</ref> &amp;</type>
+          <declname>pt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Check whether the given (key, value) pair is in the map. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the pair to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if pt is in the map. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="81" column="6" bodyfile="flat_map.h" bodystart="160" bodyend="163"/>
+      </memberdef>
+      <memberdef kind="function" id="class_flat_unique_multi_map_1ad1782dd469332e1627d86d422c9b5039" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FlatUniqueMultiMap&lt; K, V &gt;::Has</definition>
+        <argsstring>(const first_type &amp;key) const</argsstring>
+        <name>Has</name>
+        <qualifiedname>FlatUniqueMultiMap::Has</qualifiedname>
+        <param>
+          <type>const <ref refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" kindref="member">first_type</ref> &amp;</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Check whether the given key has any value in the map. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>key</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the key to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if key is in the map. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="88" column="6" bodyfile="flat_map.h" bodystart="166" bodyend="169"/>
+      </memberdef>
+      <memberdef kind="function" id="class_flat_unique_multi_map_1ad5530c22387b43823518a9e294946d3e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t FlatUniqueMultiMap&lt; K, V &gt;::Count</definition>
+        <argsstring>(const first_type &amp;key) const</argsstring>
+        <name>Count</name>
+        <qualifiedname>FlatUniqueMultiMap::Count</qualifiedname>
+        <param>
+          <type>const <ref refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" kindref="member">first_type</ref> &amp;</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Counts how many items with a given key are in the map. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>key</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the key to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>size_t how often the key appears </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="95" column="8" bodyfile="flat_map.h" bodystart="172" bodyend="184"/>
+      </memberdef>
+      <memberdef kind="function" id="class_flat_unique_multi_map_1aac9a35a746c1ca59a6763a143512d1b4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FlatUniqueMultiMap&lt; K, V &gt;::Add</definition>
+        <argsstring>(pair_type pt)</argsstring>
+        <name>Add</name>
+        <qualifiedname>FlatUniqueMultiMap::Add</qualifiedname>
+        <param>
+          <type><ref refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" kindref="member">pair_type</ref></type>
+          <declname>pt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adds the (key, value) pair to the map if it doesn&apos;t already exist. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the pair to add. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if was added. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="102" column="6" bodyfile="flat_map.h" bodystart="187" bodyend="194"/>
+      </memberdef>
+      <memberdef kind="function" id="class_flat_unique_multi_map_1aa4fb592161d04ebc44943ff702ed20d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FlatUniqueMultiMap&lt; K, V &gt;::Remove</definition>
+        <argsstring>(const pair_type &amp;pt)</argsstring>
+        <name>Remove</name>
+        <qualifiedname>FlatUniqueMultiMap::Remove</qualifiedname>
+        <param>
+          <type>const <ref refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" kindref="member">pair_type</ref> &amp;</type>
+          <declname>pt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Removes the (key, value) pair from the map if it exists. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the pair to remove. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if pt was removed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="109" column="6" bodyfile="flat_map.h" bodystart="197" bodyend="204"/>
+      </memberdef>
+      <memberdef kind="function" id="class_flat_unique_multi_map_1aab4262bdf6509b9bfdbb75460e9d6de2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int FlatUniqueMultiMap&lt; K, V &gt;::RemoveAll</definition>
+        <argsstring>(const first_type &amp;key)</argsstring>
+        <name>RemoveAll</name>
+        <qualifiedname>FlatUniqueMultiMap::RemoveAll</qualifiedname>
+        <param>
+          <type>const <ref refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" kindref="member">first_type</ref> &amp;</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Removes all (key, value) pairs for the given key. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>key</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the key to remove. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the number of pairs removed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="116" column="5" bodyfile="flat_map.h" bodystart="207" bodyend="214"/>
+      </memberdef>
+      <memberdef kind="function" id="class_flat_unique_multi_map_1a3190341ad2698bc9fb658baa170a5cbc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ValueIter</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void FlatUniqueMultiMap&lt; K, V &gt;::ReplaceAll</definition>
+        <argsstring>(const first_type &amp;key, ValueIter values_begin, ValueIter values_end)</argsstring>
+        <name>ReplaceAll</name>
+        <qualifiedname>FlatUniqueMultiMap::ReplaceAll</qualifiedname>
+        <param>
+          <type>const <ref refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" kindref="member">first_type</ref> &amp;</type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type>ValueIter</type>
+          <declname>values_begin</declname>
+        </param>
+        <param>
+          <type>ValueIter</type>
+          <declname>values_end</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Replace all (key, value) pairs for the given key with the given values in the iterator range. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>key</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the key to replace. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>values_begin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>an iterator pointing to the beginning of the values range to replace with. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>values_end</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>an iterator pointing to the end of the values range to replace with. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="125" column="6" bodyfile="flat_map.h" bodystart="218" bodyend="259"/>
+      </memberdef>
+      <memberdef kind="function" id="class_flat_unique_multi_map_1acf66b1198429e8097f86aeecf7d8295f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_flat_unique_multi_map_1aa507a7486f4bcc71997fd08ca6b7a2df" kindref="member">iterator</ref></type>
+        <definition>iterator FlatUniqueMultiMap&lt; K, V &gt;::begin</definition>
+        <argsstring>() const</argsstring>
+        <name>begin</name>
+        <qualifiedname>FlatUniqueMultiMap::begin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>iterator to beginning </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="128" column="10" bodyfile="flat_map.h" bodystart="128" bodyend="128"/>
+      </memberdef>
+      <memberdef kind="function" id="class_flat_unique_multi_map_1a8cc26951970fb7a41e81eefc29d974f5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_flat_unique_multi_map_1aa507a7486f4bcc71997fd08ca6b7a2df" kindref="member">iterator</ref></type>
+        <definition>iterator FlatUniqueMultiMap&lt; K, V &gt;::end</definition>
+        <argsstring>() const</argsstring>
+        <name>end</name>
+        <qualifiedname>FlatUniqueMultiMap::end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>iterator to end </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="130" column="10" bodyfile="flat_map.h" bodystart="130" bodyend="130"/>
+      </memberdef>
+      <memberdef kind="function" id="class_flat_unique_multi_map_1aa4ec5ff864ac079b7947b2eff3dfd0de" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t FlatUniqueMultiMap&lt; K, V &gt;::size</definition>
+        <argsstring>() const</argsstring>
+        <name>size</name>
+        <qualifiedname>FlatUniqueMultiMap::size</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the number of (key, value) pairs in the map. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="133" column="8" bodyfile="flat_map.h" bodystart="133" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="function" id="class_flat_unique_multi_map_1a5e58321d8fe6733c9f82a13d92e65a96" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool FlatUniqueMultiMap&lt; K, V &gt;::empty</definition>
+        <argsstring>() const</argsstring>
+        <name>empty</name>
+        <qualifiedname>FlatUniqueMultiMap::empty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if the map is empty. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="flat_map.h" line="136" column="6" bodyfile="flat_map.h" bodystart="136" bodyend="136"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>An ordered associative container which maps keys to values. Each key may appear multiple times, but each (key, value) pair must be unique. The elements are ordered by (key, value) lexicographically. The data is stored in a flat array, which means read operations are fast and write operations are slower. This data structure is optimized for write rarely, read often workloads. </para>
+    </detaileddescription>
+    <location file="flat_map.h" line="39" column="1" bodyfile="flat_map.h" bodystart="39" bodyend="139"/>
+    <listofallmembers>
+      <member refid="class_flat_unique_multi_map_1aac9a35a746c1ca59a6763a143512d1b4" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>Add</name></member>
+      <member refid="class_flat_unique_multi_map_1acf66b1198429e8097f86aeecf7d8295f" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>begin</name></member>
+      <member refid="class_flat_unique_multi_map_1a7d1cfdd311d17078fe3b306241bbe9d0" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>container_type</name></member>
+      <member refid="class_flat_unique_multi_map_1ad5530c22387b43823518a9e294946d3e" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>Count</name></member>
+      <member refid="class_flat_unique_multi_map_1a5e58321d8fe6733c9f82a13d92e65a96" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>empty</name></member>
+      <member refid="class_flat_unique_multi_map_1a8cc26951970fb7a41e81eefc29d974f5" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>end</name></member>
+      <member refid="class_flat_unique_multi_map_1a53a4d75e81f0c26e79ebac4f788f2898" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>first_type</name></member>
+      <member refid="class_flat_unique_multi_map_1a00e5b40f85d8e33d61cfae3a78d27e89" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>FlatUniqueMultiMap</name></member>
+      <member refid="class_flat_unique_multi_map_1a0ca6d770d65a89d21a59a68e68b465b9" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>FlatUniqueMultiMap</name></member>
+      <member refid="class_flat_unique_multi_map_1abb1766649ad696571465164bbb430566" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>Has</name></member>
+      <member refid="class_flat_unique_multi_map_1ad1782dd469332e1627d86d422c9b5039" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>Has</name></member>
+      <member refid="class_flat_unique_multi_map_1aa507a7486f4bcc71997fd08ca6b7a2df" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>iterator</name></member>
+      <member refid="class_flat_unique_multi_map_1a0216cdb72731b2fdffe697b47e59f903" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>LowerBound</name></member>
+      <member refid="class_flat_unique_multi_map_1a77fe9ab233a9bdd400190ec89e5b4b5e" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>LowerBound</name></member>
+      <member refid="class_flat_unique_multi_map_1abf98702ff3dc49f0f4e91b8ac9d794af" prot="private" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>mappings</name></member>
+      <member refid="class_flat_unique_multi_map_1a91df799d41742b7cfaeedea921a9f34b" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>pair_type</name></member>
+      <member refid="class_flat_unique_multi_map_1aa4fb592161d04ebc44943ff702ed20d4" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>Remove</name></member>
+      <member refid="class_flat_unique_multi_map_1aab4262bdf6509b9bfdbb75460e9d6de2" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>RemoveAll</name></member>
+      <member refid="class_flat_unique_multi_map_1a3190341ad2698bc9fb658baa170a5cbc" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>ReplaceAll</name></member>
+      <member refid="class_flat_unique_multi_map_1ad620e80ee368842f5182296ae0119f42" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>second_type</name></member>
+      <member refid="class_flat_unique_multi_map_1aa4ec5ff864ac079b7947b2eff3dfd0de" prot="public" virt="non-virtual"><scope>FlatUniqueMultiMap</scope><name>size</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,227 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_window___interpreter_1_1_ui_sub_action_line" kind="class" language="C++" prot="public">
+    <compoundname>Window_Interpreter::UiSubActionLine</compoundname>
+    <includes refid="window__interpreter_8h" local="no">window_interpreter.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_window___interpreter_1_1_ui_sub_action_line_1a316039643c418a0681c05d4adc6dac60" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Window_Interpreter::UiSubActionLine::index</definition>
+        <argsstring></argsstring>
+        <name>index</name>
+        <qualifiedname>Window_Interpreter::UiSubActionLine::index</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="63" column="5" bodyfile="window_interpreter.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___interpreter_1_1_ui_sub_action_line_1a69dfd572e6297458e27abd7549702d0f" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="class_window___interpreter_1acbe4840e24e328f89aa809f7d70559aa" kindref="member">UiAction</ref> &gt;</type>
+        <definition>std::vector&lt;UiAction&gt; Window_Interpreter::UiSubActionLine::actions</definition>
+        <argsstring></argsstring>
+        <name>actions</name>
+        <qualifiedname>Window_Interpreter::UiSubActionLine::actions</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="65" column="13" bodyfile="window_interpreter.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___interpreter_1_1_ui_sub_action_line_1af5d43879090655c6bc6e360440ef8c1e" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt;std::string&gt; Window_Interpreter::UiSubActionLine::texts</definition>
+        <argsstring></argsstring>
+        <name>texts</name>
+        <qualifiedname>Window_Interpreter::UiSubActionLine::texts</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="66" column="13" bodyfile="window_interpreter.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___interpreter_1_1_ui_sub_action_line_1a4c7d169168146a8c183de8c0eac57142" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="class_font_1a300007dc1b65d906cf32066494d5cb8f" kindref="member">Font::SystemColor</ref> &gt;</type>
+        <definition>std::vector&lt;Font::SystemColor&gt; Window_Interpreter::UiSubActionLine::colors</definition>
+        <argsstring></argsstring>
+        <name>colors</name>
+        <qualifiedname>Window_Interpreter::UiSubActionLine::colors</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="67" column="13" bodyfile="window_interpreter.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_window___interpreter_1_1_ui_sub_action_line_1a6f638168aa0756665efd86eba87bda82" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::function&lt; bool()&gt; &gt;</type>
+        <definition>std::vector&lt;std::function&lt;bool()&gt; &gt; Window_Interpreter::UiSubActionLine::visibility_delegates</definition>
+        <argsstring></argsstring>
+        <name>visibility_delegates</name>
+        <qualifiedname>Window_Interpreter::UiSubActionLine::visibility_delegates</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="68" column="13" bodyfile="window_interpreter.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_window___interpreter_1_1_ui_sub_action_line_1aafba6cf4aa77bf572b394299dc32f84b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Window_Interpreter::UiSubActionLine::UiSubActionLine</definition>
+        <argsstring>()</argsstring>
+        <name>UiSubActionLine</name>
+        <qualifiedname>Window_Interpreter::UiSubActionLine::UiSubActionLine</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="39" column="1" bodyfile="window_interpreter.h" bodystart="39" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___interpreter_1_1_ui_sub_action_line_1ae5710c55700340a64b1a641698a7c019" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Window_Interpreter::UiSubActionLine::UiSubActionLine</definition>
+        <argsstring>(std::initializer_list&lt; UiAction &gt; actions, std::initializer_list&lt; std::string &gt; texts, std::initializer_list&lt; Font::SystemColor &gt; colors, std::initializer_list&lt; std::function&lt; bool()&gt; &gt; visibility_delegates)</argsstring>
+        <name>UiSubActionLine</name>
+        <qualifiedname>Window_Interpreter::UiSubActionLine::UiSubActionLine</qualifiedname>
+        <param>
+          <type>std::initializer_list&lt; <ref refid="class_window___interpreter_1acbe4840e24e328f89aa809f7d70559aa" kindref="member">UiAction</ref> &gt;</type>
+          <declname>actions</declname>
+        </param>
+        <param>
+          <type>std::initializer_list&lt; std::string &gt;</type>
+          <declname>texts</declname>
+        </param>
+        <param>
+          <type>std::initializer_list&lt; <ref refid="class_font_1a300007dc1b65d906cf32066494d5cb8f" kindref="member">Font::SystemColor</ref> &gt;</type>
+          <declname>colors</declname>
+        </param>
+        <param>
+          <type>std::initializer_list&lt; std::function&lt; bool()&gt; &gt;</type>
+          <declname>visibility_delegates</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="43" column="1" bodyfile="window_interpreter.h" bodystart="43" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___interpreter_1_1_ui_sub_action_line_1a2328b634f00fda2799c1f4a5e7eb12f2" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Window_Interpreter::UiSubActionLine::IsVisible</definition>
+        <argsstring>() const</argsstring>
+        <name>IsVisible</name>
+        <qualifiedname>Window_Interpreter::UiSubActionLine::IsVisible</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="56" column="6" bodyfile="window_interpreter.cpp" bodystart="300" bodyend="306"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___interpreter_1_1_ui_sub_action_line_1af5fb96435ba8d52774650452deabf27c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Interpreter::UiSubActionLine::Update</definition>
+        <argsstring>(Window_Selectable &amp;parent)</argsstring>
+        <name>Update</name>
+        <qualifiedname>Window_Interpreter::UiSubActionLine::Update</qualifiedname>
+        <param>
+          <type><ref refid="class_window___selectable" kindref="compound">Window_Selectable</ref> &amp;</type>
+          <declname>parent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="57" column="6" bodyfile="window_interpreter.cpp" bodystart="308" bodyend="346"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___interpreter_1_1_ui_sub_action_line_1ad3cbda0e77f93fffa8ffa87bfc27863c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Interpreter::UiSubActionLine::Draw</definition>
+        <argsstring>(BitmapRef contents, Rect rect) const</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Window_Interpreter::UiSubActionLine::Draw</qualifiedname>
+        <param>
+          <type><ref refid="memory__management_8h_1a022ea6e5bf27cd499ac4019090a1d71a" kindref="member">BitmapRef</ref></type>
+          <declname>contents</declname>
+        </param>
+        <param>
+          <type><ref refid="class_rect" kindref="compound">Rect</ref></type>
+          <declname>rect</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="58" column="6" bodyfile="window_interpreter.cpp" bodystart="363" bodyend="372"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___interpreter_1_1_ui_sub_action_line_1ae90edb85031a684404ee5615a1414544" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Window_Interpreter::UiSubActionLine::ClearIndex</definition>
+        <argsstring>()</argsstring>
+        <name>ClearIndex</name>
+        <qualifiedname>Window_Interpreter::UiSubActionLine::ClearIndex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="59" column="6" bodyfile="window_interpreter.cpp" bodystart="374" bodyend="376"/>
+      </memberdef>
+      <memberdef kind="function" id="class_window___interpreter_1_1_ui_sub_action_line_1a84bf20455de012216152b7e426886aa8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_window___interpreter_1acbe4840e24e328f89aa809f7d70559aa" kindref="member">UiAction</ref></type>
+        <definition>Window_Interpreter::UiAction Window_Interpreter::UiSubActionLine::GetSelectedAction</definition>
+        <argsstring>() const</argsstring>
+        <name>GetSelectedAction</name>
+        <qualifiedname>Window_Interpreter::UiSubActionLine::GetSelectedAction</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="window_interpreter.h" line="60" column="10" bodyfile="window_interpreter.cpp" bodystart="378" bodyend="380"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="window_interpreter.h" line="37" column="1" bodyfile="window_interpreter.h" bodystart="37" bodyend="69"/>
+    <listofallmembers>
+      <member refid="class_window___interpreter_1_1_ui_sub_action_line_1a69dfd572e6297458e27abd7549702d0f" prot="private" virt="non-virtual"><scope>Window_Interpreter::UiSubActionLine</scope><name>actions</name></member>
+      <member refid="class_window___interpreter_1_1_ui_sub_action_line_1ae90edb85031a684404ee5615a1414544" prot="public" virt="non-virtual"><scope>Window_Interpreter::UiSubActionLine</scope><name>ClearIndex</name></member>
+      <member refid="class_window___interpreter_1_1_ui_sub_action_line_1a4c7d169168146a8c183de8c0eac57142" prot="private" virt="non-virtual"><scope>Window_Interpreter::UiSubActionLine</scope><name>colors</name></member>
+      <member refid="class_window___interpreter_1_1_ui_sub_action_line_1ad3cbda0e77f93fffa8ffa87bfc27863c" prot="public" virt="non-virtual"><scope>Window_Interpreter::UiSubActionLine</scope><name>Draw</name></member>
+      <member refid="class_window___interpreter_1_1_ui_sub_action_line_1a84bf20455de012216152b7e426886aa8" prot="public" virt="non-virtual"><scope>Window_Interpreter::UiSubActionLine</scope><name>GetSelectedAction</name></member>
+      <member refid="class_window___interpreter_1_1_ui_sub_action_line_1a316039643c418a0681c05d4adc6dac60" prot="private" virt="non-virtual"><scope>Window_Interpreter::UiSubActionLine</scope><name>index</name></member>
+      <member refid="class_window___interpreter_1_1_ui_sub_action_line_1a2328b634f00fda2799c1f4a5e7eb12f2" prot="public" virt="non-virtual"><scope>Window_Interpreter::UiSubActionLine</scope><name>IsVisible</name></member>
+      <member refid="class_window___interpreter_1_1_ui_sub_action_line_1af5d43879090655c6bc6e360440ef8c1e" prot="private" virt="non-virtual"><scope>Window_Interpreter::UiSubActionLine</scope><name>texts</name></member>
+      <member refid="class_window___interpreter_1_1_ui_sub_action_line_1aafba6cf4aa77bf572b394299dc32f84b" prot="public" virt="non-virtual"><scope>Window_Interpreter::UiSubActionLine</scope><name>UiSubActionLine</name></member>
+      <member refid="class_window___interpreter_1_1_ui_sub_action_line_1ae5710c55700340a64b1a641698a7c019" prot="public" virt="non-virtual"><scope>Window_Interpreter::UiSubActionLine</scope><name>UiSubActionLine</name></member>
+      <member refid="class_window___interpreter_1_1_ui_sub_action_line_1af5fb96435ba8d52774650452deabf27c" prot="public" virt="non-virtual"><scope>Window_Interpreter::UiSubActionLine</scope><name>Update</name></member>
+      <member refid="class_window___interpreter_1_1_ui_sub_action_line_1a6f638168aa0756665efd86eba87bda82" prot="private" virt="non-virtual"><scope>Window_Interpreter::UiSubActionLine</scope><name>visibility_delegates</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

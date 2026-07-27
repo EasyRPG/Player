@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_game___interpreter_1_1_key_input_state" kind="struct" language="C++" prot="protected">
+    <compoundname>Game_Interpreter::KeyInputState</compoundname>
+    <includes refid="game__interpreter_8h" local="no">game_interpreter.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_game___interpreter_1_1_key_input_state_1a85fa57b6fec438879025775592ef6c71" prot="public" static="no" mutable="no">
+        <type>lcf::FlagSet&lt; <ref refid="class_game___interpreter_1a80cb189e057d472f7262f15568ac5b2b" kindref="member">Keys</ref> &gt;</type>
+        <definition>lcf::FlagSet&lt;Keys&gt; Game_Interpreter::KeyInputState::keys</definition>
+        <argsstring></argsstring>
+        <name>keys</name>
+        <qualifiedname>Game_Interpreter::KeyInputState::keys</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="337" column="14" bodyfile="game_interpreter.h" bodystart="337" bodyend="337"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___interpreter_1_1_key_input_state_1a6a45f893d86e5505f4a9cd6b2d665dac" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t Game_Interpreter::KeyInputState::variable</definition>
+        <argsstring></argsstring>
+        <name>variable</name>
+        <qualifiedname>Game_Interpreter::KeyInputState::variable</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="338" column="9" bodyfile="game_interpreter.h" bodystart="338" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___interpreter_1_1_key_input_state_1abf0c11f9ce9d915d0ed3945b914c6f05" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Interpreter::KeyInputState::time_variable</definition>
+        <argsstring></argsstring>
+        <name>time_variable</name>
+        <qualifiedname>Game_Interpreter::KeyInputState::time_variable</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="339" column="5" bodyfile="game_interpreter.h" bodystart="339" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___interpreter_1_1_key_input_state_1aee0b2a79fe6d2aa1a5fbaefdef935d44" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Game_Interpreter::KeyInputState::wait_frames</definition>
+        <argsstring></argsstring>
+        <name>wait_frames</name>
+        <qualifiedname>Game_Interpreter::KeyInputState::wait_frames</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="340" column="5" bodyfile="game_interpreter.h" bodystart="340" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___interpreter_1_1_key_input_state_1ace4cdcd05070ae933471c3d25a6800f4" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::KeyInputState::wait</definition>
+        <argsstring></argsstring>
+        <name>wait</name>
+        <qualifiedname>Game_Interpreter::KeyInputState::wait</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="341" column="6" bodyfile="game_interpreter.h" bodystart="341" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_game___interpreter_1_1_key_input_state_1a7b01483ebb285bbc47dfe4012ded0d80" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Game_Interpreter::KeyInputState::timed</definition>
+        <argsstring></argsstring>
+        <name>timed</name>
+        <qualifiedname>Game_Interpreter::KeyInputState::timed</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="342" column="6" bodyfile="game_interpreter.h" bodystart="342" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_game___interpreter_1_1_key_input_state_1a81710b1e5ccb19c9974dcac4e9aa069d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Game_Interpreter::KeyInputState::CheckInput</definition>
+        <argsstring>() const</argsstring>
+        <name>CheckInput</name>
+        <qualifiedname>Game_Interpreter::KeyInputState::CheckInput</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="344" column="5" bodyfile="game_interpreter.cpp" bodystart="3162" bodyend="3229"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_game___interpreter_1_1_key_input_state_1a355152aa9caf44d1a30b87a988884643" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter::KeyInputState::fromSave</definition>
+        <argsstring>(const lcf::rpg::SaveEventExecState &amp;save)</argsstring>
+        <name>fromSave</name>
+        <qualifiedname>Game_Interpreter::KeyInputState::fromSave</qualifiedname>
+        <param>
+          <type>const lcf::rpg::SaveEventExecState &amp;</type>
+          <declname>save</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="345" column="6" bodyfile="game_interpreter.cpp" bodystart="136" bodyend="200"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_game___interpreter_1_1_key_input_state_1a916d16b9a9bf8766f71d551b8b627f76" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Game_Interpreter::KeyInputState::toSave</definition>
+        <argsstring>(lcf::rpg::SaveEventExecState &amp;save) const</argsstring>
+        <name>toSave</name>
+        <qualifiedname>Game_Interpreter::KeyInputState::toSave</qualifiedname>
+        <param>
+          <type>lcf::rpg::SaveEventExecState &amp;</type>
+          <declname>save</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="game_interpreter.h" line="346" column="6" bodyfile="game_interpreter.cpp" bodystart="202" bodyend="278"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="game_interpreter.h" line="336" column="1" bodyfile="game_interpreter.h" bodystart="336" bodyend="347"/>
+    <listofallmembers>
+      <member refid="struct_game___interpreter_1_1_key_input_state_1a81710b1e5ccb19c9974dcac4e9aa069d" prot="public" virt="non-virtual"><scope>Game_Interpreter::KeyInputState</scope><name>CheckInput</name></member>
+      <member refid="struct_game___interpreter_1_1_key_input_state_1a355152aa9caf44d1a30b87a988884643" prot="public" virt="non-virtual"><scope>Game_Interpreter::KeyInputState</scope><name>fromSave</name></member>
+      <member refid="struct_game___interpreter_1_1_key_input_state_1a85fa57b6fec438879025775592ef6c71" prot="public" virt="non-virtual"><scope>Game_Interpreter::KeyInputState</scope><name>keys</name></member>
+      <member refid="struct_game___interpreter_1_1_key_input_state_1abf0c11f9ce9d915d0ed3945b914c6f05" prot="public" virt="non-virtual"><scope>Game_Interpreter::KeyInputState</scope><name>time_variable</name></member>
+      <member refid="struct_game___interpreter_1_1_key_input_state_1a7b01483ebb285bbc47dfe4012ded0d80" prot="public" virt="non-virtual"><scope>Game_Interpreter::KeyInputState</scope><name>timed</name></member>
+      <member refid="struct_game___interpreter_1_1_key_input_state_1a916d16b9a9bf8766f71d551b8b627f76" prot="public" virt="non-virtual"><scope>Game_Interpreter::KeyInputState</scope><name>toSave</name></member>
+      <member refid="struct_game___interpreter_1_1_key_input_state_1a6a45f893d86e5505f4a9cd6b2d665dac" prot="public" virt="non-virtual"><scope>Game_Interpreter::KeyInputState</scope><name>variable</name></member>
+      <member refid="struct_game___interpreter_1_1_key_input_state_1ace4cdcd05070ae933471c3d25a6800f4" prot="public" virt="non-virtual"><scope>Game_Interpreter::KeyInputState</scope><name>wait</name></member>
+      <member refid="struct_game___interpreter_1_1_key_input_state_1aee0b2a79fe6d2aa1a5fbaefdef935d44" prot="public" virt="non-virtual"><scope>Game_Interpreter::KeyInputState</scope><name>wait_frames</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

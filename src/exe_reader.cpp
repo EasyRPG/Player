@@ -537,3 +537,4 @@ int EXEReader::FileInfo::GetEngineType(bool& is_maniac_patch) const {
 }
 
 #endif
+

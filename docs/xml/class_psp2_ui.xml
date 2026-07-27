@@ -1,0 +1,438 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_psp2_ui" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>Psp2Ui</compoundname>
+    <basecompoundref refid="class_base_ui" prot="public" virt="non-virtual">BaseUi</basecompoundref>
+    <includes refid="psvita_2ui_8h" local="no">ui.h</includes>
+    <sectiondef kind="user-defined">
+      <memberdef kind="function" id="class_psp2_ui_1a5a4002ef93665318f6268a86065c3484" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Psp2Ui::UpdateDisplay</definition>
+        <argsstring>() override</argsstring>
+        <name>UpdateDisplay</name>
+        <qualifiedname>Psp2Ui::UpdateDisplay</qualifiedname>
+        <reimplements refid="class_base_ui_1ad0ac519b67b66dda5df6289a3f9e25c2">UpdateDisplay</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Inherited from <ref refid="class_base_ui" kindref="compound">BaseUi</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/psvita/ui.h" line="51" column="6" bodyfile="platform/psvita/ui.cpp" bodystart="268" bodyend="274"/>
+      </memberdef>
+      <memberdef kind="function" id="class_psp2_ui_1afa2332c25058b779f899e18d6871c274" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>bool</type>
+        <definition>bool Psp2Ui::ProcessEvents</definition>
+        <argsstring>() override</argsstring>
+        <name>ProcessEvents</name>
+        <qualifiedname>Psp2Ui::ProcessEvents</qualifiedname>
+        <reimplements refid="class_base_ui_1aa5adf73d350d9cf4635084df16849461">ProcessEvents</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Processes events queue.</para>
+<para><simplesect kind="return"><para>When false requests an immediate <ref refid="namespace_player" kindref="compound">Player</ref> shutdown </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/psvita/ui.h" line="52" column="6" bodyfile="platform/psvita/ui.cpp" bodystart="210" bodyend="266"/>
+      </memberdef>
+      <memberdef kind="function" id="class_psp2_ui_1a9750efa5430653b86cb5824962f85d36" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Psp2Ui::SetScalingMode</definition>
+        <argsstring>(ConfigEnum::ScalingMode) override</argsstring>
+        <name>SetScalingMode</name>
+        <qualifiedname>Psp2Ui::SetScalingMode</qualifiedname>
+        <reimplements refid="class_base_ui_1a1edf200ee8e139d481ed571c4705a31b">SetScalingMode</reimplements>
+        <param>
+          <type><ref refid="namespace_config_enum_1a6af6666c9dcdcba2469b732a6eb7f000" kindref="member">ConfigEnum::ScalingMode</ref></type>
+          <defname>mode</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the scaling mode of the window </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/psvita/ui.h" line="53" column="6" bodyfile="platform/psvita/ui.cpp" bodystart="276" bodyend="278"/>
+      </memberdef>
+      <memberdef kind="function" id="class_psp2_ui_1aaa31d9fb803110178e77257f9fabd64d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Psp2Ui::ToggleStretch</definition>
+        <argsstring>() override</argsstring>
+        <name>ToggleStretch</name>
+        <qualifiedname>Psp2Ui::ToggleStretch</qualifiedname>
+        <reimplements refid="class_base_ui_1a16737efd977c20b828b477086915da89">ToggleStretch</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Toggles &quot;stretch to screen width&quot; on or off </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/psvita/ui.h" line="54" column="6" bodyfile="platform/psvita/ui.cpp" bodystart="280" bodyend="283"/>
+      </memberdef>
+      <memberdef kind="function" id="class_psp2_ui_1a3927d225718c9f5aecef917351b14851" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Psp2Ui::ToggleTouchUi</definition>
+        <argsstring>() override</argsstring>
+        <name>ToggleTouchUi</name>
+        <qualifiedname>Psp2Ui::ToggleTouchUi</qualifiedname>
+        <reimplements refid="class_base_ui_1ad21fdbce0abcbd781791071dd7bb3bd1">ToggleTouchUi</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Turns a touch ui on or off. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/psvita/ui.h" line="55" column="6" bodyfile="platform/psvita/ui.cpp" bodystart="285" bodyend="287"/>
+      </memberdef>
+      <memberdef kind="function" id="class_psp2_ui_1a11367e4f24ac09f762193c7b1bcc5386" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Psp2Ui::ToggleVsync</definition>
+        <argsstring>() override</argsstring>
+        <name>ToggleVsync</name>
+        <qualifiedname>Psp2Ui::ToggleVsync</qualifiedname>
+        <reimplements refid="class_base_ui_1a4325b9a6266e1f202ea1f887a3c2f022">ToggleVsync</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Turns vsync on or off </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/psvita/ui.h" line="56" column="6" bodyfile="platform/psvita/ui.cpp" bodystart="289" bodyend="292"/>
+      </memberdef>
+      <memberdef kind="function" id="class_psp2_ui_1a9954b6bdd4d07bd819674c7a7eac5ff8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Psp2Ui::vGetConfig</definition>
+        <argsstring>(Game_ConfigVideo &amp;cfg) const override</argsstring>
+        <name>vGetConfig</name>
+        <qualifiedname>Psp2Ui::vGetConfig</qualifiedname>
+        <reimplements refid="class_base_ui_1aef921da0d7b4ec1e7ee45f62097e2e5a">vGetConfig</reimplements>
+        <param>
+          <type><ref refid="struct_game___config_video" kindref="compound">Game_ConfigVideo</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/psvita/ui.h" line="57" column="6" bodyfile="platform/psvita/ui.cpp" bodystart="294" bodyend="308"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_psp2_ui_1a356d45ef8ccec3b8c9fed3910e590812" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Psp2Ui::Psp2Ui</definition>
+        <argsstring>(int width, int height, const Game_Config &amp;cfg)</argsstring>
+        <name>Psp2Ui</name>
+        <qualifiedname>Psp2Ui::Psp2Ui</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_game___config" kindref="compound">Game_Config</ref> &amp;</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Constructor.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>width</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>window client width. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>height</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>window client height. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cfg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>config options </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/psvita/ui.h" line="40" column="1" bodyfile="platform/psvita/ui.cpp" bodystart="136" bodyend="194"/>
+      </memberdef>
+      <memberdef kind="function" id="class_psp2_ui_1a96d3a4ab835710e42c1906502920dd2b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Psp2Ui::~Psp2Ui</definition>
+        <argsstring>()</argsstring>
+        <name>~Psp2Ui</name>
+        <qualifiedname>Psp2Ui::~Psp2Ui</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Destructor. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="platform/psvita/ui.h" line="45" column="1" bodyfile="platform/psvita/ui.cpp" bodystart="196" bodyend="208"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_psp2_ui" kindref="compound">Psp2Ui</ref> class. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>BaseUi</label>
+        <link refid="class_base_ui"/>
+      </node>
+      <node id="1">
+        <label>Psp2Ui</label>
+        <link refid="class_psp2_ui"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>BaseUi</label>
+        <link refid="class_base_ui"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>vcfg</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>current_display_mode</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>mouse_pos</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>analog_input</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>back_color</edgelabel>
+        </childnode>
+      </node>
+      <node id="18">
+        <label>BaseUi::DisplayMode</label>
+        <link refid="struct_base_ui_1_1_display_mode"/>
+      </node>
+      <node id="7">
+        <label>BoolConfigParam</label>
+        <link refid="class_bool_config_param"/>
+        <childnode refid="8" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>Color</label>
+        <link refid="class_color"/>
+      </node>
+      <node id="13">
+        <label>ConfigParam&lt; int &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="12" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>ConfigParam&lt; std::string &gt;</label>
+        <link refid="class_config_param"/>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>ConfigParamBase&lt; ConfigEnum::GameResolution &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="15">
+        <label>ConfigParamBase&lt; ConfigEnum::ScalingMode &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="10">
+        <label>ConfigParamBase&lt; ConfigEnum::ShowFps &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="8">
+        <label>ConfigParamBase&lt; bool &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="12">
+        <label>ConfigParamBase&lt; int &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="6">
+        <label>ConfigParamBase&lt; T &gt;</label>
+        <link refid="class_config_param_base"/>
+      </node>
+      <node id="16">
+        <label>EnumConfigParam&lt; ConfigEnum::GameResolution, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="17" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>EnumConfigParam&lt; ConfigEnum::ScalingMode, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="15" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>EnumConfigParam&lt; ConfigEnum::ShowFps, 3 &gt;</label>
+        <link refid="class_enum_config_param"/>
+        <childnode refid="10" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Game_ConfigVideo</label>
+        <link refid="struct_game___config_video"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>renderer</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>fullscreen</edgelabel>
+          <edgelabel>pause_when_focus_lost</edgelabel>
+          <edgelabel>stretch</edgelabel>
+          <edgelabel>touch_ui</edgelabel>
+          <edgelabel>vsync</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>fps</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>fps_limit</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>window_height</edgelabel>
+          <edgelabel>window_width</edgelabel>
+          <edgelabel>window_x</edgelabel>
+          <edgelabel>window_y</edgelabel>
+          <edgelabel>window_zoom</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>scaling_mode</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>game_resolution</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>Input::AnalogInput</label>
+        <link refid="struct_input_1_1_analog_input"/>
+        <childnode refid="21" relation="usage">
+          <edgelabel>primary</edgelabel>
+          <edgelabel>secondary</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>LockedConfigParam&lt; std::string &gt;</label>
+        <link refid="class_locked_config_param"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>PointT&lt; float &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="19">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="1">
+        <label>Psp2Ui</label>
+        <link refid="class_psp2_ui"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>RangeConfigParam&lt; int &gt;</label>
+        <link refid="class_range_config_param"/>
+        <childnode refid="12" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="platform/psvita/ui.h" line="31" column="1" bodyfile="platform/psvita/ui.h" bodystart="31" bodyend="70"/>
+    <listofallmembers>
+      <member refid="class_base_ui_1a96512cebf65e9153cb3b377a1080eaef" prot="protected" virt="non-virtual"><scope>Psp2Ui</scope><name>analog_input</name></member>
+      <member refid="class_base_ui_1ae38aec6a7306ee56bdd3c4a0d0bb76e6" prot="protected" virt="non-virtual"><scope>Psp2Ui</scope><name>back_color</name></member>
+      <member refid="class_base_ui_1abc04d498f5fac11ee11f9c9122207c13" prot="protected" virt="non-virtual"><scope>Psp2Ui</scope><name>BaseUi</name></member>
+      <member refid="class_base_ui_1a6705177f2e26c41cd38aedf809b3ff96" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>CaptureScreen</name></member>
+      <member refid="class_base_ui_1ab3cb68a47aa7a742bd2aba62c3c93830" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>ChangeDisplaySurfaceResolution</name></member>
+      <member refid="class_base_ui_1a0c76ff69fe6792d43cdfefdad462c48a" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>CleanDisplay</name></member>
+      <member refid="class_base_ui_1a1259ecf0abbfeca8f798dc05ec7cf973" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>CreateUi</name></member>
+      <member refid="class_base_ui_1ad968d67d945a727f6be3556cb4e15dfb" prot="protected" virt="non-virtual"><scope>Psp2Ui</scope><name>current_display_mode</name></member>
+      <member refid="class_base_ui_1a3fcf56158d2dbfa1a2dddf5b62dd8c86" prot="protected" virt="non-virtual"><scope>Psp2Ui</scope><name>cursor_visible</name></member>
+      <member refid="class_base_ui_1aeae86a5ea89c8717b55692b023768373" prot="protected" virt="non-virtual"><scope>Psp2Ui</scope><name>external_frame_rate</name></member>
+      <member refid="class_base_ui_1afbefd1cf3f059e1613cdb93a92ddfae2" prot="protected" virt="non-virtual"><scope>Psp2Ui</scope><name>finger_input</name></member>
+      <member refid="class_base_ui_1a8277cb2800b716f1775d74a71a752ec7" prot="protected" virt="non-virtual"><scope>Psp2Ui</scope><name>frame_limit</name></member>
+      <member refid="class_base_ui_1a1743a7957049618f9092313ef3643ff8" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>GetAnalogInput</name></member>
+      <member refid="class_base_ui_1a1d9ab96f32fc80f68ea299a56c588b48" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>GetConfig</name></member>
+      <member refid="class_base_ui_1ac58c799344c947f74f7680ac92b29f46" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>GetDisplaySurface</name></member>
+      <member refid="class_base_ui_1a6a12e3b17421efa5ab8be3789bba01d6" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>GetDisplaySurface</name></member>
+      <member refid="class_base_ui_1a29fb87f2f0bea382c9e07a4787546155" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>GetFrameLimit</name></member>
+      <member refid="class_base_ui_1acaea0726d275e4cfe660d450c15613ff" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>GetHeight</name></member>
+      <member refid="class_base_ui_1a26429a01230e03334c6d534b50aea481" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>GetKeyStates</name></member>
+      <member refid="class_base_ui_1a749ed505a2e01d7c3f09304ef8d66e27" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>GetMouseFocus</name></member>
+      <member refid="class_base_ui_1ab8e3ba8ce6415a4c706b628093d07d08" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>GetMousePosition</name></member>
+      <member refid="class_base_ui_1a665686e47cf5b94d8fe84b7fb255330a" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>GetTouchInput</name></member>
+      <member refid="class_base_ui_1afc0660dcf3b0a7c3e6354b215b409e2a" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>GetWidth</name></member>
+      <member refid="class_base_ui_1a8a6e1bfb68cd5283b9ba510eae44453c" prot="public" virt="virtual"><scope>Psp2Ui</scope><name>GetWindowMetrics</name></member>
+      <member refid="class_base_ui_1ad2f8960e9e9b562cf67d249557f6259a" prot="public" virt="virtual"><scope>Psp2Ui</scope><name>HandleErrorOutput</name></member>
+      <member refid="class_base_ui_1a783a7b0dbc389c5230011b4e7ba72fcf" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>IsFrameRateSynchronized</name></member>
+      <member refid="class_base_ui_1a1e7122e1da0ce80c92fc4bbd70ab3529" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>IsFullscreen</name></member>
+      <member refid="class_base_ui_1acb63c6d48a74e7c111a5d8d54eb9bc44" prot="protected" virt="non-virtual"><scope>Psp2Ui</scope><name>keys</name></member>
+      <member refid="class_base_ui_1aa55d38974520aa1b75d19ac8fc78184b" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>KeyStatus</name></member>
+      <member refid="class_base_ui_1a77e2002cc546f7326d1bf154192ec99c" prot="protected" virt="non-virtual"><scope>Psp2Ui</scope><name>main_surface</name></member>
+      <member refid="class_base_ui_1a59b0524cf6d37e9d5ce7ff5c749e620c" prot="protected" virt="non-virtual"><scope>Psp2Ui</scope><name>mouse_focus</name></member>
+      <member refid="class_base_ui_1ad40db5525bb26ed0fd1b5e258da45b7c" prot="protected" virt="non-virtual"><scope>Psp2Ui</scope><name>mouse_pos</name></member>
+      <member refid="class_base_ui_1a1d3a2649b6ee63174afd8d8aff879658" prot="public" virt="virtual"><scope>Psp2Ui</scope><name>OpenURL</name></member>
+      <member refid="class_base_ui_1abdffe1380198934a10588fd57081eba6" prot="protected" virt="non-virtual"><scope>Psp2Ui</scope><name>original_fps_show_state</name></member>
+      <member refid="class_psp2_ui_1afa2332c25058b779f899e18d6871c274" prot="public" virt="virtual"><scope>Psp2Ui</scope><name>ProcessEvents</name></member>
+      <member refid="class_psp2_ui_1a356d45ef8ccec3b8c9fed3910e590812" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>Psp2Ui</name></member>
+      <member refid="class_base_ui_1ad7dcb52dbf687ea604d2c4994c0215c7" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>RenderFps</name></member>
+      <member refid="class_base_ui_1a9b36faf7ba0bdd8c0fb78a1b1241be4f" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>SetFrameLimit</name></member>
+      <member refid="class_base_ui_1a6f97cd92275f9c2a0bbe357171d7b9b7" prot="protected" virt="non-virtual"><scope>Psp2Ui</scope><name>SetFrameRateSynchronized</name></member>
+      <member refid="class_base_ui_1aeaa4e3a8c3f70be2c7bbf18ba89d5a1a" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>SetGameResolution</name></member>
+      <member refid="class_base_ui_1aa4c8869422507e9d9b216eff0465413c" prot="protected" virt="non-virtual"><scope>Psp2Ui</scope><name>SetIsFullscreen</name></member>
+      <member refid="class_base_ui_1a2b870c00dadecb6351d14dacca1d9b02" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>SetPauseWhenFocusLost</name></member>
+      <member refid="class_psp2_ui_1a9750efa5430653b86cb5824962f85d36" prot="public" virt="virtual"><scope>Psp2Ui</scope><name>SetScalingMode</name></member>
+      <member refid="class_base_ui_1a34ccc599af3eb7185a41f45f042d5d66" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>SetShowFps</name></member>
+      <member refid="class_base_ui_1ac838b906c382e0bd53eae5f775ef5dfb" prot="public" virt="virtual"><scope>Psp2Ui</scope><name>SetTitle</name></member>
+      <member refid="class_base_ui_1ae0d4c82612a9c1e8b76dcde91dd90217" prot="public" virt="virtual"><scope>Psp2Ui</scope><name>ShowCursor</name></member>
+      <member refid="class_base_ui_1acfec1d72d810c6b6adc2fecf6ef322cc" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>ShowFpsOnTitle</name></member>
+      <member refid="class_base_ui_1a7cf7aa4d9d0c4c86bcec4ff6ef15c4f9" prot="public" virt="virtual"><scope>Psp2Ui</scope><name>ToggleFullscreen</name></member>
+      <member refid="class_base_ui_1abca78fd083436f0a9d036d949fc5e371" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>ToggleShowFps</name></member>
+      <member refid="class_psp2_ui_1aaa31d9fb803110178e77257f9fabd64d" prot="public" virt="virtual"><scope>Psp2Ui</scope><name>ToggleStretch</name></member>
+      <member refid="class_psp2_ui_1a3927d225718c9f5aecef917351b14851" prot="public" virt="virtual"><scope>Psp2Ui</scope><name>ToggleTouchUi</name></member>
+      <member refid="class_psp2_ui_1a11367e4f24ac09f762193c7b1bcc5386" prot="public" virt="virtual"><scope>Psp2Ui</scope><name>ToggleVsync</name></member>
+      <member refid="class_base_ui_1abb92ae64151143bc0a186fa934ffafa6" prot="public" virt="virtual"><scope>Psp2Ui</scope><name>ToggleZoom</name></member>
+      <member refid="class_base_ui_1a18ee3fdd88366c546ceb2daf3382f425" prot="protected" virt="non-virtual"><scope>Psp2Ui</scope><name>touch_input</name></member>
+      <member refid="class_psp2_ui_1a5a4002ef93665318f6268a86065c3484" prot="public" virt="virtual"><scope>Psp2Ui</scope><name>UpdateDisplay</name></member>
+      <member refid="class_base_ui_1a2d3af98fda6d7a8b33b71235bfe1bc62" prot="protected" virt="non-virtual"><scope>Psp2Ui</scope><name>vcfg</name></member>
+      <member refid="class_base_ui_1a58f5dc89bb89fae57b3d8512a5c5810a" prot="protected" virt="virtual"><scope>Psp2Ui</scope><name>vChangeDisplaySurfaceResolution</name></member>
+      <member refid="class_psp2_ui_1a9954b6bdd4d07bd819674c7a7eac5ff8" prot="public" virt="virtual"><scope>Psp2Ui</scope><name>vGetConfig</name></member>
+      <member refid="class_base_ui_1acb710126bbe5950a70d4dd6348d4bed1" prot="public" virt="virtual"><scope>Psp2Ui</scope><name>~BaseUi</name></member>
+      <member refid="class_psp2_ui_1a96d3a4ab835710e42c1906502920dd2b" prot="public" virt="non-virtual"><scope>Psp2Ui</scope><name>~Psp2Ui</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -529,3 +529,4 @@ void Scene_Map::UpdateInn() {
 	Main_Data::game_system->BgmStop();
 	FinishInn();
 }
+

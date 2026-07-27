@@ -1,0 +1,1341 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="class_scene___battle" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Scene_Battle</compoundname>
+    <basecompoundref refid="class_scene" prot="public" virt="non-virtual">Scene</basecompoundref>
+    <derivedcompoundref refid="class_scene___battle___rpg2k" prot="public" virt="non-virtual">Scene_Battle_Rpg2k</derivedcompoundref>
+    <derivedcompoundref refid="class_scene___battle___rpg2k3" prot="public" virt="non-virtual">Scene_Battle_Rpg2k3</derivedcompoundref>
+    <includes refid="scene__battle_8h" local="no">scene_battle.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5" prot="public" static="no" strong="no">
+        <type></type>
+        <name>State</name>
+        <qualifiedname>Scene_Battle::State</qualifiedname>
+        <enumvalue id="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a044fada406a79efc73bf4ac391a96b8b" prot="public">
+          <name>State_Start</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Battle has started (Display encounter message) </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a1ee9b20bbf996b5ea7a31e1d826427c9" prot="public">
+          <name>State_SelectOption</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Menu with Battle, Auto Battle and Escape <ref refid="namespace_options" kindref="compound">Options</ref> </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a248ba41a360c5111c3e3a9525d806a39" prot="public">
+          <name>State_SelectActor</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Selects next actor who has to move </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a363e5c2d395ed3194e114a1b879d99ce" prot="public">
+          <name>State_AutoBattle</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Auto battle command selected </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a84128f9a60548c2fca1413a8fa417606" prot="public">
+          <name>State_SelectCommand</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Menu with abilities of current Actor (e.g. Command, Item, Skill and Defend) </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5ae4c084ebaa6ab28327cd15dd52ec67f1" prot="public">
+          <name>State_SelectItem</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Item selection is active </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a24670a1c95760faf7743fd0e72c0cb16" prot="public">
+          <name>State_SelectSkill</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Skill selection menu is active </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5abc2501797be72514cf5da569e3c9be36" prot="public">
+          <name>State_SelectEnemyTarget</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para><ref refid="namespace_player" kindref="compound">Player</ref> selects enemy target </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a501d32fa43c8d0637cb4f96bd458bd9f" prot="public">
+          <name>State_SelectAllyTarget</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para><ref refid="namespace_player" kindref="compound">Player</ref> selects allied target </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5ab869723f5f46a51b64eb53526ff299e1" prot="public">
+          <name>State_Battle</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Battle Running </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a23cd0be2ed3f14966c0b61729920dbe8" prot="public">
+          <name>State_Victory</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Battle ended with a victory </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a3729141d1901f23014d33019e937ee00" prot="public">
+          <name>State_Defeat</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Battle ended with a defeat </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5aa89b37be99c5780fb1300fe29b0fe0af" prot="public">
+          <name>State_Escape</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Escape command selected </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="97" column="1" bodyfile="scene_battle.h" bodystart="97" bodyend="124"/>
+      </memberdef>
+      <memberdef kind="enum" id="class_scene___battle_1ab8623a206a9a09cb8ad237835316047d" prot="public" static="no" strong="no">
+        <type></type>
+        <name>BattleOptionType</name>
+        <qualifiedname>Scene_Battle::BattleOptionType</qualifiedname>
+        <enumvalue id="class_scene___battle_1ab8623a206a9a09cb8ad237835316047da5b1fb6c55f02f9330c88893d2bd6397a" prot="public">
+          <name>Battle</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle_1ab8623a206a9a09cb8ad237835316047daee1fb351443aa721767f653638a65e89" prot="public">
+          <name>AutoBattle</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle_1ab8623a206a9a09cb8ad237835316047dac4d3cf29d315f1c9181068d27d6c9fa2" prot="public">
+          <name>Escape</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle_1ab8623a206a9a09cb8ad237835316047da8f0b0274befa4ba82c7ff51d7f7abe60" prot="public">
+          <name>Win</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_scene___battle_1ab8623a206a9a09cb8ad237835316047daa240b6407db0b1cb71e2a6b86679cad4" prot="public">
+          <name>Lose</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="namespace_options" kindref="compound">Options</ref> available in a battle option menu. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="127" column="1" bodyfile="scene_battle.h" bodystart="127" bodyend="133"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_scene___battle_1ab65527778a347272b9c7130c0a6921f3" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5" kindref="member">State</ref></type>
+        <definition>State Scene_Battle::state</definition>
+        <argsstring></argsstring>
+        <name>state</name>
+        <qualifiedname>Scene_Battle::state</qualifiedname>
+        <initializer>= <ref refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a044fada406a79efc73bf4ac391a96b8b" kindref="member">State_Start</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="176" column="7" bodyfile="scene_battle.h" bodystart="176" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1a101c3428860570da5fa1c7f8b37e4819" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5" kindref="member">State</ref></type>
+        <definition>State Scene_Battle::previous_state</definition>
+        <argsstring></argsstring>
+        <name>previous_state</name>
+        <qualifiedname>Scene_Battle::previous_state</qualifiedname>
+        <initializer>= <ref refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a044fada406a79efc73bf4ac391a96b8b" kindref="member">State_Start</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="177" column="7" bodyfile="scene_battle.h" bodystart="177" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1a6764cea5d91e484b265d6a871a4df3cd" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Battle::cycle</definition>
+        <argsstring></argsstring>
+        <name>cycle</name>
+        <qualifiedname>Scene_Battle::cycle</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="178" column="5" bodyfile="scene_battle.h" bodystart="178" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1a1d3bf957bae9af472b87573efecc4f69" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Battle::troop_id</definition>
+        <argsstring></argsstring>
+        <name>troop_id</name>
+        <qualifiedname>Scene_Battle::troop_id</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="179" column="5" bodyfile="scene_battle.h" bodystart="179" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1a90eb41c853960d9e2e3ea251774ba1b4" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Battle::escape_chance</definition>
+        <argsstring></argsstring>
+        <name>escape_chance</name>
+        <qualifiedname>Scene_Battle::escape_chance</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="180" column="5" bodyfile="scene_battle.h" bodystart="180" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1a995e418e64233b14b0794c967a22eb18" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Battle::allow_escape</definition>
+        <argsstring></argsstring>
+        <name>allow_escape</name>
+        <qualifiedname>Scene_Battle::allow_escape</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="181" column="6" bodyfile="scene_battle.h" bodystart="181" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1a569ca6b63806b5b842b04ae74bf1946a" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Scene_Battle::first_strike</definition>
+        <argsstring></argsstring>
+        <name>first_strike</name>
+        <qualifiedname>Scene_Battle::first_strike</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="182" column="6" bodyfile="scene_battle.h" bodystart="182" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1a6034f315e7d6a4ad608a4ca06e05f2a5" prot="protected" static="no" mutable="no">
+        <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> *</type>
+        <definition>Game_Actor* Scene_Battle::active_actor</definition>
+        <argsstring></argsstring>
+        <name>active_actor</name>
+        <qualifiedname>Scene_Battle::active_actor</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="184" column="12" bodyfile="scene_battle.h" bodystart="184" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1aae6c264571b28701b207bd0c951bdb49" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___command" kindref="compound">Window_Command</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Command&gt; Scene_Battle::options_window</definition>
+        <argsstring></argsstring>
+        <name>options_window</name>
+        <qualifiedname>Scene_Battle::options_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Displays Fight, Autobattle, Flee </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="187" column="17" bodyfile="scene_battle.h" bodystart="187" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1a3b4f9ef17ced6fe92899350482cd21cb" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___command" kindref="compound">Window_Command</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Command&gt; Scene_Battle::target_window</definition>
+        <argsstring></argsstring>
+        <name>target_window</name>
+        <qualifiedname>Scene_Battle::target_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Displays list of enemies </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="189" column="17" bodyfile="scene_battle.h" bodystart="189" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1a32a1001af7e41e4959b8e6b3a2a3f14b" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___command" kindref="compound">Window_Command</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Command&gt; Scene_Battle::command_window</definition>
+        <argsstring></argsstring>
+        <name>command_window</name>
+        <qualifiedname>Scene_Battle::command_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Displays Attack, Defense, Magic, Item </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="191" column="17" bodyfile="scene_battle.h" bodystart="191" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1ad294471dca830b6b94cb6f81dfd2704a" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___item" kindref="compound">Window_Item</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Item&gt; Scene_Battle::item_window</definition>
+        <argsstring></argsstring>
+        <name>item_window</name>
+        <qualifiedname>Scene_Battle::item_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="192" column="17" bodyfile="scene_battle.h" bodystart="192" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1a3ad63ae3c34d7167e50f2d0aec24b5f8" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___battle_skill" kindref="compound">Window_BattleSkill</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_BattleSkill&gt; Scene_Battle::skill_window</definition>
+        <argsstring></argsstring>
+        <name>skill_window</name>
+        <qualifiedname>Scene_Battle::skill_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="193" column="17" bodyfile="scene_battle.h" bodystart="193" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1aaa87d8889fab0fc133c66b2300fd9cc2" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___help" kindref="compound">Window_Help</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Help&gt; Scene_Battle::help_window</definition>
+        <argsstring></argsstring>
+        <name>help_window</name>
+        <qualifiedname>Scene_Battle::help_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="194" column="17" bodyfile="scene_battle.h" bodystart="194" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1a7c947b36335228bb737cb9ae5ab8dbae" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___battle_status" kindref="compound">Window_BattleStatus</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_BattleStatus&gt; Scene_Battle::status_window</definition>
+        <argsstring></argsstring>
+        <name>status_window</name>
+        <qualifiedname>Scene_Battle::status_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Displays allies status </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="196" column="17" bodyfile="scene_battle.h" bodystart="196" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1a68c1836194e0be5a50b7dbe47a600d58" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_window___message" kindref="compound">Window_Message</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;Window_Message&gt; Scene_Battle::message_window</definition>
+        <argsstring></argsstring>
+        <name>message_window</name>
+        <qualifiedname>Scene_Battle::message_window</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="197" column="17" bodyfile="scene_battle.h" bodystart="197" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1af1dcfafc8510441df31b6f2ee45e5e34" prot="protected" static="no" mutable="no">
+        <type>std::deque&lt; <ref refid="class_game___battler" kindref="compound">Game_Battler</ref> * &gt;</type>
+        <definition>std::deque&lt;Game_Battler*&gt; Scene_Battle::battle_actions</definition>
+        <argsstring></argsstring>
+        <name>battle_actions</name>
+        <qualifiedname>Scene_Battle::battle_actions</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="199" column="12" bodyfile="scene_battle.h" bodystart="199" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1accc61bbe53486a70ec438a161024c56d" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; std::unique_ptr&lt; <ref refid="class_auto_battle_1_1_algorithm_base" kindref="compound">AutoBattle::AlgorithmBase</ref> &gt; &gt;</type>
+        <definition>std::vector&lt;std::unique_ptr&lt;AutoBattle::AlgorithmBase&gt; &gt; Scene_Battle::autobattle_algos</definition>
+        <argsstring></argsstring>
+        <name>autobattle_algos</name>
+        <qualifiedname>Scene_Battle::autobattle_algos</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="200" column="13" bodyfile="scene_battle.h" bodystart="200" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1a0b02f9aabb6841bc109a520f0e7fdbe1" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; std::unique_ptr&lt; <ref refid="class_enemy_ai_1_1_algorithm_base" kindref="compound">EnemyAi::AlgorithmBase</ref> &gt; &gt;</type>
+        <definition>std::vector&lt;std::unique_ptr&lt;EnemyAi::AlgorithmBase&gt; &gt; Scene_Battle::enemyai_algos</definition>
+        <argsstring></argsstring>
+        <name>enemyai_algos</name>
+        <qualifiedname>Scene_Battle::enemyai_algos</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="201" column="13" bodyfile="scene_battle.h" bodystart="201" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1a89da69d03b49b7e7b5fe0b636c4e0855" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Battle::default_autobattle_algo</definition>
+        <argsstring></argsstring>
+        <name>default_autobattle_algo</name>
+        <qualifiedname>Scene_Battle::default_autobattle_algo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="202" column="5" bodyfile="scene_battle.h" bodystart="202" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1a67c2b2f8880f956995b09a9a7a542791" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Scene_Battle::default_enemyai_algo</definition>
+        <argsstring></argsstring>
+        <name>default_enemyai_algo</name>
+        <qualifiedname>Scene_Battle::default_enemyai_algo</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="203" column="5" bodyfile="scene_battle.h" bodystart="203" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1ae909aa531ca830d4a49a467576527232" prot="protected" static="no" mutable="no">
+        <type><ref refid="scene__battle_8h_1a50909d5c462724b7e4e2a8b72859e5dd" kindref="member">BattleContinuation</ref></type>
+        <definition>BattleContinuation Scene_Battle::on_battle_end</definition>
+        <argsstring></argsstring>
+        <name>on_battle_end</name>
+        <qualifiedname>Scene_Battle::on_battle_end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="205" column="20" bodyfile="scene_battle.h" bodystart="205" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_scene___battle_1ab348504618d105fc1a675a555c4905bb" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="class_scene___battle_1ab8623a206a9a09cb8ad237835316047d" kindref="member">BattleOptionType</ref> &gt;</type>
+        <definition>std::vector&lt;BattleOptionType&gt; Scene_Battle::battle_options</definition>
+        <argsstring></argsstring>
+        <name>battle_options</name>
+        <qualifiedname>Scene_Battle::battle_options</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="namespace_options" kindref="compound">Options</ref> available in the menu. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="208" column="13" bodyfile="scene_battle.h" bodystart="208" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_scene___battle_1af37748c4972843f57c1318b720c4a46e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::shared_ptr&lt; <ref refid="class_scene___battle" kindref="compound">Scene_Battle</ref> &gt;</type>
+        <definition>std::shared_ptr&lt; Scene_Battle &gt; Scene_Battle::Create</definition>
+        <argsstring>(const BattleArgs &amp;args)</argsstring>
+        <name>Create</name>
+        <qualifiedname>Scene_Battle::Create</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_battle_args" kindref="compound">BattleArgs</ref> &amp;</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="77" column="24" bodyfile="scene_battle.cpp" bodystart="519" bodyend="527"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a8866faed25f156108018a9a74de33635" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::SelectionFlash</definition>
+        <argsstring>(Game_Battler *battler)</argsstring>
+        <name>SelectionFlash</name>
+        <qualifiedname>Scene_Battle::SelectionFlash</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>battler</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="135" column="13" bodyfile="scene_battle.cpp" bodystart="605" bodyend="609"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_scene___battle_1a6ed9d672d4efbb0f7918ac23096bd05f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Scene_Battle::~Scene_Battle</definition>
+        <argsstring>() override</argsstring>
+        <name>~Scene_Battle</name>
+        <qualifiedname>Scene_Battle::~Scene_Battle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="79" column="1" bodyfile="scene_battle.cpp" bodystart="74" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1ad3109198d84edde7a31ab39a402e1351" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::Start</definition>
+        <argsstring>() override</argsstring>
+        <name>Start</name>
+        <qualifiedname>Scene_Battle::Start</qualifiedname>
+        <reimplements refid="class_scene_1a31e0e1b9ce39bd9f5ec160835cc94d44">Start</reimplements>
+        <reimplementedby refid="class_scene___battle___rpg2k3_1ab7be015e7f7bce13a8d807f357b4c2e5">Start</reimplementedby>
+        <reimplementedby refid="class_scene___battle___rpg2k_1adf3a7112d308b5119110e3a4dd5b7013">Start</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Start processing. This function is executed while the screen is faded out. All objects needed for the scene should be created here. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="81" column="6" bodyfile="scene_battle.cpp" bodystart="78" bodyend="139"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a0a87ad1d03f7b55cf9f7f4bc6e79250f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::CreateOptions</definition>
+        <argsstring>()</argsstring>
+        <name>CreateOptions</name>
+        <qualifiedname>Scene_Battle::CreateOptions</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="83" column="6" bodyfile="scene_battle.cpp" bodystart="192" bodyend="226"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a2fc5c6d2bea57e4a5afa0086aed43130" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::UpdateScreen</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateScreen</name>
+        <qualifiedname>Scene_Battle::UpdateScreen</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="85" column="6" bodyfile="scene_battle.cpp" bodystart="246" bodyend="249"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a85023dd1a511af0ccb32026a83cc28d9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::UpdateBattlers</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateBattlers</name>
+        <qualifiedname>Scene_Battle::UpdateBattlers</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="86" column="6" bodyfile="scene_battle.cpp" bodystart="251" bodyend="259"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a098bc232535ab6244866d96e01996a0d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::UpdateUi</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateUi</name>
+        <qualifiedname>Scene_Battle::UpdateUi</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="87" column="6" bodyfile="scene_battle.cpp" bodystart="261" bodyend="271"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a2513a84eed2531684affacc849911255" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle::UpdateEvents</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateEvents</name>
+        <qualifiedname>Scene_Battle::UpdateEvents</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="88" column="6" bodyfile="scene_battle.cpp" bodystart="273" bodyend="303"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1ab07d2f96a69310d30c5146bfdec1d399" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle::UpdateTimers</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateTimers</name>
+        <qualifiedname>Scene_Battle::UpdateTimers</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="89" column="6" bodyfile="scene_battle.cpp" bodystart="305" bodyend="320"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a6579be9b151e47b0f2185ed9eff9dc21" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::UpdateGraphics</definition>
+        <argsstring>() override</argsstring>
+        <name>UpdateGraphics</name>
+        <qualifiedname>Scene_Battle::UpdateGraphics</qualifiedname>
+        <reimplements refid="class_scene_1affa07b015ecebcf18cc0d652ab9a2fd4">UpdateGraphics</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Update graphics in scene stack </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="90" column="6" bodyfile="scene_battle.cpp" bodystart="322" bodyend="324"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a3f6340780eb98bf49c3a8ea45618ecb1" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::Continue</definition>
+        <argsstring>(SceneType prev_scene) override</argsstring>
+        <name>Continue</name>
+        <qualifiedname>Scene_Battle::Continue</qualifiedname>
+        <reimplements refid="class_scene_1ac612b681d0de7c100f580b4bc446887b">Continue</reimplements>
+        <param>
+          <type><ref refid="class_scene_1adf61561da781541f6b9ec5590756b09e" kindref="member">SceneType</ref></type>
+          <declname>prev_scene</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Continue processing. This function is executed when returning from a nested scene (instead of Start).</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>prev_scene</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The previous scene </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="92" column="6" bodyfile="scene_battle.cpp" bodystart="157" bodyend="162"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a5c0b8a56af356311fd37a1b561609a43" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::TransitionIn</definition>
+        <argsstring>(SceneType prev_scene) override</argsstring>
+        <name>TransitionIn</name>
+        <qualifiedname>Scene_Battle::TransitionIn</qualifiedname>
+        <reimplements refid="class_scene_1a4a594aefe6bd86e17042acf7c76eb0e6">TransitionIn</reimplements>
+        <param>
+          <type><ref refid="class_scene_1adf61561da781541f6b9ec5590756b09e" kindref="member">SceneType</ref></type>
+          <declname>prev_scene</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Used to configure the transition upon starting or resuming the scene.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>prev_scene</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the scene we transitioned from </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="93" column="6" bodyfile="scene_battle.cpp" bodystart="164" bodyend="170"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a8641b0949d9865e767e1d28120799f10" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::TransitionOut</definition>
+        <argsstring>(SceneType next_scene) override</argsstring>
+        <name>TransitionOut</name>
+        <qualifiedname>Scene_Battle::TransitionOut</qualifiedname>
+        <reimplements refid="class_scene_1a64d36508ee1971f89c7d5e8513d777b1">TransitionOut</reimplements>
+        <param>
+          <type><ref refid="class_scene_1adf61561da781541f6b9ec5590756b09e" kindref="member">SceneType</ref></type>
+          <declname>next_scene</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Used to configure the transition upon ending or suspending the scene.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>next_scene</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the scene we will transition to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="94" column="6" bodyfile="scene_battle.cpp" bodystart="172" bodyend="186"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1aa950a9644abbd4e903352b1fafbf4f97" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::DrawBackground</definition>
+        <argsstring>(Bitmap &amp;dst) override</argsstring>
+        <name>DrawBackground</name>
+        <qualifiedname>Scene_Battle::DrawBackground</qualifiedname>
+        <reimplements refid="class_scene_1a1fcc0d5308270cc967966da917957bdf">DrawBackground</reimplements>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Called by the graphic system to request drawing of a background, usually a system color background</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dst</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The bitmap to draw the background to. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="95" column="6" bodyfile="scene_battle.cpp" bodystart="188" bodyend="190"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_scene___battle_1a632c347b5ac88c194d3d9f9a9364870b" prot="protected" static="no" const="no" explicit="yes" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Scene_Battle::Scene_Battle</definition>
+        <argsstring>(const BattleArgs &amp;args)</argsstring>
+        <name>Scene_Battle</name>
+        <qualifiedname>Scene_Battle::Scene_Battle</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_battle_args" kindref="compound">BattleArgs</ref> &amp;</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="138" column="10" bodyfile="scene_battle.cpp" bodystart="51" bodyend="72"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1adf615d26ea8bf22cc0f516818087645d" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::CreateUi</definition>
+        <argsstring>()</argsstring>
+        <name>CreateUi</name>
+        <qualifiedname>Scene_Battle::CreateUi</qualifiedname>
+        <reimplementedby refid="class_scene___battle___rpg2k3_1a0d295ee51cbb4559a7e6442f9ee1cdb3">CreateUi</reimplementedby>
+        <reimplementedby refid="class_scene___battle___rpg2k_1a808fb5941d4421b1fabfb3470b5cf53a">CreateUi</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="140" column="14" bodyfile="scene_battle.cpp" bodystart="228" bodyend="244"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1aa9a5de5f31881ea8dc39c72e11c594fa" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Scene_Battle::SetState</definition>
+        <argsstring>(Scene_Battle::State new_state)=0</argsstring>
+        <name>SetState</name>
+        <qualifiedname>Scene_Battle::SetState</qualifiedname>
+        <reimplementedby refid="class_scene___battle___rpg2k3_1a306a026dc5169efed60e181ecdbb0e75">SetState</reimplementedby>
+        <reimplementedby refid="class_scene___battle___rpg2k_1ad2811c1ebe8c1d160853a17cc2d56846">SetState</reimplementedby>
+        <param>
+          <type><ref refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5" kindref="member">Scene_Battle::State</ref></type>
+          <declname>new_state</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="142" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1ae3232ebf3b9bb0bd6e6cd84227f95ea1" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle::IsWindowMoving</definition>
+        <argsstring>()</argsstring>
+        <name>IsWindowMoving</name>
+        <qualifiedname>Scene_Battle::IsWindowMoving</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="144" column="6" bodyfile="scene_battle.cpp" bodystart="326" bodyend="328"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a2861733b8543272c50ba274439d170c6" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle::IsEscapeAllowed</definition>
+        <argsstring>() const</argsstring>
+        <name>IsEscapeAllowed</name>
+        <qualifiedname>Scene_Battle::IsEscapeAllowed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="145" column="6" bodyfile="scene_battle.h" bodystart="211" bodyend="213"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a7defa27149a0cd18d53ab2da7356ba54" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_game___enemy" kindref="compound">Game_Enemy</ref> *</type>
+        <definition>Game_Enemy * Scene_Battle::EnemySelected</definition>
+        <argsstring>()</argsstring>
+        <name>EnemySelected</name>
+        <qualifiedname>Scene_Battle::EnemySelected</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="147" column="20" bodyfile="scene_battle.cpp" bodystart="330" bodyend="367"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a8f008f2f148ec0358c8e7f5121e24d70" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="class_game___actor" kindref="compound">Game_Actor</ref> *</type>
+        <definition>Game_Actor * Scene_Battle::AllySelected</definition>
+        <argsstring>()</argsstring>
+        <name>AllySelected</name>
+        <qualifiedname>Scene_Battle::AllySelected</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="148" column="20" bodyfile="scene_battle.cpp" bodystart="369" bodyend="400"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a5cfc83c6459ef3ab4868cb2e899e6246" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::AttackSelected</definition>
+        <argsstring>()</argsstring>
+        <name>AttackSelected</name>
+        <qualifiedname>Scene_Battle::AttackSelected</qualifiedname>
+        <reimplementedby refid="class_scene___battle___rpg2k3_1addfcde9012af0fcd1c76d3eb203636a5">AttackSelected</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="149" column="14" bodyfile="scene_battle.cpp" bodystart="402" bodyend="411"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a588428d371f0893dc87356fe98f7530f" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::DefendSelected</definition>
+        <argsstring>()</argsstring>
+        <name>DefendSelected</name>
+        <qualifiedname>Scene_Battle::DefendSelected</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="150" column="14" bodyfile="scene_battle.cpp" bodystart="413" bodyend="419"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1ab1c5afd8ffb0c2d6eb4e1a71889bb6d2" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::ItemSelected</definition>
+        <argsstring>()</argsstring>
+        <name>ItemSelected</name>
+        <qualifiedname>Scene_Battle::ItemSelected</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="151" column="14" bodyfile="scene_battle.cpp" bodystart="421" bodyend="465"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a580a88c15812f1bff7ff3859f3e97390" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::SkillSelected</definition>
+        <argsstring>()</argsstring>
+        <name>SkillSelected</name>
+        <qualifiedname>Scene_Battle::SkillSelected</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="152" column="14" bodyfile="scene_battle.cpp" bodystart="467" bodyend="478"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1ad4258a56b625dc5e973901d190dacb68" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::AssignSkill</definition>
+        <argsstring>(const lcf::rpg::Skill *skill, const lcf::rpg::Item *item)</argsstring>
+        <name>AssignSkill</name>
+        <qualifiedname>Scene_Battle::AssignSkill</qualifiedname>
+        <param>
+          <type>const lcf::rpg::Skill *</type>
+          <declname>skill</declname>
+        </param>
+        <param>
+          <type>const lcf::rpg::Item *</type>
+          <declname>item</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="154" column="14" bodyfile="scene_battle.cpp" bodystart="480" bodyend="517"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1aeff9ee6eff1e2679f2bc62096a63704e" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::ActionSelectedCallback</definition>
+        <argsstring>(Game_Battler *for_battler)</argsstring>
+        <name>ActionSelectedCallback</name>
+        <qualifiedname>Scene_Battle::ActionSelectedCallback</qualifiedname>
+        <reimplementedby refid="class_scene___battle___rpg2k3_1a3e7d5ab97e260926134baaa10a319b39">ActionSelectedCallback</reimplementedby>
+        <reimplementedby refid="class_scene___battle___rpg2k_1ae5cd45794c85d5d117ffa3888510e851">ActionSelectedCallback</reimplementedby>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>for_battler</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Executed when selection an action (normal, skill, item, ...) and (if needed) choosing an attack target was finished.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>for_battler</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Battler whose action was selected. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="162" column="14" bodyfile="scene_battle.cpp" bodystart="570" bodyend="595"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1aaf7d79e67b57a60866c36fbf89df9902" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::PrepareBattleAction</definition>
+        <argsstring>(Game_Battler *battler)</argsstring>
+        <name>PrepareBattleAction</name>
+        <qualifiedname>Scene_Battle::PrepareBattleAction</qualifiedname>
+        <param>
+          <type><ref refid="class_game___battler" kindref="compound">Game_Battler</ref> *</type>
+          <declname>battler</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="164" column="6" bodyfile="scene_battle.cpp" bodystart="529" bodyend="563"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1af17a023bc48a89e652846bafac16da2a" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::RemoveCurrentAction</definition>
+        <argsstring>()</argsstring>
+        <name>RemoveCurrentAction</name>
+        <qualifiedname>Scene_Battle::RemoveCurrentAction</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="166" column="6" bodyfile="scene_battle.cpp" bodystart="565" bodyend="568"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1ac92a7c9d9d17a884e7e4d827e4b4251d" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle::CallDebug</definition>
+        <argsstring>()</argsstring>
+        <name>CallDebug</name>
+        <qualifiedname>Scene_Battle::CallDebug</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="168" column="6" bodyfile="scene_battle.cpp" bodystart="597" bodyend="603"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1ac448cca6895659ddbbc811f43d3c5d05" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::EndBattle</definition>
+        <argsstring>(BattleResult result)</argsstring>
+        <name>EndBattle</name>
+        <qualifiedname>Scene_Battle::EndBattle</qualifiedname>
+        <param>
+          <type><ref refid="game__battle_8h_1aeb428039bc2a76249eeb078109c9bc08" kindref="member">BattleResult</ref></type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="170" column="6" bodyfile="scene_battle.cpp" bodystart="611" bodyend="633"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a8627279b0395d62c26c9960ed89a22d6" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Scene_Battle::InitEscapeChance</definition>
+        <argsstring>()</argsstring>
+        <name>InitEscapeChance</name>
+        <qualifiedname>Scene_Battle::InitEscapeChance</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="172" column="6" bodyfile="scene_battle.cpp" bodystart="141" bodyend="147"/>
+      </memberdef>
+      <memberdef kind="function" id="class_scene___battle_1a5d220eb5bdb132930b888c1d3670a98e" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Scene_Battle::TryEscape</definition>
+        <argsstring>()</argsstring>
+        <name>TryEscape</name>
+        <qualifiedname>Scene_Battle::TryEscape</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="scene_battle.h" line="173" column="6" bodyfile="scene_battle.cpp" bodystart="149" bodyend="155"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="class_scene___battle" kindref="compound">Scene_Battle</ref> class. Manages the battles. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="1">
+        <label>Scene_Battle</label>
+        <link refid="class_scene___battle"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Scene_Battle_Rpg2k</label>
+        <link refid="class_scene___battle___rpg2k"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Scene_Battle_Rpg2k3</label>
+        <link refid="class_scene___battle___rpg2k3"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>Game_Actor</label>
+        <link refid="class_game___actor"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Game_Battler</label>
+        <link refid="class_game___battler"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>position</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>shake</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>flash</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Game_Battler::FlashData</label>
+        <link refid="struct_game___battler_1_1_flash_data"/>
+      </node>
+      <node id="6">
+        <label>Game_Battler::ShakeData</label>
+        <link refid="struct_game___battler_1_1_shake_data"/>
+      </node>
+      <node id="5">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+      <node id="2">
+        <label>Scene</label>
+        <link refid="class_scene"/>
+      </node>
+      <node id="1">
+        <label>Scene_Battle</label>
+        <link refid="class_scene___battle"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>active_actor</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="scene_battle.h" line="74" column="1" bodyfile="scene_battle.h" bodystart="74" bodyend="209"/>
+    <listofallmembers>
+      <member refid="class_scene___battle_1aeff9ee6eff1e2679f2bc62096a63704e" prot="protected" virt="virtual"><scope>Scene_Battle</scope><name>ActionSelectedCallback</name></member>
+      <member refid="class_scene___battle_1a6034f315e7d6a4ad608a4ca06e05f2a5" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>active_actor</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea525fafbc764da0de39c27dea3ffeb3d0" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>ActorTarget</name></member>
+      <member refid="class_scene___battle_1a995e418e64233b14b0794c967a22eb18" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>allow_escape</name></member>
+      <member refid="class_scene___battle_1a8f008f2f148ec0358c8e7f5121e24d70" prot="protected" virt="virtual"><scope>Scene_Battle</scope><name>AllySelected</name></member>
+      <member refid="class_scene___battle_1ad4258a56b625dc5e973901d190dacb68" prot="protected" virt="virtual"><scope>Scene_Battle</scope><name>AssignSkill</name></member>
+      <member refid="class_scene_1a6091a98761b264c35a150bc28ee4a505" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>async_continuation</name></member>
+      <member refid="class_scene_1a30c5c46dd99e4825df2d69518748c8ac" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>AsyncContinuation</name></member>
+      <member refid="class_scene_1a40aec0ae8ed38526531911eea247398b" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>AsyncNext</name></member>
+      <member refid="class_scene___battle_1a5cfc83c6459ef3ab4868cb2e899e6246" prot="protected" virt="virtual"><scope>Scene_Battle</scope><name>AttackSelected</name></member>
+      <member refid="class_scene___battle_1ab8623a206a9a09cb8ad237835316047daee1fb351443aa721767f653638a65e89" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>AutoBattle</name></member>
+      <member refid="class_scene___battle_1accc61bbe53486a70ec438a161024c56d" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>autobattle_algos</name></member>
+      <member refid="class_scene___battle_1ab8623a206a9a09cb8ad237835316047da5b1fb6c55f02f9330c88893d2bd6397a" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Battle</name></member>
+      <member refid="class_scene___battle_1af1dcfafc8510441df31b6f2ee45e5e34" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>battle_actions</name></member>
+      <member refid="class_scene___battle_1ab348504618d105fc1a675a555c4905bb" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>battle_options</name></member>
+      <member refid="class_scene___battle_1ab8623a206a9a09cb8ad237835316047d" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>BattleOptionType</name></member>
+      <member refid="class_scene___battle_1ac92a7c9d9d17a884e7e4d827e4b4251d" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>CallDebug</name></member>
+      <member refid="class_scene_1a91e354ab86259cd3bc94c094036280da" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>CheckSceneExit</name></member>
+      <member refid="class_scene___battle_1a32a1001af7e41e4959b8e6b3a2a3f14b" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>command_window</name></member>
+      <member refid="class_scene___battle_1a3f6340780eb98bf49c3a8ea45618ecb1" prot="public" virt="virtual"><scope>Scene_Battle</scope><name>Continue</name></member>
+      <member refid="class_scene___battle_1af37748c4972843f57c1318b720c4a46e" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Create</name></member>
+      <member refid="class_scene___battle_1a0a87ad1d03f7b55cf9f7f4bc6e79250f" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>CreateOptions</name></member>
+      <member refid="class_scene___battle_1adf615d26ea8bf22cc0f516818087645d" prot="protected" virt="virtual"><scope>Scene_Battle</scope><name>CreateUi</name></member>
+      <member refid="class_scene___battle_1a6764cea5d91e484b265d6a871a4df3cd" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>cycle</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea418b00b4c130e675ac7512610ed3f473" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Debug</name></member>
+      <member refid="class_scene___battle_1a89da69d03b49b7e7b5fe0b636c4e0855" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>default_autobattle_algo</name></member>
+      <member refid="class_scene___battle_1a67c2b2f8880f956995b09a9a7a542791" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>default_enemyai_algo</name></member>
+      <member refid="class_scene___battle_1a588428d371f0893dc87356fe98f7530f" prot="protected" virt="virtual"><scope>Scene_Battle</scope><name>DefendSelected</name></member>
+      <member refid="class_scene___battle_1aa950a9644abbd4e903352b1fafbf4f97" prot="public" virt="virtual"><scope>Scene_Battle</scope><name>DrawBackground</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaee9d4a8ee40ca6e8310597315e07b978" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>End</name></member>
+      <member refid="class_scene___battle_1ac448cca6895659ddbbc811f43d3c5d05" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>EndBattle</name></member>
+      <member refid="class_scene___battle_1a0b02f9aabb6841bc109a520f0e7fdbe1" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>enemyai_algos</name></member>
+      <member refid="class_scene___battle_1a7defa27149a0cd18d53ab2da7356ba54" prot="protected" virt="virtual"><scope>Scene_Battle</scope><name>EnemySelected</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea302637f5f0048f4433949f10fc6c8f58" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Equip</name></member>
+      <member refid="class_scene___battle_1ab8623a206a9a09cb8ad237835316047dac4d3cf29d315f1c9181068d27d6c9fa2" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Escape</name></member>
+      <member refid="class_scene___battle_1a90eb41c853960d9e2e3ea251774ba1b4" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>escape_chance</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea85a7c5a46a3ca806d41de80e68da80e1" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>File</name></member>
+      <member refid="class_scene_1aa8b96a758c0f1ea4cf28808089ff7123" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Find</name></member>
+      <member refid="class_scene___battle_1a569ca6b63806b5b842b04ae74bf1946a" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>first_strike</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea895a9b137f215eee5613d6a546275f5b" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>GameBrowser</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ead885a8fd6d0f378a99ee56a676029bca" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Gameover</name></member>
+      <member refid="class_scene_1ad837b22dff59e9c21f31204d958a24d7" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>GetDrawableList</name></member>
+      <member refid="class_scene_1ab9edda06ab170512d308c0c9fb38056b" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>GetRequestedSceneType</name></member>
+      <member refid="class_scene_1a203eba321fedc8a26c8802f4b9a84e01" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>HasDelayFrames</name></member>
+      <member refid="class_scene_1a1acd1e4345dfecb30c7c35f6d3e8130b" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>HasRequestedScene</name></member>
+      <member refid="class_scene___battle_1aaa87d8889fab0fc133c66b2300fd9cc2" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>help_window</name></member>
+      <member refid="class_scene___battle_1a8627279b0395d62c26c9960ed89a22d6" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>InitEscapeChance</name></member>
+      <member refid="class_scene_1ac348fc3b0beb12093144a1f03d81449d" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>instance</name></member>
+      <member refid="class_scene_1a5a8c37138fc3a2dda1e0e077b472ab7b" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>IsAsyncPending</name></member>
+      <member refid="class_scene___battle_1a2861733b8543272c50ba274439d170c6" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>IsEscapeAllowed</name></member>
+      <member refid="class_scene_1a0e0d605d080b286e73a07587d72dfe70" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>IsInitialized</name></member>
+      <member refid="class_scene___battle_1ae3232ebf3b9bb0bd6e6cd84227f95ea1" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>IsWindowMoving</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea70390d274c6e9c167ac095faaa160c7c" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Item</name></member>
+      <member refid="class_scene___battle_1ad294471dca830b6b94cb6f81dfd2704a" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>item_window</name></member>
+      <member refid="class_scene___battle_1ab1c5afd8ffb0c2d6eb4e1a71889bb6d2" prot="protected" virt="virtual"><scope>Scene_Battle</scope><name>ItemSelected</name></member>
+      <member refid="class_scene_1a119de9e0876281a6eee15c7d15618d87" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>kReturnTitleDelayFrames</name></member>
+      <member refid="class_scene_1a563850d0f01381b76420c22ac335a103" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>kStartGameDelayFrames</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea16a3c57786ccf0d21f72a774d43957ab" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>LanguageMenu</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eac3db6576c8c7dc6e5d007d989f5022ea" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Load</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea4615e1aa6a92b7860d342a6aaf642611" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Logo</name></member>
+      <member refid="class_scene___battle_1ab8623a206a9a09cb8ad237835316047daa240b6407db0b1cb71e2a6b86679cad4" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Lose</name></member>
+      <member refid="class_scene_1ae7f0f916c29e55b282dfe4ae522d2096" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>MainFunction</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eae39f3115e47e2cc1a161ab73db4819a6" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Map</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea2412b59539890965aeb61a22141a781b" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Menu</name></member>
+      <member refid="class_scene___battle_1a68c1836194e0be5a50b7dbe47a600d58" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>message_window</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea05b82d049724f3ca8838b9800e8f3f3e" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Name</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea352ebbd390cdf4d31336a52af54fca32" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Null</name></member>
+      <member refid="class_scene_1a71555af047b54446dfc4fd2b0e6f78bd" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>old_instances</name></member>
+      <member refid="class_scene___battle_1ae909aa531ca830d4a49a467576527232" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>on_battle_end</name></member>
+      <member refid="class_scene_1a7388cece257333bb2c98a202135adf51" prot="public" virt="virtual"><scope>Scene_Battle</scope><name>OnEventHpChanged</name></member>
+      <member refid="class_scene_1a80c10e8f0c10921300be168e67ddf3ed" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>OnFinishAsync</name></member>
+      <member refid="class_scene_1a05be417a18748b38a3cd18566edd6d2d" prot="public" virt="virtual"><scope>Scene_Battle</scope><name>OnPartyChanged</name></member>
+      <member refid="class_scene_1ac6fa936fd2dc55f41889400d36d855e6" prot="public" virt="virtual"><scope>Scene_Battle</scope><name>OnTranslationChanged</name></member>
+      <member refid="class_scene___battle_1aae6c264571b28701b207bd0c951bdb49" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>options_window</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea26ab4613edf5d94d74a5e1ad4ec37fa3" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Order</name></member>
+      <member refid="class_scene_1a29b08fddcde74b786ec01129847454ba" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Peek</name></member>
+      <member refid="class_scene_1a713d07a297477318624fada11415f5e3" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Pop</name></member>
+      <member refid="class_scene_1ac657b33df6c856847d87aa976ae9a9eb" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>PopUntil</name></member>
+      <member refid="class_scene___battle_1aaf7d79e67b57a60866c36fbf89df9902" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>PrepareBattleAction</name></member>
+      <member refid="class_scene___battle_1a101c3428860570da5fa1c7f8b37e4819" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>previous_state</name></member>
+      <member refid="class_scene_1a61c10b38185eac9925da70d7fb915890" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Push</name></member>
+      <member refid="class_scene_1afb9e8385131d0524f0d9afa946096709" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>PushTitleScene</name></member>
+      <member refid="class_scene_1a5ecd59170e0a54d6216ccebd76702dd6" prot="public" virt="virtual"><scope>Scene_Battle</scope><name>Refresh</name></member>
+      <member refid="class_scene___battle_1af17a023bc48a89e652846bafac16da2a" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>RemoveCurrentAction</name></member>
+      <member refid="class_scene_1a902f2993901187b05d8e42188b7e8156" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>ReturnToTitleScene</name></member>
+      <member refid="class_scene_1a495973012445184e00a31dd31e217b7e" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>rpgRtSceneFromSceneType</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc195dbdbaa61f7b6b3ecb3236592d17" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Save</name></member>
+      <member refid="class_scene_1ad10176d75a9cc0da56626f682d083507" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Scene</name></member>
+      <member refid="class_scene___battle_1a632c347b5ac88c194d3d9f9a9364870b" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>Scene_Battle</name></member>
+      <member refid="class_scene_1a300d6b1274f226a1e69a552858414ba3" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>scene_names</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea7484d8e1128440652139839089e85604" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>SceneMax</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09e" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>SceneType</name></member>
+      <member refid="class_scene___battle_1a8866faed25f156108018a9a74de33635" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>SelectionFlash</name></member>
+      <member refid="class_scene_1a40c9e3ffb2917b1e3880e2ff5733b1b6" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>SetDelayFrames</name></member>
+      <member refid="class_scene_1a9f641fa0061cebf4294009cb1d860cbe" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>SetRequestedScene</name></member>
+      <member refid="class_scene___battle_1aa9a5de5f31881ea8dc39c72e11c594fa" prot="protected" virt="pure-virtual"><scope>Scene_Battle</scope><name>SetState</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafc93e55e9b1ff9b798d1fb0ee22abab0" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Settings</name></member>
+      <member refid="class_scene_1a287b3a8a6fdaa0eb6e9b43ae7c774c8b" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>SetUseSharedDrawables</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09ea40484f6fb0aae90d36b27e9f7abfee9c" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Shop</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eafd156984a4436ea28706dc0c7873c8fc" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Skill</name></member>
+      <member refid="class_scene___battle_1a3ad63ae3c34d7167e50f2d0aec24b5f8" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>skill_window</name></member>
+      <member refid="class_scene___battle_1a580a88c15812f1bff7ff3859f3e97390" prot="protected" virt="virtual"><scope>Scene_Battle</scope><name>SkillSelected</name></member>
+      <member refid="class_scene___battle_1ad3109198d84edde7a31ab39a402e1351" prot="public" virt="virtual"><scope>Scene_Battle</scope><name>Start</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>State</name></member>
+      <member refid="class_scene___battle_1ab65527778a347272b9c7130c0a6921f3" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>state</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a363e5c2d395ed3194e114a1b879d99ce" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>State_AutoBattle</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5ab869723f5f46a51b64eb53526ff299e1" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>State_Battle</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a3729141d1901f23014d33019e937ee00" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>State_Defeat</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5aa89b37be99c5780fb1300fe29b0fe0af" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>State_Escape</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a248ba41a360c5111c3e3a9525d806a39" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>State_SelectActor</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a501d32fa43c8d0637cb4f96bd458bd9f" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>State_SelectAllyTarget</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a84128f9a60548c2fca1413a8fa417606" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>State_SelectCommand</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5abc2501797be72514cf5da569e3c9be36" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>State_SelectEnemyTarget</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5ae4c084ebaa6ab28327cd15dd52ec67f1" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>State_SelectItem</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a1ee9b20bbf996b5ea7a31e1d826427c9" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>State_SelectOption</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a24670a1c95760faf7743fd0e72c0cb16" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>State_SelectSkill</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a044fada406a79efc73bf4ac391a96b8b" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>State_Start</name></member>
+      <member refid="class_scene___battle_1a20d8a5ed9c07b28bd0d4d307ff8a6fc5a23cd0be2ed3f14966c0b61729920dbe8" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>State_Victory</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eabe141c1b0922ac825b014da56774c2dc" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Status</name></member>
+      <member refid="class_scene___battle_1a7c947b36335228bb737cb9ae5ab8dbae" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>status_window</name></member>
+      <member refid="class_scene_1ac6413c7a3e405e57e415bec3c3096f26" prot="public" virt="virtual"><scope>Scene_Battle</scope><name>Suspend</name></member>
+      <member refid="class_scene_1a2ac1629e5d081accb6b3d2682c8aac18" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>TakeRequestedScene</name></member>
+      <member refid="class_scene___battle_1a3b4f9ef17ced6fe92899350482cd21cb" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>target_window</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eadce8e1c84d0a06f5a005b24a6e602424" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Teleport</name></member>
+      <member refid="class_scene_1adf61561da781541f6b9ec5590756b09eaf3446103059a7e7c2333b8e0f81377d0" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Title</name></member>
+      <member refid="class_scene_1a1e97664b3509e2eb64b1aa621634703c" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>TransferDrawablesFrom</name></member>
+      <member refid="class_scene___battle_1a5c0b8a56af356311fd37a1b561609a43" prot="public" virt="virtual"><scope>Scene_Battle</scope><name>TransitionIn</name></member>
+      <member refid="class_scene___battle_1a8641b0949d9865e767e1d28120799f10" prot="public" virt="virtual"><scope>Scene_Battle</scope><name>TransitionOut</name></member>
+      <member refid="class_scene___battle_1a1d3bf957bae9af472b87573efecc4f69" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>troop_id</name></member>
+      <member refid="class_scene___battle_1a5d220eb5bdb132930b888c1d3670a98e" prot="protected" virt="non-virtual"><scope>Scene_Battle</scope><name>TryEscape</name></member>
+      <member refid="class_scene_1a8320189e28f3918a4f0200aedb97ccb5" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>type</name></member>
+      <member refid="class_scene_1a71a71b4f7752b853ff8032b0941a9d8d" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Update</name></member>
+      <member refid="class_scene___battle_1a85023dd1a511af0ccb32026a83cc28d9" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>UpdateBattlers</name></member>
+      <member refid="class_scene_1a85503cbb64a2f88b227d926768ed0100" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>UpdateDelayFrames</name></member>
+      <member refid="class_scene___battle_1a2513a84eed2531684affacc849911255" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>UpdateEvents</name></member>
+      <member refid="class_scene___battle_1a6579be9b151e47b0f2185ed9eff9dc21" prot="public" virt="virtual"><scope>Scene_Battle</scope><name>UpdateGraphics</name></member>
+      <member refid="class_scene___battle_1a2fc5c6d2bea57e4a5afa0086aed43130" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>UpdateScreen</name></member>
+      <member refid="class_scene___battle_1ab07d2f96a69310d30c5146bfdec1d399" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>UpdateTimers</name></member>
+      <member refid="class_scene___battle_1a098bc232535ab6244866d96e01996a0d" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>UpdateUi</name></member>
+      <member refid="class_scene_1ac41adc09c7fed6609df594bf5bcdc1c5" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>UsesSharedDrawables</name></member>
+      <member refid="class_scene_1a8111b81e59b90b6711e9a39a507a32eb" prot="protected" virt="virtual"><scope>Scene_Battle</scope><name>vUpdate</name></member>
+      <member refid="class_scene___battle_1ab8623a206a9a09cb8ad237835316047da8f0b0274befa4ba82c7ff51d7f7abe60" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>Win</name></member>
+      <member refid="class_scene_1aa0a5be58e2ee2d1fdafc5fb46b5e661e" prot="public" virt="virtual"><scope>Scene_Battle</scope><name>~Scene</name></member>
+      <member refid="class_scene___battle_1a6ed9d672d4efbb0f7918ac23096bd05f" prot="public" virt="non-virtual"><scope>Scene_Battle</scope><name>~Scene_Battle</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

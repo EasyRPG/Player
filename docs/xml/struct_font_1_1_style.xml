@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_font_1_1_style" kind="struct" language="C++" prot="public">
+    <compoundname>Font::Style</compoundname>
+    <includes refid="font_8h" local="no">font.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_font_1_1_style_1a4503712cad4994bce82aaffeb30f58f8" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Font::Style::size</definition>
+        <argsstring></argsstring>
+        <name>size</name>
+        <qualifiedname>Font::Style::size</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Size in pixel to render at </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="82" column="5" bodyfile="font.h" bodystart="82" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_font_1_1_style_1a6db38f5145335cd1eebf3359b530a8e3" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Font::Style::bold</definition>
+        <argsstring></argsstring>
+        <name>bold</name>
+        <qualifiedname>Font::Style::bold</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Whether to render text in bold (currently unsupported) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="84" column="6" bodyfile="font.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_font_1_1_style_1afff0f2c4314e45634fd022f4dc6e1911" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Font::Style::italic</definition>
+        <argsstring></argsstring>
+        <name>italic</name>
+        <qualifiedname>Font::Style::italic</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Whether to render text in italic (currently unsupported) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="86" column="6" bodyfile="font.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_font_1_1_style_1acadd7283886e7b2e660e298275260369" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Font::Style::draw_shadow</definition>
+        <argsstring></argsstring>
+        <name>draw_shadow</name>
+        <qualifiedname>Font::Style::draw_shadow</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Whether to render a drop shadow </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="88" column="6" bodyfile="font.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_font_1_1_style_1abd74c20c0a2eacfcf1dc98164b972492" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Font::Style::draw_gradient</definition>
+        <argsstring></argsstring>
+        <name>draw_gradient</name>
+        <qualifiedname>Font::Style::draw_gradient</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Whether to draw the system color using a gradient </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="90" column="6" bodyfile="font.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_font_1_1_style_1a5e6023be248bfaa60bf6c59802089437" prot="public" static="no" mutable="no">
+        <type><ref refid="point_8h_1aa697f86449285df38536590ffc3e3357" kindref="member">Point</ref></type>
+        <definition>Point Font::Style::color_offset</definition>
+        <argsstring></argsstring>
+        <name>color_offset</name>
+        <qualifiedname>Font::Style::color_offset</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>When draw_gradient is false specifies the pixel of the current system color to use </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="92" column="7" bodyfile="font.h" bodystart="92" bodyend="92"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_font_1_1_style_1a20db7a6f888eb357d9bf4d75b0f724da" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Font::Style::letter_spacing</definition>
+        <argsstring></argsstring>
+        <name>letter_spacing</name>
+        <qualifiedname>Font::Style::letter_spacing</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Specifies how far the drawing cursor is advanced in x direction after rendering a glyph. This will yield incorrect results for anything that involves complex shaping. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="font.h" line="97" column="5" bodyfile="font.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Contains style informations </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>Font::Style</label>
+        <link refid="struct_font_1_1_style"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>color_offset</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PointT&lt; int &gt;</label>
+        <link refid="class_point_t"/>
+      </node>
+    </collaborationgraph>
+    <location file="font.h" line="80" column="1" bodyfile="font.h" bodystart="80" bodyend="98"/>
+    <listofallmembers>
+      <member refid="struct_font_1_1_style_1a6db38f5145335cd1eebf3359b530a8e3" prot="public" virt="non-virtual"><scope>Font::Style</scope><name>bold</name></member>
+      <member refid="struct_font_1_1_style_1a5e6023be248bfaa60bf6c59802089437" prot="public" virt="non-virtual"><scope>Font::Style</scope><name>color_offset</name></member>
+      <member refid="struct_font_1_1_style_1abd74c20c0a2eacfcf1dc98164b972492" prot="public" virt="non-virtual"><scope>Font::Style</scope><name>draw_gradient</name></member>
+      <member refid="struct_font_1_1_style_1acadd7283886e7b2e660e298275260369" prot="public" virt="non-virtual"><scope>Font::Style</scope><name>draw_shadow</name></member>
+      <member refid="struct_font_1_1_style_1afff0f2c4314e45634fd022f4dc6e1911" prot="public" virt="non-virtual"><scope>Font::Style</scope><name>italic</name></member>
+      <member refid="struct_font_1_1_style_1a20db7a6f888eb357d9bf4d75b0f724da" prot="public" virt="non-virtual"><scope>Font::Style</scope><name>letter_spacing</name></member>
+      <member refid="struct_font_1_1_style_1a4503712cad4994bce82aaffeb30f58f8" prot="public" virt="non-virtual"><scope>Font::Style</scope><name>size</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

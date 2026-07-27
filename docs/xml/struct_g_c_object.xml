@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_g_c_object" kind="struct" language="C++" prot="public">
+    <compoundname>GCObject</compoundname>
+    <includes refid="lobject_8h" local="no">lobject.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_g_c_object_1af27f3b17495ada2a250831a5424ed971" prot="public" static="no" mutable="no">
+        <type></type>
+        <definition>GCObject::CommonHeader</definition>
+        <argsstring></argsstring>
+        <name>CommonHeader</name>
+        <qualifiedname>GCObject::CommonHeader</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lua/lobject.h" line="306" column="3" bodyfile="leasy/lua/lobject.h" bodystart="306" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/lua/lobject.h" line="305" column="1" bodyfile="leasy/lua/lobject.h" bodystart="305" bodyend="307"/>
+    <listofallmembers>
+      <member refid="struct_g_c_object_1af27f3b17495ada2a250831a5424ed971" prot="public" virt="non-virtual"><scope>GCObject</scope><name>CommonHeader</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

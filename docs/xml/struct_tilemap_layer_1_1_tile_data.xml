@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="struct_tilemap_layer_1_1_tile_data" kind="struct" language="C++" prot="private">
+    <compoundname>TilemapLayer::TileData</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_tilemap_layer_1_1_tile_data_1a674a1c5b565801d17b6553201915a9e6" prot="public" static="no" mutable="no">
+        <type>short</type>
+        <definition>short TilemapLayer::TileData::ID</definition>
+        <argsstring></argsstring>
+        <name>ID</name>
+        <qualifiedname>TilemapLayer::TileData::ID</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="157" column="7" bodyfile="tilemap_layer.h" bodystart="157" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_tilemap_layer_1_1_tile_data_1a934ede23b9bb748e12ed921d657884c0" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t TilemapLayer::TileData::z</definition>
+        <argsstring></argsstring>
+        <name>z</name>
+        <qualifiedname>TilemapLayer::TileData::z</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="tilemap_layer.h" line="158" column="9" bodyfile="tilemap_layer.h" bodystart="158" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="tilemap_layer.h" line="156" column="1" bodyfile="tilemap_layer.h" bodystart="156" bodyend="159"/>
+    <listofallmembers>
+      <member refid="struct_tilemap_layer_1_1_tile_data_1a674a1c5b565801d17b6553201915a9e6" prot="public" virt="non-virtual"><scope>TilemapLayer::TileData</scope><name>ID</name></member>
+      <member refid="struct_tilemap_layer_1_1_tile_data_1a934ede23b9bb748e12ed921d657884c0" prot="public" virt="non-virtual"><scope>TilemapLayer::TileData</scope><name>z</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

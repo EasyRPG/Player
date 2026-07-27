@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="classleasy_1_1ios_1_1buffer" kind="class" language="C++" prot="public">
+    <compoundname>leasy::ios::buffer</compoundname>
+    <includes refid="lio_8hpp" local="no">lio.hpp</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classleasy_1_1ios_1_1buffer_1a99fa1d2115af2dc90a73ba8e0dfee45c" prot="private" static="no" mutable="no">
+        <type>std::ostringstream</type>
+        <definition>std::ostringstream leasy::ios::buffer::stream_</definition>
+        <argsstring></argsstring>
+        <name>stream_</name>
+        <qualifiedname>leasy::ios::buffer::stream_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="102" column="22" bodyfile="leasy/lio.hpp" bodystart="102" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classleasy_1_1ios_1_1buffer_1adeb276460b9358d074c05327c6510bf8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void leasy::ios::buffer::write</definition>
+        <argsstring>(Args &amp;&amp;... args)</argsstring>
+        <name>write</name>
+        <qualifiedname>leasy::ios::buffer::write</qualifiedname>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="88" column="15" bodyfile="leasy/lio.hpp" bodystart="88" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1buffer_1a75f844846593bbfa7df1ca3f2293b38c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string leasy::ios::buffer::str</definition>
+        <argsstring>() const</argsstring>
+        <name>str</name>
+        <qualifiedname>leasy::ios::buffer::str</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="92" column="22" bodyfile="leasy/lio.hpp" bodystart="92" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="function" id="classleasy_1_1ios_1_1buffer_1ab125cac1828ca515825a104fd01db04f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void leasy::ios::buffer::clear</definition>
+        <argsstring>()</argsstring>
+        <name>clear</name>
+        <qualifiedname>leasy::ios::buffer::clear</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="leasy/lio.hpp" line="96" column="15" bodyfile="leasy/lio.hpp" bodystart="96" bodyend="99"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/lio.hpp" line="85" column="1" bodyfile="leasy/lio.hpp" bodystart="85" bodyend="103"/>
+    <listofallmembers>
+      <member refid="classleasy_1_1ios_1_1buffer_1ab125cac1828ca515825a104fd01db04f" prot="public" virt="non-virtual"><scope>leasy::ios::buffer</scope><name>clear</name></member>
+      <member refid="classleasy_1_1ios_1_1buffer_1a75f844846593bbfa7df1ca3f2293b38c" prot="public" virt="non-virtual"><scope>leasy::ios::buffer</scope><name>str</name></member>
+      <member refid="classleasy_1_1ios_1_1buffer_1a99fa1d2115af2dc90a73ba8e0dfee45c" prot="private" virt="non-virtual"><scope>leasy::ios::buffer</scope><name>stream_</name></member>
+      <member refid="classleasy_1_1ios_1_1buffer_1adeb276460b9358d074c05327c6510bf8" prot="public" virt="non-virtual"><scope>leasy::ios::buffer</scope><name>write</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

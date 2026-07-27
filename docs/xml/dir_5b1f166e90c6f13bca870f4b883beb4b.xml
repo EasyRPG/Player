@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_5b1f166e90c6f13bca870f4b883beb4b" kind="dir">
+    <compoundname>leasy/kits</compoundname>
+    <innerfile refid="cvref_8hpp">cvref.hpp</innerfile>
+    <innerfile refid="preload_8hpp">preload.hpp</innerfile>
+    <innerfile refid="ps7k_8hpp">ps7k.hpp</innerfile>
+    <innerfile refid="rtt_8hpp">rtt.hpp</innerfile>
+    <innerfile refid="select_8hpp">select.hpp</innerfile>
+    <innerfile refid="strings_8hpp">strings.hpp</innerfile>
+    <innerfile refid="utils_8hpp">utils.hpp</innerfile>
+    <innerfile refid="variant_8hpp">variant.hpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/kits/"/>
+  </compounddef>
+</doxygen>

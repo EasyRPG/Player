@@ -132,3 +132,4 @@ inline bool TileOpacity::Empty() const {
 }
 
 #endif
+

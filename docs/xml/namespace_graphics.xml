@@ -1,0 +1,207 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="namespace_graphics" kind="namespace" language="C++">
+    <compoundname>Graphics</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespace_graphics_1a691440ec2c5d82aca2ca05aac33008b2" prot="public" static="no" mutable="no">
+        <type>std::shared_ptr&lt; <ref refid="class_scene" kindref="compound">Scene</ref> &gt;</type>
+        <definition>std::shared_ptr&lt;Scene&gt; Graphics::current_scene</definition>
+        <argsstring></argsstring>
+        <name>current_scene</name>
+        <qualifiedname>Graphics::current_scene</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphics.cpp" line="41" column="17" bodyfile="graphics.cpp" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_graphics_1a9d950fac18ed57972788aeb6c2a615ff" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_message_overlay" kindref="compound">MessageOverlay</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;MessageOverlay&gt; Graphics::message_overlay</definition>
+        <argsstring></argsstring>
+        <name>message_overlay</name>
+        <qualifiedname>Graphics::message_overlay</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphics.cpp" line="43" column="17" bodyfile="graphics.cpp" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_graphics_1a074ad4c25d24b0ff63ee9d7bd1d8f003" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_fps_overlay" kindref="compound">FpsOverlay</ref> &gt;</type>
+        <definition>std::unique_ptr&lt;FpsOverlay&gt; Graphics::fps_overlay</definition>
+        <argsstring></argsstring>
+        <name>fps_overlay</name>
+        <qualifiedname>Graphics::fps_overlay</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphics.cpp" line="44" column="17" bodyfile="graphics.cpp" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespace_graphics_1a6c56bb151d92da5dabacd6d921a64607" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Graphics::window_title_key</definition>
+        <argsstring></argsstring>
+        <name>window_title_key</name>
+        <qualifiedname>Graphics::window_title_key</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphics.cpp" line="46" column="13" bodyfile="graphics.cpp" bodystart="46" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_graphics_1a464bd2dd3966b40410babe867f504239" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Graphics::UpdateTitle</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateTitle</name>
+        <qualifiedname>Graphics::UpdateTitle</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphics.cpp" line="39" column="6" bodyfile="graphics.cpp" bodystart="76" bodyend="107" declfile="graphics.cpp" declline="39" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_graphics_1aa5cca3799f830d61c298c1b5e7f87774" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Graphics::Init</definition>
+        <argsstring>()</argsstring>
+        <name>Init</name>
+        <qualifiedname>Graphics::Init</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes <ref refid="namespace_graphics" kindref="compound">Graphics</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphics.h" line="40" column="6" bodyfile="graphics.cpp" bodystart="49" bodyend="55" declfile="graphics.h" declline="40" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_graphics_1a112e158809615e803e125c80810a5635" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Graphics::Quit</definition>
+        <argsstring>()</argsstring>
+        <name>Quit</name>
+        <qualifiedname>Graphics::Quit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Disposes <ref refid="namespace_graphics" kindref="compound">Graphics</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphics.h" line="45" column="6" bodyfile="graphics.cpp" bodystart="57" bodyend="65" declfile="graphics.h" declline="45" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_graphics_1a58bf92a7288028fbd9418fbfda56aacf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Graphics::Update</definition>
+        <argsstring>()</argsstring>
+        <name>Update</name>
+        <qualifiedname>Graphics::Update</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the screen. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphics.h" line="50" column="6" bodyfile="graphics.cpp" bodystart="67" bodyend="74" declfile="graphics.h" declline="50" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_graphics_1a825b4414e3d468655bd5d1b80f881bc8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Graphics::Draw</definition>
+        <argsstring>(Bitmap &amp;dst)</argsstring>
+        <name>Draw</name>
+        <qualifiedname>Graphics::Draw</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphics.h" line="52" column="6" bodyfile="graphics.cpp" bodystart="109" bodyend="123" declfile="graphics.h" declline="52" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_graphics_1afa465b473c6ee33fecf816aba210990c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Graphics::LocalDraw</definition>
+        <argsstring>(Bitmap &amp;dst, Drawable::Z_t min_z, Drawable::Z_t max_z)</argsstring>
+        <name>LocalDraw</name>
+        <qualifiedname>Graphics::LocalDraw</qualifiedname>
+        <param>
+          <type><ref refid="class_bitmap" kindref="compound">Bitmap</ref> &amp;</type>
+          <declname>dst</declname>
+        </param>
+        <param>
+          <type><ref refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" kindref="member">Drawable::Z_t</ref></type>
+          <declname>min_z</declname>
+        </param>
+        <param>
+          <type><ref refid="class_drawable_1a93db4314fd94a98c70de6ac1f00688e9" kindref="member">Drawable::Z_t</ref></type>
+          <declname>max_z</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphics.h" line="54" column="6" bodyfile="graphics.cpp" bodystart="125" bodyend="133" declfile="graphics.h" declline="54" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_graphics_1ab650bb579ada57ff8591ca5e2796d216" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::shared_ptr&lt; <ref refid="class_scene" kindref="compound">Scene</ref> &gt;</type>
+        <definition>std::shared_ptr&lt; Scene &gt; Graphics::UpdateSceneCallback</definition>
+        <argsstring>()</argsstring>
+        <name>UpdateSceneCallback</name>
+        <qualifiedname>Graphics::UpdateSceneCallback</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphics.h" line="56" column="17" bodyfile="graphics.cpp" bodystart="135" bodyend="150" declfile="graphics.h" declline="56" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_graphics_1a8bd303bfb3b30a49adf69ff9065fcd14" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_message_overlay" kindref="compound">MessageOverlay</ref> &amp;</type>
+        <definition>MessageOverlay &amp; Graphics::GetMessageOverlay</definition>
+        <argsstring>()</argsstring>
+        <name>GetMessageOverlay</name>
+        <qualifiedname>Graphics::GetMessageOverlay</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns a handle to the message overlay. Only used by <ref refid="namespace_output" kindref="compound">Output</ref> to put messages.</para>
+<para><simplesect kind="return"><para>message overlay </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphics.h" line="64" column="16" bodyfile="graphics.cpp" bodystart="152" bodyend="154" declfile="graphics.h" declline="64" declcolumn="16"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><ref refid="namespace_graphics" kindref="compound">Graphics</ref> namespace. Handles screen drawing. </para>
+    </detaileddescription>
+    <location file="graphics.cpp" line="38" column="1"/>
+  </compounddef>
+</doxygen>

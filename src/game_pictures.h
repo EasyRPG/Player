@@ -151,3 +151,4 @@ inline bool Game_Pictures::Picture::IsOnBattle() const {
 }
 
 #endif
+

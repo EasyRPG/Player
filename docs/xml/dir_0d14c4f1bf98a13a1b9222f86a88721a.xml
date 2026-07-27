@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.17.0" xml:lang="en-US">
+  <compounddef id="dir_0d14c4f1bf98a13a1b9222f86a88721a" kind="dir">
+    <compoundname>leasy</compoundname>
+    <innerdir refid="dir_fca77f9bab3a9f6420580869c4055adc">leasy/diag5</innerdir>
+    <innerdir refid="dir_420bb66f080727639bb10fa63eb75338">leasy/iky7</innerdir>
+    <innerdir refid="dir_ba55b6fbdf678621e6b3484a5f5cb031">leasy/ily3</innerdir>
+    <innerdir refid="dir_5b1f166e90c6f13bca870f4b883beb4b">leasy/kits</innerdir>
+    <innerdir refid="dir_069b3f86ea25de4bacf1f970d9e6df16">leasy/libs2</innerdir>
+    <innerdir refid="dir_69a45190d90aef3e4e5b3343f55f91d5">leasy/lua</innerdir>
+    <innerdir refid="dir_00df8b31b475d8f95fd33424403eb79b">leasy/metadata</innerdir>
+    <innerdir refid="dir_004a5a4eb7a4be1b32584ca636a205dc">leasy/test</innerdir>
+    <innerdir refid="dir_972a0541e6965e1604d4634c6a12b318">leasy/typings</innerdir>
+    <innerdir refid="dir_95daaf1b8672d41b7dd5e9cf00442f8c">leasy/ui</innerdir>
+    <innerdir refid="dir_65f168f04d990b6d92046382cef1c4c1">leasy/ul2</innerdir>
+    <innerfile refid="dec_8h">dec.h</innerfile>
+    <innerfile refid="events_8hpp">events.hpp</innerfile>
+    <innerfile refid="ldebug_8hpp">ldebug.hpp</innerfile>
+    <innerfile refid="leasy_8cpp">leasy.cpp</innerfile>
+    <innerfile refid="leasy_8hpp">leasy.hpp</innerfile>
+    <innerfile refid="lio_8cpp">lio.cpp</innerfile>
+    <innerfile refid="lio_8hpp">lio.hpp</innerfile>
+    <innerfile refid="lmain_8cpp">lmain.cpp</innerfile>
+    <innerfile refid="signals_8hpp">signals.hpp</innerfile>
+    <innerfile refid="singleton_8hpp">singleton.hpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="leasy/"/>
+  </compounddef>
+</doxygen>
